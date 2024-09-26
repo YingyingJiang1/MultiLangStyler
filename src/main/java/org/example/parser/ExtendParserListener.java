@@ -1,0 +1,968 @@
+package org.example.parser;
+
+import org.example.antlr.JavaParser;
+import org.example.antlr.JavaParserBaseListener;
+import org.example.style.ProgramStyle;
+import org.example.style.format.FormatStyle;
+import org.example.styler.antlr.AntlrConcreteStylerBase;
+import org.example.styler.Styler;
+import org.example.styler.antlr.AntlrFormatStyler;
+import org.example.styler.antlr.AntlrNewlineStyler;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+ * @author     : Jiang Yingying
+ * @create     : 2024/1/22 17:32
+ */
+public class ExtendParserListener extends JavaParserBaseListener {
+	public ProgramStyle programStyle;
+	public int state;
+	public List<AntlrConcreteStylerBase> enterStylers = new ArrayList<>();
+	public List<AntlrConcreteStylerBase> exitStylers = new ArrayList<>();
+
+	public ExtendParserListener(ProgramStyle programStyle, int state,
+	                            List<AntlrConcreteStylerBase> enterStylers,
+	                            List<AntlrConcreteStylerBase> exitStylers) {
+		this.programStyle = programStyle;
+		this.state = state;
+		this.enterStylers = enterStylers;
+		this.exitStylers = exitStylers;
+	}
+
+	public ExtendParserListener() {
+	}
+
+	private void doTask(ExtendContext ctx, List<AntlrConcreteStylerBase> stylers) {
+		if (state == Styler.EXTRACTION_PROCESS) {
+			for (AntlrConcreteStylerBase styler : stylers) {
+				if (styler.isEnable(Styler.EXTRACTION_PROCESS) && styler.isRelevant(ctx)) {
+					styler.extractStyle(ctx, programStyle);
+				}
+			}
+		} else if (state == Styler.APPLICATION_PROCESS) {
+			ExtendContext newCtx = ctx;
+			for (AntlrConcreteStylerBase styler : stylers) {
+				if(styler.isEnable(Styler.APPLICATION_PROCESS) && styler.isRelevant(newCtx)) {
+					newCtx = styler.applyStyle(newCtx, programStyle);
+				}
+			}
+		}
+	}
+
+	//--------------------------------------------------- enterxxx methods ---------------------------------------------------
+
+	@Override
+	public void enterBlock(JavaParser.BlockContext ctx) {
+		ctx.deleteStatementCtx(); // Ensure delete statement context when entering block.
+		ctx.incBraceDepth();
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterBody(JavaParser.BodyContext ctx) {
+		ctx.incBraceDepth();
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterIfStmt(JavaParser.IfStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterIfElseStmt(JavaParser.IfElseStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterForStmt(JavaParser.ForStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterWhileStmt(JavaParser.WhileStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterDoWhileStmt(JavaParser.DoWhileStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterSwitchStmt(JavaParser.SwitchStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterTryCatchStmt(JavaParser.TryCatchStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterTryResourceStmt(JavaParser.TryResourceStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterModifierList(JavaParser.ModifierListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterSyncStmt(JavaParser.SyncStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterInitializer(JavaParser.InitializerContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterArrayInitializer(JavaParser.ArrayInitializerContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterAnnotationList(JavaParser.AnnotationListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterAnnotation(JavaParser.AnnotationContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterElementValueArrayInitializer(JavaParser.ElementValueArrayInitializerContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterLabelStmt(JavaParser.LabelStmtContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterTypeDeclarationList(JavaParser.TypeDeclarationListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterInitializerList(JavaParser.InitializerListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterFieldDeclarationList(JavaParser.FieldDeclarationListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterConstructorDeclarationList(JavaParser.ConstructorDeclarationListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterMethodDeclarationList(JavaParser.MethodDeclarationListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterImportDeclarationList(JavaParser.ImportDeclarationListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterCompilationUnit(JavaParser.CompilationUnitContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	//--------------------------------------------------- exitxxx methods ---------------------------------------------------
+
+	@Override
+	public void exitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
+		ctx.expandChildIf(root -> root instanceof JavaParser.TypeDeclarationListContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+
+	@Override
+	public void exitConstructorDeclarationList(JavaParser.ConstructorDeclarationListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitBody(JavaParser.BodyContext ctx) {
+		ctx.expandChildIf(root -> root instanceof JavaParser.ClassBodyDeclarationContext);
+		ctx.decBraceDepth();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitClassHead(JavaParser.ClassHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitInterfaceHead(JavaParser.InterfaceHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitRecordHead(JavaParser.RecordHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitEnumHead(JavaParser.EnumHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+
+	@Override
+	public void exitAnnotationTypeHead(JavaParser.AnnotationTypeHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitMethodHead(JavaParser.MethodHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitConstructorHead(JavaParser.ConstructorHeadContext ctx) {
+		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
+		ctx.expandChildIf(root -> root instanceof JavaParser.VariableDeclaratorsContext);
+		doTask(ctx, exitStylers);
+	}
+
+
+	@Override
+	public void exitFieldDeclarationList(JavaParser.FieldDeclarationListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitInitializerList(JavaParser.InitializerListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+
+	@Override
+	public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+
+	@Override
+	public void exitMethodDeclarationList(JavaParser.MethodDeclarationListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeDeclarationList(JavaParser.TypeDeclarationListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitIfStmt(JavaParser.IfStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitIfElseStmt(JavaParser.IfElseStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitForStmt(JavaParser.ForStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitWhileStmt(JavaParser.WhileStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitDoWhileStmt(JavaParser.DoWhileStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLabelStmt(JavaParser.LabelStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitSwitchStmt(JavaParser.SwitchStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitSyncStmt(JavaParser.SyncStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitInitializer(JavaParser.InitializerContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitArrayInitializer(JavaParser.ArrayInitializerContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitElementValueArrayInitializer(JavaParser.ElementValueArrayInitializerContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitImportDeclarationList(JavaParser.ImportDeclarationListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitPackageDeclaration(JavaParser.PackageDeclarationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitModifierList(JavaParser.ModifierListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeParameters(JavaParser.TypeParametersContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeParameter(JavaParser.TypeParameterContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeBound(JavaParser.TypeBoundContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitEnumConstants(JavaParser.EnumConstantsContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitConstDeclarationList(JavaParser.ConstDeclarationListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitConstDeclaration(JavaParser.ConstDeclarationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitConstantDeclarator(JavaParser.ConstantDeclaratorContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitVariableDeclarators(JavaParser.VariableDeclaratorsContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+
+	@Override
+	public void exitTypeArgument(JavaParser.TypeArgumentContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitQualifiedNameList(JavaParser.QualifiedNameListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitFormalParameters(JavaParser.FormalParametersContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitReceiverParameter(JavaParser.ReceiverParameterContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitFormalParameterList(JavaParser.FormalParameterListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitFormalParameter(JavaParser.FormalParameterContext ctx) {
+		ctx.expandChildIf(child -> child instanceof JavaParser.VariableDeclaratorIdContext);
+	}
+
+	@Override
+	public void exitLastFormalParameter(JavaParser.LastFormalParameterContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLambdaLVTIList(JavaParser.LambdaLVTIListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitQualifiedName(JavaParser.QualifiedNameContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLiteral(JavaParser.LiteralContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitFloatLiteral(JavaParser.FloatLiteralContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAltAnnotationQualifiedName(JavaParser.AltAnnotationQualifiedNameContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotationList(JavaParser.AnnotationListContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotation(JavaParser.AnnotationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitElementValuePairs(JavaParser.ElementValuePairsContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitElementValuePair(JavaParser.ElementValuePairContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitElementValue(JavaParser.ElementValueContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotationTypeElementDeclaration(JavaParser.AnnotationTypeElementDeclarationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotationTypeElementRest(JavaParser.AnnotationTypeElementRestContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotationMethodOrConstantRest(JavaParser.AnnotationMethodOrConstantRestContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotationMethodRest(JavaParser.AnnotationMethodRestContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAnnotationConstantRest(JavaParser.AnnotationConstantRestContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitDefaultValue(JavaParser.DefaultValueContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitModuleDeclaration(JavaParser.ModuleDeclarationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitModuleDirective(JavaParser.ModuleDirectiveContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitRequiresModifier(JavaParser.RequiresModifierContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitRecordHeader(JavaParser.RecordHeaderContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitRecordComponentList(JavaParser.RecordComponentListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitRecordComponent(JavaParser.RecordComponentContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitBlock(JavaParser.BlockContext ctx) {
+		ctx.decBraceDepth(); // This statement must be placed before the @doOperation is called.
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
+		ctx.expandChildIf(child -> child instanceof JavaParser.VariableDeclaratorsContext);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitIdentifier(JavaParser.IdentifierContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeIdentifier(JavaParser.TypeIdentifierContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitCatchType(JavaParser.CatchTypeContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitResourceSpecification(JavaParser.ResourceSpecificationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitResources(JavaParser.ResourcesContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitResource(JavaParser.ResourceContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitSwitchLabel(JavaParser.SwitchLabelContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitForControl(JavaParser.ForControlContext ctx) {
+		// ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitForInit(JavaParser.ForInitContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitEnhancedForControl(JavaParser.EnhancedForControlContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitParExpression(JavaParser.ParExpressionContext ctx) {
+		// ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitExpressionList(JavaParser.ExpressionListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitMethodCall(JavaParser.MethodCallContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitExpression(JavaParser.ExpressionContext ctx) {
+		// ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitPattern(JavaParser.PatternContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLambdaExpression(JavaParser.LambdaExpressionContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLambdaParameters(JavaParser.LambdaParametersContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLambdaBody(JavaParser.LambdaBodyContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitGuardedPattern(JavaParser.GuardedPatternContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitClassType(JavaParser.ClassTypeContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitCreator(JavaParser.CreatorContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitCreatedName(JavaParser.CreatedNameContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitInnerCreator(JavaParser.InnerCreatorContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitArrayCreatorRest(JavaParser.ArrayCreatorRestContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitClassCreatorRest(JavaParser.ClassCreatorRestContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitExplicitGenericInvocation(JavaParser.ExplicitGenericInvocationContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeArgumentsOrDiamond(JavaParser.TypeArgumentsOrDiamondContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitNonWildcardTypeArguments(JavaParser.NonWildcardTypeArgumentsContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeList(JavaParser.TypeListContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitEnumConstant(JavaParser.EnumConstantContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitClassBodyDeclaration(JavaParser.ClassBodyDeclarationContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitVariableDeclaratorId(JavaParser.VariableDeclaratorIdContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitVariableInitializer(JavaParser.VariableInitializerContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLambdaLVTIParameter(JavaParser.LambdaLVTIParameterContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitLocalVariableDeclarationStmt(JavaParser.LocalVariableDeclarationStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitStatement(JavaParser.StatementContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitAssertStmt(JavaParser.AssertStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTryCatchStmt(JavaParser.TryCatchStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTryResourceStmt(JavaParser.TryResourceStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitReturnStmt(JavaParser.ReturnStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitThrowStmt(JavaParser.ThrowStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitBreakStmt(JavaParser.BreakStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitContinueStmt(JavaParser.ContinueStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitYieldStmt(JavaParser.YieldStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitExpressionStmt(JavaParser.ExpressionStmtContext ctx) {
+		ctx.deleteStatementCtx();
+		doTask(ctx, exitStylers);
+	}
+
+
+
+	@Override
+	public void exitCatchClause(JavaParser.CatchClauseContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitSwitchLabeledRule(JavaParser.SwitchLabeledRuleContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeType(JavaParser.TypeTypeContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitPrimitiveType(JavaParser.PrimitiveTypeContext ctx) {
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitTypeArguments(JavaParser.TypeArgumentsContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitSuperSuffix(JavaParser.SuperSuffixContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitExplicitGenericInvocationSuffix(JavaParser.ExplicitGenericInvocationSuffixContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitArguments(JavaParser.ArgumentsContext ctx) {
+		ctx.expandChildren();
+		doTask(ctx, exitStylers);
+	}
+}
