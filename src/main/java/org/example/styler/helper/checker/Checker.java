@@ -1,6 +1,6 @@
-package org.example.styler.antlr.helper.checker;
+package org.example.styler.helper.checker;
 
-import org.example.styler.antlr.helper.EquivalentStructure;
+import org.example.styler.helper.EquivalentStructure;
 
 /*
  * @description

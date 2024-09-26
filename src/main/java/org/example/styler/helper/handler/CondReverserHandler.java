@@ -1,4 +1,4 @@
-package org.example.styler.antlr.helper.handler;
+package org.example.styler.helper.handler;
 
 import com.thoughtworks.qdox.model.expression.Expression;
 import org.antlr.v4.runtime.Token;
@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.antlr.JavaParser;
 import org.example.parser.*;
-import org.example.styler.antlr.helper.EquivalentStructure;
+import org.example.styler.helper.EquivalentStructure;
 
 import java.util.HashMap;
 import java.util.List;

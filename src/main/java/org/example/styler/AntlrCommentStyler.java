@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonToken;

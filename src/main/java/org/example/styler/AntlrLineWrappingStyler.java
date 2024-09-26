@@ -1,8 +1,6 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
-import org.example.Helper;
-import org.example.antlr.JavaParser;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendToken;
 import org.example.style.ProgramStyle;

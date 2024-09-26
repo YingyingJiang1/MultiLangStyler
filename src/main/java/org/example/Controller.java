@@ -7,7 +7,7 @@ import org.example.style.ProgramStyle;
 import org.example.styler.Applicator;
 import org.example.styler.Extractor;
 import org.example.styler.XmlExtractor;
-import org.example.styler.antlr.AntlrStyler;
+import org.example.styler.AntlrStyler;
 
 import java.io.File;
 import java.io.IOException;

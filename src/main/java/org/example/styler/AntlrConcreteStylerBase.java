@@ -1,12 +1,9 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
-import org.example.antlr.JavaParser;
 import org.example.parser.ExtendContext;
 import org.example.style.ProgramStyle;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

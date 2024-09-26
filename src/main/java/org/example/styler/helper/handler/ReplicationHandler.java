@@ -1,8 +1,8 @@
-package org.example.styler.antlr.helper.handler;
+package org.example.styler.helper.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.ParseTreeFactory;
-import org.example.styler.antlr.helper.EquivalentStructure;
+import org.example.styler.helper.EquivalentStructure;
 
 import java.util.ArrayList;
 import java.util.List;

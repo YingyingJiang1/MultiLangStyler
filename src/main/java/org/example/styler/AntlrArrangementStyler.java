@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import groovy.util.PermutationGenerator;
 import org.antlr.v4.runtime.tree.ParseTree;

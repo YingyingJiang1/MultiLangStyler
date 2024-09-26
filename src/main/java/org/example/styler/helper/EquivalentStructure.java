@@ -1,4 +1,4 @@
-package org.example.styler.antlr.helper;
+package org.example.styler.helper;
 
 
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -9,8 +9,8 @@ import org.example.parser.ExtendContext;
 import org.example.parser.MyParser;
 import org.example.parser.ParseTreeFactory;
 import org.example.myException.CompilationException;
-import org.example.styler.antlr.helper.checker.Checker;
-import org.example.styler.antlr.helper.handler.Handler;
+import org.example.styler.helper.checker.Checker;
+import org.example.styler.helper.handler.Handler;
 
 import java.util.*;
 import java.util.regex.Matcher;

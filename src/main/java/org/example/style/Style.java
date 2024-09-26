@@ -13,11 +13,10 @@ import java.util.Objects;
  * @create     : 2024/1/7 17:55
  */
 public abstract class Style {
-
-	protected String styleName = "";
-  public void fill(){}
-  public void addElement(Element root, Parser parser){}
-  public Object parseElement(Element root, Parser parser){return null;}
+    protected String styleName = "";
+    public void fill(){}
+    public void addElement(Element root, Parser parser){}
+    public Object parseElement(Element root, Parser parser){return null;}
 
   /*protected static void groupTokens() {
     if(tokenSource == null)

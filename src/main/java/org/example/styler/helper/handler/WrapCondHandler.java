@@ -1,4 +1,4 @@
-package org.example.styler.antlr.helper.handler;
+package org.example.styler.helper.handler;
 
 import com.intellij.codeInsight.template.impl.TemplateImpl;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.antlr.JavaParser;
 import org.example.parser.ExtendContext;
 import org.example.parser.ParseTreeFactory;
-import org.example.styler.antlr.helper.EquivalentStructure;
+import org.example.styler.helper.EquivalentStructure;
 
 import java.util.List;
 

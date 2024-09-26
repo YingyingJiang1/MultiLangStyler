@@ -1,7 +1,7 @@
-package org.example.styler.antlr.helper.checker;
+package org.example.styler.helper.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.styler.antlr.helper.EquivalentStructure;
+import org.example.styler.helper.EquivalentStructure;
 
 import java.util.HashSet;
 import java.util.Set;

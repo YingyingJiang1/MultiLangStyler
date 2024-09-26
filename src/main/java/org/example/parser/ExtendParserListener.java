@@ -3,11 +3,8 @@ package org.example.parser;
 import org.example.antlr.JavaParser;
 import org.example.antlr.JavaParserBaseListener;
 import org.example.style.ProgramStyle;
-import org.example.style.format.FormatStyle;
-import org.example.styler.antlr.AntlrConcreteStylerBase;
+import org.example.styler.AntlrConcreteStylerBase;
 import org.example.styler.Styler;
-import org.example.styler.antlr.AntlrFormatStyler;
-import org.example.styler.antlr.AntlrNewlineStyler;
 
 import java.util.ArrayList;
 import java.util.List;

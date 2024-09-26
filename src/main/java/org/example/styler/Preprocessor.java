@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
@@ -7,7 +7,6 @@ import org.example.antlr.JavaLexer;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendToken;
 import org.example.parser.TokenInfoField;
-import org.example.styler.Styler;
 
 import java.util.List;
 

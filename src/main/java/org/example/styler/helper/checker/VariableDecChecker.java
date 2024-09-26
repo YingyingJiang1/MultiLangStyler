@@ -1,4 +1,4 @@
-package org.example.styler.antlr.helper.checker;
+package org.example.styler.helper.checker;
 
 /*
  * @description

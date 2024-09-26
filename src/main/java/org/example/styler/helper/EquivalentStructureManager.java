@@ -1,10 +1,10 @@
-package org.example.styler.antlr.helper;
+package org.example.styler.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.antlr.JavaParser;
-import org.example.styler.antlr.helper.checker.Checker;
-import org.example.styler.antlr.helper.handler.Handler;
+import org.example.styler.helper.checker.Checker;
+import org.example.styler.helper.handler.Handler;
 
 import java.io.File;
 import java.util.*;

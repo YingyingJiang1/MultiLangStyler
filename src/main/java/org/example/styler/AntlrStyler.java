@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import com.ibm.icu.text.CharsetDetector;
 import org.antlr.v4.runtime.*;
@@ -19,11 +19,8 @@ import org.example.parser.*;
 import org.example.style.ProgramStyle;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.IndentionRule;
-import org.example.styler.FileCollector;
-import org.example.styler.Styler;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /*
  * @description:

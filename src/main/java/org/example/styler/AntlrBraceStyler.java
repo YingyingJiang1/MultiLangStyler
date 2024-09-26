@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -12,10 +12,9 @@ import org.example.style.ProgramStyle;
 import org.example.style.format.BraceInfo;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
-import org.snakeyaml.engine.v2.api.lowlevel.Parse;
+
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class AntlrBraceStyler extends AntlrConcreteStylerBase {
   private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(

@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -10,7 +10,6 @@ import org.example.parser.ExtendToken;
 import org.example.style.ProgramStyle;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.NewlineRule;
-import org.example.styler.Styler;
 
 import java.util.*;
 

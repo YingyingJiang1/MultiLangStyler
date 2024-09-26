@@ -1,4 +1,4 @@
-package org.example.styler.antlr;
+package org.example.styler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -12,8 +12,8 @@ import org.example.style.EquivalencesStyle;
 import org.example.style.ProgramStyle;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
-import org.example.styler.antlr.helper.EquivalentStructure;
-import org.example.styler.antlr.helper.EquivalentStructureManager;
+import org.example.styler.helper.EquivalentStructure;
+import org.example.styler.helper.EquivalentStructureManager;
 
 import java.util.*;
 
