@@ -1,6 +1,5 @@
 package org.example.styler.antlr;
 
-import groovy.util.PermutationGenerator;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.Helper;
@@ -9,6 +8,7 @@ import org.example.parser.ExtendContext;
 import org.example.myException.StylizationException;
 import org.example.style.ProgramStyle;
 import org.example.style.arrangement.*;
+import org.example.styler.PermutationGenerator;
 
 import java.util.*;
 import java.util.function.Predicate;
