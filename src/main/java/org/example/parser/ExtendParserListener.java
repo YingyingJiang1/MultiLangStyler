@@ -3,7 +3,7 @@ package org.example.parser;
 import org.example.antlr.JavaParser;
 import org.example.antlr.JavaParserBaseListener;
 import org.example.style.ProgramStyle;
-import org.example.styler.AntlrConcreteStylerBase;
+import org.example.styler.StylerBase;
 import org.example.styler.Styler;
 
 import java.util.ArrayList;
@@ -16,12 +16,12 @@ import java.util.List;
 public class ExtendParserListener extends JavaParserBaseListener {
 	public ProgramStyle programStyle;
 	public int state;
-	public List<AntlrConcreteStylerBase> enterStylers = new ArrayList<>();
-	public List<AntlrConcreteStylerBase> exitStylers = new ArrayList<>();
+	public List<StylerBase> enterStylers = new ArrayList<>();
+	public List<StylerBase> exitStylers = new ArrayList<>();
 
 	public ExtendParserListener(ProgramStyle programStyle, int state,
-	                            List<AntlrConcreteStylerBase> enterStylers,
-	                            List<AntlrConcreteStylerBase> exitStylers) {
+	                            List<StylerBase> enterStylers,
+	                            List<StylerBase> exitStylers) {
 		this.programStyle = programStyle;
 		this.state = state;
 		this.enterStylers = enterStylers;
@@ -31,16 +31,16 @@ public class ExtendParserListener extends JavaParserBaseListener {
 	public ExtendParserListener() {
 	}
 
-	private void doTask(ExtendContext ctx, List<AntlrConcreteStylerBase> stylers) {
+	private void doTask(ExtendContext ctx, List<StylerBase> stylers) {
 		if (state == Styler.EXTRACTION_PROCESS) {
-			for (AntlrConcreteStylerBase styler : stylers) {
+			for (StylerBase styler : stylers) {
 				if (styler.isEnable(Styler.EXTRACTION_PROCESS) && styler.isRelevant(ctx)) {
 					styler.extractStyle(ctx, programStyle);
 				}
 			}
 		} else if (state == Styler.APPLICATION_PROCESS) {
 			ExtendContext newCtx = ctx;
-			for (AntlrConcreteStylerBase styler : stylers) {
+			for (StylerBase styler : stylers) {
 				if(styler.isEnable(Styler.APPLICATION_PROCESS) && styler.isRelevant(newCtx)) {
 					newCtx = styler.applyStyle(newCtx, programStyle);
 				}

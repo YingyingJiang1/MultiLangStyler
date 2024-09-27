@@ -2,7 +2,7 @@ package org.example.experiment;
 
 import java.util.HashMap;
 
-import org.example.style.EquivalencesStyle;
+import org.example.styler.structure.style.EquivalencesStyle;
 import org.example.style.format.FormatStyle;
 
 import java.util.List;

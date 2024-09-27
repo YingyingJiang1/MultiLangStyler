@@ -12,6 +12,7 @@ import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
 import org.example.parser.LexerErrorListener;
 import org.example.style.ProgramStyle;
+import org.example.style.Style;
 import org.example.style.comment.Comment;
 import org.example.style.comment.CommentRule;
 
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
  * @author       Yingying Jiang
  * @create       2024/3/31 16:04
  */
-public class AntlrCommentStyler extends AntlrConcreteStylerBase{
+public class AntlrCommentStyler extends StylerBase {
   private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(
       JavaParser.RULE_typeDeclaration,JavaParser.RULE_methodDeclaration,
       JavaParser.RULE_constructorDeclaration,JavaParser.RULE_initializer,
@@ -34,9 +35,9 @@ public class AntlrCommentStyler extends AntlrConcreteStylerBase{
   static Pattern pattern = Pattern.compile("\\b*([a-z]+)\\s+([a-z]+)\\s+([a-z]+).*\\b*");
 
   @Override
-  public ExtendContext applyStyle(ExtendContext ctx, ProgramStyle programStyle) {
+  public ExtendContext applyStyle(ExtendContext ctx, Style styler) {
     List<Info> infos = extractInfos(ctx);
-    Comment comment = (Comment) programStyle.getStyle(ProgramStyle.COMMENT);
+    Comment comment = (Comment) styler.getStyle(ProgramStyle.COMMENT);
     for(Info info : infos) {
       CommentRule.Context context = extractContext(info);
       CommentRule.Property property = comment.getProperty(context);
@@ -52,8 +53,8 @@ public class AntlrCommentStyler extends AntlrConcreteStylerBase{
   }
 
   @Override
-  public void extractStyle(ExtendContext ctx, ProgramStyle programStyle) {
-    Comment comment = (Comment) programStyle.getStyle(ProgramStyle.COMMENT);
+  public void extractStyle(ExtendContext ctx, Style style) {
+    Comment comment = (Comment) style.getStyle(ProgramStyle.COMMENT);
     List<Info> infos = extractInfos(ctx);
     List<CommentRule> rules = new ArrayList<>();
     for(Info info : infos) {

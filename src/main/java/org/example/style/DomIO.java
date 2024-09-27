@@ -1,11 +1,8 @@
 package org.example.style;
 
+import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.antlr.JavaLexer;
-import org.example.antlr.JavaParser;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * @description
@@ -13,8 +10,7 @@ import java.util.List;
  * @create       2024/3/30 14:55
  */
 public interface DomIO {
-  void addElement(Element parent);
-  void parseElement(Element parent);
-
+  void addElement(Element parent, Parser parser);
+  Object parseElement(Element parent, Parser parser);
 
 }

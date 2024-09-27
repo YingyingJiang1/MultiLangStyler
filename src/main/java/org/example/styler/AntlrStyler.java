@@ -19,6 +19,14 @@ import org.example.parser.*;
 import org.example.style.ProgramStyle;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.IndentionRule;
+import org.example.styler.arrangement.ArrangementStyler;
+import org.example.styler.brace.AntlrBraceStyler;
+import org.example.styler.format.FormatStyler;
+import org.example.styler.hws.HwsStyler;
+import org.example.styler.linewrapping.LineWrappingStyler;
+import org.example.styler.naming.NamingStyler;
+import org.example.styler.newline.NewlineStyler;
+import org.example.styler.structure.StructureStyler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -39,21 +47,21 @@ public class AntlrStyler extends Styler {
   private JavaParser parser;
   private ParseTree tree;
   private Map<Integer, TokenOperation> tokenToOperationMap = new HashMap<>();
-  private List<AntlrConcreteStylerBase> enterStylers = new ArrayList<>();
-  private List<AntlrConcreteStylerBase> exitStylers = new ArrayList<>();
-  private List<AntlrConcreteStylerBase> tStreamStylers = new ArrayList<>(); // token stream stylers.
+  private List<StylerBase> enterStylers = new ArrayList<>();
+  private List<StylerBase> exitStylers = new ArrayList<>();
+  private List<StylerBase> tStreamStylers = new ArrayList<>(); // token stream stylers.
 
 
   public AntlrStyler(Configuration conf, ProgramStyle programStyle) throws IOException {
     super(conf, programStyle);
-    exitStylers.add(new AntlrNamingStyler());
-    exitStylers.add(AntlrArrangementStyler.getInstance());
+    exitStylers.add(new NamingStyler());
+    exitStylers.add(ArrangementStyler.getInstance());
     exitStylers.add(new AntlrCommentStyler());
-    exitStylers.add(new AntlrFormatStyler());
-    exitStylers.add(new AntlrStructureStyler());
+    exitStylers.add(new FormatStyler());
+    exitStylers.add(new StructureStyler());
 
-    tStreamStylers.add(new AntlrHwsStyler());
-    tStreamStylers.add(new AntlrLineWrappingStyler());
+    tStreamStylers.add(new HwsStyler());
+    tStreamStylers.add(new LineWrappingStyler());
   }
 
   @Override
@@ -99,12 +107,12 @@ public class AntlrStyler extends Styler {
     for(TokenOperation operation : tokenToOperationMap.values()) {
       operation.doFinalize();
     }
-    List<AntlrConcreteStylerBase> stylers = new ArrayList<>();
+    List<StylerBase> stylers = new ArrayList<>();
     stylers.addAll(enterStylers);
     stylers.addAll(exitStylers);
     stylers.addAll(tStreamStylers);
 
-    for (AntlrConcreteStylerBase styler : stylers) {
+    for (StylerBase styler : stylers) {
       styler.doFinalize(programStyle);
     }
   }
@@ -124,7 +132,7 @@ public class AntlrStyler extends Styler {
       Token token = tokens.get(i);
       int type = token.getType();
 
-      for (AntlrConcreteStylerBase styler : tStreamStylers) {
+      for (StylerBase styler : tStreamStylers) {
         styler.extractStyle(tokens, i, programStyle);
       }
       TokenOperation op = tokenToOperationMap.get(type);
@@ -170,7 +178,7 @@ public class AntlrStyler extends Styler {
       Preprocessor preprocessor = new Preprocessor();
       preprocessor.preprocess(parser, Styler.APPLICATION_PROCESS);
       enableAll(Styler.APPLICATION_PROCESS);
-      disable(Styler.APPLICATION_PROCESS, AntlrFormatStyler.class);
+      disable(Styler.APPLICATION_PROCESS, FormatStyler.class);
       applyStylePhase1();
 
       String code = applyFormat();
@@ -191,10 +199,10 @@ public class AntlrStyler extends Styler {
   }
 
   private String applyFormat() throws IOException {
-    List<AntlrConcreteStylerBase> enterStylers = new ArrayList<>();
-    List<AntlrConcreteStylerBase> exitStylers = new ArrayList<>();
+    List<StylerBase> enterStylers = new ArrayList<>();
+    List<StylerBase> exitStylers = new ArrayList<>();
     enterStylers.add(new AntlrBraceStyler(false, true));
-    enterStylers.add(new AntlrNewlineStyler(false, true));
+    enterStylers.add(new NewlineStyler(false, true));
     ExtendParserListener listener = new ExtendParserListener(programStyle,
         Styler.APPLICATION_PROCESS, enterStylers, exitStylers);
     ParseTreeWalker walker = new MyParseTreeWalker();
@@ -253,7 +261,7 @@ public class AntlrStyler extends Styler {
         }
       }
 
-      for(AntlrConcreteStylerBase styler : tStreamStylers) {
+      for(StylerBase styler : tStreamStylers) {
         styler.applyStyle(tokens, i, programStyle);
       }
 
@@ -279,30 +287,30 @@ public class AntlrStyler extends Styler {
   }
 
   public void enableAll(int process) {
-    for(AntlrConcreteStylerBase styler : enterStylers) {
+    for(StylerBase styler : enterStylers) {
       styler.enable(process);
     }
-    for(AntlrConcreteStylerBase styler : exitStylers) {
+    for(StylerBase styler : exitStylers) {
       styler.enable(process);
     }
   }
 
   public void disableAll(int process) {
-    for(AntlrConcreteStylerBase styler : enterStylers) {
+    for(StylerBase styler : enterStylers) {
       styler.disable(process);
     }
-    for(AntlrConcreteStylerBase styler : exitStylers) {
+    for(StylerBase styler : exitStylers) {
       styler.disable(process);
     }
   }
 
   public void enable(int process, Class cls) {
-    for(AntlrConcreteStylerBase styler : enterStylers) {
+    for(StylerBase styler : enterStylers) {
       if(styler.getClass().equals(cls)) {
         styler.enable(process);
       }
     }
-    for(AntlrConcreteStylerBase styler : exitStylers) {
+    for(StylerBase styler : exitStylers) {
       if(styler.getClass().equals(cls)) {
         styler.enable(process);
       }
@@ -310,12 +318,12 @@ public class AntlrStyler extends Styler {
   }
 
   public void disable(int process, Class cls) {
-    for(AntlrConcreteStylerBase styler : enterStylers) {
+    for(StylerBase styler : enterStylers) {
       if(styler.getClass().equals(cls)) {
         styler.disable(process);
       }
     }
-    for(AntlrConcreteStylerBase styler : exitStylers) {
+    for(StylerBase styler : exitStylers) {
       if(styler.getClass().equals(cls)) {
         styler.disable(process);
       }

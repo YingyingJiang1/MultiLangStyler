@@ -2,9 +2,8 @@ package org.example.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.format.SingleLineBlockProperty;
-
-import java.util.Objects;
+import org.example.styler.arrangement.style.ArrangementContext;
+import org.example.styler.arrangement.style.ArrangementProperty;
 
 /*
  * @description: Base class of all specific style classes. The 'tokenSource' field muse be set before
@@ -12,11 +11,21 @@ import java.util.Objects;
  * @author     : Jiang Yingying
  * @create     : 2024/1/7 17:55
  */
-public abstract class Style {
+public abstract class Style implements DomIO,StyleIntf {
     protected String styleName = "";
     public void fill(){}
     public void addElement(Element root, Parser parser){}
     public Object parseElement(Element root, Parser parser){return null;}
+    @Override
+    public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
+
+    }
+
+    @Override
+    public StyleProperty getProperty(StyleContext styleContext) {
+        return null;
+    }
+
 
   /*protected static void groupTokens() {
     if(tokenSource == null)

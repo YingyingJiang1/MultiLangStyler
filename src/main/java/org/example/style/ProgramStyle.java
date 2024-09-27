@@ -2,11 +2,12 @@ package org.example.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.arrangement.Arrangement;
+import org.example.styler.arrangement.style.ArrangementStyle;
 import org.example.style.comment.Comment;
 import org.example.style.format.FormatStyle;
 import org.example.style.literal.LiteralStyle;
 import org.example.style.name.NamingStyle;
+import org.example.styler.structure.style.EquivalencesStyle;
 
 import java.util.*;
 
@@ -27,7 +28,7 @@ public class ProgramStyle extends Style {
   public ProgramStyle() {
     styles.put(FORMAT, new FormatStyle());
     styles.put(LITERAL, new LiteralStyle());
-    styles.put(ARRANGEMENT, new Arrangement());
+    styles.put(ARRANGEMENT, new ArrangementStyle());
     styles.put(NAMING, new NamingStyle());
     styles.put(COMMENT, new Comment());
     styles.put(EQUIVALENCES, new EquivalencesStyle());
