@@ -16,8 +16,8 @@ import java.util.*;
 public class NewlineRule implements DomIO {
   public static Property defaultProperty = new Property(1);
 
-  public Context context;
-  public Property property;
+  public Context context = new Context();
+  public Property property = new Property();
 
   private static Set<Integer> defaultCases = new HashSet<>(Arrays.asList(
       JavaParser.RULE_packageDeclaration,JavaParser.RULE_importDeclaration,JavaParser.RULE_importDeclarationList,
@@ -85,6 +85,8 @@ public class NewlineRule implements DomIO {
       this.totalTextLens.put(totalTextLen, 1);
       ++count;
     }
+
+    public Context() {}
 
     public Context getGroupedContext() {
       if (grouper == null) {
@@ -193,6 +195,8 @@ public class NewlineRule implements DomIO {
     public Property(int newlines) {
       this.newlines = newlines;
     }
+
+    public Property() {}
 
     @Override
     public void addElement(Element parent) {

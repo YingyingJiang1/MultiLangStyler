@@ -34,6 +34,7 @@ public class Configuration {
   public boolean overrideSource;
   public String useExistedStyle;
   public String applyResultSaveDir;
+  public String styleFileSavedDir;
   public boolean testMode;
 
   public void loadConf() throws IOException, DocumentException {
@@ -54,7 +55,7 @@ public class Configuration {
   private void loadApplicationInfo(Element root) {
     Element applicationInfo = root.element("application_info");
 //    overrideSource = applicationInfo.elementText("override").equals("true");
-    loadSource(applicationInfo, applicationCollection);
+    applicationCollection = loadSource(applicationInfo);
 
 
     if (applicationInfo.element("result_saved_dir") != null) {
@@ -64,17 +65,18 @@ public class Configuration {
 
   private void loadExtractionInfo(Element root) {
     Element extractionInfo = root.element("extraction_info");
-    loadSource(extractionInfo, extractionCollection);
-    styleFile = extractionInfo.elementText("style_file");
-    useExistedStyle = extractionInfo.elementText("use_existed_style");
+    extractionCollection = loadSource(extractionInfo);
+    styleFile = extractionInfo.elementText("style_file").replace("${root}", System.getProperty("user.dir"));
+    styleFileSavedDir = extractionInfo.elementText("style_saved_directory").replace("${root}", System.getProperty("user.dir"));
   }
 
-  private void loadSource(Element info, FileCollector.FileCollection collection) {
+  private FileCollector.FileCollection loadSource(Element info) {
     Element source = info.element("source");
     List<String> sourcePaths = new ArrayList<>();
     List<String> excludes = Arrays.stream(source.attributeValue("excludes").split(";")).toList();
     sourcePaths = Arrays.stream(source.getText().split(";")).toList();
-    collection = FileCollector.getJavaFileCollection(sourcePaths);
+    FileCollector.FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
     collection.difference(FileCollector.getJavaFileCollection(excludes));
+    return collection;
   }
 }

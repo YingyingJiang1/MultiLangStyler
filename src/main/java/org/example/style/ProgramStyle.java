@@ -26,7 +26,7 @@ public class ProgramStyle extends Style {
 
   public ProgramStyle() {
     styles.put(FORMAT, new FormatStyle());
-    styles.put(LITERAL, new LiteralStyle());
+//    styles.put(LITERAL, new LiteralStyle());
     styles.put(ARRANGEMENT, new Arrangement());
     styles.put(NAMING, new NamingStyle());
     styles.put(COMMENT, new Comment());

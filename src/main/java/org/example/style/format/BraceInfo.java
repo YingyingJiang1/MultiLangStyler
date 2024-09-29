@@ -54,16 +54,15 @@ public class BraceInfo {
 
   public static BraceInfo parseElement(Element parent, Parser parser) {
     BraceInfo braceInfo = new BraceInfo();
-    Element braceInfoEle = parent.element("brace_info");
-    braceInfo.blockType = TypeEnum.valueOf(braceInfoEle.element("block_type").getText());
-    Element stmtNumEle = braceInfoEle.element("number_of_stmt");
+    braceInfo.blockType = TypeEnum.valueOf(parent.element("block_type").getText());
+    Element stmtNumEle = parent.element("number_of_stmt");
     String stmtNumText = stmtNumEle.getText();
     if(stmtNumText.equals("exceed 1")) {
       braceInfo.stmtNumInBlock = 2;
     } else {
       braceInfo.stmtNumInBlock = Integer.parseInt(stmtNumText);
     }
-    String[] arr = braceInfoEle.element("line_break_info").getText().split("[(),]");
+    String[] arr = parent.element("line_break_info").getText().split("[(),]");
 
     braceInfo.lineBreakInfo = new BraceLineBreakInfo(
         Boolean.parseBoolean(arr[0]), Boolean.parseBoolean(arr[1]),

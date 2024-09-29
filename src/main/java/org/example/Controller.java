@@ -31,12 +31,8 @@ public class Controller {
       applicators.add(new AntlrStyler(conf, programStyle));
 
       extractor.extractStyle();
-//      if(!programStyle.isRulesEnough()) {
-//        System.err.println("File is so short, please change file!");
-//        return;
-//      }
 
-//        extractor.writeStyleInXml(conf.styleFileSavedDir);
+      extractor.writeStyleInXml(conf.styleFileSavedDir);
 
       for(Applicator applicator : applicators) {
         applicator.applyStyle();
@@ -49,7 +45,7 @@ public class Controller {
 
   private static Extractor createExtractor(Configuration conf, ProgramStyle programStyle) throws IOException {
     Extractor extractor = null;
-    if(conf.useExistedStyle != null) {
+    if(conf.styleFile != null && !conf.styleFile.isEmpty()) {
       extractor = new XmlExtractor(conf, programStyle);
     }
     if (extractor == null) {
