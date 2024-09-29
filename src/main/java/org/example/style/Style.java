@@ -2,8 +2,6 @@ package org.example.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.styler.arrangement.style.ArrangementContext;
-import org.example.styler.arrangement.style.ArrangementProperty;
 
 /*
  * @description: Base class of all specific style classes. The 'tokenSource' field muse be set before

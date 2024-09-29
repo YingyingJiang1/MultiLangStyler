@@ -6,9 +6,8 @@ import org.example.style.Style;
 import org.example.style.StyleContext;
 import org.example.style.StyleProperty;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /*
  * @description
@@ -17,20 +16,20 @@ import java.util.Map;
  */
 public class ArrangementStyle extends Style {
 
-    private Map<ArrangementContext, ArrangementProperty> arrangements;
+    private List<ArrangementRule> arrangements;
 
     public ArrangementStyle() {
         styleName = "Arrangement";
-        arrangements = new HashMap<>();
+        arrangements = new ArrayList<>();
     }
 
     public void addElement(Element parent, Parser parser) {
         Element arrangementsEle = parent.addElement("arrangements");
-        for (Map.Entry<ArrangementContext, ArrangementProperty> entry : arrangements.entrySet()) {
+        for (ArrangementRule rule : arrangements) {
             Element arrangementEle = arrangementsEle.addElement("arrangement");
-            entry.getKey().addElement(arrangementEle, parser);
+            rule.arrangementContext.addElement(arrangementEle, parser);
             Element areasEle = arrangementEle.addElement("areas");
-            for (ArrangementProperty.ContentArea area : entry.getValue().getAreas()) {
+            for (ArrangementProperty.ContentArea area : rule.arrangementProperty.getAreas()) {
                 area.addElement(areasEle, parser);
             }
         }
@@ -40,51 +39,58 @@ public class ArrangementStyle extends Style {
         Element arrangementsEle = parent.element("arrangements");
         List<Element> arrangementEleList = arrangementsEle.elements();
         for (Element arrangementEle : arrangementEleList) {
-            ArrangementContext arrangementContext = (ArrangementContext) ArrangementContext.parseElement(arrangementEle, parser);
-            ArrangementProperty arrangementProperty = new ArrangementProperty();
+            ArrangementContext context = (ArrangementContext) ArrangementContext.parseElement(arrangementEle, parser);
+            ArrangementProperty property = new ArrangementProperty();
             List<Element> areaEleList = arrangementEle.element("areas").elements();
             for (Element areaEle : areaEleList) {
-                arrangementProperty.areas.add(ArrangementProperty.ContentArea.parseElement(areaEle, parser));
+                property.areas.add(ArrangementProperty.ContentArea.parseElement(areaEle, parser));
             }
-            arrangements.put(arrangementContext, arrangementProperty);
+            arrangements.add(new ArrangementRule(context, property));
         }
         return this;
     }
 
-    public boolean contains(ArrangementContext arrangementContext) {
-        for (ArrangementContext arrangementContext1 : arrangements.keySet()) {
-            if (arrangementContext1.include(arrangementContext)) {
+    public boolean contains(ArrangementContext context) {
+        for (ArrangementRule rule : arrangements) {
+            if (rule.arrangementContext.include(context)) {
                 return true;
             }
         }
         return false;
     }
 
-    public ArrangementProperty getContentArrangement(ArrangementContext arrangementContext) {
+    public ArrangementProperty getContentArrangement(ArrangementContext context) {
         int maxInclusionDegree = Integer.MIN_VALUE;
-        ArrangementProperty arrangementProperty = new ArrangementProperty();
+        ArrangementProperty property = new ArrangementProperty();
         ArrangementProperty res = new ArrangementProperty();
-        for (ArrangementContext arrangementContext1 : arrangements.keySet()) {
-            int inclusionDegree = arrangementContext1.inclusionDegree(arrangementContext);
+        for (ArrangementRule rule : arrangements) {
+            int inclusionDegree = rule.arrangementContext.inclusionDegree(context);
             if (inclusionDegree > maxInclusionDegree) {
-                res = arrangements.get(arrangementContext1);
+                res = getProperty(rule.arrangementContext);
                 maxInclusionDegree = inclusionDegree;
             }
         }
         return res;
     }
 
-    public void addContentArrangement(ArrangementContext arrangementContext, ArrangementProperty arrangementProperty) {
-        arrangements.put(arrangementContext, arrangementProperty);
+    public void addContentArrangement(ArrangementContext context, ArrangementProperty property) {
+        arrangements.add(new ArrangementRule(context, property));
     }
 
-  @Override
-  public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-    arrangements.put((ArrangementContext) styleContext, (ArrangementProperty) styleProperty);
-  }
+    @Override
+    public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
+        ArrangementRule rule = new ArrangementRule((ArrangementContext) styleContext, (ArrangementProperty) styleProperty);
+        arrangements.add(rule);
+    }
 
-  @Override
-  public ArrangementProperty getProperty(StyleContext styleContext) {
-    return (ArrangementProperty) arrangements.get((ArrangementContext) styleContext);
-  }
+    @Override
+    public ArrangementProperty getProperty(StyleContext styleContext) {
+        ArrangementContext targetContext = (ArrangementContext) styleContext;
+        for (ArrangementRule rule : arrangements) {
+            if (rule.arrangementContext.equals(targetContext)) {
+                return rule.arrangementProperty;
+            }
+        }
+        return null;
+    }
 }

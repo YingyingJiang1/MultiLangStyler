@@ -13,12 +13,8 @@ import org.example.style.Style;
 import org.example.style.format.BraceInfo;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
-<<<<<<< HEAD:src/main/java/org/example/styler/brace/BraceStyler.java
 import org.example.styler.ASTStyler;
 import org.example.styler.StylerBase;
-
-=======
->>>>>>> master:src/main/java/org/example/styler/antlr/AntlrBraceStyler.java
 
 import java.util.*;
 

@@ -52,12 +52,12 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 	 */
 	public ExtendContext applyStyle(ExtendContext ctx, Style style) {
 		try {
-			ArrangementContext arrangementContext = extractContentContext(ctx);
-			if (arrangementContext == null) {
+			ArrangementContext context = extractContentContext(ctx);
+			if (context == null) {
 				return ctx;
 			}
 			ArrangementStyle arrangementStyle = (ArrangementStyle) style;
-			List<ArrangementProperty.ContentArea> areas = arrangementStyle.getProperty(arrangementContext).getAreas();
+			List<ArrangementProperty.ContentArea> areas = arrangementStyle.getProperty(context).getAreas();
 			List<ExtendContext> newListCtxs = new ArrayList<>(Collections.nCopies(areas.size(), null));
 
 
@@ -136,8 +136,8 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 			boolean isTopLevelDec = ctx.getParent().getParent() instanceof JavaParser.CompilationUnitContext;
 			if (isTopLevelDec) {
 				ArrangementStyle arrangementStyle = (ArrangementStyle) style;
-				ArrangementContext arrangementContext = extractContentContext(ctx);
-				if (arrangementContext != null && !arrangementStyle.contains(arrangementContext)) {
+				ArrangementContext context = extractContentContext(ctx);
+				if (context != null && !arrangementStyle.contains(context)) {
 					ExtendContext bodyCtx = (ExtendContext) ctx
 							.getFirstInnerChildByType(JavaParser.RULE_body);
 					if (bodyCtx == null) {
@@ -154,7 +154,7 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 							areas.add(area);
 						}
 					}
-					arrangementStyle.addRule(arrangementContext, property);
+					arrangementStyle.addRule(context, property);
 				}
 			}
 		} catch (Exception e) {

@@ -35,10 +35,10 @@ public class ArrangementContext extends StyleContext {
     }
 
     // Calculate the degree that $this including $contentContext.
-    public int inclusionDegree(ArrangementContext arrangementContext) {
-        int degree = typeType.equals(arrangementContext.typeType) ? 1 : -1;
+    public int inclusionDegree(ArrangementContext context) {
+        int degree = typeType.equals(context.typeType) ? 1 : -1;
         for (Map.Entry<String, Integer> entry : statistic.entrySet()) {
-            Integer value = arrangementContext.statistic.get(entry.getKey());
+            Integer value = context.statistic.get(entry.getKey());
             if (value != null && entry.getValue() >= value) {
                 ++degree;
             } else {
@@ -48,11 +48,11 @@ public class ArrangementContext extends StyleContext {
         return degree;
     }
 
-    public boolean include(ArrangementContext arrangementContext) {
-        if (!typeType.equals(arrangementContext.typeType)) {
+    public boolean include(ArrangementContext context) {
+        if (!typeType.equals(context.typeType)) {
             return false;
         }
-        for (Map.Entry<String, Integer> entry : arrangementContext.statistic.entrySet()) {
+        for (Map.Entry<String, Integer> entry : context.statistic.entrySet()) {
             Integer value = statistic.get(entry.getKey());
             if (value == null || entry.getValue() >= value) {
                 return false;
@@ -62,15 +62,15 @@ public class ArrangementContext extends StyleContext {
     }
 
 
-    public Object parseElement(Element parent, Parser parser) {
+    public static Object parseElement(Element parent, Parser parser) {
         Element contentEle = parent.element("content_context");
-        ArrangementContext arrangementContext = new ArrangementContext();
-        arrangementContext.typeType = contentEle.getText();
+        ArrangementContext context = new ArrangementContext();
+        context.typeType = contentEle.getText();
         List<Attribute> attributes = contentEle.attributes();
         for (Attribute attribute : attributes) {
-            arrangementContext.statistic.put(attribute.getName(), Integer.parseInt(attribute.getValue()));
+            context.statistic.put(attribute.getName(), Integer.parseInt(attribute.getValue()));
         }
-        return arrangementContext;
+        return context;
     }
 
 }

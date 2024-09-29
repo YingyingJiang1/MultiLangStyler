@@ -12,7 +12,7 @@ import java.util.*;
  * @author       Yingying Jiang
  * @create       2024/3/31 15:59
  */
-public class CommentRule implements DomIO {
+public class CommentRule  {
 
   Context context;
   Property property;
@@ -27,19 +27,19 @@ public class CommentRule implements DomIO {
     this.property = property;
   }
 
-  @Override
+
   public void addElement(Element parent) {
     context.addElement(parent);
     property.addElement(parent);
   }
 
-  @Override
+
   public void parseElement(Element parent) {
     context.parseElement(parent);
     property.parseElement(parent);
   }
 
-  public static class Context implements DomIO {
+  public static class Context {
 
     boolean trailing;
     int commentedRule; // -1 represents code comment.
@@ -65,7 +65,7 @@ public class CommentRule implements DomIO {
       return distance;
     }
 
-    @Override
+
     public void addElement(Element parent) {
       Element contextEle = parent.addElement("context");
       contextEle.addElement("trailing").addText(Boolean.toString(trailing));
@@ -74,7 +74,6 @@ public class CommentRule implements DomIO {
           Integer.toString(commentedRule) + ":" + commentType);
     }
 
-    @Override
     public void parseElement(Element parent) {
       Element contextEle = parent.element("context");
       trailing = Boolean.parseBoolean(contextEle.addElement("trailing").getText());
@@ -122,7 +121,7 @@ public class CommentRule implements DomIO {
     }
   }
 
-  public static class Property implements DomIO {
+  public static class Property {
     public static final int ALIGN = 1;
     public static final int NO_INDENTION = 2;
 
@@ -143,14 +142,12 @@ public class CommentRule implements DomIO {
 
     }
 
-    @Override
     public void addElement(Element parent) {
       Element propertyEle = parent.addElement("property");
       propertyEle.addComment("indention: 1(align), 2(no indention)");
       propertyEle.addElement("indention").addText(Integer.toString(indention));
     }
 
-    @Override
     public void parseElement(Element parent) {
       Element propertyEle = parent.element("property");
       indention = Integer.parseInt(propertyEle.addElement("indention").getText());
