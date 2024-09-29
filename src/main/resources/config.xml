@@ -1,0 +1,13 @@
+<configuration>
+    <extraction_info>
+        <!-- Paths of target style programs, seperated by ';'.
+        When <source> element is empty or useDefault is "true",the default path is the root of the current project.-->
+        <source excludes=""></source>
+        <style_file></style_file>
+        <use_existed_style></use_existed_style>
+    </extraction_info>
+    <application_info override="true">
+        <source excludes=""></source>
+        <result_saved_dir></result_saved_dir>
+    </application_info>
+</configuration>

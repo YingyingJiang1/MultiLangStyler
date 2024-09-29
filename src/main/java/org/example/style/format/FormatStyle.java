@@ -2,7 +2,6 @@ package org.example.style.format;
 
 import org.antlr.v4.runtime.Parser;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.taskdefs.Java;
 import org.dom4j.Element;
 import org.example.antlr.JavaParser;
 import org.example.parser.AntlrHelper;

@@ -7,6 +7,7 @@ import org.example.styler.antlr.helper.checker.Checker;
 import org.example.styler.antlr.helper.handler.Handler;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 
 /*
@@ -41,10 +42,11 @@ public class EquivalentStructureManager {
     equivalences.put(JavaParser.RULE_expression, new ArrayList<>());
     equivalences.put(JavaParser.RULE_localVariableDeclarationStmt, new ArrayList<>());
 
-    File file = new File("D:\\user\\pity\\notes\\毕设\\plugin\\code-style-transfer\\equivalences.json");
     try {
+      String resourceFile = "/equivalencesConf.json";
+      InputStream is = getClass().getResourceAsStream(resourceFile);
       ObjectMapper objectMapper = new ObjectMapper();
-      JsonNode jsonNode =  objectMapper.readTree(file);
+      JsonNode jsonNode =  objectMapper.readTree(is);
       for(JsonNode node : jsonNode) {
         // Skip comment
         if (node.get("id") == null) {
@@ -111,7 +113,7 @@ public class EquivalentStructureManager {
       }
     } catch (Exception e) {
       e.printStackTrace();
-      System.err.println("load Equivalent structures failed from " + file.getAbsolutePath() + ":" + e.getMessage());
+      System.err.println("load Equivalent structures failed" + e.getMessage());
     }
     return equivalences;
   }

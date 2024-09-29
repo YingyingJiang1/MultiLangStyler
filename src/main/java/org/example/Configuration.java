@@ -20,7 +20,7 @@ public class Configuration {
   public void print() {
     System.out.println("Extraction files: " + extractionCollection.toString());
     System.out.println("Application files: " + applicationCollection.toString());
-    System.out.println("Style file saved directory: " + styleFileSavedDir);
+    System.out.println("Style file saved directory: " + styleFile);
     System.out.println("Override source: " + overrideSource);
     System.out.println("Use existed style: " + useExistedStyle);
     System.out.println("Apply result saved directory: " + applyResultSaveDir);
@@ -28,40 +28,34 @@ public class Configuration {
   }
 
   Element root = null;
-  public FileCollector.FileCollection extractionCollection;
-  public FileCollector.FileCollection applicationCollection;
-  public String styleFileSavedDir;
+  public FileCollector.FileCollection extractionCollection = new FileCollector.FileCollection();
+  public FileCollector.FileCollection applicationCollection = new FileCollector.FileCollection();
+  public String styleFile;
   public boolean overrideSource;
-  public boolean useExistedStyle;
+  public String useExistedStyle;
   public String applyResultSaveDir;
   public boolean testMode;
 
-  public void loadConf(AnActionEvent event) throws IOException, DocumentException {
-    this.event = event;
+  public void loadConf() throws IOException, DocumentException {
     InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
     SAXReader reader = new SAXReader();
     Document document = reader.read(inputStream);
     root = document.getRootElement();
 
-    if (event != null) {
-      loadExtractionInfo(root);
-      loadApplicationInfo(root);
-    } else {
-      System.err.println("Plugin has no AnActionEvent instance.");
-    }
+    loadExtractionInfo(root);
+    loadApplicationInfo(root);
   }
 
   public String getStyleFile() {
-    return styleFileSavedDir + File.separator + "style.xml";
+    return styleFile;
   }
 
 
   private void loadApplicationInfo(Element root) {
     Element applicationInfo = root.element("application_info");
-    overrideSource = applicationInfo.elementText("override").equals("true");
-//    loadSource(applicationInfo, applicationCollection);
+//    overrideSource = applicationInfo.elementText("override").equals("true");
+    loadSource(applicationInfo, applicationCollection);
 
-    System.out.println("add selected file!");
 
     if (applicationInfo.element("result_saved_dir") != null) {
       applyResultSaveDir = applicationInfo.element("result_saved_dir").getText();
@@ -70,28 +64,16 @@ public class Configuration {
 
   private void loadExtractionInfo(Element root) {
     Element extractionInfo = root.element("extraction_info");
-
     loadSource(extractionInfo, extractionCollection);
-
-    Element styleSavedDir = extractionInfo.element("style_saved_directory");
-    if(styleSavedDir.attributeValue("useDefault").equals("false")) {
-      styleFileSavedDir = PathManager.getTempPath();
-    } else {
-      styleFileSavedDir = styleSavedDir.getText();
-    }
-    useExistedStyle = extractionInfo.elementText("use_existed_style").equals("true");
+    styleFile = extractionInfo.elementText("style_file");
+    useExistedStyle = extractionInfo.elementText("use_existed_style");
   }
 
   private void loadSource(Element info, FileCollector.FileCollection collection) {
     Element source = info.element("source");
     List<String> sourcePaths = new ArrayList<>();
     List<String> excludes = Arrays.stream(source.attributeValue("excludes").split(";")).toList();
-    if(source.attributeValue("useDefault").equals("true")) {
-      Project project = event.getProject();
-      sourcePaths.add(project.getBasePath() + File.separator + "src");
-    } else {
-      sourcePaths = Arrays.stream(source.getText().split(";")).toList();
-    }
+    sourcePaths = Arrays.stream(source.getText().split(";")).toList();
     collection = FileCollector.getJavaFileCollection(sourcePaths);
     collection.difference(FileCollector.getJavaFileCollection(excludes));
   }

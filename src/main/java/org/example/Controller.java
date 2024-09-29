@@ -23,11 +23,6 @@ public class Controller {
   public static ProgramStyle programStyle;
 
   public static void execute(Configuration conf) {
-    if (conf.extractionCollection.isEmpty() || conf.applicationCollection.isEmpty()) {
-      System.out.println("No extraction or application files.");
-      return;
-    }
-
     try {
       ProgramStyle programStyle = new ProgramStyle();
       Controller.programStyle = programStyle;
@@ -54,12 +49,8 @@ public class Controller {
 
   private static Extractor createExtractor(Configuration conf, ProgramStyle programStyle) throws IOException {
     Extractor extractor = null;
-    if(conf.useExistedStyle) {
-      boolean hasExistedStyle = Arrays.stream(new File(conf.styleFileSavedDir).listFiles()).toList()
-          .contains(new File(conf.getStyleFile()));
-      if (hasExistedStyle) {
-        extractor = new XmlExtractor(conf, programStyle);
-      }
+    if(conf.useExistedStyle != null) {
+      extractor = new XmlExtractor(conf, programStyle);
     }
     if (extractor == null) {
       extractor = new AntlrStyler(conf, programStyle);

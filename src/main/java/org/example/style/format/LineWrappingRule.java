@@ -1,6 +1,5 @@
 package org.example.style.format;
 
-import groovyjarjarantlr4.v4.runtime.misc.Array2DHashSet;
 import org.dom4j.Element;
 import org.example.antlr.JavaParser;
 import org.example.parser.AntlrHelper;

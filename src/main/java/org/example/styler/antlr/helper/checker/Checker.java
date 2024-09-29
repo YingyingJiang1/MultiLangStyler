@@ -18,7 +18,7 @@ public abstract class Checker {
     if(cls.equals("EqualChecker")) {
       return new equalChecker(argsList);
     }
-    if(cls.equals("NotIntegerCheck")) {
+    if(cls.equals("NotIntegerChecker")) {
       return new NotIntegerCheck(argsList);
     }
     throw new RuntimeException("wrong checker name:" + cls);

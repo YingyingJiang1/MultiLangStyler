@@ -12,7 +12,6 @@ import org.example.style.ProgramStyle;
 import org.example.style.format.BraceInfo;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
-import org.snakeyaml.engine.v2.api.lowlevel.Parse;
 
 import java.util.*;
 import java.util.function.Predicate;

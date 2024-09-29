@@ -12,7 +12,7 @@ import java.util.List;
  * @author       Yingying Jiang
  * @create       2024/3/31 15:58
  */
-public class Comment extends Style {
+public class CommentStyle extends Style {
 
   List<CommentRule> rules = new ArrayList<>();
 

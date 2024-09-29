@@ -13,7 +13,7 @@ public abstract class Handler {
   public void handle(EquivalentStructure structure, int from, int to) {}
 
   public static Handler createHandler(String cls, String[][] argsList) {
-    if(cls.equals("CondReverser")) {
+    if(cls.equals("CondReverserHandler")) {
       return new CondReverserHandler(argsList);
     }
     if(cls.equals("ReplicationHandler")) {
