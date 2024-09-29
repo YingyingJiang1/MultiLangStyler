@@ -1,6 +1,5 @@
 package org.example.styler.structure.handler;
 
-import com.intellij.codeInsight.template.impl.TemplateImpl;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.antlr.JavaParser;

@@ -156,7 +156,6 @@ public class AntlrStyler extends Styler {
         Styler.EXTRACTION_PROCESS, enterStylers, exitStylers);
     ParseTreeWalker walker = new MyParseTreeWalker();
     walker.walk(listener, tree);
-    // Files.write(Paths.get("source-ast.txt"), root.toStringTree(parser).getBytes());
   }
 
   @Override
@@ -332,16 +331,6 @@ public class AntlrStyler extends Styler {
 
 
   private void saveApplyResult(String programStr) throws IOException {
-    String encode = StandardCharsets.UTF_8.toString();
-    try(FileInputStream inputStream = new FileInputStream(filePath);) {
-      // Get encode.
-      CharsetDetector detector = new CharsetDetector();
-      byte[] bytes = inputStream.readAllBytes();
-      detector.setText(bytes);
-      encode = detector.detect().getName();
-    }
-
-
     Path resFilePath = null;
     Path filePath = Paths.get(this.filePath);
     String saveDir = null;
@@ -361,11 +350,8 @@ public class AntlrStyler extends Styler {
     String fileName = filePath.getFileName().toString();
     int dotIndex = fileName.lastIndexOf(".");
     String resPath = saveDir + fileName;
-//    String resPath = saveDir + (dotIndex == -1 ? "result.java" : fileName.substring(0, fileName.indexOf(".")) +
-//        "-result.java");
 
-   //  String resPath = saveDir + (dotIndex == -1 ? "result.java" : fileName);
-    try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath), encode))) {
+    try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
       writer.write(programStr);
     }
   }

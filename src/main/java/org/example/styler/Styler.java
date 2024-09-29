@@ -26,7 +26,7 @@ public class Styler implements Extractor, Applicator {
   protected String filePath;
   protected ProgramStyle programStyle;
   protected Configuration conf;
-  protected FileCollector.FileCollection files = null;
+  protected FileCollector.FileCollection files;
 
   public static final int EXTRACTION_PROCESS = 1;
   public static final int APPLICATION_PROCESS = 2;

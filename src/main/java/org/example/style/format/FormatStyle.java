@@ -2,7 +2,6 @@ package org.example.style.format;
 
 import org.antlr.v4.runtime.Parser;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.taskdefs.Java;
 import org.dom4j.Element;
 import org.example.parser.AntlrHelper;
 import org.example.style.Style;
@@ -26,7 +25,6 @@ public class FormatStyle extends Style {
   private Grouper ruleGrouper;
   private int columnLimit;
   private List<IndentionRule> indentionRules;
-  private List<BlankLineInfo> blankLineInfos;
   private LineWrappingRule lineWrappingRule = new LineWrappingRule();
   private List<BraceInfo> braceInfos;
   private List<NewlineRule> newlineRules;
@@ -40,7 +38,6 @@ public class FormatStyle extends Style {
   public FormatStyle() {
     styleName = "Format";
     this.spaces = new HashMap<>();
-    this.blankLineInfos = new ArrayList<>();
     this.braceInfos = new ArrayList<>();
     this.newlineRules = new ArrayList<>();
     this.indentionRules = new ArrayList<>();
@@ -152,12 +149,6 @@ public class FormatStyle extends Style {
     List<Element> braceInfoEleList = braceInfosEle.elements();
     for(Element braceInfoEle : braceInfoEleList) {
       braceInfos.add(BraceInfo.parseElement(braceInfoEle, parser));
-    }
-
-    Element blankLineInfosEle = formatStyleEle.element("blank_line_infos");
-    List<Element> blankLineEleList = blankLineInfosEle.elements();
-    for(Element blankLineEle : blankLineEleList) {
-      blankLineInfos.add(new BlankLineInfo(blankLineEle.getText()));
     }
 
     Element newlineRulesEle = formatStyleEle.element("newline_rules");
@@ -291,11 +282,6 @@ public class FormatStyle extends Style {
       info.fill();
     }
 
-    // Fill @blankLines.
-    for(BlankLineInfo model : this.blankLineInfos) {
-      model.fill();
-    }
-
     // Fill @braceInfos
     for(BraceInfo braceInfo : braceInfos) {
       braceInfo.fill();;
@@ -385,16 +371,6 @@ public class FormatStyle extends Style {
     return space;
   }
 
-  public String getBlankLineBetween(int parentType, int leftChildType, int rightChildType) {
-    for(BlankLineInfo info : blankLineInfos) {
-      if(info.getLeftCtx() == leftChildType && info.getRightCtx() == rightChildType) {
-        if(info.getParentCtx() == parentType || info.getParentCtx() == -1 || parentType == -1) {
-          return StringUtils.repeat(System.lineSeparator(), info.getBlankLineNumber());
-        }
-      }
-    }
-    return null;
-  }
   public BraceInfo.BraceLineBreakInfo getBraceLineBreakInfo(BraceInfo.TypeEnum blockType, int stmtNum) {
     BraceInfo braceInfo = new BraceInfo(blockType, stmtNum);
     int minDis = Integer.MAX_VALUE;

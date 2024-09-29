@@ -44,10 +44,9 @@ public class IndentionRule implements DomIO {
 
   @Override
   public void parseElement(Element parent) {
-    Element indentionRleEle = parent.element("indention_rule");
-    indentionUnit = Integer.parseInt(indentionRleEle.element("indention_unit").getText());
+    indentionUnit = Integer.parseInt(parent.element("indention_unit").getText());
 
-    String type = indentionRleEle.element("indention_type").getText();
+    String type = parent.element("indention_type").getText();
     if(type.equals("space")) {
       indentionType = ' ';
     } else {

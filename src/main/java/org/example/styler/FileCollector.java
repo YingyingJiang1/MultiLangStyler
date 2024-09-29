@@ -1,7 +1,5 @@
 package org.example.styler;
 
-import com.intellij.ui.EditableRowTable;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.nio.file.Path;
@@ -178,7 +176,7 @@ public class FileCollector {
   public static class FileCollection {
 
 
-    List<FileSet> fileSets;
+    List<FileSet> fileSets = new ArrayList<>();
     int size = 0;
 
     public FileCollection() {

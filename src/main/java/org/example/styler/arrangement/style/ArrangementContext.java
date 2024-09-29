@@ -62,7 +62,7 @@ public class ArrangementContext extends StyleContext {
     }
 
 
-    public static Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, Parser parser) {
         Element contentEle = parent.element("content_context");
         ArrangementContext arrangementContext = new ArrangementContext();
         arrangementContext.typeType = contentEle.getText();

@@ -2,8 +2,7 @@ package org.example.style.format.grouper;
 
 import org.example.antlr.JavaParser;
 import org.example.parser.AntlrHelper;
-import org.example.style.format.FormatStyle;
-import org.jetbrains.jps.javac.JavacProtoUtil;
+
 
 public class FineGrainedGrouper implements Grouper {
 	private static FineGrainedGrouper instance = new FineGrainedGrouper();

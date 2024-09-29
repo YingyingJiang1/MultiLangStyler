@@ -81,15 +81,18 @@ public class NamingStyle extends Style {
 
   @Override
   public Object parseElement(Element root, Parser parser) {
-    Element rules = root.element("rules");
-    Element writtenRulesEle = rules.element("written_rules");
-    List<Element> ruleEleList = writtenRulesEle.elements();
-    for(Element ruleEle : ruleEleList) {
-      List<WrittenProperty> properties = new ArrayList<>();
-      properties.add(WrittenProperty.parseElement(ruleEle, parser));
-      writtenRules.put(WrittenContext.parseElement(ruleEle, parser), properties);
+    if (root != null) {
+      Element rules = root.element("rules");
+      Element writtenRulesEle = rules.element("written_rules");
+      List<Element> ruleEleList = writtenRulesEle.elements();
+      for(Element ruleEle : ruleEleList) {
+        List<WrittenProperty> properties = new ArrayList<>();
+        properties.add(WrittenProperty.parseElement(ruleEle, parser));
+        writtenRules.put(WrittenContext.parseElement(ruleEle, parser), properties);
+      }
+      return this;
     }
-    return this;
+    return null;
   }
 
   List<String> segmentName(String name) {

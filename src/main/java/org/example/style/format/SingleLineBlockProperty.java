@@ -50,9 +50,11 @@ public class SingleLineBlockProperty implements DomIO {
 
 	@Override
 	public void parseElement(Element parent) {
-		useBrace = Boolean.parseBoolean(parent.elementText("use_brace"));
-		if(!useBrace) {
-			isInlineBlock = Boolean.parseBoolean(parent.elementText("is_inline_block"));
+		if (parent != null) {
+			useBrace = Boolean.parseBoolean(parent.elementText("use_brace"));
+			if(!useBrace) {
+				isInlineBlock = Boolean.parseBoolean(parent.elementText("is_inline_block"));
+			}
 		}
 	}
 
