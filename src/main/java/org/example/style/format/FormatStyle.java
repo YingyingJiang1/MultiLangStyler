@@ -3,12 +3,14 @@ package org.example.style.format;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.parser.AntlrHelper;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.format.grouper.FineGrainedGrouper;
 import org.example.style.format.grouper.Grouper;
 import org.example.style.format.grouper.RuleGrouper;
-import org.example.styler.brace.style.BraceFormatProperty;
-import org.example.styler.brace.style.TypeEnum;
+import org.example.styler.hws.style.IndentionRule;
+import org.example.styler.hws.style.SpaceRule;
+import org.example.styler.linewrapping.style.LineWrappingRule;
+import org.example.styler.newline.style.NewlineRule;
 
 import java.util.*;
 import java.util.function.Function;
@@ -25,9 +27,8 @@ public class FormatStyle extends Style {
   private Grouper tokenGrouper;
   private Grouper ruleGrouper;
   private int columnLimit;
-  private List<IndentionRule> indentionRules;
-  private LineWrappingRule lineWrappingRule = new LineWrappingRule();
 
+  private LineWrappingRule lineWrappingRule = new LineWrappingRule();
   private List<NewlineRule> newlineRules;
   private SingleLineBlockProperty singleLineBlock = new SingleLineBlockProperty();
 
@@ -40,7 +41,6 @@ public class FormatStyle extends Style {
     styleName = "Format";
     this.spaces = new HashMap<>();
     this.newlineRules = new ArrayList<>();
-    this.indentionRules = new ArrayList<>();
     setTokenGrouper();
     setRuleGrouper();
 
@@ -77,10 +77,7 @@ public class FormatStyle extends Style {
   public void addElement(Element root, Parser parser) {
     Element formatStyleEle = root.addElement("format_style");
 
-    Element indentionRulesEle = root.addElement("indention_rules");
-    for(IndentionRule indentionRule : indentionRules) {
-      indentionRule.addElement(indentionRulesEle);
-    }
+
 
     Element spaceInfosEle = formatStyleEle.addElement("space_infos");
     spaceInfosEle.addComment("space_info: (left token group type, right token group type)");
@@ -120,12 +117,7 @@ public class FormatStyle extends Style {
     Element columnLimitEle = formatStyleEle.element("column_limit");
     columnLimit = Integer.parseInt(columnLimitEle.getText());
 
-    Element indentionRulesEle = root.element("indention_rules");
-    for(Element indentionRuleEle : indentionRulesEle.elements()) {
-      IndentionRule indentionRule = new IndentionRule();
-      indentionRule.parseElement(indentionRuleEle);
-      indentionRules.add(indentionRule);
-    }
+
 
     Element spaceInfosEle = formatStyleEle.element("space_infos");
     List<Element> spaceInfoEleList = spaceInfosEle.elements();
@@ -156,19 +148,6 @@ public class FormatStyle extends Style {
     return this;
   }
 
-  public void addRule(IndentionRule newRule) {
-    boolean addFlag = true;
-    for(IndentionRule rule : indentionRules) {
-      if(rule.equals(newRule)) {
-        rule.merge(newRule);
-        addFlag = false;
-        break;
-      }
-    }
-    if (addFlag) {
-      indentionRules.add(newRule);
-    }
-  }
 
   // Add Rule for @singleLineBlock
   public void addRule(SingleLineBlockProperty property) {
@@ -179,12 +158,6 @@ public class FormatStyle extends Style {
     return lineWrappingRule;
   }
 
-  public IndentionRule getIndentionProperty() {
-    if (indentionRules.isEmpty()) {
-      return null;
-    }
-    return indentionRules.get(0);
-  }
 
   private void addRule(NewlineRule newRule) {
     boolean addFlag = true;
@@ -271,16 +244,6 @@ public class FormatStyle extends Style {
     // Fill @spaces.
     for(SpaceRule info : this.spaces.values()) {
       info.fill();
-    }
-
-    // Fill @indentionRules
-    Optional<IndentionRule> ret = indentionRules.stream().max(Comparator.comparing(IndentionRule::getCount));
-    if (ret.isPresent()) {
-      IndentionRule targetIndentionRule = ret.get();
-      indentionRules.clear();
-      indentionRules.add(targetIndentionRule);
-    } else {
-      isRulesEnough = false;
     }
 
     // Fill @singleLineBlock

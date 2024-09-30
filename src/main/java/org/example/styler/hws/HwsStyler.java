@@ -3,13 +3,11 @@ package org.example.styler.hws;
 import org.antlr.v4.runtime.Token;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendToken;
-import org.example.style.ProgramStyle;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
-import org.example.style.format.IndentionRule;
-import org.example.styler.ASTStyler;
 import org.example.styler.StylerBase;
 import org.example.styler.TSStyler;
+import org.example.styler.hws.style.IndentionRule;
 
 import java.util.*;
 

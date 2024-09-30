@@ -2,13 +2,7 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.StyleProperty;
-
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.example.interfaces.StyleProperty;
 
 public class BraceFormatProperty extends StyleProperty {
     public boolean beforeLB, afterLB, beforeRB, afterRB;

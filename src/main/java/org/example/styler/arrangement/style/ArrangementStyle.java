@@ -2,12 +2,11 @@ package org.example.styler.arrangement.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.Style;
-import org.example.style.StyleContext;
-import org.example.style.StyleProperty;
-import org.example.style.StyleRule;
+import org.example.interfaces.Style;
+import org.example.interfaces.StyleContext;
+import org.example.interfaces.StyleProperty;
+import org.example.interfaces.StyleRule;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -19,7 +18,6 @@ public class ArrangementStyle extends Style {
     
     public ArrangementStyle() {
         styleName = "Arrangement";
-        rules = new ArrayList<>();
     }
 
     public void addElement(Element parent, Parser parser) {
@@ -27,7 +25,7 @@ public class ArrangementStyle extends Style {
         for (StyleRule styleRule : rules) {
             ArrangementRule rule = (ArrangementRule) styleRule;
             Element arrangementEle = arrangementsEle.addElement("arrangement");
-            rule.styleContext.addElement(arrangementEle, parser);
+            rule.getStyleContext().addElement(arrangementEle, parser);
             Element areasEle = arrangementEle.addElement("areas");
             for (ArrangementProperty.ContentArea area : rule.getStyleProperty().getAreas()) {
                 area.addElement(areasEle, parser);
@@ -63,13 +61,12 @@ public class ArrangementStyle extends Style {
 
     public ArrangementProperty getContentArrangement(ArrangementContext context) {
         int maxInclusionDegree = Integer.MIN_VALUE;
-        ArrangementProperty property = new ArrangementProperty();
         ArrangementProperty res = new ArrangementProperty();
         for (StyleRule styleRule : rules) {
             ArrangementRule rule = (ArrangementRule) styleRule;
             int inclusionDegree = rule.getStyleContext().inclusionDegree(context);
             if (inclusionDegree > maxInclusionDegree) {
-                res = getProperty(rule.styleContext);
+                res = (ArrangementProperty) getProperty(rule.getStyleContext());
                 maxInclusionDegree = inclusionDegree;
             }
         }
@@ -84,17 +81,5 @@ public class ArrangementStyle extends Style {
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
         ArrangementRule rule = new ArrangementRule((ArrangementContext) styleContext, (ArrangementProperty) styleProperty);
         rules.add(rule);
-    }
-
-    @Override
-    public ArrangementProperty getProperty(StyleContext styleContext) {
-        ArrangementContext targetContext = (ArrangementContext) styleContext;
-        for (StyleRule styleRule : rules) {
-            ArrangementRule rule = (ArrangementRule) styleRule;
-            if (rule.styleContext.equals(targetContext)) {
-                return rule.getStyleProperty();
-            }
-        }
-        return null;
     }
 }

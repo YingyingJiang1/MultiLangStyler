@@ -8,7 +8,7 @@ import org.example.parser.ExtendContext;
 import org.example.myException.StylizationException;
 import org.example.parser.ExtendTokenFactory;
 import org.example.parser.ParseTreeFactory;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
 import org.example.styler.StylerBase;

@@ -2,13 +2,13 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.StyleContext;
-
-import java.util.Objects;
+import org.example.interfaces.StyleContext;
 
 public class BraceFormatContext extends StyleContext {
     private TypeEnum blockType;
     private int stmtNumInBlock; // 0:empty block, 1: only one single statement in block, 2: one single block statement or exceed one statement.
+
+    public BraceFormatContext() {}
 
     public BraceFormatContext(TypeEnum blockType, int stmtNum) {
         this.blockType = blockType;

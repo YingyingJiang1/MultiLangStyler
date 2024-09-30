@@ -1,9 +1,10 @@
-package org.example.style.format;
+package org.example.styler.linewrapping.style;
 
 import org.dom4j.Element;
 import org.example.antlr.JavaParser;
 import org.example.parser.AntlrHelper;
-import org.example.style.DomIO;
+import org.example.interfaces.DomIO;
+import org.example.styler.hws.style.IndentionRule;
 
 import java.util.*;
 

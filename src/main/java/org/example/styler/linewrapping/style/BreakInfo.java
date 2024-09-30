@@ -1,8 +1,8 @@
-package org.example.style.format;
+package org.example.styler.linewrapping.style;
 
 import org.dom4j.Element;
 import org.example.parser.AntlrHelper;
-import org.example.style.DomIO;
+import org.example.interfaces.DomIO;
 
 import java.util.Objects;
 

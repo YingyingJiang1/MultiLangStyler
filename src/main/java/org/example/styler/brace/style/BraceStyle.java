@@ -2,41 +2,38 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.Style;
-import org.example.style.StyleContext;
-import org.example.style.StyleProperty;
-import org.example.style.StyleRule;
-import org.example.style.format.BraceInfo;
+import org.example.interfaces.Style;
+import org.example.interfaces.StyleContext;
+import org.example.interfaces.StyleProperty;
+import org.example.interfaces.StyleRule;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BraceStyle extends Style {
     // key: index of rule.
     // value: frequency.
-    private Map<Integer, Integer> frequency = new HashMap<>();
+    private List<Integer> frequencies = new ArrayList<>();
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-        BraceFormatContext targetContext = (BraceFormatContext) styleContext;
         BraceFormatRule targetRule = new BraceFormatRule((BraceFormatContext) styleContext, (BraceFormatProperty) styleProperty);
         int index = rules.indexOf(targetRule);
         if(index < 0) {
             rules.add(targetRule);
             index = rules.size() - 1;
         }
-        frequency.put(index, frequency.getOrDefault(index, 0) + 1);
+        int frequency = frequencies.size() > index ? frequencies.get(index) + 1 : 1;
+        frequencies.set(index, frequency);
     }
 
     @Override
     public BraceFormatProperty getProperty(StyleContext styleContext) {
         BraceFormatProperty res = null;
-        BraceFormatContext targetContext = (BraceFormatContext) styleContext;
         int minDis = Integer.MAX_VALUE;
         BraceFormatProperty lineBreakInfo = null;
         for(StyleRule styleRule : rules) {
             BraceFormatRule rule = (BraceFormatRule) styleRule;
-            int distance = rule.getStyleContext().calculateDis(targetContext);
+            int distance = rule.getStyleContext().calculateDis(styleContext);
             if(distance < minDis) {
                 minDis = distance;
                 res = rule.getStyleProperty();
@@ -47,30 +44,11 @@ public class BraceStyle extends Style {
 
     @Override
     public void fill() {
-        if(frequency == null) {
+        if(frequencies == null) {
             return;
         }
-
-        // Reserve the style property with the highest frequency for the rules having the same style context.
-        Map<StyleContext, Integer> map = new HashMap<>(); // key: context, value: index of current max frequency.
-        for (int i = 0; i < rules.size() - 1; i++) {
-            StyleContext context = rules.get(i).getStyleContext();
-            if (map.get(context) == null) {
-                map.put(context, i);
-            } else {
-                int index = map.get(context);
-                if (frequency.get(i) > frequency.get(index)) {
-                    map.put(context, i);
-                }
-            }
-        }
-
-        List<StyleRule> newRules = map.values().stream()
-                .map(index -> rules.get(index))
-                .toList();
-        rules.clear();
-        rules.addAll(newRules);
-        frequency = null;
+        ruleFilter.filterRepeatedRules(rules, frequencies);
+        frequencies = null;
     }
 
 

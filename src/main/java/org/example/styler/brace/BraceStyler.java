@@ -8,14 +8,13 @@ import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
 import org.example.parser.TokenInfoField;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
 import org.example.styler.ASTStyler;
 import org.example.styler.StylerBase;
 import org.example.styler.brace.style.BraceFormatContext;
 import org.example.styler.brace.style.BraceFormatProperty;
-import org.example.styler.brace.style.BraceStyle;
 import org.example.styler.brace.style.TypeEnum;
 
 import java.util.*;

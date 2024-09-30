@@ -7,10 +7,9 @@ import org.example.antlr.JavaParser;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
-import org.example.style.ProgramStyle;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
-import org.example.style.format.NewlineRule;
+import org.example.styler.newline.style.NewlineRule;
 import org.example.styler.StylerBase;
 import org.example.styler.Styler;
 

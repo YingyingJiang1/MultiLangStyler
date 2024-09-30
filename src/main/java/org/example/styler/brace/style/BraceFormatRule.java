@@ -1,14 +1,8 @@
 package org.example.styler.brace.style;
 
-import org.example.style.StyleContext;
-import org.example.style.StyleProperty;
-import org.example.style.StyleRule;
+import org.example.interfaces.StyleRule;
 
 public class BraceFormatRule extends StyleRule {
-
-    BraceFormatContext styleContext = new BraceFormatContext()  ;
-    BraceFormatProperty styleProperty = new BraceFormatProperty()  ;
-
 
     public BraceFormatRule(BraceFormatContext styleContext, BraceFormatProperty styleProperty) {
         super(styleContext, styleProperty);

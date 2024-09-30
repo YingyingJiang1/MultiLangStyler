@@ -1,4 +1,4 @@
-package org.example.style;
+package org.example.interfaces;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;

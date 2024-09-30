@@ -12,7 +12,7 @@ import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
 import org.example.parser.LexerErrorListener;
 import org.example.style.ProgramStyle;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.comment.Comment;
 import org.example.style.comment.CommentRule;
 

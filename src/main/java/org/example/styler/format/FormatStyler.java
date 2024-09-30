@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.antlr.JavaParser;
 import org.example.parser.ExtendContext;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.styler.ASTStyler;
 import org.example.styler.StylerBase;
 import org.example.styler.brace.BraceStyler;

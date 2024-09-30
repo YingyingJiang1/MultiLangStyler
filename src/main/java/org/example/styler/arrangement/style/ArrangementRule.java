@@ -1,7 +1,6 @@
 package org.example.styler.arrangement.style;
 
-import org.example.style.StyleContext;
-import org.example.style.StyleRule;
+import org.example.interfaces.StyleRule;
 
 public class ArrangementRule extends StyleRule {
 

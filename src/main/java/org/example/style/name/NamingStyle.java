@@ -2,7 +2,7 @@ package org.example.style.name;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.style.name.segmenter.Dictionary;
 import org.example.style.name.segmenter.Segmenter;
 import org.example.style.name.segmenter.SimpleSegmenter;

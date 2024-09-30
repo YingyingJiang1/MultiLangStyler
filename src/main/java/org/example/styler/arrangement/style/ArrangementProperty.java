@@ -3,7 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.antlr.JavaParser;
-import org.example.style.StyleProperty;
+import org.example.interfaces.StyleProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;

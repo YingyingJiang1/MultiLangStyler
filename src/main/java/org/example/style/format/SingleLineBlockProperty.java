@@ -1,11 +1,9 @@
 package org.example.style.format;
 
 import org.dom4j.Element;
-import org.example.style.DomIO;
+import org.example.interfaces.DomIO;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /*

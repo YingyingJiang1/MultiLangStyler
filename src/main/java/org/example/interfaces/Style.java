@@ -1,10 +1,13 @@
-package org.example.style;
+package org.example.interfaces;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.styler.RuleFilter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @description: Base class of all specific style classes. The 'tokenSource' field muse be set before
@@ -15,16 +18,23 @@ import java.util.List;
 public abstract class Style implements DomIO,StyleIntf {
     protected String styleName = "";
     protected List<StyleRule> rules = new ArrayList<>();
+    protected static RuleFilter ruleFilter = new RuleFilter();
 
     public void addElement(Element root, Parser parser){}
     public Object parseElement(Element root, Parser parser){return null;}
+
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
 
     }
 
     @Override
-    public StyleProperty getProperty(StyleContext styleContext) {
+    public StyleProperty getProperty(StyleContext targetContext) {
+        for (StyleRule rule : rules) {
+            if (rule.getStyleContext().equals(targetContext)) {
+                return rule.styleProperty;
+            }
+        }
         return null;
     }
 

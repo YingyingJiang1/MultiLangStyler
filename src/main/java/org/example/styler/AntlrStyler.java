@@ -1,6 +1,5 @@
 package org.example.styler;
 
-import com.ibm.icu.text.CharsetDetector;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -18,7 +17,7 @@ import org.example.experiment.Experiment;
 import org.example.parser.*;
 import org.example.style.ProgramStyle;
 import org.example.style.format.FormatStyle;
-import org.example.style.format.IndentionRule;
+import org.example.styler.hws.style.IndentionRule;
 import org.example.styler.arrangement.ArrangementStyler;
 import org.example.styler.brace.AntlrBraceStyler;
 import org.example.styler.format.FormatStyler;
@@ -266,6 +265,7 @@ public class AntlrStyler extends Styler {
 
       Token preToken = tokens.get(i - 1);
       if(preToken.getText().endsWith("\n") && !isVws) { // add indention
+
         IndentionRule indentionProperty = formatStyle.getIndentionProperty();
         if (indentionProperty != null) {
           String indentionStr = StringUtils.repeat(indentionProperty.indentionType,

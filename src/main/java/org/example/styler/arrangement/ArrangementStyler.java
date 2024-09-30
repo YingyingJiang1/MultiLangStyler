@@ -6,7 +6,7 @@ import org.example.Helper;
 import org.example.antlr.JavaParser;
 import org.example.parser.ExtendContext;
 import org.example.myException.StylizationException;
-import org.example.style.Style;
+import org.example.interfaces.Style;
 import org.example.styler.ASTStyler;
 import org.example.styler.PermutationGenerator;
 import org.example.styler.StylerBase;
