@@ -62,15 +62,14 @@ public class ArrangementContext extends StyleContext {
     }
 
 
-    public static Object parseElement(Element parent, Parser parser) {
+    public ArrangementContext parseElement(Element parent, Parser parser) {
         Element contentEle = parent.element("content_context");
-        ArrangementContext context = new ArrangementContext();
-        context.typeType = contentEle.getText();
+        typeType = contentEle.getText();
         List<Attribute> attributes = contentEle.attributes();
         for (Attribute attribute : attributes) {
-            context.statistic.put(attribute.getName(), Integer.parseInt(attribute.getValue()));
+            statistic.put(attribute.getName(), Integer.parseInt(attribute.getValue()));
         }
-        return context;
+        return this;
     }
 
 }

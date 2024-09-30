@@ -3,6 +3,9 @@ package org.example.style;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * @description: Base class of all specific style classes. The 'tokenSource' field muse be set before
  * instantiate StyleBase's subclass.
@@ -11,7 +14,8 @@ import org.dom4j.Element;
  */
 public abstract class Style implements DomIO,StyleIntf {
     protected String styleName = "";
-    public void fill(){}
+    protected List<StyleRule> rules = new ArrayList<>();
+
     public void addElement(Element root, Parser parser){}
     public Object parseElement(Element root, Parser parser){return null;}
     @Override
@@ -22,6 +26,12 @@ public abstract class Style implements DomIO,StyleIntf {
     @Override
     public StyleProperty getProperty(StyleContext styleContext) {
         return null;
+    }
+
+    public void fill() {
+        for(StyleRule rule : rules) {
+            rule.fill();
+        }
     }
 
 

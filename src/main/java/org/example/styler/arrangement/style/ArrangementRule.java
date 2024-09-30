@@ -1,12 +1,22 @@
 package org.example.styler.arrangement.style;
 
-public class ArrangementRule {
-    ArrangementContext arrangementContext = new ArrangementContext();
-    ArrangementProperty arrangementProperty = new ArrangementProperty();
+import org.example.style.StyleContext;
+import org.example.style.StyleRule;
+
+public class ArrangementRule extends StyleRule {
 
     public ArrangementRule(ArrangementContext context, ArrangementProperty property) {
-        this.arrangementContext = context;
-        this.arrangementProperty = property;
+        this.styleContext = context;
+        this.styleProperty = property;
     }
 
+    @Override
+    public ArrangementContext getStyleContext() {
+        return (ArrangementContext) styleContext;
+    }
+
+    @Override
+    public ArrangementProperty getStyleProperty() {
+        return (ArrangementProperty) styleProperty;
+    }
 }

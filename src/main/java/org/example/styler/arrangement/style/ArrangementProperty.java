@@ -22,7 +22,7 @@ public class ArrangementProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public ArrangementProperty parseElement(Element parent, Parser parser) {
         return null;
     }
 

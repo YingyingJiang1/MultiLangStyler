@@ -8,13 +8,15 @@ import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
 import org.example.parser.TokenInfoField;
-import org.example.style.ProgramStyle;
 import org.example.style.Style;
-import org.example.style.format.BraceInfo;
 import org.example.style.format.FormatStyle;
 import org.example.style.format.SingleLineBlockProperty;
 import org.example.styler.ASTStyler;
 import org.example.styler.StylerBase;
+import org.example.styler.brace.style.BraceFormatContext;
+import org.example.styler.brace.style.BraceFormatProperty;
+import org.example.styler.brace.style.BraceStyle;
+import org.example.styler.brace.style.TypeEnum;
 
 import java.util.*;
 
@@ -41,20 +43,20 @@ public class BraceStyler extends StylerBase implements ASTStyler {
   public ExtendContext applyStyle(ExtendContext ctx, Style style) {
     applySingleLineBlockStyle(ctx, style);
     List<ExtendContext> blocks = getAllBlocks(ctx);
-    BraceInfo.TypeEnum blockType = getBlockType(ctx.getRuleIndex());
+    TypeEnum blockType = getBlockType(ctx.getRuleIndex());
 
     // Apply brace information and add blank line.
     int lastIndex = blocks.size() - 1;
-    FormatStyle formatStyle = (FormatStyle) style;
     for (int i = 0; i < blocks.size(); ++i) {
       ExtendContext block = blocks.get(i);
       // Specially process the last block of multi-block statement.
-      if (blockType == BraceInfo.TypeEnum.MULTI_BLOCK_STMT && block == ctx.getLastContextChild()) {
-        blockType = BraceInfo.TypeEnum.NORMAL_BLOCK;
+      if (blockType == TypeEnum.MULTI_BLOCK_STMT && block == ctx.getLastContextChild()) {
+        blockType = TypeEnum.NORMAL_BLOCK;
       }
-      BraceInfo.BraceLineBreakInfo braceLineBreakInfo =
-          formatStyle.getBraceLineBreakInfo(blockType, getStmtNum(block));
-      applyBraceInfo(braceLineBreakInfo, block, formatStyle);
+
+      BraceFormatContext styleContext = new BraceFormatContext(blockType, getStmtNum(block));
+      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getProperty(styleContext);
+      applyBraceInfo(braceFormatProperty, block);
     }
     return ctx;
   }
@@ -64,7 +66,7 @@ public class BraceStyler extends StylerBase implements ASTStyler {
     extractSingleLineBlockStyle(ctx, style);
     List<ExtendContext> blocks = getAllBlocks(ctx);
     int ruleIndex = ctx.getRuleIndex();
-    BraceInfo.TypeEnum blockType = getBlockType(ruleIndex);
+    TypeEnum blockType = getBlockType(ruleIndex);
     boolean isNotMultiBlockStmt = ruleIndex != JavaParser.RULE_ifElseStmt && ruleIndex != JavaParser.RULE_tryCatchStmt;
     // Extract brace information and blank line.
     for (int i = 0; i < blocks.size(); ++i) {
@@ -202,41 +204,38 @@ public class BraceStyler extends StylerBase implements ASTStyler {
   /**
    * @param ctx A block.
    */
-  private void applyBraceInfo(BraceInfo.BraceLineBreakInfo braceLineBreakInfo,
-                              ExtendContext ctx, FormatStyle formatStyle) {
+  private void applyBraceInfo(BraceFormatProperty braceFormatProperty, ExtendContext ctx) {
     // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
-    if (braceLineBreakInfo != null) {
-      if (braceLineBreakInfo.beforeLB) {
+    if (braceFormatProperty != null) {
+      if (braceFormatProperty.beforeLB) {
         addVwsBefore(ctx, JavaParser.LBRACE);
       }
-      if (braceLineBreakInfo.afterLB) {
+      if (braceFormatProperty.afterLB) {
         addVwsAfter(ctx, JavaParser.LBRACE);
       }
-      if (braceLineBreakInfo.beforeRB) {
+      if (braceFormatProperty.beforeRB) {
         addVwsBefore(ctx, JavaParser.RBRACE);
       }
-      if (braceLineBreakInfo.afterRB) {
+      if (braceFormatProperty.afterRB) {
         addVwsAfter(ctx, JavaParser.RBRACE);
       }
     }
 
   }
 
-  private void extractBraceInfo(BraceInfo.TypeEnum blockType, ExtendContext ctx, Style style) {
-    FormatStyle formatStyle = (FormatStyle) style;
+  private void extractBraceInfo(TypeEnum blockType, ExtendContext ctx, Style style) {
     int stmtNum = 0;
     stmtNum = getStmtNum(ctx);
+    BraceFormatContext styleContext = new BraceFormatContext(blockType, stmtNum);
+
     boolean beforeLB, afterLB, beforeRB, afterRB;
     TokenInfoField.BraceTokenInfo lbInfo, rbInfo;
     TokenInfoField.BraceTokenInfo[] infos = getBraceTokenInfo(ctx);
     lbInfo = infos[0];
     rbInfo = infos[1];
-    beforeLB = lbInfo.before;
-    afterLB = lbInfo.after;
-    beforeRB = rbInfo.before;
-    afterRB = rbInfo.after;
+    BraceFormatProperty styleProperty = new BraceFormatProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
 
-    formatStyle.updateBraceInfoStatistic(blockType, stmtNum, beforeLB, afterLB, beforeRB, afterRB);
+    style.addRule(styleContext, styleProperty);
   }
 
   private List<ExtendContext> getAllBlocks(ExtendContext ctx) {
@@ -262,25 +261,25 @@ public class BraceStyler extends StylerBase implements ASTStyler {
    * @param ruleIndex Rule index of the real parent of the block.
    * @implNote This method doesn't handle the case: the block is a @BodyContext instance.
    */
-  private BraceInfo.TypeEnum getBlockType(int ruleIndex) {
-    BraceInfo.TypeEnum blockType;
+  private TypeEnum getBlockType(int ruleIndex) {
+    TypeEnum blockType;
     switch (ruleIndex) {
       case JavaParser.RULE_constructorDeclaration:
       case JavaParser.RULE_methodDeclaration:
       case JavaParser.RULE_typeDeclaration:
-        blockType = BraceInfo.TypeEnum.BODY_BLOCK;
+        blockType = TypeEnum.BODY_BLOCK;
         break;
       case JavaParser.RULE_ifElseStmt:
       case JavaParser.RULE_tryCatchStmt:
-        blockType = BraceInfo.TypeEnum.MULTI_BLOCK_STMT;
+        blockType = TypeEnum.MULTI_BLOCK_STMT;
         break;
       case JavaParser.RULE_initializer:
       case JavaParser.RULE_arrayInitializer:
       case JavaParser.RULE_elementValueArrayInitializer:
-        blockType = BraceInfo.TypeEnum.ARRAY_INITIALIZER_BLOCK;
+        blockType = TypeEnum.ARRAY_INITIALIZER_BLOCK;
         break;
       default:
-        blockType = BraceInfo.TypeEnum.NORMAL_BLOCK;
+        blockType = TypeEnum.NORMAL_BLOCK;
     }
     return blockType;
   }

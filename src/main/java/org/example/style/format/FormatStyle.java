@@ -1,13 +1,14 @@
 package org.example.style.format;
 
 import org.antlr.v4.runtime.Parser;
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.example.parser.AntlrHelper;
 import org.example.style.Style;
 import org.example.style.format.grouper.FineGrainedGrouper;
 import org.example.style.format.grouper.Grouper;
 import org.example.style.format.grouper.RuleGrouper;
+import org.example.styler.brace.style.BraceFormatProperty;
+import org.example.styler.brace.style.TypeEnum;
 
 import java.util.*;
 import java.util.function.Function;
@@ -26,7 +27,7 @@ public class FormatStyle extends Style {
   private int columnLimit;
   private List<IndentionRule> indentionRules;
   private LineWrappingRule lineWrappingRule = new LineWrappingRule();
-  private List<BraceInfo> braceInfos;
+
   private List<NewlineRule> newlineRules;
   private SingleLineBlockProperty singleLineBlock = new SingleLineBlockProperty();
 
@@ -38,7 +39,6 @@ public class FormatStyle extends Style {
   public FormatStyle() {
     styleName = "Format";
     this.spaces = new HashMap<>();
-    this.braceInfos = new ArrayList<>();
     this.newlineRules = new ArrayList<>();
     this.indentionRules = new ArrayList<>();
     setTokenGrouper();
@@ -97,11 +97,7 @@ public class FormatStyle extends Style {
       }
     }
 
-    Element braceInfosEle = formatStyleEle.addElement("brace_infos");
-    braceInfosEle.addComment("In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
-    for(BraceInfo braceInfo : braceInfos) {
-      braceInfo.addElement(braceInfosEle, parser);
-    }
+
     
     Element newlineRulesEle = formatStyleEle.addElement("newline_rules");
     for(NewlineRule rule : newlineRules) {
@@ -145,11 +141,6 @@ public class FormatStyle extends Style {
       info.counts.add(Boolean.parseBoolean(arr[4]) ? 1 : -1);
     }
 
-    Element braceInfosEle = formatStyleEle.element("brace_infos");
-    List<Element> braceInfoEleList = braceInfosEle.elements();
-    for(Element braceInfoEle : braceInfoEleList) {
-      braceInfos.add(BraceInfo.parseElement(braceInfoEle, parser));
-    }
 
     Element newlineRulesEle = formatStyleEle.element("newline_rules");
     for(Element ruleEle : newlineRulesEle.elements()) {
@@ -282,11 +273,6 @@ public class FormatStyle extends Style {
       info.fill();
     }
 
-    // Fill @braceInfos
-    for(BraceInfo braceInfo : braceInfos) {
-      braceInfo.fill();;
-    }
-
     // Fill @indentionRules
     Optional<IndentionRule> ret = indentionRules.stream().max(Comparator.comparing(IndentionRule::getCount));
     if (ret.isPresent()) {
@@ -371,19 +357,7 @@ public class FormatStyle extends Style {
     return space;
   }
 
-  public BraceInfo.BraceLineBreakInfo getBraceLineBreakInfo(BraceInfo.TypeEnum blockType, int stmtNum) {
-    BraceInfo braceInfo = new BraceInfo(blockType, stmtNum);
-    int minDis = Integer.MAX_VALUE;
-    BraceInfo.BraceLineBreakInfo lineBreakInfo = null;
-    for(BraceInfo braceInfo1 : braceInfos) {
-      int distance = braceInfo1.calculateDis(braceInfo);
-      if(distance < minDis) {
-        minDis = distance;
-        lineBreakInfo = braceInfo1.getLineBreakInfo();
-      }
-    }
-    return lineBreakInfo;
-  }
+
 
   public int getColumnLimit() {
     return columnLimit;
@@ -422,17 +396,6 @@ public class FormatStyle extends Style {
     }
   }
 
-  public void updateBraceInfoStatistic(BraceInfo.TypeEnum blockType, int elementNumInBlock,
-                                       boolean beforeLB, boolean afterLB, boolean beforeRB, boolean afterRB) {
-    BraceInfo newInfo = new BraceInfo(blockType, elementNumInBlock);
-    int index = braceInfos.indexOf(newInfo);
-    if(index >= 0) {
-      newInfo = braceInfos.get(index);
-    } else {
-      braceInfos.add(newInfo);
-    }
-    newInfo.updateStatistic(beforeLB, afterLB, beforeRB, afterRB);
-  }
 
   private String getTokenName(int type) {
     if(AntlrHelper.isLeftAngleBracket(type)) {
