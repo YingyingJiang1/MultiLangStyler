@@ -3,6 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
+import org.example.interfaces.DomIO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author       Yingying Jiang
  * @create       2024/2/1 14:34
  */
-public class Order {
+public class Order implements DomIO {
 
 
     private EnumType logicalOrder; // @orders may contain multiple logic orders. The order's occurrence determines its priority.
@@ -68,8 +69,31 @@ public class Order {
         this.logicalOrder = logicalOrder;
     }
 
-    public void addElement(Element root, Parser parser) {
-        Element orderEle = root.addElement("order_info");
+    String toReadableString(Parser parser) {
+        StringBuilder builder = new StringBuilder();
+        Vocabulary vocabulary = parser.getVocabulary();
+        builder.append("logic order: ").append(logicalOrder.name().toLowerCase()).append(System.lineSeparator());
+        if (!modifierOrder.isEmpty()) {
+            builder.append("modifier order of each layer: ").append(System.lineSeparator());
+        }
+        for (int i = 0; i < modifierOrder.size(); ++i) {
+            builder.append(i + 1).append("th layer: ");
+            for (int modifier : modifierOrder.get(i)) {
+                if (modifier == -1) {
+                    builder.append("empty");
+                } else {
+                    builder.append(vocabulary.getSymbolicName(modifier).toLowerCase());
+                }
+                builder.append(",");
+            }
+            builder.append(System.lineSeparator());
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public void addElement(Element parent, Parser parser) {
+        Element orderEle = parent.addElement("order");
         orderEle.addElement("logical_order").addText(logicalOrder.name());
         Vocabulary vocabulary = parser.getVocabulary();
         if (!modifierOrder.isEmpty()) {
@@ -91,10 +115,10 @@ public class Order {
         orderEle.addElement("allowed_order_deviation").addText(Double.toString(allowedOrderDeviation));
     }
 
-    public static Order parseElement(Element root, Parser parser) {
-        Element orderEle = root.element("order_info");
-        Order order = new Order();
-        order.logicalOrder = EnumType.valueOf(orderEle.element("logical_order").getText());
+    @Override
+    public Object parseElement(Element parent, Parser parser) {
+        Element orderEle = parent.element("order");
+        logicalOrder = EnumType.valueOf(orderEle.element("logical_order").getText());
         Element modifierOrderEle = orderEle.element("modifier_order");
         if (modifierOrderEle != null) {
             List<Element> layers = modifierOrderEle.elements();
@@ -108,32 +132,10 @@ public class Order {
                         modifierLayer.add(parser.getTokenType(arr[i]));
                     }
                 }
-                order.modifierOrder.add(modifierLayer);
+                modifierOrder.add(modifierLayer);
             }
         }
         Order.allowedOrderDeviation = Double.valueOf(orderEle.element("allowed_order_deviation").getText());
-        return order;
-    }
-
-    public String toReadableString(Parser parser) {
-        StringBuilder builder = new StringBuilder();
-        Vocabulary vocabulary = parser.getVocabulary();
-        builder.append("logic order: ").append(logicalOrder.name().toLowerCase()).append(System.lineSeparator());
-        if (!modifierOrder.isEmpty()) {
-            builder.append("modifier order of each layer: ").append(System.lineSeparator());
-        }
-        for (int i = 0; i < modifierOrder.size(); ++i) {
-            builder.append(i + 1).append("th layer: ");
-            for (int modifier : modifierOrder.get(i)) {
-                if (modifier == -1) {
-                    builder.append("empty");
-                } else {
-                    builder.append(vocabulary.getSymbolicName(modifier).toLowerCase());
-                }
-                builder.append(",");
-            }
-            builder.append(System.lineSeparator());
-        }
-        return builder.toString();
+        return this;
     }
 }

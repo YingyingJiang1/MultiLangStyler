@@ -7,7 +7,6 @@ import org.example.interfaces.StyleContext;
 import org.example.interfaces.StyleProperty;
 import org.example.interfaces.StyleRule;
 
-import java.beans.BeanProperty;
 import java.util.*;
 
 public class BraceStyle extends Style {
@@ -18,10 +17,6 @@ public class BraceStyle extends Style {
     // value: frequency.
     private List<Integer> formatFrequencies = new ArrayList<>();
     private List<Integer> optionalFrequencies = new ArrayList<>();
-
-    public BraceStyle() {
-        styleName = "Brace_Style";
-    }
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
@@ -81,24 +76,27 @@ public class BraceStyle extends Style {
 
     @Override
     public void addElement(Element parent, Parser parser) {
-        Element braceRulesEle = parent.element("brace_rules");
-        addListElement(braceRulesEle, parser, braceFormatRules, "brace_format_rules", "In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
-        addListElement(braceRulesEle, parser, optionalBraceRules, "optional_brace_rules", null);
+        addListElement(parent.element("brace_format_rules"), parser, braceFormatRules, "rule", "In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
+        addListElement(parent.element("optional_brace_rules"), parser, optionalBraceRules, "rule", null);
     }
 
     @Override
     public BraceStyle parseElement(Element parent, Parser parser) {
-        Element braceRulesEle = parent.element("brace_rules");
-        Element braceFormatRulesEle = braceRulesEle.element("brace_format_rules");
-        Element optionalBraceRulesEle = braceRulesEle.element("optional_brace_rules");
+        Element braceFormatRulesEle = parent.element("brace_format_rules");
+        Element optionalBraceRulesEle = parent.element("optional_brace_rules");
 
-        parseListElement(braceFormatRulesEle, parser, braceFormatRules, "brace_format_rules");
-        parseListElement(optionalBraceRulesEle, parser, optionalBraceRules, "optional_brace_rules");
+        parseListElement(braceFormatRulesEle, parser, braceFormatRules, BraceFormatProperty.class.getSimpleName());
+        parseListElement(optionalBraceRulesEle, parser, optionalBraceRules, OptionalBraceProperty.class.getSimpleName());
         return this;
     }
 
     @Override
-    protected StyleRule createRule(Element element) {
-        return super.createRule(element);
+    protected StyleRule createRule(String propertyName) {
+        if (propertyName.equals(BraceFormatProperty.class.getSimpleName())) {
+            return new StyleRule(new BraceFormatContext(), new BraceFormatProperty());
+        } else if (propertyName.equals(OptionalBraceProperty.class.getSimpleName())) {
+            return new StyleRule(null, new OptionalBraceProperty());
+        }
+        return null;
     }
 }

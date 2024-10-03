@@ -37,10 +37,12 @@ public class StyleRule implements DomIO {
     @Override
     public void addElement(Element parent, Parser parser) {
         if (styleContext != null) {
-            styleContext.addElement(parent, parser);
+            Element contextEle = parent.addElement("style_context");
+            styleContext.addElement(contextEle, parser);
         }
         if (styleProperty != null) {
-            styleProperty.addElement(parent, parser);
+            Element contextEle = parent.addElement("style_property");
+            styleProperty.addElement(contextEle, parser);
         }
     }
 

@@ -32,7 +32,6 @@ public class IndentionProperty extends StyleProperty {
     @Override
     public IndentionProperty parseElement(Element parent, Parser parser){
         indentionUnit = Integer.parseInt(parent.element("indention_unit").getText());
-
         String type = parent.element("indention_type").getText();
         if(type.equals("space")) {
             indentionType = ' ';

@@ -7,7 +7,7 @@ import org.example.interfaces.Style;
 import org.example.style.format.grouper.FineGrainedGrouper;
 import org.example.style.format.grouper.Grouper;
 import org.example.style.format.grouper.RuleGrouper;
-import org.example.styler.linewrapping.style.LineWrappingRule;
+import org.example.styler.linewrapping.style.LineWrappingStyle;
 import org.example.styler.newline.style.NewlineContext;
 import org.example.styler.newline.style.NewlineProperty;
 import org.example.styler.newline.style.NewlineRule;
@@ -28,7 +28,7 @@ public class FormatStyle extends Style {
   private Grouper ruleGrouper;
   private int columnLimit;
 
-  private LineWrappingRule lineWrappingRule = new LineWrappingRule();
+  private LineWrappingStyle lineWrappingStyle = new LineWrappingStyle();
   private List<NewlineRule> newlineRules;
   private SingleLineBlockProperty singleLineBlock = new SingleLineBlockProperty();
 
@@ -91,7 +91,7 @@ public class FormatStyle extends Style {
 
     Element columnLimitEle = formatStyleEle.addElement("column_limit");
     columnLimitEle.addText(Integer.toString(columnLimit));
-    lineWrappingRule.addElement(formatStyleEle);
+    lineWrappingStyle.addElement(formatStyleEle);
 
     Element singleLineBlockEle = formatStyleEle.addElement("single_line_block");
     singleLineBlock.addElement(singleLineBlockEle);
@@ -128,7 +128,7 @@ public class FormatStyle extends Style {
       newlineRules.add(rule);
     }
 
-    lineWrappingRule.parseElement(formatStyleEle);
+    lineWrappingStyle.parseElement(formatStyleEle);
 
     Element singleLineBlockEle = formatStyleEle.element("single_line_block");
     singleLineBlock.parseElement(singleLineBlockEle);
@@ -137,8 +137,8 @@ public class FormatStyle extends Style {
 
 
 
-  public LineWrappingRule getRule() {
-    return lineWrappingRule;
+  public LineWrappingStyle getRule() {
+    return lineWrappingStyle;
   }
 
 
@@ -233,7 +233,7 @@ public class FormatStyle extends Style {
     singleLineBlock.fill();
 
     // Fill @lineWrappingRule
-    lineWrappingRule.fill();
+    lineWrappingStyle.fill();
 
 	  // add default newline rule
 //	  List<NewlineRule.Context> contexts = Arrays.asList(

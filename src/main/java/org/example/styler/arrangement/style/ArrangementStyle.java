@@ -7,9 +7,6 @@ import org.example.interfaces.StyleContext;
 import org.example.interfaces.StyleProperty;
 import org.example.interfaces.StyleRule;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * @description
  * @author       Yingying Jiang
@@ -22,32 +19,19 @@ public class ArrangementStyle extends Style {
     }
 
     public void addElement(Element parent, Parser parser) {
-        Element arrangementsEle = parent.addElement("rules");
-        for (StyleRule styleRule : rules) {
-            Element arrangementEle = arrangementsEle.addElement("arrangement");
-            styleRule.getStyleContext().addElement(arrangementEle, parser);
-            Element areasEle = arrangementEle.addElement("areas");
-            ArrangementProperty property = (ArrangementProperty) styleRule.getStyleProperty();
-            for (ArrangementProperty.ContentArea area : property.getAreas()) {
-                area.addElement(areasEle, parser);
-            }
-        }
+        addListElement(parent, parser, rules, "arrangement_rule", null);
     }
 
     public Object parseElement(Element parent, Parser parser) {
-        Element arrangementsEle = parent.element("rules");
-        List<Element> arrangementEleList = arrangementsEle.elements();
-        for (Element arrangementEle : arrangementEleList) {
-            ArrangementContext context = new ArrangementContext();
-            context.parseElement(arrangementEle, parser);
-            ArrangementProperty property = new ArrangementProperty();
-            List<Element> areaEleList = arrangementEle.element("areas").elements();
-            for (Element areaEle : areaEleList) {
-                property.areas.add(ArrangementProperty.ContentArea.parseElement(areaEle, parser));
-            }
-            rules.add(new StyleRule(context, property));
-        }
+        parseListElement(parent, parser, rules, "arrangement_rule");
         return this;
+    }
+
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        ArrangementContext context = new ArrangementContext();
+        ArrangementProperty property = new ArrangementProperty();
+        return new StyleRule(context, property);
     }
 
     public boolean contains(ArrangementContext targetContext) {

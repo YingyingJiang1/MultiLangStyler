@@ -7,7 +7,8 @@ import org.example.interfaces.Style;
 import org.example.style.format.*;
 import org.example.styler.StylerBase;
 import org.example.styler.TSStyler;
-import org.example.styler.linewrapping.style.LineWrappingRule;
+import org.example.styler.linewrapping.style.LineWrappingProperty;
+import org.example.styler.linewrapping.style.LineWrappingStyle;
 
 import java.util.*;
 
@@ -59,11 +60,11 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
           /*System.out.println("left:" + AntlrHelper.getTokenName(preToken.getType()));
           System.out.println("right:" + AntlrHelper.getTokenName(nextToken.getType()));*/
 
-          LineWrappingRule.Property property = new LineWrappingRule.Property();
+          LineWrappingProperty lineWrappingProperty = new LineWrappingProperty();
 
           for (int i = start; i < curIndex; i++) {
             if (tokens.get(i).getCharPositionInLine() == nextToken.getCharPositionInLine()) {
-              property.addAlignToken(tokens.get(i).getType());
+              lineWrappingProperty.addAlignToken(tokens.get(i).getType());
               break;
             }
           }
@@ -74,9 +75,9 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
 
           int fixIndention = nextToken.getCharPositionInLine() - startToken.getCharPositionInLine();
           if (fixIndention >= 0) {
-            property.addIndention(fixIndention);
+            lineWrappingProperty.addIndention(fixIndention);
             FormatStyle formatStyle = (FormatStyle) style;
-            formatStyle.getRule().addRule(preToken.getType(), nextToken.getType(), property);
+            formatStyle.getRule().addRule(preToken.getType(), nextToken.getType(), lineWrappingProperty);
           }
         }
       }
@@ -112,7 +113,7 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
 
     // Compare column and maxColumn
     FormatStyle formatStyle = (FormatStyle) style;
-    LineWrappingRule rule = formatStyle.getRule();
+    LineWrappingStyle rule = formatStyle.getRule();
     if (column < rule.maxColumn) {
       return 0;
     }
@@ -126,9 +127,9 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
       if(AntlrHelper.isHws(tokens.get(i))) {
         continue;
       }
-      LineWrappingRule.Property property = rule.getProperty(tokens.get(i).getType());
-      if (property != null) {
-        breakPos.add(new Info(i, columnLen, property));
+      LineWrappingProperty lineWrappingProperty = rule.getProperty(tokens.get(i).getType());
+      if (lineWrappingProperty != null) {
+        breakPos.add(new Info(i, columnLen, lineWrappingProperty));
       }
     }
 
@@ -136,13 +137,13 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
     int threshold = Math.min(rule.maxColumn / 2, 3 * rule.avgColumn / 2);
     while (column > rule.maxColumn && !breakPos.isEmpty()) {
       Info info =
-          breakPos.stream().max((info1, info2) -> Integer.compare(info1.property.count,
-          info2.property.count)).get();
-      boolean before = info.property.before;
+          breakPos.stream().max((info1, info2) -> Integer.compare(info1.lineWrappingProperty.count,
+          info2.lineWrappingProperty.count)).get();
+      boolean before = info.lineWrappingProperty.before;
       int decrease = before ? info.columnLen - tokens.get(info.index).getText().length() : info.columnLen;
 
       if(info.columnLen > threshold) {
-        breakLine(info.property, tokens, before ? info.index - 1 : info.index);
+        breakLine(info.lineWrappingProperty, tokens, before ? info.index - 1 : info.index);
         // Update @breakPos.
         Iterator<Info> iterator = breakPos.iterator();
         while (iterator.hasNext()) {
@@ -159,7 +160,7 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
     return 0;
   }
 
-  private void breakLine(LineWrappingRule.Property property, List<Token> tokens, int breakIndex) {
+  private void breakLine(LineWrappingProperty lineWrappingProperty, List<Token> tokens, int breakIndex) {
     boolean setted = false;
     ExtendToken startToken = (ExtendToken) tokens.get(breakIndex + 1);
     ExtendToken insertAfter = (ExtendToken) tokens.get(breakIndex);
@@ -167,7 +168,7 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
     // tokens.add(startTokenIndex - 1, new ExtendToken(JavaParser.VWS, System.lineSeparator()));
 
     for(int i = start; i <= breakIndex; ++i) {
-      if(property.alignTokens.contains(tokens.get(i).getType())) {
+      if(lineWrappingProperty.alignTokens.contains(tokens.get(i).getType())) {
         startToken.setHierarchy(0);
         startToken.setIndention(tokens.get(i).getCharPositionInLine());
         setted = true;
@@ -175,7 +176,7 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
       }
     }
     if (!setted) {
-      startToken.setIndention(property.fixedIndention);
+      startToken.setIndention(lineWrappingProperty.fixedIndention);
     }
   }
 
@@ -201,12 +202,12 @@ public class LineWrappingStyler extends StylerBase implements TSStyler {
   static class Info {
     int index;
     int columnLen;
-    LineWrappingRule.Property property;
+    LineWrappingProperty lineWrappingProperty;
 
-    public Info(int index, int columnLen, LineWrappingRule.Property property) {
+    public Info(int index, int columnLen, LineWrappingProperty lineWrappingProperty) {
       this.index = index;
       this.columnLen = columnLen;
-      this.property = property;
+      this.lineWrappingProperty = lineWrappingProperty;
     }
   }
 

@@ -8,15 +8,12 @@ import org.example.interfaces.StyleProperty;
 import org.example.interfaces.StyleRule;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HwsStyle extends Style {
     List<StyleRule> indentionRules = new ArrayList<>(0);
     List<StyleRule> spaceRules = new ArrayList<>(0);
 
-    // If there's a space between the ith pair token, then increase the count of pair,
-    // otherwise, decrease the count.
     private List<Integer> spaceRuleFrequencies;
     private List<Integer> indentionRuleFrequencies;
 
@@ -27,10 +24,10 @@ public class HwsStyle extends Style {
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
         if (styleProperty instanceof IndentionProperty indentionProperty) {
-            IndentionRule rule = new IndentionRule(indentionProperty);
+            StyleRule rule = new StyleRule(indentionProperty);
             addRule(rule, indentionRules, indentionRuleFrequencies);
         } else if (styleContext instanceof SpaceContext spaceContext && styleProperty instanceof SpaceProperty spaceProperty)  {
-            SpaceRule rule = new SpaceRule(spaceContext, spaceProperty);
+            StyleRule rule = new StyleRule(spaceContext, spaceProperty);
             addRule(rule, spaceRules, spaceRuleFrequencies);
         }
     }
@@ -38,16 +35,11 @@ public class HwsStyle extends Style {
 
     @Override
     public StyleProperty getProperty(StyleContext styleContext) {
-        if (styleContext == null) {
-            List<? extends StyleRule> properties = indentionRules;
-            if (styleContext instanceof SpaceContext) {
-                properties = spaceRules.stream().filter(spaceRule -> spaceRule.getStyleContext().equals(styleContext)).toList();
-            }
-            return properties.isEmpty() ? null : properties.get(0).getStyleProperty();
-        } else if (styleContext instanceof SpaceContext) {
-
+        List<? extends StyleRule> properties = indentionRules;
+        if (styleContext instanceof SpaceContext) {
+            properties = spaceRules.stream().filter(spaceRule -> spaceRule.getStyleContext().equals(styleContext)).toList();
         }
-        return null;
+        return properties.isEmpty() ? null : properties.get(0).getStyleProperty();
     }
 
     @Override

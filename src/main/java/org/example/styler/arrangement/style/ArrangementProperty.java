@@ -3,6 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.antlr.JavaParser;
+import org.example.interfaces.DomIO;
 import org.example.interfaces.StyleProperty;
 
 import java.util.ArrayList;
@@ -18,16 +19,45 @@ public class ArrangementProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, Parser parser) {
+        for (ArrangementProperty.ContentArea area : areas) {
+            area.addElement(parent, parser);
+        }
+    }
 
+    private ContentArea createArea(String areaName) {
+        ContentArea area = null;
+        switch (areaName) {
+            case "typeDeclarationList_area":
+                area = new TypeDecArea(JavaParser.RULE_typeDeclaration);
+                break;
+            case "fieldDeclarationList_area":
+                area = new FieldDecArea(JavaParser.RULE_fieldDeclaration);
+                break;
+            case "constructorDeclarationList_area":
+                area = new ConstructorDecArea(JavaParser.RULE_constDeclaration);
+                break;
+            case "methodDeclarationList_area":
+                area = new MethodDecArea(JavaParser.RULE_methodDeclaration);
+                break;
+            case "initializer_area":
+                area = new InitializerArea(JavaParser.RULE_initializer);
+                break;
+        }
+        return area;
     }
 
     @Override
     public ArrangementProperty parseElement(Element parent, Parser parser) {
-        return null;
+        for (Element areaEle : parent.elements()) {
+            ContentArea area = createArea(areaEle.getName());
+            area.parseElement(areaEle, parser);
+            areas.add(area);
+        }
+        return this;
     }
 
 
-    public static class ContentArea {
+    public static class ContentArea implements DomIO {
 
         private int category; // @category is JavaParser.RULE_XXXList
         public Feature feature; // The @feature is used when matching areas of the same category.
@@ -59,36 +89,6 @@ public class ArrangementProperty extends StyleProperty {
             return order;
         }
 
-        public void addElement(Element root, Parser parser) {
-            Element areaEle = root.addElement(parser.getRuleNames()[category] + "_area");
-            feature.addElement(areaEle, parser);
-            order.addElement(areaEle, parser);
-        }
-
-        public static ContentArea parseElement(Element root, Parser parser) {
-            String areaName = root.getText();
-            ContentArea area = null;
-            switch (areaName) {
-                case "typeDeclarationList_area":
-                    area = new TypeDecArea(JavaParser.RULE_typeDeclaration);
-                    break;
-                case "fieldDeclarationList_area":
-                    area = new FieldDecArea(JavaParser.RULE_fieldDeclaration);
-                    break;
-                case "constructorDeclarationList_area":
-                    area = new ConstructorDecArea(JavaParser.RULE_constDeclaration);
-                    break;
-                case "methodDeclarationList_area":
-                    area = new MethodDecArea(JavaParser.RULE_methodDeclaration);
-                    break;
-                case "initializer_area":
-                    area = new InitializerArea(JavaParser.RULE_initializer);
-                    break;
-            }
-            area.feature = Feature.parseElement(root, parser);
-            area.order = Order.parseElement(root, parser);
-            return area;
-        }
 
         public String toReadableString(Parser parser) {
             String areaName = parser.getRuleNames()[category];
@@ -96,6 +96,20 @@ public class ArrangementProperty extends StyleProperty {
                     "feature: {" + feature.toReadableString(parser) + "}" + System.lineSeparator() +
                     "order: {" + order.toReadableString(parser) + "}" + System.lineSeparator() +
                     "}" + System.lineSeparator();
+        }
+
+        @Override
+        public void addElement(Element parent, Parser parser) {
+            Element areaEle = parent.addElement(parser.getRuleNames()[category] + "_area");
+            feature.addElement(areaEle, parser);
+            order.addElement(areaEle, parser);
+        }
+
+        @Override
+        public Object parseElement(Element parent, Parser parser) {
+            feature.parseElement(parent, parser);
+            order.parseElement(parent, parser);
+            return this;
         }
     }
 

@@ -57,8 +57,9 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 				return ctx;
 			}
 			ArrangementStyle arrangementStyle = (ArrangementStyle) style;
-			List<ArrangementProperty.ContentArea> areas = arrangementStyle.getProperty(context).getAreas();
-			List<ExtendContext> newListCtxs = new ArrayList<>(Collections.nCopies(areas.size(), null));
+			ArrangementProperty property = (ArrangementProperty) arrangementStyle.getProperty(context);
+			List<ArrangementProperty.ContentArea> areas = property.getAreas();
+			List<ExtendContext> newListCtxs = new ArrayList<>(Collections.nCopies(property.getAreas().size(), null));
 
 
 			// Create a new list of declaration lists for the body of type declaration.

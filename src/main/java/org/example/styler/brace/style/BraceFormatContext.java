@@ -27,9 +27,8 @@ public class BraceFormatContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, Parser parser) {
-        Element braceInfoEle = parent.addElement("brace_info");
-        braceInfoEle.addElement("block_type").addText(blockType.name());
-        Element stmtNumEle = braceInfoEle.addElement("number_of_stmt");
+        parent.addElement("block_type").addText(blockType.name());
+        Element stmtNumEle = parent.addElement("number_of_stmt");
         if(stmtNumInBlock < 2) {
             stmtNumEle.addText(Integer.toString(stmtNumInBlock));
         } else {

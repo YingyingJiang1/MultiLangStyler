@@ -26,16 +26,8 @@ public class ArrangementContext extends StyleContext {
         this.statistic = statistic;
     }
 
-    public void addElement(Element parent, Parser parser) {
-        Element contentEle = parent.addElement("content_context");
-        contentEle.addText(typeType);
-        for (Map.Entry<String, Integer> entry : statistic.entrySet()) {
-            contentEle.addAttribute(entry.getKey(), entry.getValue().toString());
-        }
-    }
-
     // Calculate the degree that $this including $contentContext.
-    public int inclusionDegree(ArrangementContext context) {
+    int inclusionDegree(ArrangementContext context) {
         int degree = typeType.equals(context.typeType) ? 1 : -1;
         for (Map.Entry<String, Integer> entry : statistic.entrySet()) {
             Integer value = context.statistic.get(entry.getKey());
@@ -48,7 +40,7 @@ public class ArrangementContext extends StyleContext {
         return degree;
     }
 
-    public boolean include(ArrangementContext context) {
+    boolean include(ArrangementContext context) {
         if (!typeType.equals(context.typeType)) {
             return false;
         }
@@ -62,10 +54,17 @@ public class ArrangementContext extends StyleContext {
     }
 
 
+    public void addElement(Element parent, Parser parser) {
+        parent.addText(typeType);
+        for (Map.Entry<String, Integer> entry : statistic.entrySet()) {
+            parent.addAttribute(entry.getKey(), entry.getValue().toString());
+        }
+    }
+
+
     public ArrangementContext parseElement(Element parent, Parser parser) {
-        Element contentEle = parent.element("content_context");
-        typeType = contentEle.getText();
-        List<Attribute> attributes = contentEle.attributes();
+        typeType = parent.getText();
+        List<Attribute> attributes = parent.attributes();
         for (Attribute attribute : attributes) {
             statistic.put(attribute.getName(), Integer.parseInt(attribute.getValue()));
         }

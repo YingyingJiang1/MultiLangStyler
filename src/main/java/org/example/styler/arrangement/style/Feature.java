@@ -3,6 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
+import org.example.interfaces.DomIO;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ import java.util.*;
  * @author       Yingying Jiang
  * @create       2024/2/1 14:34
  */
-public class Feature {
+public class Feature implements DomIO {
 
     private Map<Integer, Integer> modifierStatistics;
     // List<StyleObj> contentStatistics;
@@ -40,19 +41,6 @@ public class Feature {
         return distance;
     }
 
-    public void addElement(Element root, Parser parser) {
-        Element featureEle = root.addElement("feature").addText(toReadableString(parser));
-    }
-
-    public static Feature parseElement(Element root, Parser parser) {
-        Element featureEle = root.element("feature");
-        String[] arr = featureEle.getText().split("[:,]]");
-        Feature feature = new Feature();
-        for (int i = 0; i < arr.length; i += 2) {
-            feature.modifierStatistics.put(parser.getTokenType(arr[i]), Integer.valueOf(arr[i + 1]));
-        }
-        return feature;
-    }
 
     public String toReadableString(Parser parser) {
         Vocabulary vocabulary = parser.getVocabulary();
@@ -70,5 +58,21 @@ public class Feature {
 
     public void updateModifierStatistic(int modifierType) {
         modifierStatistics.compute(modifierType, (k, v) -> v == null ? 1 : v + 1);
+    }
+
+    @Override
+    public void addElement(Element parent, Parser parser) {
+        Element featureEle = parent.addElement("feature").addText(toReadableString(parser));
+    }
+
+    @Override
+    public Object parseElement(Element parent, Parser parser) {
+        Element featureEle = parent.element("feature");
+        String[] arr = featureEle.getText().split("[:,]]");
+        Feature feature = new Feature();
+        for (int i = 0; i < arr.length; i += 2) {
+            feature.modifierStatistics.put(parser.getTokenType(arr[i]), Integer.valueOf(arr[i + 1]));
+        }
+        return feature;
     }
 }

@@ -4,9 +4,6 @@ import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.interfaces.StyleContext;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SpaceContext extends StyleContext {
     public int startToken, endToken;
 
@@ -17,7 +14,7 @@ public class SpaceContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, Parser parser) {
-        parent.addElement("style_context").addText(Integer.toString(startToken) + "," + Integer.toString(endToken));
+        parent.addElement("style_context").addText(startToken + "," + endToken);
     }
 
     @Override

@@ -63,25 +63,32 @@ public class Style implements DomIO,StyleIntf {
     }
 
     protected void addListElement(Element parent, Parser parser, List<StyleRule> rules, String name, String comment) {
-        Element newParent = parent.addElement(name);
         if (comment != null) {
-            newParent.addComment(comment);
+            parent.addComment(comment);
         }
         for(StyleRule styleRule : rules) {
+            Element newParent = parent.addElement(name);
             styleRule.addElement(newParent, parser);
         }
     }
 
+    /**
+     *
+     * @param parent
+     * @param parser
+     * @param rules
+     * @param name class name of StyleProperty.
+     */
     protected void parseListElement(Element parent, Parser parser, List<StyleRule> rules, String name) {
-        Element rulesEle = parent.element(name);
-        List<Element> eleList = rulesEle.elements();
+        List<Element> eleList = parent.elements();
         for(Element ele : eleList) {
-            StyleRule rule = createRule(ele);
+            StyleRule rule = createRule(name);
+            rule.parseElement(ele, parser);
             rules.add(rule);
         }
     }
 
-    protected StyleRule createRule(Element element) {
+    protected StyleRule createRule(String propertyName) {
         return null;
     }
 

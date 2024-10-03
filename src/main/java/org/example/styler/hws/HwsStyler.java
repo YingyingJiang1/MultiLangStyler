@@ -7,6 +7,9 @@ import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
 import org.example.styler.StylerBase;
 import org.example.styler.TSStyler;
+import org.example.styler.hws.style.IndentionProperty;
+import org.example.styler.hws.style.SpaceContext;
+import org.example.styler.hws.style.SpaceProperty;
 
 import java.util.*;
 
@@ -25,7 +28,6 @@ public class HwsStyler extends StylerBase implements TSStyler {
       return 0;
     }
 
-    FormatStyle formatStyle = (FormatStyle) style;
     int left = curIndex - 1, right = curIndex + 1;
     if(AntlrHelper.isHws(token)) {
       if(token.getCharPositionInLine() == 0) {
@@ -46,7 +48,7 @@ public class HwsStyler extends StylerBase implements TSStyler {
         }
 
         if (indentionType != '\0' && indentionUnit != 0) {
-          formatStyle.addRule(new IndentionRule(indentionUnit, indentionType));
+          style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
         }
 
         // Extract column limit info.
@@ -54,18 +56,18 @@ public class HwsStyler extends StylerBase implements TSStyler {
         // Skip comment token.
         while(i >= 0 && AntlrHelper.isComment(tokens.get(i)))
           --i;
-        if(i >= 0 && tokens.get(i).getLine() == tokens.get(curIndex).getLine() - 1) {
-          Token lastTokenInLine = tokens.get(i);
-          int columnLimit = lastTokenInLine.getCharPositionInLine() + lastTokenInLine.getText().length();
-          formatStyle.updateColumnLimit(columnLimit);
-        }
+//        if(i >= 0 && tokens.get(i).getLine() == tokens.get(curIndex).getLine() - 1) {
+//          Token lastTokenInLine = tokens.get(i);
+//          int columnLimit = lastTokenInLine.getCharPositionInLine() + lastTokenInLine.getText().length();
+//          formatStyle.updateColumnLimit(columnLimit);
+//        }
       } else if(left >= 0 && right < tokens.size()) {
         if(!AntlrHelper.isWs(tokens.get(left)) && !AntlrHelper.isWs(tokens.get(right))) {
-          formatStyle.addRule(tokens.get(left).getType(), tokens.get(right).getType(), 1);
+          style.addRule(new SpaceContext(tokens.get(left).getType(), tokens.get(right).getType()), new SpaceProperty(true));
         }
       }
     } else if(right < tokens.size() && !AntlrHelper.isWs(tokens.get(right))) {
-      formatStyle.addRule(token.getType(), tokens.get(right).getType(), -1);
+      style.addRule(new SpaceContext(token.getType(), tokens.get(right).getType()), new SpaceProperty(false));
     }
     return 0;
   }

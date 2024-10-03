@@ -2,7 +2,6 @@ package org.example.styler.newline.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.interfaces.DomIO;
 import org.example.interfaces.StyleContext;
 import org.example.parser.AntlrHelper;
 import org.example.style.format.grouper.Grouper;
