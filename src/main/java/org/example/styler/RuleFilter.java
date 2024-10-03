@@ -33,6 +33,9 @@ public class RuleFilter {
         rules.addAll(newRules);
     }
 
+    /**
+     * Filter for rules without style context.
+     */
     public void filterRules2one(List<StyleRule> rules, List<Integer> frequencies) {
         int maxFrequency = Collections.max(frequencies);
         StyleRule rule = rules.get(frequencies.indexOf(maxFrequency));

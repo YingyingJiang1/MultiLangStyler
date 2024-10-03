@@ -7,9 +7,10 @@ import org.example.interfaces.Style;
 import org.example.style.format.grouper.FineGrainedGrouper;
 import org.example.style.format.grouper.Grouper;
 import org.example.style.format.grouper.RuleGrouper;
-import org.example.styler.hws.style.IndentionRule;
 import org.example.styler.hws.style.SpaceRule;
 import org.example.styler.linewrapping.style.LineWrappingRule;
+import org.example.styler.newline.style.NewlineContext;
+import org.example.styler.newline.style.NewlineProperty;
 import org.example.styler.newline.style.NewlineRule;
 
 import java.util.*;
@@ -70,7 +71,7 @@ public class FormatStyle extends Style {
 
   private void setRuleGrouper() {
     ruleGrouper = RuleGrouper.getInstance();
-    NewlineRule.Context.grouper = ruleGrouper;
+    NewlineContext.grouper = ruleGrouper;
   }
 
   @Override
@@ -149,10 +150,6 @@ public class FormatStyle extends Style {
   }
 
 
-  // Add Rule for @singleLineBlock
-  public void addRule(SingleLineBlockProperty property) {
-    singleLineBlock.merge(property);
-  }
 
   public LineWrappingRule getRule() {
     return lineWrappingRule;
@@ -163,12 +160,12 @@ public class FormatStyle extends Style {
     boolean addFlag = true;
     for (NewlineRule rule : newlineRules) {
       if(rule.equals(newRule)) {
-        rule.context.merge(newRule.context);
+        rule.newlineContext.merge(newRule.newlineContext);
         addFlag = false;
         break;
       }
     }
-    if (addFlag && newRule.property.newlines > 0) {
+    if (addFlag && newRule.newlineProperty.newlines > 0) {
       newlineRules.add(newRule);
     }
   }
@@ -180,9 +177,9 @@ public class FormatStyle extends Style {
 
     if (ruleGrouper != null) {
       for(NewlineRule newRule : rules) {
-        NewlineRule.Context groupedContext = newRule.context.getGroupedContext();
-        if(!newRule.context.equals(groupedContext)) {
-          NewlineRule groupedRule = new NewlineRule(groupedContext, newRule.property.clone());
+        NewlineContext groupedNewlineContext = newRule.newlineContext.getGroupedContext();
+        if(!newRule.newlineContext.equals(groupedNewlineContext)) {
+          NewlineRule groupedRule = new NewlineRule(groupedNewlineContext, newRule.newlineProperty.clone());
           addRule(groupedRule);
         }
       }
@@ -194,26 +191,26 @@ public class FormatStyle extends Style {
     return singleLineBlock;
   }
 
-  public NewlineRule.Property getProperty(NewlineRule.Context context) {
-    Function<NewlineRule.Context, NewlineRule.Property> propertyGetter =
-        new Function<NewlineRule.Context, NewlineRule.Property>() {
+  public NewlineProperty getProperty(NewlineContext newlineContext) {
+    Function<NewlineContext, NewlineProperty> propertyGetter =
+        new Function<NewlineContext, NewlineProperty>() {
       @Override
-      public NewlineRule.Property apply(NewlineRule.Context context) {
+      public NewlineProperty apply(NewlineContext context) {
         List<NewlineRule> candidates = new ArrayList<>();
         for (NewlineRule rule : newlineRules) {
-          if(rule.context.equals(context)) {
+          if(rule.newlineContext.equals(context)) {
             candidates.add(rule);
           }
         }
 
         if(!candidates.isEmpty()) {
-          NewlineRule.Property ret = null;
+          NewlineProperty ret = null;
           double minDis = Double.MAX_VALUE;
           for (NewlineRule rule : candidates) {
-            double dis =rule.context.calculateDistance(context);
+            double dis =rule.newlineContext.calculateDistance(context);
             if (dis < minDis) {
               minDis = dis;
-              ret = rule.property;
+              ret = rule.newlineProperty;
             }
           }
           return ret;
@@ -221,12 +218,12 @@ public class FormatStyle extends Style {
         return null;
       }
     };
-    NewlineRule.Property ret = propertyGetter.apply(context);
+    NewlineProperty ret = propertyGetter.apply(newlineContext);
 
     if (ret == null && ruleGrouper != null) {
-      NewlineRule.Context groupedContext = context.getGroupedContext();
-      if(!groupedContext.equals(context)) {
-        ret = propertyGetter.apply(groupedContext);
+      NewlineContext groupedNewlineContext = newlineContext.getGroupedContext();
+      if(!groupedNewlineContext.equals(newlineContext)) {
+        ret = propertyGetter.apply(groupedNewlineContext);
       }
     }
 
@@ -234,8 +231,8 @@ public class FormatStyle extends Style {
       return ret;
     }
 
-    if(NewlineRule.isDefaultCase(context)) {
-      return NewlineRule.defaultProperty;
+    if(NewlineRule.isDefaultCase(newlineContext)) {
+      return NewlineRule.defaultNewlineProperty;
     }
     return null;
   }

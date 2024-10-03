@@ -3,6 +3,7 @@ package org.example.styler.structure;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.antlr.JavaParser;
+import org.example.interfaces.StyleProperty;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendContext;
 import org.example.myException.StylizationException;
@@ -10,8 +11,8 @@ import org.example.parser.ExtendTokenFactory;
 import org.example.parser.ParseTreeFactory;
 import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
-import org.example.style.format.SingleLineBlockProperty;
 import org.example.styler.StylerBase;
+import org.example.styler.brace.style.OptionalBraceProperty;
 import org.example.styler.structure.style.EquivalencesStyle;
 
 import java.util.*;
@@ -109,8 +110,7 @@ public class StructureStyler extends StylerBase {
     if(!AntlrHelper.isBraceOptionalBlocks(ctx.getRuleIndex())) {
       return;
     }
-    FormatStyle formatStyle = (FormatStyle) style;
-    SingleLineBlockProperty property = formatStyle.getSingleBlockProperty();
+    OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
     for (int i = 0; i < ctx.getChildCount(); i++) {
       ParseTree child = ctx.getChild(i);
       if(AntlrHelper.isStmt(child) && child instanceof ExtendContext stmtCtx) {

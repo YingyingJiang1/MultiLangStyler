@@ -9,13 +9,9 @@ import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
 import org.example.parser.TokenInfoField;
 import org.example.interfaces.Style;
-import org.example.style.format.FormatStyle;
-import org.example.style.format.SingleLineBlockProperty;
 import org.example.styler.ASTStyler;
 import org.example.styler.StylerBase;
-import org.example.styler.brace.style.BraceFormatContext;
-import org.example.styler.brace.style.BraceFormatProperty;
-import org.example.styler.brace.style.TypeEnum;
+import org.example.styler.brace.style.*;
 
 import java.util.*;
 
@@ -40,7 +36,7 @@ public class BraceStyler extends StylerBase implements ASTStyler {
 
   @Override
   public ExtendContext applyStyle(ExtendContext ctx, Style style) {
-    applySingleLineBlockStyle(ctx, style);
+    applyOptionalBraceStyle(ctx, style);
     List<ExtendContext> blocks = getAllBlocks(ctx);
     TypeEnum blockType = getBlockType(ctx.getRuleIndex());
 
@@ -62,7 +58,8 @@ public class BraceStyler extends StylerBase implements ASTStyler {
 
   @Override
   public void extractStyle(ExtendContext ctx, Style style) {
-    extractSingleLineBlockStyle(ctx, style);
+    extractOptionalBraceStyle(ctx, style);
+
     List<ExtendContext> blocks = getAllBlocks(ctx);
     int ruleIndex = ctx.getRuleIndex();
     TypeEnum blockType = getBlockType(ruleIndex);
@@ -86,18 +83,17 @@ public class BraceStyler extends StylerBase implements ASTStyler {
    * @param ctx
    * @param style
    */
-  private void applySingleLineBlockStyle(ExtendContext ctx, Style style) {
+  private void applyOptionalBraceStyle(ExtendContext ctx, Style style) {
     if(!AntlrHelper.isBraceOptionalBlocks(ctx.getRuleIndex())) {
       return;
     }
-    FormatStyle formatStyle = (FormatStyle)  style;
-    SingleLineBlockProperty property = formatStyle.getSingleBlockProperty();
+    OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
     for (int i = 0; i < ctx.getChildCount(); i++) {
       ParseTree child = ctx.getChild(i);
       if(AntlrHelper.isStmt(child) && child instanceof ExtendContext stmtCtx) {
         if (stmtCtx.getRuleIndex() != JavaParser.RULE_block) {
           ExtendToken stop = (ExtendToken) stmtCtx.stop;
-          if(!property.isInlineBlock) {
+          if(!property.compactStyle) {
             ctx.addVws(i, 1);
             ++i;
           } else {
@@ -120,29 +116,26 @@ public class BraceStyler extends StylerBase implements ASTStyler {
     }
   }
 
-  private void extractSingleLineBlockStyle(ExtendContext ctx, Style style) {
+  private void extractOptionalBraceStyle(ExtendContext ctx, Style style) {
     if(!AntlrHelper.isBraceOptionalBlocks(ctx.getRuleIndex())) {
       return;
     }
-    FormatStyle formatStyle = (FormatStyle) style;
-    SingleLineBlockProperty property = formatStyle.getSingleBlockProperty();
     for (int i = 0; i < ctx.getChildCount(); i++) {
       ParseTree child = ctx.getChild(i);
       if(AntlrHelper.isStmt(child) && child instanceof ExtendContext stmtCtx) {
+        OptionalBraceProperty property = new OptionalBraceProperty();
         if(stmtCtx.getRuleIndex() == JavaParser.RULE_block) {
           int innerStmtRule = stmtCtx.getRuleIndex();
           boolean braceNotOptional = innerStmtRule == JavaParser.RULE_ifElseStmt ||
               ctx.getRuleIndex() == JavaParser.RULE_ifElseStmt && innerStmtRule == JavaParser.RULE_ifStmt;
-          if(stmtCtx.countChildIf(AntlrHelper::isStmt) == 1 && !braceNotOptional) {
-            property.addUseBrace(true);
-          }
+          property.useBrace = stmtCtx.countChildIf(AntlrHelper::isStmt) == 1 && !braceNotOptional;
         } else {
           ParseTree preChild = ctx.getChild(i - 1);
           int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
               ((ExtendContext) preChild).stop.getLine();
-          property.addIsInlineBlock(stmtCtx.start.getLine() == preChildLine);
-          property.addUseBrace(false);
+          property.compactStyle = (stmtCtx.start.getLine() == preChildLine);
         }
+        style.addRule(null, property);
       }
     }
   }

@@ -7,6 +7,7 @@ import org.example.interfaces.StyleContext;
 import org.example.interfaces.StyleProperty;
 import org.example.interfaces.StyleRule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -81,5 +82,10 @@ public class ArrangementStyle extends Style {
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
         ArrangementRule rule = new ArrangementRule((ArrangementContext) styleContext, (ArrangementProperty) styleProperty);
         rules.add(rule);
+    }
+
+    @Override
+    public ArrangementProperty getProperty(StyleContext targetContext) {
+        return (ArrangementProperty) super.getProperty(targetContext);
     }
 }

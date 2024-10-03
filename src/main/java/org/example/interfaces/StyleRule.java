@@ -33,6 +33,7 @@ public class StyleRule implements DomIO {
         return styleProperty;
     }
 
+
     @Override
     public void addElement(Element parent, Parser parser) {
         if (styleContext != null) {

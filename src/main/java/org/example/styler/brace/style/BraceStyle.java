@@ -7,72 +7,99 @@ import org.example.interfaces.StyleContext;
 import org.example.interfaces.StyleProperty;
 import org.example.interfaces.StyleRule;
 
+import java.beans.BeanProperty;
 import java.util.*;
 
 public class BraceStyle extends Style {
+    List<StyleRule> braceFormatRules = new ArrayList<>();
+    List<StyleRule> optionalBraceRules = new ArrayList<>();
+    
     // key: index of rule.
     // value: frequency.
-    private List<Integer> frequencies = new ArrayList<>();
+    private List<Integer> formatFrequencies = new ArrayList<>();
+    private List<Integer> optionalFrequencies = new ArrayList<>();
 
-    @Override
-    public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-        BraceFormatRule targetRule = new BraceFormatRule((BraceFormatContext) styleContext, (BraceFormatProperty) styleProperty);
-        int index = rules.indexOf(targetRule);
-        if(index < 0) {
-            rules.add(targetRule);
-            index = rules.size() - 1;
-        }
-        int frequency = frequencies.size() > index ? frequencies.get(index) + 1 : 1;
-        frequencies.set(index, frequency);
+    public BraceStyle() {
+        styleName = "Brace_Style";
     }
 
     @Override
-    public BraceFormatProperty getProperty(StyleContext styleContext) {
-        BraceFormatProperty res = null;
-        int minDis = Integer.MAX_VALUE;
-        BraceFormatProperty lineBreakInfo = null;
-        for(StyleRule styleRule : rules) {
-            BraceFormatRule rule = (BraceFormatRule) styleRule;
-            int distance = rule.getStyleContext().calculateDis(styleContext);
-            if(distance < minDis) {
-                minDis = distance;
-                res = rule.getStyleProperty();
+    public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
+        if (styleProperty instanceof BraceFormatProperty targetProperty) {
+            BraceFormatRule targetRule = new BraceFormatRule((BraceFormatContext) styleContext, targetProperty);
+            addRule(targetRule, braceFormatRules, formatFrequencies);
+        } else if (styleProperty instanceof OptionalBraceProperty targetProperty) {
+            OptionalBraceRule targetRule = new OptionalBraceRule(targetProperty);
+            addRule(targetRule, optionalBraceRules, optionalFrequencies);
+        }
+    }
+
+    @Override
+    public StyleProperty getProperty(StyleContext styleContext) {
+        StyleProperty res = null;
+        if (styleContext instanceof BraceFormatContext) {
+            int minDis = Integer.MAX_VALUE;
+            BraceFormatProperty lineBreakInfo = null;
+            for(StyleRule styleRule : braceFormatRules) {
+                BraceFormatRule rule = (BraceFormatRule) styleRule;
+                int distance = rule.getStyleContext().calculateDis(styleContext);
+                if(distance < minDis) {
+                    minDis = distance;
+                    res = rule.getStyleProperty();
+                }
             }
+            return res;
+        } else if (styleContext == null) {
+            res = optionalBraceRules.isEmpty() ? null : optionalBraceRules.get(0).getStyleProperty();
         }
         return res;
     }
 
+
     @Override
     public void fill() {
-        if(frequencies == null) {
-            return;
+        ruleFilter.filterRepeatedRules(braceFormatRules, formatFrequencies);
+
+        boolean compactStyle = false;
+        int maxFrequency = 0;
+        for (int i = 0; i < optionalBraceRules.size(); i++) {
+            OptionalBraceProperty property = (OptionalBraceProperty) optionalBraceRules.get(i).getStyleProperty();
+            if (!property.useBrace && optionalFrequencies.get(i) > maxFrequency) {
+                compactStyle = property.compactStyle;
+                maxFrequency = optionalFrequencies.get(i);
+            }
         }
-        ruleFilter.filterRepeatedRules(rules, frequencies);
-        frequencies = null;
+        ruleFilter.filterRules2one(optionalBraceRules, optionalFrequencies);
+        if (!optionalBraceRules.isEmpty()) {
+            OptionalBraceProperty property = (OptionalBraceProperty) optionalBraceRules.get(0).getStyleProperty();
+            property.compactStyle = compactStyle;
+        }
+
+        formatFrequencies = null;
+        optionalFrequencies = null;
     }
 
 
     @Override
     public void addElement(Element parent, Parser parser) {
-        Element braceInfosEle = parent.addElement("brace_infos");
-        braceInfosEle.addComment("In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
-        for(StyleRule styleRule : rules) {
-            BraceFormatRule rule = (BraceFormatRule) styleRule;
-            rule.getStyleContext().addElement(braceInfosEle, parser);
-            rule.getStyleProperty().addElement(braceInfosEle, parser);
-        }
+        Element braceRulesEle = parent.element("brace_rules");
+        addListElement(braceRulesEle, parser, braceFormatRules, "brace_format_rules", "In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
+        addListElement(braceRulesEle, parser, optionalBraceRules, "optional_brace_rules", null);
     }
 
     @Override
     public BraceStyle parseElement(Element parent, Parser parser) {
-        Element braceInfosEle = parent.element("brace_infos");
-        List<Element> braceInfoEleList = braceInfosEle.elements();
-        for(Element braceInfoEle : braceInfoEleList) {
-            BraceFormatRule rule = new BraceFormatRule(new BraceFormatContext().parseElement(braceInfoEle, parser),
-                    new BraceFormatProperty().parseElement(braceInfoEle, parser)
-            );
-            rules.add(rule);
-        }
+        Element braceRulesEle = parent.element("brace_rules");
+        Element braceFormatRulesEle = braceRulesEle.element("brace_format_rules");
+        Element optionalBraceRulesEle = braceRulesEle.element("optional_brace_rules");
+
+        parseListElement(braceFormatRulesEle, parser, braceFormatRules, "brace_format_rules");
+        parseListElement(optionalBraceRulesEle, parser, optionalBraceRules, "optional_brace_rules");
         return this;
+    }
+
+    @Override
+    protected StyleRule createRule(Element element) {
+        return super.createRule(element);
     }
 }

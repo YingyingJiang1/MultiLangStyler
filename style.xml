@@ -92,59 +92,59 @@
     </brace_infos>
     <newline_rules>
       <newline_rule>
-        <context>
+        <newlineContext>
           <type_around>92:expressionStmt,92:expressionStmt</type_around>
           <possible_total_text_length>[21]</possible_total_text_length>
           <average_total_text_length>21.0</average_total_text_length>
           <count>1</count>
-        </context>
-        <property>
+        </newlineContext>
+        <newlineProperty>
           <newlines>1</newlines>
-        </property>
+        </newlineProperty>
       </newline_rule>
       <newline_rule>
-        <context>
+        <newlineContext>
           <type_around>131:single_stmt,131:single_stmt</type_around>
           <possible_total_text_length>[34, 21]</possible_total_text_length>
           <average_total_text_length>27.5</average_total_text_length>
           <count>1</count>
-        </context>
-        <property>
+        </newlineContext>
+        <newlineProperty>
           <newlines>1</newlines>
-        </property>
+        </newlineProperty>
       </newline_rule>
       <newline_rule>
-        <context>
+        <newlineContext>
           <type_around>72:localVariableDeclarationStmt,72:localVariableDeclarationStmt</type_around>
           <possible_total_text_length>[34]</possible_total_text_length>
           <average_total_text_length>34.0</average_total_text_length>
           <count>1</count>
-        </context>
-        <property>
+        </newlineContext>
+        <newlineProperty>
           <newlines>1</newlines>
-        </property>
+        </newlineProperty>
       </newline_rule>
       <newline_rule>
-        <context>
+        <newlineContext>
           <type_around>72:localVariableDeclarationStmt,80:forStmt</type_around>
           <possible_total_text_length>[77]</possible_total_text_length>
           <average_total_text_length>77.0</average_total_text_length>
           <count>1</count>
-        </context>
-        <property>
+        </newlineContext>
+        <newlineProperty>
           <newlines>1</newlines>
-        </property>
+        </newlineProperty>
       </newline_rule>
       <newline_rule>
-        <context>
+        <newlineContext>
           <type_around>131:single_stmt,132:block_stmt</type_around>
           <possible_total_text_length>[77]</possible_total_text_length>
           <average_total_text_length>77.0</average_total_text_length>
           <count>0</count>
-        </context>
-        <property>
+        </newlineContext>
+        <newlineProperty>
           <newlines>1</newlines>
-        </property>
+        </newlineProperty>
       </newline_rule>
     </newline_rules>
     <column_limit>42</column_limit>
@@ -184,34 +184,34 @@
   <naming>
     <written_rules>
       <rule>
-        <context category="METHOD" accessControl="PACKAGE" attr="0"/>
-        <property startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="3" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
+        <newlineContext category="METHOD" accessControl="PACKAGE" attr="0"/>
+        <newlineProperty startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="3" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
           <!--1: UPPER_CASE, 2: LOWER_CASE, 3: CAMEL_CASE-->
-        </property>
+        </newlineProperty>
       </rule>
       <rule>
-        <context category="LOCAL_VARIABLE" accessControl="" attr="0"/>
-        <property startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="2" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
+        <newlineContext category="LOCAL_VARIABLE" accessControl="" attr="0"/>
+        <newlineProperty startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="2" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
           <!--1: UPPER_CASE, 2: LOWER_CASE, 3: CAMEL_CASE-->
-        </property>
+        </newlineProperty>
       </rule>
       <rule>
-        <context category="CLASS" accessControl="PACKAGE" attr="0"/>
-        <property startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="3" isFirstCharUpperCase="true" separatorUnderscoreLength="0">
+        <newlineContext category="CLASS" accessControl="PACKAGE" attr="0"/>
+        <newlineProperty startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="3" isFirstCharUpperCase="true" separatorUnderscoreLength="0">
           <!--1: UPPER_CASE, 2: LOWER_CASE, 3: CAMEL_CASE-->
-        </property>
+        </newlineProperty>
       </rule>
       <rule>
-        <context category="FOR_VARIABLE" accessControl="" attr="0"/>
-        <property startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="2" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
+        <newlineContext category="FOR_VARIABLE" accessControl="" attr="0"/>
+        <newlineProperty startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="2" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
           <!--1: UPPER_CASE, 2: LOWER_CASE, 3: CAMEL_CASE-->
-        </property>
+        </newlineProperty>
       </rule>
       <rule>
-        <context category="PARAMETER" accessControl="" attr="0"/>
-        <property startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="2" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
+        <newlineContext category="PARAMETER" accessControl="" attr="0"/>
+        <newlineProperty startingUnderscoreLength="0" endingUnderscoreLength="0" nameCase="2" isFirstCharUpperCase="false" separatorUnderscoreLength="0">
           <!--1: UPPER_CASE, 2: LOWER_CASE, 3: CAMEL_CASE-->
-        </property>
+        </newlineProperty>
       </rule>
     </written_rules>
   </naming>

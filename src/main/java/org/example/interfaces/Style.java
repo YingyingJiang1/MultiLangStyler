@@ -3,6 +3,9 @@ package org.example.interfaces;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.styler.RuleFilter;
+import org.example.styler.brace.style.BraceFormatContext;
+import org.example.styler.brace.style.BraceFormatProperty;
+import org.example.styler.brace.style.BraceFormatRule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +23,14 @@ public abstract class Style implements DomIO,StyleIntf {
     protected List<StyleRule> rules = new ArrayList<>();
     protected static RuleFilter ruleFilter = new RuleFilter();
 
-    public void addElement(Element root, Parser parser){}
-    public Object parseElement(Element root, Parser parser){return null;}
+    public void addElement(Element parent, Parser parser){
+        for(StyleRule styleRule : rules) {
+            styleRule.addElement(parent, parser);
+        }
+    }
+    public Object parseElement(Element parent, Parser parser){
+        return null;
+    }
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
@@ -38,10 +47,47 @@ public abstract class Style implements DomIO,StyleIntf {
         return null;
     }
 
+
     public void fill() {
         for(StyleRule rule : rules) {
             rule.fill();
         }
+    }
+
+    /**
+     * add rule and update frequency.
+     */
+    protected void addRule(StyleRule rule, List<StyleRule> rules, List<Integer> frequencies) {
+        int index = rules.indexOf(rule);
+        if (index < 0) {
+            rules.add(rule);
+            index = rules.size() - 1;
+        }
+        int frequency = index < frequencies.size() ? frequencies.get(index) + 1 : 1;
+        frequencies.set(index, frequency);
+    }
+
+    protected void addListElement(Element parent, Parser parser, List<StyleRule> rules, String name, String comment) {
+        Element newParent = parent.addElement(name);
+        if (comment != null) {
+            newParent.addComment(comment);
+        }
+        for(StyleRule styleRule : rules) {
+            styleRule.addElement(newParent, parser);
+        }
+    }
+
+    protected void parseListElement(Element parent, Parser parser, List<StyleRule> rules, String name) {
+        Element rulesEle = parent.element(name);
+        List<Element> eleList = rulesEle.elements();
+        for(Element ele : eleList) {
+            StyleRule rule = createRule(ele);
+            rules.add(rule);
+        }
+    }
+
+    protected StyleRule createRule(Element element) {
+        return null;
     }
 
 

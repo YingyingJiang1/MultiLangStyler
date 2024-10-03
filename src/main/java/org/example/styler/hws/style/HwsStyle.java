@@ -52,15 +52,6 @@ public class HwsStyle extends Style {
         }
     }
 
-    private void addRule(StyleRule rule, List<StyleRule> rules, List<Integer> frequencies) {
-        int index = rules.indexOf(rule);
-        if (index < 0) {
-            rules.add(rule);
-            index = rules.size() - 1;
-        }
-        int frequency = index < frequencies.size() ? frequencies.get(index) + 1 : 1;
-        frequencies.set(index, frequency);
-    }
 
     @Override
     public void addElement(Element root, Parser parser) {

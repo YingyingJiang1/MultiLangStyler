@@ -9,6 +9,8 @@ import org.example.parser.ExtendContext;
 import org.example.parser.ExtendToken;
 import org.example.interfaces.Style;
 import org.example.style.format.FormatStyle;
+import org.example.styler.newline.style.NewlineContext;
+import org.example.styler.newline.style.NewlineProperty;
 import org.example.styler.newline.style.NewlineRule;
 import org.example.styler.StylerBase;
 import org.example.styler.Styler;
@@ -58,14 +60,14 @@ public class NewlineStyler extends StylerBase {
     for(int i = 0; i < ctx.getChildCount() - 1; ++i) {
       List<Info> infos = extractInfos(ctx, i, i + 1, Styler.APPLICATION_PROCESS);
       for(Info info : infos) {
-        NewlineRule.Context context = extractContext(info);
-        NewlineRule.Property property = formatStyle.getProperty(context);
+        NewlineContext newlineContext = extractContext(info);
+        NewlineProperty newlineProperty = formatStyle.getProperty(newlineContext);
 
         // Must update index here! Because index will change after insertion operation.
         info.child1.index = i;
         info.child2.index = i + 1;
-        if (property != null) {
-          i += applyProperty(ctx, info, property);
+        if (newlineProperty != null) {
+          i += applyProperty(ctx, info, newlineProperty);
         }
       }
     }
@@ -95,9 +97,9 @@ public class NewlineStyler extends StylerBase {
     return info;
   }
 
-  private NewlineRule.Context extractContext(Info info) {
+  private NewlineContext extractContext(Info info) {
     Info.InnerInfo info1 = info.child1, info2 = info.child2;
-    return new NewlineRule.Context(info1.type, info2.type, info1.textLen + info2.textLen);
+    return new NewlineContext(info1.type, info2.type, info1.textLen + info2.textLen);
   }
 
 
@@ -160,7 +162,7 @@ public class NewlineStyler extends StylerBase {
     return infos;
   }
 
-  private NewlineRule.Property extractProperty(Info info) {
+  private NewlineProperty extractProperty(Info info) {
     Info.InnerInfo info1 = info.child1, info2 = info.child2;
     int newlines = info2.line - info1.line;
 
@@ -174,26 +176,26 @@ public class NewlineStyler extends StylerBase {
     if (newlines < 0) {
       newlines = 0;
     }
-    return new NewlineRule.Property(newlines);
+    return new NewlineProperty(newlines);
   }
 
   /**
    *
    * @param info
-   * @param property
+   * @param newlineProperty
    * @return the length of the shift to right.
    */
-  private int applyProperty(ExtendContext parent, Info info, NewlineRule.Property property) {
+  private int applyProperty(ExtendContext parent, Info info, NewlineProperty newlineProperty) {
     int insertionPoint = info.child1.index + 1;
-    if (property.newlines > 0) {
+    if (newlineProperty.newlines > 0) {
       // info1: the latest comment info before a rule.
       // info2: a rule info.
       if(AntlrHelper.isComment(info.child1.token)) {
-        String vwsStr = StringUtils.repeat(System.lineSeparator(), property.newlines);
+        String vwsStr = StringUtils.repeat(System.lineSeparator(), newlineProperty.newlines);
         info.child2.token.comments.add(new ExtendToken(JavaParser.VWS, vwsStr));
       } else if(insertionPoint >= 0) { // info1: a rule info
         ExtendToken token1 = info.child1.token;
-        int newlines = property.newlines;
+        int newlines = newlineProperty.newlines;
         newlines -= getNewlineAfter(parent, info.child1);
         if (newlines > 0) {
           info.parentCtx.addVws(insertionPoint, newlines);
