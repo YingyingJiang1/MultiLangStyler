@@ -20,6 +20,9 @@ public class HwsStyle extends Style {
     private List<Integer> spaceRuleFrequencies;
     private List<Integer> indentionRuleFrequencies;
 
+    public HwsStyle() {
+        styleName = "hws_style";
+    }
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
@@ -35,11 +38,16 @@ public class HwsStyle extends Style {
 
     @Override
     public StyleProperty getProperty(StyleContext styleContext) {
-        List<? extends StyleRule> properties = indentionRules;
-        if (styleContext instanceof SpaceContext) {
-            properties = spaceRules.stream().filter(spaceRule -> spaceRule.getStyleContext().equals(styleContext)).toList();
+        if (styleContext == null) {
+            List<? extends StyleRule> properties = indentionRules;
+            if (styleContext instanceof SpaceContext) {
+                properties = spaceRules.stream().filter(spaceRule -> spaceRule.getStyleContext().equals(styleContext)).toList();
+            }
+            return properties.isEmpty() ? null : properties.get(0).getStyleProperty();
+        } else if (styleContext instanceof SpaceContext) {
+
         }
-        return properties.isEmpty() ? null : properties.get(0).getStyleProperty();
+        return null;
     }
 
     @Override
@@ -54,21 +62,15 @@ public class HwsStyle extends Style {
 
 
     @Override
-    public void addElement(Element root, Parser parser) {
-        Element indentionRulesEle = root.addElement("indention_rules");
-        for(StyleRule indentionRule : indentionRules) {
-            indentionRule.getStyleProperty().addElement(indentionRulesEle, parser);
-        }
+    public void addElement(Element parent, Parser parser) {
+        addListElement(parent, parser, indentionRules, "indentation_rules", null);
+        addListElement(parent, parser, spaceRules, "space_rules", "space_rule: (left token group type, right token group type)");
     }
 
     @Override
-    public HwsStyle parseElement(Element root, Parser parser) {
-        Element indentionRulesEle = root.element("indention_rules");
-        for(Element indentionRuleEle : indentionRulesEle.elements()) {
-            IndentionRule indentionRule = new IndentionRule();
-            indentionRule.parseElement(indentionRuleEle, parser);
-            indentionRules.add(indentionRule);
-        }
+    public HwsStyle parseElement(Element parent, Parser parser) {
+        parseListElement(parent, parser, spaceRules, "space_rules");
+        parseListElement(parent, parser, indentionRules, "indentation_rules");
         return this;
     }
 }

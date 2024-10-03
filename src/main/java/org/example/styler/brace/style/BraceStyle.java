@@ -25,11 +25,10 @@ public class BraceStyle extends Style {
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
+        StyleRule targetRule = new StyleRule(styleContext, styleProperty);
         if (styleProperty instanceof BraceFormatProperty targetProperty) {
-            BraceFormatRule targetRule = new BraceFormatRule((BraceFormatContext) styleContext, targetProperty);
             addRule(targetRule, braceFormatRules, formatFrequencies);
         } else if (styleProperty instanceof OptionalBraceProperty targetProperty) {
-            OptionalBraceRule targetRule = new OptionalBraceRule(targetProperty);
             addRule(targetRule, optionalBraceRules, optionalFrequencies);
         }
     }
@@ -40,9 +39,9 @@ public class BraceStyle extends Style {
         if (styleContext instanceof BraceFormatContext) {
             int minDis = Integer.MAX_VALUE;
             BraceFormatProperty lineBreakInfo = null;
-            for(StyleRule styleRule : braceFormatRules) {
-                BraceFormatRule rule = (BraceFormatRule) styleRule;
-                int distance = rule.getStyleContext().calculateDis(styleContext);
+            for(StyleRule rule : braceFormatRules) {
+                BraceFormatContext braceFormatContext = (BraceFormatContext) rule.getStyleContext();
+                int distance = braceFormatContext.calculateDis(styleContext);
                 if(distance < minDis) {
                     minDis = distance;
                     res = rule.getStyleProperty();

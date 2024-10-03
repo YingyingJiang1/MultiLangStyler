@@ -24,11 +24,11 @@ public class ArrangementStyle extends Style {
     public void addElement(Element parent, Parser parser) {
         Element arrangementsEle = parent.addElement("rules");
         for (StyleRule styleRule : rules) {
-            ArrangementRule rule = (ArrangementRule) styleRule;
             Element arrangementEle = arrangementsEle.addElement("arrangement");
-            rule.getStyleContext().addElement(arrangementEle, parser);
+            styleRule.getStyleContext().addElement(arrangementEle, parser);
             Element areasEle = arrangementEle.addElement("areas");
-            for (ArrangementProperty.ContentArea area : rule.getStyleProperty().getAreas()) {
+            ArrangementProperty property = (ArrangementProperty) styleRule.getStyleProperty();
+            for (ArrangementProperty.ContentArea area : property.getAreas()) {
                 area.addElement(areasEle, parser);
             }
         }
@@ -45,15 +45,15 @@ public class ArrangementStyle extends Style {
             for (Element areaEle : areaEleList) {
                 property.areas.add(ArrangementProperty.ContentArea.parseElement(areaEle, parser));
             }
-            rules.add(new ArrangementRule(context, property));
+            rules.add(new StyleRule(context, property));
         }
         return this;
     }
 
-    public boolean contains(ArrangementContext context) {
-        for (StyleRule styleRule : rules) {
-            ArrangementRule rule = (ArrangementRule) styleRule;
-            if (rule.getStyleContext().include(context)) {
+    public boolean contains(ArrangementContext targetContext) {
+        for (StyleRule rule : rules) {
+            ArrangementContext context = (ArrangementContext) rule.getStyleContext();
+            if (context.include(targetContext)) {
                 return true;
             }
         }
@@ -64,10 +64,10 @@ public class ArrangementStyle extends Style {
         int maxInclusionDegree = Integer.MIN_VALUE;
         ArrangementProperty res = new ArrangementProperty();
         for (StyleRule styleRule : rules) {
-            ArrangementRule rule = (ArrangementRule) styleRule;
-            int inclusionDegree = rule.getStyleContext().inclusionDegree(context);
+            ArrangementContext context1 = (ArrangementContext) styleRule.getStyleContext();
+            int inclusionDegree = context1.inclusionDegree(context);
             if (inclusionDegree > maxInclusionDegree) {
-                res = (ArrangementProperty) getProperty(rule.getStyleContext());
+                res = (ArrangementProperty) getProperty(styleRule.getStyleContext());
                 maxInclusionDegree = inclusionDegree;
             }
         }
@@ -75,17 +75,12 @@ public class ArrangementStyle extends Style {
     }
 
     public void addContentArrangement(ArrangementContext context, ArrangementProperty property) {
-        rules.add(new ArrangementRule(context, property));
+        rules.add(new StyleRule(context, property));
     }
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-        ArrangementRule rule = new ArrangementRule((ArrangementContext) styleContext, (ArrangementProperty) styleProperty);
+        StyleRule rule = new StyleRule((ArrangementContext) styleContext, (ArrangementProperty) styleProperty);
         rules.add(rule);
-    }
-
-    @Override
-    public ArrangementProperty getProperty(StyleContext targetContext) {
-        return (ArrangementProperty) super.getProperty(targetContext);
     }
 }

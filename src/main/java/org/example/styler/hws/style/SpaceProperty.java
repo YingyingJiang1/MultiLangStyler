@@ -13,11 +13,12 @@ public class SpaceProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, Parser parser) {
-
+        parent.addElement("style_property").setText(String.valueOf(addSpace));
     }
 
     @Override
     public Object parseElement(Element parent, Parser parser) {
-        return null;
+        addSpace = Boolean.parseBoolean(parent.elementText("style_property"));
+        return this;
     }
 }

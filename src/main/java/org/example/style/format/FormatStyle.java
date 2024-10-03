@@ -7,7 +7,6 @@ import org.example.interfaces.Style;
 import org.example.style.format.grouper.FineGrainedGrouper;
 import org.example.style.format.grouper.Grouper;
 import org.example.style.format.grouper.RuleGrouper;
-import org.example.styler.hws.style.SpaceRule;
 import org.example.styler.linewrapping.style.LineWrappingRule;
 import org.example.styler.newline.style.NewlineContext;
 import org.example.styler.newline.style.NewlineProperty;
@@ -80,20 +79,7 @@ public class FormatStyle extends Style {
 
 
 
-    Element spaceInfosEle = formatStyleEle.addElement("space_infos");
-    spaceInfosEle.addComment("space_info: (left token group type, right token group type)");
-    for(SpaceRule hwsInfo : spaces.values()) {
-      String leftTokenName = getTokenName(hwsInfo.startToken);
-      for(int i = 0; i < hwsInfo.endTokens.size(); ++i) {
-        int endToken = hwsInfo.endTokens.get(i);
-        String rightTokenName = getTokenName(hwsInfo.endTokens.get(i));
-        spaceInfosEle.addElement("space_info").addText(
-            hwsInfo.startToken + ":" + leftTokenName + "," +
-                endToken + ":" + rightTokenName + "," +
-                (hwsInfo.counts.get(i) >= 0)
-        );
-      }
-    }
+
 
 
     

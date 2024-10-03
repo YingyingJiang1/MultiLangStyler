@@ -3,14 +3,9 @@ package org.example.interfaces;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.styler.RuleFilter;
-import org.example.styler.brace.style.BraceFormatContext;
-import org.example.styler.brace.style.BraceFormatProperty;
-import org.example.styler.brace.style.BraceFormatRule;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
  * @description: Base class of all specific style classes. The 'tokenSource' field muse be set before
@@ -18,7 +13,7 @@ import java.util.Map;
  * @author     : Jiang Yingying
  * @create     : 2024/1/7 17:55
  */
-public abstract class Style implements DomIO,StyleIntf {
+public class Style implements DomIO,StyleIntf {
     protected String styleName = "";
     protected List<StyleRule> rules = new ArrayList<>();
     protected static RuleFilter ruleFilter = new RuleFilter();

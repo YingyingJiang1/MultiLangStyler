@@ -17,11 +17,14 @@ public class SpaceContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, Parser parser) {
-
+        parent.addElement("style_context").addText(Integer.toString(startToken) + "," + Integer.toString(endToken));
     }
 
     @Override
     public Object parseElement(Element parent, Parser parser) {
-        return null;
+        String[] tokens = parent.element("style_context").getText().split(",");
+        startToken = Integer.parseInt(tokens[0]);
+        endToken = Integer.parseInt(tokens[1]);
+        return this;
     }
 }
