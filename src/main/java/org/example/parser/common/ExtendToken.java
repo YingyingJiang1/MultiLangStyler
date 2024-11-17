@@ -26,7 +26,6 @@ public class ExtendToken extends CommonToken {
   public boolean trailingComment;
   // The meaning of @info depends on the type of the token.
   public Object info;
-  private String tokenName;
 
   public ExtendToken(int type) {
     super(type);
@@ -72,14 +71,6 @@ public class ExtendToken extends CommonToken {
 
   public void setHierarchy(int depth) {
     this.hierarchy = depth;
-  }
-
-  public String getTokenName() {
-    return tokenName;
-  }
-
-  public void setTokenName(String tokenName) {
-    this.tokenName = tokenName;
   }
 
   public Object getInfo() {

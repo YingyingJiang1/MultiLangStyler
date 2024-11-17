@@ -15,7 +15,7 @@ import java.util.Set;
 public interface MyParser {
     Set<String> binOps = new HashSet<>(Arrays.asList(
             "+", "-", "*", "/",  "%", "&", "|", "^", "=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=",
-            "<<=", ">>=", ">>>=", "<", ">", "<=", ">=", "==", "!=", ":", "::", "."
+            "<<=", ">>=", ">>>=", "<", ">", "<=", ">=", "==", "!=", ":", "::", ".", "->"
     ));
 
     Set<String> unaryOps = new HashSet<>(Arrays.asList(
@@ -51,6 +51,8 @@ public interface MyParser {
 
     boolean isBinOp(String name);
     boolean isUnOp(String name);
+    boolean isSeparator(String name);
+    boolean isOperator(String name);
 
 
     int getVws();

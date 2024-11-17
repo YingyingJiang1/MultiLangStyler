@@ -40,20 +40,25 @@ public class SpaceStyler extends Styler {
         StyleContext context = null;
         SpaceProperty property = null;
 
-        // Positions on the left and right of a binary operator are symmetrical.
         if (parser.isBinOp(name)) {
+            // Positions on the left and right of a binary operator are symmetrical.
             context = new SpaceContext("", name, "");
             property = new SpaceProperty(leftSpace, rightSpace);
         } else if (parser.isUnOp(name)) {
             if (isSuffix(tokens, index)) { // suffix ++, suffix --
-                String leftName = findFirstNonHwsOfLeft(tokens, index - 1);
-                context = new SpaceContext(leftName, name, "");
+                Token left = findFirstNonHwsOfLeft(tokens, index - 1);
+                context = new SpaceContext(left == null ? "" : left.getText(), name, "");
                 property = new SpaceProperty(leftSpace, false);
             } else { // Right associated operator
-                String rightName = findFirstNonHwsOfRight(tokens, index + 1);
-                context = new SpaceContext("", name, rightName);
+                Token right = findFirstNonHwsOfRight(tokens, index + 1);
+                context = new SpaceContext("", name, right == null ? "" : right.getText());
                 property = new SpaceProperty(false, rightSpace);
             }
+        } else if (parser.isSeparator(name)) {
+            // Positions on the left and right of a separator are considered respectively.
+            Token left = findFirstNonHwsOfLeft(tokens, index - 1);
+            Token right = findFirstNonHwsOfRight(tokens, index + 1);
+
         }
 
         style.addRule(context, property);
@@ -62,11 +67,11 @@ public class SpaceStyler extends Styler {
     @Override
     public void applyStyle(List<Token> tokens, int index) {
         Token cur = tokens.get(index), left = tokens.get(index - 1), right = tokens.get(index + 1);
-        String selfText = cur.getType() == parser.getIdentifier() ? "identifier" : cur.getText();
-        String leftText = left.getType() == parser.getIdentifier() ? "identifier" : left.getText();
-        String rightText = right.getType() == parser.getIdentifier() ? "identifier" : right.getText();
+        String selfText = getTokenName(cur);
+        String leftText = getTokenName(left);
+        String rightText = getTokenName(right);
 
-        StyleContext context = new SpaceContext(leftText,selfText, rightText);
+        StyleContext context = new SpaceContext(leftText, selfText, rightText);
         SpaceProperty property = (SpaceProperty) style.getSimilarProperty(context);
         if (property != null) {
             if (cur instanceof CommonToken commonToken) {
@@ -86,30 +91,45 @@ public class SpaceStyler extends Styler {
             relevantTokens = new HashSet<>();
             relevantTokens.addAll(parser.getSeparators());
             relevantTokens.addAll(parser.getOperators());
-            relevantTokens.add("identifier");
         }
         return relevantTokens;
     }
 
-    private String findFirstNonHwsOfLeft(List<Token> tokens, int start) {
-        for (int left = start; left >= 0; left--) {
-            if (tokens.get(left).getType() != parser.getHws()) {
-                return tokens.get(left).getText();
-            }
-        }
-        return "";
+    @Override
+    public boolean isRelevant(Token token) {
+        return token.getType() == parser.getIdentifier() || getRelevantTokens().contains(token.getText());
     }
 
-    private String findFirstNonHwsOfRight(List<Token> tokens, int start) {
-        for (int right = start; right < tokens.size(); ++right) {
-            if (tokens.get(right).getType()!= parser.getHws()) {
-                return tokens.get(right).getText();
+    private Token findFirstNonHwsOfLeft(List<Token> tokens, int start) {
+        for (int left = start; left >= 0; left--) {
+            if (tokens.get(left).getType() != parser.getHws()) {
+                return tokens.get(left);
             }
         }
-        return "";
+        return null;
+    }
+
+    private Token findFirstNonHwsOfRight(List<Token> tokens, int start) {
+        for (int right = start; right < tokens.size(); ++right) {
+            if (tokens.get(right).getType() != parser.getHws()) {
+                return tokens.get(right);
+            }
+        }
+        return null;
     }
 
     private boolean isSuffix(List<Token> tokens, int index) {
-        String left = findFirstNonHwsOfLeft(tokens, index - 1);
-        return left
+        Token left = findFirstNonHwsOfLeft(tokens, index - 1);
+        return left != null && left.getType() == parser.getIdentifier();
     }
+
+    private String getTokenName(Token token) {
+        if (token.getType() == parser.getIdentifier()) {
+            return "identifier";
+        } else if (parser.isSeparator(token.getText()) || parser.isOperator(token.getText())) {
+            return token.getText();
+        } else {
+            return "keyword";
+        }
+    }
+}

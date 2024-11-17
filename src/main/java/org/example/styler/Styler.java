@@ -93,13 +93,13 @@ public abstract class Styler implements Extractor, Applicator {
         return relevantRules.contains(targetRule);
     }
 
-    public boolean isRelevant(int tokenType){
+    public boolean isRelevant(Token token){
         Set<String> relevantTokens = getRelevantTokens();
         // Special case: all tokens is relevant.
         if (relevantTokens == null) {
             return true;
         }
-        return relevantTokens.contains(tokenType);
+        return relevantTokens.contains(token.getText());
     }
 
     public void setParser(MyParser parser) {

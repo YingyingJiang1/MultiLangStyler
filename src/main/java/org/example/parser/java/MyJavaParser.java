@@ -248,6 +248,16 @@ public class MyJavaParser implements MyParser {
         return unaryOps.contains(name);
     }
 
+    @Override
+    public boolean isSeparator(String name) {
+        return separators.contains(name);
+    }
+
+    @Override
+    public boolean isOperator(String name) {
+        return isBinOp(name) || isUnOp(name);
+    }
+
 //    @Override
 //    public boolean isKeyword(int type) {
 //        return JavaLexer.BOOLEAN <= type && type <= JavaLexer.NON_SEALED ||
