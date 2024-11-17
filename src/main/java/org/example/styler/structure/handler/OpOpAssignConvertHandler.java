@@ -2,7 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.antlr.JavaParser;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.ExtendToken;
 import org.example.parser.ParseTreeFactory;
 import org.example.styler.structure.EquivalentStructure;

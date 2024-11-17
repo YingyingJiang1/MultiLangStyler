@@ -8,19 +8,16 @@ import org.antlr.v4.runtime.*;
 import org.apache.commons.lang3.StringUtils;
 import org.example.Configuration;
 import org.example.Controller;
-import org.example.antlr.JavaLexer;
-import org.example.antlr.JavaParser;
+import org.example.parser.java.antlr.JavaLexer;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.FileCollector;
 
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /*
  * @description

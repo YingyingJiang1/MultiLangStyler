@@ -3,7 +3,7 @@ package org.example.styler.linewrapping;
 import org.antlr.v4.runtime.Token;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendToken;
-import org.example.interfaces.Style;
+import org.example.style.Style;
 import org.example.style.format.*;
 import org.example.styler.StylerBase;
 import org.example.styler.TSStyler;

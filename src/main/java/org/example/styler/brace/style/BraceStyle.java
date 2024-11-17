@@ -2,29 +2,20 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.interfaces.Style;
-import org.example.interfaces.StyleContext;
-import org.example.interfaces.StyleProperty;
-import org.example.interfaces.StyleRule;
-
-import java.util.*;
+import org.example.style.Style;
+import org.example.style.rule.*;
 
 public class BraceStyle extends Style {
-    List<StyleRule> braceFormatRules = new ArrayList<>();
-    List<StyleRule> optionalBraceRules = new ArrayList<>();
-    
-    // key: index of rule.
-    // value: frequency.
-    private List<Integer> formatFrequencies = new ArrayList<>();
-    private List<Integer> optionalFrequencies = new ArrayList<>();
+    RuleSet formatRuleSet = new MapRuleSet();
+    RuleSet optionalBraceRuleSet = new MapRuleSet();
+
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-        StyleRule targetRule = new StyleRule(styleContext, styleProperty);
         if (styleProperty instanceof BraceFormatProperty targetProperty) {
-            addRule(targetRule, braceFormatRules, formatFrequencies);
+            addRule(styleContext, targetProperty, formatRuleSet);
         } else if (styleProperty instanceof OptionalBraceProperty targetProperty) {
-            addRule(targetRule, optionalBraceRules, optionalFrequencies);
+            addRule(styleContext, targetProperty, optionalBraceRuleSet);
         }
     }
 
@@ -32,19 +23,10 @@ public class BraceStyle extends Style {
     public StyleProperty getProperty(StyleContext styleContext) {
         StyleProperty res = null;
         if (styleContext instanceof BraceFormatContext) {
-            int minDis = Integer.MAX_VALUE;
-            BraceFormatProperty lineBreakInfo = null;
-            for(StyleRule rule : braceFormatRules) {
-                BraceFormatContext braceFormatContext = (BraceFormatContext) rule.getStyleContext();
-                int distance = braceFormatContext.calculateDis(styleContext);
-                if(distance < minDis) {
-                    minDis = distance;
-                    res = rule.getStyleProperty();
-                }
-            }
+            formatRuleSet.getSimilarProperty(styleContext);
             return res;
         } else if (styleContext == null) {
-            res = optionalBraceRules.isEmpty() ? null : optionalBraceRules.get(0).getStyleProperty();
+            res = optionalBraceRuleSet.getProperty(null);
         }
         return res;
     }
@@ -52,32 +34,15 @@ public class BraceStyle extends Style {
 
     @Override
     public void fill() {
-        ruleFilter.filterRepeatedRules(braceFormatRules, formatFrequencies);
-
-        boolean compactStyle = false;
-        int maxFrequency = 0;
-        for (int i = 0; i < optionalBraceRules.size(); i++) {
-            OptionalBraceProperty property = (OptionalBraceProperty) optionalBraceRules.get(i).getStyleProperty();
-            if (!property.useBrace && optionalFrequencies.get(i) > maxFrequency) {
-                compactStyle = property.compactStyle;
-                maxFrequency = optionalFrequencies.get(i);
-            }
-        }
-        ruleFilter.filterRules2one(optionalBraceRules, optionalFrequencies);
-        if (!optionalBraceRules.isEmpty()) {
-            OptionalBraceProperty property = (OptionalBraceProperty) optionalBraceRules.get(0).getStyleProperty();
-            property.compactStyle = compactStyle;
-        }
-
-        formatFrequencies = null;
-        optionalFrequencies = null;
+        formatRuleSet.filterRules();
+        optionalBraceRuleSet.filterRules();
     }
 
 
     @Override
     public void addElement(Element parent, Parser parser) {
-        addListElement(parent.element("brace_format_rules"), parser, braceFormatRules, "rule", "In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
-        addListElement(parent.element("optional_brace_rules"), parser, optionalBraceRules, "rule", null);
+        addListElement(parent.element("brace_format_rules"), parser, formatRuleSet, "rule", "In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
+        addListElement(parent.element("optional_brace_rules"), parser, optionalBraceRuleSet, "rule", null);
     }
 
     @Override
@@ -85,8 +50,8 @@ public class BraceStyle extends Style {
         Element braceFormatRulesEle = parent.element("brace_format_rules");
         Element optionalBraceRulesEle = parent.element("optional_brace_rules");
 
-        parseListElement(braceFormatRulesEle, parser, braceFormatRules, BraceFormatProperty.class.getSimpleName());
-        parseListElement(optionalBraceRulesEle, parser, optionalBraceRules, OptionalBraceProperty.class.getSimpleName());
+        parseListElement(braceFormatRulesEle, parser, formatRuleSet, BraceFormatProperty.class.getSimpleName());
+        parseListElement(optionalBraceRulesEle, parser, optionalBraceRuleSet, OptionalBraceProperty.class.getSimpleName());
         return this;
     }
 

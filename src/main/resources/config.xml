@@ -2,12 +2,12 @@
     <extraction_info>
         <!-- Paths of target style programs, seperated by ';'.
         When <source> element is empty or useDefault is "true",the default path is the root of the current project.-->
-        <source excludes="">C:\Users\dell\OneDrive\桌面\L138\H1.java</source>
-        <style_saved_directory>${root}</style_saved_directory>
+        <source excludes=""></source>
+        <style_path></style_path>
         <style_file></style_file>
     </extraction_info>
-    <application_info override="true">
+    <application_info override="false">
         <source excludes="">C:\Users\dell\OneDrive\桌面\L138</source>
-        <result_saved_dir>C:\Users\dell\jyy</result_saved_dir>
+        <result_saved_dir></result_saved_dir>
     </application_info>
 </configuration>

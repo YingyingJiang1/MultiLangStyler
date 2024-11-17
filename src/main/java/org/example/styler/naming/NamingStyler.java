@@ -2,9 +2,9 @@ package org.example.styler.naming;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.antlr.JavaParser;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.ExtendContext;
-import org.example.interfaces.Style;
+import org.example.style.Style;
 import org.example.style.name.SymbolItem;
 import org.example.style.Modifier;
 import org.example.style.name.DataType;

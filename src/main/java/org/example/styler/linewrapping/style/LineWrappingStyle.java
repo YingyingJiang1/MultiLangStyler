@@ -1,8 +1,8 @@
 package org.example.styler.linewrapping.style;
 
 import org.dom4j.Element;
-import org.example.antlr.JavaParser;
-import org.example.interfaces.Style;
+import org.example.parser.java.antlr.JavaParser;
+import org.example.style.Style;
 import org.example.parser.AntlrHelper;
 
 import java.util.*;

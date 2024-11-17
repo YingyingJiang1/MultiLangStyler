@@ -3,7 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
-import org.example.interfaces.DomIO;
+import org.example.io.DomIO;
 
 import java.util.*;
 

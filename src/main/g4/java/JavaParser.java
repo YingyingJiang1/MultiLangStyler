@@ -214,7 +214,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CompilationUnitContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class CompilationUnitContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public PackageDeclarationContext packageDeclaration() {
 			return getRuleContext(PackageDeclarationContext.class,0);
 		}
@@ -372,7 +372,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ImportDeclarationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ImportDeclarationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<ImportDeclarationContext> importDeclaration() {
 			return getRuleContexts(ImportDeclarationContext.class);
 		}
@@ -433,7 +433,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeDeclarationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeDeclarationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<TypeDeclarationContext> typeDeclaration() {
 			return getRuleContexts(TypeDeclarationContext.class);
 		}
@@ -520,7 +520,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class PackageDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class PackageDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public AnnotationListContext annotationList() {
 			return getRuleContext(AnnotationListContext.class,0);
 		}
@@ -576,7 +576,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ImportDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ImportDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode IMPORT() { return getToken(JavaParser.IMPORT, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return getRuleContext(QualifiedNameContext.class,0);
@@ -653,7 +653,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ModifierListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ModifierListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
@@ -868,7 +868,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -969,7 +969,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ClassHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ClassHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode CLASS() { return getToken(JavaParser.CLASS, 0); }
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
@@ -1079,7 +1079,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class InterfaceHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class InterfaceHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode INTERFACE() { return getToken(JavaParser.INTERFACE, 0); }
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
@@ -1173,7 +1173,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class RecordHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class RecordHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode RECORD() { return getToken(JavaParser.RECORD, 0); }
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
@@ -1256,7 +1256,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class EnumHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class EnumHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode ENUM() { return getToken(JavaParser.ENUM, 0); }
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
@@ -1321,7 +1321,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationTypeHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationTypeHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode AT() { return getToken(JavaParser.AT, 0); }
 		public TerminalNode INTERFACE() { return getToken(JavaParser.INTERFACE, 0); }
 		public IdentifierContext identifier() {
@@ -1372,7 +1372,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class BodyContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class BodyContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LBRACE() { return getToken(JavaParser.LBRACE, 0); }
 		public TerminalNode RBRACE() { return getToken(JavaParser.RBRACE, 0); }
 		public List<ClassBodyDeclarationContext> classBodyDeclaration() {
@@ -1561,7 +1561,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeParametersContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeParametersContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LT() { return getToken(JavaParser.LT, 0); }
 		public List<TypeParameterContext> typeParameter() {
 			return getRuleContexts(TypeParameterContext.class);
@@ -1636,7 +1636,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeParameterContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeParameterContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<AnnotationListContext> annotationList() {
 			return getRuleContexts(AnnotationListContext.class);
 		}
@@ -1708,7 +1708,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeBoundContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeBoundContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<TypeTypeContext> typeType() {
 			return getRuleContexts(TypeTypeContext.class);
 		}
@@ -1777,7 +1777,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class EnumConstantsContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class EnumConstantsContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<EnumConstantContext> enumConstant() {
 			return getRuleContexts(EnumConstantContext.class);
 		}
@@ -1848,7 +1848,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class EnumConstantContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class EnumConstantContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public BodyContext classBody;
 		public AnnotationListContext annotationList() {
 			return getRuleContext(AnnotationListContext.class,0);
@@ -1926,7 +1926,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ClassBodyDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ClassBodyDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode SEMI() { return getToken(JavaParser.SEMI, 0); }
 		public InitializerListContext initializerList() {
 			return getRuleContext(InitializerListContext.class,0);
@@ -2025,7 +2025,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class InitializerContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class InitializerContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
 		}
@@ -2084,7 +2084,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class InitializerListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class InitializerListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<InitializerContext> initializer() {
 			return getRuleContexts(InitializerContext.class);
 		}
@@ -2171,7 +2171,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FieldDeclarationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FieldDeclarationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<FieldDeclarationContext> fieldDeclaration() {
 			return getRuleContexts(FieldDeclarationContext.class);
 		}
@@ -2258,7 +2258,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ConstructorDeclarationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ConstructorDeclarationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<ConstructorDeclarationContext> constructorDeclaration() {
 			return getRuleContexts(ConstructorDeclarationContext.class);
 		}
@@ -2345,7 +2345,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class MethodDeclarationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class MethodDeclarationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<MethodDeclarationContext> methodDeclaration() {
 			return getRuleContexts(MethodDeclarationContext.class);
 		}
@@ -2432,7 +2432,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class MethodDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class MethodDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -2504,7 +2504,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class MethodHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class MethodHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TypeTypeContext typeType() {
 			return getRuleContext(TypeTypeContext.class,0);
 		}
@@ -2613,7 +2613,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ConstructorDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ConstructorDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public BlockContext constructorBody;
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
@@ -2669,7 +2669,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ConstructorHeadContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ConstructorHeadContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -2762,7 +2762,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FieldDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FieldDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -2820,7 +2820,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ConstDeclarationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ConstDeclarationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<ConstDeclarationContext> constDeclaration() {
 			return getRuleContexts(ConstDeclarationContext.class);
 		}
@@ -2899,7 +2899,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ConstDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ConstDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -2981,7 +2981,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ConstantDeclaratorContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ConstantDeclaratorContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -3059,7 +3059,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class VariableDeclaratorsContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class VariableDeclaratorsContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<VariableDeclaratorContext> variableDeclarator() {
 			return getRuleContexts(VariableDeclaratorContext.class);
 		}
@@ -3128,7 +3128,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class VariableDeclaratorContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class VariableDeclaratorContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public VariableDeclaratorIdContext variableDeclaratorId() {
 			return getRuleContext(VariableDeclaratorIdContext.class,0);
 		}
@@ -3190,7 +3190,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class VariableDeclaratorIdContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class VariableDeclaratorIdContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -3260,7 +3260,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class VariableInitializerContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class VariableInitializerContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ArrayInitializerContext arrayInitializer() {
 			return getRuleContext(ArrayInitializerContext.class,0);
 		}
@@ -3371,7 +3371,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ArrayInitializerContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ArrayInitializerContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LBRACE() { return getToken(JavaParser.LBRACE, 0); }
 		public TerminalNode RBRACE() { return getToken(JavaParser.RBRACE, 0); }
 		public List<VariableInitializerContext> variableInitializer() {
@@ -3467,7 +3467,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ClassOrInterfaceTypeContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ClassOrInterfaceTypeContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TypeIdentifierContext typeIdentifier() {
 			return getRuleContext(TypeIdentifierContext.class,0);
 		}
@@ -3568,7 +3568,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeArgumentContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeArgumentContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TypeTypeContext typeType() {
 			return getRuleContext(TypeTypeContext.class,0);
 		}
@@ -3655,7 +3655,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class QualifiedNameListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class QualifiedNameListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<QualifiedNameContext> qualifiedName() {
 			return getRuleContexts(QualifiedNameContext.class);
 		}
@@ -3724,7 +3724,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FormalParametersContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FormalParametersContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(JavaParser.RPAREN, 0); }
 		public ReceiverParameterContext receiverParameter() {
@@ -3828,7 +3828,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ReceiverParameterContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ReceiverParameterContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TypeTypeContext typeType() {
 			return getRuleContext(TypeTypeContext.class,0);
 		}
@@ -3903,7 +3903,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FormalParameterListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FormalParameterListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<FormalParameterContext> formalParameter() {
 			return getRuleContexts(FormalParameterContext.class);
 		}
@@ -4003,7 +4003,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FormalParameterContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FormalParameterContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -4058,7 +4058,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LastFormalParameterContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LastFormalParameterContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -4121,7 +4121,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LambdaLVTIListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LambdaLVTIListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<LambdaLVTIParameterContext> lambdaLVTIParameter() {
 			return getRuleContexts(LambdaLVTIParameterContext.class);
 		}
@@ -4190,7 +4190,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LambdaLVTIParameterContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LambdaLVTIParameterContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -4243,7 +4243,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class QualifiedNameContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class QualifiedNameContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
 		}
@@ -4314,7 +4314,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LiteralContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LiteralContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IntegerLiteralContext integerLiteral() {
 			return getRuleContext(IntegerLiteralContext.class,0);
 		}
@@ -4421,7 +4421,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class IntegerLiteralContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class IntegerLiteralContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode DECIMAL_LITERAL() { return getToken(JavaParser.DECIMAL_LITERAL, 0); }
 		public TerminalNode HEX_LITERAL() { return getToken(JavaParser.HEX_LITERAL, 0); }
 		public TerminalNode OCT_LITERAL() { return getToken(JavaParser.OCT_LITERAL, 0); }
@@ -4476,7 +4476,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FloatLiteralContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FloatLiteralContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode FLOAT_LITERAL() { return getToken(JavaParser.FLOAT_LITERAL, 0); }
 		public TerminalNode HEX_FLOAT_LITERAL() { return getToken(JavaParser.HEX_FLOAT_LITERAL, 0); }
 		public FloatLiteralContext(ParserRuleContext parent, int invokingState) {
@@ -4529,7 +4529,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AltAnnotationQualifiedNameContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AltAnnotationQualifiedNameContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode AT() { return getToken(JavaParser.AT, 0); }
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
@@ -4601,7 +4601,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<AnnotationContext> annotation() {
 			return getRuleContexts(AnnotationContext.class);
 		}
@@ -4664,7 +4664,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode AT() { return getToken(JavaParser.AT, 0); }
 		public QualifiedNameContext qualifiedName() {
 			return getRuleContext(QualifiedNameContext.class,0);
@@ -4766,7 +4766,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementValuePairsContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ElementValuePairsContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<ElementValuePairContext> elementValuePair() {
 			return getRuleContexts(ElementValuePairContext.class);
 		}
@@ -4835,7 +4835,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementValuePairContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ElementValuePairContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -4888,7 +4888,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementValueContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ElementValueContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -4959,7 +4959,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ElementValueArrayInitializerContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ElementValueArrayInitializerContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LBRACE() { return getToken(JavaParser.LBRACE, 0); }
 		public TerminalNode RBRACE() { return getToken(JavaParser.RBRACE, 0); }
 		public List<ElementValueContext> elementValue() {
@@ -5055,7 +5055,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationTypeElementDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationTypeElementDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -5162,7 +5162,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationTypeElementRestContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationTypeElementRestContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TypeTypeContext typeType() {
 			return getRuleContext(TypeTypeContext.class,0);
 		}
@@ -5241,7 +5241,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationMethodOrConstantRestContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationMethodOrConstantRestContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public AnnotationMethodRestContext annotationMethodRest() {
 			return getRuleContext(AnnotationMethodRestContext.class,0);
 		}
@@ -5302,7 +5302,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationMethodRestContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationMethodRestContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -5367,7 +5367,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AnnotationConstantRestContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AnnotationConstantRestContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public VariableDeclaratorsContext variableDeclarators() {
 			return getRuleContext(VariableDeclaratorsContext.class,0);
 		}
@@ -5412,7 +5412,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class DefaultValueContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class DefaultValueContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode DEFAULT() { return getToken(JavaParser.DEFAULT, 0); }
 		public ElementValueContext elementValue() {
 			return getRuleContext(ElementValueContext.class,0);
@@ -5460,7 +5460,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ModuleDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ModuleDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public BodyContext moduleBody;
 		public TerminalNode MODULE() { return getToken(JavaParser.MODULE, 0); }
 		public QualifiedNameContext qualifiedName() {
@@ -5526,7 +5526,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ModuleDirectiveContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ModuleDirectiveContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode REQUIRES() { return getToken(JavaParser.REQUIRES, 0); }
 		public List<QualifiedNameContext> qualifiedName() {
 			return getRuleContexts(QualifiedNameContext.class);
@@ -5690,7 +5690,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class RequiresModifierContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class RequiresModifierContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode TRANSITIVE() { return getToken(JavaParser.TRANSITIVE, 0); }
 		public TerminalNode STATIC() { return getToken(JavaParser.STATIC, 0); }
 		public RequiresModifierContext(ParserRuleContext parent, int invokingState) {
@@ -5743,7 +5743,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class RecordHeaderContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class RecordHeaderContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(JavaParser.RPAREN, 0); }
 		public RecordComponentListContext recordComponentList() {
@@ -5803,7 +5803,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class RecordComponentListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class RecordComponentListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<RecordComponentContext> recordComponent() {
 			return getRuleContexts(RecordComponentContext.class);
 		}
@@ -5872,7 +5872,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class RecordComponentContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class RecordComponentContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TypeTypeContext typeType() {
 			return getRuleContext(TypeTypeContext.class,0);
 		}
@@ -5922,7 +5922,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class BlockContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class BlockContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LBRACE() { return getToken(JavaParser.LBRACE, 0); }
 		public TerminalNode RBRACE() { return getToken(JavaParser.RBRACE, 0); }
 		public List<TypeDeclarationContext> typeDeclaration() {
@@ -6094,7 +6094,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SwitchBlockStatementGroupContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class SwitchBlockStatementGroupContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<SwitchLabelContext> switchLabel() {
 			return getRuleContexts(SwitchLabelContext.class);
 		}
@@ -6205,7 +6205,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LocalVariableDeclarationStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LocalVariableDeclarationStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public LocalVariableDeclarationContext localVariableDeclaration() {
 			return getRuleContext(LocalVariableDeclarationContext.class,0);
 		}
@@ -6253,7 +6253,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LocalVariableDeclarationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LocalVariableDeclarationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -6336,7 +6336,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class IdentifierContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class IdentifierContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode IDENTIFIER() { return getToken(JavaParser.IDENTIFIER, 0); }
 		public TerminalNode MODULE() { return getToken(JavaParser.MODULE, 0); }
 		public TerminalNode OPEN() { return getToken(JavaParser.OPEN, 0); }
@@ -6403,7 +6403,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeIdentifierContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeIdentifierContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode IDENTIFIER() { return getToken(JavaParser.IDENTIFIER, 0); }
 		public TerminalNode MODULE() { return getToken(JavaParser.MODULE, 0); }
 		public TerminalNode OPEN() { return getToken(JavaParser.OPEN, 0); }
@@ -6468,7 +6468,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class StatementContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class StatementContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public BlockContext blockLabel;
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -6708,7 +6708,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AssertStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class AssertStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode ASSERT() { return getToken(JavaParser.ASSERT, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -6776,7 +6776,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class IfStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class IfStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode IF() { return getToken(JavaParser.IF, 0); }
 		public ParExpressionContext parExpression() {
 			return getRuleContext(ParExpressionContext.class,0);
@@ -6829,7 +6829,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class IfElseStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class IfElseStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode IF() { return getToken(JavaParser.IF, 0); }
 		public ParExpressionContext parExpression() {
 			return getRuleContext(ParExpressionContext.class,0);
@@ -6890,7 +6890,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ForStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ForStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode FOR() { return getToken(JavaParser.FOR, 0); }
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public ForControlContext forControl() {
@@ -6949,7 +6949,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class WhileStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class WhileStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode WHILE() { return getToken(JavaParser.WHILE, 0); }
 		public ParExpressionContext parExpression() {
 			return getRuleContext(ParExpressionContext.class,0);
@@ -7002,7 +7002,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class DoWhileStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class DoWhileStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode DO() { return getToken(JavaParser.DO, 0); }
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
@@ -7061,7 +7061,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TryCatchStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TryCatchStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode TRY() { return getToken(JavaParser.TRY, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -7159,7 +7159,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TryResourceStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TryResourceStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode TRY() { return getToken(JavaParser.TRY, 0); }
 		public ResourceSpecificationContext resourceSpecification() {
 			return getRuleContext(ResourceSpecificationContext.class,0);
@@ -7246,7 +7246,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SwitchStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class SwitchStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode SWITCH() { return getToken(JavaParser.SWITCH, 0); }
 		public ParExpressionContext parExpression() {
 			return getRuleContext(ParExpressionContext.class,0);
@@ -7299,7 +7299,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SyncStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class SyncStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode SYNCHRONIZED() { return getToken(JavaParser.SYNCHRONIZED, 0); }
 		public ParExpressionContext parExpression() {
 			return getRuleContext(ParExpressionContext.class,0);
@@ -7352,7 +7352,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ReturnStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ReturnStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode RETURN() { return getToken(JavaParser.RETURN, 0); }
 		public TerminalNode SEMI() { return getToken(JavaParser.SEMI, 0); }
 		public ExpressionContext expression() {
@@ -7412,7 +7412,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ThrowStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ThrowStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode THROW() { return getToken(JavaParser.THROW, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -7463,7 +7463,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class BreakStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class BreakStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode BREAK() { return getToken(JavaParser.BREAK, 0); }
 		public TerminalNode SEMI() { return getToken(JavaParser.SEMI, 0); }
 		public IdentifierContext identifier() {
@@ -7523,7 +7523,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ContinueStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ContinueStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode CONTINUE() { return getToken(JavaParser.CONTINUE, 0); }
 		public TerminalNode SEMI() { return getToken(JavaParser.SEMI, 0); }
 		public IdentifierContext identifier() {
@@ -7583,7 +7583,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class YieldStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class YieldStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode YIELD() { return getToken(JavaParser.YIELD, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -7634,7 +7634,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExpressionStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ExpressionStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ExpressionContext statementExpression;
 		public TerminalNode SEMI() { return getToken(JavaParser.SEMI, 0); }
 		public ExpressionContext expression() {
@@ -7683,7 +7683,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LabelStmtContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LabelStmtContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifierLabel;
 		public TerminalNode COLON() { return getToken(JavaParser.COLON, 0); }
 		public StatementContext statement() {
@@ -7737,7 +7737,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CatchClauseContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class CatchClauseContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode CATCH() { return getToken(JavaParser.CATCH, 0); }
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public ModifierListContext modifierList() {
@@ -7806,7 +7806,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CatchTypeContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class CatchTypeContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<QualifiedNameContext> qualifiedName() {
 			return getRuleContexts(QualifiedNameContext.class);
 		}
@@ -7875,7 +7875,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FinallyBlockContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class FinallyBlockContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode FINALLY() { return getToken(JavaParser.FINALLY, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -7923,7 +7923,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ResourceSpecificationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ResourceSpecificationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public ResourcesContext resources() {
 			return getRuleContext(ResourcesContext.class,0);
@@ -7986,7 +7986,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ResourcesContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ResourcesContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<ResourceContext> resource() {
 			return getRuleContexts(ResourceContext.class);
 		}
@@ -8057,7 +8057,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ResourceContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ResourceContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -8156,7 +8156,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SwitchLabelContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class SwitchLabelContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ExpressionContext constantExpression;
 		public Token enumConstantName;
 		public IdentifierContext varName;
@@ -8257,7 +8257,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ForControlContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ForControlContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ExpressionListContext forUpdate;
 		public EnhancedForControlContext enhancedForControl() {
 			return getRuleContext(EnhancedForControlContext.class,0);
@@ -8362,7 +8362,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ForInitContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ForInitContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public LocalVariableDeclarationContext localVariableDeclaration() {
 			return getRuleContext(LocalVariableDeclarationContext.class,0);
 		}
@@ -8423,7 +8423,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class EnhancedForControlContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class EnhancedForControlContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -8501,7 +8501,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ParExpressionContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ParExpressionContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -8552,7 +8552,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExpressionListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ExpressionListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
@@ -8621,7 +8621,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class MethodCallContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class MethodCallContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ArgumentsContext arguments() {
 			return getRuleContext(ArgumentsContext.class,0);
 		}
@@ -8710,7 +8710,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExpressionContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ExpressionContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public Token prefix;
 		public Token bop;
 		public Token postfix;
@@ -9505,7 +9505,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class PatternContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class PatternContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ModifierListContext modifierList() {
 			return getRuleContext(ModifierListContext.class,0);
 		}
@@ -9565,7 +9565,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LambdaExpressionContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LambdaExpressionContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public LambdaParametersContext lambdaParameters() {
 			return getRuleContext(LambdaParametersContext.class,0);
 		}
@@ -9618,7 +9618,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LambdaParametersContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LambdaParametersContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
 		}
@@ -9750,7 +9750,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LambdaBodyContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class LambdaBodyContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -9861,7 +9861,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SwitchLabeledRuleContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class SwitchLabeledRuleContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode CASE() { return getToken(JavaParser.CASE, 0); }
 		public TerminalNode ARROW() { return getToken(JavaParser.ARROW, 0); }
 		public TerminalNode COLON() { return getToken(JavaParser.COLON, 0); }
@@ -10041,7 +10041,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class GuardedPatternContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class GuardedPatternContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public GuardedPatternContext guardedPattern() {
 			return getRuleContext(GuardedPatternContext.class,0);
@@ -10226,7 +10226,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ClassTypeContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ClassTypeContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public AnnotationListContext annotationList() {
 			return getRuleContext(AnnotationListContext.class,0);
 		}
@@ -10306,7 +10306,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CreatorContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class CreatorContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public CreatedNameContext createdName() {
 			return getRuleContext(CreatedNameContext.class,0);
 		}
@@ -10388,7 +10388,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CreatedNameContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class CreatedNameContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
 		}
@@ -10524,7 +10524,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class InnerCreatorContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class InnerCreatorContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -10597,7 +10597,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ArrayCreatorRestContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ArrayCreatorRestContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ArrayInitializerContext arrayInitializer() {
 			return getRuleContext(ArrayInitializerContext.class,0);
 		}
@@ -10727,7 +10727,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ClassCreatorRestContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ClassCreatorRestContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public BodyContext classBody;
 		public ArgumentsContext arguments() {
 			return getRuleContext(ArgumentsContext.class,0);
@@ -10786,7 +10786,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExplicitGenericInvocationContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ExplicitGenericInvocationContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public NonWildcardTypeArgumentsContext nonWildcardTypeArguments() {
 			return getRuleContext(NonWildcardTypeArgumentsContext.class,0);
 		}
@@ -10836,7 +10836,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeArgumentsOrDiamondContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeArgumentsOrDiamondContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LT() { return getToken(JavaParser.LT, 0); }
 		public TerminalNode GT() { return getToken(JavaParser.GT, 0); }
 		public TypeArgumentsContext typeArguments() {
@@ -10898,7 +10898,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class NonWildcardTypeArgumentsContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class NonWildcardTypeArgumentsContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LT() { return getToken(JavaParser.LT, 0); }
 		public TypeListContext typeList() {
 			return getRuleContext(TypeListContext.class,0);
@@ -10949,7 +10949,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeListContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeListContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<TypeTypeContext> typeType() {
 			return getRuleContexts(TypeTypeContext.class);
 		}
@@ -11018,7 +11018,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeTypeContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeTypeContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public List<AnnotationListContext> annotationList() {
 			return getRuleContexts(AnnotationListContext.class);
 		}
@@ -11142,7 +11142,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class PrimitiveTypeContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class PrimitiveTypeContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode BOOLEAN() { return getToken(JavaParser.BOOLEAN, 0); }
 		public TerminalNode CHAR() { return getToken(JavaParser.CHAR, 0); }
 		public TerminalNode BYTE() { return getToken(JavaParser.BYTE, 0); }
@@ -11202,7 +11202,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TypeArgumentsContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class TypeArgumentsContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LT() { return getToken(JavaParser.LT, 0); }
 		public List<TypeArgumentContext> typeArgument() {
 			return getRuleContexts(TypeArgumentContext.class);
@@ -11277,7 +11277,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SuperSuffixContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class SuperSuffixContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public ArgumentsContext arguments() {
 			return getRuleContext(ArgumentsContext.class,0);
 		}
@@ -11367,7 +11367,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExplicitGenericInvocationSuffixContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ExplicitGenericInvocationSuffixContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode SUPER() { return getToken(JavaParser.SUPER, 0); }
 		public SuperSuffixContext superSuffix() {
 			return getRuleContext(SuperSuffixContext.class,0);
@@ -11453,7 +11453,7 @@ public class JavaParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ArgumentsContext extends org.example.antlr.myExtends.ExtendContext {
+	public static class ArgumentsContext extends org.example.parser.java.antlr.myExtends.ExtendContext {
 		public TerminalNode LPAREN() { return getToken(JavaParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(JavaParser.RPAREN, 0); }
 		public ExpressionListContext expressionList() {

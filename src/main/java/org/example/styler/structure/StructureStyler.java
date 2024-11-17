@@ -2,15 +2,13 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.antlr.JavaParser;
-import org.example.interfaces.StyleProperty;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendContext;
 import org.example.myException.StylizationException;
 import org.example.parser.ExtendTokenFactory;
 import org.example.parser.ParseTreeFactory;
-import org.example.interfaces.Style;
-import org.example.style.format.FormatStyle;
+import org.example.style.Style;
 import org.example.styler.StylerBase;
 import org.example.styler.brace.style.OptionalBraceProperty;
 import org.example.styler.structure.style.EquivalencesStyle;

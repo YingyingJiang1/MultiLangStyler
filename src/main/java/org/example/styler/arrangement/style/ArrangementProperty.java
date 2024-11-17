@@ -2,9 +2,9 @@ package org.example.styler.arrangement.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.antlr.JavaParser;
-import org.example.interfaces.DomIO;
-import org.example.interfaces.StyleProperty;
+import org.example.parser.java.antlr.JavaParser;
+import org.example.io.DomIO;
+import org.example.style.rule.StyleProperty;
 
 import java.util.ArrayList;
 import java.util.Arrays;

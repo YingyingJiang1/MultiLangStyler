@@ -2,7 +2,7 @@ package org.example.styler.structure.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.interfaces.Style;
+import org.example.style.Style;
 
 import java.util.ArrayList;
 import java.util.HashMap;

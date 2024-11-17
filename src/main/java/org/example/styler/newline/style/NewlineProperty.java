@@ -1,7 +1,6 @@
 package org.example.styler.newline.style;
 
 import org.dom4j.Element;
-import org.example.interfaces.DomIO;
 import org.example.styler.hws.style.SpaceProperty;
 
 import java.util.Objects;

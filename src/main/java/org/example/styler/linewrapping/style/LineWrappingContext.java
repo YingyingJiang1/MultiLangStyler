@@ -2,10 +2,7 @@ package org.example.styler.linewrapping.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.interfaces.StyleContext;
-import org.example.parser.AntlrHelper;
-
-import java.util.Objects;
+import org.example.style.rule.StyleContext;
 
 public class LineWrappingContext extends StyleContext {
   int maxColumn, avgColumn;

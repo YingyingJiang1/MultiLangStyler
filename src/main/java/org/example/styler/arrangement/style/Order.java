@@ -3,7 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
-import org.example.interfaces.DomIO;
+import org.example.io.DomIO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class Order implements DomIO {
         return !modifierOrder.isEmpty();
     }
 
-    public int getLayerNumberWithMostModifiers() {
+    public int getColumnNumberWithMostModifiers() {
         int maxLenIndex = 0, maxLen = 0;
         for (int i = 0; i < modifierOrder.size(); ++i) {
             int curLen = modifierOrder.get(i).size();
@@ -74,10 +74,10 @@ public class Order implements DomIO {
         Vocabulary vocabulary = parser.getVocabulary();
         builder.append("logic order: ").append(logicalOrder.name().toLowerCase()).append(System.lineSeparator());
         if (!modifierOrder.isEmpty()) {
-            builder.append("modifier order of each layer: ").append(System.lineSeparator());
+            builder.append("modifier order of each column: ").append(System.lineSeparator());
         }
         for (int i = 0; i < modifierOrder.size(); ++i) {
-            builder.append(i + 1).append("th layer: ");
+            builder.append(i + 1).append("th column: ");
             for (int modifier : modifierOrder.get(i)) {
                 if (modifier == -1) {
                     builder.append("empty");
@@ -108,7 +108,7 @@ public class Order implements DomIO {
                     }
                     builder.append(",");
                 }
-                modifierOrderEle.addElement("layer" + (i + 1)).addText(
+                modifierOrderEle.addElement("column" + (i + 1)).addText(
                         builder.length() > 0 ? builder.substring(0, builder.length() - 1) : "");
             }
         }
@@ -121,18 +121,18 @@ public class Order implements DomIO {
         logicalOrder = EnumType.valueOf(orderEle.element("logical_order").getText());
         Element modifierOrderEle = orderEle.element("modifier_order");
         if (modifierOrderEle != null) {
-            List<Element> layers = modifierOrderEle.elements();
-            for (Element layer : layers) {
-                String[] arr = layer.getText().split(",");
-                List<Integer> modifierLayer = new ArrayList<>();
+            List<Element> columns = modifierOrderEle.elements();
+            for (Element column : columns) {
+                String[] arr = column.getText().split(",");
+                List<Integer> modifierColumn = new ArrayList<>();
                 for (int i = 0; i < arr.length; i++) {
                     if (arr[i].equals("EMPTY")) {
-                        modifierLayer.add(-1);
+                        modifierColumn.add(-1);
                     } else {
-                        modifierLayer.add(parser.getTokenType(arr[i]));
+                        modifierColumn.add(parser.getTokenType(arr[i]));
                     }
                 }
-                modifierOrder.add(modifierLayer);
+                modifierOrder.add(modifierColumn);
             }
         }
         Order.allowedOrderDeviation = Double.valueOf(orderEle.element("allowed_order_deviation").getText());

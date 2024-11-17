@@ -1,64 +1,108 @@
 package org.example.styler;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
-import org.example.Configuration;
-import org.example.antlr.JavaParser;
-import org.example.style.ProgramStyle;
+import org.antlr.v4.runtime.Token;
+import org.example.parser.common.ExtendContext;
+import org.example.parser.common.MyParser;
+import org.example.style.Style;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 /*
  * @description:
  * @author     : Jiang Yingying
  * @create     : 2024/1/21 10:44
  */
-public class Styler implements Extractor, Applicator {
-  protected String filePath;
-  protected ProgramStyle programStyle;
-  protected Configuration conf;
-  protected FileCollector.FileCollection files;
+public abstract class Styler implements Extractor, Applicator {
+    protected MyParser parser;
+    protected Style style;
+    protected boolean enableExtraction = true;
+    protected boolean enableApplication = true;
+//  protected String filePath;
+//  protected ProgramStyle programStyle;
+//  protected Configuration conf;
+//  protected FileCollector.FileCollection files;
 
-  public static final int EXTRACTION_PROCESS = 1;
-  public static final int APPLICATION_PROCESS = 2;
+    public static final int EXTRACTION_PROCESS = 1;
+    public static final int APPLICATION_PROCESS = 2;
 
-
-  public Styler(Configuration conf, ProgramStyle programStyle) throws IOException {
-    this.conf = conf;
-    this.programStyle = programStyle;
-  }
-
-  public void applyStyle() throws IOException {
-  }
-
-  public void extractStyle() throws IOException, DocumentException {
-  }
-
-  public void writeStyleInXml(String dir) throws IOException {
-    // 创建xml文件并写入内容
-    Document document = DocumentHelper.createDocument();
-    Element root = document.addElement("program_style");
-    programStyle.addElement(root, new JavaParser(null));
-    if(!dir.endsWith("/")) {
-      dir = dir + "/";
+    public Styler(MyParser parser, boolean enableExtraction, boolean enableApplication) {
+        this.parser = parser;
+        this.enableExtraction = enableExtraction;
+        this.enableApplication = enableApplication;
     }
 
-    String fileName = "";
-    // fileName = Paths.get(filePath).getFileName().toString().replace(".java", "") + "-";
-    String styleXmlPath = dir + fileName + "style.xml";
+    public Styler() {}
 
-    XMLWriter writer = new XMLWriter(new FileWriter(new File(styleXmlPath)),
-        OutputFormat.createPrettyPrint());
-    writer.write(document);
-    writer.close();
+    public Style getStyle() { return style; }
 
-    System.out.println("style result saved in:" + styleXmlPath);
-  }
+    @Override
+    public void applyStyle(List<Token> tokens, int index) {
+    }
 
+    @Override
+    public ExtendContext applyStyle(ExtendContext ctx) {
+        return null;
+    }
+
+    @Override
+    public void extractStyle(List<Token> tokens, int index) {}
+
+    @Override
+    public void extractStyle(ExtendContext ctx) {}
+
+    public boolean isEnable(int process) {
+        if (process == EXTRACTION_PROCESS) {
+            return enableExtraction;
+        }
+        if (process == APPLICATION_PROCESS) {
+            return enableApplication;
+        }
+        return true;
+    }
+
+    public void enable(int process) {
+        if (process == EXTRACTION_PROCESS) {
+            enableExtraction = true;
+        }
+        if (process == APPLICATION_PROCESS) {
+            enableApplication = true;
+        }
+    }
+
+    public void disable(int process) {
+        if (process == EXTRACTION_PROCESS) {
+            enableExtraction = false;
+        }
+        if (process == APPLICATION_PROCESS) {
+            enableApplication = false;
+        }
+    }
+
+    protected Set<Integer> getRelevantRules() {return null;}
+
+    protected Set<String> getRelevantTokens() { return null;}
+
+    public boolean isRelevant(ExtendContext ctx){
+        Set<Integer> relevantRules = getRelevantRules();
+        // Special case: all rules is relevant.
+        if (relevantRules == null) {
+            return true;
+        }
+        int targetRule = ctx.getRuleIndex();
+        return relevantRules.contains(targetRule);
+    }
+
+    public boolean isRelevant(int tokenType){
+        Set<String> relevantTokens = getRelevantTokens();
+        // Special case: all tokens is relevant.
+        if (relevantTokens == null) {
+            return true;
+        }
+        return relevantTokens.contains(tokenType);
+    }
+
+    public void setParser(MyParser parser) {
+        this.parser = parser;
+    }
 }

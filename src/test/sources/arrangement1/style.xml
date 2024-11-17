@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+  <arrangement_rule>
+    <style_context MethodDeclarationListContext="3" ConstructorDeclarationListContext="1" InitializerListContext="1" TypeDeclarationListContext="3" FieldDeclarationListContext="4">class</style_context>
+    <style_property>
+      <fieldDeclarationList_area>
+        <feature>PRIVATE:1,PUBLIC:3,STATIC:4,FINAL:4</feature>
+        <order>
+          <logical_order>MODIFIER_LEXI_ORDER</logical_order>
+          <modifier_order>
+            <column1>PRIVATE,PUBLIC</column1>
+            <column2>STATIC</column2>
+            <column3>FINAL</column3>
+          </modifier_order>
+          <allowed_order_deviation>0.3</allowed_order_deviation>
+        </order>
+      </fieldDeclarationList_area>
+      <typeDeclarationList_area>
+        <feature>empty:1,STATIC:2</feature>
+        <order>
+          <logical_order>MODIFIER_ORDER</logical_order>
+          <modifier_order>
+            <column1>STATIC</column1>
+          </modifier_order>
+          <allowed_order_deviation>0.3</allowed_order_deviation>
+        </order>
+      </typeDeclarationList_area>
+      <initializerList_area>
+        <feature>STATIC:1</feature>
+        <order>
+          <logical_order>MODIFIER_LEXI_ORDER</logical_order>
+          <modifier_order>
+            <column1>STATIC</column1>
+          </modifier_order>
+          <allowed_order_deviation>0.3</allowed_order_deviation>
+        </order>
+      </initializerList_area>
+      <constructorDeclarationList_area>
+        <feature>PRIVATE:1</feature>
+        <order>
+          <logical_order>MODIFIER_LEXI_ORDER</logical_order>
+          <modifier_order>
+            <column1>PRIVATE</column1>
+          </modifier_order>
+          <allowed_order_deviation>0.3</allowed_order_deviation>
+        </order>
+      </constructorDeclarationList_area>
+      <methodDeclarationList_area>
+        <feature>PUBLIC:3,STATIC:3</feature>
+        <order>
+          <logical_order>MODIFIER_ORDER</logical_order>
+          <modifier_order>
+            <column1>PUBLIC</column1>
+            <column2>STATIC</column2>
+          </modifier_order>
+          <allowed_order_deviation>0.3</allowed_order_deviation>
+        </order>
+      </methodDeclarationList_area>
+    </style_property>
+  </arrangement_rule>
+</program_style>

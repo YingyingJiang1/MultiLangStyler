@@ -2,7 +2,7 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.interfaces.StyleProperty;
+import org.example.style.rule.StyleProperty;
 
 public class OptionalBraceProperty extends StyleProperty {
     public boolean useBrace;

@@ -1,7 +1,7 @@
 package org.example.styler.newline.style;
 
-import org.example.antlr.JavaParser;
-import org.example.interfaces.StyleRule;
+import org.example.parser.java.antlr.JavaParser;
+import org.example.style.rule.StyleRule;
 
 import java.util.*;
 

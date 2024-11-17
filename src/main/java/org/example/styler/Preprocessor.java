@@ -1,12 +1,12 @@
 package org.example.styler;
 
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
-import org.example.antlr.JavaLexer;
-import org.example.parser.AntlrHelper;
-import org.example.parser.ExtendToken;
-import org.example.parser.TokenInfoField;
+import org.example.parser.common.MyParser;
+import org.example.parser.java.antlr.JavaLexer;
+import org.example.parser.common.AntlrHelper;
+import org.example.parser.common.ExtendToken;
+import org.example.parser.common.TokenInfoField;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Preprocessor {
   int curNestingDepth = 0;
-  public void preprocess(Parser parser, int process) {
+  public void preprocess(MyParser parser, int process) {
     CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
     for (int i = 0; i < tokenStream.size(); i++) {
       setHierarchy(tokenStream, i);
@@ -55,6 +55,11 @@ public class Preprocessor {
     ((ExtendToken) tokenStream.get(curIndex)).info = info;
   }
 
+  /**
+   * @Description Add comment tokens to the first or last token of the commented statement
+   * @param tokenStream
+   * @param tokenIndex
+   */
   private void processComment(CommonTokenStream tokenStream, int tokenIndex) {
     ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
     if (token.getChannel() != JavaLexer.DEFAULT_TOKEN_CHANNEL) {

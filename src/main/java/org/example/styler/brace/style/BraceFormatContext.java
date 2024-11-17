@@ -2,7 +2,7 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.interfaces.StyleContext;
+import org.example.style.rule.StyleContext;
 
 public class BraceFormatContext extends StyleContext {
     private TypeEnum blockType;

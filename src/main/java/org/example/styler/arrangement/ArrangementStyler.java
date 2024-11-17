@@ -2,14 +2,12 @@ package org.example.styler.arrangement;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.Helper;
-import org.example.antlr.JavaParser;
-import org.example.parser.ExtendContext;
+import org.example.datatype.Helper;
+import org.example.parser.common.ExtendContext;
 import org.example.myException.StylizationException;
-import org.example.interfaces.Style;
-import org.example.styler.ASTStyler;
+import org.example.style.Style;
 import org.example.styler.PermutationGenerator;
-import org.example.styler.StylerBase;
+import org.example.styler.Styler;
 import org.example.styler.arrangement.style.*;
 
 
@@ -17,24 +15,17 @@ import java.util.*;
 import java.util.function.Predicate;
 
 /*
- * @description
- * Please ensure: the relevant AST structure is consistent with the definition in JavaParser.g4
  * @author       Yingying Jiang
  * @create       2024/3/25 6:34
  */
-public class ArrangementStyler extends StylerBase implements ASTStyler {
-	private static ArrangementStyler instance = new ArrangementStyler();
+public class ArrangementStyler extends Styler {
 
-	private ArrangementStyler() {
-	}
+	private static Set<Integer> relevantRules = null;
 
-	private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(
-			JavaParser.RULE_typeDeclaration
-	));
+	public ArrangementStyler() {
+        style = new ArrangementStyle(parser);
+    }
 
-	public static ArrangementStyler getInstance() {
-		return instance;
-	}
 
 	/*
 	 * @description: This method resorts all list context instances in type declaration body
@@ -50,28 +41,27 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 	 *  followed by the list contexts without matched area in their original relative order.
 	 *
 	 */
-	public ExtendContext applyStyle(ExtendContext ctx, Style style) {
+	public ExtendContext applyStyle(ExtendContext ctx) {
 		try {
 			ArrangementContext context = extractContentContext(ctx);
 			if (context == null) {
 				return ctx;
 			}
-			ArrangementStyle arrangementStyle = (ArrangementStyle) style;
-			ArrangementProperty property = (ArrangementProperty) arrangementStyle.getProperty(context);
+			ArrangementProperty property = (ArrangementProperty) style.getProperty(context);
 			List<ArrangementProperty.ContentArea> areas = property.getAreas();
 			List<ExtendContext> newListCtxs = new ArrayList<>(Collections.nCopies(property.getAreas().size(), null));
 
 
 			// Create a new list of declaration lists for the body of type declaration.
 			ExtendContext bodyCtx = (ExtendContext) ctx
-					.getFirstInnerChildByType(JavaParser.RULE_body);
+					.getFirstInnerChildByType(parser.getBody());
 			if (bodyCtx == null) {
 				return ctx;
 			}
 			int from = -1, to =  -1;
 			for (int i = 0; i < bodyCtx.getChildCount(); ++i) {
 				ParseTree child = bodyCtx.getChild(i);
-				if (child instanceof ExtendContext && isList(((ExtendContext) child).getRuleIndex())) {
+				if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
 					if(from == -1) {
 						from = i;
 					}
@@ -131,31 +121,30 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 	}
 
 
-	public void extractStyle(ExtendContext ctx, Style style) {
+	public void extractStyle(ExtendContext ctx) {
 		try {
 			// Extract order info in top level type declaration.
-			boolean isTopLevelDec = ctx.getParent().getParent() instanceof JavaParser.CompilationUnitContext;
+			boolean isTopLevelDec = parser.isTopUnit(ctx.getParent().getParent());
 			if (isTopLevelDec) {
-				ArrangementStyle arrangementStyle = (ArrangementStyle) style;
 				ArrangementContext context = extractContentContext(ctx);
-				if (context != null && !arrangementStyle.contains(context)) {
+				if (context != null && !style.contains(context)) {
 					ExtendContext bodyCtx = (ExtendContext) ctx
-							.getFirstInnerChildByType(JavaParser.RULE_body);
+							.getFirstInnerChildByType(parser.getBody());
 					if (bodyCtx == null) {
-						return;
+						return ;
 					}
 
 					ArrangementProperty property = new ArrangementProperty();
 					List<ArrangementProperty.ContentArea> areas = property.getAreas();
 					for (ParseTree child : bodyCtx.children) {
-						if (child instanceof ExtendContext && isList(((ExtendContext) child).getRuleIndex())) {
+						if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
 							ExtendContext listCtx = (ExtendContext) child;
 							ArrangementProperty.ContentArea area = createArea(listCtx);
 							area.fillArea(extractFeature(listCtx), extractOrder(listCtx));
 							areas.add(area);
 						}
 					}
-					arrangementStyle.addRule(context, property);
+					style.addRule(context, property);
 				}
 			}
 		} catch (Exception e) {
@@ -172,8 +161,7 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 		ExtendContext headCtx = (ExtendContext) ctx.getChild(1);
 		String typeType = headCtx.getStart().getText();
 		Map<String, Integer> statistic = new HashMap<>();
-		ExtendContext bodyCtx = ctx.getFirstInnerChildByType(JavaParser.RULE_body);
-		// ExtendContext bodyDecCtx = bodyCtx.getFirstInnerChildByType(JavaParser.RULE_classBodyDeclaration);
+		ExtendContext bodyCtx = ctx.getFirstInnerChildByType(parser.getBody());
 		if (bodyCtx == null) {
 			return null;
 		}
@@ -193,13 +181,13 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 				continue;
 			}
 			ExtendContext dec = (ExtendContext) root;
-			int modifierListIndex = dec.indexOfFirstInnerChildByType(JavaParser.RULE_modifierList);
+			int modifierListIndex = dec.indexOfFirstInnerChildByType(parser.getModifierList());
 
 			if (modifierListIndex >= 0) {
 				ExtendContext modifierListCtx = (ExtendContext) dec.children.get(modifierListIndex);
 				boolean noModifier = true;
 				for (ParseTree modifier : modifierListCtx.children) {
-					if (!(modifier instanceof JavaParser.AnnotationContext)) {
+					if (!(parser.isAnnotation(modifier))) {
 						int type = ((TerminalNode) modifier).getSymbol().getType();
 						feature.updateModifierStatistic(type);
 						noModifier = false;
@@ -257,13 +245,13 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 			Info.DeclarationInfo decInfo = new Info.DeclarationInfo();
 
 			ExtendContext dec = (ExtendContext) ctx.children.get(decIndex);
-			ExtendContext modifierListCtx = dec.getFirstInnerChildByType(JavaParser.RULE_modifierList);
+			ExtendContext modifierListCtx = dec.getFirstInnerChildByType(parser.getModifierList());
 			// Add modifiers.
 			if (modifierListCtx != null) {
 				// Delete JavaParser.AnnotationContext.
 				List<ParseTree> modifiers = modifierListCtx.children
 						.stream().
-						filter(modifier -> !(modifier instanceof JavaParser.AnnotationContext)).toList();
+						filter(modifier -> !(parser.isAnnotation(modifier))).toList();
 
 				for (ParseTree t : modifiers) {
 					if(t instanceof TerminalNode ter) {
@@ -301,21 +289,21 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 	private void extractAlphabeticOrder(Info info, Order order) {
 		// Extract lexicographical order from @identifierText.
 		if (order.isInModifierOrder()) {
-			List<List<Integer>> modifierOrderPerLayer = order.getModifierOrder();
-			// Find the modifier layer that has the most diverse modifiers.
+			List<List<Integer>> modifierOrderPercolumn = order.getModifierOrder();
+			// Find the modifier column that has the most diverse modifiers.
 			List<Integer> targetModifierOrder = new ArrayList<>();
-			int layer = 0;
-			for (int i = 0; i < modifierOrderPerLayer.size(); i++) {
-				List<Integer> modifierOrder = modifierOrderPerLayer.get(i);
+			int column = 0;
+			for (int i = 0; i < modifierOrderPercolumn.size(); i++) {
+				List<Integer> modifierOrder = modifierOrderPercolumn.get(i);
 				if(modifierOrder.size() > targetModifierOrder.size()) {
 					targetModifierOrder = modifierOrder;
-					layer = i;
+					column = i;
 				}
 			}
 
 			boolean inAlphabeticOrder = true;
 			for(int modifier : targetModifierOrder) {
-				List<String> identifiers = info.getIdentifiers(modifier, layer);
+				List<String> identifiers = info.getIdentifiers(modifier, column);
 				if (identifiers.isEmpty()) {
 					continue;
 				}
@@ -339,8 +327,8 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 	}
 
 	private void extractModifierOrder(Info info, Order order) {
-		for (int i = 0; i < info.maxModifierLayer; i++) {
-			List<Integer> curModifierList = info.getModifierLayer(i);
+		for (int i = 0; i < info.maxModifiercolumn; i++) {
+			List<Integer> curModifierList = info.getModifiercolumn(i);
 			Map<Integer, Integer> modifierMap = info.getModifierMap(i);
 			PermutationGenerator<Integer> permutationGenerator = new PermutationGenerator<>(modifierMap.keySet());
 			int minEditDistance = Integer.MAX_VALUE;
@@ -389,11 +377,11 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 				continue;
 			}
 			ExtendContext decCtx = (ExtendContext) ctx.getChild(i);
-			ExtendContext modifierListCtx = (ExtendContext) decCtx.getChild(decCtx.indexOfFirstInnerChildByType(JavaParser.RULE_modifierList));
+			ExtendContext modifierListCtx = (ExtendContext) decCtx.getChild(decCtx.indexOfFirstInnerChildByType(parser.getModifierList()));
 			String identifierText = getIdentifierText(decCtx);
 			List<Integer> modifiers = new ArrayList<>();
 			for (ParseTree modifier : modifierListCtx.children) {
-				if (!(modifier instanceof JavaParser.AnnotationContext)) {
+				if (!(parser.isAnnotation(modifier))) {
 					modifiers.add(((TerminalNode) modifier).getSymbol().getType());
 				}
 			}
@@ -426,8 +414,12 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 		ctx.updateStopToken();
 	}
 
-	@Override
 	protected Set<Integer> getRelevantRules() {
+		if (relevantRules == null) {
+			relevantRules = new HashSet<>(Arrays.asList(
+					parser.getTypeDeclaration()
+			));
+		}
 		return relevantRules;
 	}
 
@@ -436,14 +428,14 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 	 * MethodDeclarationContext, TypeDeclarationContext, InitializerContext
 	 */
 	protected String getIdentifierText(ExtendContext ctx) {
-		if (ctx instanceof JavaParser.InitializerContext) {
+		if (parser.isInitializer(ctx)) {
 			return "";
 		}
 		ExtendContext idCtx = null;
-		if (ctx instanceof JavaParser.FieldDeclarationContext) {
-			idCtx = ctx.getContextRecIf(context -> context instanceof JavaParser.IdentifierContext);
+		if (parser.isFieldDeclaration(ctx)) {
+			idCtx = ctx.getContextRecIf(context -> parser.isIdentifier(context));
 		} else {
-			idCtx = ((ExtendContext) ctx.getChild(1)).getFirstInnerChildByType(JavaParser.RULE_identifier);
+			idCtx = ((ExtendContext) ctx.getChild(1)).getFirstInnerChildByType(parser.getIdentifier());
 		}
 		if (idCtx != null) {
 			return idCtx.getText();
@@ -455,13 +447,13 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 		List<Helper.Pair<Integer, Integer>> declarationGroupRanges = new ArrayList<>();
 		List<List<Declaration>> declarationGroups = new ArrayList<>();
 		declarationGroups.add(declarations);
-		for (int layer = 0; layer < modifierOrder.size(); ++layer) {
-			List<Integer> modifierOrderLayer = modifierOrder.get(layer);
+		for (int column = 0; column < modifierOrder.size(); ++column) {
+			List<Integer> modifierOrdercolumn = modifierOrder.get(column);
 			List<List<Declaration>> tmp = new ArrayList<>();
 			// pair: (modifier, a list of declarations)
 			// Use List to ensure the order of modifiers is consistent with the order of insertion.
 			List<Helper.Pair<Integer, List<Declaration>>> groupHelper = new ArrayList<>();
-			for (Integer modifier : modifierOrderLayer) {
+			for (Integer modifier : modifierOrdercolumn) {
 				groupHelper.add(new Helper.Pair<>(modifier, new ArrayList<>()));
 			}
 			groupHelper.add(new Helper.Pair<>(-1, new ArrayList<>()));
@@ -469,8 +461,8 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 			for (List<Declaration> declarations1 : declarationGroups) {
 				for (Declaration declaration : declarations1) {
 					int groupIndex = -1;
-					for (int i = 0; i < modifierOrderLayer.size(); ++i) {
-						if (declaration.modifiers.contains(modifierOrderLayer.get(i))) {
+					for (int i = 0; i < modifierOrdercolumn.size(); ++i) {
+						if (declaration.modifiers.contains(modifierOrdercolumn.get(i))) {
 							groupIndex = i;
 							break;
 						}
@@ -523,6 +515,11 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 		return dis / (double) len < allowedDeviation;
 	}
 
+	@Override
+	public Style getStyle() {
+		return style;
+	}
+
 	private static class Declaration {
 		List<Integer> modifiers;
 		String identifierText;
@@ -552,17 +549,16 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 
 	private ArrangementProperty.ContentArea createArea(ExtendContext ctx) {
 		int rule = ctx.getRuleIndex();
-		switch (rule) {
-			case JavaParser.RULE_fieldDeclarationList:
-				return new ArrangementProperty.FieldDecArea(rule);
-			case JavaParser.RULE_methodDeclarationList:
-				return new ArrangementProperty.MethodDecArea(rule);
-			case JavaParser.RULE_constructorDeclarationList:
-				return new ArrangementProperty.ConstructorDecArea(rule);
-			case JavaParser.RULE_initializerList:
-				return new ArrangementProperty.InitializerArea(rule);
-			case JavaParser.RULE_typeDeclarationList:
-				return new ArrangementProperty.TypeDecArea(rule);
+		if (parser.isFieldDeclarationList(ctx)) {
+			return new ArrangementProperty.FieldDecArea(rule);
+		} else if(parser.isMethodDeclarationList(ctx)) {
+			return new ArrangementProperty.MethodDecArea(rule);
+		} else if(parser.isConstructorDeclarationList(ctx)) {
+			return new ArrangementProperty.ConstructorDecArea(rule);
+		} else if(parser.isInitializerList(ctx)) {
+			return new ArrangementProperty.InitializerArea(rule);
+		} else if(parser.isTypeDeclarationList(ctx)) {
+			return new ArrangementProperty.TypeDecArea(rule);
 		}
 		return null;
 	}
@@ -570,46 +566,37 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 
 	private int getFirstListCtxIndex(ExtendContext ctx) {
 		return ctx.findFirstChild(
-				root -> root instanceof JavaParser.MethodDeclarationListContext ||
-						root instanceof JavaParser.FieldDeclarationListContext ||
-						root instanceof JavaParser.ConstructorDeclarationListContext ||
-						root instanceof JavaParser.TypeDeclarationListContext ||
-						root instanceof JavaParser.InitializerListContext);
-	}
-
-	private boolean isList(int rule) {
-		Set<Integer> listCtxs = new HashSet<>(Arrays.asList(
-				JavaParser.RULE_fieldDeclarationList, JavaParser.RULE_constructorDeclarationList,
-				JavaParser.RULE_methodDeclarationList, JavaParser.RULE_typeDeclarationList,
-				JavaParser.RULE_initializerList
-		));
-		return listCtxs.contains(rule);
+				root -> parser.isMethodDeclarationList(root) ||
+						parser.isFieldDeclarationList(root) ||
+						parser.isConstructorDeclarationList(root) ||
+						parser.isTypeDeclarationList(root) ||
+						parser.isInitializerList(root));
 	}
 
 	static class Info {
-		int maxModifierLayer = 0;
-		List<Map<Integer, Integer>> modifierMapPerLayer = null;
+		int maxModifiercolumn = 0;
+		List<Map<Integer, Integer>> modifierMapPercolumn = null;
 		List<DeclarationInfo> declarations = new ArrayList<>();
 
 		public void add(DeclarationInfo decInfo) {
 			declarations.add(decInfo);
-			if(decInfo.modifiers.size() > maxModifierLayer) {
-				maxModifierLayer = decInfo.modifiers.size();
+			if(decInfo.modifiers.size() > maxModifiercolumn) {
+				maxModifiercolumn = decInfo.modifiers.size();
 				for(DeclarationInfo dec : declarations) {
-					if(dec.modifiers.size() < maxModifierLayer) {
-						dec.modifiers.addAll(Collections.nCopies(maxModifierLayer - dec.modifiers.size(), -1));
+					if(dec.modifiers.size() < maxModifiercolumn) {
+						dec.modifiers.addAll(Collections.nCopies(maxModifiercolumn - dec.modifiers.size(), -1));
 					}
 				}
-			} else if(decInfo.modifiers.size() < maxModifierLayer) {
-				decInfo.modifiers.addAll(Collections.nCopies(maxModifierLayer - decInfo.modifiers.size(), -1));
+			} else if(decInfo.modifiers.size() < maxModifiercolumn) {
+				decInfo.modifiers.addAll(Collections.nCopies(maxModifiercolumn - decInfo.modifiers.size(), -1));
 			}
 		}
 
-		public Map<Integer, Integer> getModifierMap(int layer) {
-			if (modifierMapPerLayer == null) {
+		public Map<Integer, Integer> getModifierMap(int column) {
+			if (modifierMapPercolumn == null) {
 				fillModifierMap();
 			}
-			return modifierMapPerLayer.get(layer);
+			return modifierMapPercolumn.get(column);
 		}
 
 		public List<String> getIdentifiers() {
@@ -620,10 +607,10 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 			return identifiers;
 		}
 
-		public List<String> getIdentifiers(int modifier, int layer) {
+		public List<String> getIdentifiers(int modifier, int column) {
 			List<String> identifiers = new ArrayList<>();
 			for (DeclarationInfo declarationInfo : declarations) {
-				if (declarationInfo.modifiers.get(layer) == modifier) {
+				if (declarationInfo.modifiers.get(column) == modifier) {
 					identifiers.add(declarationInfo.identifier);
 				}
 			}
@@ -631,33 +618,33 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 		}
 
 
-		public List<Integer> getModifierLayer(int i) {
-			List<Integer> modifierLayer = new ArrayList<>();
+		public List<Integer> getModifiercolumn(int i) {
+			List<Integer> modifiercolumn = new ArrayList<>();
 			for(DeclarationInfo dec : declarations) {
-				modifierLayer.add(dec.modifiers.get(i));
+				modifiercolumn.add(dec.modifiers.get(i));
 			}
-			return modifierLayer;
+			return modifiercolumn;
 		}
 
 		private void fillModifierMap() {
-			modifierMapPerLayer = new ArrayList<>();
-			for (int i = 0; i < maxModifierLayer; i++) {
-				modifierMapPerLayer.add(new HashMap<>());
+			modifierMapPercolumn = new ArrayList<>();
+			for (int i = 0; i < maxModifiercolumn; i++) {
+				modifierMapPercolumn.add(new HashMap<>());
 			}
 			for (DeclarationInfo decInfo : declarations) {
-				for (int i = 0; i < maxModifierLayer; i++) {
-					modifierMapPerLayer.get(i).compute(decInfo.modifiers.get(i), (k, v) -> v == null ? 1 : v + 1);
+				for (int i = 0; i < maxModifiercolumn; i++) {
+					modifierMapPercolumn.get(i).compute(decInfo.modifiers.get(i), (k, v) -> v == null ? 1 : v + 1);
 				}
 			}
 		}
 
-		public void resort(List<Integer> targetModifierOrder, int layer) {
+		public void resort(List<Integer> targetModifierOrder, int column) {
 			List<DeclarationInfo> newDeclarations = new ArrayList<>();
 			for (int modifier : targetModifierOrder) {
 				List<DeclarationInfo> list = declarations.stream().filter(new Predicate<DeclarationInfo>() {
 					@Override
 					public boolean test(DeclarationInfo declarationInfo) {
-						return declarationInfo.modifiers.get(layer) == modifier;
+						return declarationInfo.modifiers.get(column) == modifier;
 					}
 				}).toList();
 				newDeclarations.addAll(list);
@@ -679,14 +666,14 @@ public class ArrangementStyler extends StylerBase implements ASTStyler {
 		 *   public double b;
 		 *   protected int c;
 		 *   private static int d;
-		 * Then we should have two modifier layer:
-		 * The first modifier layer is a @ModifierLayer instance:
+		 * Then we should have two modifier column:
+		 * The first modifier column is a @Modifiercolumn instance:
 		 * {
 		 *  modifiers: [public, protected, private]
 		 *  indexPairsPerModifier: [[(0, 1)], [(2,2)], [(3,3)]]
 		 *  pairsId: [[(1, 2)], [(2, 1)], [(3, 1)]]
 		 * }
-		 * The second modifier layer is a @ModifierLayer instance:
+		 * The second modifier column is a @Modifiercolumn instance:
 		 * {
 		 *  modifiers: [static, empty]
 		 *  indexPairsPerModifier: [[(0, 0), (3,3)], [(1,2)]]

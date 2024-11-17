@@ -1,6 +1,9 @@
 package org.example.styler;
 
-import java.io.IOException;
+import org.antlr.v4.runtime.Token;
+import org.example.parser.common.ExtendContext;
+
+import java.util.List;
 
 /*
  * @description:
@@ -8,5 +11,6 @@ import java.io.IOException;
  * @create     : 2024/1/20 22:15
  */
 public interface Applicator {
-  void applyStyle() throws IOException;
+    ExtendContext applyStyle(ExtendContext ctx);
+    void applyStyle(List<Token> tokens, int index);
 }

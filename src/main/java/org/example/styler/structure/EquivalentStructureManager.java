@@ -2,11 +2,10 @@ package org.example.styler.structure;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.antlr.JavaParser;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 

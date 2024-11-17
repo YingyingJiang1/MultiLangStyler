@@ -2,7 +2,7 @@ package org.example.styler.linewrapping.style;
 
 import org.dom4j.Element;
 import org.example.parser.AntlrHelper;
-import org.example.interfaces.DomIO;
+import org.example.io.DomIO;
 
 import java.util.Objects;
 

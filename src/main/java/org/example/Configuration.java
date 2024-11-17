@@ -4,7 +4,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.example.styler.FileCollector;
+import org.example.datatype.FileCollection;
+import org.example.datatype.FileCollector;
 
 import java.io.*;
 import java.util.*;
@@ -28,13 +29,13 @@ public class Configuration {
   }
 
   Element root = null;
-  public FileCollector.FileCollection extractionCollection = new FileCollector.FileCollection();
-  public FileCollector.FileCollection applicationCollection = new FileCollector.FileCollection();
+  public FileCollection extractionCollection = new FileCollection();
+  public FileCollection applicationCollection = new FileCollection();
   public String styleFile;
   public boolean overrideSource;
   public String useExistedStyle;
   public String applyResultSaveDir;
-  public String styleFileSavedDir;
+  public String styleFileSavedPath;
   public boolean testMode;
 
   public void loadConf() throws IOException, DocumentException {
@@ -67,15 +68,15 @@ public class Configuration {
     Element extractionInfo = root.element("extraction_info");
     extractionCollection = loadSource(extractionInfo);
     styleFile = extractionInfo.elementText("style_file").replace("${root}", System.getProperty("user.dir"));
-    styleFileSavedDir = extractionInfo.elementText("style_saved_directory").replace("${root}", System.getProperty("user.dir"));
+    styleFileSavedPath = extractionInfo.elementText("style_path").replace("${root}", System.getProperty("user.dir"));
   }
 
-  private FileCollector.FileCollection loadSource(Element info) {
+  private FileCollection loadSource(Element info) {
     Element source = info.element("source");
     List<String> sourcePaths = new ArrayList<>();
     List<String> excludes = Arrays.stream(source.attributeValue("excludes").split(";")).toList();
     sourcePaths = Arrays.stream(source.getText().split(";")).toList();
-    FileCollector.FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
+    FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
     collection.difference(FileCollector.getJavaFileCollection(excludes));
     return collection;
   }

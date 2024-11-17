@@ -1,8 +1,9 @@
 package org.example.styler;
 
-import org.dom4j.DocumentException;
+import org.antlr.v4.runtime.Token;
+import org.example.parser.common.ExtendContext;
 
-import java.io.IOException;
+import java.util.List;
 
 /*
  * @description:
@@ -10,6 +11,6 @@ import java.io.IOException;
  * @create     : 2024/1/20 22:15
  */
 public interface Extractor {
-  public void extractStyle() throws IOException, DocumentException;
-  public void writeStyleInXml(String dir) throws IOException;
+    void extractStyle(ExtendContext ctx);
+    void extractStyle(List<Token> tokens, int index);
 }

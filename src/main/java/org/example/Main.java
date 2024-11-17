@@ -16,7 +16,8 @@ public class Main {
     Configuration conf = new Configuration();
     try {
       conf.loadConf();
-      Controller.execute(conf);
+      Controller controller = new Controller(conf);
+      controller.execute();
     } catch (DocumentException e) {
         throw new RuntimeException(e);
     }

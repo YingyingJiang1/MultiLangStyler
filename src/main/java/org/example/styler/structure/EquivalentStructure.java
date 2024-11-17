@@ -3,10 +3,10 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.antlr.JavaParser;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.AntlrHelper;
 import org.example.parser.ExtendContext;
-import org.example.parser.MyParser;
+import org.example.parser.java.MyJavaParser;
 import org.example.parser.ParseTreeFactory;
 import org.example.myException.CompilationException;
 import org.example.styler.structure.checker.Checker;
@@ -58,7 +58,7 @@ public class EquivalentStructure {
 			for (int i = 0; i < codes.length; i++) {
 				boolean flag = codes[i].startsWith("$^");
 				String code = replaceHolder(codes[i]);
-				MyParser parser = new MyParser(code);
+				MyJavaParser parser = new MyJavaParser(code);
 				if (i < rules.length) {
 					rule = rules[i];
 				}
