@@ -1,7 +1,8 @@
 package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.ParseTreeFactory;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.ParseTreeFactory;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class ReplicationHandler extends Handler{
 		this.argsList = argsList;
 	}
 	@Override
-	public void handle(EquivalentStructure structure, int from, int to) {
+	public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
 		for(String[] args : argsList) {
 			int checkTo = Integer.parseInt(args[0]);
 			if (checkTo != to) {

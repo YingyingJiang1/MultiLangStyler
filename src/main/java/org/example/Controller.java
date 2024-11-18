@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
-import org.example.datatype.FileCollection;
+import org.example.utils.FileCollection;
 import org.example.io.StyleFileIO;
 import org.example.myException.EAsourceUnsetException;
 import org.example.myException.ParserRuleContextTypeException;
@@ -131,11 +131,18 @@ public class Controller {
 
         // Avoid exceptions caused by boundaries.
         int len = tokens.get(tokens.size() - 1).getType() == parser.getHws() ? tokens.size() - 2 : tokens.size() - 1;
+        List<Styler> indentionStylers = tStreamStylers.stream().filter(styler -> styler instanceof IndentionStyler).toList();
+        tStreamStylers.removeIf(styler -> styler instanceof IndentionStyler);
         for (int i = 1; i < len; ++i) { // @i begins at 1 to avoid exceptions caused by boundaries.
+            Token token = tokens.get(i);
+            if (!indentionStylers.isEmpty() && token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
+                indentionStylers.get(0).extractStyle(tokens, i);
+            }
             for (Styler styler : tStreamStylers) {
                 styler.extractStyle(tokens, i);
             }
         }
+        tStreamStylers.addAll(indentionStylers);
 
         // Must restore the type of modified tokens, otherwise things will go wrong in syntactic analysis phase.
         for (int i : toBeRestored) {
@@ -211,9 +218,8 @@ public class Controller {
             column += firstToken.getText().length();
         }
 
-        Styler indentionStyler = tStreamStylers.get(tStreamStylers.size() - 1);
-        tStreamStylers.remove(tStreamStylers.size() - 1);
-
+        List<Styler> indentionStylers = tStreamStylers.stream().filter(styler -> styler instanceof IndentionStyler).toList();
+        tStreamStylers.removeIf(styler -> styler instanceof IndentionStyler);
         for (int i = 1; i < tokens.size(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
@@ -236,17 +242,17 @@ public class Controller {
 
             Token preToken = tokens.get(i - 1);
             // For efficiency reasons, apply indentation separately.
-            if (preToken.getText().endsWith("\n") && parser.getVws() != curTokenType) { // add indention
-                indentionStyler.applyStyle(tokens, i);
+            if (!indentionStylers.isEmpty() && preToken.getText().endsWith("\n") && parser.getVws() != curTokenType) { // add indention
+                indentionStylers.get(0).applyStyle(tokens, i);
 
             }
             for (Styler styler : tStreamStylers) {
                 styler.applyStyle(tokens, i);
             }
 
-            tStreamStylers.remove(indentionStyler);
             builder.append(curToken.getText());
         }
+        tStreamStylers.addAll(indentionStylers);
 
         return builder.toString();
     }
@@ -409,7 +415,7 @@ public class Controller {
             } else if (tokenType == parser.getGT()) {
                 --count;
                 matchedTokens.add(i);
-            } else if (tokenType != parser.getIdentifier() && tokenType != parser.getComma() &&
+            } else if (tokenType != parser.getRuleIdentifier() && tokenType != parser.getComma() &&
                     tokenType != parser.getHws() && tokenType != parser.getVws()) {
                 break;
             }

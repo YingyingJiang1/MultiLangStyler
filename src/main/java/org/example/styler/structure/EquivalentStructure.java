@@ -3,11 +3,10 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.java.antlr.JavaParser;
-import org.example.parser.AntlrHelper;
-import org.example.parser.ExtendContext;
+import org.example.parser.common.ExtendContext;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.MyJavaParser;
-import org.example.parser.ParseTreeFactory;
 import org.example.myException.CompilationException;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
@@ -97,7 +96,7 @@ public class EquivalentStructure {
 		return vNodeContainer.getVNodeByHolderName(holderName);
 	}
 
-	public int match(ParseTree t) {
+	public int match(ParseTree t, MyParser parser) {
 		// Virtual tree that has a greater priority is matched first.
 		Map<VirtualTree, Integer> vtMap = new TreeMap<>();
 		for (int i = 0; i < vTrees.size(); i++) {
@@ -127,11 +126,11 @@ public class EquivalentStructure {
 				}
 //				System.out.println(vt.toStringTree(new JavaParser(null)));
 //				System.out.println(t1.toStringTree(new JavaParser(null)));
-				if (!isMatched(vt, t1, vtree.context)) {
+				if (!isMatched(vt, t1, vtree.context, parser)) {
 					break;
 				}
 			}
-			if(vi == vtree.trees.size() && vtree.context.isMatched() && check(index))  {
+			if(vi == vtree.trees.size() && vtree.context.isMatched(parser) && check(index))  {
 				return index;
 			}
 		}
@@ -151,13 +150,13 @@ public class EquivalentStructure {
 		return true;
 	}
 
-	public ParseTree convert(int from, int to, ParseTree oldTree) {
+	public ParseTree convert(int from, int to, ParseTree oldTree, MyParser parser) {
 		if(bannedTransfer != null && bannedTransfer.get(from) != null && bannedTransfer.get(from).contains(to)) {
 			return null;
 		}
 		if (handlers != null) {
 			for (Handler handler : handlers) {
-				handler.handle(this, from, to);
+				handler.handle(this, from, to, parser);
 			}
 		}
 
@@ -227,7 +226,7 @@ public class EquivalentStructure {
 	 * @param t
 	 * @return
 	 */
-	private boolean isMatched(ParseTree vt, ParseTree t, Context context) {
+	private boolean isMatched(ParseTree vt, ParseTree t, Context context, MyParser parser) {
 		if (vt instanceof TerminalNode && t instanceof TerminalNode) {
 			return vt.getText().equals(t.getText());
 		}
@@ -246,12 +245,12 @@ public class EquivalentStructure {
 				VirtualNode virtualNode = treeVNodeMap.get(cChild);
 				boolean matched = false;
 				if (virtualNode != null) {
-					matched = virtualNode.matches(tChild);
+					matched = virtualNode.matches(tChild, parser);
 					if (matched) {
 						virtualNode.addMatchedTree(tChild);
 					}
 				} else {
-					matched = isMatched(cChild, tChild, context);
+					matched = isMatched(cChild, tChild, context, parser);
 				}
 
 				if (matched) {
@@ -342,51 +341,63 @@ public class EquivalentStructure {
 	}
 
 	static class VirtualNodeMatcher {
-		private static Map<String, Set<Integer>> matchRules = new HashMap<>();
-		private static Map<String, Set<Integer>> matchTokens = new HashMap<>();
+		private static Map<Class, VirtualNodeMatcher> instances = new HashMap<>(0);
+		private Map<String, Set<Integer>> matchRules = new HashMap<>();
+		private Map<String, Set<String>> matchTokens = new HashMap<>();
 
-		static {
-			matchRules.put("$I", new HashSet<>(Arrays.asList(JavaParser.RULE_identifier, JavaParser.RULE_expression)));
-			matchRules.put("$C", new HashSet<>(Arrays.asList(JavaParser.RULE_expression)));
-			matchRules.put("$E", new HashSet<>(Arrays.asList(JavaParser.RULE_expression)));
-			matchRules.put("$S", AntlrHelper.getAllStmts());
-			matchRules.put("$T", new HashSet<>(Arrays.asList(JavaParser.RULE_typeType)));
-			matchRules.put("$M", new HashSet<>(Arrays.asList(JavaParser.RULE_modifierList)));
+		private VirtualNodeMatcher(MyParser parser) {
+			init(parser);
+		}
 
-			matchRules.put("$S(ifStmt)", new HashSet<>(Arrays.asList(JavaParser.RULE_ifStmt)));
-			matchRules.put("$S(ifElseStmt)", new HashSet<>(Arrays.asList(JavaParser.RULE_ifElseStmt)));
-
-			matchTokens.put("$I", new HashSet<>(Arrays.asList(JavaParser.IDENTIFIER)));
-			matchTokens.put("$-", new HashSet<>(Arrays.asList(
-					JavaParser.DIV, JavaParser.MOD
-			)));
-			matchTokens.put("$-=", new HashSet<>(Arrays.asList(
-					JavaParser.DIV_ASSIGN, JavaParser.MOD_ASSIGN
-			)));
-			matchTokens.put("$+", new HashSet<>(Arrays.asList(
-					JavaParser.MUL,
-					JavaParser.BITAND, JavaParser.BITOR, JavaParser.CARET
-
-			)));
-			matchTokens.put("$+=", new HashSet<>(Arrays.asList(
-					JavaParser.MUL_ASSIGN,
-					JavaParser.AND_ASSIGN, JavaParser.OR_ASSIGN, JavaParser.XOR_ASSIGN
-			)));
-
+		public static VirtualNodeMatcher getInstance(MyParser parser) {
+			VirtualNodeMatcher ret = instances.get(parser.getClass());
+			if (ret == null) {
+				ret = new VirtualNodeMatcher(parser);
+				instances.put(parser.getClass(), ret);
+			}
+			return ret;
 		}
 
 
-		public static boolean isMatched(String type, ParseTree tree) {
+		public boolean isMatched(String type, ParseTree tree, MyParser parser) {
+			init(parser);
 			if(tree instanceof TerminalNode) {
 				if(tree.getText().equals(";") && type.equals("$S")) {
 					return true;
 				}
-				return matchTokens.get(type) != null && matchTokens.get(type).contains(((TerminalNode) tree).getSymbol().getType());
+				return matchTokens.get(type) != null && matchTokens.get(type).contains(((TerminalNode) tree).getSymbol().getText());
 			} else {
 				int rule = ((ExtendContext) tree).getRuleIndex();
 				Set<Integer> rules = matchRules.get(type);
 				return rules != null && rules.contains(rule);
 			}
+		}
+
+		private void init(MyParser parser) {
+			matchRules.put("$I", new HashSet<>(Arrays.asList(parser.getRuleIdentifier(), parser.getRuleExpression())));
+			matchRules.put("$C", new HashSet<>(Arrays.asList(parser.getRuleExpression())));
+			matchRules.put("$E", new HashSet<>(Arrays.asList(parser.getRuleExpression())));
+			matchRules.put("$S", parser.getAllStmts());
+			matchRules.put("$T", new HashSet<>(Arrays.asList(parser.getRuleTypeType())));
+			matchRules.put("$M", new HashSet<>(Arrays.asList(parser.getRuleModifierList())));
+
+			matchRules.put("$S(ifStmt)", new HashSet<>(Arrays.asList(parser.getRuleIfStmt())));
+			matchRules.put("$S(ifElseStmt)", new HashSet<>(Arrays.asList(parser.getRuleIfElseStmt())));
+
+			matchTokens.put("$I", new HashSet<>(Arrays.asList("identifier")));
+			matchTokens.put("$-", new HashSet<>(Arrays.asList(
+					"/", "%"
+			)));
+			matchTokens.put("$-=", new HashSet<>(Arrays.asList(
+					"/=", "%="
+			)));
+			matchTokens.put("$+", new HashSet<>(Arrays.asList(
+					"*", "&", "|", "^"
+			)));
+			matchTokens.put("$+=", new HashSet<>(Arrays.asList(
+					"*=", "&=", "|=", "^="
+			)));
+
 		}
 	}
 
@@ -415,14 +426,14 @@ public class EquivalentStructure {
 			return t == null;
 		}
 		
-		public boolean matches(ParseTree t1) {
-			return VirtualNodeMatcher.isMatched(type, t1);
+		public boolean matches(ParseTree t1, MyParser parser) {
+			return VirtualNodeMatcher.getInstance(parser).isMatched(type, t1, parser);
 		}
 
-		public boolean checkState() {
+		public boolean checkState(MyParser parser) {
 			// Check tree type correct.
 			for (ParseTree tree : matchedNodes) {
-				if (!VirtualNodeMatcher.isMatched(type, tree)) {
+				if (!VirtualNodeMatcher.getInstance(parser).isMatched(type, tree, parser)) {
 					return false;
 				}
 			}
@@ -494,9 +505,9 @@ public class EquivalentStructure {
 			}
 		}
 
-		public boolean isMatched() {
+		public boolean isMatched(MyParser parser) {
 			for (VirtualNode vNode : contexts.values()) {
-				if(!vNode.checkState()) {
+				if(!vNode.checkState(parser)) {
 					return false;
 				}
 			}

@@ -1,4 +1,4 @@
-package org.example.styler.linewrapping.style;
+package org.example.styler.format.linewrapping.style;
 
 import org.dom4j.Element;
 import org.example.parser.AntlrHelper;

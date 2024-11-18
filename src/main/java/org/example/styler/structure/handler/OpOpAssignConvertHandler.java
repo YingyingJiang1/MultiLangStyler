@@ -1,7 +1,12 @@
 package org.example.styler.structure.handler;
 
+import org.antlr.v4.runtime.TokenFactory;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.ExtendToken;
+import org.example.parser.common.ExtendTokenFactory;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.ExtendToken;
 import org.example.parser.ParseTreeFactory;
@@ -18,22 +23,21 @@ import java.util.Map;
  * @create       2024/4/13 14:40
  */
 public class OpOpAssignConvertHandler extends Handler{
-	static private Map<Integer, ExtendToken> convertMap = new HashMap<>();
+	static private Map<String, String> convertMap = new HashMap<>();
 	static {
-		convertMap.put(JavaParser.MUL, new ExtendToken(JavaParser.MUL_ASSIGN, "*="));
-		convertMap.put(JavaParser.MUL_ASSIGN, new ExtendToken(JavaParser.MUL, "*"));
-		convertMap.put(JavaParser.DIV, new ExtendToken(JavaParser.DIV_ASSIGN, "/="));
-		convertMap.put(JavaParser.DIV_ASSIGN, new ExtendToken(JavaParser.DIV, "/"));
-		convertMap.put(JavaParser.MOD, new ExtendToken(JavaParser.MOD_ASSIGN, "%="));
-		convertMap.put(JavaParser.MOD_ASSIGN, new ExtendToken(JavaParser.MOD, "%"));
+		convertMap.put("*", "*=");
+		convertMap.put("*=", "*");
+		convertMap.put("/", "/=");
+		convertMap.put("/=", "/");
+		convertMap.put("%", "%=");
+		convertMap.put("%=", "%");
 
-		convertMap.put(JavaParser.BITAND, new ExtendToken(JavaParser.AND_ASSIGN, "&="));
-		convertMap.put(JavaParser.AND_ASSIGN, new ExtendToken(JavaParser.BITAND, "&"));
-		convertMap.put(JavaParser.BITOR, new ExtendToken(JavaParser.OR_ASSIGN, "|="));
-		convertMap.put(JavaParser.OR_ASSIGN, new ExtendToken(JavaParser.BITOR, "|"));
-
-		convertMap.put(JavaParser.CARET, new ExtendToken(JavaParser.XOR_ASSIGN, "^="));
-		convertMap.put(JavaParser.XOR_ASSIGN, new ExtendToken(JavaParser.CARET, "^"));
+		convertMap.put("&", "&=");
+		convertMap.put("&=", "&");
+		convertMap.put("|", "|=");
+		convertMap.put("|=", "|");
+		convertMap.put("^", "^=");
+		convertMap.put("^=", "^");
 
 	}
 	public OpOpAssignConvertHandler(String[][] argsList) {
@@ -51,7 +55,7 @@ public class OpOpAssignConvertHandler extends Handler{
 	 * @param to
 	 */
 	@Override
-	public void handle(EquivalentStructure structure, int from, int to) {
+	public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
 		for(String[] args : argsList) {
 			int index1 = Integer.parseInt(args[0]);
 			int index2 = Integer.parseInt(args[1]);
@@ -73,9 +77,9 @@ public class OpOpAssignConvertHandler extends Handler{
 			for (int i = 0; i < fromTrees.size(); i++) {
 				ParseTree tree = fromTrees.get(i);
 				if(tree instanceof TerminalNode ter) {
-					ExtendToken convertedToken = convertMap.get(ter.getSymbol().getType());
-					if (convertedToken != null) {
-						toTrees.set(i, ParseTreeFactory.createTerminalNode(convertedToken.clone()));
+					String convertedOp = convertMap.get(ter.getSymbol().getText());
+					if (convertedOp != null) {
+						toTrees.set(i, ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(parser.getType(convertedOp), convertedOp)));
 					}
 				}
 			}

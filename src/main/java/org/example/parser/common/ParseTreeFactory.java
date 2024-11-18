@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
-import org.example.parser.java.antlr.JavaParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,16 +99,16 @@ public class ParseTreeFactory {
    * @param expCtx
    * @return
    */
-  public ExtendContext negateExpression(ExtendContext expCtx) {
+  public ExtendContext negateExpression(ExtendContext expCtx, MyParser parser) {
     ExtendContext parent = (ExtendContext) expCtx.getParent();
     if(expCtx.start.getText().equals("!")) {
       ExtendContext notExpression = (ExtendContext) expCtx.getChild(1);;
       notExpression.setParent(expCtx.getParent());
       return notExpression;
     } else {
-      ExtendContext notExpression = new JavaParser.ExpressionContext(parent, expCtx.invokingState);
+      ExtendContext notExpression = (ExtendContext) parser.createExpression(parent, expCtx.invokingState);
       List<ParseTree> children = new ArrayList<>();
-      ParseTree bangChild = new TerminalNodeImpl(ExtendTokenFactory.DEFAULT.create(JavaParser.BANG, "!"));
+      ParseTree bangChild = new TerminalNodeImpl(ExtendTokenFactory.DEFAULT.create(parser.getBang(), "!"));
       children.add(bangChild);
       children.add(expCtx);
       notExpression.children.clear();
@@ -118,15 +117,15 @@ public class ParseTreeFactory {
     }
   }
 
-  public ExtendContext encapsulateExpByParen(ExtendContext expCtx) {
-    if (expCtx.start.getType() == JavaParser.LPAREN && expCtx.stop.getType() == JavaParser.RPAREN) {
+  public ExtendContext encapsulateExpByParen(ExtendContext expCtx, MyParser parser) {
+    if (expCtx.start.getType() == parser.getLParen() && expCtx.stop.getType() == parser.getRParen()) {
       return expCtx;
     }
-    Token lParen = ExtendTokenFactory.DEFAULT.create(JavaParser.LPAREN, "(");
-    Token rParen = ExtendTokenFactory.DEFAULT.create(JavaParser.RPAREN, ")");
+    Token lParen = ExtendTokenFactory.DEFAULT.create(parser.getLParen(), "(");
+    Token rParen = ExtendTokenFactory.DEFAULT.create(parser.getRParen(), ")");
 
     ExtendContext parent = (ExtendContext) expCtx.getParent();
-    ExtendContext parenExpression = new JavaParser.ExpressionContext(parent, expCtx.invokingState);
+    ExtendContext parenExpression = (ExtendContext) parser.createExpression(parent, expCtx.invokingState);
     List<ParseTree> children = new ArrayList<>();
     children.add(new TerminalNodeImpl(lParen));
     children.add(expCtx);

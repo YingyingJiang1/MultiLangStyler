@@ -38,20 +38,21 @@ public class MyJavaParser implements MyParser {
             JavaParser.RULE_switchStmt,
             JavaParser.RULE_whileStmt, JavaParser.RULE_doWhileStmt, JavaParser.RULE_tryCatchStmt, JavaParser.RULE_tryResourceStmt
     ));
-    private static Set<Integer> allStmts = new HashSet<>(Arrays.asList(
-            JavaParser.RULE_block, JavaParser.RULE_fieldDeclaration,
-            JavaParser.RULE_localVariableDeclarationStmt, JavaParser.RULE_assertStmt,
-            JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,
-            JavaParser.RULE_whileStmt, JavaParser.RULE_doWhileStmt,
-            JavaParser.RULE_tryCatchStmt, JavaParser.RULE_tryResourceStmt,
-            JavaParser.RULE_switchStmt, JavaParser.RULE_syncStmt, JavaParser.RULE_returnStmt,
+    protected static Set<Integer> singleStmts = new HashSet<>(Arrays.asList(
+            JavaParser.RULE_fieldDeclaration,
+            JavaParser.RULE_localVariableDeclarationStmt,JavaParser.RULE_assertStmt,
+            JavaParser.RULE_returnStmt,JavaParser.RULE_syncStmt,
             JavaParser.RULE_throwStmt, JavaParser.RULE_breakStmt, JavaParser.RULE_continueStmt,
-            JavaParser.RULE_yieldStmt, JavaParser.RULE_expressionStmt, JavaParser.RULE_labelStmt
+            JavaParser.RULE_yieldStmt,JavaParser.RULE_expressionStmt,JavaParser.RULE_labelStmt
+
     ));
     private static Set<Integer> memberLists = new HashSet<>(Arrays.asList(
             JavaParser.RULE_fieldDeclarationList, JavaParser.RULE_constructorDeclarationList,
             JavaParser.RULE_methodDeclarationList, JavaParser.RULE_typeDeclarationList,
             JavaParser.RULE_initializerList
+    ));
+    private static Set<Integer> braceOptionalBlocks = new HashSet<>(Arrays.asList(
+            JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,JavaParser.RULE_whileStmt
     ));
 
 
@@ -155,7 +156,8 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToStmt(ParseTree t) {
         if (t instanceof ExtendContext ctx) {
-            return allStmts.contains(ctx.getRuleIndex());
+            // block is included ??
+            return singleStmts.contains(ctx.getRuleIndex()) || compoundStmts.contains(ctx.getRuleIndex()) || ctx.getRuleIndex() == JavaParser.RULE_block;
         }
         return ((TerminalNode) t).getSymbol().getType() == JavaParser.SEMI;
     }
@@ -174,7 +176,15 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean isStmt(ParseTree t) {
+    public boolean belongToSingleStmt(ParseTree t) {
+        if (t instanceof ExtendContext ctx) {
+            return singleStmts.contains(ctx.getRuleIndex());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isStatement(ParseTree t) {
         return t instanceof JavaParser.StatementContext;
     }
 
@@ -239,6 +249,36 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isBlock(ParseTree t) {
+        return t instanceof JavaParser.BlockContext;
+    }
+
+    @Override
+    public boolean isCatchClause(ParseTree t) {
+        return t instanceof JavaParser.CatchClauseContext;
+    }
+
+    @Override
+    public boolean isTypeDeclaration(ParseTree t) {
+        return t instanceof JavaParser.TypeDeclarationContext;
+    }
+
+    @Override
+    public int getRuleExpression() {
+        return JavaParser.RULE_expression;
+    }
+
+    @Override
+    public boolean belongToBraceOptionalStmt(int rule) {
+        return braceOptionalBlocks.contains(rule);
+    }
+
+    @Override
+    public ParseTree createExpression(ParserRuleContext parent, int invokingState) {
+        return new JavaParser.ExpressionContext(parent, invokingState);
+    }
+
+    @Override
     public boolean isBinOp(String name) {
         return binOps.contains(name);
     }
@@ -258,6 +298,16 @@ public class MyJavaParser implements MyParser {
         return isBinOp(name) || isUnOp(name);
     }
 
+    @Override
+    public boolean isComment(int type) {
+        return type == JavaParser.LINE_COMMENT || type == JavaParser.BLOCK_COMMENT;
+    }
+
+    @Override
+    public boolean isBrace(int type) {
+        return type == JavaParser.LBRACE || type == JavaParser.RBRACE;
+    }
+
 //    @Override
 //    public boolean isKeyword(int type) {
 //        return JavaLexer.BOOLEAN <= type && type <= JavaLexer.NON_SEALED ||
@@ -265,48 +315,113 @@ public class MyJavaParser implements MyParser {
 //    }
 
     @Override
-    public int getTypeDeclaration() {
+    public int getRuleTypeDeclaration() {
         return JavaParser.RULE_typeDeclaration;
     }
 
     @Override
-    public int getIdentifier() {
+    public int getRuleIdentifier() {
         return JavaParser.RULE_identifier;
     }
 
     @Override
-    public int getFieldDeclarationList() {
+    public int getRuleIfStmt() {
+        return JavaParser.RULE_ifStmt;
+    }
+
+    @Override
+    public int getRuleIfElseStmt() {
+        return JavaParser.RULE_ifElseStmt;
+    }
+
+    @Override
+    public int getRuleFieldDeclarationList() {
         return JavaParser.RULE_fieldDeclarationList;
     }
 
     @Override
-    public int getMethodDeclarationList() {
+    public int getRuleMethodDeclarationList() {
         return JavaParser.RULE_methodDeclarationList;
     }
 
     @Override
-    public int getConstructorDeclarationList() {
+    public int getRuleConstructorDeclarationList() {
         return JavaParser.RULE_constructorDeclarationList;
     }
 
     @Override
-    public int getInitializerList() {
+    public int getRuleInitializerList() {
         return JavaParser.RULE_initializerList;
     }
 
     @Override
-    public int getTypeDeclarationList() {
+    public int getRuleTypeDeclarationList() {
         return JavaParser.RULE_typeDeclarationList;
     }
 
     @Override
-    public int getBody() {
+    public int getRuleBody() {
         return JavaParser.RULE_body;
     }
 
     @Override
-    public int getModifierList() {
+    public int getRuleModifierList() {
         return JavaParser.RULE_modifierList;
+    }
+
+    @Override
+    public int getRuleTypeType() {
+        return JavaParser.RULE_typeType;
+    }
+
+    @Override
+    public int getRuleSwitchBlockStatementGroup() {
+        return JavaParser.RULE_switchBlockStatementGroup;
+    }
+
+    @Override
+    public int getRuleConstructorDeclaration() {
+        return JavaParser.RULE_constructorDeclaration;
+    }
+
+    @Override
+    public int getRuleMethodDeclaration() {
+        return JavaParser.RULE_methodDeclaration;
+    }
+
+    @Override
+    public int getRuleSyncStmt() {
+        return JavaParser.RULE_syncStmt;
+    }
+
+    @Override
+    public int getRuleInitializer() {
+        return JavaParser.RULE_initializer;
+    }
+
+    @Override
+    public int getRuleArrayInitializer() {
+        return JavaParser.RULE_arrayInitializer;
+    }
+
+    @Override
+    public int getRuleElementValueArrayInitializer() {
+        return JavaParser.RULE_elementValueArrayInitializer;
+    }
+
+    @Override
+    public int getRuleTryCatchStmt() {
+        return JavaParser.RULE_tryCatchStmt;
+    }
+
+    @Override
+    public int getLE() {
+        return JavaParser.LE;
+    }
+
+    @Override
+    public int getGE() {
+        return JavaParser.GE;
     }
 
     @Override
@@ -320,20 +435,97 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getEQ() {
+        return JavaParser.EQUAL;
+    }
+
+    @Override
+    public int getNEQ() {
+        return JavaParser.NOTEQUAL;
+    }
+
+    @Override
     public int getComma() {
         return JavaParser.COMMA;
     }
 
     @Override
-    public List<String> getOperators() {
-        List<String> operators = new ArrayList<String>(binOps);
-        operators.addAll(unaryOps);
-        return operators.stream().toList();
+    public int getSemi() {
+        return JavaParser.SEMI;
     }
 
     @Override
-    public List<String> getSeparators() {
-        return separators.stream().toList();
+    public int getLineComment() {
+        return JavaParser.LINE_COMMENT;
+    }
+
+    @Override
+    public int getLBrace() {
+        return JavaParser.LBRACE;
+    }
+
+    @Override
+    public int getRBrace() {
+        return JavaParser.RBRACE;
+    }
+
+    @Override
+    public int getRuleBlock() {
+        return JavaParser.RULE_block;
+    }
+
+    @Override
+    public int getLParen() {
+        return JavaParser.LPAREN;
+    }
+
+    @Override
+    public int getRParen() {
+        return JavaParser.RPAREN;
+    }
+
+    @Override
+    public int getBang() {
+        return JavaParser.BANG;
+    }
+
+    @Override
+    public int getType(String text) {
+        if (text == null) {
+            return Integer.MIN_VALUE;
+        }
+        return parser.getTokenType(TokenNameGetter.getInstance().getName(text));
+    }
+
+    @Override
+    public int getBlockComment() {
+        return JavaParser.BLOCK_COMMENT;
+    }
+
+    @Override
+    public Set<String> getOperators() {
+        Set<String> operators = new HashSet<>();
+        operators.addAll(binOps);
+        operators.addAll(unaryOps);
+        return operators;
+    }
+
+    @Override
+    public Set<String> getSeparators() {
+        return separators;
+    }
+
+    @Override
+    public Set<Integer> getAllStmts() {
+        Set<Integer> allStmts = new HashSet<>();
+        allStmts.addAll(singleStmts);
+        allStmts.addAll(compoundStmts);
+        return allStmts;
+    }
+
+    @Override
+    public Set<Integer> getCompoundStmts() {
+        return compoundStmts;
     }
 
     @Override
@@ -345,4 +537,10 @@ public class MyJavaParser implements MyParser {
     public int getHws() {
         return JavaParser.HWS;
     }
+
+    @Override
+    public int getIdentifier() {
+        return JavaParser.IDENTIFIER;
+    }
+
 }

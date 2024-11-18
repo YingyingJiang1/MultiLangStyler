@@ -1,4 +1,4 @@
-package org.example.datatype;
+package org.example.utils;
 
 import java.util.*;
 

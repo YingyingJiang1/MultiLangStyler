@@ -5,13 +5,26 @@ import org.dom4j.Element;
 import org.example.style.rule.StyleContext;
 
 public class LineWrappingContext extends StyleContext {
-    @Override
-    public void addElement(Element parent, Parser parser) {
+  int maxColumn, avgColumn;
+  Attr attr;
 
-    }
+  public LineWrappingContext(int maxColumn, int avgColumn, Attr attr) {
+    this.maxColumn = maxColumn;
+    this.avgColumn = avgColumn;
+    this.attr = attr;
+  }
 
-    @Override
-    public Object parseElement(Element parent, Parser parser) {
-        return null;
-    }
+  @Override
+  public void addElement(Element parent, Parser parser) {
+
+  }
+
+  @Override
+  public Object parseElement(Element parent, Parser parser) {
+    return null;
+  }
+
+  public enum Attr {
+    CODE, COMMENT
+  }
 }

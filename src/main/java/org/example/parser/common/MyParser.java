@@ -1,8 +1,8 @@
 package org.example.parser.common;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Styler;
 
 import java.io.IOException;
@@ -34,8 +34,12 @@ public interface MyParser {
     boolean belongToStmt(ParseTree t);
     boolean belongToExpandChildren(ParseTree t);
     boolean belongToMemberList(ParseTree t);
+    boolean belongToSingleStmt(ParseTree t);
+    boolean belongToBraceOptionalStmt(int rule);
 
-    boolean isStmt(ParseTree t);
+    ParseTree createExpression(ParserRuleContext parent, int invokingState);
+
+    boolean isStatement(ParseTree t);
     boolean isInitializer(ParseTree t);
     boolean isFieldDeclaration(ParseTree t);
     boolean isIdentifier(ParseTree t);
@@ -48,27 +52,68 @@ public interface MyParser {
     boolean isBody(ParseTree t);
     boolean isAnnotation(ParseTree t);
     boolean isVws(ParseTree t);
+    boolean isBlock(ParseTree t);
+    boolean isCatchClause(ParseTree t);
+    boolean isTypeDeclaration(ParseTree t);
+
+    int getRuleBlock();
+    int getRuleExpression();
+    int getRuleIdentifier();
+    int getRuleIfStmt();
+    int getRuleIfElseStmt();
+    int getRuleTypeDeclaration();
+    int getRuleFieldDeclarationList();
+    int getRuleMethodDeclarationList();
+    int getRuleConstructorDeclarationList();
+    int getRuleInitializerList();
+    int getRuleTypeDeclarationList();
+    int getRuleBody();
+    int getRuleModifierList();
+    int getRuleTypeType();
+    int getRuleSwitchBlockStatementGroup();
+    int getRuleConstructorDeclaration();
+    int getRuleMethodDeclaration();
+    int getRuleSyncStmt();
+    int getRuleInitializer();
+    int getRuleArrayInitializer();
+    int getRuleElementValueArrayInitializer();
+    int getRuleTryCatchStmt();
+
+
+
 
     boolean isBinOp(String name);
     boolean isUnOp(String name);
     boolean isSeparator(String name);
     boolean isOperator(String name);
 
+    boolean isComment(int type);
+    boolean isBrace(int type);
+
 
     int getVws();
     int getHws();
-    int getTypeDeclaration();
     int getIdentifier();
-    int getFieldDeclarationList();
-    int getMethodDeclarationList();
-    int getConstructorDeclarationList();
-    int getInitializerList();
-    int getTypeDeclarationList();
-    int getBody();
-    int getModifierList();
+    int getLE();
+    int getGE();
     int getLT();
     int getGT();
+    int getEQ();
+    int getNEQ();
     int getComma();
-    List<String> getOperators();
-    List<String> getSeparators();
+    int getSemi();
+    int getLineComment();
+    int getLBrace();
+    int getRBrace();
+    int getLParen();
+    int getRParen();
+    int getBang();
+    int getType(String text);
+    int getBlockComment();
+
+    Set<String> getOperators();
+    Set<String> getSeparators();
+    Set<Integer> getAllStmts();
+    Set<Integer> getCompoundStmts();
+
 }

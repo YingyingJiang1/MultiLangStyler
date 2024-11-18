@@ -252,7 +252,7 @@ public class ExtendContext extends ParserRuleContext {
 
     public void deleteStatementCtx(MyParser parser) {
         for (int i = 0; i < getChildCount(); ++i) {
-            if (parser.isStmt(getChild(i))) {
+            if (parser.isStatement(getChild(i))) {
                 ExtendContext stmtCtx = (ExtendContext) getChild(i);
                 this.replaceChild(stmtCtx, stmtCtx.getChild(0));
             }

@@ -3,6 +3,7 @@ package org.example.styler.structure.handler;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.*;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.*;
 import org.example.styler.structure.EquivalentStructure;
@@ -18,21 +19,21 @@ import java.util.Map;
  */
 public class CondReverserHandler extends Handler{
   // key: compare operator, value: reversing compare operator
-  static Map<String, Token> compareOpMap;
-  static Map<String, Token> logicalOpMap;
+  static Map<String, String> compareOpMap ;
+  static Map<String, String> logicalOpMap;
 
   static {
     compareOpMap = new HashMap<>();
-    compareOpMap.put(">", new ExtendToken(JavaParser.LE, "<="));
-    compareOpMap.put("<", new ExtendToken(JavaParser.GE, ">="));
-    compareOpMap.put(">=", new ExtendToken(JavaParser.LT, "<"));
-    compareOpMap.put("<=", new ExtendToken(JavaParser.GT, ">"));
-    compareOpMap.put("==", new ExtendToken(JavaParser.NOTEQUAL, "!="));
-    compareOpMap.put("!=", new ExtendToken(JavaParser.EQUAL, "=="));
+    compareOpMap.put(">", "<=");
+    compareOpMap.put("<", ">=");
+    compareOpMap.put(">=", "<");
+    compareOpMap.put("<=", ">=");
+    compareOpMap.put("==", "!=");
+    compareOpMap.put("!=", "==");
 
     logicalOpMap = new HashMap<>();
-    logicalOpMap.put("&&", new ExtendToken(JavaParser.OR, "||"));
-    logicalOpMap.put("||", new ExtendToken(JavaParser.AND, "&&"));
+    logicalOpMap.put("&&", "||");
+    logicalOpMap.put("||", "&&");
   }
 
   public CondReverserHandler(String[][] argsList) {
@@ -48,7 +49,7 @@ public class CondReverserHandler extends Handler{
    * @param to
    */
   @Override
-  public void handle(EquivalentStructure structure, int from, int to) {
+  public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
     for(String[] args : argsList) {
       int index1 = Integer.parseInt(args[0]), index2 = Integer.parseInt(args[1]);
       if(index1 == from && index2 == to || index1 == to && index2 == from) {
@@ -58,7 +59,7 @@ public class CondReverserHandler extends Handler{
           for (int j = 0; j < matchedTrees.size(); j++) {
             ParseTree t = matchedTrees.get(j);
             if (t instanceof JavaParser.ExpressionContext ctx) {
-              matchedTrees.set(j, reverseCond(ctx));
+              matchedTrees.set(j, reverseCond(ctx, parser));
             }
           }
         }
@@ -72,23 +73,23 @@ public class CondReverserHandler extends Handler{
    * @param ctx
    * @return whether has unwrapped logical or expression
    */
-  private ParseTree reverseCond(ExtendContext ctx) {
+  private ParseTree reverseCond(ExtendContext ctx, MyParser parser) {
     ExtendToken op = getOp(ctx);
-    Token reversedOp = compareOpMap.get(op.getText());
+    String reversedOp = compareOpMap.get(op.getText());
     if (reversedOp != null) {
       // reverse compare or logical operator
-      op.setType(reversedOp.getType());
-      op.setText(reversedOp.getText());
+      op.setType(parser.getType(reversedOp));
+      op.setText(reversedOp);
       return ctx;
     }
 
     reversedOp = logicalOpMap.get(op.getText());
     ExtendContext exp = ctx;
     if (reversedOp != null) {
-      exp = ParseTreeFactory.getInstance().encapsulateExpByParen((ExtendContext) ctx);
+      exp = ParseTreeFactory.getInstance().encapsulateExpByParen(ctx, parser);
     }
     // expression -> !expression or !expression -> expression
-    ExtendContext notExp = ParseTreeFactory.getInstance().negateExpression(exp);
+    ExtendContext notExp = ParseTreeFactory.getInstance().negateExpression(exp, parser);
     return notExp;
   }
 

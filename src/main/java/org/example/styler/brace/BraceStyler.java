@@ -3,42 +3,28 @@ package org.example.styler.brace;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.java.antlr.JavaParser;
-import org.example.parser.AntlrHelper;
-import org.example.parser.ExtendContext;
-import org.example.parser.ExtendToken;
-import org.example.parser.TokenInfoField;
+import org.example.parser.common.ExtendContext;
+import org.example.parser.common.ExtendToken;
+import org.example.parser.common.TokenInfoField;
+
 import org.example.style.Style;
-import org.example.styler.ASTStyler;
-import org.example.styler.StylerBase;
+import org.example.styler.Styler;
 import org.example.styler.brace.style.*;
 
 import java.util.*;
 
-public class BraceStyler extends StylerBase implements ASTStyler {
-  private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(
-      JavaParser.RULE_typeDeclaration,
-      JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_switchStmt,
-      JavaParser.RULE_switchBlockStatementGroup,
-      JavaParser.RULE_forStmt, JavaParser.RULE_doWhileStmt, JavaParser.RULE_whileStmt,
-      JavaParser.RULE_constructorDeclaration, JavaParser.RULE_methodDeclaration,
-      JavaParser.RULE_syncStmt, JavaParser.RULE_initializer,
-      JavaParser.RULE_tryCatchStmt,JavaParser.RULE_tryResourceStmt,
-      JavaParser.RULE_arrayInitializer, JavaParser.RULE_elementValueArrayInitializer
-  ));
+public class BraceStyler extends Styler {
+  private static Set<Integer> relevantRules = null;
 
   public BraceStyler() {
-  }
-
-  public BraceStyler(boolean enableExtraction, boolean enableApplication) {
-    super(enableExtraction, enableApplication);
+    style = new BraceStyle();
   }
 
   @Override
-  public ExtendContext applyStyle(ExtendContext ctx, Style style) {
+  public ExtendContext applyStyle(ExtendContext ctx) {
     applyOptionalBraceStyle(ctx, style);
     List<ExtendContext> blocks = getAllBlocks(ctx);
-    TypeEnum blockType = getBlockType(ctx.getRuleIndex());
+    TypeEnum blockType = TypeEnum.getBlockType(ctx.getRuleIndex(), parser);
 
     // Apply brace information and add blank line.
     int lastIndex = blocks.size() - 1;
@@ -57,13 +43,13 @@ public class BraceStyler extends StylerBase implements ASTStyler {
   }
 
   @Override
-  public void extractStyle(ExtendContext ctx, Style style) {
+  public void extractStyle(ExtendContext ctx) {
     extractOptionalBraceStyle(ctx, style);
 
     List<ExtendContext> blocks = getAllBlocks(ctx);
     int ruleIndex = ctx.getRuleIndex();
-    TypeEnum blockType = getBlockType(ruleIndex);
-    boolean isNotMultiBlockStmt = ruleIndex != JavaParser.RULE_ifElseStmt && ruleIndex != JavaParser.RULE_tryCatchStmt;
+    TypeEnum blockType = TypeEnum.getBlockType(ruleIndex, parser);
+    boolean isNotMultiBlockStmt = ruleIndex != parser.getRuleIfElseStmt() && ruleIndex != parser.getRuleTryCatchStmt();
     // Extract brace information and blank line.
     for (int i = 0; i < blocks.size(); ++i) {
       try {
@@ -84,14 +70,14 @@ public class BraceStyler extends StylerBase implements ASTStyler {
    * @param style
    */
   private void applyOptionalBraceStyle(ExtendContext ctx, Style style) {
-    if(!AntlrHelper.isBraceOptionalBlocks(ctx.getRuleIndex())) {
+    if(!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
       return;
     }
     OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
     for (int i = 0; i < ctx.getChildCount(); i++) {
       ParseTree child = ctx.getChild(i);
-      if(AntlrHelper.isStmt(child) && child instanceof ExtendContext stmtCtx) {
-        if (stmtCtx.getRuleIndex() != JavaParser.RULE_block) {
+      if(parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
+        if (!parser.isBlock(stmtCtx)) {
           ExtendToken stop = (ExtendToken) stmtCtx.stop;
           if(!property.compactStyle) {
             ctx.addVws(i, 1);
@@ -100,14 +86,14 @@ public class BraceStyler extends StylerBase implements ASTStyler {
             ExtendToken start = (ExtendToken) stmtCtx.start;
             // Move line comment to the end of statement.
             if(!start.trailingComment && !start.comments.isEmpty() &&
-                AntlrHelper.isLineComment(start.comments.get(start.comments.size() - 1))) {
+                parser.getLineComment() == start.comments.get(start.comments.size() - 1).getType()) {
               stop = (ExtendToken) stmtCtx.stop;
               stop.trailingComment = true;
               stop.comments.addAll(start.comments);
               start.comments.clear();
             }
           }
-          if(!(stop.trailingComment && AntlrHelper.isLineComment(stop.comments.get(0)))) {
+          if(!(stop.trailingComment && parser.getLineComment() == stop.comments.get(0).getType())) {
             ctx.addVws(i + 1, 1); // Add vws after statement
             ++i;
           }
@@ -117,18 +103,18 @@ public class BraceStyler extends StylerBase implements ASTStyler {
   }
 
   private void extractOptionalBraceStyle(ExtendContext ctx, Style style) {
-    if(!AntlrHelper.isBraceOptionalBlocks(ctx.getRuleIndex())) {
+    if(!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
       return;
     }
     for (int i = 0; i < ctx.getChildCount(); i++) {
       ParseTree child = ctx.getChild(i);
-      if(AntlrHelper.isStmt(child) && child instanceof ExtendContext stmtCtx) {
+      if(parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
         OptionalBraceProperty property = new OptionalBraceProperty();
-        if(stmtCtx.getRuleIndex() == JavaParser.RULE_block) {
+        if(parser.isBlock(stmtCtx)) {
           int innerStmtRule = stmtCtx.getRuleIndex();
-          boolean braceNotOptional = innerStmtRule == JavaParser.RULE_ifElseStmt ||
-              ctx.getRuleIndex() == JavaParser.RULE_ifElseStmt && innerStmtRule == JavaParser.RULE_ifStmt;
-          property.useBrace = stmtCtx.countChildIf(AntlrHelper::isStmt) == 1 && !braceNotOptional;
+          boolean braceNotOptional = innerStmtRule == parser.getRuleIfElseStmt() ||
+              ctx.getRuleIndex() == parser.getRuleIfElseStmt() && innerStmtRule == parser.getRuleIfStmt();
+          property.useBrace = stmtCtx.countChildIf(parser::isStatement) == 1 && !braceNotOptional;
         } else {
           ParseTree preChild = ctx.getChild(i - 1);
           int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
@@ -142,6 +128,19 @@ public class BraceStyler extends StylerBase implements ASTStyler {
 
   @Override
   protected Set<Integer> getRelevantRules() {
+    if (relevantRules == null) {
+      relevantRules = new HashSet<>(Arrays.asList(
+              parser.getRuleTypeDeclaration(),
+              parser.getRuleSwitchBlockStatementGroup(),
+              parser.getRuleConstructorDeclaration(),
+              parser.getRuleMethodDeclaration(),
+              parser.getRuleSyncStmt(),
+              parser.getRuleInitializer(),
+              parser.getRuleArrayInitializer(),
+              parser.getRuleElementValueArrayInitializer()
+      ));
+      relevantRules.addAll(parser.getCompoundStmts());
+    }
     return relevantRules;
   }
 
@@ -160,10 +159,9 @@ public class BraceStyler extends StylerBase implements ASTStyler {
    */
   private void addIndentionForCaseGroup(ExtendContext ctx, Style style) {
     for (ParseTree child : ctx.children) {
-      if (child instanceof JavaParser.TypeDeclarationContext ||
-          child instanceof JavaParser.StatementContext) {
+      if (parser.isTypeDeclaration(child) || parser.isStatement(child)) {
         // SKip block statement
-        if (child.getChildCount() > 0 && child.getChild(0) instanceof JavaParser.BlockContext) {
+        if (child.getChildCount() > 0 &&  parser.isBlock(child.getChild(0))) {
           continue;
         }
         List<Token> tokens = ((ExtendContext) child).getAllTokensRec();
@@ -179,8 +177,8 @@ public class BraceStyler extends StylerBase implements ASTStyler {
   private void addVwsBefore(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
     if (!token.trailingComment && !token.comments.isEmpty() &&
-        AntlrHelper.isBlockComment(token.comments.get(token.comments.size() - 1))) {
-      token.comments.add(new ExtendToken(JavaParser.VWS, System.lineSeparator()));
+        parser.getBlockComment() == token.comments.get(token.comments.size() - 1).getType()) {
+      token.comments.add(new ExtendToken(parser.getVws(), System.lineSeparator()));
     } else {
       ctx.addVws(ctx.findFirstTerChildByType(braceType),1);
     }
@@ -188,7 +186,7 @@ public class BraceStyler extends StylerBase implements ASTStyler {
 
   private void addVwsAfter(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
-    if(!(token.trailingComment && AntlrHelper.isLineComment(token.comments.get(token.comments.size() - 1)))) {
+    if(!(token.trailingComment && parser.getLineComment() == token.comments.get(token.comments.size() - 1).getType())) {
       ctx.addVws(ctx.findFirstTerChildByType(braceType) + 1, 1);
     }
   }
@@ -200,16 +198,16 @@ public class BraceStyler extends StylerBase implements ASTStyler {
     // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
     if (braceFormatProperty != null) {
       if (braceFormatProperty.beforeLB) {
-        addVwsBefore(ctx, JavaParser.LBRACE);
+        addVwsBefore(ctx, parser.getLBrace());
       }
       if (braceFormatProperty.afterLB) {
-        addVwsAfter(ctx, JavaParser.LBRACE);
+        addVwsAfter(ctx, parser.getLBrace());
       }
       if (braceFormatProperty.beforeRB) {
-        addVwsBefore(ctx, JavaParser.RBRACE);
+        addVwsBefore(ctx, parser.getRBrace());
       }
       if (braceFormatProperty.afterRB) {
-        addVwsAfter(ctx, JavaParser.RBRACE);
+        addVwsAfter(ctx, parser.getRBrace());
       }
     }
 
@@ -234,51 +232,24 @@ public class BraceStyler extends StylerBase implements ASTStyler {
     int ruleIndex = ctx.getRuleIndex();
     List<ExtendContext> blocks = new ArrayList<>();
 
-    if (ruleIndex == JavaParser.RULE_body ||
-        ruleIndex == JavaParser.RULE_arrayInitializer || ruleIndex == JavaParser.RULE_elementValueArrayInitializer) {
+    if (ruleIndex == parser.getRuleBody() ||
+        ruleIndex == parser.getRuleArrayInitializer() || ruleIndex == parser.getRuleElementValueArrayInitializer()) {
       blocks.add(ctx);
     } else {
       for (ParseTree child : ctx.children) {
-        if (child instanceof JavaParser.BlockContext || child instanceof JavaParser.BodyContext) {
+        if (parser.isBlock(child) || parser.isBody(child)) {
           blocks.add((ExtendContext) child);
-        } else if (child instanceof JavaParser.CatchClauseContext) {
-          blocks.add(((ExtendContext) child).getFirstInnerChildByType(JavaParser.RULE_block));
+        } else if (parser.isCatchClause(child)) {
+          blocks.add(((ExtendContext) child).getFirstInnerChildByType(parser.getRuleBlock()));
         }
       }
     }
     return blocks;
   }
 
-  /**
-   * @param ruleIndex Rule index of the real parent of the block.
-   * @implNote This method doesn't handle the case: the block is a @BodyContext instance.
-   */
-  private TypeEnum getBlockType(int ruleIndex) {
-    TypeEnum blockType;
-    switch (ruleIndex) {
-      case JavaParser.RULE_constructorDeclaration:
-      case JavaParser.RULE_methodDeclaration:
-      case JavaParser.RULE_typeDeclaration:
-        blockType = TypeEnum.BODY_BLOCK;
-        break;
-      case JavaParser.RULE_ifElseStmt:
-      case JavaParser.RULE_tryCatchStmt:
-        blockType = TypeEnum.MULTI_BLOCK_STMT;
-        break;
-      case JavaParser.RULE_initializer:
-      case JavaParser.RULE_arrayInitializer:
-      case JavaParser.RULE_elementValueArrayInitializer:
-        blockType = TypeEnum.ARRAY_INITIALIZER_BLOCK;
-        break;
-      default:
-        blockType = TypeEnum.NORMAL_BLOCK;
-    }
-    return blockType;
-  }
-
   private TokenInfoField.BraceTokenInfo[] getBraceTokenInfo(ExtendContext ctx) {
-    int lbIndex = ctx.findFirstTerChildByType(JavaParser.LBRACE);
-    int rbIndex = ctx.findFirstTerChildByType(JavaParser.RBRACE);
+    int lbIndex = ctx.findFirstTerChildByType(parser.getLBrace());
+    int rbIndex = ctx.findFirstTerChildByType(parser.getRBrace());
     TokenInfoField.BraceTokenInfo[] infos = new TokenInfoField.BraceTokenInfo[2];
     if (lbIndex == -1 || rbIndex == -1) {
       return infos;
@@ -303,25 +274,9 @@ public class BraceStyler extends StylerBase implements ASTStyler {
     if (stmtNum > 2) {
       stmtNum = 2;
     }
-    if (stmtNum == 1 && !isSingleStmt(ctx.getChild(1))) {
+    if (stmtNum == 1 && !parser.belongToSingleStmt(ctx.getChild(1))) {
       stmtNum = 2;
     }
     return stmtNum;
-  }
-
-  private boolean isSingleStmt(ParseTree root) {
-    if (root instanceof TerminalNode) {
-      return true;
-    }
-
-    ExtendContext ctx = (ExtendContext) root;
-    int ruleIndex = ctx.getRuleIndex();
-    if (ruleIndex == JavaParser.RULE_localVariableDeclarationStmt || ruleIndex == JavaParser.RULE_assertStmt ||
-        ruleIndex == JavaParser.RULE_returnStmt || ruleIndex == JavaParser.RULE_throwStmt ||
-        ruleIndex == JavaParser.RULE_breakStmt || ruleIndex == JavaParser.RULE_continueStmt ||
-        ruleIndex == JavaParser.RULE_yieldStmt || ruleIndex == JavaParser.RULE_expressionStmt) {
-      return true;
-    }
-    return false;
   }
 }

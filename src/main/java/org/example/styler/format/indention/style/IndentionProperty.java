@@ -2,11 +2,17 @@ package org.example.styler.format.indention.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.style.rule.StyleProperty;
 
 public class IndentionProperty extends StyleProperty {
     public int indentionUnit;
     public char indentionType = ' ';
+
+    public IndentionProperty(int indentionUnit, char indentionType) {
+        this.indentionUnit = indentionUnit;
+        this.indentionType = indentionType;
+    }
 
     @Override
     public void addElement(Element parent, Parser parser) {

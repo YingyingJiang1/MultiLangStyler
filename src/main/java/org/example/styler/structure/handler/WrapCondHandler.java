@@ -2,9 +2,10 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.ExtendContext;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.parser.ExtendContext;
-import org.example.parser.ParseTreeFactory;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class WrapCondHandler extends Handler{
 	}
 
 	@Override
-	public void handle(EquivalentStructure structure, int from, int to) {
+	public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
 		for(String[] args : argsList) {
 			int configuredForm = Integer.parseInt(args[0]), configuredTo = Integer.parseInt(args[1]);
 			if(configuredForm == from && configuredTo == to) {
@@ -31,7 +32,7 @@ public class WrapCondHandler extends Handler{
 						ParseTree t = matchedTrees.get(j);
 						if (t instanceof JavaParser.ExpressionContext ctx) {
 							if(containsLogicalOp(ctx)) {
-								matchedTrees.set(j, ParseTreeFactory.getInstance().encapsulateExpByParen(ctx));
+								matchedTrees.set(j, ParseTreeFactory.getInstance().encapsulateExpByParen(ctx, parser));
 							}
 						}
 					}

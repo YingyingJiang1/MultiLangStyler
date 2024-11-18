@@ -1,5 +1,6 @@
 package org.example.styler.structure.handler;
 
+import org.example.parser.common.MyParser;
 import org.example.styler.structure.EquivalentStructure;
 
 /*
@@ -10,9 +11,9 @@ import org.example.styler.structure.EquivalentStructure;
 public abstract class Handler {
   String[][] argsList;
 
-  public void handle(EquivalentStructure structure, int from, int to) {}
+  public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {}
 
-  public static Handler createHandler(String cls, String[][] argsList) {
+  public static Handler createHandler(String cls, String[][] argsList, MyParser parser) {
     if(cls.equals("CondReverserHandler")) {
       return new CondReverserHandler(argsList);
     }

@@ -2,14 +2,13 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.ExtendContext;
+import org.example.parser.common.ExtendTokenFactory;
+import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.parser.AntlrHelper;
-import org.example.parser.ExtendContext;
 import org.example.myException.StylizationException;
-import org.example.parser.ExtendTokenFactory;
-import org.example.parser.ParseTreeFactory;
 import org.example.style.Style;
-import org.example.styler.StylerBase;
+import org.example.styler.Styler;
 import org.example.styler.brace.style.OptionalBraceProperty;
 import org.example.styler.structure.style.EquivalencesStyle;
 
@@ -20,20 +19,13 @@ import java.util.*;
  * @author       Yingying Jiang
  * @create       2024/4/2 23:51
  */
-public class StructureStyler extends StylerBase {
+public class StructureStyler extends Styler {
   private Map<Integer, List<EquivalentStructure>> equivalences;
   public static Map<Integer, Integer> triggerMap = new HashMap<>();
   private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
   private int recursiveDepth = 0;
 
-  private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(
-      JavaParser.RULE_block,JavaParser.RULE_initializer,
-      JavaParser.RULE_localVariableDeclarationStmt,JavaParser.RULE_ifStmt,
-      JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,JavaParser.RULE_whileStmt,
-      JavaParser.RULE_doWhileStmt, JavaParser.RULE_tryCatchStmt,JavaParser.RULE_tryResourceStmt,
-      JavaParser.RULE_switchStmt, JavaParser.RULE_syncStmt, JavaParser.RULE_returnStmt,
-      JavaParser.RULE_yieldStmt,JavaParser.RULE_expressionStmt, JavaParser.RULE_expression
-  ));
+  private static Set<Integer> relevantRules = null;
 
 
   public StructureStyler() {
@@ -55,7 +47,7 @@ public class StructureStyler extends StylerBase {
         }*/
         Set<MatchedStructure> matchedStructures = new TreeSet<>();
         for(EquivalentStructure structure : equivalentStructures) {
-          int matchedIndex = structure.match(ctx);
+          int matchedIndex = structure.match(ctx, parser);
           int targetIndex = equivalencesStyle.getProperty(structure.getId());
           if(matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
             matchedStructures.add(new MatchedStructure(structure, matchedIndex));
@@ -75,12 +67,12 @@ public class StructureStyler extends StylerBase {
                 convertionPerformed.get(targetStructure).contains(to)) {
               break;
             }
-            newTree = targetStructure.convert(from, to, ctx);
+            newTree = targetStructure.convert(from, to, ctx, parser);
             // If converting operation is performed successfully then record the conversion and call recursively.
             if(newTree instanceof ExtendContext newCtx) {
               convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
               convertionPerformed.get(targetStructure).add(to);
-              ++triggerCount;
+//              ++triggerCount;
               triggerMap.compute(targetStructure.getId(), (k, v) -> v == null ? 1 : v + 1);
               applyStyle(newCtx, style);
               break;
@@ -105,19 +97,19 @@ public class StructureStyler extends StylerBase {
    * @param style
    */
   private void applySingleBlockStyle(ExtendContext ctx, Style style) {
-    if(!AntlrHelper.isBraceOptionalBlocks(ctx.getRuleIndex())) {
+    if(!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
       return;
     }
     OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
     for (int i = 0; i < ctx.getChildCount(); i++) {
       ParseTree child = ctx.getChild(i);
-      if(AntlrHelper.isStmt(child) && child instanceof ExtendContext stmtCtx) {
+      if(parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
         if (property.useBrace) {
           // Add {}
-          if(stmtCtx.getRuleIndex() != JavaParser.RULE_block) {
+          if(stmtCtx.getRuleIndex() != parser.getRuleBlock()) {
             ExtendContext block = new JavaParser.BlockContext(ctx, stmtCtx.invokingState);
-            TerminalNode lb = ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(JavaParser.LBRACE, "{"));
-            TerminalNode rb = ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(JavaParser.RBRACE, "}"));
+            TerminalNode lb = ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(parser.getLBrace(), "{"));
+            TerminalNode rb = ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(parser.getRBrace(), "}"));
             List<ParseTree> children = new ArrayList<>();
             children.add(lb);
             children.add(stmtCtx);
@@ -126,12 +118,11 @@ public class StructureStyler extends StylerBase {
             ctx.replaceChild(stmtCtx, block);
           }
         } else if(stmtCtx.getRuleIndex() == JavaParser.RULE_block &&
-            stmtCtx.countChildIf(AntlrHelper::isStmt) == 1) {
-          ExtendContext innerStmtCtx = stmtCtx.getFirstCtxChildIf(AntlrHelper::isStmt);
+            stmtCtx.countChildIf(parser::isStatement) == 1) {
+          ExtendContext innerStmtCtx = stmtCtx.getFirstCtxChildIf(parser::isStatement);
           // Skip empty statement(;).
           if (innerStmtCtx != null) {
-            int innerStmtRule = innerStmtCtx.getRuleIndex();
-            if(AntlrHelper.isSingleStmt(innerStmtRule)) {
+            if(parser.belongToSingleStmt(innerStmtCtx)) {
               // Remove {}
               ctx.replaceChild(stmtCtx, innerStmtCtx);
             }
@@ -151,7 +142,7 @@ public class StructureStyler extends StylerBase {
         System.out.println(ctx.toStringTree(new JavaParser(null)));
       }*/
       for(EquivalentStructure structure : equivalentStructures) {
-        int index = structure.match(ctx);
+        int index = structure.match(ctx, parser);
         if(index != -1) {
           equivalencesStyle.addRule(structure.getId(), index);
           // break; // Can't break,because ctx may match multiple structures with different id.
@@ -162,6 +153,9 @@ public class StructureStyler extends StylerBase {
 
   @Override
   protected Set<Integer> getRelevantRules() {
+    if (relevantRules == null) {
+      relevantRules = parser.getAllStmts();
+    }
     return relevantRules;
   }
 

@@ -2,11 +2,11 @@ package org.example.styler.arrangement;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.datatype.Helper;
+import org.example.utils.Helper;
 import org.example.parser.common.ExtendContext;
 import org.example.myException.StylizationException;
 import org.example.style.Style;
-import org.example.styler.PermutationGenerator;
+import org.example.utils.PermutationGenerator;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.style.*;
 
@@ -54,7 +54,7 @@ public class ArrangementStyler extends Styler {
 
 			// Create a new list of declaration lists for the body of type declaration.
 			ExtendContext bodyCtx = (ExtendContext) ctx
-					.getFirstInnerChildByType(parser.getBody());
+					.getFirstInnerChildByType(parser.getRuleBody());
 			if (bodyCtx == null) {
 				return ctx;
 			}
@@ -129,7 +129,7 @@ public class ArrangementStyler extends Styler {
 				ArrangementContext context = extractContentContext(ctx);
 				if (context != null && !style.contains(context)) {
 					ExtendContext bodyCtx = (ExtendContext) ctx
-							.getFirstInnerChildByType(parser.getBody());
+							.getFirstInnerChildByType(parser.getRuleBody());
 					if (bodyCtx == null) {
 						return ;
 					}
@@ -161,7 +161,7 @@ public class ArrangementStyler extends Styler {
 		ExtendContext headCtx = (ExtendContext) ctx.getChild(1);
 		String typeType = headCtx.getStart().getText();
 		Map<String, Integer> statistic = new HashMap<>();
-		ExtendContext bodyCtx = ctx.getFirstInnerChildByType(parser.getBody());
+		ExtendContext bodyCtx = ctx.getFirstInnerChildByType(parser.getRuleBody());
 		if (bodyCtx == null) {
 			return null;
 		}
@@ -181,7 +181,7 @@ public class ArrangementStyler extends Styler {
 				continue;
 			}
 			ExtendContext dec = (ExtendContext) root;
-			int modifierListIndex = dec.indexOfFirstInnerChildByType(parser.getModifierList());
+			int modifierListIndex = dec.indexOfFirstInnerChildByType(parser.getRuleModifierList());
 
 			if (modifierListIndex >= 0) {
 				ExtendContext modifierListCtx = (ExtendContext) dec.children.get(modifierListIndex);
@@ -245,7 +245,7 @@ public class ArrangementStyler extends Styler {
 			Info.DeclarationInfo decInfo = new Info.DeclarationInfo();
 
 			ExtendContext dec = (ExtendContext) ctx.children.get(decIndex);
-			ExtendContext modifierListCtx = dec.getFirstInnerChildByType(parser.getModifierList());
+			ExtendContext modifierListCtx = dec.getFirstInnerChildByType(parser.getRuleModifierList());
 			// Add modifiers.
 			if (modifierListCtx != null) {
 				// Delete JavaParser.AnnotationContext.
@@ -377,7 +377,7 @@ public class ArrangementStyler extends Styler {
 				continue;
 			}
 			ExtendContext decCtx = (ExtendContext) ctx.getChild(i);
-			ExtendContext modifierListCtx = (ExtendContext) decCtx.getChild(decCtx.indexOfFirstInnerChildByType(parser.getModifierList()));
+			ExtendContext modifierListCtx = (ExtendContext) decCtx.getChild(decCtx.indexOfFirstInnerChildByType(parser.getRuleModifierList()));
 			String identifierText = getIdentifierText(decCtx);
 			List<Integer> modifiers = new ArrayList<>();
 			for (ParseTree modifier : modifierListCtx.children) {
@@ -417,7 +417,7 @@ public class ArrangementStyler extends Styler {
 	protected Set<Integer> getRelevantRules() {
 		if (relevantRules == null) {
 			relevantRules = new HashSet<>(Arrays.asList(
-					parser.getTypeDeclaration()
+					parser.getRuleTypeDeclaration()
 			));
 		}
 		return relevantRules;
@@ -435,7 +435,7 @@ public class ArrangementStyler extends Styler {
 		if (parser.isFieldDeclaration(ctx)) {
 			idCtx = ctx.getContextRecIf(context -> parser.isIdentifier(context));
 		} else {
-			idCtx = ((ExtendContext) ctx.getChild(1)).getFirstInnerChildByType(parser.getIdentifier());
+			idCtx = ((ExtendContext) ctx.getChild(1)).getFirstInnerChildByType(parser.getRuleIdentifier());
 		}
 		if (idCtx != null) {
 			return idCtx.getText();

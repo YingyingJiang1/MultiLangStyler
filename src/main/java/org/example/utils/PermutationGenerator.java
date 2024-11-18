@@ -1,4 +1,4 @@
-package org.example.styler;
+package org.example.utils;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -4,8 +4,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.example.datatype.FileCollection;
-import org.example.datatype.FileCollector;
+import org.example.utils.FileCollection;
+import org.example.utils.FileCollector;
 
 import java.io.*;
 import java.util.*;

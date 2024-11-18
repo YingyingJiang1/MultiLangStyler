@@ -7,8 +7,8 @@ import org.example.style.Style;
 import org.example.style.format.*;
 import org.example.styler.StylerBase;
 import org.example.styler.TSStyler;
-import org.example.styler.linewrapping.style.LineWrappingProperty;
-import org.example.styler.linewrapping.style.LineWrappingStyle;
+import org.example.styler.format.linewrapping.style.LineWrappingProperty;
+import org.example.styler.format.linewrapping.style.LineWrappingStyle;
 
 import java.util.*;
 
