@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.style.ProgramStyle;
 
@@ -77,12 +78,11 @@ public class ExtendContext extends ParserRuleContext {
         updateStopToken();
     }
 
-//  public void addVws(MyParser parser, int insertionPoint, int amount) {
-//    String newlineStr = StringUtils.repeat(System.lineSeparator(), amount);
-//    TerminalNode t = new TerminalNodeImpl(new ExtendToken(parser.getVws(), newlineStr));
-//    t.setParent(this);
-//    children.add(insertionPoint, t);
-//  }
+  public void addTerNode(int type, String text, int insertionPoint) {
+    TerminalNode t = new TerminalNodeImpl(new ExtendToken(type, text));
+    t.setParent(this);
+    children.add(insertionPoint, t);
+  }
 
     public TerminalNode getFirstTerChildByType(int type) {
         for (ParseTree child : children) {

@@ -3,6 +3,7 @@ package org.example.styler.brace;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenInfoField;
@@ -80,7 +81,7 @@ public class BraceStyler extends Styler {
         if (!parser.isBlock(stmtCtx)) {
           ExtendToken stop = (ExtendToken) stmtCtx.stop;
           if(!property.compactStyle) {
-            ctx.addVws(i, 1);
+            ctx.addTerNode(parser.getVws(), System.lineSeparator(), i);
             ++i;
           } else {
             ExtendToken start = (ExtendToken) stmtCtx.start;
@@ -94,7 +95,7 @@ public class BraceStyler extends Styler {
             }
           }
           if(!(stop.trailingComment && parser.getLineComment() == stop.comments.get(0).getType())) {
-            ctx.addVws(i + 1, 1); // Add vws after statement
+            ctx.addTerNode(parser.getVws(), System.lineSeparator(), i + 1); // Add vws after statement
             ++i;
           }
         }
@@ -180,14 +181,14 @@ public class BraceStyler extends Styler {
         parser.getBlockComment() == token.comments.get(token.comments.size() - 1).getType()) {
       token.comments.add(new ExtendToken(parser.getVws(), System.lineSeparator()));
     } else {
-      ctx.addVws(ctx.findFirstTerChildByType(braceType),1);
+      ctx.addTerNode(parser.getVws(), System.lineSeparator(), ctx.findFirstTerChildByType(braceType));
     }
   }
 
   private void addVwsAfter(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
     if(!(token.trailingComment && parser.getLineComment() == token.comments.get(token.comments.size() - 1).getType())) {
-      ctx.addVws(ctx.findFirstTerChildByType(braceType) + 1, 1);
+      ctx.addTerNode(parser.getVws(), System.lineSeparator(), ctx.findFirstTerChildByType(braceType) + 1);
     }
   }
 
