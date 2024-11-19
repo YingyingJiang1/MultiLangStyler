@@ -1,9 +1,8 @@
-package org.example.styler.brace;
+package org.example.styler.format.body;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenInfoField;
@@ -11,19 +10,22 @@ import org.example.parser.common.TokenInfoField;
 import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.styler.brace.style.*;
+import org.example.styler.format.body.style.BodyLayoutContext;
+import org.example.styler.format.body.style.BodyLayoutProperty;
+import org.example.styler.format.body.style.BodyLayoutStyle;
+import org.example.styler.format.body.style.TypeEnum;
 
 import java.util.*;
 
-public class BraceStyler extends Styler {
+public class BodyLayoutStyler extends Styler {
   private static Set<Integer> relevantRules = null;
 
-  public BraceStyler() {
-    style = new BraceStyle();
+  public BodyLayoutStyler() {
+    style = new BodyLayoutStyle(parser);
   }
 
   @Override
   public ExtendContext applyStyle(ExtendContext ctx) {
-    applyOptionalBraceStyle(ctx, style);
     List<ExtendContext> blocks = getAllBlocks(ctx);
     TypeEnum blockType = TypeEnum.getBlockType(ctx.getRuleIndex(), parser);
 
@@ -36,17 +38,15 @@ public class BraceStyler extends Styler {
         blockType = TypeEnum.NORMAL_BLOCK;
       }
 
-      BraceFormatContext styleContext = new BraceFormatContext(blockType, getStmtNum(block));
-      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getProperty(styleContext);
-      applyBraceInfo(braceFormatProperty, block);
+      BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getStmtNum(block));
+      BodyLayoutProperty bodyLayoutProperty = (BodyLayoutProperty) style.getSimilarProperty(styleContext);
+      applyBraceInfo(bodyLayoutProperty, block);
     }
     return ctx;
   }
 
   @Override
   public void extractStyle(ExtendContext ctx) {
-    extractOptionalBraceStyle(ctx, style);
-
     List<ExtendContext> blocks = getAllBlocks(ctx);
     int ruleIndex = ctx.getRuleIndex();
     TypeEnum blockType = TypeEnum.getBlockType(ruleIndex, parser);
@@ -65,67 +65,6 @@ public class BraceStyler extends Styler {
     }
   }
 
-  /**
-   * Try to add vws.
-   * @param ctx
-   * @param style
-   */
-  private void applyOptionalBraceStyle(ExtendContext ctx, Style style) {
-    if(!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
-      return;
-    }
-    OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
-    for (int i = 0; i < ctx.getChildCount(); i++) {
-      ParseTree child = ctx.getChild(i);
-      if(parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
-        if (!parser.isBlock(stmtCtx)) {
-          ExtendToken stop = (ExtendToken) stmtCtx.stop;
-          if(!property.compactStyle) {
-            ctx.addTerNode(parser.getVws(), System.lineSeparator(), i);
-            ++i;
-          } else {
-            ExtendToken start = (ExtendToken) stmtCtx.start;
-            // Move line comment to the end of statement.
-            if(!start.trailingComment && !start.comments.isEmpty() &&
-                parser.getLineComment() == start.comments.get(start.comments.size() - 1).getType()) {
-              stop = (ExtendToken) stmtCtx.stop;
-              stop.trailingComment = true;
-              stop.comments.addAll(start.comments);
-              start.comments.clear();
-            }
-          }
-          if(!(stop.trailingComment && parser.getLineComment() == stop.comments.get(0).getType())) {
-            ctx.addTerNode(parser.getVws(), System.lineSeparator(), i + 1); // Add vws after statement
-            ++i;
-          }
-        }
-      }
-    }
-  }
-
-  private void extractOptionalBraceStyle(ExtendContext ctx, Style style) {
-    if(!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
-      return;
-    }
-    for (int i = 0; i < ctx.getChildCount(); i++) {
-      ParseTree child = ctx.getChild(i);
-      if(parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
-        OptionalBraceProperty property = new OptionalBraceProperty();
-        if(parser.isBlock(stmtCtx)) {
-          int innerStmtRule = stmtCtx.getRuleIndex();
-          boolean braceNotOptional = innerStmtRule == parser.getRuleIfElseStmt() ||
-              ctx.getRuleIndex() == parser.getRuleIfElseStmt() && innerStmtRule == parser.getRuleIfStmt();
-          property.useBrace = stmtCtx.countChildIf(parser::isStatement) == 1 && !braceNotOptional;
-        } else {
-          ParseTree preChild = ctx.getChild(i - 1);
-          int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
-              ((ExtendContext) preChild).stop.getLine();
-          property.compactStyle = (stmtCtx.start.getLine() == preChildLine);
-        }
-        style.addRule(null, property);
-      }
-    }
-  }
 
   @Override
   protected Set<Integer> getRelevantRules() {
@@ -195,19 +134,19 @@ public class BraceStyler extends Styler {
   /**
    * @param ctx A block.
    */
-  private void applyBraceInfo(BraceFormatProperty braceFormatProperty, ExtendContext ctx) {
+  private void applyBraceInfo(BodyLayoutProperty bodyLayoutProperty, ExtendContext ctx) {
     // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
-    if (braceFormatProperty != null) {
-      if (braceFormatProperty.beforeLB) {
+    if (bodyLayoutProperty != null) {
+      if (bodyLayoutProperty.beforeLB) {
         addVwsBefore(ctx, parser.getLBrace());
       }
-      if (braceFormatProperty.afterLB) {
+      if (bodyLayoutProperty.afterLB) {
         addVwsAfter(ctx, parser.getLBrace());
       }
-      if (braceFormatProperty.beforeRB) {
+      if (bodyLayoutProperty.beforeRB) {
         addVwsBefore(ctx, parser.getRBrace());
       }
-      if (braceFormatProperty.afterRB) {
+      if (bodyLayoutProperty.afterRB) {
         addVwsAfter(ctx, parser.getRBrace());
       }
     }
@@ -217,14 +156,14 @@ public class BraceStyler extends Styler {
   private void extractBraceInfo(TypeEnum blockType, ExtendContext ctx, Style style) {
     int stmtNum = 0;
     stmtNum = getStmtNum(ctx);
-    BraceFormatContext styleContext = new BraceFormatContext(blockType, stmtNum);
+    BodyLayoutContext styleContext = new BodyLayoutContext(blockType, stmtNum);
 
     boolean beforeLB, afterLB, beforeRB, afterRB;
     TokenInfoField.BraceTokenInfo lbInfo, rbInfo;
     TokenInfoField.BraceTokenInfo[] infos = getBraceTokenInfo(ctx);
     lbInfo = infos[0];
     rbInfo = infos[1];
-    BraceFormatProperty styleProperty = new BraceFormatProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
+    BodyLayoutProperty styleProperty = new BodyLayoutProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
 
     style.addRule(styleContext, styleProperty);
   }

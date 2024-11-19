@@ -4,6 +4,12 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
+import org.example.style.Style;
+import org.example.styler.brace.OptionalBraceStyler;
+import org.example.styler.format.body.BodyLayoutStyler;
+import org.example.styler.format.linewrapping.LineWrappingStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.example.io.StyleFileIO;
 import org.example.myException.EAsourceUnsetException;
@@ -34,6 +40,7 @@ public class Controller {
     private MyParser parser;
     private ParseTree tree;
 //    private Map<Integer, TokenOperation> tokenToOperationMap = new HashMap<>();
+
     private final List<Styler> stylers = new ArrayList<>();
     private final List<Styler> enterStylers = new ArrayList<>();
     private final List<Styler> exitStylers = new ArrayList<>();
@@ -53,6 +60,14 @@ public class Controller {
     private void initStylers(ProgramStyle programStyle) {
         if (programStyle == null) {
             stylers.add(new ArrangementStyler());
+            stylers.add(new OptionalBraceStyler());
+            stylers.add(new StructureStyler());
+            // format stylers
+            stylers.add(new BodyLayoutStyler());
+            stylers.add(new IndentionStyler());
+            stylers.add(new LineWrappingStyler());
+            stylers.add(new NewlineStyler());
+            stylers.add(new SpaceStyler());
             //    exitStylers.add(new NamingStyler());
             exitStylers.addAll(stylers);
 //    exitStylers.add(new AntlrCommentStyler());
@@ -67,7 +82,6 @@ public class Controller {
             tStreamStylers.add(new SpaceStyler());
             tStreamStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
         }
-
     }
 
     private void extractStyle(FileCollection files) throws IOException, DocumentException, IllegalArgumentException {

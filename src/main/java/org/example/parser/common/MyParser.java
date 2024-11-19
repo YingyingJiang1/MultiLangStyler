@@ -78,6 +78,8 @@ public interface MyParser {
     int getRuleArrayInitializer();
     int getRuleElementValueArrayInitializer();
     int getRuleTryCatchStmt();
+    int getRuleForStmt();
+    int getRuleWhileStmt();
 
 
 

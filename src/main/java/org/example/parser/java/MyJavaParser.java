@@ -415,6 +415,16 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleForStmt() {
+        return JavaParser.RULE_forStmt;
+    }
+
+    @Override
+    public int getRuleWhileStmt() {
+        return JavaParser.RULE_whileStmt;
+    }
+
+    @Override
     public int getLE() {
         return JavaParser.LE;
     }

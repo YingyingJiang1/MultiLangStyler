@@ -1,22 +1,22 @@
-package org.example.styler.brace.style;
+package org.example.styler.format.body.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.style.rule.StyleContext;
 
-public class BraceFormatContext extends StyleContext {
+public class BodyLayoutContext extends StyleContext {
     private TypeEnum blockType;
     private int stmtNumInBlock; // 0:empty block, 1: only one single statement in block, 2: one single block statement or exceed one statement.
 
-    public BraceFormatContext() {}
+    public BodyLayoutContext() {}
 
-    public BraceFormatContext(TypeEnum blockType, int stmtNum) {
+    public BodyLayoutContext(TypeEnum blockType, int stmtNum) {
         this.blockType = blockType;
         this.stmtNumInBlock = stmtNum;
     }
 
     public int calculateDis(StyleContext context) {
-        BraceFormatContext braceContext = (BraceFormatContext) context;
+        BodyLayoutContext braceContext = (BodyLayoutContext) context;
         if(this.equals(braceContext)) {
             return 0;
         }
@@ -37,8 +37,8 @@ public class BraceFormatContext extends StyleContext {
     }
 
     @Override
-    public BraceFormatContext parseElement(Element parent, Parser parser) {
-        BraceFormatContext context = new BraceFormatContext();
+    public BodyLayoutContext parseElement(Element parent, Parser parser) {
+        BodyLayoutContext context = new BodyLayoutContext();
         context.blockType = TypeEnum.valueOf(parent.element("block_type").getText());
         Element stmtNumEle = parent.element("number_of_stmt");
         String stmtNumText = stmtNumEle.getText();

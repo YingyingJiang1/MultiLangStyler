@@ -1,17 +1,17 @@
-package org.example.styler.brace.style;
+package org.example.styler.format.body.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.style.rule.StyleProperty;
 
-public class BraceFormatProperty extends StyleProperty {
+public class BodyLayoutProperty extends StyleProperty {
     public boolean beforeLB, afterLB, beforeRB, afterRB;
 
 
-    public BraceFormatProperty() {
+    public BodyLayoutProperty() {
     }
 
-    public BraceFormatProperty(boolean beforeLB, boolean afterLB, boolean beforeRB, boolean afterRB) {
+    public BodyLayoutProperty(boolean beforeLB, boolean afterLB, boolean beforeRB, boolean afterRB) {
         this.beforeLB = beforeLB;
         this.afterLB = afterLB;
         this.beforeRB = beforeRB;
@@ -47,9 +47,9 @@ public class BraceFormatProperty extends StyleProperty {
     }
 
     @Override
-    public BraceFormatProperty parseElement(Element parent, Parser parser) {
+    public BodyLayoutProperty parseElement(Element parent, Parser parser) {
         String[] arr = parent.element("line_break_info").getText().split("[(),]");
-        return new BraceFormatProperty(
+        return new BodyLayoutProperty(
                 Boolean.parseBoolean(arr[0]), Boolean.parseBoolean(arr[1]),
                 Boolean.parseBoolean(arr[2]), Boolean.parseBoolean(arr[3]));
     }

@@ -4,15 +4,15 @@ import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.style.Style;
 import org.example.style.rule.*;
+import org.example.styler.format.body.style.BodyLayoutContext;
+import org.example.styler.format.body.style.BodyLayoutProperty;
 
-public class BraceStyle extends Style {
-    RuleSet formatRuleSet = new MapRuleSet();
-    RuleSet optionalBraceRuleSet = new MapRuleSet();
+public class OptionalBraceStyle extends Style {
 
 
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-        if (styleProperty instanceof BraceFormatProperty targetProperty) {
+        if (styleProperty instanceof BodyLayoutProperty targetProperty) {
             addRule(styleContext, targetProperty, formatRuleSet);
         } else if (styleProperty instanceof OptionalBraceProperty targetProperty) {
             addRule(styleContext, targetProperty, optionalBraceRuleSet);
@@ -22,7 +22,7 @@ public class BraceStyle extends Style {
     @Override
     public StyleProperty getProperty(StyleContext styleContext) {
         StyleProperty res = null;
-        if (styleContext instanceof BraceFormatContext) {
+        if (styleContext instanceof BodyLayoutContext) {
             formatRuleSet.getSimilarProperty(styleContext);
             return res;
         } else if (styleContext == null) {
@@ -46,19 +46,19 @@ public class BraceStyle extends Style {
     }
 
     @Override
-    public BraceStyle parseElement(Element parent, Parser parser) {
+    public OptionalBraceStyle parseElement(Element parent, Parser parser) {
         Element braceFormatRulesEle = parent.element("brace_format_rules");
         Element optionalBraceRulesEle = parent.element("optional_brace_rules");
 
-        parseListElement(braceFormatRulesEle, parser, formatRuleSet, BraceFormatProperty.class.getSimpleName());
+        parseListElement(braceFormatRulesEle, parser, formatRuleSet, BodyLayoutProperty.class.getSimpleName());
         parseListElement(optionalBraceRulesEle, parser, optionalBraceRuleSet, OptionalBraceProperty.class.getSimpleName());
         return this;
     }
 
     @Override
     protected StyleRule createRule(String propertyName) {
-        if (propertyName.equals(BraceFormatProperty.class.getSimpleName())) {
-            return new StyleRule(new BraceFormatContext(), new BraceFormatProperty());
+        if (propertyName.equals(BodyLayoutProperty.class.getSimpleName())) {
+            return new StyleRule(new BodyLayoutContext(), new BodyLayoutProperty());
         } else if (propertyName.equals(OptionalBraceProperty.class.getSimpleName())) {
             return new StyleRule(null, new OptionalBraceProperty());
         }

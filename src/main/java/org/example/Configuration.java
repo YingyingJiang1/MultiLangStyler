@@ -6,6 +6,8 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import java.io.*;
 import java.util.*;
@@ -16,6 +18,8 @@ import java.util.*;
  * @author       Yingying Jiang
  * @create       2024/3/13 16:11
  */
+@EnableConfigurationProperties(Configuration.class)
+@ConfigurationProperties(prefix = "config")
 public class Configuration {
 
   public void print() {
