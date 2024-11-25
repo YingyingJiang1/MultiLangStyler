@@ -11,5 +11,6 @@ import org.example.styler.format.body.style.BodyLayoutProperty;
 public class OptionalBraceStyle extends Style {
     public OptionalBraceStyle(MyParser parser) {
         super(parser);
+        styleName = "optional_brace";
     }
 }

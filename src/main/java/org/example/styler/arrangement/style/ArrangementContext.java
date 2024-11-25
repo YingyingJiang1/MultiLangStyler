@@ -3,6 +3,7 @@ package org.example.styler.arrangement.style;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class ArrangementContext extends StyleContext {
     }
 
 
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         parent.addText(typeType);
         for (Map.Entry<String, Integer> entry : statistic.entrySet()) {
             parent.addAttribute(entry.getKey(), entry.getValue().toString());
@@ -62,7 +63,7 @@ public class ArrangementContext extends StyleContext {
     }
 
 
-    public ArrangementContext parseElement(Element parent, Parser parser) {
+    public ArrangementContext parseElement(Element parent, MyParser parser) {
         typeType = parent.getText();
         List<Attribute> attributes = parent.attributes();
         for (Attribute attribute : attributes) {

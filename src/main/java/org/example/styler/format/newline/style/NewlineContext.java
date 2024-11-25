@@ -2,9 +2,13 @@ package org.example.styler.format.newline.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
+import org.example.parser.java.antlr.JavaLexer;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.style.grouper.Grouper;
 import org.example.style.rule.StyleContext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +21,18 @@ public class NewlineContext extends StyleContext {
     double avgLen;
     int count = 0;
 
+    public NewlineContext(int type1, int type2, int totalTexLen) {
+        this.type1 = type1;
+        this.type2 = type2;
+        totalTextLens.put(totalTexLen, 1);
+        count = 1;
+    }
+
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         Element contextEle = parent.addElement("context");
-        String type1Name = grouper == null ? AntlrHelper.getTypeName(type1) : grouper.getGroupName(type1);
-        String type2Name = grouper == null ? AntlrHelper.getTypeName(type2) : grouper.getGroupName(type2);
+        String type1Name = getTypeName(type1, parser);
+        String type2Name = getTypeName(type2, parser);
         contextEle.addElement("type_around").addText(
                 Integer.toString(type1) + ":" + type1Name + "," +
                         Integer.toString(type2) + ":" + type2Name);
@@ -40,13 +51,13 @@ public class NewlineContext extends StyleContext {
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         Element contextEle = parent.element("context");
         String[] types = contextEle.element("type_around").getText().split("[:,]");
         type1 = Integer.parseInt(types[0]);
         type2 = Integer.parseInt(types[2]);
 
-        List<Integer> textLens = AntlrHelper.toIntList(contextEle.element("possible_total_text_length").getText());
+        List<Integer> textLens = toIntList(contextEle.element("possible_total_text_length").getText());
         for (int textLen : textLens) {
             totalTextLens.put(textLen, 0);
         }
@@ -67,5 +78,26 @@ public class NewlineContext extends StyleContext {
             return Integer.MAX_VALUE - count;
         }
         return super.calculateDistance(targetContext);
+    }
+
+    private String getTypeName(int type, MyParser parser) {
+        if (grouper == null || !grouper.isGroup(type)) {
+            return type >= 0 ? parser.getRuleName(type) : parser.getTokenName(-type);
+        } else {
+            return grouper.getGroupName(type);
+        }
+
+    }
+
+    private List<Integer> toIntList(String str) {
+        List<Integer> ret = new ArrayList<>();
+        if(str.length() <= 2) {
+            return ret;
+        }
+        String[] strs = str.substring(1, str.length() - 1).split(",");
+        for(String integer : strs) {
+            ret.add(Integer.parseInt(integer));
+        }
+        return ret;
     }
 }

@@ -40,13 +40,13 @@ public class OptionalBraceStyle extends Style {
 
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         addListElement(parent.element("brace_format_rules"), parser, formatRuleSet, "rule", "In @brace_info.@line_break_info: (beforeLB, afterLB, beforeRB, afterRB)");
         addListElement(parent.element("optional_brace_rules"), parser, optionalBraceRuleSet, "rule", null);
     }
 
     @Override
-    public OptionalBraceStyle parseElement(Element parent, Parser parser) {
+    public OptionalBraceStyle parseElement(Element parent, MyParser parser) {
         Element braceFormatRulesEle = parent.element("brace_format_rules");
         Element optionalBraceRulesEle = parent.element("optional_brace_rules");
 

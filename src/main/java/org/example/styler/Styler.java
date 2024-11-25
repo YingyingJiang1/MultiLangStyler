@@ -18,6 +18,7 @@ public abstract class Styler implements Extractor, Applicator {
     protected Style style;
     protected boolean enableExtraction = true;
     protected boolean enableApplication = true;
+    public boolean executeWhenExit = true;
 //  protected String filePath;
 //  protected ProgramStyle programStyle;
 //  protected Configuration conf;
@@ -33,6 +34,10 @@ public abstract class Styler implements Extractor, Applicator {
     }
 
     public Styler() {}
+
+    public Styler(boolean executeWhenExit) {
+        this.executeWhenExit = executeWhenExit;
+    }
 
     public Style getStyle() { return style; }
 
@@ -77,6 +82,10 @@ public abstract class Styler implements Extractor, Applicator {
         if (process == APPLICATION_PROCESS) {
             enableApplication = false;
         }
+    }
+
+    public void doFinalize() {
+        style.fillStyle();
     }
 
     protected Set<Integer> getRelevantRules() {return null;}

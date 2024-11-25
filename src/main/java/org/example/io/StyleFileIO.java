@@ -8,6 +8,7 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.example.Configuration;
+import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.style.ProgramStyle;
 
@@ -22,20 +23,20 @@ import java.io.IOException;
  */
 public class StyleFileIO {
 
-  public static ProgramStyle read(String file) throws DocumentException {
+  public static ProgramStyle read(String file, MyParser parser) throws DocumentException {
       ProgramStyle programStyle = new ProgramStyle();
       SAXReader reader = new SAXReader();
       Document document = reader.read(new File(file));
       Element root = document.getRootElement();
-      programStyle.parseElement(root, new JavaParser(null));
+      programStyle.parseElement(root, parser);
       return programStyle;
   }
 
-  public static void write(ProgramStyle programStyle, String file) throws IOException {
+  public static void write(ProgramStyle programStyle, String file, MyParser parser) throws IOException {
     // 创建xml文件并写入内容
     Document document = DocumentHelper.createDocument();
     Element root = document.addElement("program_style");
-    programStyle.addElement(root, new JavaParser(null));
+    programStyle.addElement(root, parser);
 
     XMLWriter writer = new XMLWriter(new FileWriter(new File(file)),
             OutputFormat.createPrettyPrint());

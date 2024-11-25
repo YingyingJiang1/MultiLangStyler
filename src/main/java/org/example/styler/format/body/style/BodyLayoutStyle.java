@@ -7,5 +7,6 @@ public class BodyLayoutStyle extends Style {
 
     public BodyLayoutStyle(MyParser parser) {
         super(parser);
+        styleName = "body_layout";
     }
 }

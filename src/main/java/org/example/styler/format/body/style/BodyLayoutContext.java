@@ -2,6 +2,7 @@ package org.example.styler.format.body.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
 public class BodyLayoutContext extends StyleContext {
@@ -26,7 +27,7 @@ public class BodyLayoutContext extends StyleContext {
 
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         parent.addElement("block_type").addText(blockType.name());
         Element stmtNumEle = parent.addElement("number_of_stmt");
         if(stmtNumInBlock < 2) {
@@ -37,7 +38,7 @@ public class BodyLayoutContext extends StyleContext {
     }
 
     @Override
-    public BodyLayoutContext parseElement(Element parent, Parser parser) {
+    public BodyLayoutContext parseElement(Element parent, MyParser parser) {
         BodyLayoutContext context = new BodyLayoutContext();
         context.blockType = TypeEnum.valueOf(parent.element("block_type").getText());
         Element stmtNumEle = parent.element("number_of_stmt");

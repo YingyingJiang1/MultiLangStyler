@@ -159,17 +159,6 @@ public class AntlrHelper {
     return JavaParser.ruleNames[ruleIndex];
   }
 
-  public static List<Integer> toIntList(String str) {
-    List<Integer> ret = new ArrayList<>();
-    if(str.length() <= 2) {
-      return ret;
-    }
-    String[] strs = str.substring(1, str.length() - 1).split(",");
-    for(String integer : strs) {
-      ret.add(Integer.parseInt(integer));
-    }
-    return ret;
-  }
 
   public static boolean isBlockStmt(int type) {
     return blockStmts.contains(type);

@@ -2,6 +2,7 @@ package org.example.styler.structure;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
@@ -25,7 +26,7 @@ public class EquivalentStructureManager {
     return instance;
   }
 
-  public Map<Integer, List<EquivalentStructure>> loadEquivalences() {
+  public Map<Integer, List<EquivalentStructure>> loadEquivalences(MyParser parser) {
     if (equivalences != null) {
       return equivalences;
     }
@@ -74,7 +75,7 @@ public class EquivalentStructureManager {
           handlers = new ArrayList<>();
           for(JsonNode handlerNode : handlersNode) {
             Handler handler = Handler.createHandler(handlerNode.get("class").asText(),
-                objectMapper.convertValue(handlerNode.get("argsList"), String[][].class));
+                objectMapper.convertValue(handlerNode.get("argsList"), String[][].class), parser);
             handlers.add(handler);
           }
         }

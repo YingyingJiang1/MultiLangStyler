@@ -15,14 +15,14 @@ public class ArrangementStyle extends Style {
     
     public ArrangementStyle(MyParser parser) {
         super(parser);
-        styleName = "Arrangement";
+        styleName = "arrangement";
     }
 
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         addListElement(parent, parser, ruleSet, "arrangement_rule", null);
     }
 
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         parseListElement(parent, parser, ruleSet, "arrangement_rule");
         return this;
     }

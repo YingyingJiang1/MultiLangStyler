@@ -1,8 +1,7 @@
 package org.example.styler.format.indention.style;
 
-import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
-import org.example.parser.java.antlr.JavaParser;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class IndentionProperty extends StyleProperty {
@@ -15,13 +14,13 @@ public class IndentionProperty extends StyleProperty {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("indentionUnit", String.valueOf(indentionUnit));
         parent.addAttribute("indentionType", String.valueOf(indentionType));
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         indentionUnit = Integer.parseInt(parent.attributeValue("indentionUnit"));
         indentionType = parent.attributeValue("indentionType").charAt(0);
         return this;

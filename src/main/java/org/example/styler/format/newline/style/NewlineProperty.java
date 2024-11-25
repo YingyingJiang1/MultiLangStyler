@@ -2,6 +2,7 @@ package org.example.styler.format.newline.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class NewlineProperty extends StyleProperty {
@@ -25,13 +26,17 @@ public class NewlineProperty extends StyleProperty {
      */
     public int newlines;
 
+    public NewlineProperty(int newlines) {
+        this.newlines = newlines;
+    }
+
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("newlines", Integer.toString(newlines));
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         String newlinesStr = parent.attributeValue("newlines");
         if (newlinesStr != null) {
             newlines = Integer.parseInt(newlinesStr);

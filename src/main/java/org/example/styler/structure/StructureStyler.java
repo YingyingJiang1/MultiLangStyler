@@ -29,7 +29,7 @@ public class StructureStyler extends Styler {
 
 
   public StructureStyler() {
-    equivalences = EquivalentStructureManager.getInstance().loadEquivalences();
+    equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser);
   }
 
   public ExtendContext applyStyle(ExtendContext ctx, Style style) {

@@ -6,5 +6,6 @@ import org.example.style.Style;
 public class SpaceStyle extends Style {
     public SpaceStyle(MyParser parser) {
         super(parser);
+        styleName = "space";
     }
 }

@@ -2,6 +2,7 @@ package org.example.styler.brace.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class OptionalBraceProperty extends StyleProperty {
@@ -18,7 +19,7 @@ public class OptionalBraceProperty extends StyleProperty {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         parent.addElement("use_brace").addText(Boolean.toString(useBrace));
         if(!useBrace) {
             parent.addElement("is_inline_block").addText(Boolean.toString(compactStyle));
@@ -26,7 +27,7 @@ public class OptionalBraceProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         if (parent != null) {
             useBrace = Boolean.parseBoolean(parent.elementText("use_brace"));
             if(!useBrace) {

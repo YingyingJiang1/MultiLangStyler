@@ -1,30 +1,39 @@
 package org.example.styler.format.linewrapping.style;
 
-import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
 public class LineWrappingContext extends StyleContext {
-  int maxColumn, avgColumn;
-  Attr attr;
 
-  public LineWrappingContext(int maxColumn, int avgColumn, Attr attr) {
-    this.maxColumn = maxColumn;
-    this.avgColumn = avgColumn;
-    this.attr = attr;
-  }
+    Attr attr;
 
-  @Override
-  public void addElement(Element parent, Parser parser) {
+    public LineWrappingContext(Attr attr) {
+        this.attr = attr;
+    }
 
-  }
+    @Override
+    public double calculateDistance(StyleContext targetContext) {
+        if (targetContext instanceof LineWrappingContext context) {
+            if (attr != context.attr) {
+                return -1;
+            }
+            return 0;
+        }
+        return -1;
+    }
 
-  @Override
-  public Object parseElement(Element parent, Parser parser) {
-    return null;
-  }
+    @Override
+    public void addElement(Element parent, MyParser parser) {
 
-  public enum Attr {
-    CODE, COMMENT
-  }
+    }
+
+    @Override
+    public Object parseElement(Element parent, MyParser parser) {
+        return null;
+    }
+
+    public enum Attr {
+        CODE, COMMENT
+    }
 }

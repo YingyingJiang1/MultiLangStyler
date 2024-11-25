@@ -2,6 +2,7 @@ package org.example.styler.format.body.style;
 
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class BodyLayoutProperty extends StyleProperty {
@@ -39,7 +40,7 @@ public class BodyLayoutProperty extends StyleProperty {
 
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         Element braceInfoEle = parent.addElement("brace_info");
         braceInfoEle.addElement("line_break_info").addText(
                 "(" + toString() + ")"
@@ -47,7 +48,7 @@ public class BodyLayoutProperty extends StyleProperty {
     }
 
     @Override
-    public BodyLayoutProperty parseElement(Element parent, Parser parser) {
+    public BodyLayoutProperty parseElement(Element parent, MyParser parser) {
         String[] arr = parent.element("line_break_info").getText().split("[(),]");
         return new BodyLayoutProperty(
                 Boolean.parseBoolean(arr[0]), Boolean.parseBoolean(arr[1]),

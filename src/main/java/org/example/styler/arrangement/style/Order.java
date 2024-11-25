@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
 import org.example.io.DomIO;
+import org.example.parser.common.MyParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +70,8 @@ public class Order implements DomIO {
         this.logicalOrder = logicalOrder;
     }
 
-    String toReadableString(Parser parser) {
+    String toReadableString(MyParser parser) {
         StringBuilder builder = new StringBuilder();
-        Vocabulary vocabulary = parser.getVocabulary();
         builder.append("logic order: ").append(logicalOrder.name().toLowerCase()).append(System.lineSeparator());
         if (!modifierOrder.isEmpty()) {
             builder.append("modifier order of each column: ").append(System.lineSeparator());
@@ -82,7 +82,7 @@ public class Order implements DomIO {
                 if (modifier == -1) {
                     builder.append("empty");
                 } else {
-                    builder.append(vocabulary.getSymbolicName(modifier).toLowerCase());
+                    builder.append(parser.getTokenName(modifier));
                 }
                 builder.append(",");
             }
@@ -92,10 +92,9 @@ public class Order implements DomIO {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         Element orderEle = parent.addElement("order");
         orderEle.addElement("logical_order").addText(logicalOrder.name());
-        Vocabulary vocabulary = parser.getVocabulary();
         if (!modifierOrder.isEmpty()) {
             Element modifierOrderEle = orderEle.addElement("modifier_order");
             for (int i = 0; i < modifierOrder.size(); ++i) {
@@ -104,7 +103,7 @@ public class Order implements DomIO {
                     if (modifier == -1) {
                         builder.append("EMPTY");
                     } else {
-                        builder.append(vocabulary.getSymbolicName(modifier));
+                        builder.append(parser.getTokenName(modifier));
                     }
                     builder.append(",");
                 }
@@ -116,7 +115,7 @@ public class Order implements DomIO {
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         Element orderEle = parent.element("order");
         logicalOrder = EnumType.valueOf(orderEle.element("logical_order").getText());
         Element modifierOrderEle = orderEle.element("modifier_order");
@@ -129,7 +128,7 @@ public class Order implements DomIO {
                     if (arr[i].equals("EMPTY")) {
                         modifierColumn.add(-1);
                     } else {
-                        modifierColumn.add(parser.getTokenType(arr[i]));
+                        modifierColumn.add(parser.getType(arr[i]));
                     }
                 }
                 modifierOrder.add(modifierColumn);

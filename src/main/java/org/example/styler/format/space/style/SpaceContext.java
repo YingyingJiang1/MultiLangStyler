@@ -1,8 +1,7 @@
 package org.example.styler.format.space.style;
 
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.Token;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.grouper.Grouper;
 import org.example.style.rule.StyleContext;
 
@@ -44,7 +43,7 @@ public class SpaceContext extends StyleContext {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         StringBuilder sb = new StringBuilder();
         sb.append(tokenName1);
         if (!tokenName2.isEmpty()) {
@@ -54,7 +53,7 @@ public class SpaceContext extends StyleContext {
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         String[] tokens = parent.attributeValue("token").split(",");
         if (tokens.length > 0) {
             tokenName1 = tokens[0];

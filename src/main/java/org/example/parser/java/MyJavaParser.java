@@ -135,8 +135,8 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public void walkTree(int state, List<Styler> enterStylers, List<Styler> exitStylers) {
-        ExtendJavaParserListener listener = new ExtendJavaParserListener(state, enterStylers, exitStylers, this);
+    public void walkTree(int state, List<Styler> stylers) {
+        ExtendJavaParserListener listener = new ExtendJavaParserListener(state, stylers, this);
         ParseTreeWalker walker = new MyParseTreeWalker();
         walker.walk(listener, tree);
     }
@@ -504,12 +504,25 @@ public class MyJavaParser implements MyParser {
         if (text == null) {
             return Integer.MIN_VALUE;
         }
-        return parser.getTokenType(TokenNameGetter.getInstance().getName(text));
+        return text.startsWith("RULE") ?
+                parser.getRuleIndex(text) :
+                parser.getTokenType(TokenNameGetter.getInstance().getName(text));
     }
 
     @Override
     public int getBlockComment() {
         return JavaParser.BLOCK_COMMENT;
+    }
+
+    @Override
+    public String getTokenName(int type) {
+        return JavaLexer.VOCABULARY.getSymbolicName(type);
+    }
+
+    @Override
+    public String getRuleName(int type) {
+        String[] ruleNames = JavaParser.ruleNames;
+        return ruleNames[type];
     }
 
     @Override
@@ -536,6 +549,19 @@ public class MyJavaParser implements MyParser {
     @Override
     public Set<Integer> getCompoundStmts() {
         return compoundStmts;
+    }
+
+    @Override
+    public Set<Integer> getSingleStmts() {
+        return singleStmts;
+    }
+
+    @Override
+    public Set<Integer> getDecHeads() {
+        return new HashSet<>(List.of(
+                JavaParser.RULE_classHead, JavaParser.RULE_enumHead, JavaParser.RULE_interfaceHead,
+                JavaParser.RULE_recordHead, JavaParser.RULE_constructorHead, JavaParser.RULE_methodHead
+        ));
     }
 
     @Override

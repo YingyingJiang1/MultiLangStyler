@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
 import org.example.io.DomIO;
+import org.example.parser.common.MyParser;
 
 import java.util.*;
 
@@ -42,14 +43,13 @@ public class Feature implements DomIO {
     }
 
 
-    public String toReadableString(Parser parser) {
-        Vocabulary vocabulary = parser.getVocabulary();
+    public String toReadableString(MyParser parser) {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<Integer, Integer> entry : modifierStatistics.entrySet()) {
             if (entry.getKey() == -1) {
-                builder.append("empty");
+                builder.append("DEFAULT");
             } else {
-                builder.append(vocabulary.getSymbolicName(entry.getKey()));
+                builder.append(parser.getTokenName(entry.getKey()));
             }
             builder.append(":").append(entry.getValue()).append(",");
         }
@@ -61,17 +61,17 @@ public class Feature implements DomIO {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         Element featureEle = parent.addElement("feature").addText(toReadableString(parser));
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         Element featureEle = parent.element("feature");
         String[] arr = featureEle.getText().split("[:,]]");
         Feature feature = new Feature();
         for (int i = 0; i < arr.length; i += 2) {
-            feature.modifierStatistics.put(parser.getTokenType(arr[i]), Integer.valueOf(arr[i + 1]));
+            feature.modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));
         }
         return feature;
     }

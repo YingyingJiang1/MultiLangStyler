@@ -43,7 +43,7 @@ public class MapRuleSet implements RuleSet{
             double distance = entry.getKey().calculateDistance(targetContext);
             // Must be less than, because `Double.MAX_VALUE` is a special value which represents
             // that a context similar to `targetContext` cannot be found
-            if(distance < minDis) {
+            if(distance >= 0 && distance < minDis) {
                 minDis = distance;
                 if (!entry.getValue().isEmpty()) {
                     res = entry.getValue().get(0);

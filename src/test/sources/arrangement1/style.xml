@@ -4,7 +4,7 @@
   <arrangement_rule>
     <style_context MethodDeclarationListContext="3" ConstructorDeclarationListContext="1" InitializerListContext="1" TypeDeclarationListContext="3" FieldDeclarationListContext="4">class</style_context>
     <style_property>
-      <fieldDeclarationList_area>
+      <field_declaration_list>
         <feature>PRIVATE:1,PUBLIC:3,STATIC:4,FINAL:4</feature>
         <order>
           <logical_order>MODIFIER_LEXI_ORDER</logical_order>
@@ -15,9 +15,9 @@
           </modifier_order>
           <allowed_order_deviation>0.3</allowed_order_deviation>
         </order>
-      </fieldDeclarationList_area>
-      <typeDeclarationList_area>
-        <feature>empty:1,STATIC:2</feature>
+      </field_declaration_list>
+      <type_declaration_list>
+        <feature>DEFAULT:1,STATIC:2</feature>
         <order>
           <logical_order>MODIFIER_ORDER</logical_order>
           <modifier_order>
@@ -25,8 +25,8 @@
           </modifier_order>
           <allowed_order_deviation>0.3</allowed_order_deviation>
         </order>
-      </typeDeclarationList_area>
-      <initializerList_area>
+      </type_declaration_list>
+      <initializer_list>
         <feature>STATIC:1</feature>
         <order>
           <logical_order>MODIFIER_LEXI_ORDER</logical_order>
@@ -35,8 +35,8 @@
           </modifier_order>
           <allowed_order_deviation>0.3</allowed_order_deviation>
         </order>
-      </initializerList_area>
-      <constructorDeclarationList_area>
+      </initializer_list>
+      <constructor_declaration_list>
         <feature>PRIVATE:1</feature>
         <order>
           <logical_order>MODIFIER_LEXI_ORDER</logical_order>
@@ -45,8 +45,8 @@
           </modifier_order>
           <allowed_order_deviation>0.3</allowed_order_deviation>
         </order>
-      </constructorDeclarationList_area>
-      <methodDeclarationList_area>
+      </constructor_declaration_list>
+      <method_declaration_list>
         <feature>PUBLIC:3,STATIC:3</feature>
         <order>
           <logical_order>MODIFIER_ORDER</logical_order>
@@ -56,7 +56,7 @@
           </modifier_order>
           <allowed_order_deviation>0.3</allowed_order_deviation>
         </order>
-      </methodDeclarationList_area>
+      </method_declaration_list>
     </style_property>
   </arrangement_rule>
 </program_style>

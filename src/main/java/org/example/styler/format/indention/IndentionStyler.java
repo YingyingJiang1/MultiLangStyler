@@ -1,14 +1,11 @@
 package org.example.styler.format.indention;
 
-import jdk.nio.mapmode.ExtendedMapMode;
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendToken;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
-import org.example.styler.hws.style.SpaceContext;
-import org.example.styler.hws.style.SpaceProperty;
 
 import java.util.List;
 

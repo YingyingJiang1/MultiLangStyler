@@ -1,7 +1,8 @@
 package org.example.styler.arrangement.style;
 
-import org.antlr.v4.runtime.Parser;
+import com.google.common.base.CaseFormat;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.io.DomIO;
 import org.example.style.rule.StyleProperty;
@@ -18,7 +19,7 @@ public class ArrangementProperty extends StyleProperty {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         for (ArrangementProperty.ContentArea area : areas) {
             area.addElement(parent, parser);
         }
@@ -47,7 +48,7 @@ public class ArrangementProperty extends StyleProperty {
     }
 
     @Override
-    public ArrangementProperty parseElement(Element parent, Parser parser) {
+    public ArrangementProperty parseElement(Element parent, MyParser parser) {
         for (Element areaEle : parent.elements()) {
             ContentArea area = createArea(areaEle.getName());
             area.parseElement(areaEle, parser);
@@ -90,8 +91,8 @@ public class ArrangementProperty extends StyleProperty {
         }
 
 
-        public String toReadableString(Parser parser) {
-            String areaName = parser.getRuleNames()[category];
+        public String toReadableString(MyParser parser) {
+            String areaName = parser.getRuleName(category);
             return areaName + " area: {" + System.lineSeparator() +
                     "feature: {" + feature.toReadableString(parser) + "}" + System.lineSeparator() +
                     "order: {" + order.toReadableString(parser) + "}" + System.lineSeparator() +
@@ -99,14 +100,16 @@ public class ArrangementProperty extends StyleProperty {
         }
 
         @Override
-        public void addElement(Element parent, Parser parser) {
-            Element areaEle = parent.addElement(parser.getRuleNames()[category] + "_area");
+        public void addElement(Element parent, MyParser parser) {
+            Element areaEle = parent.addElement(
+                    CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE,
+                            parser.getRuleName(category)));
             feature.addElement(areaEle, parser);
             order.addElement(areaEle, parser);
         }
 
         @Override
-        public Object parseElement(Element parent, Parser parser) {
+        public Object parseElement(Element parent, MyParser parser) {
             feature.parseElement(parent, parser);
             order.parseElement(parent, parser);
             return this;

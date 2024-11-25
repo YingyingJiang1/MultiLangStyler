@@ -1,7 +1,7 @@
 package org.example.styler.structure.style;
 
-import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
+import org.example.parser.common.MyParser;
 import org.example.style.Style;
 
 import java.util.ArrayList;
@@ -18,13 +18,18 @@ public class EquivalencesStyle extends Style {
 
   public Map<Integer, List<Integer>> equivalences = new HashMap<>();
 
+  public EquivalencesStyle(MyParser parser) {
+    super(parser);
+    styleName = "equivalences";
+  }
+
   public void addRule(Integer id, Integer index) {
     equivalences.computeIfAbsent(id, k -> new ArrayList<>());
     equivalences.get(id).add(index);
   }
 
   @Override
-  public void addElement(Element parent, Parser parser) {
+  public void addElement(Element parent, MyParser parser) {
     Element equivalencesEle = parent.addElement("equivalences");
     for(Map.Entry<Integer, List<Integer>> entry : equivalences.entrySet()) {
       equivalencesEle.addElement("equivalence")
@@ -34,7 +39,7 @@ public class EquivalencesStyle extends Style {
   }
 
   @Override
-  public Object parseElement(Element parent, Parser parser) {
+  public Object parseElement(Element parent, MyParser parser) {
     Element equivalencesEle = parent.element("equivalences");
     for (Element ele : equivalencesEle.elements()) {
       String[] strs = ele.getText().split("[:,]");
@@ -50,8 +55,9 @@ public class EquivalencesStyle extends Style {
     return value == null ? -1 : value.get(0);
   }
 
+
   @Override
-  public void fill() {
+  public void fillStyle() {
     for (List<Integer> indexes : equivalences.values()) {
       Map<Integer, Integer> indexCounts = new HashMap<>();
       for(int index : indexes) {

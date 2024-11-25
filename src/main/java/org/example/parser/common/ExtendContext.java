@@ -78,11 +78,11 @@ public class ExtendContext extends ParserRuleContext {
         updateStopToken();
     }
 
-  public void addTerNode(int type, String text, int insertionPoint) {
-    TerminalNode t = new TerminalNodeImpl(new ExtendToken(type, text));
-    t.setParent(this);
-    children.add(insertionPoint, t);
-  }
+    public void addTerNode(int type, String text, int insertionPoint) {
+        TerminalNode t = new TerminalNodeImpl(new ExtendToken(type, text));
+        t.setParent(this);
+        children.add(insertionPoint, t);
+    }
 
     public TerminalNode getFirstTerChildByType(int type) {
         for (ParseTree child : children) {
@@ -359,6 +359,15 @@ public class ExtendContext extends ParserRuleContext {
                 if (innerNode.getRuleIndex() == ruleIndex)
                     return i;
             }
+        }
+        return -1;
+    }
+
+    public int indexOfIf(Predicate<ParseTree> predicate) {
+        for (int i = 0; i < this.children.size(); ++i) {
+            ParseTree treeNode = this.children.get(i);
+            if (predicate.test(treeNode))
+                return i;
         }
         return -1;
     }

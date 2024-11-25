@@ -28,7 +28,7 @@ public interface MyParser {
 
     ParseTree parse(Path filePath) throws IOException;
     TokenStream getTokenStream();
-    void walkTree(int state, List<Styler> enterStylers, List<Styler> exitStylers);
+    void walkTree(int state, List<Styler> stylers);
 
     boolean isChangeHierarchy(ParseTree t, ParseTree parent);
     boolean belongToStmt(ParseTree t);
@@ -113,9 +113,14 @@ public interface MyParser {
     int getType(String text);
     int getBlockComment();
 
+    String getTokenName(int type);
+    String getRuleName(int type);
+
     Set<String> getOperators();
     Set<String> getSeparators();
     Set<Integer> getAllStmts();
     Set<Integer> getCompoundStmts();
+    Set<Integer> getSingleStmts();
+    Set<Integer> getDecHeads();
 
 }

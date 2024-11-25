@@ -17,10 +17,15 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	public List<Styler> exitStylers = new ArrayList<>();
 	private MyParser parser;
 
-	public ExtendJavaParserListener(int state, List<Styler> enterStylers, List<Styler> exitStylers, MyParser parser) {
+	public ExtendJavaParserListener(int state, List<Styler> stylers, MyParser parser) {
 		this.state = state;
-		this.enterStylers = enterStylers;
-		this.exitStylers = exitStylers;
+		for (Styler styler : stylers) {
+			if (styler.executeWhenExit) {
+				exitStylers.add(styler);
+			} else {
+				enterStylers.add(styler);
+			}
+		}
 		this.parser = parser;
 	}
 

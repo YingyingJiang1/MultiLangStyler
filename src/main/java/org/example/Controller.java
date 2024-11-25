@@ -4,12 +4,6 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
-import org.example.style.Style;
-import org.example.styler.brace.OptionalBraceStyler;
-import org.example.styler.format.body.BodyLayoutStyler;
-import org.example.styler.format.linewrapping.LineWrappingStyler;
-import org.example.styler.format.newline.NewlineStyler;
-import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.example.io.StyleFileIO;
 import org.example.myException.EAsourceUnsetException;
@@ -41,9 +35,7 @@ public class Controller {
     private ParseTree tree;
 //    private Map<Integer, TokenOperation> tokenToOperationMap = new HashMap<>();
 
-    private final List<Styler> stylers = new ArrayList<>();
-    private final List<Styler> enterStylers = new ArrayList<>();
-    private final List<Styler> exitStylers = new ArrayList<>();
+    private final List<Styler> astStylers = new ArrayList<>();
     private final List<Styler> tStreamStylers = new ArrayList<>(); // token stream stylers.
 //  protected ProgramStyle programStyle;
   protected Configuration conf;
@@ -59,17 +51,16 @@ public class Controller {
 
     private void initStylers(ProgramStyle programStyle) {
         if (programStyle == null) {
-            stylers.add(new ArrangementStyler());
-            stylers.add(new OptionalBraceStyler());
-            stylers.add(new StructureStyler());
+            astStylers.add(new ArrangementStyler());
+//            stylers.add(new OptionalBraceStyler());
+//            stylers.add(new StructureStyler());
             // format stylers
-            stylers.add(new BodyLayoutStyler());
-            stylers.add(new IndentionStyler());
-            stylers.add(new LineWrappingStyler());
-            stylers.add(new NewlineStyler());
-            stylers.add(new SpaceStyler());
+//            stylers.add(new BodyLayoutStyler());
+//            stylers.add(new IndentionStyler());
+//            stylers.add(new LineWrappingStyler());
+//            stylers.add(new NewlineStyler());
+//            stylers.add(new SpaceStyler());
             //    exitStylers.add(new NamingStyler());
-            exitStylers.addAll(stylers);
 //    exitStylers.add(new AntlrCommentStyler());
 //    exitStylers.add(new StructureStyler());
             //    exitStylers.add(new FormatStyler());
@@ -86,7 +77,6 @@ public class Controller {
 
     private void extractStyle(FileCollection files) throws IOException, DocumentException, IllegalArgumentException {
         extractInitialize();
-        enableAll(Styler.EXTRACTION_PROCESS);
         int count = 0;
         for (int i = 0; i < files.size(); i++) {
             curPath = Paths.get(files.getFilePath(i));
@@ -115,7 +105,7 @@ public class Controller {
     }
 
     private void extractOnAST() {
-        parser.walkTree(EXTRACTION_PROCESS, enterStylers, exitStylers);
+        parser.walkTree(EXTRACTION_PROCESS, astStylers);
     }
 
     private void extractInitialize() {
@@ -125,12 +115,10 @@ public class Controller {
 
     private void extractFinalize() {
         List<Styler> stylers = new ArrayList<>();
-        stylers.addAll(enterStylers);
-        stylers.addAll(exitStylers);
+        stylers.addAll(astStylers);
         stylers.addAll(tStreamStylers);
-
         for (Styler styler : stylers) {
-            styler.getStyle().fillStyle();
+            styler.doFinalize();
         }
     }
 
@@ -187,10 +175,9 @@ public class Controller {
             // First round: apply on AST
             Preprocessor preprocessor = new Preprocessor();
             preprocessor.preprocess(parser, Styler.APPLICATION_PROCESS);
-            enableAll(Styler.APPLICATION_PROCESS);
 //            Set<Class> disabledClassed = new HashSet<>(List.of(AntlrBraceStyler.class, NewlineStyler.class);
 //            disable(APPLICATION_PROCESS, disabledClassed);
-            parser.walkTree(Styler.APPLICATION_PROCESS, enterStylers, exitStylers);
+            parser.walkTree(Styler.APPLICATION_PROCESS, astStylers);
 
             // Second round: apply on AST
 //            Set<Class> enabledClasses = new HashSet<>(List.of(List.of(AntlrBraceStyler.class, NewlineStyler.class));
@@ -269,50 +256,6 @@ public class Controller {
         tStreamStylers.addAll(indentionStylers);
 
         return builder.toString();
-    }
-
-    private void enableAll(int process) {
-        for (Styler styler : enterStylers) {
-            styler.enable(process);
-        }
-        for (Styler styler : exitStylers) {
-            styler.enable(process);
-        }
-    }
-
-    private void disableAll(int process) {
-        for (Styler styler : enterStylers) {
-            styler.disable(process);
-        }
-        for (Styler styler : exitStylers) {
-            styler.disable(process);
-        }
-    }
-
-    private void enable(int process, Class cls) {
-        for (Styler styler : enterStylers) {
-            if (styler.getClass().equals(cls)) {
-                styler.enable(process);
-            }
-        }
-        for (Styler styler : exitStylers) {
-            if (styler.getClass().equals(cls)) {
-                styler.enable(process);
-            }
-        }
-    }
-
-    private void disable(int process, Set<Class> classes) {
-        for (Styler styler : enterStylers) {
-            if (classes.contains(styler.getClass())) {
-                styler.disable(process);
-            }
-        }
-        for (Styler styler : exitStylers) {
-            if (classes.contains(styler.getClass())) {
-                styler.disable(process);
-            }
-        }
     }
 
 
@@ -537,14 +480,14 @@ public class Controller {
         try {
             // extract style from existing style file or source codes.
             if (conf.styleFile != null) {
-                ProgramStyle programStyle = StyleFileIO.read(conf.styleFile);
+                ProgramStyle programStyle = StyleFileIO.read(conf.styleFile, parser);
                 initStylers(programStyle);
             } else {
                 initStylers(null);
                 extractStyle(conf.extractionCollection);
             }
             ProgramStyle programStyle = combineStyle();
-            StyleFileIO.write(programStyle, conf.styleFileSavedPath);
+            StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
             applyStyle(conf.applicationCollection);
             return programStyle;
         } catch (EAsourceUnsetException | IOException | ParserRuleContextTypeException |
@@ -558,7 +501,7 @@ public class Controller {
 
     private ProgramStyle combineStyle() {
         ProgramStyle programStyle = new ProgramStyle();
-        for (Styler styler : stylers) {
+        for (Styler styler : astStylers) {
             programStyle.add(styler.getStyle());
         }
         return programStyle;
@@ -566,9 +509,8 @@ public class Controller {
 
     private void setParser(Path filePath) {
         parser = MyParserFactory.createParser(filePath.getFileName().toString());
-        for (Styler styler : stylers) {
-            styler.setParser(parser);
-        }
+        astStylers.forEach(styler -> styler.setParser(parser));
+        tStreamStylers.forEach(styler -> styler.setParser(parser));
     }
 
 

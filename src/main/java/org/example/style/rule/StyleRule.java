@@ -3,6 +3,7 @@ package org.example.style.rule;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.io.DomIO;
+import org.example.parser.common.MyParser;
 
 /**
  * @description Try to concentrate type conversions in a single file.
@@ -22,8 +23,12 @@ public class StyleRule implements DomIO {
     }
 
     public void fillStyle() {
-        styleContext.fillStyle();
-        styleProperty.fillStyle();
+        if (styleContext != null) {
+            styleContext.fillStyle();
+        }
+        if (styleProperty!= null) {
+            styleProperty.fillStyle();
+        }
     }
 
     public StyleContext getStyleContext() {
@@ -36,7 +41,7 @@ public class StyleRule implements DomIO {
 
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         if (styleContext != null) {
             Element contextEle = parent.addElement("style_context");
             styleContext.addElement(contextEle, parser);
@@ -48,7 +53,7 @@ public class StyleRule implements DomIO {
     }
 
     @Override
-    public StyleRule parseElement(Element parent, Parser parser) {
+    public StyleRule parseElement(Element parent, MyParser parser) {
         if (styleContext != null) {
             styleContext.parseElement(parent, parser);
         }

@@ -79,7 +79,7 @@ public class NewlineContext extends StyleContext {
     }
 
     @Override
-    public void addElement(Element parent, Parser parser) {
+    public void addElement(Element parent, MyParser parser) {
         Element contextEle = parent.addElement("context");
         String type1Name = grouper == null ? AntlrHelper.getTypeName(type1) : grouper.getGroupName(type1);
         String type2Name = grouper == null ? AntlrHelper.getTypeName(type2) : grouper.getGroupName(type2);
@@ -101,7 +101,7 @@ public class NewlineContext extends StyleContext {
     }
 
     @Override
-    public Object parseElement(Element parent, Parser parser) {
+    public Object parseElement(Element parent, MyParser parser) {
         Element contextEle = parent.element("context");
         String[] types = contextEle.element("type_around").getText().split("[:,]");
         type1 = Integer.parseInt(types[0]);

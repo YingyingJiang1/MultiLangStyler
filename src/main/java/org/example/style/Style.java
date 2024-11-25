@@ -25,13 +25,15 @@ public abstract class Style implements DomIO {
         this.parser = parser;
     }
 
-    public void addElement(Element parent, Parser parser){
+    public void addElement(Element parent, MyParser parser){
+        Element styleEle = parent.addElement(styleName);
         for (StyleRule rule : ruleSet.getRules()) {
-            rule.addElement(parent, parser);
+            Element ruleEle = parent.addElement("rule");
+            rule.addElement(ruleEle, parser);
         }
     }
 
-    public Object parseElement(Element parent, Parser parser){
+    public Object parseElement(Element parent, MyParser parser){
         return null;
     }
 
@@ -53,7 +55,7 @@ public abstract class Style implements DomIO {
         }
     }
 
-    protected void addListElement(Element parent, Parser parser, RuleSet ruleSet, String name, String comment) {
+    protected void addListElement(Element parent, MyParser parser, RuleSet ruleSet, String name, String comment) {
         if (comment != null) {
             parent.addComment(comment);
         }
@@ -68,7 +70,7 @@ public abstract class Style implements DomIO {
         return ruleSet.contains(targetContext);
     }
 
-    protected void parseListElement(Element parent, Parser parser, RuleSet ruleSet, String name) {
+    protected void parseListElement(Element parent, MyParser parser, RuleSet ruleSet, String name) {
         List<Element> eleList = parent.elements();
         for(Element ele : eleList) {
             StyleRule rule = createRule(name);

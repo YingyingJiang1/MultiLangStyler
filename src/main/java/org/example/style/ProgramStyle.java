@@ -3,6 +3,7 @@ package org.example.style;
 import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.io.DomIO;
+import org.example.parser.common.MyParser;
 
 import java.util.*;
 
@@ -22,14 +23,14 @@ public class ProgramStyle implements DomIO {
 
 
     @Override
-    public void addElement(Element root, Parser parser) {
+    public void addElement(Element root, MyParser parser) {
         for (Style style : styles) {
             style.addElement(root, parser);
         }
     }
 
     @Override
-    public Object parseElement(Element root, Parser parser) {
+    public Object parseElement(Element root, MyParser parser) {
         for (Style style : styles) {
             style.parseElement(root, parser);
         }

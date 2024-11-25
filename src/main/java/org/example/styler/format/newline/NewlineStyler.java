@@ -7,10 +7,9 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.style.Style;
+import org.example.styler.format.newline.style.NewlineContext;
+import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
-import org.example.styler.newline.style.NewlineContext;
-import org.example.styler.newline.style.NewlineProperty;
-import org.example.styler.newline.style.NewlineRule;
 import org.example.styler.Styler;
 
 import java.util.*;
@@ -41,12 +40,9 @@ public class NewlineStyler extends Styler {
         for(int i = 0; i < len; ++i) {
             List<Info> infos1 = extractInfos(ctx, i, i + 1, Styler.EXTRACTION_PROCESS);
             List<Info> infos = infos1;
-            List<NewlineRule> rules = new ArrayList<>();
             for(Info info : infos) {
-                NewlineRule rule = new NewlineRule(extractContext(info), extractProperty(info));
-                rules.add(rule);
+                style.addRule(extractContext(info), extractProperty(info));
             }
-            style.addRules(rules);
         }
     }
 
@@ -55,7 +51,7 @@ public class NewlineStyler extends Styler {
             List<Info> infos = extractInfos(ctx, i, i + 1, Styler.APPLICATION_PROCESS);
             for(Info info : infos) {
                 NewlineContext newlineContext = extractContext(info);
-                NewlineProperty newlineProperty = formatStyle.getProperty(newlineContext);
+                NewlineProperty newlineProperty = (NewlineProperty) style.getProperty(newlineContext);
 
                 // Must update index here! Because index will change after insertion operation.
                 info.child1.index = i;
@@ -192,7 +188,7 @@ public class NewlineStyler extends Styler {
                 int newlines = newlineProperty.newlines;
                 newlines -= getNewlineAfter(parent, info.child1);
                 if (newlines > 0) {
-                    info.parentCtx.addVws(insertionPoint, newlines);
+                    info.parentCtx.addTerNode(parser.getVws(), StringUtils.repeat(System.lineSeparator(), newlines), insertionPoint);
                     return 1;
                 }
             }

@@ -6,16 +6,16 @@ import java.util.*;
 public class FineGrainedGrouper implements Grouper {
 	private static FineGrainedGrouper instance = new FineGrainedGrouper();
 
-	public static final int KEYWORD_GROUP = START - 1;
-	public static final int LITERAL_GROUP = START - 2;
-	public static final int UNARY_OP_GROUP = START - 3;
-	public static final int BIN_BIT_OP = START - 4; // &, ^, |
-	public static final int BIN_ASSIGN_OP = START - 5; // =, +=, <<=,...
-	public static final int BIN_ARITHMETIC_OP = START - 6; // +, -, *...
-	public static final int BIN_LOGICAL_OP = START - 7; // &&, ||
-	public static final int BIN_COMPARE_OP = START - 8; // <, <=, ==,...
-	public static final int ARROW = START - 9;
-	public static final int COLON = START - 10;
+	public static final int KEYWORD_GROUP = START + 1;
+	public static final int LITERAL_GROUP = START + 2;
+	public static final int UNARY_OP_GROUP = START + 3;
+	public static final int BIN_BIT_OP = START + 4; // &, ^, |
+	public static final int BIN_ASSIGN_OP = START + 5; // =, +=, <<=,...
+	public static final int BIN_ARITHMETIC_OP = START + 6; // +, +, *...
+	public static final int BIN_LOGICAL_OP = START + 7; // &&, ||
+	public static final int BIN_COMPARE_OP = START + 8; // <, <=, ==,...
+	public static final int ARROW = START + 9;
+	public static final int COLON = START + 10;
 
 
 
@@ -57,6 +57,16 @@ public class FineGrainedGrouper implements Grouper {
 			}
 		}
 		return name;
+	}
+
+	@Override
+	public String getGroupName(int type) {
+		return "";
+	}
+
+	@Override
+	public boolean isGroup(int type) {
+		return type > START;
 	}
 
 //	@Override

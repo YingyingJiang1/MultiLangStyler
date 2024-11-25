@@ -7,5 +7,6 @@ public class IndentionStyle extends Style {
 
     public IndentionStyle(MyParser parser) {
         super(parser);
+        styleName = "indention";
     }
 }
