@@ -2,7 +2,7 @@ package org.example.styler.arrangement.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
-import org.example.style.CommonStyle;
+import org.example.style.style;
 import org.example.style.rule.StyleRule;
 
 /*
@@ -10,10 +10,10 @@ import org.example.style.rule.StyleRule;
  * @author       Yingying Jiang
  * @create       2024/2/1 14:31
  */
-public class ArrangementStyle extends CommonStyle {
+public class ArrangementStyle extends style {
     
     public ArrangementStyle(MyParser parser) {
-        super(parser);
+        super();
         styleName = "arrangement";
     }
 

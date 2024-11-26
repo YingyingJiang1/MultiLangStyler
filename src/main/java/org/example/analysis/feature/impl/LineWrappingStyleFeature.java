@@ -1,9 +1,9 @@
-package org.example.analysis.diff.impl;
+package org.example.analysis.feature.impl;
 
-import org.example.analysis.diff.feature.FeatureVector;
-import org.example.analysis.diff.StyleFeature;
-import org.example.analysis.diff.feature.VectorFeatureValue;
-import org.example.style.CommonStyle;
+import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.StyleFeature;
+import org.example.analysis.feature.featurevalue.VectorFeatureValue;
+import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.format.linewrapping.style.LineWrappingContext;
 import org.example.styler.format.linewrapping.style.LineWrappingProperty;
@@ -18,9 +18,9 @@ public class LineWrappingStyleFeature extends StyleFeature {
      */
     int maxLen = 80;
     @Override
-    public void toFeatureVector(CommonStyle commonStyle, Map<String, FeatureVector> styleFeatures) {
+    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
         FeatureVector fv = new FeatureVector();
-        for (StyleRule rule : commonStyle.getRules()) {
+        for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof LineWrappingContext context &&
             rule.getStyleProperty() instanceof LineWrappingProperty property) {
                 if (context.attr == LineWrappingContext.Attr.CODE) {

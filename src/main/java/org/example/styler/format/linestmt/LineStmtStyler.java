@@ -5,7 +5,6 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.styler.Styler;
 import org.example.styler.format.linestmt.style.LineStmtProperty;
-import org.example.styler.format.linestmt.style.LineStmtCommonStyle;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +13,7 @@ public class LineStmtStyler extends Styler {
     private static Set<Integer> relevantRules = null;
 
     public LineStmtStyler() {
-        commonStyle = new LineStmtCommonStyle(parser);
+        style.setStyleName("line_stmt");
     }
 
     /**
@@ -24,7 +23,7 @@ public class LineStmtStyler extends Styler {
      */
     @Override
     public ExtendContext applyStyle(ExtendContext ctx) {
-        LineStmtProperty property = (LineStmtProperty) commonStyle.getProperty(null);
+        LineStmtProperty property = (LineStmtProperty) style.getProperty(null);
         if (property.isOneStmtPerLine) {
             for (int i = 0; i < ctx.getChildCount() - 1; i++) {
                 ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
@@ -51,7 +50,7 @@ public class LineStmtStyler extends Styler {
                 }
             }
         }
-        commonStyle.addRule(null, new LineStmtProperty(oneStmtPerLine));
+        style.addRule(null, new LineStmtProperty(oneStmtPerLine));
     }
 
     @Override

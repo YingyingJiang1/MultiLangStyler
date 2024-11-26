@@ -14,15 +14,10 @@ import java.util.List;
  * @author     : Jiang Yingying
  * @create     : 2024/1/7 17:55
  */
-public class CommonStyle implements DomIO,Style {
-    protected MyParser parser;
+public class style implements DomIO,Style {
     public String styleName = "";
 //    protected List<StyleRule> rules = new ArrayList<>();
     protected RuleSet ruleSet = new MapRuleSet();
-
-    public CommonStyle(MyParser parser) {
-        this.parser = parser;
-    }
 
     public void addElement(Element parent, MyParser parser){
         Element styleEle = parent.addElement(styleName);
@@ -60,6 +55,11 @@ public class CommonStyle implements DomIO,Style {
         for (StyleRule rule : ruleSet.getRules()) {
             rule.fillStyle();
         }
+    }
+
+    @Override
+    public void setStyleName(String styleName) {
+        this.styleName = styleName;
     }
 
     protected void addListElement(Element parent, MyParser parser, RuleSet ruleSet, String name, String comment) {

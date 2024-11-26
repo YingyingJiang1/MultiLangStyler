@@ -1,12 +1,12 @@
 package org.example.analysis;
 
 import org.example.Controller;
-import org.example.analysis.diff.StyleFeature;
-import org.example.analysis.diff.StyleDiffFactory;
-import org.example.analysis.diff.feature.FeatureVector;
+import org.example.analysis.feature.StyleFeature;
+import org.example.analysis.feature.StyleFeatureFactory;
+import org.example.analysis.feature.featurevalue.FeatureVector;
 import org.example.analysis.ioformat.DiffResult;
 import org.example.analysis.ioformat.InputPair;
-import org.example.style.CommonStyle;
+import org.example.style.style;
 import org.example.style.ProgramStyle;
 import org.example.utils.FileCollection;
 
@@ -39,10 +39,10 @@ public class DiffAnalyzer {
             files2.add(Paths.get(pair.getFile2()));
             ProgramStyle programStyle2 = new Controller().extractStyle(files2);
 
-            for (CommonStyle commonStyle1 : programStyle1.getStyles()) {
-                List<CommonStyle> result = programStyle2.getStyles().stream().filter(style2 -> commonStyle1.getClass() == style2.getClass()).toList();
+            for (style commonStyle1 : programStyle1.getStyles()) {
+                List<style> result = programStyle2.getStyles().stream().filter(style2 -> commonStyle1.getClass() == style2.getClass()).toList();
                 if (!result.isEmpty()) {
-                    StyleFeature styleFeature = StyleDiffFactory.createStyleDiff(commonStyle1.getClass());
+                    StyleFeature styleFeature = StyleFeatureFactory.createStyleDiff(commonStyle1.getClass());
                     if (styleFeature != null) {
                         FeatureVector fv1 = styleFeature.toFeatureVector(commonStyle1);
                         FeatureVector fv2 = styleFeature.toFeatureVector(result.get(0));

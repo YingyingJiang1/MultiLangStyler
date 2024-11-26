@@ -6,7 +6,6 @@ import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenNameGetter;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
-import org.example.styler.format.space.style.SpaceCommonStyle;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceProperty;
 
@@ -21,11 +20,10 @@ public class SpaceStyler extends Styler {
     static Set<String> relevantTokens = null;
 
     public SpaceStyler() {
-        commonStyle = new SpaceCommonStyle(parser);
-
+        style.setStyleName("space");
         // There's always a space between keywords and identifiers.
-        commonStyle.addRule(new SpaceContext("keyword", "identifier"), new SpaceProperty(true));
-        commonStyle.addRule(new SpaceContext("identifier", "keyword"), new SpaceProperty(true));
+        style.addRule(new SpaceContext("keyword", "identifier"), new SpaceProperty(true));
+        style.addRule(new SpaceContext("identifier", "keyword"), new SpaceProperty(true));
     }
 
 
@@ -39,7 +37,7 @@ public class SpaceStyler extends Styler {
 
 
         if (context != null) {
-            commonStyle.addRule(context, property);
+            style.addRule(context, property);
         }
     }
 
@@ -47,7 +45,7 @@ public class SpaceStyler extends Styler {
     public void applyStyle(List<Token> tokens, int index) {
         Token cur = tokens.get(index);
         StyleContext context = extractContext(tokens, index);
-        SpaceProperty property = (SpaceProperty) commonStyle.getSimilarProperty(context);
+        SpaceProperty property = (SpaceProperty) style.getSimilarProperty(context);
         if (property != null) {
             if (cur instanceof CommonToken commonToken) {
                 if (property.space2) {

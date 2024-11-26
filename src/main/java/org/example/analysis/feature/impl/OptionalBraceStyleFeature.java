@@ -1,9 +1,9 @@
-package org.example.analysis.diff.impl;
+package org.example.analysis.feature.impl;
 
-import org.example.analysis.diff.feature.FeatureVector;
-import org.example.analysis.diff.StyleFeature;
-import org.example.analysis.diff.feature.VectorFeatureValue;
-import org.example.style.CommonStyle;
+import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.StyleFeature;
+import org.example.analysis.feature.featurevalue.VectorFeatureValue;
+import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.brace.style.OptionalBraceProperty;
 
@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class OptionalBraceStyleFeature extends StyleFeature {
     @Override
-    public Map<String, FeatureVector> toFeatureVector(CommonStyle commonStyle) {
+    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
         FeatureVector fv1 = new FeatureVector();
         FeatureVector fv2 = null;
-        for (StyleRule rule : commonStyle.getRules()) {
+        for (StyleRule rule : style.getRules()) {
             if (rule.getStyleProperty() instanceof OptionalBraceProperty property) {
                 fv1.addFeature("Use brace", new VectorFeatureValue(List.of(property.useBrace)));
                 if (!property.useBrace) {
@@ -26,7 +26,6 @@ public class OptionalBraceStyleFeature extends StyleFeature {
         }
         styleFeatures.put("Optional brace", fv1);
         styleFeatures.put("Layout of control statement without braces", fv2);
-        return styleFeatures;
     }
 
 }

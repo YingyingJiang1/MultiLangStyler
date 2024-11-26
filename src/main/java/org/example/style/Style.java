@@ -13,4 +13,5 @@ public interface Style {
     List<StyleRule> getRules();
     String getStyleName() ;
     void fillStyle();
+    void setStyleName(String styleName);
 }

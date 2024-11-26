@@ -1,29 +1,21 @@
-package org.example.analysis.diff;
+package org.example.analysis.feature;
 
-import org.example.analysis.diff.impl.*;
-import org.example.style.CommonStyle;
-import org.example.styler.arrangement.style.ArrangementStyle;
-import org.example.styler.format.indention.style.IndentionCommonStyle;
-import org.example.styler.format.linewrapping.style.LineWrappingCommonStyle;
-import org.example.styler.format.newline.style.NewlineCommonStyle;
-import org.example.styler.format.space.style.SpaceCommonStyle;
-import org.example.styler.structure.style.StructPreferenceCommonStyle;
+import org.example.analysis.feature.impl.*;
+import org.example.style.Style;
 
 import java.util.Map;
 
 
-public class StyleDiffFactory {
-    private static Map<Class<? extends CommonStyle>, DiffCreator> diffCreatorMap = Map.of(
-            ArrangementStyle.class, new ArrangementStyleDiffCreator(),
-            BodyLayoutCommonStyle.class, new BodyLayoutStyleDiffCreator(),
-            IndentionCommonStyle.class, new IndentionStyleDiffCreator(),
-            LineWrappingCommonStyle.class, new LineWrappingStyleDiffCreator(),
-            NewlineCommonStyle.class, new NewlineStyleDiffCreator(),
-            OptionalBraceCommonStyle.class, new OptionalBraceStyleDiffCreator(),
-            SpaceCommonStyle.class, new SpaceStyleDiffCreator(),
-            StructPreferenceCommonStyle.class, new StructPreferenceStyleDiffCreator()
+public class StyleFeatureFactory {
+    private static Map<String, DiffCreator> diffCreatorMap = Map.of(
+            "arrangement", new ArrangementStyleDiffCreator(),
+            "body_layout", new BodyLayoutStyleDiffCreator(),
+            "indention", new IndentionStyleDiffCreator(),
+            "optional_brace", new OptionalBraceStyleDiffCreator(),
+            "space", new SpaceStyleDiffCreator(),
+            "struct_preference", new StructPreferenceStyleDiffCreator()
     );
-    public static StyleFeature createStyleDiff(Class<? extends CommonStyle> styleClass) {
+    public static StyleFeature createStyleDiff(Class<? extends Style> styleClass) {
         return diffCreatorMap.get(styleClass).create();
     }
     
@@ -60,13 +52,7 @@ public class StyleDiffFactory {
             return new LineWrappingStyleFeature();
         }
     }
-    
-    private static class NewlineStyleDiffCreator extends DiffCreator {
-        @Override
-        public StyleFeature create() {
-            return new NewlineStyleFeature();
-        }
-    }
+
     
     private static class OptionalBraceStyleDiffCreator extends DiffCreator {
         @Override

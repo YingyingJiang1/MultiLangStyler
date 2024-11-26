@@ -1,8 +1,8 @@
-package org.example.analysis.diff.impl;
+package org.example.analysis.feature.impl;
 
-import org.example.analysis.diff.StyleFeature;
-import org.example.analysis.diff.feature.FeatureVector;
-import org.example.analysis.diff.feature.DoubleFeatureValue;
+import org.example.analysis.feature.StyleFeature;
+import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.parser.common.MyParser;
 
 import java.util.ArrayList;

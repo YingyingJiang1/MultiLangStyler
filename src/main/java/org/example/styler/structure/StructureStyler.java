@@ -7,13 +7,13 @@ import org.example.parser.common.ExtendTokenFactory;
 import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.StylizationException;
-import org.example.style.CommonStyle;
+import org.example.style.Style;
+import org.example.style.Style;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
 import org.example.styler.brace.style.OptionalBraceProperty;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
-import org.example.styler.structure.style.StructPreferenceCommonStyle;
 
 import java.util.*;
 
@@ -33,14 +33,14 @@ public class StructureStyler extends Styler {
 
     public StructureStyler() {
         equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser);
+        style.setStyleName("equivalences");
     }
 
-    public ExtendContext applyStyle(ExtendContext ctx, CommonStyle commonStyle) {
-        applySingleBlockStyle(ctx, commonStyle);
+    public ExtendContext applyStyle(ExtendContext ctx, Style style) {
+        applySingleBlockStyle(ctx, style);
         ++recursiveDepth;
         ParseTree newTree = ctx;
         try {
-            StructPreferenceCommonStyle structPreferenceStyle = (StructPreferenceCommonStyle) commonStyle;
             List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
             if (equivalentStructures != null) {
         /*if (ctx instanceof JavaParser.LocalVariableDeclarationStmtContext) {
@@ -52,7 +52,7 @@ public class StructureStyler extends Styler {
                 for (EquivalentStructure structure : equivalentStructures) {
                     int matchedIndex = structure.match(ctx, parser);
                     StyleContext context = new StructPreferenceContext(structure.getName(), structure.getId());
-                    StructPreferenceProperty property = (StructPreferenceProperty) structPreferenceStyle.getProperty(context);
+                    StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
                     int targetIndex = property == null ? -1 : property.preferenceIndex;
                     if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
                         matchedStructures.add(new MatchedStructure(structure, matchedIndex));
@@ -66,7 +66,7 @@ public class StructureStyler extends Styler {
                         MatchedStructure matchedStructure = it.next();
                         EquivalentStructure targetStructure = matchedStructure.structure;
                         StyleContext context = new StructPreferenceContext(matchedStructure.structure.getName(), matchedStructure.structure.getId());
-                        StructPreferenceProperty property = (StructPreferenceProperty) structPreferenceStyle.getProperty(context);
+                        StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
                         int to = property.preferenceIndex;
                         int from = matchedStructure.index;
                         // Check whether the conversion is performed before.
@@ -81,7 +81,7 @@ public class StructureStyler extends Styler {
                             convertionPerformed.get(targetStructure).add(to);
 //              ++triggerCount;
                             triggerMap.compute(targetStructure.getId(), (k, v) -> v == null ? 1 : v + 1);
-                            applyStyle(newCtx, commonStyle);
+                            applyStyle(newCtx, style);
                             break;
                         }
                     }
@@ -102,13 +102,13 @@ public class StructureStyler extends Styler {
      * Try to add or remove {}
      *
      * @param ctx
-     * @param commonStyle
+     * @param style
      */
-    private void applySingleBlockStyle(ExtendContext ctx, CommonStyle commonStyle) {
+    private void applySingleBlockStyle(ExtendContext ctx, Style style) {
         if (!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
             return;
         }
-        OptionalBraceProperty property = (OptionalBraceProperty) commonStyle.getProperty(null);
+        OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree child = ctx.getChild(i);
             if (parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
@@ -140,8 +140,7 @@ public class StructureStyler extends Styler {
         }
     }
 
-    public void extractStyle(ExtendContext ctx, CommonStyle commonStyle) {
-        StructPreferenceCommonStyle structPreferenceStyle = (StructPreferenceCommonStyle) commonStyle;
+    public void extractStyle(ExtendContext ctx, Style style) {
         List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
         if (equivalentStructures != null) {
       /*if(ctx instanceof JavaParser.ForStmtContext) {
@@ -152,7 +151,7 @@ public class StructureStyler extends Styler {
             for (EquivalentStructure structure : equivalentStructures) {
                 int index = structure.match(ctx, parser);
                 if (index != -1) {
-                    structPreferenceStyle.addRule(
+                    style.addRule(
                             new StructPreferenceContext(structure.getName(), structure.getId()),
                             new StructPreferenceProperty(index));
                     // break; // Can't break,because ctx may match multiple structures with different id.

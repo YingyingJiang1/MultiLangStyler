@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
-import org.example.style.CommonStyle;
+import org.example.style.style;
 import org.example.styler.Styler;
 import org.example.styler.brace.style.OptionalBraceProperty;
 
@@ -16,8 +16,7 @@ public class OptionalBraceStyler extends Styler {
     private static Set<Integer> relevantRules = null;
 
     public OptionalBraceStyler() {
-        style = new CommonStyle(parser);
-        style.styleName = "optional_brace";
+        style.setStyleName("optional_brace");
     }
 
     @Override

@@ -1,6 +1,6 @@
 <configuration>
     <extraction_info>
-        <!-- Paths of target commonStyle programs, seperated by ';'.
+        <!-- Paths of target style programs, seperated by ';'.
         When <source> element is empty or useDefault is "true",the default path is the root of the current project.-->
         <source excludes=""></source>
         <style_path></style_path>

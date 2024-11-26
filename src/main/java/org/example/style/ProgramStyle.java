@@ -12,7 +12,7 @@ import java.util.*;
  * @create     : 2024/1/8 22:27
  */
 public class ProgramStyle implements DomIO {
-    List<CommonStyle> commonStyles = new ArrayList<CommonStyle>();
+    List<style> commonStyles = new ArrayList<style>();
     public static final int FORMAT = 0;
     public static final int LITERAL = 1;
     public static final int ARRANGEMENT = 2;
@@ -23,24 +23,24 @@ public class ProgramStyle implements DomIO {
 
     @Override
     public void addElement(Element root, MyParser parser) {
-        for (CommonStyle commonStyle : commonStyles) {
-            commonStyle.addElement(root, parser);
+        for (Style style : commonStyles) {
+            style.addElement(root, parser);
         }
     }
 
     @Override
     public Object parseElement(Element root, MyParser parser) {
-        for (CommonStyle commonStyle : commonStyles) {
-            commonStyle.parseElement(root, parser);
+        for (Style style : commonStyles) {
+            style.parseElement(root, parser);
         }
         return this;
     }
 
-    public void add(CommonStyle commonStyle) {
-        commonStyles.add(commonStyle);
+    public void add(Style style) {
+        commonStyles.add(style);
     }
 
-    public List<CommonStyle> getStyles() {
+    public List<style> getStyles() {
         return commonStyles;
     }
 }

@@ -1,4 +1,4 @@
-package org.example.analysis.diff.feature;
+package org.example.analysis.feature.featurevalue;
 
 import java.util.HashMap;
 import java.util.Map;
