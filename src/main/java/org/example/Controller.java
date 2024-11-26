@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.cert.CertificateRevokedException;
 import java.util.*;
 
 /*
@@ -47,6 +48,8 @@ public class Controller {
     public Controller(Configuration conf) {
         this.conf = conf;
     }
+
+    public Controller() {}
 
 
     private void initStylers(ProgramStyle programStyle) {
@@ -75,33 +78,38 @@ public class Controller {
         }
     }
 
-    private void extractStyle(FileCollection files) throws IOException, DocumentException, IllegalArgumentException {
+    public ProgramStyle extractStyle(FileCollection files) {
         extractInitialize();
         int count = 0;
         for (int i = 0; i < files.size(); i++) {
-            curPath = Paths.get(files.getFilePath(i));
-            setParser(curPath);
-            ParseTree tree = parser.parse(curPath);
-            if (tree == null) {
-                // System.out.println("extraction failure because of syntax error:" + filePath);
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compilation-error" +
-                        ".txt", true), StandardCharsets.UTF_8));
-                writer.write(curPath.toString());
-                continue;
+            try {
+                curPath = Paths.get(files.getFilePath(i));
+                setParser(curPath);
+                ParseTree tree = parser.parse(curPath);
+                if (tree == null) {
+                    // System.out.println("extraction failure because of syntax error:" + filePath);
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compilation-error" +
+                            ".txt", true), StandardCharsets.UTF_8));
+                    writer.write(curPath.toString());
+                    continue;
+                }
+                // System.out.println("extract style from file: " + filePath);
+                ++count;
+                Preprocessor preprocessor = new Preprocessor();
+                preprocessor.preprocess(parser, Styler.EXTRACTION_PROCESS);
+                extractOnTS();
+                extractOnAST();
+            } catch (IOException e) {
+                System.err.println("error in extracting style from file: " + files.getFilePath(i));
             }
-            // System.out.println("extract style from file: " + filePath);
-            ++count;
-            Preprocessor preprocessor = new Preprocessor();
-            preprocessor.preprocess(parser, Styler.EXTRACTION_PROCESS);
-            extractOnTS();
-            extractOnAST();
         }
 //    System.out.println("-----------------------------------------------------------------");
 //    System.out.println("extraction result:");
 //    System.out.println("extracted files: " + count + "/" + files.size());
 //    System.out.println("-----------------------------------------------------------------");
 
-         extractFinalize();
+        extractFinalize();
+        return combineStyle();
     }
 
     private void extractOnAST() {
@@ -155,7 +163,7 @@ public class Controller {
         }
     }
 
-    private void applyStyle(FileCollection files) throws IOException {
+    public void applyStyle(FileCollection files) throws IOException {
         applyInitialize();
         int count = 0;
         for (int i = 0; i < files.size(); i++) {
@@ -478,15 +486,15 @@ public class Controller {
 
     public ProgramStyle execute() {
         try {
+            ProgramStyle programStyle = null;
             // extract style from existing style file or source codes.
             if (conf.styleFile != null) {
-                ProgramStyle programStyle = StyleFileIO.read(conf.styleFile, parser);
+                programStyle = StyleFileIO.read(conf.styleFile, parser);
                 initStylers(programStyle);
             } else {
                 initStylers(null);
-                extractStyle(conf.extractionCollection);
+                programStyle = extractStyle(conf.extractionCollection);
             }
-            ProgramStyle programStyle = combineStyle();
             StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
             applyStyle(conf.applicationCollection);
             return programStyle;

@@ -10,7 +10,7 @@ import org.example.myException.StylizationException;
 import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.styler.brace.style.OptionalBraceProperty;
-import org.example.styler.structure.style.EquivalencesStyle;
+import org.example.styler.structure.style.StructPreference;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public class StructureStyler extends Styler {
     ++recursiveDepth;
     ParseTree newTree = ctx;
     try {
-      EquivalencesStyle equivalencesStyle = (EquivalencesStyle) style;
+      StructPreference structPreference = (StructPreference) style;
       List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
       if (equivalentStructures != null) {
         /*if (ctx instanceof JavaParser.LocalVariableDeclarationStmtContext) {
@@ -48,7 +48,7 @@ public class StructureStyler extends Styler {
         Set<MatchedStructure> matchedStructures = new TreeSet<>();
         for(EquivalentStructure structure : equivalentStructures) {
           int matchedIndex = structure.match(ctx, parser);
-          int targetIndex = equivalencesStyle.getProperty(structure.getId());
+          int targetIndex = structPreference.getProperty(structure.getId());
           if(matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
             matchedStructures.add(new MatchedStructure(structure, matchedIndex));
           }
@@ -60,7 +60,7 @@ public class StructureStyler extends Styler {
           while(it.hasNext()) {
             MatchedStructure matchedStructure = it.next();
             EquivalentStructure targetStructure = matchedStructure.structure;
-            int to = equivalencesStyle.getProperty(matchedStructure.structure.getId());
+            int to = structPreference.getProperty(matchedStructure.structure.getId());
             int from = matchedStructure.index;
             // Check whether the conversion is performed before.
             if(convertionPerformed.get(targetStructure) != null &&
@@ -133,7 +133,7 @@ public class StructureStyler extends Styler {
   }
 
   public void extractStyle(ExtendContext ctx, Style style) {
-    EquivalencesStyle equivalencesStyle = (EquivalencesStyle) style;
+    StructPreference structPreference = (StructPreference) style;
     List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
     if (equivalentStructures != null) {
       /*if(ctx instanceof JavaParser.ForStmtContext) {
@@ -144,7 +144,7 @@ public class StructureStyler extends Styler {
       for(EquivalentStructure structure : equivalentStructures) {
         int index = structure.match(ctx, parser);
         if(index != -1) {
-          equivalencesStyle.addRule(structure.getId(), index);
+          structPreference.addRule(structure.getId(), index);
           // break; // Can't break,because ctx may match multiple structures with different id.
         }
       }

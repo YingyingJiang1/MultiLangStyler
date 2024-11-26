@@ -14,11 +14,11 @@ import java.util.Map;
  * @author       Yingying Jiang
  * @create       2024/4/4 17:17
  */
-public class EquivalencesStyle extends Style {
+public class StructPreference extends Style {
 
   public Map<Integer, List<Integer>> equivalences = new HashMap<>();
 
-  public EquivalencesStyle(MyParser parser) {
+  public StructPreference(MyParser parser) {
     super(parser);
     styleName = "equivalences";
   }

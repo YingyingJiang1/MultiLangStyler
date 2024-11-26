@@ -49,6 +49,10 @@ public abstract class Style implements DomIO {
         return ruleSet.getSimilarProperty(targetContext);
     }
 
+    public String getStyleName() {
+        return styleName;
+    }
+
     public void fillStyle() {
         for (StyleRule rule : ruleSet.getRules()) {
             rule.fillStyle();
