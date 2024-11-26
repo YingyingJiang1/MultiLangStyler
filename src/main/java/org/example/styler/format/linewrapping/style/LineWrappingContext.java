@@ -6,7 +6,7 @@ import org.example.style.rule.StyleContext;
 
 public class LineWrappingContext extends StyleContext {
 
-    Attr attr;
+    public Attr attr;
 
     public LineWrappingContext(Attr attr) {
         this.attr = attr;

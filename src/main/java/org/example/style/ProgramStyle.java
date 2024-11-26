@@ -1,6 +1,5 @@
 package org.example.style;
 
-import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
@@ -13,7 +12,7 @@ import java.util.*;
  * @create     : 2024/1/8 22:27
  */
 public class ProgramStyle implements DomIO {
-    List<Style> styles = new ArrayList<Style>();
+    List<CommonStyle> commonStyles = new ArrayList<CommonStyle>();
     public static final int FORMAT = 0;
     public static final int LITERAL = 1;
     public static final int ARRANGEMENT = 2;
@@ -24,24 +23,24 @@ public class ProgramStyle implements DomIO {
 
     @Override
     public void addElement(Element root, MyParser parser) {
-        for (Style style : styles) {
-            style.addElement(root, parser);
+        for (CommonStyle commonStyle : commonStyles) {
+            commonStyle.addElement(root, parser);
         }
     }
 
     @Override
     public Object parseElement(Element root, MyParser parser) {
-        for (Style style : styles) {
-            style.parseElement(root, parser);
+        for (CommonStyle commonStyle : commonStyles) {
+            commonStyle.parseElement(root, parser);
         }
         return this;
     }
 
-    public void add(Style style) {
-        styles.add(style);
+    public void add(CommonStyle commonStyle) {
+        commonStyles.add(commonStyle);
     }
 
-    public List<Style> getStyles() {
-        return styles;
+    public List<CommonStyle> getStyles() {
+        return commonStyles;
     }
 }

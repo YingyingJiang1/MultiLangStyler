@@ -3,20 +3,17 @@ package org.example.styler.format.linewrapping;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
+import org.example.styler.format.linewrapping.style.LineWrappingCommonStyle;
 import org.example.styler.format.linewrapping.style.LineWrappingContext;
 import org.example.styler.format.linewrapping.style.LineWrappingProperty;
-import org.example.styler.format.linewrapping.style.LineWrappingStyle;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BinaryOperator;
 
 public class LineWrappingStyler extends Styler {
     private static Set<Integer> relevantRules = null;
@@ -26,7 +23,7 @@ public class LineWrappingStyler extends Styler {
     private int maxLenBefore = 0;
 
     public LineWrappingStyler() {
-        style = new LineWrappingStyle(parser);
+        commonStyle = new LineWrappingCommonStyle(parser);
     }
 
     @Override
@@ -78,7 +75,7 @@ public class LineWrappingStyler extends Styler {
         List<Token> tokens = extractRelatedTokens(ctx);
 
         if (!tokens.isEmpty()) {
-            LineWrappingProperty property = (LineWrappingProperty) style.getProperty(new LineWrappingContext(LineWrappingContext.Attr.CODE));
+            LineWrappingProperty property = (LineWrappingProperty) commonStyle.getProperty(new LineWrappingContext(LineWrappingContext.Attr.CODE));
             int totalLen = calculateTotalLen(tokens);
 
             if (property.isLineWrapping(totalLen)) {
@@ -122,10 +119,10 @@ public class LineWrappingStyler extends Styler {
         if (!sorted.isEmpty()) {
             succeedLoc = sorted.get(sorted.size() - 1).getKey();
         }
-        style.addRule(codeContext, new LineWrappingProperty(
+        commonStyle.addRule(codeContext, new LineWrappingProperty(
                 codeStats.getVariance(), (int) codeStats.getMax(), maxLenBefore, null, succeedLoc));
         // Comments are always line-wrapped.
-        style.addRule(commentContext, new LineWrappingProperty(
+        commonStyle.addRule(commentContext, new LineWrappingProperty(
                 commentStats.getVariance(), (int) commentStats.getMax(), -1, null, succeedLoc));
     }
 

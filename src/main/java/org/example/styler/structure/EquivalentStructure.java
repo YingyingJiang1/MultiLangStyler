@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 public class EquivalentStructure {
 
 	int id;
+	String name;
 	int[] rules;
 	List<VirtualTree> vTrees = new ArrayList<>();
 	VirtualNodeContainer vNodeContainer = null;
@@ -90,6 +91,10 @@ public class EquivalentStructure {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public VirtualNode getVNode(String holderName) {

@@ -9,7 +9,7 @@ public class SpaceContext extends StyleContext {
     // name are the following: operators, separators, "keyword", "identifier". `tokenName2` can be empty string
     // When `tokenName2` is empty, we focus on the space around the `tokenName1`.
     // When `tokenName2` is not empty, we focus on the space between the `tokenName1` and `tokenName2`.
-    String tokenName1, tokenName2;
+    public String tokenName1, tokenName2;
     static Grouper grouper;
 
     public SpaceContext(String tokenName1, String tokenName2) {

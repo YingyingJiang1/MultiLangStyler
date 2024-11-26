@@ -6,10 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.style.Style;
+import org.example.style.CommonStyle;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
-import org.example.styler.format.newline.style.NewlineStyle;
+import org.example.styler.format.newline.style.NewlineCommonStyle;
 import org.example.styler.Styler;
 
 import java.util.*;
@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class NewlineStyler extends Styler {
     public NewlineStyler() {
-        style = new NewlineStyle(parser);
+        commonStyle = new NewlineCommonStyle(parser);
     }
 
     private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(
@@ -35,23 +35,23 @@ public class NewlineStyler extends Styler {
     ));
 
 
-    public void extractStyle(ExtendContext ctx, Style style) {
+    public void extractStyle(ExtendContext ctx, CommonStyle commonStyle) {
         int len = ctx.getChildCount() - 1;
         for(int i = 0; i < len; ++i) {
             List<Info> infos1 = extractInfos(ctx, i, i + 1, Styler.EXTRACTION_PROCESS);
             List<Info> infos = infos1;
             for(Info info : infos) {
-                style.addRule(extractContext(info), extractProperty(info));
+                commonStyle.addRule(extractContext(info), extractProperty(info));
             }
         }
     }
 
-    public ExtendContext applyStyle(ExtendContext ctx, Style style) {
+    public ExtendContext applyStyle(ExtendContext ctx, CommonStyle commonStyle) {
         for(int i = 0; i < ctx.getChildCount() - 1; ++i) {
             List<Info> infos = extractInfos(ctx, i, i + 1, Styler.APPLICATION_PROCESS);
             for(Info info : infos) {
                 NewlineContext newlineContext = extractContext(info);
-                NewlineProperty newlineProperty = (NewlineProperty) style.getProperty(newlineContext);
+                NewlineProperty newlineProperty = (NewlineProperty) commonStyle.getProperty(newlineContext);
 
                 // Must update index here! Because index will change after insertion operation.
                 info.child1.index = i;

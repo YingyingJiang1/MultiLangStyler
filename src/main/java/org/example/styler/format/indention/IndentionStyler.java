@@ -5,14 +5,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendToken;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
-import org.example.styler.format.indention.style.IndentionStyle;
+import org.example.styler.format.indention.style.IndentionCommonStyle;
 
 import java.util.List;
 
 public class IndentionStyler extends Styler {
 
     public IndentionStyler() {
-        style = new IndentionStyle(parser);
+        commonStyle = new IndentionCommonStyle(parser);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class IndentionStyler extends Styler {
             }
 
             if (indentionType != '\0' && indentionUnit != 0) {
-                style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
+                commonStyle.addRule(null, new IndentionProperty(indentionUnit, indentionType));
             }
         }
     }
@@ -44,7 +44,7 @@ public class IndentionStyler extends Styler {
     @Override
     public void applyStyle(List<Token> tokens, int index) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
-        IndentionProperty property = (IndentionProperty) style.getProperty(null);
+        IndentionProperty property = (IndentionProperty) commonStyle.getProperty(null);
         if (property != null) {
             String indentionStr = StringUtils.repeat(property.indentionType,
                     curToken.getHierarchy() * property.indentionUnit) +

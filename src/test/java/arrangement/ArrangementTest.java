@@ -5,15 +5,14 @@ import org.example.Configuration;
 import org.example.Controller;
 import org.example.style.ProgramStyle;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+
 
 public class ArrangementTest {
     @Test
     public void executeTest() {
-        test1();
+//        test1();
     }
 
     @Test

@@ -7,12 +7,10 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenInfoField;
 
-import org.example.style.Style;
+import org.example.style.CommonStyle;
 import org.example.styler.Styler;
-import org.example.styler.brace.style.*;
 import org.example.styler.format.body.style.BodyLayoutContext;
 import org.example.styler.format.body.style.BodyLayoutProperty;
-import org.example.styler.format.body.style.BodyLayoutStyle;
 import org.example.styler.format.body.style.TypeEnum;
 
 import java.util.*;
@@ -21,7 +19,7 @@ public class BodyLayoutStyler extends Styler {
   private static Set<Integer> relevantRules = null;
 
   public BodyLayoutStyler() {
-    style = new BodyLayoutStyle(parser);
+    commonStyle = new BodyLayoutCommonStyle(parser);
   }
 
   @Override
@@ -39,7 +37,7 @@ public class BodyLayoutStyler extends Styler {
       }
 
       BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getStmtNum(block));
-      BodyLayoutProperty bodyLayoutProperty = (BodyLayoutProperty) style.getSimilarProperty(styleContext);
+      BodyLayoutProperty bodyLayoutProperty = (BodyLayoutProperty) commonStyle.getSimilarProperty(styleContext);
       applyBraceInfo(bodyLayoutProperty, block);
     }
     return ctx;
@@ -57,7 +55,7 @@ public class BodyLayoutStyler extends Styler {
         ExtendContext block = (ExtendContext) blocks.get(i);
         // Skip the last block of multi-block statement.
         if (isNotMultiBlockStmt || block != ctx.getLastContextChild()) {
-          extractBraceInfo(blockType, block, style);
+          extractBraceInfo(blockType, block, commonStyle);
         }
       } catch (NullPointerException e) {
         System.err.println("brace information extraction failure: " + e.getMessage());
@@ -97,7 +95,7 @@ public class BodyLayoutStyler extends Styler {
    *
    * @param ctx A case group of switch statement.
    */
-  private void addIndentionForCaseGroup(ExtendContext ctx, Style style) {
+  private void addIndentionForCaseGroup(ExtendContext ctx, CommonStyle commonStyle) {
     for (ParseTree child : ctx.children) {
       if (parser.isTypeDeclaration(child) || parser.isStatement(child)) {
         // SKip block statement
@@ -153,7 +151,7 @@ public class BodyLayoutStyler extends Styler {
 
   }
 
-  private void extractBraceInfo(TypeEnum blockType, ExtendContext ctx, Style style) {
+  private void extractBraceInfo(TypeEnum blockType, ExtendContext ctx, CommonStyle commonStyle) {
     int stmtNum = 0;
     stmtNum = getStmtNum(ctx);
     BodyLayoutContext styleContext = new BodyLayoutContext(blockType, stmtNum);
@@ -165,7 +163,7 @@ public class BodyLayoutStyler extends Styler {
     rbInfo = infos[1];
     BodyLayoutProperty styleProperty = new BodyLayoutProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
 
-    style.addRule(styleContext, styleProperty);
+    commonStyle.addRule(styleContext, styleProperty);
   }
 
   private List<ExtendContext> getAllBlocks(ExtendContext ctx) {

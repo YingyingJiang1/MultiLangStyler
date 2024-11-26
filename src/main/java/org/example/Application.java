@@ -3,9 +3,13 @@ package org.example;
 import org.dom4j.DocumentException;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import smile.data.CategoricalEncoder;
+import smile.data.DataFrame;
+import smile.math.matrix.Matrix;
 
 @SpringBootApplication
 public class Application {

@@ -6,8 +6,8 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
 public class BodyLayoutContext extends StyleContext {
-    private TypeEnum blockType;
-    private int stmtNumInBlock; // 0:empty block, 1: only one single statement in block, 2: one single block statement or exceed one statement.
+    public TypeEnum blockType;
+    public int stmtNumInBlock; // 0:empty block, 1: only one single statement in block, 2: one single block statement or exceed one statement.
 
     public BodyLayoutContext() {}
 
