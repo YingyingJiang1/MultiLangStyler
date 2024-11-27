@@ -3,10 +3,10 @@ package org.example.analysis.feature.featurevalue;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FeatureVector {
+public class StyleVector {
     Map<String, FeatureValue> featureValueMap = new HashMap<String, FeatureValue>(0);
 
-    public double calculateDistance(FeatureVector fv) {
+    public double calculateDistance(StyleVector fv) {
         return 0;
     }
 

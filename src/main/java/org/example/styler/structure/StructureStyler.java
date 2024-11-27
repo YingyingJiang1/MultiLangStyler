@@ -8,7 +8,6 @@ import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.StylizationException;
 import org.example.style.Style;
-import org.example.style.Style;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
 import org.example.styler.brace.style.OptionalBraceProperty;
@@ -51,7 +50,7 @@ public class StructureStyler extends Styler {
                 Set<MatchedStructure> matchedStructures = new TreeSet<>();
                 for (EquivalentStructure structure : equivalentStructures) {
                     int matchedIndex = structure.match(ctx, parser);
-                    StyleContext context = new StructPreferenceContext(structure.getName(), structure.getId());
+                    StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
                     StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
                     int targetIndex = property == null ? -1 : property.preferenceIndex;
                     if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
@@ -65,7 +64,7 @@ public class StructureStyler extends Styler {
                     while (it.hasNext()) {
                         MatchedStructure matchedStructure = it.next();
                         EquivalentStructure targetStructure = matchedStructure.structure;
-                        StyleContext context = new StructPreferenceContext(matchedStructure.structure.getName(), matchedStructure.structure.getId());
+                        StyleContext context = new StructPreferenceContext(matchedStructure.structure.getCategory(), matchedStructure.structure.getId());
                         StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
                         int to = property.preferenceIndex;
                         int from = matchedStructure.index;
@@ -152,7 +151,7 @@ public class StructureStyler extends Styler {
                 int index = structure.match(ctx, parser);
                 if (index != -1) {
                     style.addRule(
-                            new StructPreferenceContext(structure.getName(), structure.getId()),
+                            new StructPreferenceContext(structure.getCategory(), structure.getId()),
                             new StructPreferenceProperty(index));
                     // break; // Can't break,because ctx may match multiple structures with different id.
                 }

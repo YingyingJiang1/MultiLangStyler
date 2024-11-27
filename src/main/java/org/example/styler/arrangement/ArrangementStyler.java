@@ -2,10 +2,10 @@ package org.example.styler.arrangement;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.style.Style;
 import org.example.utils.Helper;
 import org.example.parser.common.ExtendContext;
 import org.example.myException.StylizationException;
-import org.example.style.style;
 import org.example.utils.PermutationGenerator;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.style.*;
@@ -516,7 +516,7 @@ public class ArrangementStyler extends Styler {
 	}
 
 	@Override
-	public style getStyle() {
+	public Style getStyle() {
 		return style;
 	}
 

@@ -55,7 +55,6 @@ public class MyJavaParser implements MyParser {
             JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,JavaParser.RULE_whileStmt
     ));
 
-
     private MyJavaParser() {}
 
     public static MyJavaParser getInstance() {
@@ -562,6 +561,31 @@ public class MyJavaParser implements MyParser {
                 JavaParser.RULE_classHead, JavaParser.RULE_enumHead, JavaParser.RULE_interfaceHead,
                 JavaParser.RULE_recordHead, JavaParser.RULE_constructorHead, JavaParser.RULE_methodHead
         ));
+    }
+
+    @Override
+    public Set<Integer> getHomoOps() {
+        return Set.of(
+                JavaParser.ADD, JavaParser.SUB, JavaParser.MUL, JavaParser.DIV, JavaParser.MOD,
+                JavaParser.BITAND, JavaParser.BITOR, JavaParser.CARET
+        );
+    }
+
+    @Override
+    public Set<Integer> getOpAssign() {
+        return Set.of(
+                JavaParser.ADD_ASSIGN, JavaParser.SUB_ASSIGN, JavaParser.MUL_ASSIGN, JavaParser.DIV_ASSIGN, JavaParser.MOD_ASSIGN,
+                JavaParser.AND_ASSIGN, JavaParser.OR_ASSIGN, JavaParser.XOR_ASSIGN
+        );
+    }
+
+    @Override
+    public Set<Integer> getLiterals() {
+        return Set.of(
+                JavaParser.NULL_LITERAL, JavaParser.BINARY_LITERAL, JavaParser.BOOL_LITERAL,
+                JavaParser.CHAR_LITERAL, JavaParser.DECIMAL_LITERAL, JavaParser.HEX_LITERAL,
+                JavaParser.OCT_LITERAL, JavaParser.FLOAT_LITERAL, JavaParser.HEX_FLOAT_LITERAL
+        );
     }
 
     @Override

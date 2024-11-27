@@ -2,6 +2,7 @@
   "Adjacent tokens should be seperated by space!",
   {
     "id": 1,
+    "category": "Increment/decrement preferences",
     "codes":["$I ++ ;", "++ $I ;","$I += 1 ;","$I = $I1 + 1 ;","$I = 1 + $I1 ;"],
     "holders": ["$I","$I1"],
     "rules": ["expressionStmt"],
@@ -11,6 +12,7 @@
   },
   {
     "id": 2,
+    "category": "Increment/decrement preferences",
     "codes":["$I -- ;", "-- $I ;", "$I -= 1 ;","$I = $I1 - 1 ;"],
     "holders": ["$I","$I1"],
     "rules": ["expressionStmt"],
@@ -21,6 +23,7 @@
 
   {
     "id": 3,
+    "category": "",
     "codes":["$E = $E1 + $E2;", "$E += $E2;"],
     "holders": ["$E", "$E1", "$E2"],
     "rules": ["expressionStmt"],
@@ -35,6 +38,7 @@
   },
   {
     "id": 4,
+    "category": "",
     "codes":["$E = $E1 - $E2;", "$E -= $E2;"],
     "holders": ["$E", "$E1", "$E2"],
     "rules": ["expressionStmt"],
@@ -232,28 +236,29 @@
   },
   {
     "id": 26,
-    "codes":["$E = $E1 $+ $E2;","$E = $E2 $+ $E1;", "$E $+= $E2;"],
-    "holders": ["$E", "$E1", "$E2", "$+","$+="],
+    "codes":["$E = $E1 $HOMO_BOP $E2;", "$E $HOMO_BOP_ASSIGN $E1;"],
+    "holders": ["$E", "$E1", "$E2", "$HOMO_BOP","$HOMO_BOP_ASSIGN"],
     "rules": ["expressionStmt"],
     "checkers": [
-      {"class":"EqualChecker", "argsList": [[0, "$E", "$E1"], [1, "$E", "$E1"]]}
+      {"class":"EqualChecker", "argsList": [[0, "$E", "$E2"]]}
     ],
     "handlers": [
-      {"class":"ReplicationHandler","argsList":[[0, "$E", "$E1"], [1, "$E", "$E1"]]},
-      {"class":"OpOpAssignConvertHandler","argsList":[[0, 2, "$+","$+="], [1, 2, "$+","$+="]]}
-    ]
+      {"class":"ReplicationHandler","argsList":[[0, "$E", "$E1"]]},
+      {"class":"OpOpAssignConvertHandler","argsList":[[0, 1, "$HOMO_BOP","$HOMO_BOP_ASSIGN"]]}
+    ],
+    "comment": "exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT)."
   },
   {
     "id": 27,
-    "codes":["$E = $E1 $- $E2;", "$E $-= $E2;"],
-    "holders": ["$E", "$E1", "$E2", "$-","$-="],
+    "codes":["$E = $E1 $HOMO_BOP $E2;", "$E $HOMO_BOP_ASSIGN $E2;"],
+    "holders": ["$E", "$E1", "$E2", "$HOMO_BOP","$HOMO_BOP_ASSIGN"],
     "rules": ["expressionStmt"],
     "checkers": [
       {"class":"EqualChecker", "argsList": [[0, "$E", "$E1"]]}
     ],
     "handlers": [
       {"class":"ReplicationHandler","argsList":[[0, "$E", "$E1"]]},
-      {"class":"OpOpAssignConvertHandler","argsList":[[0, 1, "$-","$-="]]}
+      {"class":"OpOpAssignConvertHandler","argsList":[[0, 1, "$HOMO_BOP","$HOMO_BOP_ASSIGN"]]}
     ],
     "comment": "exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT)."
   },
@@ -312,6 +317,60 @@
       {"class":"EqualChecker", "argsList": [[0, "$I", "$I1"]]}
     ],
     "handlers": [{"class":"ReplicationHandler","argsList":[[0, "$I","$I1"]]}]
+  },
+  {
+    "id": 32,
+    "category": "Operator preferences",
+    "codes":[
+      "$E < $E1", "$E1 > $E"
+    ],
+    "holders": ["$E", "$E1"],
+    "rules": ["expression"],
+    "checkers": [],
+    "handlers": []
+  },
+  {
+    "id": 33,
+    "category": "Operator preferences",
+    "codes":[
+      "$E <= $E1", "$E1 >= $E"
+    ],
+    "holders": ["$E", "$E1"],
+    "rules": ["expression"],
+    "checkers": [],
+    "handlers": []
+  },
+  {
+    "id": 34,
+    "category": "Operator preferences",
+    "codes":[
+      "$E == false", "! $E"
+    ],
+    "holders": ["$E"],
+    "rules": ["expression"],
+    "checkers": [],
+    "handlers": []
+  },
+  {
+    "id": 35,
+    "category": "Operator preferences",
+    "codes":[
+      "$E == true", "$E"
+    ],
+    "holders": ["$E"],
+    "rules": ["expression"],
+    "checkers": [],
+    "handlers": []
+  },
+  {
+    "id": 36,
+    "category": "Numerical literals",
+    "codes":[
+      "$LITERAL == $E", "$E == $LITERAL"
+    ],
+    "holders": ["$E", "$LITERAL"],
+    "rules": ["expression"],
+    "checkers": [],
+    "handlers": []
   }
-
 ]

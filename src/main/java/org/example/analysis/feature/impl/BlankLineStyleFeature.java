@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.feature.StyleFeature;
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.parser.common.MyParser;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class BlankLineStyleFeature extends StyleFeature {
     @Override
-    public void toFeatureVector(MyParser parser, Map<String, FeatureVector> styleFeatures) {
+    public void toFeatureVector(MyParser parser, Map<String, StyleVector> styleFeatures) {
         String[] lines = parser.getTokenStream().getText().split("\n");
         List<Integer> emptyLines = new ArrayList<>();
         // 获取所有空行编号
@@ -20,7 +20,7 @@ public class BlankLineStyleFeature extends StyleFeature {
                 emptyLines.add(i + 1);
             }
         }
-        FeatureVector fv = new FeatureVector();
+        StyleVector fv = new StyleVector();
         fv.addFeature("Density", new DoubleFeatureValue(lines.length == 0 ? 0 : emptyLines.size() / (double) lines.length));
         double totalDistance = 0;
         for (int i = 0; i < emptyLines.size() - 1; i++) {

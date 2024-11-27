@@ -3,18 +3,20 @@ package org.example.analysis;
 import org.example.Controller;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.StyleFeatureFactory;
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.ioformat.DiffResult;
 import org.example.analysis.ioformat.InputPair;
-import org.example.style.style;
 import org.example.style.ProgramStyle;
+import org.example.style.Style;
 import org.example.utils.FileCollection;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DiffAnalyzer {
     public static void main(String[] args) {
@@ -39,16 +41,16 @@ public class DiffAnalyzer {
             files2.add(Paths.get(pair.getFile2()));
             ProgramStyle programStyle2 = new Controller().extractStyle(files2);
 
-            for (style commonStyle1 : programStyle1.getStyles()) {
-                List<style> result = programStyle2.getStyles().stream().filter(style2 -> commonStyle1.getClass() == style2.getClass()).toList();
-                if (!result.isEmpty()) {
-                    StyleFeature styleFeature = StyleFeatureFactory.createStyleDiff(commonStyle1.getClass());
-                    if (styleFeature != null) {
-                        FeatureVector fv1 = styleFeature.toFeatureVector(commonStyle1);
-                        FeatureVector fv2 = styleFeature.toFeatureVector(result.get(0));
-                        boolean consistent = isConsistent(fv1, fv2);
-                        diffResult.add(commonStyle1.getStyleName(), pair, consistent);
-                    }
+            Map<String, StyleVector> styleVecs1 = new HashMap<>();
+            Map<String, StyleVector> styleVecs2 = new HashMap<>();
+            extractStyleFeatures(programStyle1.getStyles(), styleVecs1);
+            extractStyleFeatures(programStyle2.getStyles(), styleVecs2);
+
+            for (String styleName : styleVecs1.keySet()) {
+                StyleVector vec1 = styleVecs1.get(styleName);
+                if (styleVecs2.get(styleName) != null) {
+                    boolean consistent = isConsistent(vec1, styleVecs2.get(styleName));
+                    diffResult.add(styleName, pair, consistent);
                 }
             }
 
@@ -62,8 +64,17 @@ public class DiffAnalyzer {
     }
 
 
-    public boolean isConsistent(FeatureVector fv1, FeatureVector fv2) {
+    private static boolean isConsistent(StyleVector fv1, StyleVector fv2) {
         return fv1.calculateDistance(fv2) < 0.5;
+    }
+
+    private static void extractStyleFeatures(List<Style> styles, Map<String, StyleVector> styleFeatures) {
+        for (Style Style : styles) {
+            StyleFeature styleFeature = StyleFeatureFactory.createStyleDiff(Style.getStyleName());
+            if (styleFeature != null) {
+                styleFeature.toFeatureVector(Style, styleFeatures);
+            }
+        }
     }
 
 }

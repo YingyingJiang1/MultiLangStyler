@@ -53,6 +53,7 @@ public class EquivalentStructureManager {
           continue;
         }
         int id = node.get("id").asInt();
+        String category = node.get("category") == null ? "" : node.get("category").asText();
         String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
         String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
         String[] ruleNames = objectMapper.convertValue(node.get("rules"), String[].class);
@@ -99,7 +100,7 @@ public class EquivalentStructureManager {
           }
         }
 
-        EquivalentStructure structure = new EquivalentStructure(id, rules, checkers, handlers, bannedTransferMap);
+        EquivalentStructure structure = new EquivalentStructure(id, category, rules, checkers, handlers, bannedTransferMap);
         structure.compile(codes, holders);
 
         Set<Integer> ruleSet = new HashSet<>(Arrays.stream(rules).boxed().toList());

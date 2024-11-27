@@ -3,7 +3,7 @@ package org.example.styler;
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.style.style;
+import org.example.style.CommonStyle;
 import org.example.style.Style;
 import org.example.style.Style;
 
@@ -36,10 +36,11 @@ public abstract class Styler implements Extractor, Applicator {
     }
 
     public Styler() {
-        style = new style();
+        style = new CommonStyle();
     }
 
     public Styler(boolean executeWhenExit) {
+        style = new CommonStyle();
         this.executeWhenExit = executeWhenExit;
     }
 

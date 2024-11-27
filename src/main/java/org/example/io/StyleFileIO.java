@@ -11,6 +11,7 @@ import org.example.Configuration;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.style.ProgramStyle;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,28 +23,36 @@ import java.io.IOException;
  * @create     : 2024/1/20 22:15
  */
 public class StyleFileIO {
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(StyleFileIO.class);
 
-  public static ProgramStyle read(String file, MyParser parser) throws DocumentException {
-      ProgramStyle programStyle = new ProgramStyle();
-      SAXReader reader = new SAXReader();
-      Document document = reader.read(new File(file));
-      Element root = document.getRootElement();
-      programStyle.parseElement(root, parser);
-      return programStyle;
-  }
+    public static ProgramStyle read(String file, MyParser parser) throws DocumentException {
+        ProgramStyle programStyle = new ProgramStyle();
+        try {
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(new File(file));
+            Element root = document.getRootElement();
+            programStyle.parseElement(root, parser);
+        } catch (DocumentException e) {
+            logger.error("read style file error. Target path: {}", file);
+        }
+        return programStyle;
+    }
 
-  public static void write(ProgramStyle programStyle, String file, MyParser parser) throws IOException {
-    // 创建xml文件并写入内容
-    Document document = DocumentHelper.createDocument();
-    Element root = document.addElement("program_style");
-    programStyle.addElement(root, parser);
+    public static void write(ProgramStyle programStyle, String file, MyParser parser) {
+        try {
+            // 创建xml文件并写入内容
+            Document document = DocumentHelper.createDocument();
+            Element root = document.addElement("program_style");
+            programStyle.addElement(root, parser);
 
-    XMLWriter writer = new XMLWriter(new FileWriter(new File(file)),
-            OutputFormat.createPrettyPrint());
-    writer.write(document);
-    writer.close();
-
-    System.out.println("style result saved in:" + file);
-  }
+            XMLWriter writer = new XMLWriter(new FileWriter(new File(file)),
+                    OutputFormat.createPrettyPrint());
+            writer.write(document);
+            writer.close();
+            logger.info("style result saved in:{}", file);
+        } catch (IOException e) {
+            logger.error("write style file error. target path:{}", file);
+        }
+    }
 
 }

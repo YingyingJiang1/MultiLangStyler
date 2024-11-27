@@ -1,6 +1,6 @@
 package org.example.analysis.feature.impl;
 
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.style.Style;
@@ -12,14 +12,14 @@ import java.util.Map;
 
 public class OptionalBraceStyleFeature extends StyleFeature {
     @Override
-    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
-        FeatureVector fv1 = new FeatureVector();
-        FeatureVector fv2 = null;
+    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
+        StyleVector fv1 = new StyleVector();
+        StyleVector fv2 = null;
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleProperty() instanceof OptionalBraceProperty property) {
                 fv1.addFeature("Use brace", new VectorFeatureValue(List.of(property.useBrace)));
                 if (!property.useBrace) {
-                    fv2 = new FeatureVector();
+                    fv2 = new StyleVector();
                     fv2.addFeature("Compact style", new VectorFeatureValue(List.of(property.compactStyle)));
                 }
             }

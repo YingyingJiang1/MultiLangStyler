@@ -1,6 +1,6 @@
 package org.example.analysis.feature.impl;
 
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class IndentionStyleFeature extends StyleFeature {
     @Override
-    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
-        FeatureVector fv = new FeatureVector();
+    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
+        StyleVector fv = new StyleVector();
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleProperty() instanceof IndentionProperty property) {
                 fv.addFeature("Indention unit", new DoubleFeatureValue(property.indentionUnit));

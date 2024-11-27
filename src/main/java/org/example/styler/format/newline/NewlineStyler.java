@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.style.style;
+import org.example.style.Style;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.Styler;
@@ -20,6 +20,11 @@ import java.util.*;
  */
 public class NewlineStyler extends Styler {
     public NewlineStyler() {
+        style.setStyleName("newline");
+    }
+
+    public NewlineStyler(boolean executeWhenExit) {
+        super(executeWhenExit);
         style.setStyleName("newline");
     }
 

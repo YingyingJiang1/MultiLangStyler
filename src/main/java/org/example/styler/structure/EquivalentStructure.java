@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class EquivalentStructure {
 
 	int id;
-	String name;
+	String category;
 	int[] rules;
 	List<VirtualTree> vTrees = new ArrayList<>();
 	VirtualNodeContainer vNodeContainer = null;
@@ -34,8 +34,9 @@ public class EquivalentStructure {
 	List<Checker> checkers = null;
 	List<Handler> handlers = null;
 
-	public EquivalentStructure(int id, int[] rules, List<Checker> checkers,
+	public EquivalentStructure(int id, String category, int[] rules, List<Checker> checkers,
 	                           List<Handler> handlers, Map<Integer, List<Integer>> bannedTransfer) {
+		this.category = category;
 		this.id = id;
 		this.rules = rules;
 		this.checkers = checkers;
@@ -58,6 +59,9 @@ public class EquivalentStructure {
 			for (int i = 0; i < codes.length; i++) {
 				boolean flag = codes[i].startsWith("$^");
 				String code = replaceHolder(codes[i]);
+				if (id == 26) {
+					System.out.println("");
+				}
 				MyJavaParser parser = new MyJavaParser(code);
 				if (i < rules.length) {
 					rule = rules[i];
@@ -93,8 +97,8 @@ public class EquivalentStructure {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public String getCategory() {
+		return category;
 	}
 
 	public VirtualNode getVNode(String holderName) {
@@ -327,12 +331,13 @@ public class EquivalentStructure {
 	}
 
 	private String replaceHolder(String code) {
-		Set<String> holderNames = vNodeContainer.getHolderNames();
+		// Holder name with a longer prefix should be replaced first.
+		List<String> holderNames = vNodeContainer.getHolderNames().stream().sorted(Comparator.comparing(s -> -s.length())).toList();
 		boolean flag = code.startsWith("$^");
 		String[] strs = code.split(" ");
 		StringBuilder retCode = new StringBuilder();
 		for(String str : strs) {
-			for(String holderName : vNodeContainer.getHolderNames()) {
+			for(String holderName : holderNames) {
 				str = str.replace(holderName, vNodeContainer.getValue(holderName));
 			}
 			retCode.append(str);
@@ -348,7 +353,7 @@ public class EquivalentStructure {
 	static class VirtualNodeMatcher {
 		private static Map<Class, VirtualNodeMatcher> instances = new HashMap<>(0);
 		private Map<String, Set<Integer>> matchRules = new HashMap<>();
-		private Map<String, Set<String>> matchTokens = new HashMap<>();
+		private Map<String, Set<Integer>> matchTokens = new HashMap<>();
 
 		private VirtualNodeMatcher(MyParser parser) {
 			init(parser);
@@ -379,30 +384,20 @@ public class EquivalentStructure {
 		}
 
 		private void init(MyParser parser) {
-			matchRules.put("$I", new HashSet<>(Arrays.asList(parser.getRuleIdentifier(), parser.getRuleExpression())));
-			matchRules.put("$C", new HashSet<>(Arrays.asList(parser.getRuleExpression())));
-			matchRules.put("$E", new HashSet<>(Arrays.asList(parser.getRuleExpression())));
+			matchRules.put("$I", Set.of(parser.getRuleIdentifier(), parser.getRuleExpression()));
+			matchRules.put("$C", Set.of(parser.getRuleExpression()));
+			matchRules.put("$E", Set.of(parser.getRuleExpression()));
 			matchRules.put("$S", parser.getAllStmts());
-			matchRules.put("$T", new HashSet<>(Arrays.asList(parser.getRuleTypeType())));
-			matchRules.put("$M", new HashSet<>(Arrays.asList(parser.getRuleModifierList())));
+			matchRules.put("$T", Set.of(parser.getRuleTypeType()));
+			matchRules.put("$M", Set.of(parser.getRuleModifierList()));
 
-			matchRules.put("$S(ifStmt)", new HashSet<>(Arrays.asList(parser.getRuleIfStmt())));
-			matchRules.put("$S(ifElseStmt)", new HashSet<>(Arrays.asList(parser.getRuleIfElseStmt())));
+			matchRules.put("$S(ifStmt)", Set.of(parser.getRuleIfStmt()));
+			matchRules.put("$S(ifElseStmt)", Set.of(parser.getRuleIfElseStmt()));
 
-			matchTokens.put("$I", new HashSet<>(Arrays.asList("identifier")));
-			matchTokens.put("$-", new HashSet<>(Arrays.asList(
-					"/", "%"
-			)));
-			matchTokens.put("$-=", new HashSet<>(Arrays.asList(
-					"/=", "%="
-			)));
-			matchTokens.put("$+", new HashSet<>(Arrays.asList(
-					"*", "&", "|", "^"
-			)));
-			matchTokens.put("$+=", new HashSet<>(Arrays.asList(
-					"*=", "&=", "|=", "^="
-			)));
-
+			matchTokens.put("$I", Set.of(parser.getIdentifier()));
+			matchTokens.put("$HOMO_BOP", parser.getHomoOps());
+			matchTokens.put("$HOMO_BOP_ASSIGN", parser.getOpAssign());
+			matchTokens.put("$LITERAL", parser.getLiterals());
 		}
 	}
 
@@ -547,11 +542,20 @@ public class EquivalentStructure {
 		// key: holder value, value:holder names
 		Map<String, List<String>> valueNameMap = new HashMap<>();
 		Map<String, Holder> holders = new HashMap<>();
+		// Ensure each pattern has three groups. If regular1 is a prefix of regular2 then regular1 should be put after regular2.
 		static Pattern[] holderPatterns = {
 				Pattern.compile("(\\$[ICSEMVT^])(\\d*)([*+?]?)"),
 				Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
-				Pattern.compile("(\\$(-|-=|\\+|\\+=))()()")
+				Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
+				Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
+				Pattern.compile("(\\$LITERAL)(\\d*)()")
 		};
+		private static final Map<String, String> holderMap = new HashMap<>(){{
+			put("$I", "I");put("$C", "C");put("$E", "E");put("$V", "V");put("$T", "T");put("$M", "");
+			put("$S(ifStmt)", "if(true){}");put("$S(ifElseStmt)", "if(true){}else{}");put("$S", "S#id=S#id;");
+			put("$HOMO_BOP", "+");put("$HOMO_BOP_ASSIGN", "+=");put("$LITERAL", "1");
+			put("", "");
+		}};
 		static int TYPE_GROUP = 1;
 		static int DIGITAL_GROUP = 2;
 		static int REPETITION_GROUP = 3;
@@ -653,25 +657,13 @@ public class EquivalentStructure {
 			String type = "", digitalId = "", repetition = "";
 			for(Pattern holderPattern : holderPatterns) {
 				Matcher matcher = holderPattern.matcher(holderName);
-				if (matcher.matches()) {
+				if (matcher.matches() && matcher.group(TYPE_GROUP).length() > type.length()) {
 					type = matcher.group(TYPE_GROUP);
 					digitalId = matcher.group(DIGITAL_GROUP);
 					repetition = matcher.group(REPETITION_GROUP);
-					break;
 				}
 			}
-			String holderValue = switch (type) {
-				case "$I", "$C", "$E", "$V", "$T" -> type.charAt(1) + digitalId;
-				case "$S" -> "S" + digitalId + "=" + "S" + digitalId + ";";
-				case "$M" -> "";
-				case "$S(ifStmt)" -> "if(true){}";
-				case "$S(ifElseStmt)" -> "if(true){}else{}";
-				case "$-" -> "-";
-				case "$-=" -> "-=";
-				case "$+" -> "+";
-				case "$+=" -> "+=";
-				default -> "";
-			};
+			String holderValue = holderMap.getOrDefault(type, "").replace("#id", digitalId);
 			valueNameMap.computeIfAbsent(holderValue, v -> new ArrayList<>());
 			valueNameMap.get(holderValue).add(holderName);
 			return new Holder(holderName, holderValue, index, repetition, type);

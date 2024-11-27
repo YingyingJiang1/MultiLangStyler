@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.feature.featurevalue.FeatureValue;
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.style.Style;
@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class SpaceStyleFeature extends StyleFeature {
     @Override
-    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
-        FeatureVector fv = new FeatureVector();
+    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
+        StyleVector fv = new StyleVector();
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof SpaceContext context &&
             rule.getStyleProperty() instanceof SpaceProperty property) {

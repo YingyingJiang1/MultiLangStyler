@@ -4,6 +4,12 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
+import org.example.styler.brace.OptionalBraceStyler;
+import org.example.styler.format.body.BodyLayoutStyler;
+import org.example.styler.format.linestmt.LineStmtStyler;
+import org.example.styler.format.linewrapping.LineWrappingStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.example.io.StyleFileIO;
 import org.example.myException.EAsourceUnsetException;
@@ -15,6 +21,8 @@ import org.example.styler.*;
 import org.example.styler.arrangement.ArrangementStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -32,6 +40,7 @@ import java.util.*;
 public class Controller {
     // For test
 //    public static ProgramStyle programStyle;
+    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     private MyParser parser;
     private ParseTree tree;
 //    private Map<Integer, TokenOperation> tokenToOperationMap = new HashMap<>();
@@ -55,24 +64,13 @@ public class Controller {
     private void initStylers(ProgramStyle programStyle) {
         if (programStyle == null) {
             astStylers.add(new ArrangementStyler());
-//            stylers.add(new OptionalBraceStyler());
-//            stylers.add(new StructureStyler());
-            // format stylers
-//            stylers.add(new BodyLayoutStyler());
-//            stylers.add(new IndentionStyler());
-//            stylers.add(new LineWrappingStyler());
-//            stylers.add(new NewlineStyler());
-//            stylers.add(new SpaceStyler());
-            //    exitStylers.add(new NamingStyler());
-//    exitStylers.add(new AntlrCommentStyler());
-//    exitStylers.add(new StructureStyler());
-            //    exitStylers.add(new FormatStyler());
+            astStylers.add(new OptionalBraceStyler(false));
+            astStylers.add(new StructureStyler());
+            astStylers.add(new BodyLayoutStyler(false));
+            astStylers.add(new LineWrappingStyler());
+            astStylers.add(new LineStmtStyler());
+            astStylers.add(new NewlineStyler(false));
 
-//        enterStylers.add(new AntlrBraceStyler(false, false));
-//        enterStylers.add(new NewlineStyler(false, false)); // This must be the last Styler
-
-//    tStreamStylers.add(new HwsStyler());
-//    tStreamStylers.add(new LineWrappingStyler());
             tStreamStylers.add(new SpaceStyler());
             tStreamStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
         }
@@ -498,11 +496,10 @@ public class Controller {
             StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
             applyStyle(conf.applicationCollection);
             return programStyle;
-        } catch (EAsourceUnsetException | IOException | ParserRuleContextTypeException |
-                 DocumentException e) {
-            System.err.printf("Failed to write file:" + e.getMessage());
+        } catch (IOException | DocumentException e) {
+            logger.error(e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage() + "\n" + "Path: " + curPath.toString());
+            logger.error("{}\nPath: {}", e.getMessage(), curPath.toString());
         }
         return null;
     }

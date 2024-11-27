@@ -122,5 +122,7 @@ public interface MyParser {
     Set<Integer> getCompoundStmts();
     Set<Integer> getSingleStmts();
     Set<Integer> getDecHeads();
-
+    Set<Integer> getHomoOps(); // All operands have the same type.
+    Set<Integer> getOpAssign();
+    Set<Integer> getLiterals();
 }

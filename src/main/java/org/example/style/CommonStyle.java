@@ -14,7 +14,7 @@ import java.util.List;
  * @author     : Jiang Yingying
  * @create     : 2024/1/7 17:55
  */
-public class style implements DomIO,Style {
+public class CommonStyle implements DomIO,Style {
     public String styleName = "";
 //    protected List<StyleRule> rules = new ArrayList<>();
     protected RuleSet ruleSet = new MapRuleSet();

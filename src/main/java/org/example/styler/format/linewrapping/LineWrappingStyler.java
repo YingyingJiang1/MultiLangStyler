@@ -18,7 +18,7 @@ import java.util.*;
 public class LineWrappingStyler extends Styler {
     private static Set<Integer> relevantRules = null;
     private DescriptiveStatistics codeStats = new DescriptiveStatistics();
-    private DescriptiveStatistics commentStats = new DescriptiveStatistics();
+    private DescriptiveStatistics commentStats = null;
     private Map<LineWrappingProperty.SucceedLoc, Integer> succeedLocFre = new HashMap<>();
     private int maxLenBefore = 0;
 
@@ -27,18 +27,18 @@ public class LineWrappingStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(List<Token> tokens, int index) {
-        String[] lines = parser.getTokenStream().getText().split("\n");
-        for (String line : lines) {
-            // Comment length are not included in the column limit
-            if (line.startsWith("//") || line.startsWith("/*")) {
-                commentStats.addValue(line.length());
+    public void extractStyle(ExtendContext ctx) {
+        if (commentStats == null) {
+            commentStats = new DescriptiveStatistics();
+            String[] lines = parser.getTokenStream().getText().split("\n");
+            for (String line : lines) {
+                // Comment length are not included in the column limit
+                if (line.startsWith("//") || line.startsWith("/*")) {
+                    commentStats.addValue(line.length());
+                }
             }
         }
-    }
 
-    @Override
-    public void extractStyle(ExtendContext ctx) {
         List<Token> tokens = extractRelatedTokens(ctx);
         List<MutablePair<Token, Token>> linePairs = findLinePairs(tokens);
         if (!linePairs.isEmpty()) {
@@ -176,6 +176,7 @@ public class LineWrappingStyler extends Styler {
         ExtendToken virtualToken = new ExtendToken(-1);
         virtualToken.setLine(-1);
         virtualToken.setCharPositionInLine(-1);
+        tokens.add(virtualToken);
         List<MutablePair<Token, Token>> pairs = new ArrayList<>();
         Token start = tokens.isEmpty() ? null : tokens.get(0), end = null;
         for (int i = 0; i < size; i++) {

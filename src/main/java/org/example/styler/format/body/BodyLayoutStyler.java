@@ -6,8 +6,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenInfoField;
-
-import org.example.style.style;
+import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.styler.format.body.style.BodyLayoutContext;
 import org.example.styler.format.body.style.BodyLayoutProperty;
@@ -19,6 +18,11 @@ public class BodyLayoutStyler extends Styler {
   private static Set<Integer> relevantRules = null;
 
   public BodyLayoutStyler() {
+    style.setStyleName("body_layout");
+  }
+
+  public BodyLayoutStyler(boolean executeWhenExit) {
+    super(executeWhenExit);
     style.setStyleName("body_layout");
   }
 

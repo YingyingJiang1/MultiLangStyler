@@ -15,8 +15,8 @@ public class StyleFeatureFactory {
             "space", new SpaceStyleDiffCreator(),
             "struct_preference", new StructPreferenceStyleDiffCreator()
     );
-    public static StyleFeature createStyleDiff(Class<? extends Style> styleClass) {
-        return diffCreatorMap.get(styleClass).create();
+    public static StyleFeature createStyleDiff(String styleName) {
+        return diffCreatorMap.get(styleName).create();
     }
     
     private static class DiffCreator {

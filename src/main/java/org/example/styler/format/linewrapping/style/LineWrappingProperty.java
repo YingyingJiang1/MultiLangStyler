@@ -27,12 +27,11 @@ public class LineWrappingProperty extends StyleProperty {
                 new BreakLoc("[.]", false),
                 new BreakLoc("[&]{2}"),
                 new BreakLoc("[|]{2}"),
+                new BreakLoc("[-+*/%&|^]"),
                 new BreakLoc("[=]{2,3}"),
-                new BreakLoc("[+-*/%&|^]=", true),
-                new BreakLoc("[(]"),
-                new BreakLoc("[+-*/%&|^]=|<<=|>>=|>>>="),
+                new BreakLoc("[-+*/%&|^]=|<<=|>>=|>>>="),
                 new BreakLoc("<|<=|>|>=|==|!="),
-                new BreakLoc("[+-*/%&|^]")
+                new BreakLoc("[(]")
                 );
         Collections.addAll(COMMENT_PROPERTY.breakLocs,
                 new BreakLoc("\s+|[,.]")

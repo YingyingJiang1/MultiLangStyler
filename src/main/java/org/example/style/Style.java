@@ -1,5 +1,6 @@
 package org.example.style;
 
+import org.example.io.DomIO;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
@@ -14,4 +15,5 @@ public interface Style {
     String getStyleName() ;
     void fillStyle();
     void setStyleName(String styleName);
+    boolean contains(StyleContext targetContext);
 }

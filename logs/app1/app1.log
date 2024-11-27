@@ -1,0 +1,35 @@
+2024-11-27 11:57:08,682 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 11:57:08,687 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 11:57:09,176 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarting/50 : Starting Application using Java 17.0.11 with PID 32912 (D:\jyy\科研\style-transformation\transformer\target\classes started by jiang in D:\jyy\科研\style-transformation\transformer)
+2024-11-27 11:57:09,177 INFO  --- [main] org.springframework.boot.SpringApplication.logStartupProfileInfo/654 : No active profile set, falling back to 1 default profile: "default"
+2024-11-27 11:57:09,613 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarted/56 : Started Application in 0.849 seconds (process running for 1.752)
+2024-11-27 11:59:02,262 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 11:59:02,266 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 11:59:02,731 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarting/50 : Starting Application using Java 17.0.11 with PID 22296 (D:\jyy\科研\style-transformation\transformer\target\classes started by jiang in D:\jyy\科研\style-transformation\transformer)
+2024-11-27 11:59:02,733 INFO  --- [main] org.springframework.boot.SpringApplication.logStartupProfileInfo/654 : No active profile set, falling back to 1 default profile: "default"
+2024-11-27 11:59:03,435 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarted/56 : Started Application in 1.096 seconds (process running for 1.899)
+2024-11-27 12:01:43,298 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 12:01:43,302 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 12:01:43,645 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarting/50 : Starting Application using Java 17.0.11 with PID 22380 (D:\jyy\科研\style-transformation\transformer\target\classes started by jiang in D:\jyy\科研\style-transformation\transformer)
+2024-11-27 12:01:43,646 INFO  --- [main] org.springframework.boot.SpringApplication.logStartupProfileInfo/654 : No active profile set, falling back to 1 default profile: "default"
+2024-11-27 12:01:44,244 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarted/56 : Started Application in 0.884 seconds (process running for 1.525)
+2024-11-27 12:02:08,496 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 12:02:08,503 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 12:02:09,029 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarting/50 : Starting Application using Java 17.0.11 with PID 34096 (D:\jyy\科研\style-transformation\transformer\target\classes started by jiang in D:\jyy\科研\style-transformation\transformer)
+2024-11-27 12:02:09,032 INFO  --- [main] org.springframework.boot.SpringApplication.logStartupProfileInfo/654 : No active profile set, falling back to 1 default profile: "default"
+2024-11-27 12:02:09,763 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarted/56 : Started Application in 1.176 seconds (process running for 1.996)
+2024-11-27 12:02:37,256 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 12:02:37,261 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 12:02:54,250 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 12:02:54,254 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 12:03:15,765 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 12:03:15,769 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 12:03:16,212 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarting/50 : Starting Application using Java 17.0.11 with PID 8900 (D:\jyy\科研\style-transformation\transformer\target\classes started by jiang in D:\jyy\科研\style-transformation\transformer)
+2024-11-27 12:03:16,214 INFO  --- [main] org.springframework.boot.SpringApplication.logStartupProfileInfo/654 : No active profile set, falling back to 1 default profile: "default"
+2024-11-27 12:03:16,651 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarted/56 : Started Application in 0.809 seconds (process running for 1.582)
+2024-11-27 12:05:17,435 ERROR --- [main] org.example.io.StyleFileIO.read/36 : read style file error. Target path: 
+2024-11-27 12:05:17,439 ERROR --- [main] org.example.io.StyleFileIO.write/54 : write style file error. target path:
+2024-11-27 12:05:17,803 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarting/50 : Starting Application using Java 17.0.11 with PID 30116 (D:\jyy\科研\style-transformation\transformer\target\classes started by jiang in D:\jyy\科研\style-transformation\transformer)
+2024-11-27 12:05:17,804 INFO  --- [main] org.springframework.boot.SpringApplication.logStartupProfileInfo/654 : No active profile set, falling back to 1 default profile: "default"
+2024-11-27 12:05:18,267 INFO  --- [main] org.springframework.boot.StartupInfoLogger.logStarted/56 : Started Application in 0.764 seconds (process running for 1.399)
+2024-11-27 14:21:04,095 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\style.xml

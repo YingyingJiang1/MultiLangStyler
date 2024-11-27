@@ -1,6 +1,6 @@
 package org.example.analysis.feature.impl;
 
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.style.Style;
@@ -18,8 +18,8 @@ public class LineWrappingStyleFeature extends StyleFeature {
      */
     int maxLen = 80;
     @Override
-    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
-        FeatureVector fv = new FeatureVector();
+    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
+        StyleVector fv = new StyleVector();
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof LineWrappingContext context &&
             rule.getStyleProperty() instanceof LineWrappingProperty property) {

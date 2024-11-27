@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.feature.StyleFeature;
-import org.example.analysis.feature.featurevalue.FeatureVector;
+import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class LineStmtStyleFeature extends StyleFeature {
-    public void toFeatureVector(Style style, Map<String, FeatureVector> styleFeatures) {
-        FeatureVector fv = new FeatureVector();
+    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
+        StyleVector fv = new StyleVector();
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleProperty() instanceof LineStmtProperty property) {
-                styleFeatures.put("Line statement", new FeatureVector());
+                styleFeatures.put("Line statement", new StyleVector());
                 fv.addFeature("One line one statement", new VectorFeatureValue(List.of(property.isOneStmtPerLine)));
             }
         }
