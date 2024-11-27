@@ -3,6 +3,7 @@ package org.example.styler.structure.handler;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 
@@ -84,7 +85,7 @@ public class CondReverserHandler extends Handler{
     reversedOp = logicalOpMap.get(op.getText());
     ExtendContext exp = ctx;
     if (reversedOp != null) {
-      exp = ParseTreeFactory.getInstance().encapsulateExpByParen(ctx, parser);
+      exp = ParseTreeFactory.getInstance().encapsulateExpWithParen(ctx, parser);
     }
     // expression -> !expression or !expression -> expression
     ExtendContext notExp = ParseTreeFactory.getInstance().negateExpression(exp, parser);
@@ -104,7 +105,7 @@ public class CondReverserHandler extends Handler{
   private ExtendToken getOp(ExtendContext ctx) {
     List<TerminalNode> ters = ctx.getAllTerminalsIf(v -> true);
     if (ters.isEmpty()) {
-      return ExtendTokenFactory.DEFAULT.create(0, "");
+      return parser.getTokenFactory().create(0, "");
     }
     return (ExtendToken) ters.get(0).getSymbol();
   }

@@ -1,10 +1,11 @@
-package org.example.parser.common;
+package org.example.parser.common.factory;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenFactory;
 import org.antlr.v4.runtime.TokenSource;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.Pair;
+import org.example.parser.common.ExtendToken;
 
 /*
  * @description
@@ -12,7 +13,6 @@ import org.antlr.v4.runtime.misc.Pair;
  * @create       2024/2/1 15:03
  */
 public class ExtendTokenFactory extends CommonTokenFactory {
-  public static ExtendTokenFactory DEFAULT = new ExtendTokenFactory();
   public ExtendTokenFactory(boolean copyText) {
     super(copyText);
   }

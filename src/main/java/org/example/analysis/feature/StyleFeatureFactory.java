@@ -1,7 +1,6 @@
 package org.example.analysis.feature;
 
 import org.example.analysis.feature.impl.*;
-import org.example.style.Style;
 
 import java.util.Map;
 
@@ -9,7 +8,7 @@ import java.util.Map;
 public class StyleFeatureFactory {
     private static Map<String, DiffCreator> diffCreatorMap = Map.of(
             "arrangement", new ArrangementStyleDiffCreator(),
-            "body_layout", new BodyLayoutStyleDiffCreator(),
+            "brace_format", new BodyLayoutStyleDiffCreator(),
             "indention", new IndentionStyleDiffCreator(),
             "optional_brace", new OptionalBraceStyleDiffCreator(),
             "space", new SpaceStyleDiffCreator(),
@@ -35,7 +34,7 @@ public class StyleFeatureFactory {
     private static class BodyLayoutStyleDiffCreator extends DiffCreator {
         @Override
         public StyleFeature create() {
-            return new BodyLayoutStyleFeature();
+            return new BraceFormatStyleFeature();
         }
     }
     

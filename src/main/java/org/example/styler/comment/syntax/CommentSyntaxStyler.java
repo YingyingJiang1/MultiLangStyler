@@ -15,7 +15,7 @@ public class CommentSyntaxStyler extends Styler {
 
     @Override
     public void extractStyle(List<Token> tokens, int index) {
-        List<Token> commentTokens = tokens.stream().filter(t -> parser.isComment(t.getType())).toList();
+        List<Token> commentTokens = tokens.stream().filter(t -> parser.belongToComment(t.getType())).toList();
         for (int i = 0; i < commentTokens.size(); i++) {
             Token t = commentTokens.get(i);
             String syntax = t.getType() == parser.getBlockComment() ? "/**/" : "//";

@@ -1,10 +1,10 @@
-package org.example.styler.format.body.style;
+package org.example.styler.body;
 
 import org.example.parser.common.MyParser;
 
 import java.util.*;
 
-public enum TypeEnum {
+public enum BodyBlockTypeEnum {
     BODY_BLOCK, // Body of type declaration or method declaration.
     MULTI_BLOCK_STMT, // if-else, try-catch-finally
     DO_WHILE_BLOCK,
@@ -13,17 +13,17 @@ public enum TypeEnum {
     NORMAL_BLOCK, // Except for the above blocks.
     ;
 
-    private static Map<TypeEnum, Set<Integer>> map = null;
+    private static Map<BodyBlockTypeEnum, Set<Integer>> map = null;
     private static Class<MyParser> parserClass = null;
 
-    public static TypeEnum getBlockType(int rule, MyParser parser) {
+    public static BodyBlockTypeEnum getBlockType(int rule, MyParser parser) {
         init(parser);
-        for (Map.Entry<TypeEnum, Set<Integer>> entry : map.entrySet()) {
+        for (Map.Entry<BodyBlockTypeEnum, Set<Integer>> entry : map.entrySet()) {
             if (entry.getValue().contains(rule)) {
                 return entry.getKey();
             }
         }
-        return TypeEnum.NORMAL_BLOCK;
+        return BodyBlockTypeEnum.NORMAL_BLOCK;
     }
 
     private static void init(MyParser parser) {

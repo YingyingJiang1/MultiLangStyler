@@ -1,5 +1,7 @@
-package org.example.parser.common;
+package org.example.parser.java;
 
+import org.example.parser.common.ExtendContext;
+import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.java.antlr.JavaParserBaseListener;
 import org.example.styler.Styler;
@@ -228,44 +230,39 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitClassHead(JavaParser.ClassHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitInterfaceHead(JavaParser.InterfaceHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitRecordHead(JavaParser.RecordHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitEnumHead(JavaParser.EnumHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
 		doTask(ctx, exitStylers);
 	}
 
 
 	@Override
 	public void exitAnnotationTypeHead(JavaParser.AnnotationTypeHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitMethodHead(JavaParser.MethodHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitConstructorHead(JavaParser.ConstructorHeadContext ctx) {
-		// ctx.expandChildIf((root) -> root instanceof JavaParser.IdentifierContext);
+		
 		doTask(ctx, exitStylers);
 	}
 

@@ -1,4 +1,4 @@
-package org.example.styler.format.body;
+package org.example.styler.body.braceformat;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -7,43 +7,41 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenInfoField;
 import org.example.style.Style;
-import org.example.styler.Styler;
-import org.example.styler.format.body.style.BodyLayoutContext;
-import org.example.styler.format.body.style.BodyLayoutProperty;
-import org.example.styler.format.body.style.BodyType;
-import org.example.styler.format.body.style.TypeEnum;
+
+import org.example.styler.body.BodyContext;
+import org.example.styler.body.BodyStyler;
+import org.example.styler.body.braceformat.style.BraceFormatProperty;
+import org.example.styler.body.BodyBlockTypeEnum;
 
 import java.util.*;
 
-public class BodyLayoutStyler extends Styler {
+public class BraceFormatStyler extends BodyStyler {
   private static Set<Integer> relevantRules = null;
 
-  public BodyLayoutStyler() {
-    style.setStyleName("body_layout");
+  public BraceFormatStyler() {
+    style.setStyleName("brace_format");
   }
 
-  public BodyLayoutStyler(boolean executeWhenExit) {
+  public BraceFormatStyler(boolean executeWhenExit) {
     super(executeWhenExit);
-    style.setStyleName("body_layout");
+    style.setStyleName("brace_format");
   }
 
   @Override
   public ExtendContext applyStyle(ExtendContext ctx) {
     List<ExtendContext> blocks = getAllBlocks(ctx);
-    TypeEnum blockType = TypeEnum.getBlockType(ctx.getRuleIndex(), parser);
 
-    // Apply brace information and add blank line.
+    // Apply brace information.
     int lastIndex = blocks.size() - 1;
     for (int i = 0; i < blocks.size(); ++i) {
       ExtendContext block = blocks.get(i);
+      BodyContext context = extractStyleContext(ctx, block);
       // Specially process the last block of multi-block statement.
-      if (blockType == TypeEnum.MULTI_BLOCK_STMT && block == ctx.getLastContextChild()) {
-        blockType = TypeEnum.NORMAL_BLOCK;
+      if (context.blockType == BodyBlockTypeEnum.MULTI_BLOCK_STMT && block == ctx.getLastContextChild()) {
+        context.blockType = BodyBlockTypeEnum.NORMAL_BLOCK;
       }
-
-      BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getBodyType(block));
-      BodyLayoutProperty bodyLayoutProperty = (BodyLayoutProperty) style.getSimilarProperty(styleContext);
-      applyBraceInfo(bodyLayoutProperty, block);
+      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getSimilarProperty(context);
+      applyBraceInfo(braceFormatProperty, block);
     }
     return ctx;
   }
@@ -52,18 +50,18 @@ public class BodyLayoutStyler extends Styler {
   public void extractStyle(ExtendContext ctx) {
     List<ExtendContext> blocks = getAllBlocks(ctx);
     int ruleIndex = ctx.getRuleIndex();
-    TypeEnum blockType = TypeEnum.getBlockType(ruleIndex, parser);
     boolean isNotMultiBlockStmt = ruleIndex != parser.getRuleIfElseStmt() && ruleIndex != parser.getRuleTryCatchStmt();
-    // Extract brace information and blank line.
+    // Extract brace information.
     for (int i = 0; i < blocks.size(); ++i) {
-      try {
-        ExtendContext block = (ExtendContext) blocks.get(i);
-        // Skip the last block of multi-block statement.
-        if (isNotMultiBlockStmt || block != ctx.getLastContextChild()) {
-          extractBraceInfo(blockType, block, style);
-        }
-      } catch (NullPointerException e) {
-        System.err.println("brace information extraction failure: " + e.getMessage());
+      ExtendContext block = (ExtendContext) blocks.get(i);
+      // Skip the last block of multi-block statement.
+      if (isNotMultiBlockStmt || block != ctx.getLastContextChild()) {
+        TokenInfoField.BraceTokenInfo lbInfo, rbInfo;
+        TokenInfoField.BraceTokenInfo[] infos = getBraceTokenInfo(block);
+        lbInfo = infos[0];
+        rbInfo = infos[1];
+        BraceFormatProperty styleProperty = new BraceFormatProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
+        style.addRule(extractStyleContext(ctx, block), styleProperty);
       }
     }
   }
@@ -119,7 +117,7 @@ public class BodyLayoutStyler extends Styler {
 
   private void addVwsBefore(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
-    if (!token.trailingComment && !token.comments.isEmpty() &&
+    if (!token.hasTrailingComment && !token.comments.isEmpty() &&
         parser.getBlockComment() == token.comments.get(token.comments.size() - 1).getType()) {
       token.comments.add(new ExtendToken(parser.getVws(), System.lineSeparator()));
     } else {
@@ -129,7 +127,7 @@ public class BodyLayoutStyler extends Styler {
 
   private void addVwsAfter(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
-    if(!(token.trailingComment && parser.getLineComment() == token.comments.get(token.comments.size() - 1).getType())) {
+    if(!(token.hasTrailingComment && parser.getLineComment() == token.comments.get(token.comments.size() - 1).getType())) {
       ctx.addTerNode(parser.getVws(), System.lineSeparator(), ctx.findFirstTerChildByType(braceType) + 1);
     }
   }
@@ -137,36 +135,23 @@ public class BodyLayoutStyler extends Styler {
   /**
    * @param ctx A block.
    */
-  private void applyBraceInfo(BodyLayoutProperty bodyLayoutProperty, ExtendContext ctx) {
+  private void applyBraceInfo(BraceFormatProperty braceFormatProperty, ExtendContext ctx) {
     // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
-    if (bodyLayoutProperty != null) {
-      if (bodyLayoutProperty.beforeLB) {
+    if (braceFormatProperty != null) {
+      if (braceFormatProperty.beforeLB) {
         addVwsBefore(ctx, parser.getLBrace());
       }
-      if (bodyLayoutProperty.afterLB) {
+      if (braceFormatProperty.afterLB) {
         addVwsAfter(ctx, parser.getLBrace());
       }
-      if (bodyLayoutProperty.beforeRB) {
+      if (braceFormatProperty.beforeRB) {
         addVwsBefore(ctx, parser.getRBrace());
       }
-      if (bodyLayoutProperty.afterRB) {
+      if (braceFormatProperty.afterRB) {
         addVwsAfter(ctx, parser.getRBrace());
       }
     }
 
-  }
-
-  private void extractBraceInfo(TypeEnum blockType, ExtendContext ctx, Style style) {
-    BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getBodyType(ctx));
-
-    boolean beforeLB, afterLB, beforeRB, afterRB;
-    TokenInfoField.BraceTokenInfo lbInfo, rbInfo;
-    TokenInfoField.BraceTokenInfo[] infos = getBraceTokenInfo(ctx);
-    lbInfo = infos[0];
-    rbInfo = infos[1];
-    BodyLayoutProperty styleProperty = new BodyLayoutProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
-
-    style.addRule(styleContext, styleProperty);
   }
 
   private List<ExtendContext> getAllBlocks(ExtendContext ctx) {
@@ -200,24 +185,5 @@ public class BodyLayoutStyler extends Styler {
     infos[0] = (TokenInfoField.BraceTokenInfo) lbToken.info;
     infos[1] = (TokenInfoField.BraceTokenInfo) rbToken.info;
     return infos;
-  }
-
-
-  /**
-   * @param ctx @BodyContext or @BlockContext instance.
-   * @return
-   * @implNote If @ctx is a @BodyContext instance, then only empty or non-empty body is concerned about.
-   * If @ctx is a @BlockContext instance, then empty block, one single statement block or multiple statements block
-   * is concerned about.
-   */
-  private BodyType getBodyType(ExtendContext ctx) {
-    int stmtNum = ctx.countChildIf(child -> child instanceof ExtendContext); // Exclude LBRACE and RBRACE.
-    if (stmtNum == 0) {
-      return BodyType.EMPTY;
-    } else if(stmtNum == 1 && parser.belongToSingleStmt(ctx.getFirstCtxChildIf(child -> true))) {
-      return BodyType.SINGLE;
-    } else {
-      return BodyType.MULTI;
-    }
   }
 }

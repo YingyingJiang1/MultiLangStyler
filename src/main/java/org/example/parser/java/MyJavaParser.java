@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.CompilationException;
@@ -278,32 +279,32 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean isBinOp(String name) {
+    public boolean belongToBinOp(String name) {
         return binOps.contains(name);
     }
 
     @Override
-    public boolean isUnOp(String name) {
+    public boolean belongToUnOp(String name) {
         return unaryOps.contains(name);
     }
 
     @Override
-    public boolean isSeparator(String name) {
+    public boolean belongToSeparator(String name) {
         return separators.contains(name);
     }
 
     @Override
-    public boolean isOperator(String name) {
-        return isBinOp(name) || isUnOp(name);
+    public boolean belongToOperator(String name) {
+        return belongToBinOp(name) || belongToUnOp(name);
     }
 
     @Override
-    public boolean isComment(int type) {
+    public boolean belongToComment(int type) {
         return type == JavaParser.LINE_COMMENT || type == JavaParser.BLOCK_COMMENT;
     }
 
     @Override
-    public boolean isBrace(int type) {
+    public boolean belongToBrace(int type) {
         return type == JavaParser.LBRACE || type == JavaParser.RBRACE;
     }
 
@@ -522,6 +523,11 @@ public class MyJavaParser implements MyParser {
     public String getRuleName(int type) {
         String[] ruleNames = JavaParser.ruleNames;
         return ruleNames[type];
+    }
+
+    @Override
+    public TokenFactory getTokenFactory() {
+        return parser.getTokenFactory();
     }
 
     @Override

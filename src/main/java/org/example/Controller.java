@@ -4,16 +4,14 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
-import org.example.styler.brace.OptionalBraceStyler;
-import org.example.styler.format.body.BodyLayoutStyler;
+import org.example.styler.body.optionalbrace.OptionalBraceStyler;
+import org.example.styler.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
 import org.example.styler.format.linewrapping.LineWrappingStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.example.io.StyleFileIO;
-import org.example.myException.EAsourceUnsetException;
-import org.example.myException.ParserRuleContextTypeException;
 import org.example.parser.common.*;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.style.ProgramStyle;
@@ -29,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.cert.CertificateRevokedException;
 import java.util.*;
 
 /*
@@ -64,9 +61,9 @@ public class Controller {
     private void initStylers(ProgramStyle programStyle) {
         if (programStyle == null) {
             astStylers.add(new ArrangementStyler());
-            astStylers.add(new OptionalBraceStyler(false));
+            astStylers.add(new OptionalBraceStyler());
             astStylers.add(new StructureStyler());
-            astStylers.add(new BodyLayoutStyler(false));
+            astStylers.add(new BraceFormatStyler(false));
             astStylers.add(new LineWrappingStyler());
             astStylers.add(new LineStmtStyler());
             astStylers.add(new NewlineStyler(false));
@@ -430,16 +427,7 @@ public class Controller {
             int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
             ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());
             token.setHierarchy(hierarchy);
-            for (Token comment : token.comments) {
-                ((ExtendToken) comment).setHierarchy(hierarchy);
-            }
-            if (token.trailingComment) {
-                tokens.add(token);
-                tokens.addAll(((ExtendToken) token).comments);
-            } else {
-                tokens.addAll(((ExtendToken) token).comments);
-                tokens.add(token);
-            }
+            tokens.addAll(token.getFullTokens());
         } else {
             ExtendContext ctx = (ExtendContext) root;
             ctx.updateHierarchy(parser);

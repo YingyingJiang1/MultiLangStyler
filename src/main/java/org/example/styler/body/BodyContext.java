@@ -1,18 +1,18 @@
-package org.example.styler.format.body.style;
+package org.example.styler.body;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
-public class BodyLayoutContext extends StyleContext {
-    public TypeEnum blockType;
-    public BodyType bodyType;
+public class BodyContext extends StyleContext {
+    public BodyBlockTypeEnum blockType;
+    public BodyNumType bodyNumType;
 
-    public BodyLayoutContext() {}
+    public BodyContext() {}
 
-    public BodyLayoutContext(TypeEnum blockType, BodyType bodyType) {
+    public BodyContext(BodyBlockTypeEnum blockType, BodyNumType bodyNumType) {
         this.blockType = blockType;
-        this.bodyType = bodyType;
+        this.bodyNumType = bodyNumType;
     }
 
 //    public int calculateDis(StyleContext context) {
@@ -28,13 +28,13 @@ public class BodyLayoutContext extends StyleContext {
     @Override
     public void addElement(Element parent, MyParser parser) {
         parent.addElement("block_type").addText(blockType.name());
-        parent.addElement("body_type").addText(bodyType.name());
+        parent.addElement("body_type").addText(bodyNumType.name());
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        BodyLayoutContext context = new BodyLayoutContext();
-        context.blockType = TypeEnum.valueOf(parent.element("block_type").getText().toUpperCase());
-        context.bodyType = BodyType.valueOf(parent.element("body_type").getText().toUpperCase());
+        BodyContext context = new BodyContext();
+        context.blockType = BodyBlockTypeEnum.valueOf(parent.element("block_type").getText().toUpperCase());
+        context.bodyNumType = BodyNumType.valueOf(parent.element("body_type").getText().toUpperCase());
     }
 }

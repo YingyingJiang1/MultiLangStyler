@@ -87,10 +87,10 @@ public class Preprocessor {
       for (int i = 0; i < comments.size(); i++) {
         if(preToken != null && preToken.getLine() == comments.get(i).getLine()){
           preToken.comments.add(comments.get(i));
-          preToken.trailingComment = true;
+          preToken.hasTrailingComment = true;
         } else {
           token.comments = comments.subList(i, comments.size());
-          token.trailingComment = false;
+          token.hasTrailingComment = false;
           break;
         }
       }

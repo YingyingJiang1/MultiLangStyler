@@ -32,7 +32,7 @@ public class WrapCondHandler extends Handler{
 						ParseTree t = matchedTrees.get(j);
 						if (t instanceof JavaParser.ExpressionContext ctx) {
 							if(containsLogicalOp(ctx)) {
-								matchedTrees.set(j, ParseTreeFactory.getInstance().encapsulateExpByParen(ctx, parser));
+								matchedTrees.set(j, ParseTreeFactory.getInstance().encapsulateExpWithParen(ctx, parser));
 							}
 						}
 					}

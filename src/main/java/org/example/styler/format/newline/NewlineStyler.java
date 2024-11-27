@@ -124,7 +124,7 @@ public class NewlineStyler extends Styler {
         }
 
         // Extraction process
-        boolean hasCommentBefore = !info2.token.comments.isEmpty() && !info2.token.trailingComment;
+        boolean hasCommentBefore = !info2.token.comments.isEmpty() && !info2.token.hasTrailingComment;
         if(hasCommentBefore) {
             ExtendToken firstCmtToken = (ExtendToken) info2.token.comments.get(0);
             ExtendToken lastCmtToken = (ExtendToken) info2.token.comments.get(info2.token.comments.size() - 1);
@@ -160,11 +160,11 @@ public class NewlineStyler extends Styler {
         Info.InnerInfo info1 = info.child1, info2 = info.child2;
         int newlines = info2.line - info1.line;
 
-        if (parser.isBrace(info1.token.getType()) ||
+        if (parser.belongToBrace(info1.token.getType()) ||
                 (parser.belongToBraceOptionalStmt(info1.type) && info1.token.getType() == parser.getSemi())) {
             --newlines;
         }
-        if(parser.isBrace(info2.token.getType())) {
+        if(parser.belongToBrace(info2.token.getType())) {
             --newlines;
         }
         if (newlines < 0) {
@@ -184,7 +184,7 @@ public class NewlineStyler extends Styler {
         if (newlineProperty.newlines > 0) {
             // info1: the latest comment info before a rule.
             // info2: a rule info.
-            if(parser.isComment(info.child1.token.getType())) {
+            if(parser.belongToComment(info.child1.token.getType())) {
                 String vwsStr = StringUtils.repeat(System.lineSeparator(), newlineProperty.newlines);
                 info.child2.token.comments.add(new ExtendToken(JavaParser.VWS, vwsStr));
             } else if(insertionPoint >= 0) { // info1: a rule info
@@ -203,7 +203,7 @@ public class NewlineStyler extends Styler {
     private int getNewlineAfter(ExtendContext parent, Info.InnerInfo info) {
         int count = 0;
         // line comment has a newline at the end, so sub 1.
-        if(info.token.trailingComment && info.token.comments.get(info.token.comments.size() - 1).getType() == parser.getLineComment()) {
+        if(info.token.hasTrailingComment && info.token.comments.get(info.token.comments.size() - 1).getType() == parser.getLineComment()) {
             count = 1;
         }
         if(parent.getChild(info.index) instanceof ExtendContext stmt) {

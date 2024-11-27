@@ -4,8 +4,8 @@ import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.style.Style;
 import org.example.style.rule.*;
-import org.example.styler.format.body.style.BodyLayoutContext;
-import org.example.styler.format.body.style.BodyLayoutProperty;
+import org.example.styler.format.brace.style.BodyLayoutContext;
+import org.example.styler.format.brace.style.BodyLayoutProperty;
 
 public class OptionalBraceStyle extends Style {
 

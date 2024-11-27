@@ -3,14 +3,14 @@ package org.example.styler.structure;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.ExtendContext;
-import org.example.parser.common.ExtendTokenFactory;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.StylizationException;
 import org.example.style.Style;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
-import org.example.styler.brace.style.OptionalBraceProperty;
+import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 
@@ -36,7 +36,6 @@ public class StructureStyler extends Styler {
     }
 
     public ExtendContext applyStyle(ExtendContext ctx, Style style) {
-        applySingleBlockStyle(ctx, style);
         ++recursiveDepth;
         ParseTree newTree = ctx;
         try {
@@ -95,48 +94,6 @@ public class StructureStyler extends Styler {
             convertionPerformed.clear();
         }
         return (ExtendContext) newTree;
-    }
-
-    /**
-     * Try to add or remove {}
-     *
-     * @param ctx
-     * @param style
-     */
-    private void applySingleBlockStyle(ExtendContext ctx, Style style) {
-        if (!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
-            return;
-        }
-        OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(null);
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            ParseTree child = ctx.getChild(i);
-            if (parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {
-                if (property.useBrace) {
-                    // Add {}
-                    if (stmtCtx.getRuleIndex() != parser.getRuleBlock()) {
-                        ExtendContext block = new JavaParser.BlockContext(ctx, stmtCtx.invokingState);
-                        TerminalNode lb = ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(parser.getLBrace(), "{"));
-                        TerminalNode rb = ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(parser.getRBrace(), "}"));
-                        List<ParseTree> children = new ArrayList<>();
-                        children.add(lb);
-                        children.add(stmtCtx);
-                        children.add(rb);
-                        block.addChildren(children);
-                        ctx.replaceChild(stmtCtx, block);
-                    }
-                } else if (stmtCtx.getRuleIndex() == JavaParser.RULE_block &&
-                        stmtCtx.countChildIf(parser::isStatement) == 1) {
-                    ExtendContext innerStmtCtx = stmtCtx.getFirstCtxChildIf(parser::isStatement);
-                    // Skip empty statement(;).
-                    if (innerStmtCtx != null) {
-                        if (parser.belongToSingleStmt(innerStmtCtx)) {
-                            // Remove {}
-                            ctx.replaceChild(stmtCtx, innerStmtCtx);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public void extractStyle(ExtendContext ctx, Style style) {

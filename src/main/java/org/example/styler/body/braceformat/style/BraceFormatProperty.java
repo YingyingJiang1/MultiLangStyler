@@ -1,20 +1,17 @@
-package org.example.styler.format.body.style;
+package org.example.styler.body.braceformat.style;
 
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
-import java.util.List;
-
-public class BodyLayoutProperty extends StyleProperty {
+public class BraceFormatProperty extends StyleProperty {
     public boolean beforeLB, afterLB, beforeRB, afterRB;
 
 
-    public BodyLayoutProperty() {
+    public BraceFormatProperty() {
     }
 
-    public BodyLayoutProperty(boolean beforeLB, boolean afterLB, boolean beforeRB, boolean afterRB) {
+    public BraceFormatProperty(boolean beforeLB, boolean afterLB, boolean beforeRB, boolean afterRB) {
         this.beforeLB = beforeLB;
         this.afterLB = afterLB;
         this.beforeRB = beforeRB;

@@ -1,6 +1,7 @@
 package org.example.parser.common;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.TokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.styler.Styler;
@@ -36,6 +37,15 @@ public interface MyParser {
     boolean belongToMemberList(ParseTree t);
     boolean belongToSingleStmt(ParseTree t);
     boolean belongToBraceOptionalStmt(int rule);
+
+
+    boolean belongToBinOp(String name);
+    boolean belongToUnOp(String name);
+    boolean belongToSeparator(String name);
+    boolean belongToOperator(String name);
+
+    boolean belongToComment(int type);
+    boolean belongToBrace(int type);
 
     ParseTree createExpression(ParserRuleContext parent, int invokingState);
 
@@ -83,16 +93,6 @@ public interface MyParser {
 
 
 
-
-    boolean isBinOp(String name);
-    boolean isUnOp(String name);
-    boolean isSeparator(String name);
-    boolean isOperator(String name);
-
-    boolean isComment(int type);
-    boolean isBrace(int type);
-
-
     int getVws();
     int getHws();
     int getIdentifier();
@@ -115,6 +115,8 @@ public interface MyParser {
 
     String getTokenName(int type);
     String getRuleName(int type);
+
+    TokenFactory getTokenFactory();
 
     Set<String> getOperators();
     Set<String> getSeparators();

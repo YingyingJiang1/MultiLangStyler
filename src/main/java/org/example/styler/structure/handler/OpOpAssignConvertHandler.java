@@ -2,7 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendTokenFactory;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.ParseTreeFactory;
 import org.example.styler.structure.EquivalentStructure;
@@ -74,7 +74,7 @@ public class OpOpAssignConvertHandler extends Handler{
 				if(tree instanceof TerminalNode ter) {
 					String convertedOp = convertMap.get(ter.getSymbol().getText());
 					if (convertedOp != null) {
-						toTrees.set(i, ParseTreeFactory.createTerminalNode(ExtendTokenFactory.DEFAULT.create(parser.getType(convertedOp), convertedOp)));
+						toTrees.set(i, ParseTreeFactory.createTerminalNode(parser.getTokenFactory().create(parser.getType(convertedOp), convertedOp)));
 					}
 				}
 			}

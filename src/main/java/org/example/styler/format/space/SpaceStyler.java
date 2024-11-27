@@ -64,22 +64,22 @@ public class SpaceStyler extends Styler {
         String left = TokenNameGetter.getInstance().getName(findFirstNonHwsOfLeft(tokens, index - 1), parser);
         String right = TokenNameGetter.getInstance().getName(findFirstNonHwsOfRight(tokens, index + 1), parser);
 
-        if (parser.isBinOp(name)) {
+        if (parser.belongToBinOp(name)) {
             // Positions on the left and right of a binary operator are symmetrical.
             return new SpaceContext(name);
-        } else if (parser.isUnOp(name)) {
+        } else if (parser.belongToUnOp(name)) {
             if (isSuffix(tokens, index)) { // suffix ++, suffix --
                 return new SpaceContext(left, name);
             } else { // Right associated operator
                 return new SpaceContext(name, right);
             }
-        } else if (parser.isSeparator(name)) {
+        } else if (parser.belongToSeparator(name)) {
             // Positions on the left and right of a separator are considered respectively. And the case is exclusive if the adjacent token is operator,
             // because this case has already been handled in the previous branches.
-            if (!parser.isOperator(left)) {
+            if (!parser.belongToOperator(left)) {
                 return new SpaceContext(left, name);
             }
-            if (!parser.isOperator(right)) {
+            if (!parser.belongToOperator(right)) {
                 return new SpaceContext(name, right);
             }
         }

@@ -60,7 +60,7 @@ public class TokenNameGetter {
             return "";
         } else if (token.getType() == parser.getIdentifier()) {
             return "identifier";
-        } else if (parser.isSeparator(token.getText()) || parser.isOperator(token.getText())) {
+        } else if (parser.belongToSeparator(token.getText()) || parser.belongToOperator(token.getText())) {
             return token.getText();
         } else {
             return "keyword";

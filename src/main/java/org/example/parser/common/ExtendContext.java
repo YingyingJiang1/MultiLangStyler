@@ -471,4 +471,15 @@ public class ExtendContext extends ParserRuleContext {
         }
     }
 
+    public void removeChildIf(Predicate<ParseTree> cond) {
+        List<ParseTree> newChildren = new ArrayList<>();
+        for (ParseTree child : children) {
+            if (!cond.test(child)) {
+                newChildren.add(child);
+            }
+        }
+        children = newChildren;
+        updateStartToken();
+        updateStopToken();
+    }
 }
