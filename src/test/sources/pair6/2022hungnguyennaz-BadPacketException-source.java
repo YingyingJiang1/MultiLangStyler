@@ -21,7 +21,7 @@ public class BadPacketException extends RuntimeException
         if (PROCESS_TRACES) {
             return super.initCause(cause);
         }
-        return this;
+        
     }
 
     @Override
@@ -30,7 +30,7 @@ public class BadPacketException extends RuntimeException
         if (PROCESS_TRACES) {
             return super.fillInStackTrace();
         }
-        return this;
+        
     }
     // Waterfall end
 }

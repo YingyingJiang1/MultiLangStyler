@@ -1,6 +1,5 @@
 package org.example.style.rule;
 
-import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
@@ -53,13 +52,13 @@ public class StyleRule implements DomIO {
     }
 
     @Override
-    public StyleRule parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         if (styleContext != null) {
             styleContext.parseElement(parent, parser);
         }
         if (styleProperty != null) {
             styleProperty.parseElement(parent, parser);
         }
-        return this;
+        
     }
 }

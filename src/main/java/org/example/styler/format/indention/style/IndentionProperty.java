@@ -20,9 +20,9 @@ public class IndentionProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         indentionUnit = Integer.parseInt(parent.attributeValue("indentionUnit"));
         indentionType = parent.attributeValue("indentionType").charAt(0);
-        return this;
+        
     }
 }

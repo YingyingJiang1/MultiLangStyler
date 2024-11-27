@@ -16,4 +16,5 @@ public interface Style {
     void fillStyle();
     void setStyleName(String styleName);
     boolean contains(StyleContext targetContext);
+    void filterRules();
 }

@@ -1,13 +1,10 @@
 package org.example.styler.arrangement.style;
 
-import org.antlr.v4.runtime.Parser;
-import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -41,35 +38,21 @@ public class ArrangementContext extends StyleContext {
         return degree;
     }
 
-    boolean include(ArrangementContext context) {
-        if (!typeType.equals(context.typeType)) {
-            return false;
-        }
-        for (Map.Entry<String, Integer> entry : context.statistic.entrySet()) {
-            Integer value = statistic.get(entry.getKey());
-            if (value == null || entry.getValue() >= value) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     public void addElement(Element parent, MyParser parser) {
-        parent.addText(typeType);
-        for (Map.Entry<String, Integer> entry : statistic.entrySet()) {
-            parent.addAttribute(entry.getKey(), entry.getValue().toString());
-        }
+        parent.addAttribute("type", typeType);
+        String statStr = statistic.entrySet().toString();
+        parent.addAttribute("statistic", statStr.substring(1, statStr.length() - 1));
     }
 
-
-    public ArrangementContext parseElement(Element parent, MyParser parser) {
-        typeType = parent.getText();
-        List<Attribute> attributes = parent.attributes();
-        for (Attribute attribute : attributes) {
-            statistic.put(attribute.getName(), Integer.parseInt(attribute.getValue()));
+    public void parseElement(Element parent, MyParser parser) {
+        typeType = parent.attributeValue("type");
+        if (parent.attributeValue("statistic") != null) {
+            String[] statisticStrs = parent.attributeValue("statistic").replace(" ", "").split(",=");
+            for (int i = 0; i < statisticStrs.length; i += 2) {
+                statistic.put(statisticStrs[i], Integer.parseInt(statisticStrs[i + 1]));
+            }
         }
-        return this;
     }
 
 }

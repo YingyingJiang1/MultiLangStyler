@@ -1,76 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style>
-  <arrangement>
+  <style name="arrangement">
     <rule>
-      <style_context type="class">ConstructorDeclarationList=1, InitializerList=1, TypeDeclarationList=3, FieldDeclarationList=4, MethodDeclarationList=3</style_context>
+      <style_context type="class" statistic="methodDeclarationList=3, typeDeclarationList=3, constructorDeclarationList=1, fieldDeclarationList=4, initializerList=1"/>
       <style_property>
-        <field_declaration_list>
-          <feature>PRIVATE=1,PUBLIC=3,STATIC=4,FINAL=4</feature>
-          <order>
+        <member_list name="fieldDeclarationList">
+          <feature statistic="PRIVATE=1,PUBLIC=3,STATIC=4,FINAL=4"/>
+          <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_LEXI_ORDER</logical_order>
             <modifier_order>
               <column1>PRIVATE,PUBLIC</column1>
               <column2>STATIC</column2>
               <column3>FINAL</column3>
             </modifier_order>
-            <allowed_order_deviation>0.3</allowed_order_deviation>
           </order>
-        </field_declaration_list>
-        <type_declaration_list>
-          <feature>DEFAULT=1,STATIC=2</feature>
-          <order>
+        </member_list>
+        <member_list name="typeDeclarationList">
+          <feature statistic="DEFAULT=1,STATIC=2"/>
+          <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_ORDER</logical_order>
             <modifier_order>
               <column1>STATIC</column1>
             </modifier_order>
-            <allowed_order_deviation>0.3</allowed_order_deviation>
           </order>
-        </type_declaration_list>
-        <initializer_list>
-          <feature>STATIC=1</feature>
-          <order>
+        </member_list>
+        <member_list name="initializerList">
+          <feature statistic="STATIC=1"/>
+          <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_LEXI_ORDER</logical_order>
             <modifier_order>
               <column1>STATIC</column1>
             </modifier_order>
-            <allowed_order_deviation>0.3</allowed_order_deviation>
           </order>
-        </initializer_list>
-        <constructor_declaration_list>
-          <feature>PRIVATE=1</feature>
-          <order>
+        </member_list>
+        <member_list name="constructorDeclarationList">
+          <feature statistic="PRIVATE=1"/>
+          <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_LEXI_ORDER</logical_order>
             <modifier_order>
               <column1>PRIVATE</column1>
             </modifier_order>
-            <allowed_order_deviation>0.3</allowed_order_deviation>
           </order>
-        </constructor_declaration_list>
-        <method_declaration_list>
-          <feature>PUBLIC=3,STATIC=3</feature>
-          <order>
+        </member_list>
+        <member_list name="methodDeclarationList">
+          <feature statistic="PUBLIC=3,STATIC=3"/>
+          <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_ORDER</logical_order>
             <modifier_order>
               <column1>PUBLIC</column1>
               <column2>STATIC</column2>
             </modifier_order>
-            <allowed_order_deviation>0.3</allowed_order_deviation>
           </order>
-        </method_declaration_list>
+        </member_list>
       </style_property>
     </rule>
-  </arrangement>
-  <optional_brace>
+  </style>
+  <style name="optional_brace">
     <rule>
-      <style_property>
-        <use_brace>false</use_brace>
-        <is_inline_block>true</is_inline_block>
-      </style_property>
+      <style_property use_brace="false" compactStyle="true"/>
     </rule>
-  </optional_brace>
-  <equivalences/>
-  <body_layout>
+  </style>
+  <style name="equivalences"/>
+  <style name="body_layout">
     <rule>
       <style_context>
         <block_type>BODY_BLOCK</block_type>
@@ -190,8 +182,8 @@
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
-  </body_layout>
-  <lineWrapping>
+  </style>
+  <style name="lineWrapping">
     <rule>
       <style_context/>
       <style_property/>
@@ -200,11 +192,11 @@
       <style_context/>
       <style_property/>
     </rule>
-  </lineWrapping>
-  <line_stmt>
+  </style>
+  <style name="line_stmt">
     <rule>
       <style_property/>
     </rule>
-  </line_stmt>
-  <newline/>
+  </style>
+  <style name="newline"/>
 </program_style>

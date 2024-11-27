@@ -1,6 +1,5 @@
 package org.example.styler.format.linewrapping.style;
 
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
@@ -81,8 +80,7 @@ public class LineWrappingProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
-        return null;
+    public void parseElement(Element parent, MyParser parser) {
     }
 
     public Boolean getLocation(Token token) {

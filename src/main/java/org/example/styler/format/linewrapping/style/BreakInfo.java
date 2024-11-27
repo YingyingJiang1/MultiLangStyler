@@ -33,7 +33,7 @@ public class BreakInfo implements DomIO {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         Element breakInfoEle = parent.element("break_info");
         String wayStr = breakInfoEle.elementText("way");
         if (wayStr.equals("ALIGN")) {
@@ -44,7 +44,7 @@ public class BreakInfo implements DomIO {
             offRelated = Integer.parseInt(breakInfoEle.elementText("start_position"));
             breakInfoEle.addElement("way").addText("FIXED_INDENTION");
         }
-        return this;
+        
     }
 
     public void merge(BreakInfo breakInfo) {

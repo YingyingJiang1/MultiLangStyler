@@ -10,6 +10,7 @@ import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.styler.format.body.style.BodyLayoutContext;
 import org.example.styler.format.body.style.BodyLayoutProperty;
+import org.example.styler.format.body.style.BodyType;
 import org.example.styler.format.body.style.TypeEnum;
 
 import java.util.*;
@@ -40,7 +41,7 @@ public class BodyLayoutStyler extends Styler {
         blockType = TypeEnum.NORMAL_BLOCK;
       }
 
-      BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getStmtNum(block));
+      BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getBodyType(block));
       BodyLayoutProperty bodyLayoutProperty = (BodyLayoutProperty) style.getSimilarProperty(styleContext);
       applyBraceInfo(bodyLayoutProperty, block);
     }
@@ -156,9 +157,7 @@ public class BodyLayoutStyler extends Styler {
   }
 
   private void extractBraceInfo(TypeEnum blockType, ExtendContext ctx, Style style) {
-    int stmtNum = 0;
-    stmtNum = getStmtNum(ctx);
-    BodyLayoutContext styleContext = new BodyLayoutContext(blockType, stmtNum);
+    BodyLayoutContext styleContext = new BodyLayoutContext(blockType, getBodyType(ctx));
 
     boolean beforeLB, afterLB, beforeRB, afterRB;
     TokenInfoField.BraceTokenInfo lbInfo, rbInfo;
@@ -211,14 +210,14 @@ public class BodyLayoutStyler extends Styler {
    * If @ctx is a @BlockContext instance, then empty block, one single statement block or multiple statements block
    * is concerned about.
    */
-  private int getStmtNum(ExtendContext ctx) {
+  private BodyType getBodyType(ExtendContext ctx) {
     int stmtNum = ctx.countChildIf(child -> child instanceof ExtendContext); // Exclude LBRACE and RBRACE.
-    if (stmtNum > 2) {
-      stmtNum = 2;
+    if (stmtNum == 0) {
+      return BodyType.EMPTY;
+    } else if(stmtNum == 1 && parser.belongToSingleStmt(ctx.getFirstCtxChildIf(child -> true))) {
+      return BodyType.SINGLE;
+    } else {
+      return BodyType.MULTI;
     }
-    if (stmtNum == 1 && !parser.belongToSingleStmt(ctx.getChild(1))) {
-      stmtNum = 2;
-    }
-    return stmtNum;
   }
 }

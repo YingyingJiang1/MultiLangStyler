@@ -32,8 +32,7 @@ public class BodyLayoutStyleFeature extends StyleFeature {
 
     private String generateFeatureName(BodyLayoutContext context) {
         String typeName = context.blockType.name();
-        String innerStmt = context.stmtNumInBlock == 0 ? "empty" :
-                context.stmtNumInBlock == 1 ? "single" : "multiple";
+        String innerStmt = context.bodyType.name().toLowerCase();
         return typeName.charAt(0) + typeName.substring(1).toLowerCase() + "-" + innerStmt;
     }
 }

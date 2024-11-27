@@ -91,6 +91,7 @@ public abstract class Styler implements Extractor, Applicator {
 
     public void doFinalize() {
         style.fillStyle();
+        style.filterRules();
     }
 
     protected Set<Integer> getRelevantRules() {return null;}

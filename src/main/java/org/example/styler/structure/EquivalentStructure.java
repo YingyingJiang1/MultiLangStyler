@@ -59,9 +59,6 @@ public class EquivalentStructure {
 			for (int i = 0; i < codes.length; i++) {
 				boolean flag = codes[i].startsWith("$^");
 				String code = replaceHolder(codes[i]);
-				if (id == 26) {
-					System.out.println("");
-				}
 				MyJavaParser parser = new MyJavaParser(code);
 				if (i < rules.length) {
 					rule = rules[i];

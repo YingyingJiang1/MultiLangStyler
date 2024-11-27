@@ -135,11 +135,6 @@ public class ExtendContext extends ParserRuleContext {
         return count;
     }
 
-    public ExtendContext getSpecifiedCtx(int ruleIndex) {
-        if (getRuleIndex() == ruleIndex)
-            return this;
-        return getFirstInnerChildByType(ruleIndex);
-    }
 
     public int countChildIf(Predicate<ParseTree> cond) {
         int count = 0;

@@ -53,7 +53,7 @@ public class SpaceContext extends StyleContext {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         String[] tokens = parent.attributeValue("token").split(",");
         if (tokens.length > 0) {
             tokenName1 = tokens[0];
@@ -61,6 +61,6 @@ public class SpaceContext extends StyleContext {
         if (tokens.length > 1) {
             tokenName2 = tokens[1];
         }
-        return this;
+        
     }
 }

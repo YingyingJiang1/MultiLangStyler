@@ -25,9 +25,6 @@ public class OptionalBraceStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx) {
-        if(!parser.belongToBraceOptionalStmt(ctx.getRuleIndex())) {
-            return;
-        }
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree child = ctx.getChild(i);
             if(parser.isStatement(child) && child instanceof ExtendContext stmtCtx) {

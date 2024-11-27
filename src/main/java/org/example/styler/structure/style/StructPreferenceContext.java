@@ -27,7 +27,6 @@ public class StructPreferenceContext extends StyleContext {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
-        return null;
+    public void parseElement(Element parent, MyParser parser) {
     }
 }

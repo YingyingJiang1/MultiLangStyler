@@ -1,7 +1,5 @@
 package org.example.styler.arrangement.style;
 
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.Vocabulary;
 import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
@@ -111,11 +109,11 @@ public class Order implements DomIO {
                         builder.length() > 0 ? builder.substring(0, builder.length() - 1) : "");
             }
         }
-        orderEle.addElement("allowed_order_deviation").addText(Double.toString(allowedOrderDeviation));
+        orderEle.addAttribute("allowedOrderDeviation", Double.toString(allowedOrderDeviation));
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         Element orderEle = parent.element("order");
         logicalOrder = EnumType.valueOf(orderEle.element("logical_order").getText());
         Element modifierOrderEle = orderEle.element("modifier_order");
@@ -134,7 +132,7 @@ public class Order implements DomIO {
                 modifierOrder.add(modifierColumn);
             }
         }
-        Order.allowedOrderDeviation = Double.valueOf(orderEle.element("allowed_order_deviation").getText());
-        return this;
+        Order.allowedOrderDeviation = orderEle.attribute("allowedOrderDeviation") == null ?
+                0.3 : Double.parseDouble(orderEle.attributeValue("allowedOrderDeviation"));
     }
 }

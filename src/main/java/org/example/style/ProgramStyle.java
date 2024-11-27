@@ -32,13 +32,13 @@ public class ProgramStyle implements DomIO {
     }
 
     @Override
-    public Object parseElement(Element root, MyParser parser) {
+    public void parseElement(Element root, MyParser parser) {
         for (Style style : styles) {
             if (style instanceof CommonStyle commonStyle) {
                 commonStyle.parseElement(root, parser);
             }
         }
-        return this;
+        
     }
 
     public void add(Style style) {

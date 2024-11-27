@@ -20,15 +20,22 @@ public class CommonStyle implements DomIO,Style {
     protected RuleSet ruleSet = new MapRuleSet();
 
     public void addElement(Element parent, MyParser parser){
-        Element styleEle = parent.addElement(styleName);
+        Element styleEle = parent.addElement("style");
+        styleEle.addAttribute("name", styleName);
         for (StyleRule rule : ruleSet.getRules()) {
-            Element ruleEle = parent.addElement("rule");
+            Element ruleEle = styleEle.addElement("rule");
             rule.addElement(ruleEle, parser);
         }
     }
 
-    public Object parseElement(Element parent, MyParser parser){
-        return null;
+    public void parseElement(Element parent, MyParser parser){
+        Element styleEle = parent.element(styleName);
+        List<Element> ruleEles = styleEle.elements();
+        for(Element ruleEle : ruleEles) {
+            StyleRule rule = createRule("rule");
+            rule.parseElement(ruleEle, parser);
+            ruleSet.addRule(rule.getStyleContext(), rule.getStyleProperty());
+        }
     }
 
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
@@ -62,29 +69,34 @@ public class CommonStyle implements DomIO,Style {
         this.styleName = styleName;
     }
 
-    protected void addListElement(Element parent, MyParser parser, RuleSet ruleSet, String name, String comment) {
-        if (comment != null) {
-            parent.addComment(comment);
-        }
-        for(StyleRule styleRule : ruleSet.getRules()) {
-            Element newParent = parent.addElement(name);
-            styleRule.addElement(newParent, parser);
-        }
-    }
+//    protected void addListElement(Element parent, MyParser parser, RuleSet ruleSet, String name, String comment) {
+//        if (comment != null) {
+//            parent.addComment(comment);
+//        }
+//        for(StyleRule styleRule : ruleSet.getRules()) {
+//            Element newParent = parent.addElement(name);
+//            styleRule.addElement(newParent, parser);
+//        }
+//    }
 
 
     public boolean contains(StyleContext targetContext) {
         return ruleSet.contains(targetContext);
     }
 
-    protected void parseListElement(Element parent, MyParser parser, RuleSet ruleSet, String name) {
-        List<Element> eleList = parent.elements();
-        for(Element ele : eleList) {
-            StyleRule rule = createRule(name);
-            rule.parseElement(ele, parser);
-            ruleSet.addRule(rule.getStyleContext(), rule.getStyleProperty());
-        }
+    @Override
+    public void filterRules() {
+        ruleSet.filterRules();
     }
+
+//    protected void parseListElement(Element parent, MyParser parser, RuleSet ruleSet, String name) {
+//        List<Element> eleList = parent.elements();
+//        for(Element ele : eleList) {
+//            StyleRule rule = createRule(name);
+//            rule.parseElement(ele, parser);
+//            ruleSet.addRule(rule.getStyleContext(), rule.getStyleProperty());
+//        }
+//    }
 
     protected StyleRule createRule(String propertyName) {
         return null;

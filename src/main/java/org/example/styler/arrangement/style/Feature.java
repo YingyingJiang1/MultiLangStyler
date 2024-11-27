@@ -1,7 +1,6 @@
 package org.example.styler.arrangement.style;
 
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.Vocabulary;
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
@@ -51,9 +50,9 @@ public class Feature implements DomIO {
             } else {
                 builder.append(parser.getTokenName(entry.getKey()));
             }
-            builder.append(":").append(entry.getValue()).append(",");
+            builder.append("=").append(entry.getValue()).append(",");
         }
-        return builder.length() > 0 ? builder.substring(0, builder.length() - 1) : "";
+        return !builder.isEmpty() ? builder.substring(0, builder.length() - 1) : "";
     }
 
     public void updateModifierStatistic(int modifierType) {
@@ -62,17 +61,19 @@ public class Feature implements DomIO {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        Element featureEle = parent.addElement("feature").addText(toReadableString(parser));
+        Element featureEle = parent.addElement("feature");
+        featureEle.addAttribute("statistic", toReadableString(parser));
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         Element featureEle = parent.element("feature");
-        String[] arr = featureEle.getText().split("[:,]]");
-        Feature feature = new Feature();
-        for (int i = 0; i < arr.length; i += 2) {
-            feature.modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));
+        if (featureEle.attribute("statistic") != null) {
+            String[] arr = featureEle.attributeValue("statistic").split(",=");
+            Feature feature = new Feature();
+            for (int i = 0; i < arr.length; i += 2) {
+                feature.modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));
+            }
         }
-        return feature;
     }
 }

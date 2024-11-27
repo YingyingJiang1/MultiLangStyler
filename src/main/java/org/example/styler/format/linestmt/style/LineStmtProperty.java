@@ -3,7 +3,6 @@ package org.example.styler.format.linestmt.style;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
-import org.example.styler.format.space.style.SpaceProperty;
 
 public class LineStmtProperty extends StyleProperty {
     public boolean isOneStmtPerLine;
@@ -18,7 +17,6 @@ public class LineStmtProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
-        return null;
+    public void parseElement(Element parent, MyParser parser) {
     }
 }

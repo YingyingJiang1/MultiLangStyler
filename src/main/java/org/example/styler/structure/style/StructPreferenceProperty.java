@@ -21,7 +21,6 @@ public class StructPreferenceProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
-        return null;
+    public void parseElement(Element parent, MyParser parser) {
     }
 }

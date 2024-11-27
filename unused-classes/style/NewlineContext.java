@@ -113,6 +113,6 @@ public class NewlineContext extends StyleContext {
         }
         avgLen = Double.parseDouble(contextEle.element("average_total_text_length").getText());
         count = Integer.parseInt(contextEle.element("count").getText());
-        return this;
+        
     }
 }

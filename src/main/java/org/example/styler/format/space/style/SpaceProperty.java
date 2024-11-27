@@ -23,9 +23,8 @@ public class SpaceProperty extends StyleProperty {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         space1 = Boolean.parseBoolean(parent.attributeValue("leftSpace"));
         space2 = Boolean.parseBoolean(parent.attributeValue("rightSpace"));
-        return this;
     }
 }

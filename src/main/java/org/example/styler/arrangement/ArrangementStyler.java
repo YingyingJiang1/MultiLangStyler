@@ -166,9 +166,9 @@ public class ArrangementStyler extends Styler {
 			return null;
 		}
 		for (ParseTree child : bodyCtx.children) {
-			if (child instanceof ExtendContext) {
-				int count = ((ExtendContext) child).countCtxChildren();
-				statistic.compute(child.getClass().getSimpleName(), (k, v) -> v == null ? count : v + count);
+			if (child instanceof ExtendContext childCtx) {
+				int count = childCtx.countCtxChildren();
+				statistic.compute(parser.getRuleName(childCtx.getRuleIndex()), (k, v) -> v == null ? count : v + count);
 			}
 		}
 		return new ArrangementContext(typeType, statistic);

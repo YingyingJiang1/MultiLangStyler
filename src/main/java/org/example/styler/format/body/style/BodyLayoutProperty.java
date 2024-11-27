@@ -1,9 +1,11 @@
 package org.example.styler.format.body.style;
 
-import org.antlr.v4.runtime.Parser;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
+
+import java.util.List;
 
 public class BodyLayoutProperty extends StyleProperty {
     public boolean beforeLB, afterLB, beforeRB, afterRB;
@@ -33,25 +35,19 @@ public class BodyLayoutProperty extends StyleProperty {
 
 
     @Override
-    public String toString() {
-        return Boolean.toString(beforeLB) + "," + Boolean.toString(afterLB) + "," +
-                Boolean.toString(beforeRB) + "," + Boolean.toString(afterRB);
-    }
-
-
-    @Override
     public void addElement(Element parent, MyParser parser) {
-        Element braceInfoEle = parent.addElement("brace_info");
-        braceInfoEle.addElement("line_break_info").addText(
-                "(" + toString() + ")"
-        );
+        parent.addAttribute("beforeLB", Boolean.toString(beforeLB));
+        parent.addAttribute("afterLB", Boolean.toString(afterLB));
+        parent.addAttribute("beforeRB", Boolean.toString(beforeRB));
+        parent.addAttribute("afterRB", Boolean.toString(afterRB));
     }
 
     @Override
-    public BodyLayoutProperty parseElement(Element parent, MyParser parser) {
-        String[] arr = parent.element("line_break_info").getText().split("[(),]");
-        return new BodyLayoutProperty(
-                Boolean.parseBoolean(arr[0]), Boolean.parseBoolean(arr[1]),
-                Boolean.parseBoolean(arr[2]), Boolean.parseBoolean(arr[3]));
+    public void parseElement(Element parent, MyParser parser) {
+        // Default value is true
+        beforeLB = parent.attributeValue("beforeLB") == null || Boolean.parseBoolean(parent.attributeValue("beforeLB"));
+        afterLB = parent.attributeValue("afterLB") == null || Boolean.parseBoolean(parent.attributeValue("afterLB"));
+        beforeRB = parent.attributeValue("beforeRB") == null || Boolean.parseBoolean(parent.attributeValue("beforeRB"));
+        afterRB = parent.attributeValue("afterRB") == null || Boolean.parseBoolean(parent.attributeValue("afterRB"));
     }
 }

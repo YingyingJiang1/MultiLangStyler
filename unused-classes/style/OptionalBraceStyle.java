@@ -52,7 +52,7 @@ public class OptionalBraceStyle extends Style {
 
         parseListElement(braceFormatRulesEle, parser, formatRuleSet, BodyLayoutProperty.class.getSimpleName());
         parseListElement(optionalBraceRulesEle, parser, optionalBraceRuleSet, OptionalBraceProperty.class.getSimpleName());
-        return this;
+        
     }
 
     @Override

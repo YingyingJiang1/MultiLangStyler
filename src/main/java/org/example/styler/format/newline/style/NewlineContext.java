@@ -1,10 +1,7 @@
 package org.example.styler.format.newline.style;
 
-import org.antlr.v4.runtime.Parser;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
-import org.example.parser.java.antlr.JavaLexer;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.style.grouper.Grouper;
 import org.example.style.rule.StyleContext;
 
@@ -51,7 +48,7 @@ public class NewlineContext extends StyleContext {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         Element contextEle = parent.element("context");
         String[] types = contextEle.element("type_around").getText().split("[:,]");
         type1 = Integer.parseInt(types[0]);
@@ -63,7 +60,7 @@ public class NewlineContext extends StyleContext {
         }
         avgLen = Double.parseDouble(contextEle.element("average_total_text_length").getText());
         count = Integer.parseInt(contextEle.element("count").getText());
-        return this;
+        
     }
 
 

@@ -48,13 +48,12 @@ public class ArrangementProperty extends StyleProperty {
     }
 
     @Override
-    public ArrangementProperty parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         for (Element areaEle : parent.elements()) {
             ContentArea area = createArea(areaEle.getName());
             area.parseElement(areaEle, parser);
             areas.add(area);
         }
-        return this;
     }
 
 
@@ -101,18 +100,17 @@ public class ArrangementProperty extends StyleProperty {
 
         @Override
         public void addElement(Element parent, MyParser parser) {
-            Element areaEle = parent.addElement(
-                    CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE,
-                            parser.getRuleName(category)));
+            Element areaEle = parent.addElement("member_list");
+            areaEle.addAttribute("name", CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_CAMEL,
+                    parser.getRuleName(category)));
             feature.addElement(areaEle, parser);
             order.addElement(areaEle, parser);
         }
 
         @Override
-        public Object parseElement(Element parent, MyParser parser) {
+        public void parseElement(Element parent, MyParser parser) {
             feature.parseElement(parent, parser);
             order.parseElement(parent, parser);
-            return this;
         }
     }
 

@@ -26,11 +26,11 @@ public class BreakPoint implements DomIO {
     }
 
     @Override
-    public Object parseElement(Element parent, MyParser parser) {
+    public void parseElement(Element parent, MyParser parser) {
         String[] strs = parent.element("break_point").getText().split("[,:]");
         leftToken = Integer.parseInt(strs[0]);
         rightToken = Integer.parseInt(strs[2]);
-        return this;
+        
     }
 
     @Override
