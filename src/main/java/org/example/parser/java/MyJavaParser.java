@@ -595,6 +595,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleIndex(String ruleName) {
+        return parser.getRuleIndex(ruleName);
+    }
+
+    @Override
     public int getVws() {
         return JavaParser.VWS;
     }

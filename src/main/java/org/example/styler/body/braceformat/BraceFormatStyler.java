@@ -20,11 +20,7 @@ public class BraceFormatStyler extends BodyStyler {
 
   public BraceFormatStyler() {
     style.setStyleName("brace_format");
-  }
-
-  public BraceFormatStyler(boolean executeWhenExit) {
-    super(executeWhenExit);
-    style.setStyleName("brace_format");
+    executeWhenExit = false;
   }
 
   @Override

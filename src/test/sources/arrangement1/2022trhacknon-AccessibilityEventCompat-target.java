@@ -9,55 +9,7 @@ public class AccessibilityEventCompat {
     public static final int TYPE_ANNOUNCEMENT = 16384;
     public static final int TYPE_TOUCH_EXPLORATION_GESTURE_END = 1024;
 
-    /* loaded from: classes.dex */
-    interface AccessibilityEventVersionImpl {
-        void appendRecord(AccessibilityEvent accessibilityEvent, Object obj);
 
-        Object getRecord(AccessibilityEvent accessibilityEvent, int i);
-
-        int getRecordCount(AccessibilityEvent accessibilityEvent);
-    }
-
-    /* loaded from: classes.dex */
-    static class AccessibilityEventStubImpl implements AccessibilityEventVersionImpl {
-        AccessibilityEventStubImpl() {
-        }
-
-        @Override // android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventVersionImpl
-        public void appendRecord(AccessibilityEvent event, Object record) {
-        }
-
-        @Override // android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventVersionImpl
-        public Object getRecord(AccessibilityEvent event, int index) {
-            return null;
-        }
-
-        @Override // android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventVersionImpl
-        public int getRecordCount(AccessibilityEvent event) {
-            return 0;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class AccessibilityEventIcsImpl extends AccessibilityEventStubImpl {
-        AccessibilityEventIcsImpl() {
-        }
-
-        @Override // android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventStubImpl, android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventVersionImpl
-        public void appendRecord(AccessibilityEvent event, Object record) {
-            AccessibilityEventCompatIcs.appendRecord(event, record);
-        }
-
-        @Override // android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventStubImpl, android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventVersionImpl
-        public Object getRecord(AccessibilityEvent event, int index) {
-            return AccessibilityEventCompatIcs.getRecord(event, index);
-        }
-
-        @Override // android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventStubImpl, android.support.v4.view.accessibility.AccessibilityEventCompat.AccessibilityEventVersionImpl
-        public int getRecordCount(AccessibilityEvent event) {
-            return AccessibilityEventCompatIcs.getRecordCount(event);
-        }
-    }
 
     static {
         if (Build.VERSION.SDK_INT >= 14) {
@@ -67,18 +19,4 @@ public class AccessibilityEventCompat {
         }
     }
 
-    private AccessibilityEventCompat() {
-    }
-
-    public static int getRecordCount(AccessibilityEvent event) {
-        return IMPL.getRecordCount(event);
-    }
-
-    public static void appendRecord(AccessibilityEvent event, AccessibilityRecordCompat record) {
-        IMPL.appendRecord(event, record.getImpl());
-    }
-
-    public static AccessibilityRecordCompat getRecord(AccessibilityEvent event, int index) {
-        return new AccessibilityRecordCompat(IMPL.getRecord(event, index));
-    }
 }

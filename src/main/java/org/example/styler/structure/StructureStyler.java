@@ -1,16 +1,14 @@
 package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.debug.TreePrinter;
 import org.example.parser.common.ExtendContext;
-import org.example.parser.common.factory.ExtendTokenFactory;
-import org.example.parser.common.ParseTreeFactory;
-import org.example.parser.java.antlr.JavaParser;
+import org.example.parser.java.MyJavaParser;
 import org.example.myException.StylizationException;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.style.Style;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
-import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 
@@ -23,7 +21,6 @@ import java.util.*;
  */
 public class StructureStyler extends Styler {
     private Map<Integer, List<EquivalentStructure>> equivalences;
-    public static Map<Integer, Integer> triggerMap = new HashMap<>();
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
     private int recursiveDepth = 0;
 
@@ -31,8 +28,8 @@ public class StructureStyler extends Styler {
 
 
     public StructureStyler() {
-        equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser);
         style.setStyleName("equivalences");
+        equivalences = EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser(""));
     }
 
     public ExtendContext applyStyle(ExtendContext ctx, Style style) {
@@ -41,10 +38,10 @@ public class StructureStyler extends Styler {
         try {
             List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
             if (equivalentStructures != null) {
-        /*if (ctx instanceof JavaParser.LocalVariableDeclarationStmtContext) {
+        /*if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
           System.out.println("--------------------waiting to match---------------------");
           System.out.println(ctx.getText());
-          System.out.println(ctx.toStringTree(new JavaParser(null)));
+            TreePrinter.printTree(ctx, parser);
         }*/
                 Set<MatchedStructure> matchedStructures = new TreeSet<>();
                 for (EquivalentStructure structure : equivalentStructures) {
@@ -77,8 +74,6 @@ public class StructureStyler extends Styler {
                         if (newTree instanceof ExtendContext newCtx) {
                             convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
                             convertionPerformed.get(targetStructure).add(to);
-//              ++triggerCount;
-                            triggerMap.compute(targetStructure.getId(), (k, v) -> v == null ? 1 : v + 1);
                             applyStyle(newCtx, style);
                             break;
                         }
@@ -99,11 +94,11 @@ public class StructureStyler extends Styler {
     public void extractStyle(ExtendContext ctx, Style style) {
         List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
         if (equivalentStructures != null) {
-      /*if(ctx instanceof JavaParser.ForStmtContext) {
-        System.out.println("--------------------waiting to match---------------------");
-        System.out.println(ctx.getText());
-        System.out.println(ctx.toStringTree(new JavaParser(null)));
-      }*/
+            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
+                System.out.println("--------------------waiting to match---------------------");
+                System.out.println(ctx.getText());
+                TreePrinter.printTree(ctx, parser);
+            }
             for (EquivalentStructure structure : equivalentStructures) {
                 int index = structure.match(ctx, parser);
                 if (index != -1) {

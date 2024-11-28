@@ -3,7 +3,6 @@ package org.example.styler.structure;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.parser.common.MyParser;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 
@@ -32,15 +31,11 @@ public class EquivalentStructureManager {
     }
 
     equivalences = new HashMap<>();
-    equivalences.put(JavaParser.RULE_expressionStmt, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_ifStmt, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_ifElseStmt, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_forStmt, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_whileStmt, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_returnStmt, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_block, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_expression, new ArrayList<>());
-    equivalences.put(JavaParser.RULE_localVariableDeclarationStmt, new ArrayList<>());
+    for (int ruleIndex : parser.getAllStmts()) {
+      equivalences.put(ruleIndex, new ArrayList<>(0));
+    }
+    equivalences.put(parser.getRuleExpression(), new ArrayList<>(0));
+    equivalences.put(parser.getRuleBlock(), new ArrayList<>(0));
 
     try {
       String resourceFile = "/equivalencesConf.json";
@@ -85,7 +80,7 @@ public class EquivalentStructureManager {
         int[] rules = new int[ruleNames.length];
         for (int i = 0; i < ruleNames.length; i++) {
           String ruleName = ruleNames[i];
-          int rule = Arrays.asList(JavaParser.ruleNames).indexOf(ruleName);
+          int rule = parser.getRuleIndex(ruleName);
           rules[i] = rule;
         }
 

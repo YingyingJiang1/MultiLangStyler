@@ -1,24 +1,27 @@
 package org.example;
 
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
-import org.example.styler.body.optionalbrace.OptionalBraceStyler;
-import org.example.styler.body.braceformat.BraceFormatStyler;
-import org.example.styler.format.linestmt.LineStmtStyler;
-import org.example.styler.format.linewrapping.LineWrappingStyler;
-import org.example.styler.format.newline.NewlineStyler;
-import org.example.styler.structure.StructureStyler;
-import org.example.utils.FileCollection;
 import org.example.io.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.style.ProgramStyle;
-import org.example.styler.*;
+import org.example.styler.Preprocessor;
+import org.example.styler.Styler;
 import org.example.styler.arrangement.ArrangementStyler;
+import org.example.styler.body.braceformat.BraceFormatStyler;
+import org.example.styler.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.linestmt.LineStmtStyler;
+import org.example.styler.format.linewrapping.LineWrappingStyler;
+import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.example.styler.structure.StructureStyler;
+import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +30,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @description
@@ -35,17 +39,12 @@ import java.util.*;
  * @create       2024/3/13 20:59
  */
 public class Controller {
-    // For test
-//    public static ProgramStyle programStyle;
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     private MyParser parser;
     private ParseTree tree;
-//    private Map<Integer, TokenOperation> tokenToOperationMap = new HashMap<>();
-
     private final List<Styler> astStylers = new ArrayList<>();
     private final List<Styler> tStreamStylers = new ArrayList<>(); // token stream stylers.
-//  protected ProgramStyle programStyle;
-  protected Configuration conf;
+    protected Configuration conf;
     Path curPath = null;
 
     public static final int EXTRACTION_PROCESS = 1;
@@ -55,7 +54,8 @@ public class Controller {
         this.conf = conf;
     }
 
-    public Controller() {}
+    public Controller() {
+    }
 
 
     private void initStylers(ProgramStyle programStyle) {
@@ -316,9 +316,9 @@ public class Controller {
     }
 
     /**
-     * @Description Set real type for '<' and '-'.
      * @param tokens
      * @return
+     * @Description Set real type for '<' and '-'.
      */
     private List<Integer> processAmbiguousToken(List<Token> tokens) {
         List<Integer> toBeRestored = new ArrayList<>();
@@ -432,7 +432,7 @@ public class Controller {
                 if (t instanceof ExtendToken extToken) {
                     extToken.setHierarchy(hierarchy);
                 }
-            } );
+            });
 
             tokens.addAll(contextTokens);
         } else {

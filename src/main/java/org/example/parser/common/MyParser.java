@@ -127,4 +127,6 @@ public interface MyParser {
     Set<Integer> getHomoOps(); // All operands have the same type.
     Set<Integer> getOpAssign();
     Set<Integer> getLiterals();
+
+    int getRuleIndex(String ruleName);
 }

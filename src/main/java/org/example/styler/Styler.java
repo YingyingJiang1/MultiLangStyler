@@ -21,10 +21,6 @@ public abstract class Styler implements Extractor, Applicator {
     protected boolean enableExtraction = true;
     protected boolean enableApplication = true;
     public boolean executeWhenExit = true;
-//  protected String filePath;
-//  protected ProgramStyle programStyle;
-//  protected Configuration conf;
-//  protected FileCollector.FileCollection files;
 
     public static final int EXTRACTION_PROCESS = 1;
     public static final int APPLICATION_PROCESS = 2;

@@ -20,13 +20,10 @@ import java.util.*;
  * @create       2024/3/30 11:45
  */
 public class NewlineStyler extends Styler {
+
     public NewlineStyler() {
         style.setStyleName("newline");
-    }
-
-    public NewlineStyler(boolean executeWhenExit) {
-        super(executeWhenExit);
-        style.setStyleName("newline");
+        executeWhenExit = false;
     }
 
     private static Set<Integer> relevantRules = new HashSet<>(Arrays.asList(
