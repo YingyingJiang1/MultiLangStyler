@@ -46,6 +46,8 @@ public class RuleGrouper {
 			return RuleGroup.MEMBER_LIST;
 		} else if (parser.getMemberDecs().contains(ruleIndex)) {
 			return RuleGroup.MEMBER_DEC;
+		} else if (parser.belongToFileHeadDec(ruleIndex)) {
+			return RuleGroup.FILE_HEAD_DEC;
 		} else {
 			return RuleGroup.SELF_RULE;
 		}

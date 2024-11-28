@@ -18,6 +18,8 @@ import java.util.*;
 public class BraceFormatStyler extends BodyStyler {
   private static Set<Integer> relevantRules = null;
 
+  private static final BraceFormatProperty DEFAULT_PROPERTY = new BraceFormatProperty(false, true, true, true);
+
   public BraceFormatStyler() {
     style.setStyleName("brace_format");
     executeWhenExit = false;
@@ -36,7 +38,11 @@ public class BraceFormatStyler extends BodyStyler {
       if (context.bodyType == BodyTypeEnum.MULTI_BLOCK_STMT_BODY && block == ctx.getLastContextChild()) {
         context.bodyType = BodyTypeEnum.NORMAL_BODY;
       }
-      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getSimilarProperty(context);
+
+      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getProperty(context);
+      if (braceFormatProperty == null) {
+        braceFormatProperty = DEFAULT_PROPERTY;
+      }
       applyBraceInfo(braceFormatProperty, block);
     }
     return ctx;
@@ -122,7 +128,7 @@ public class BraceFormatStyler extends BodyStyler {
     boolean hasTrailingComment = token.indexOfLastTokenAfterIf(type -> type == parser.getLineComment()) >= 0;
     if(!hasTrailingComment) {
       Token vwsToken = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
-      token.addToken(token.indexInContextTokens(), vwsToken);
+      token.addToken(token.indexInContextTokens() + 1, vwsToken);
     }
   }
 

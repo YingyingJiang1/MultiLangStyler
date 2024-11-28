@@ -56,303 +56,57 @@
       </style_property>
     </rule>
   </style>
+  <style name="brace_format">
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>EMPTY</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>ARRAY_INITIALIZER_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+  </style>
   <style name="newline">
     <rule>
-      <style_context>
-        <context>
-          <type_around>6:typeDeclaration,-123:BLOCK_COMMENT</type_around>
-          <possible_total_text_length>[250]</possible_total_text_length>
-          <average_total_text_length>250.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>24:methodDeclaration,24:methodDeclaration</type_around>
-          <possible_total_text_length>[124]</possible_total_text_length>
-          <average_total_text_length>124.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
+      <style_context type1="FILE_HEAD_DEC" type2="importDeclarationList" minCodeBockLines="0"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context>
-        <context>
-          <type_around>6:typeDeclaration,6:typeDeclaration</type_around>
-          <possible_total_text_length>[220]</possible_total_text_length>
-          <average_total_text_length>220.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
+      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context>
-        <context>
-          <type_around>28:fieldDeclaration,28:fieldDeclaration</type_around>
-          <possible_total_text_length>[90]</possible_total_text_length>
-          <average_total_text_length>90.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
+      <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context>
-        <context>
-          <type_around>18:classBodyDeclaration,18:classBodyDeclaration</type_around>
-          <possible_total_text_length>[194]</possible_total_text_length>
-          <average_total_text_length>194.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
+      <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="FILE_HEAD_DEC" type2="" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="MEMBER_DEC" type2="MEMBER_DEC" minCodeBockLines="0"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context>
-        <context>
-          <type_around>4:importDeclaration,4:importDeclaration</type_around>
-          <possible_total_text_length>[75]</possible_total_text_length>
-          <average_total_text_length>75.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
+      <style_context type1="classBodyDeclaration" type2="classBodyDeclaration" minCodeBockLines="0"/>
       <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>53:annotation,-41:PUBLIC</type_around>
-          <possible_total_text_length>[15]</possible_total_text_length>
-          <average_total_text_length>15.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-128:AT,47:qualifiedName</type_around>
-          <possible_total_text_length>[9]</possible_total_text_length>
-          <average_total_text_length>9.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-123:BLOCK_COMMENT,18:classBodyDeclaration</type_around>
-          <possible_total_text_length>[1037]</possible_total_text_length>
-          <average_total_text_length>1037.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>87:returnStmt,-115:RBRACE</type_around>
-          <possible_total_text_length>[12]</possible_total_text_length>
-          <average_total_text_length>12.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-123:BLOCK_COMMENT,6:typeDeclaration</type_around>
-          <possible_total_text_length>[353]</possible_total_text_length>
-          <average_total_text_length>353.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>79:ifElseStmt,-115:RBRACE</type_around>
-          <possible_total_text_length>[111]</possible_total_text_length>
-          <average_total_text_length>111.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-41:PUBLIC,-42:STATIC</type_around>
-          <possible_total_text_length>[12]</possible_total_text_length>
-          <average_total_text_length>12.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>3:packageDeclaration,1:importDeclarationList</type_around>
-          <possible_total_text_length>[88]</possible_total_text_length>
-          <average_total_text_length>88.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-39:PRIVATE,-42:STATIC</type_around>
-          <possible_total_text_length>[13]</possible_total_text_length>
-          <average_total_text_length>13.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-123:BLOCK_COMMENT,2:typeDeclarationList</type_around>
-          <possible_total_text_length>[1785]</possible_total_text_length>
-          <average_total_text_length>1785.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>1:importDeclarationList,2:typeDeclarationList</type_around>
-          <possible_total_text_length>[75]</possible_total_text_length>
-          <average_total_text_length>75.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>1:importDeclarationList,-123:BLOCK_COMMENT</type_around>
-          <possible_total_text_length>[105]</possible_total_text_length>
-          <average_total_text_length>105.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-114:LBRACE,92:expressionStmt</type_around>
-          <possible_total_text_length>[56]</possible_total_text_length>
-          <average_total_text_length>56.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>92:expressionStmt,-115:RBRACE</type_around>
-          <possible_total_text_length>[56]</possible_total_text_length>
-          <average_total_text_length>56.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-42:STATIC,-31:FINAL</type_around>
-          <possible_total_text_length>[11]</possible_total_text_length>
-          <average_total_text_length>11.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>18:classBodyDeclaration,-123:BLOCK_COMMENT</type_around>
-          <possible_total_text_length>[224]</possible_total_text_length>
-          <average_total_text_length>224.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-114:LBRACE,87:returnStmt</type_around>
-          <possible_total_text_length>[12]</possible_total_text_length>
-          <average_total_text_length>12.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-114:LBRACE,18:classBodyDeclaration</type_around>
-          <possible_total_text_length>[195]</possible_total_text_length>
-          <average_total_text_length>195.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>18:classBodyDeclaration,-115:RBRACE</type_around>
-          <possible_total_text_length>[365]</possible_total_text_length>
-          <average_total_text_length>365.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-114:LBRACE,79:ifElseStmt</type_around>
-          <possible_total_text_length>[111]</possible_total_text_length>
-          <average_total_text_length>111.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <context>
-          <type_around>-114:LBRACE,-115:RBRACE</type_around>
-          <possible_total_text_length>[2]</possible_total_text_length>
-          <average_total_text_length>2.0</average_total_text_length>
-          <count>1</count>
-        </context>
-      </style_context>
-      <style_property newlines="0"/>
     </rule>
   </style>
   <style name="space">
@@ -447,6 +201,11 @@
     <rule>
       <style_context token=", }"/>
       <style_property space1="true" space2="false"/>
+    </rule>
+  </style>
+  <style name="indention">
+    <rule>
+      <style_property indentionUnit="4" indentionType=" "/>
     </rule>
   </style>
 </program_style>

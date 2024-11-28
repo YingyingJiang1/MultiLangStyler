@@ -8,6 +8,7 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.group.RuleGroup;
 import org.example.parser.common.group.RuleGrouper;
+import org.example.parser.common.group.TokenGroup;
 import org.example.parser.common.group.TokenGrouper;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Stage;
@@ -54,6 +55,10 @@ public class NewlineStyler extends Styler {
             if (ctx.getChild(i) instanceof TerminalNode) {
                 continue;
             }
+            if (ctx.getChild(i + 1) instanceof TerminalNode ter && parser.belongToBrace(ter.getSymbol().getType())) {
+                ++i;
+                continue;
+            }
 
             List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
             for(AdjacentCodeBlock adjacentCode : codes) {
@@ -61,15 +66,19 @@ public class NewlineStyler extends Styler {
                 NewlineContext context = extractContext(adjacentCode, property);
 
                 // More than one single statement in a line.
-                if (context.typeName1.equals(RuleGroup.SINGLE_STMT.name()) && property.newlines == 0) {
-                    style.remove(defaultContext);
+                if (context.typeName1.equals(RuleGroup.SINGLE_STMT.name())) {
+                    if (property.newlines == 0) {
+                        style.remove(defaultContext);
+                        style.addRule(context, property);
+                    }
+                    continue;
                 }
 
                 Set<String> typeNames = new HashSet<>();
                 typeNames.add(context.typeName1);
                 typeNames.add(context.typeName2);
-                boolean isMemberDecBlocks = typeNames.contains(RuleGroup.MEMBER_LIST.name()) || typeNames.contains(RuleGroup.MEMBER_DEC.name());
-                if (isMemberDecBlocks) {
+                boolean isTextLenUsefule = typeNames.contains(RuleGroup.SINGLE_STMT.name()) || typeNames.contains(RuleGroup.COMPOUND_STMT.name());
+                if (!isTextLenUsefule) {
                     context.minTextLength = 0; // Useless
                 }
 
@@ -83,6 +92,10 @@ public class NewlineStyler extends Styler {
         for(int i = 0; i < ctx.getChildCount() - 1; ++i) {
             // Skip terminal node
             if (ctx.getChild(i) instanceof TerminalNode) {
+                continue;
+            }
+            if (ctx.getChild(i + 1) instanceof TerminalNode ter && parser.belongToBrace(ter.getSymbol().getType())) {
+                ++i;
                 continue;
             }
 
@@ -160,32 +173,33 @@ public class NewlineStyler extends Styler {
         boolean hasCommentBefore = lastCommentIndexBefore >= 0;
         if(!hasCommentBefore) {
             adjacentCodes.add(new AdjacentCodeBlock(ctx, codeBlock1, codeBlock2));
-        } else {
-            int firstCmtIndexBefore = codeBlock2.token.indexOfFirstTokenBeforeIf(parser::belongToComment);
-            ExtendToken firstCmtToken = (ExtendToken) nonDefaultTokens.get(firstCmtIndexBefore);
-            ExtendToken lastCmtToken = (ExtendToken) nonDefaultTokens.get(lastCommentIndexBefore);
-            AdjacentCodeBlock.CodeBlock firstCmtInfo = new AdjacentCodeBlock.CodeBlock(-2, -firstCmtToken.getType(), firstCmtToken.getText().length(),
-                    firstCmtToken);
-            AdjacentCodeBlock.CodeBlock lastCmtInfo = new AdjacentCodeBlock.CodeBlock(-2, -lastCmtToken.getType(), lastCmtToken.getText().length(),
-                    lastCmtToken);
-            lastCmtInfo.line = getLine(lastCmtToken.getLine(), lastCmtToken.getText());
-
-            adjacentCodes.add(new AdjacentCodeBlock(ctx, codeBlock1, firstCmtInfo));
-            adjacentCodes.add(new AdjacentCodeBlock(ctx, lastCmtInfo, codeBlock2));
-
-            /*
-             * line1:a = 1;
-             * line2:// comment
-             * line3:b = 2;
-             * extraction: get a newline between (line1, line2),(line2,line3),(line1,line3)
-             * application: insert a newline between (line1,line2),(line2,line3)
-             */
-            if (stage == Stage.EXTRACT) {
-                AdjacentCodeBlock.CodeBlock info3 = new AdjacentCodeBlock.CodeBlock(codeBlock2);
-                info3.line = firstCmtToken.getLine();
-                adjacentCodes.add(new AdjacentCodeBlock(ctx, codeBlock1, info3));
-            }
         }
+//        else {
+//            int firstCmtIndexBefore = codeBlock2.token.indexOfFirstTokenBeforeIf(parser::belongToComment);
+//            ExtendToken firstCmtToken = (ExtendToken) nonDefaultTokens.get(firstCmtIndexBefore);
+//            ExtendToken lastCmtToken = (ExtendToken) nonDefaultTokens.get(lastCommentIndexBefore);
+//            AdjacentCodeBlock.CodeBlock firstCmtInfo = new AdjacentCodeBlock.CodeBlock(-2, -firstCmtToken.getType(), firstCmtToken.getText().length(),
+//                    firstCmtToken);
+//            AdjacentCodeBlock.CodeBlock lastCmtInfo = new AdjacentCodeBlock.CodeBlock(-2, -lastCmtToken.getType(), lastCmtToken.getText().length(),
+//                    lastCmtToken);
+//            lastCmtInfo.line = getLine(lastCmtToken.getLine(), lastCmtToken.getText());
+//
+//            adjacentCodes.add(new AdjacentCodeBlock(ctx, codeBlock1, firstCmtInfo));
+//            adjacentCodes.add(new AdjacentCodeBlock(ctx, lastCmtInfo, codeBlock2));
+//
+//            /*
+//             * line1:a = 1;
+//             * line2:// comment
+//             * line3:b = 2;
+//             * extraction: get a newline between (line1, line2),(line2,line3),(line1,line3)
+//             * application: insert a newline between (line1,line2),(line2,line3)
+//             */
+//            if (stage == Stage.EXTRACT) {
+//                AdjacentCodeBlock.CodeBlock info3 = new AdjacentCodeBlock.CodeBlock(codeBlock2);
+//                info3.line = firstCmtToken.getLine();
+//                adjacentCodes.add(new AdjacentCodeBlock(ctx, codeBlock1, info3));
+//            }
+//        }
 
         return adjacentCodes;
     }
@@ -282,12 +296,16 @@ public class NewlineStyler extends Styler {
     private String getTypeName(AdjacentCodeBlock.CodeBlock codeBlock) {
         int type= codeBlock.type;
         if (codeBlock.type < 0) {
-            return TokenGrouper.getInstance().getGroup(codeBlock.token, parser).name();
+            TokenGroup group = TokenGrouper.getInstance().getGroup(codeBlock.token, parser);
+            if (group == TokenGroup.SELF_TOKEN) {
+                return codeBlock.token.getText();
+            }
+            return group.name();
         }
 
         RuleGroup group = RuleGrouper.getInstance().getGroup(type, parser);
         if (group == RuleGroup.SELF_RULE) {
-            parser.getRuleName(type);
+            return parser.getRuleName(type);
         }
         return group.name();
     }

@@ -101,7 +101,7 @@ public class ExtendToken extends CommonToken {
         int ret = -1;
         if (contextTokens != null) {
             int start = contextTokens.indexOf(this);
-            for (int i = start + 1; i <= contextTokens.size(); i++) {
+            for (int i = start + 1; i < contextTokens.size(); i++) {
                 Token token = contextTokens.get(i);
                 if (cond.test(token.getType())) {
                     return i;
