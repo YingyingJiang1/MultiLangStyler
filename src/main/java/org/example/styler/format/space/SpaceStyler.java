@@ -63,28 +63,35 @@ public class SpaceStyler extends Styler {
     
     private SpaceContext extractContext(List<Token> tokens, int index) {
         ExtendToken token = (ExtendToken) tokens.get(index);
-        String name = token.getText();
-        String left = generateTokenName(findFirstNonHwsOfLeft(tokens, index - 1));
-        String right = generateTokenName(findFirstNonHwsOfRight(tokens, index + 1));
+        String name = generateTokenName(token);
+        String text = token.getText();
+        Token leftToken = findFirstNonHwsOfLeft(tokens, index - 1);
+        String leftText = leftToken == null ? "" : leftToken.getText();
+        String leftName = generateTokenName(leftToken);
+        Token rightToken = findFirstNonHwsOfRight(tokens, index + 1);
+        String rightText = rightToken == null ? "" : rightToken.getText();
+        String rightName = generateTokenName(rightToken);
 
-        if (parser.belongToBinOp(name)) {
+        if (parser.belongToBinOp(text)) {
             // Positions on the left and right of a binary operator are symmetrical.
             return new SpaceContext(name);
-        } else if (parser.belongToUnOp(name)) {
+        } else if (parser.belongToUnOp(text)) {
             if (isSuffix(tokens, index)) { // suffix ++, suffix --
-                return new SpaceContext(left, name);
+                return new SpaceContext(leftName, name);
             } else { // Right associated operator
-                return new SpaceContext(name, right);
+                return new SpaceContext(name, rightName);
             }
-        } else if (parser.belongToSeparator(name)) {
+        } else if (parser.belongToSeparator(text)) {
             // Positions on the left and right of a separator are considered respectively. And the case is exclusive if the adjacent token is operator,
             // because this case has already been handled in the previous branches.
-            if (!parser.belongToOperator(left)) {
-                return new SpaceContext(left, name);
+            if (!parser.belongToOperator(leftText)) {
+                return new SpaceContext(leftName, name);
             }
-            if (!parser.belongToOperator(right)) {
-                return new SpaceContext(name, right);
+            if (!parser.belongToOperator(rightText)) {
+                return new SpaceContext(name, rightName);
             }
+        } else if (!parser.belongToOperator(rightText) && !parser.belongToSeparator(rightText)) {
+            return new SpaceContext(name, rightName);
         }
         return null;
     }
@@ -130,9 +137,12 @@ public class SpaceStyler extends Styler {
     }
     
     private String generateTokenName(Token token) {
+        if (token == null) {
+            return "";
+        }
         TokenGroup group = TokenGrouper.getInstance().getGroup(token, parser);
         if (group == TokenGroup.SELF) {
-            return token.getText();
+            return token.getText().replaceAll("\\s", "");
         }
         return group.name();
     }

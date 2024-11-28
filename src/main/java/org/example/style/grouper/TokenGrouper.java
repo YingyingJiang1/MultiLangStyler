@@ -21,12 +21,18 @@ public class TokenGrouper {
 
 	public TokenGroup getGroup(Token token, MyParser parser) {
 		String text = token.getText();
-		if (token.getType() == parser.getIdentifier()) {
+		if (parser.belongToComment(token.getType())) {
+			return TokenGroup.COMMENT;
+		} else if (token.getType() == parser.getIdentifier()) {
 			return TokenGroup.IDENTIFIER;
 		} else if (token.getText().equals("?")) {
 			return TokenGroup.QUESTION;
 		} else if (token.getText().equals(":")) {
 			return TokenGroup.COLON;
+		} else if (token.getText().equals(".")) {
+			return TokenGroup.DOT;
+		} else if (token.getText().equals("::")) {
+			return TokenGroup.COLON_COLON;
 		} else if (parser.getBinOps().contains(text)) {
 			return TokenGroup.BIN_OP;
 		} else if (parser.getBinOps().contains(text)) {

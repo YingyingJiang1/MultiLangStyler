@@ -314,12 +314,6 @@ public class MyJavaParser implements MyParser {
         return token.getType() != JavaParser.IDENTIFIER && token.getText().matches("[a-zA-Z]+");
     }
 
-//    @Override
-//    public boolean isKeyword(int type) {
-//        return JavaLexer.BOOLEAN <= type && type <= JavaLexer.NON_SEALED ||
-//                type == JavaLexer.BOOL_LITERAL || type == JavaLexer.NULL_LITERAL;
-//    }
-
     @Override
     public int getRuleTypeDeclaration() {
         return JavaParser.RULE_typeDeclaration;
@@ -509,6 +503,17 @@ public class MyJavaParser implements MyParser {
     public int getBlockComment() {
         return JavaParser.BLOCK_COMMENT;
     }
+
+    @Override
+    public int getType(String text) {
+        if (text == null) {
+            return Integer.MIN_VALUE;
+        }
+        return text.startsWith("RULE") ?
+                parser.getRuleIndex(text) :
+                parser.getTokenType(TokenNameGetter.getInstance().getName(text));
+    }
+
 
     @Override
     public String getTokenName(int type) {

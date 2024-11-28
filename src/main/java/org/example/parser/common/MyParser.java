@@ -127,6 +127,8 @@ public interface MyParser {
     int getBang();
     int getBlockComment();
 
+    int getType(String text);
+
     String getTokenName(int type);
     String getRuleName(int type);
 

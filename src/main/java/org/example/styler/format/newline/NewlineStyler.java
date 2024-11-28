@@ -37,8 +37,8 @@ public class NewlineStyler extends Styler {
             JavaParser.RULE_annotationList, JavaParser.RULE_annotation, JavaParser.RULE_modifierList
     ));
 
-
-    public void extractStyle(ExtendContext ctx, Style style) {
+    @Override
+    public void extractStyle(ExtendContext ctx) {
         int len = ctx.getChildCount() - 1;
         for(int i = 0; i < len; ++i) {
             List<Info> infos1 = extractInfos(ctx, i, i + 1, Stage.EXTRACT);
@@ -49,7 +49,8 @@ public class NewlineStyler extends Styler {
         }
     }
 
-    public ExtendContext applyStyle(ExtendContext ctx, Style style) {
+    @Override
+    public ExtendContext applyStyle(ExtendContext ctx) {
         for(int i = 0; i < ctx.getChildCount() - 1; ++i) {
             List<Info> infos = extractInfos(ctx, i, i + 1, Stage.APPLY);
             for(Info info : infos) {

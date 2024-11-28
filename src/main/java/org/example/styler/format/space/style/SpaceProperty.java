@@ -12,8 +12,8 @@ public class SpaceProperty extends StyleProperty {
         this.space2 = space2;
     }
 
-    public SpaceProperty(boolean space1) {
-        this.space1 = space1;
+    public SpaceProperty(boolean space2) {
+        this.space2 = space2;
     }
 
     @Override

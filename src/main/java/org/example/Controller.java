@@ -180,18 +180,13 @@ public class Controller {
         int column = 0;
 
         // Handle the first token.
-        if (!tokens.isEmpty()) {
-            Token firstToken = tokens.get(0);
-            builder.append(firstToken.getText());
-            column += firstToken.getText().length();
-        }
-
-        for (int i = 1; i < tokens.size(); ++i) {
+        int size = tokens.size() - 1;
+        for (int i = 0; i < size; ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
             curToken.setCharPositionInLine(column);
 
-            boolean isVws = AntlrHelper.isVws(curToken);
+            boolean isVws = parser.getVws() == curTokenType;
             if (isVws || curToken.getText().endsWith("\n")) {
                 column = 0;
             } else {
@@ -199,14 +194,13 @@ public class Controller {
             }
 
             // In "(VWS or LINE_COMMENT),(VWS),(})", the second VWS is redundant.
-            if (i < tokens.size() - 1) {
+            if (i > 0) {
                 Token preToken = tokens.get(i - 1), nextToken = tokens.get(i + 1);
-                if (AntlrHelper.isVws(curToken) && preToken.getText().endsWith("\n") && AntlrHelper.isRBrace(nextToken)) {
+                if (isVws && preToken.getText().endsWith("\n") && parser.getRBrace() == nextToken.getType()) {
                     continue;
                 }
             }
 
-            Token preToken = tokens.get(i - 1);
             for (Styler styler : container.getStylers()) {
                 if (styler.isRelevant(tokens, i, Stage.APPLY)) {
                     styler.applyStyle(tokens, i);
@@ -215,6 +209,7 @@ public class Controller {
 
             builder.append(curToken.getText());
         }
+        builder.append(tokens.get(size).getText());
 
         return builder.toString();
     }
