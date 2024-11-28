@@ -8,6 +8,7 @@ import org.example.parser.common.AntlrHelper;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenInfoField;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -68,12 +69,7 @@ public class Preprocessor {
 
     List<Token> comments = tokenStream.getHiddenTokensToLeft(tokenIndex, JavaLexer.COMMENT_CHANNEL);
     if (comments != null) {
-      /*System.out.println("token:" + token.getType());
-      System.out.println("comments:");
-      for(Token comment : comments) {
-        System.out.println(comment.getText());
-      }*/
-
+      // Get first token in default channel on the left of all comments.
       ExtendToken preToken = null;
       Token comment = comments.get(0);
       int preIndex = comment.getTokenIndex() - 1;
@@ -84,15 +80,19 @@ public class Preprocessor {
         }
         --preIndex;
       }
+
+      List<Token> trailingComments = new ArrayList<>();
       for (int i = 0; i < comments.size(); i++) {
         if(preToken != null && preToken.getLine() == comments.get(i).getLine()){
-          preToken.comments.add(comments.get(i));
-          preToken.hasTrailingComment = true;
+          trailingComments.add(comments.get(i));
         } else {
-          token.comments = comments.subList(i, comments.size());
-          token.hasTrailingComment = false;
+          token.addAllToken(token.indexInContextTokens(), comments.subList(i, comments.size()));
           break;
         }
+      }
+      if (!trailingComments.isEmpty()) {
+        preToken.addAllToken(preToken.indexInContextTokens() + 1, trailingComments);
+        preToken.hasTrailingComment = true;
       }
     }
   }

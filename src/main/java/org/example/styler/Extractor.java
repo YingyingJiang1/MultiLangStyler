@@ -13,4 +13,5 @@ import java.util.List;
 public interface Extractor {
     void extractStyle(ExtendContext ctx);
     void extractStyle(List<Token> tokens, int index);
+    void doFinalize(); // Called after extraction finished.
 }

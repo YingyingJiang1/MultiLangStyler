@@ -1,5 +1,6 @@
 package org.example.styler.body.layout;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.ExtendContext;
@@ -52,16 +53,20 @@ public class BodyLayoutStyler extends BodyStyler {
             BodyLayoutProperty property = (BodyLayoutProperty) style.getProperty(context);
             ExtendToken stop = (ExtendToken) body.stop;
             if(!property.compactStyle) {
-                ctx.addTerNode(parser.getVws(), System.lineSeparator(), bodyIndex);
+                ExtendToken extStart = (ExtendToken) body.start;
+                extStart.addToken(extStart.indexInContextTokens(), parser.getTokenFactory().create(parser.getVws(), System.lineSeparator()));
             } else {
                 ExtendToken start = (ExtendToken) body.start;
-                // Move line comment to the end of statement.
-                if(!start.hasTrailingComment && !start.comments.isEmpty() &&
-                        parser.getLineComment() == start.comments.get(start.comments.size() - 1).getType()) {
+                // Move leading comment of the statement to the end of the statement.
+                int firstLeadingCommentIndex = start.indexOfFirstTokenBeforeIf(parser::belongToComment);
+                boolean hasLeadingComment = firstLeadingCommentIndex >= 0;
+                if(hasLeadingComment) {
+                    int lastLeadingCommentIndex = start.indexOfLastTokenBeforeIf(parser::belongToComment);
                     stop = (ExtendToken) body.stop;
                     stop.hasTrailingComment = true;
-                    stop.comments.addAll(start.comments);
-                    start.comments.clear();
+                    List<Token> comments = start.getContextTokens().subList(firstLeadingCommentIndex, lastLeadingCommentIndex + 1);
+                    stop.addAllToken(stop.indexInContextTokens(), comments);
+                    start.getContextTokens().removeAll(comments);
                 }
             }
             // Add vws if Body has a trailing comment.

@@ -25,13 +25,13 @@ public class OptionalBraceStyler extends BodyStyler {
 
     @Override
     public void extractStyle(ExtendContext ctx) {
-        int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child) ||parser.isBlock(child));
+        int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child) || parser.isBlock(child));
         if (bodyIndex >= 0) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
             List<ParseTree> innerStmts = body.children.stream().filter(parser::belongToStmt).toList();
             // Only consider the body has one statement.
             if (innerStmts.size() == 1) {
-                boolean useBrace = parser.isBlock(innerStmts.get(0));
+                boolean useBrace = parser.isBlock(body);
                 style.addRule(extractStyleContext(ctx, body), new OptionalBraceProperty(useBrace));
             }
         }
@@ -49,7 +49,7 @@ public class OptionalBraceStyler extends BodyStyler {
                 TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
                 ExtendContext block = factory.createBlock(ctx);
                 TerminalNode lb = factory.createTerminal(parser.getTokenFactory().create(parser.getLBrace(), "{"));
-                TerminalNode rb = ParseTreeFactory.createTerminalNode(parser.getTokenFactory().create(parser.getRBrace(), "}"));
+                TerminalNode rb = factory.createTerminal(parser.getTokenFactory().create(parser.getRBrace(), "}"));
                 List<ParseTree> children = new ArrayList<>();
                 children.add(lb);
                 children.add(body);

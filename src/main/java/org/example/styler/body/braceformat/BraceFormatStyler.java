@@ -117,18 +117,16 @@ public class BraceFormatStyler extends BodyStyler {
 
   private void addVwsBefore(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
-    if (!token.hasTrailingComment && !token.comments.isEmpty() &&
-        parser.getBlockComment() == token.comments.get(token.comments.size() - 1).getType()) {
-      token.comments.add(new ExtendToken(parser.getVws(), System.lineSeparator()));
-    } else {
-      ctx.addTerNode(parser.getVws(), System.lineSeparator(), ctx.findFirstTerChildByType(braceType));
-    }
+    Token vwsToken = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
+    token.addToken(token.indexInContextTokens(), vwsToken);
   }
 
   private void addVwsAfter(ExtendContext ctx, int braceType) {
     ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
-    if(!(token.hasTrailingComment && parser.getLineComment() == token.comments.get(token.comments.size() - 1).getType())) {
-      ctx.addTerNode(parser.getVws(), System.lineSeparator(), ctx.findFirstTerChildByType(braceType) + 1);
+    boolean hasTrailingComment = token.indexOfLastTokenAfterIf(type -> type == parser.getLineComment()) >= 0;
+    if(!hasTrailingComment) {
+      Token vwsToken = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
+      token.addToken(token.indexInContextTokens(), vwsToken);
     }
   }
 

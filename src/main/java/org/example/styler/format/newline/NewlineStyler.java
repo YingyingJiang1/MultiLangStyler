@@ -1,5 +1,6 @@
 package org.example.styler.format.newline;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
@@ -124,10 +125,13 @@ public class NewlineStyler extends Styler {
         }
 
         // Extraction process
-        boolean hasCommentBefore = !info2.token.comments.isEmpty() && !info2.token.hasTrailingComment;
+        List<Token> nonDefaultTokens = info2.token.getContextTokens();
+        int lastCommentIndexBefore = info2.token.indexOfLastTokenBeforeIf(parser::belongToComment);
+        boolean hasCommentBefore = lastCommentIndexBefore >= 0;
         if(hasCommentBefore) {
-            ExtendToken firstCmtToken = (ExtendToken) info2.token.comments.get(0);
-            ExtendToken lastCmtToken = (ExtendToken) info2.token.comments.get(info2.token.comments.size() - 1);
+            int firstCmtIndexBefore = info2.token.indexOfFirstTokenBeforeIf(parser::belongToComment);
+            ExtendToken firstCmtToken = (ExtendToken) nonDefaultTokens.get(firstCmtIndexBefore);
+            ExtendToken lastCmtToken = (ExtendToken) nonDefaultTokens.get(lastCommentIndexBefore);
             Info.InnerInfo firstCmtInfo = new Info.InnerInfo(-2, -firstCmtToken.getType(), firstCmtToken.getText().length(),
                     firstCmtToken);
             Info.InnerInfo lastCmtInfo = new Info.InnerInfo(-2, -lastCmtToken.getType(), lastCmtToken.getText().length(),
@@ -182,11 +186,15 @@ public class NewlineStyler extends Styler {
     private int applyProperty(ExtendContext parent, Info info, NewlineProperty newlineProperty) {
         int insertionPoint = info.child1.index + 1;
         if (newlineProperty.newlines > 0) {
-            // info1: the latest comment info before a rule.
-            // info2: a rule info.
+            // child1: comment. child2: a syntax rule.
             if(parser.belongToComment(info.child1.token.getType())) {
                 String vwsStr = StringUtils.repeat(System.lineSeparator(), newlineProperty.newlines);
-                info.child2.token.comments.add(new ExtendToken(JavaParser.VWS, vwsStr));
+                Token vwsToken = parser.getTokenFactory().create(parser.getVws(), vwsStr);
+                // Insert vws before the leading comment.
+                info.child2.token.addToken(
+                        info.child2.token.indexOfFirstTokenBeforeIf(parser::belongToComment),
+                        vwsToken
+                );
             } else if(insertionPoint >= 0) { // info1: a rule info
                 ExtendToken token1 = info.child1.token;
                 int newlines = newlineProperty.newlines;
@@ -203,7 +211,8 @@ public class NewlineStyler extends Styler {
     private int getNewlineAfter(ExtendContext parent, Info.InnerInfo info) {
         int count = 0;
         // line comment has a newline at the end, so sub 1.
-        if(info.token.hasTrailingComment && info.token.comments.get(info.token.comments.size() - 1).getType() == parser.getLineComment()) {
+        boolean hasTrailingLineComment = info.token.indexOfLastTokenAfterIf(type -> type == parser.getLineComment()) > 0;
+        if(hasTrailingLineComment) {
             count = 1;
         }
         if(parent.getChild(info.index) instanceof ExtendContext stmt) {
@@ -227,6 +236,7 @@ public class NewlineStyler extends Styler {
         }
         return count;
     }
+
 
     // Information of relevant structure.
     static class Info {

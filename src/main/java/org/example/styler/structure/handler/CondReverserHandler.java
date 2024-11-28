@@ -1,5 +1,6 @@
 package org.example.styler.structure.handler;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
@@ -73,7 +74,7 @@ public class CondReverserHandler extends Handler{
    * @return whether has unwrapped logical or expression
    */
   private ParseTree reverseCond(ExtendContext ctx, MyParser parser) {
-    ExtendToken op = getOp(ctx);
+    ExtendToken op = (ExtendToken) getOp(ctx, parser);
     String reversedOp = compareOpMap.get(op.getText());
     if (reversedOp != null) {
       // reverse compare or logical operator
@@ -102,11 +103,11 @@ public class CondReverserHandler extends Handler{
    * @param ctx
    * @return
    */
-  private ExtendToken getOp(ExtendContext ctx) {
+  private Token getOp(ExtendContext ctx, MyParser parser) {
     List<TerminalNode> ters = ctx.getAllTerminalsIf(v -> true);
     if (ters.isEmpty()) {
       return parser.getTokenFactory().create(0, "");
     }
-    return (ExtendToken) ters.get(0).getSymbol();
+    return ters.get(0).getSymbol();
   }
 }

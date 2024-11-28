@@ -5,6 +5,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.ParseTreeFactory;
+import org.example.parser.common.factory.TreeNodeFactoryGetter;
+import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.ArrayList;
@@ -74,7 +76,8 @@ public class OpOpAssignConvertHandler extends Handler{
 				if(tree instanceof TerminalNode ter) {
 					String convertedOp = convertMap.get(ter.getSymbol().getText());
 					if (convertedOp != null) {
-						toTrees.set(i, ParseTreeFactory.createTerminalNode(parser.getTokenFactory().create(parser.getType(convertedOp), convertedOp)));
+						TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
+						toTrees.set(i, factory.createTerminal(parser.getTokenFactory().create(parser.getType(convertedOp), convertedOp)));
 					}
 				}
 			}

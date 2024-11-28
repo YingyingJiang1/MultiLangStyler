@@ -89,7 +89,11 @@ public abstract class Styler implements Extractor, Applicator {
         }
     }
 
+    @Override
     public void doFinalize() {
+        if (style.getStyleName() == "brace_format") {
+            System.out.println("");
+        }
         style.fillStyle();
         style.filterRules();
     }

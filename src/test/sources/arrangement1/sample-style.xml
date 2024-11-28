@@ -58,6 +58,10 @@
   </style>
   <style name="optional_brace">
     <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
       <style_property use_brace="true"/>
     </rule>
   </style>
@@ -73,7 +77,35 @@
     <rule>
       <style_context>
         <block_type>BODY_BLOCK</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
         <body_type>EMPTY</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
+        <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -95,6 +127,27 @@
       <style_context>
         <block_type>BODY_BLOCK</block_type>
         <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
+        <body_type>EMPTY</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>BODY_BLOCK</block_type>
+        <body_type>EMPTY</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -129,55 +182,6 @@
     <rule>
       <style_context>
         <block_type>ARRAY_INITIALIZER_BLOCK</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
-        <body_type>EMPTY</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
-        <body_type>EMPTY</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>BODY_BLOCK</block_type>
         <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>

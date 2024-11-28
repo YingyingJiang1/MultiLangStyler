@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.misc.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /*
  * @description
@@ -22,8 +23,9 @@ public class ExtendToken extends CommonToken {
     // However, in case statements, there might be no braces.
     protected int hierarchy = 0;
     public int indention = 0;
-    private List<Token> comments = new ArrayList<>(0);
-    private List<Token> formatTokensBefore = null, formatTokensAfter = null;
+    // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
+    private List<Token> contextTokens = null;
+    public boolean hasTrailingComment = false;
     // The meaning of @info depends on the type of the token.
     public Object info;
 
@@ -52,49 +54,80 @@ public class ExtendToken extends CommonToken {
         ExtendToken ret = new ExtendToken(this);
         ret.hierarchy = hierarchy;
         ret.info = info;
-    /*ret.comments.addAll(comments);
-    ret.trailingComment = trailingComment;*/
+        ret.contextTokens = contextTokens;
         return ret;
     }
 
-    public void addFormatTokenBefore(Token token) {
-        if (formatTokensBefore == null) {
-            formatTokensBefore = new ArrayList<>();
+    public void addToken(int index, Token token) {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
         }
-        formatTokensBefore.add(token);
+        contextTokens.add(index, token);
     }
 
-    public void addFormatTokenAfter(Token token) {
-        if (formatTokensAfter == null) {
-            formatTokensAfter = new ArrayList<>();
+    public void addAllToken(int index, List<Token> tokens) {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
         }
-        formatTokensAfter.add(token);
+        contextTokens.addAll(index, tokens);
+    }
+
+    public int indexInContextTokens() {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
+            return 0;
+        }
+        return contextTokens.indexOf(this);
+    }
+
+    public int indexOfLastTokenBeforeIf(Predicate<Integer> cond) {
+        int ret = -1;
+        if (contextTokens != null) {
+            int start = contextTokens.indexOf(this);
+            for (int i = start - 1; i >= 0; i--) {
+                Token token = contextTokens.get(i);
+                if (cond.test(token.getType())) {
+                    return i;
+                }
+            }
+        }
+        return  ret;
+    }
+
+    public int indexOfLastTokenAfterIf(Predicate<Integer> cond) {
+        int ret = -1;
+        if (contextTokens != null) {
+            int start = contextTokens.indexOf(this);
+            for (int i = start + 1; i <= contextTokens.size(); i++) {
+                Token token = contextTokens.get(i);
+                if (cond.test(token.getType())) {
+                    return i;
+                }
+            }
+        }
+        return  ret;
+    }
+
+    public int indexOfFirstTokenBeforeIf(Predicate<Integer> cond) {
+        int ret = -1;
+        if (contextTokens != null) {
+            int start = contextTokens.indexOf(this);
+            for (int i = 0; i < start; i++) {
+                Token token = contextTokens.get(i);
+                if (cond.test(token.getType())) {
+                    return i;
+                }
+            }
+        }
+        return  ret;
     }
 
 
-
-    /**
-     * @apiNote There're some comment and format tokens around the token after style transformation.
-     */
-    public List<Token> getFullTokens() {
-        List<Token> ret = new ArrayList<>();
-        if (hasTrailingComment) {
-            ret.add(this);
-            ret.addAll(comments);
-        } else {
-            ret.addAll(comments);
-            ret.add(this);
-        }
-        ret.addAll(formatTokens);
-        return ret;
-    }
-
-    public String getComments() {
-        StringBuilder build = new StringBuilder();
-        for (Token commentToken : comments) {
-            build.append(commentToken.getText());
-        }
-        return build.toString();
+    public List<Token> getContextTokens() {
+        return contextTokens;
     }
 
     public int getHierarchy() {

@@ -426,8 +426,15 @@ public class Controller {
         if (root instanceof TerminalNode) {
             int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
             ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());
-            token.setHierarchy(hierarchy);
-            tokens.addAll(token.getFullTokens());
+            // There are some tokens add around the `token` after style transformations.
+            List<Token> contextTokens = token.getContextTokens();
+            contextTokens.forEach(t -> {
+                if (t instanceof ExtendToken extToken) {
+                    extToken.setHierarchy(hierarchy);
+                }
+            } );
+
+            tokens.addAll(contextTokens);
         } else {
             ExtendContext ctx = (ExtendContext) root;
             ctx.updateHierarchy(parser);
@@ -435,39 +442,6 @@ public class Controller {
                 generateTokens(child, tokens);
             }
         }
-    }
-
-    /**
-     * Add comment for tokens in default channel.
-     */
-    private void processComment() {
-        CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
-        tokenStream.fill();
-        List<Token> tokens = tokenStream.getTokens();
-        for (int i = 0; i < tokens.size(); i++) {
-            addComment(i);
-        }
-    }
-
-    private void addComment(int tokenIndex) {
-        CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
-        Token token = tokenStream.get(tokenIndex);
-        if (token.getChannel() != JavaLexer.DEFAULT_TOKEN_CHANNEL) {
-            return;
-        }
-        List<Token> comments = tokenStream.getHiddenTokensToLeft(tokenIndex, JavaLexer.COMMENT_CHANNEL);
-        if (comments != null) {
-      /*System.out.println("token:" + token.getType());
-      System.out.println("comments:");
-      for(Token comment : comments) {
-        System.out.println(comment.getText());
-      }*/
-            ((ExtendToken) token).comments = comments;
-        }
-    }
-
-    private String getCommentsBefore(Token token) {
-        return ((ExtendToken) token).getComments();
     }
 
     public ProgramStyle execute() {
