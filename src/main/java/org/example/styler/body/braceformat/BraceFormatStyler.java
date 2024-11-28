@@ -11,7 +11,7 @@ import org.example.style.Style;
 import org.example.styler.body.BodyContext;
 import org.example.styler.body.BodyStyler;
 import org.example.styler.body.braceformat.style.BraceFormatProperty;
-import org.example.styler.body.BodyBlockTypeEnum;
+import org.example.styler.body.BodyTypeEnum;
 
 import java.util.*;
 
@@ -37,8 +37,8 @@ public class BraceFormatStyler extends BodyStyler {
       ExtendContext block = blocks.get(i);
       BodyContext context = extractStyleContext(ctx, block);
       // Specially process the last block of multi-block statement.
-      if (context.blockType == BodyBlockTypeEnum.MULTI_BLOCK_STMT && block == ctx.getLastContextChild()) {
-        context.blockType = BodyBlockTypeEnum.NORMAL_BLOCK;
+      if (context.bodyType == BodyTypeEnum.MULTI_BLOCK_STMT_BODY && block == ctx.getLastContextChild()) {
+        context.bodyType = BodyTypeEnum.NORMAL_BODY;
       }
       BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getSimilarProperty(context);
       applyBraceInfo(braceFormatProperty, block);

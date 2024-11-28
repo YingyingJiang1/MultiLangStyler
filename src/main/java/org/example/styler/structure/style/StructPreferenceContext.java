@@ -4,12 +4,14 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
+import java.util.Objects;
+
 public class StructPreferenceContext extends StyleContext {
     int structID;
-    String structName;
+    String structCategory;
 
-    public StructPreferenceContext(String structName, int structID) {
-        this.structName = structName;
+    public StructPreferenceContext(String structCategory, int structID) {
+        this.structCategory = structCategory;
         this.structID = structID;
     }
 
@@ -17,16 +19,34 @@ public class StructPreferenceContext extends StyleContext {
         return structID;
     }
 
-    public String getStructName() {
-        return structName;
+    public String getStructCategory() {
+        return structCategory;
     }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-
+        parent.addAttribute("id", Integer.toString(structID));
+        parent.addAttribute("category", structCategory);
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+        structID = Integer.parseInt(parent.attributeValue("id"));
+        if (parent.attribute("category") != null) {
+            structCategory = parent.attributeValue("category");
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(structID);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof StructPreferenceContext context) {
+            return structID == context.structID;
+        }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package org.example.style.rule;
 
+import org.example.styler.body.BodyContext;
+
 import java.util.*;
 
 public class MapRuleSet implements RuleSet{
@@ -8,6 +10,9 @@ public class MapRuleSet implements RuleSet{
 
     @Override
     public void addRule(StyleContext context, StyleProperty property) {
+        if (context instanceof BodyContext) {
+            context.hashCode();
+        }
         List<StyleProperty> properties = rules.computeIfAbsent(context, k -> new ArrayList<>());
         properties.add(property);
 

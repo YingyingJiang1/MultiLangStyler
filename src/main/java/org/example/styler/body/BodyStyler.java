@@ -1,7 +1,6 @@
 package org.example.styler.body;
 
 import org.example.parser.common.ExtendContext;
-import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
 
 public abstract class BodyStyler extends Styler {
@@ -19,7 +18,7 @@ public abstract class BodyStyler extends Styler {
      * @return
      */
     protected BodyContext extractStyleContext(ExtendContext stmt, ExtendContext block) {
-        BodyBlockTypeEnum blockType = BodyBlockTypeEnum.getBlockType(stmt.getRuleIndex(), parser);
+        BodyTypeEnum blockType = BodyTypeEnum.getBlockType(stmt.getRuleIndex(), parser);
         return new BodyContext(blockType, getBodyType(block));
     }
 

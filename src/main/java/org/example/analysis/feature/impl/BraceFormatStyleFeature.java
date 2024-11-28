@@ -31,7 +31,7 @@ public class BraceFormatStyleFeature extends StyleFeature {
     }
 
     private String generateFeatureName(BodyContext context) {
-        String typeName = context.blockType.name();
+        String typeName = context.bodyType.name();
         String innerStmt = context.bodyNumType.name().toLowerCase();
         return typeName.charAt(0) + typeName.substring(1).toLowerCase() + "-" + innerStmt;
     }

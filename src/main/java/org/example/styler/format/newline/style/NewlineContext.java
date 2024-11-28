@@ -5,10 +5,7 @@ import org.example.parser.common.MyParser;
 import org.example.style.grouper.Grouper;
 import org.example.style.rule.StyleContext;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NewlineContext extends StyleContext {
     public static Grouper grouper;
@@ -96,5 +93,18 @@ public class NewlineContext extends StyleContext {
             ret.add(Integer.parseInt(integer));
         }
         return ret;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type1, type2);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NewlineContext context) {
+            return type1 == context.type1 && type2 == context.type2;
+        }
+        return false;
     }
 }

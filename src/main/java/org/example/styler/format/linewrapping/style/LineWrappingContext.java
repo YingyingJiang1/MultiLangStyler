@@ -4,6 +4,8 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
+import java.util.Objects;
+
 public class LineWrappingContext extends StyleContext {
 
     public Attr attr;
@@ -30,6 +32,19 @@ public class LineWrappingContext extends StyleContext {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(attr);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof LineWrappingContext context) {
+            return Objects.equals(attr, context.attr);
+        }
+        return false;
     }
 
     public enum Attr {

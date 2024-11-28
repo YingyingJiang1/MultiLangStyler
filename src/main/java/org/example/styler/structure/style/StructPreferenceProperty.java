@@ -17,10 +17,11 @@ public class StructPreferenceProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-
+        parent.addAttribute("preferenceIndex", Integer.toString(preferenceIndex));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+        preferenceIndex = Integer.parseInt(parent.attributeValue("preferenceIndex"));
     }
 }

@@ -5,6 +5,8 @@ import org.example.parser.common.MyParser;
 import org.example.style.grouper.Grouper;
 import org.example.style.rule.StyleContext;
 
+import java.util.Objects;
+
 public class SpaceContext extends StyleContext {
     // name are the following: operators, separators, "keyword", "identifier". `tokenName2` can be empty string
     // When `tokenName2` is empty, we focus on the space around the `tokenName1`.
@@ -62,5 +64,18 @@ public class SpaceContext extends StyleContext {
             tokenName2 = tokens[1];
         }
         
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tokenName1, tokenName2);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SpaceContext context) {
+            return Objects.equals(tokenName1, context.tokenName1) && Objects.equals(tokenName2, context.tokenName2);
+        }
+        return false;
     }
 }

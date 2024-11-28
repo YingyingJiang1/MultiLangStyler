@@ -20,7 +20,7 @@ public class StructPreferenceStyleFeature extends StyleFeature {
         List<StyleRule> rules = style.getRules();
         for (StyleRule rule : rules) {
             String styleName = rule.getStyleContext() instanceof StructPreferenceContext context ?
-                    context.getStructName() : null;
+                    context.getStructCategory() : null;
             FeatureValue featureValue = rule.getStyleProperty() instanceof StructPreferenceProperty property ?
                     new VectorFeatureValue(OneHotEncoder.encode(property.getPreferenceIndex())) : null;
             StyleVector fv = new StyleVector();

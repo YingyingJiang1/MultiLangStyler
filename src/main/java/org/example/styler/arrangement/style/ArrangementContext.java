@@ -6,6 +6,7 @@ import org.example.style.rule.StyleContext;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /*
  * @description
@@ -55,4 +56,17 @@ public class ArrangementContext extends StyleContext {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeType, statistic);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof ArrangementContext context) {
+            return typeType.equals(context.typeType) && statistic.equals(context.statistic);
+        }
+        return false;
+    }
 }
