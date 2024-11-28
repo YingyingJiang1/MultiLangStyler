@@ -1,4 +1,4 @@
-package org.example.parser.common;
+package org.example.parser.common.group;
 
 public enum TokenGroup {
     IDENTIFIER,
@@ -16,5 +16,5 @@ public enum TokenGroup {
 //    BIN_ARITHMETIC_OP,
 //    BIN_LOGICAL_OP,
 //    BIN_COMPARE_OP,
-    SELF,
+    SELF_TOKEN,
 }

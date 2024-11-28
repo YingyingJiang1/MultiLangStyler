@@ -5,7 +5,7 @@
 
     <!-- 自定义变量，用于配置日志输出格式，这个格式是尽量偏向 spring boot 默认的输出风格
     %date：日期，默认格式 yyyy-MM-dd hhh:mm:ss,SSS 默认使用本机时区，通过 %d{yyyy-MM-dd hhh:mm:ss,SSS} 来自定义
-    %-5level：5个占位符的日志级别，例如" info"、"error"
+    %-5level：5个占位符的日志级别，例如" adjacentCodeBlock"、"error"
     %thread : 输出日志的线程
     %class : 输出日志的类的完全限定名，效率低
     %method : 输出日志的方法名
@@ -45,7 +45,7 @@
 
     <appender name="STDOUT_INFO" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>info</level>
+            <level>adjacentCodeBlock</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
@@ -112,7 +112,7 @@
     <logger name="ch.qos.logback" level="off"></logger>
 
     <!-- 根记录器 -->
-    <root level="info">
+    <root level="adjacentCodeBlock">
         <!-- 使用 STDOUT、ROLLING 输出记录的日志-->
         <appender-ref ref="STDOUT_INFO"/>
         <appender-ref ref="STDOUT_WARN"/>

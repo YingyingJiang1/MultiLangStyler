@@ -51,13 +51,13 @@ public interface MyParser {
     boolean belongToMemberList(ParseTree t);
     boolean belongToSingleStmt(ParseTree t);
     boolean belongToBraceOptionalStmt(int rule);
+    boolean belongToFileHeadDec(int rule);
 
 
     boolean belongToBinOp(String name);
     boolean belongToUnOp(String name);
     boolean belongToSeparator(String name);
     boolean belongToOperator(String name);
-
     boolean belongToComment(int type);
     boolean belongToBrace(int type);
     boolean belongToKeyword(Token token);
@@ -145,6 +145,8 @@ public interface MyParser {
     Set<Integer> getHomoOps(); // All operands have the same type.
     Set<Integer> getOpAssign();
     Set<Integer> getLiterals();
+    Set<Integer> getMemberLists();
+    Set<Integer> getMemberDecs();
 
     int getRuleIndex(String ruleName);
 

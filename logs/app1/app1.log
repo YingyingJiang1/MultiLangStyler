@@ -5099,3 +5099,19 @@
 2024-11-28 19:10:42,527 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-28 19:15:49,935 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-28 19:23:44,338 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-28 21:56:46,551 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 21:58:29,719 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 22:01:17,570 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 22:01:28,369 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 22:02:05,912 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 22:03:13,700 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 22:03:41,657 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
+2024-11-28 22:04:43,706 ERROR --- [main] org.example.Controller.execute/418 : duplicate element: SELF_RULE
+Path: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java

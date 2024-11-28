@@ -53,6 +53,11 @@ public class MyJavaParser implements MyParser {
             JavaParser.RULE_methodDeclarationList, JavaParser.RULE_typeDeclarationList,
             JavaParser.RULE_initializerList
     ));
+    private static Set<Integer> memberDecs = Set.of(
+            JavaParser.RULE_fieldDeclaration, JavaParser.RULE_constructorDeclaration,
+            JavaParser.RULE_methodDeclaration, JavaParser.RULE_typeDeclaration,
+            JavaParser.RULE_initializer
+    );
     private static Set<Integer> braceOptionalBlocks = new HashSet<>(Arrays.asList(
             JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,JavaParser.RULE_whileStmt
     ));
@@ -272,6 +277,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToBraceOptionalStmt(int rule) {
         return braceOptionalBlocks.contains(rule);
+    }
+
+    @Override
+    public boolean belongToFileHeadDec(int rule) {
+        return rule == JavaParser.RULE_importDeclaration || rule == JavaParser.RULE_packageDeclaration;
     }
 
     @Override
@@ -604,6 +614,16 @@ public class MyJavaParser implements MyParser {
                 JavaParser.CHAR_LITERAL, JavaParser.DECIMAL_LITERAL, JavaParser.HEX_LITERAL,
                 JavaParser.OCT_LITERAL, JavaParser.FLOAT_LITERAL, JavaParser.HEX_FLOAT_LITERAL
         );
+    }
+
+    @Override
+    public Set<Integer> getMemberLists() {
+        return memberLists;
+    }
+
+    @Override
+    public Set<Integer> getMemberDecs() {
+        return memberDecs;
     }
 
     @Override

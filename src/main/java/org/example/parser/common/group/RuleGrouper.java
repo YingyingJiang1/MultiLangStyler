@@ -1,5 +1,6 @@
-package org.example.style.grouper;
+package org.example.parser.common.group;
 
+import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 
 import java.util.Arrays;
@@ -8,11 +9,7 @@ import java.util.Set;
 
 public class RuleGrouper {
 	private static RuleGrouper instance = new RuleGrouper();
-	private static final int START = 1 << 30;
-	public static final int SINGLE_STMT = START + 1;
-	public static final int BLOCK_STMT = START + 2;
-	public static final int MEMBER_LIST = START + 3;
-	public static final int BLOCK_DECLARATION = START + 4;
+
 	private static Set<Integer> singleStmts = new HashSet<>(Arrays.asList(
 			JavaParser.RULE_fieldDeclaration, JavaParser.RULE_localVariableDeclarationStmt,
 			JavaParser.RULE_expressionStmt, JavaParser.RULE_returnStmt, JavaParser.RULE_yieldStmt,
@@ -39,52 +36,20 @@ public class RuleGrouper {
 		return instance;
 	}
 
-
-//	
-//	public int getGroupId(int type) {
-//		if (singleStmts.contains(type)) {
-//			return SINGLE_STMT;
-//		} else if (blockStmts.contains(type)) {
-//			return BLOCK_STMT;
-//		} else if(memberLists.contains(type)){
-//			return MEMBER_LIST;
-//		} else if(blockDeclarations.contains(type)){
-//			return BLOCK_DECLARATION;
-//		} else {
-//			return type;
-//		}
-//	}
-
 	
-	public boolean isGroup(int type) {
-		return type > START;
-	}
-
-	
-	public String getGroupName(String name) {
-		return "";
-	}
-
-	
-	public String getGroupName(int groupId) {
-		if (groupId == SINGLE_STMT) {
-			return "single_stmt";
-		} else if (groupId == BLOCK_STMT) {
-			return "block_stmt";
-		} else if(groupId == MEMBER_LIST) {
-			return "member_list";
-		} else if(groupId == BLOCK_DECLARATION) {
-			return "block_declaration";
+	public RuleGroup getGroup(int ruleIndex, MyParser parser) {
+		if (parser.getSingleStmts().contains(ruleIndex)) {
+			return RuleGroup.SINGLE_STMT;
+		} else if (parser.getCompoundStmts().contains(ruleIndex)) {
+			return RuleGroup.COMPOUND_STMT;
+		} else if (parser.getMemberLists().contains(ruleIndex)) {
+			return RuleGroup.MEMBER_LIST;
+		} else if (parser.getMemberDecs().contains(ruleIndex)) {
+			return RuleGroup.MEMBER_DEC;
 		} else {
-			return "";
+			return RuleGroup.SELF_RULE;
 		}
 	}
-
-	
-	public int calculateGroupDistance(String group1, String group2) {
-		return 0;
-	}
-
 //	
 //	public int getGroupId(String groupName) {
 //		return switch (groupName) {

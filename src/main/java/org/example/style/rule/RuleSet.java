@@ -18,4 +18,8 @@ public interface RuleSet {
      * @description: When more than one rule with the same style context appears, the rule with the largest frequency is retained.
      */
     void filterRules();
+
+    boolean replace(StyleContext oldContext, StyleContext newContext);
+
+    StyleProperty remove(StyleContext styleContext);
 }

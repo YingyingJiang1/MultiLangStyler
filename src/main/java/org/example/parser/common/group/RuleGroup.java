@@ -1,0 +1,11 @@
+package org.example.parser.common.group;
+
+public enum RuleGroup {
+    SINGLE_STMT,
+    COMPOUND_STMT,
+    MEMBER_LIST,
+    MEMBER_DEC,
+    FILE_HEAD_DEC,
+    SELF_RULE,
+    ;
+}

@@ -80,4 +80,26 @@ public class MapRuleSet implements RuleSet{
         }
     }
 
+    @Override
+    public boolean replace(StyleContext oldContext, StyleContext newContext) {
+        List<StyleProperty> properties = rules.remove(oldContext);
+        if (properties == null) {
+            return false;
+        }
+        rules.put(newContext, properties);
+        return true;
+    }
+
+    @Override
+    public StyleProperty remove(StyleContext styleContext) {
+        if (rules.containsKey(styleContext)) {
+            List<StyleProperty> properties = rules.remove(styleContext);
+            if (properties != null && !properties.isEmpty()) {
+                return properties.get(0);
+            }
+        }
+        return null;
+    }
+
+
 }

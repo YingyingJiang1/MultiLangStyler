@@ -1,10 +1,7 @@
-package org.example.style.grouper;
+package org.example.parser.common.group;
 
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.TokenGroup;
-
-import java.util.*;
 
 
 public class TokenGrouper {
@@ -44,7 +41,7 @@ public class TokenGrouper {
 		} else if (parser.belongToKeyword(token)) {
 			return TokenGroup.KEYWORD;
 		}
-		return TokenGroup.SELF;
+		return TokenGroup.SELF_TOKEN;
 	}
 
 
