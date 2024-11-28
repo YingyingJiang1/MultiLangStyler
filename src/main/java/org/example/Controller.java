@@ -11,16 +11,8 @@ import org.example.parser.common.*;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.style.ProgramStyle;
 import org.example.styler.Preprocessor;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.arrangement.ArrangementStyler;
-import org.example.styler.body.braceformat.BraceFormatStyler;
-import org.example.styler.body.optionalbrace.OptionalBraceStyler;
-import org.example.styler.format.indention.IndentionStyler;
-import org.example.styler.format.linestmt.LineStmtStyler;
-import org.example.styler.format.linewrapping.LineWrappingStyler;
-import org.example.styler.format.newline.NewlineStyler;
-import org.example.styler.format.space.SpaceStyler;
-import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,13 +34,11 @@ public class Controller {
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     private MyParser parser;
     private ParseTree tree;
-    private final List<Styler> astStylers = new ArrayList<>();
-    private final List<Styler> tStreamStylers = new ArrayList<>(); // token stream stylers.
+    private StylerContainer container = null;
+//    private final List<Styler> astStylers = new ArrayList<>();
+//    private final List<Styler> tStreamStylers = new ArrayList<>(); // token stream stylers.
     protected Configuration conf;
     Path curPath = null;
-
-    public static final int EXTRACTION_PROCESS = 1;
-    public static final int APPLICATION_PROCESS = 2;
 
     public Controller(Configuration conf) {
         this.conf = conf;
@@ -58,18 +48,9 @@ public class Controller {
     }
 
 
-    private void initStylers(ProgramStyle programStyle) {
+    private void init(ProgramStyle programStyle) {
         if (programStyle == null) {
-            astStylers.add(new ArrangementStyler());
-            astStylers.add(new OptionalBraceStyler());
-            astStylers.add(new StructureStyler());
-            astStylers.add(new BraceFormatStyler(false));
-            astStylers.add(new LineWrappingStyler());
-            astStylers.add(new LineStmtStyler());
-            astStylers.add(new NewlineStyler(false));
-
-            tStreamStylers.add(new SpaceStyler());
-            tStreamStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
+            container = new StylerContainer();
         }
     }
 
@@ -91,7 +72,7 @@ public class Controller {
                 // System.out.println("extract style from file: " + filePath);
                 ++count;
                 Preprocessor preprocessor = new Preprocessor();
-                preprocessor.preprocess(parser, Styler.EXTRACTION_PROCESS);
+                preprocessor.preprocess(parser, Stage.EXTRACT);
                 extractOnTS();
                 extractOnAST();
             } catch (IOException e) {
@@ -108,7 +89,7 @@ public class Controller {
     }
 
     private void extractOnAST() {
-        parser.walkTree(EXTRACTION_PROCESS, astStylers);
+        parser.walkTree(Stage.EXTRACT, container.getStylers());
     }
 
     private void extractInitialize() {
@@ -117,10 +98,7 @@ public class Controller {
     }
 
     private void extractFinalize() {
-        List<Styler> stylers = new ArrayList<>();
-        stylers.addAll(astStylers);
-        stylers.addAll(tStreamStylers);
-        for (Styler styler : stylers) {
+        for (Styler styler : container.getStylers()) {
             styler.doFinalize();
         }
     }
@@ -136,18 +114,14 @@ public class Controller {
 
         // Avoid exceptions caused by boundaries.
         int len = tokens.get(tokens.size() - 1).getType() == parser.getHws() ? tokens.size() - 2 : tokens.size() - 1;
-        List<Styler> indentionStylers = tStreamStylers.stream().filter(styler -> styler instanceof IndentionStyler).toList();
-        tStreamStylers.removeIf(styler -> styler instanceof IndentionStyler);
         for (int i = 1; i < len; ++i) { // @i begins at 1 to avoid exceptions caused by boundaries.
             Token token = tokens.get(i);
-            if (!indentionStylers.isEmpty() && token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
-                indentionStylers.get(0).extractStyle(tokens, i);
-            }
-            for (Styler styler : tStreamStylers) {
-                styler.extractStyle(tokens, i);
+            for (Styler styler : container.getStylers()) {
+                if (styler.isRelevant(tokens, i, Stage.EXTRACT)) {
+                    styler.extractStyle(tokens, i);
+                }
             }
         }
-        tStreamStylers.addAll(indentionStylers);
 
         // Must restore the type of modified tokens, otherwise things will go wrong in syntactic analysis phase.
         for (int i : toBeRestored) {
@@ -177,10 +151,10 @@ public class Controller {
 
             // First round: apply on AST
             Preprocessor preprocessor = new Preprocessor();
-            preprocessor.preprocess(parser, Styler.APPLICATION_PROCESS);
+            preprocessor.preprocess(parser, Stage.APPLY);
 //            Set<Class> disabledClassed = new HashSet<>(List.of(AntlrBraceStyler.class, NewlineStyler.class);
 //            disable(APPLICATION_PROCESS, disabledClassed);
-            parser.walkTree(Styler.APPLICATION_PROCESS, astStylers);
+            parser.walkTree(Stage.APPLY, container.getStylers());
 
             // Second round: apply on AST
 //            Set<Class> enabledClasses = new HashSet<>(List.of(List.of(AntlrBraceStyler.class, NewlineStyler.class));
@@ -222,8 +196,6 @@ public class Controller {
             column += firstToken.getText().length();
         }
 
-        List<Styler> indentionStylers = tStreamStylers.stream().filter(styler -> styler instanceof IndentionStyler).toList();
-        tStreamStylers.removeIf(styler -> styler instanceof IndentionStyler);
         for (int i = 1; i < tokens.size(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
@@ -245,18 +217,14 @@ public class Controller {
             }
 
             Token preToken = tokens.get(i - 1);
-            // For efficiency reasons, apply indentation separately.
-            if (!indentionStylers.isEmpty() && preToken.getText().endsWith("\n") && parser.getVws() != curTokenType) { // add indention
-                indentionStylers.get(0).applyStyle(tokens, i);
-
-            }
-            for (Styler styler : tStreamStylers) {
-                styler.applyStyle(tokens, i);
+            for (Styler styler : container.getStylers()) {
+                if (styler.isRelevant(tokens, i, Stage.APPLY)) {
+                    styler.applyStyle(tokens, i);
+                }
             }
 
             builder.append(curToken.getText());
         }
-        tStreamStylers.addAll(indentionStylers);
 
         return builder.toString();
     }
@@ -450,9 +418,9 @@ public class Controller {
             // extract style from existing style file or source codes.
             if (conf.styleFile != null) {
                 programStyle = StyleFileIO.read(conf.styleFile, parser);
-                initStylers(programStyle);
+                init(programStyle);
             } else {
-                initStylers(null);
+                init(null);
                 programStyle = extractStyle(conf.extractionCollection);
             }
             StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
@@ -468,7 +436,7 @@ public class Controller {
 
     private ProgramStyle combineStyle() {
         ProgramStyle programStyle = new ProgramStyle();
-        for (Styler styler : astStylers) {
+        for (Styler styler : container.getStylers()) {
             programStyle.add(styler.getStyle());
         }
         return programStyle;
@@ -476,8 +444,7 @@ public class Controller {
 
     private void setParser(Path filePath) {
         parser = MyParserFactory.createParser(filePath.getFileName().toString());
-        astStylers.forEach(styler -> styler.setParser(parser));
-        tStreamStylers.forEach(styler -> styler.setParser(parser));
+        container.getStylers().forEach(styler -> styler.setParser(parser));
     }
 
 

@@ -5,7 +5,6 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.Style;
-import org.example.style.Style;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,7 @@ import java.util.Set;
  * @author     : Jiang Yingying
  * @create     : 2024/1/21 10:44
  */
-public abstract class Styler implements Extractor, Applicator {
+public abstract class Styler {
     protected MyParser parser;
     protected Style style;
     protected boolean enableExtraction = true;
@@ -42,19 +41,15 @@ public abstract class Styler implements Extractor, Applicator {
 
     public Style getStyle() { return style; }
 
-    @Override
     public void applyStyle(List<Token> tokens, int index) {
     }
 
-    @Override
     public ExtendContext applyStyle(ExtendContext ctx) {
         return null;
     }
 
-    @Override
     public void extractStyle(List<Token> tokens, int index) {}
 
-    @Override
     public void extractStyle(ExtendContext ctx) {}
 
     public boolean isEnable(int process) {
@@ -85,7 +80,6 @@ public abstract class Styler implements Extractor, Applicator {
         }
     }
 
-    @Override
     public void doFinalize() {
         if (style.getStyleName() == "brace_format") {
             System.out.println("");
@@ -98,7 +92,13 @@ public abstract class Styler implements Extractor, Applicator {
 
     protected Set<String> getRelevantTokens() { return null;}
 
-    public boolean isRelevant(ExtendContext ctx){
+    /**
+     * @implNote
+     * @param ctx
+     * @param stage EXTRACT or APPLY
+     * @return
+     */
+    public boolean isRelevant(ExtendContext ctx, Stage stage){
         Set<Integer> relevantRules = getRelevantRules();
         // Special case: all rules is relevant.
         if (relevantRules == null) {
@@ -108,13 +108,13 @@ public abstract class Styler implements Extractor, Applicator {
         return relevantRules.contains(targetRule);
     }
 
-    public boolean isRelevant(Token token){
+    public boolean isRelevant(List<Token> tokens, int i, Stage stage){
         Set<String> relevantTokens = getRelevantTokens();
         // Special case: all tokens is relevant.
         if (relevantTokens == null) {
             return true;
         }
-        return relevantTokens.contains(token.getText());
+        return relevantTokens.contains(tokens.get(i).getText());
     }
 
     public void setParser(MyParser parser) {

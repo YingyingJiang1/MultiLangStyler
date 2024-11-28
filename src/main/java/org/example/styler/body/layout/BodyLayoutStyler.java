@@ -33,21 +33,23 @@ public class BodyLayoutStyler extends BodyStyler {
     public void extractStyle(ExtendContext ctx) {
         int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0) {
-            ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
-            BodyContext context = extractStyleContext(ctx, body);
-            BodyLayoutProperty property = new BodyLayoutProperty();
-            ParseTree preChild = ctx.getChild(bodyIndex - 1);
-            int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
-                    ((ExtendContext) preChild).stop.getLine();
-            property.compactStyle = preChildLine == body.start.getLine();
-            style.addRule(context, property);
+            if (!parser.isBlock(ctx.getChild(bodyIndex))) {
+                ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
+                BodyContext context = extractStyleContext(ctx, body);
+                BodyLayoutProperty property = new BodyLayoutProperty();
+                ParseTree preChild = ctx.getChild(bodyIndex - 1);
+                int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
+                        ((ExtendContext) preChild).stop.getLine();
+                property.compactStyle = preChildLine == body.start.getLine();
+                style.addRule(context, property);
+            }
         }
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx) {
         int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
-        if (bodyIndex >= 0) {
+        if (bodyIndex >= 0 && !parser.isBlock(ctx.getChild(bodyIndex))) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
             StyleContext context = extractStyleContext(ctx, body);
             BodyLayoutProperty property = (BodyLayoutProperty) style.getProperty(context);

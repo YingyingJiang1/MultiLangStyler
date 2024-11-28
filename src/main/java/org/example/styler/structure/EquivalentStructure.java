@@ -6,8 +6,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.ParseTreeFactory;
-import org.example.parser.java.MyJavaParser;
 import org.example.myException.CompilationException;
+import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 
@@ -130,8 +130,6 @@ public class EquivalentStructure {
 				if (rule1 != rule2) {
 					break;
 				}
-//				System.out.println(vt.toStringTree(new JavaParser(null)));
-//				System.out.println(t1.toStringTree(new JavaParser(null)));
 				if (!isMatched(vt, t1, vtree.context, parser)) {
 					break;
 				}
@@ -239,7 +237,7 @@ public class EquivalentStructure {
 		if (vt instanceof ExtendContext && t instanceof ExtendContext) {
 			ExtendContext vtCtx = (ExtendContext) vt;
 			ExtendContext ctx = (ExtendContext) t;
-			// Match rule.
+			// Match root.
 			if(!ruleMatches(vtCtx, ctx)) {
 				return false;
 			}
@@ -247,23 +245,25 @@ public class EquivalentStructure {
 			// Match children
 			int vi = 0, i = 0;
 			while (vi < vt.getChildCount() && i < t.getChildCount()) {
-				ParseTree cChild = vt.getChild(vi), tChild = t.getChild(i);
-				VirtualNode virtualNode = treeVNodeMap.get(cChild);
+				ParseTree vtChild = vt.getChild(vi), tChild = t.getChild(i);
+				VirtualNode virtualNode = treeVNodeMap.get(vtChild);
 				boolean matched = false;
+
+				// Different match strategies for virtual node and non-virtual node.
 				if (virtualNode != null) {
 					matched = virtualNode.matches(tChild, parser);
 					if (matched) {
 						virtualNode.addMatchedTree(tChild);
 					}
 				} else {
-					matched = isMatched(cChild, tChild, context, parser);
+					matched = isMatched(vtChild, tChild, context, parser);
 				}
 
 				if (matched) {
 					++vi;
 					++i;
 				} else {
-					if(!context.addContext(cChild, tChild)) {
+					if(!context.addContext(vtChild, tChild)) {
 						return false;
 					}
 					++i;
@@ -372,7 +372,7 @@ public class EquivalentStructure {
 				if(tree.getText().equals(";") && type.equals("$S")) {
 					return true;
 				}
-				return matchTokens.get(type) != null && matchTokens.get(type).contains(((TerminalNode) tree).getSymbol().getText());
+				return matchTokens.get(type) != null && matchTokens.get(type).contains(((TerminalNode) tree).getSymbol().getType());
 			} else {
 				int rule = ((ExtendContext) tree).getRuleIndex();
 				Set<Integer> rules = matchRules.get(type);
@@ -541,15 +541,15 @@ public class EquivalentStructure {
 		Map<String, Holder> holders = new HashMap<>();
 		// Ensure each pattern has three groups. If regular1 is a prefix of regular2 then regular1 should be put after regular2.
 		static Pattern[] holderPatterns = {
-				Pattern.compile("(\\$[ICSEMVT^])(\\d*)([*+?]?)"),
 				Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
+				Pattern.compile("(\\$[ICSEMVT^])(\\d*)([*+?]?)"),
 				Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
 				Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
 				Pattern.compile("(\\$LITERAL)(\\d*)()")
 		};
 		private static final Map<String, String> holderMap = new HashMap<>(){{
-			put("$I", "I");put("$C", "C");put("$E", "E");put("$V", "V");put("$T", "T");put("$M", "");
-			put("$S(ifStmt)", "if(true){}");put("$S(ifElseStmt)", "if(true){}else{}");put("$S", "S#id=S#id;");
+			put("$I", "I#id");put("$C", "C#id");put("$E", "E#id");put("$V", "V#id");put("$T", "T#id");put("$M", "");
+			put("$S(ifStmt)", "if(true){}");put("$S(ifElseStmt)", "if(true){}else{}");put("$S", "RV#id=LV#id;");
 			put("$HOMO_BOP", "+");put("$HOMO_BOP_ASSIGN", "+=");put("$LITERAL", "1");
 			put("", "");
 		}};

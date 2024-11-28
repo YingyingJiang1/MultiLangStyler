@@ -4,23 +4,26 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.java.antlr.JavaParserBaseListener;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /*
  * @author     : Jiang Yingying
  * @create     : 2024/1/22 17:32
  */
 public class ExtendJavaParserListener extends JavaParserBaseListener {
-	public int state;
+	public Stage stage;
 	public List<Styler> enterStylers = new ArrayList<>();
 	public List<Styler> exitStylers = new ArrayList<>();
 	private MyParser parser;
 
-	public ExtendJavaParserListener(int state, List<Styler> stylers, MyParser parser) {
-		this.state = state;
+	public ExtendJavaParserListener(Stage stage, List<Styler> stylers, MyParser parser) {
+		this.stage = stage;
 		for (Styler styler : stylers) {
 			if (styler.executeWhenExit) {
 				exitStylers.add(styler);
@@ -36,16 +39,16 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	}
 
 	private void doTask(ExtendContext ctx, List<Styler> stylers) {
-		if (state == Styler.EXTRACTION_PROCESS) {
+		if (stage == Stage.EXTRACT) {
 			for (Styler styler : stylers) {
-				if (styler.isEnable(Styler.EXTRACTION_PROCESS) && styler.isRelevant(ctx)) {
+				if (styler.isEnable(Styler.EXTRACTION_PROCESS) && styler.isRelevant(ctx, stage)) {
 					styler.extractStyle(ctx);
 				}
 			}
-		} else if (state == Styler.APPLICATION_PROCESS) {
+		} else if (stage == Stage.APPLY) {
 			ExtendContext newCtx = ctx;
 			for (Styler styler : stylers) {
-				if(styler.isEnable(Styler.APPLICATION_PROCESS) && styler.isRelevant(newCtx)) {
+				if(styler.isEnable(Styler.APPLICATION_PROCESS) && styler.isRelevant(newCtx, stage)) {
 					newCtx = styler.applyStyle(newCtx);
 				}
 			}

@@ -3,6 +3,7 @@ package org.example;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.ArrangementStyler;
 import org.example.styler.body.braceformat.BraceFormatStyler;
+import org.example.styler.body.layout.BodyLayoutStyler;
 import org.example.styler.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
@@ -11,38 +12,37 @@ import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.structure.StructureStyler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StylerContainer {
-    Styler arrangementStyler;
-    Styler optionalBraceStyler;
-    Styler structureStyler;
-    Styler braceFormatStyler;
-    Styler bodyLayoutStyler;
-    Styler lineWrappingStyler;
-    Styler lineStmtStyler;
-    Styler newlineStyler;
-    Styler spaceStyler;
-    Styler indentionStyler;
+    List<Styler> stylers = new ArrayList<>();
 
     public StylerContainer() {
-        arrangementStyler = new ArrangementStyler();
-        optionalBraceStyler = new OptionalBraceStyler();
-        structureStyler = new StructureStyler();
-        braceFormatStyler = new BraceFormatStyler();
-        lineWrappingStyler = new LineWrappingStyler();
-        lineStmtStyler = new LineStmtStyler();
-        newlineStyler = new NewlineStyler();
-        spaceStyler = new SpaceStyler();
-        indentionStyler = new IndentionStyler();
-        bodyLayoutStyler = new BraceFormatStyler();
+        stylers.add(new ArrangementStyler());
+        stylers.add(new StructureStyler());
+        stylers.add(new OptionalBraceStyler());
+        stylers.add(new BraceFormatStyler());
+        stylers.add(new LineWrappingStyler());
+        stylers.add(new LineStmtStyler());
+        stylers.add(new NewlineStyler());
+        stylers.add(new SpaceStyler());
+        stylers.add(new BraceFormatStyler());
+        stylers.add(new BodyLayoutStyler());
+        stylers.add(new IndentionStyler());// `IndentionStyler` must be the last styler.
+
+    }
+
+    public List<Styler> getStylers() {
+        return stylers;
     }
 
     public List<Styler> getAstStylers() {
-        return List.of(arrangementStyler, optionalBraceStyler, structureStyler, braceFormatStyler, lineWrappingStyler, lineStmtStyler, newlineStyler);
+        return null;
     }
 
-    public List<Styler> getTSstylers() {
+    public List<Styler> getTStreamStylers() {
+        return null;
     }
 
 }

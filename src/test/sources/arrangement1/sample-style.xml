@@ -28,6 +28,12 @@
       </style_property>
     </rule>
   </style>
+  <style name="equivalences">
+    <rule>
+      <style_context id="20" category=""/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+  </style>
   <style name="optional_brace">
     <rule>
       <style_context>
@@ -37,7 +43,6 @@
       <style_property use_brace="true"/>
     </rule>
   </style>
-  <style name="equivalences"/>
   <style name="brace_format">
     <rule>
       <style_context>
@@ -70,4 +75,96 @@
     </rule>
   </style>
   <style name="newline"/>
+  <style name="space">
+    <rule>
+      <style_context token="(, )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="&gt;="/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="identifier, keyword"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="="/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="identifier, ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="keyword, ("/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="keyword, )"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="), ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="), {"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="."/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="-"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="keyword, identifier"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="keyword, }"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="keyword, {"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="keyword, ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="identifier, {"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="identifier, ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+  </style>
+  <style name="brace_format">
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>ARRAY_INITIALIZER_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+  </style>
+  <style name="body_layout"/>
+  <style name="indention">
+    <rule>
+      <style_property indentionUnit="4" indentionType=" "/>
+    </rule>
+  </style>
 </program_style>

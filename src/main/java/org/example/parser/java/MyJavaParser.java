@@ -10,6 +10,7 @@ import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.CompilationException;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 
 import java.io.IOException;
@@ -135,8 +136,8 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public void walkTree(int state, List<Styler> stylers) {
-        ExtendJavaParserListener listener = new ExtendJavaParserListener(state, stylers, this);
+    public void walkTree(Stage stage, List<Styler> stylers) {
+        ExtendJavaParserListener listener = new ExtendJavaParserListener(stage, stylers, this);
         ParseTreeWalker walker = new MyParseTreeWalker();
         walker.walk(listener, tree);
     }
@@ -548,6 +549,7 @@ public class MyJavaParser implements MyParser {
         Set<Integer> allStmts = new HashSet<>();
         allStmts.addAll(singleStmts);
         allStmts.addAll(compoundStmts);
+        allStmts.add(JavaParser.RULE_block);
         return allStmts;
     }
 

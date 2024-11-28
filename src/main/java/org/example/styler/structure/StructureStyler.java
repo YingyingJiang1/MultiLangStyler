@@ -32,7 +32,8 @@ public class StructureStyler extends Styler {
         equivalences = EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser(""));
     }
 
-    public ExtendContext applyStyle(ExtendContext ctx, Style style) {
+    @Override
+    public ExtendContext applyStyle(ExtendContext ctx) {
         ++recursiveDepth;
         ParseTree newTree = ctx;
         try {
@@ -74,7 +75,7 @@ public class StructureStyler extends Styler {
                         if (newTree instanceof ExtendContext newCtx) {
                             convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
                             convertionPerformed.get(targetStructure).add(to);
-                            applyStyle(newCtx, style);
+                            applyStyle(newCtx);
                             break;
                         }
                     }
@@ -91,14 +92,15 @@ public class StructureStyler extends Styler {
         return (ExtendContext) newTree;
     }
 
-    public void extractStyle(ExtendContext ctx, Style style) {
+    @Override
+    public void extractStyle(ExtendContext ctx) {
         List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
         if (equivalentStructures != null) {
-            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
-                System.out.println("--------------------waiting to match---------------------");
-                System.out.println(ctx.getText());
-                TreePrinter.printTree(ctx, parser);
-            }
+//            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
+//                System.out.println("--------------------waiting to match---------------------");
+//                System.out.println(ctx.getText());
+//                TreePrinter.printTree(ctx, parser);
+//            }
             for (EquivalentStructure structure : equivalentStructures) {
                 int index = structure.match(ctx, parser);
                 if (index != -1) {

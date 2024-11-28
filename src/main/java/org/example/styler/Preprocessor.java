@@ -18,11 +18,11 @@ import java.util.List;
  */
 public class Preprocessor {
   int curNestingDepth = 0;
-  public void preprocess(MyParser parser, int process) {
+  public void preprocess(MyParser parser, Stage stage) {
     CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
     for (int i = 0; i < tokenStream.size(); i++) {
       setHierarchy(tokenStream, i);
-      if (process == Styler.EXTRACTION_PROCESS) {
+      if (stage == Stage.EXTRACT) {
         processBrace(tokenStream, i);
       }
       processComment(tokenStream, i);

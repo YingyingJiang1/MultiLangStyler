@@ -9,9 +9,9 @@ import org.example.parser.java.antlr.JavaParser;
 
 public class TreePrinter {
     public static final Parser JAVA_PARSER = new JavaParser(null);
-    public static void printTree(ExtendContext ctx, MyParser parser) {
+    public static void printTree(ParseTree t, MyParser parser) {
         if (parser instanceof MyJavaParser) {
-            System.out.println(ctx.toStringTree(JAVA_PARSER));
+            System.out.println(t.toStringTree(JAVA_PARSER));
         }
     }
 }

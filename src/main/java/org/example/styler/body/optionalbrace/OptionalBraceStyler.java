@@ -25,7 +25,7 @@ public class OptionalBraceStyler extends BodyStyler {
 
     @Override
     public void extractStyle(ExtendContext ctx) {
-        int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child) || parser.isBlock(child));
+        int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
             List<ParseTree> innerStmts = body.children.stream().filter(parser::belongToStmt).toList();
@@ -39,7 +39,7 @@ public class OptionalBraceStyler extends BodyStyler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx) {
-        int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child) || parser.isBlock(child));
+        int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
             BodyContext context = extractStyleContext(ctx, body);

@@ -3,6 +3,7 @@ package org.example.styler.format.indention;
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.ExtendToken;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
 
@@ -51,5 +52,17 @@ public class IndentionStyler extends Styler {
 //            curToken.setCharPositionInLine(curToken.getCharPositionInLine() + indentionStr.length());
             curToken.setText(indentionStr + curToken.getText());
         }
+    }
+
+    @Override
+    public boolean isRelevant(List<Token> tokens, int i, Stage stage) {
+        if (stage == Stage.EXTRACT) {
+            return tokens.get(i).getType() == parser.getHws() && tokens.get(i).getCharPositionInLine() == 0;
+        } else if(stage == Stage.APPLY) {
+            return i - 1 >= 0 && tokens.get(i - 1).getText().endsWith("\n") && parser.getVws() != tokens.get(i).getType();
+        } else {
+            return false;
+        }
+
     }
 }

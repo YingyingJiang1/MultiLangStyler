@@ -33,7 +33,7 @@ public class NotIntegerCheck extends Checker{
 				}
 			}
 
-			for(int i = integerEnd;i < args.length; ++i) {
+			for(int i = integerEnd; i < args.length; ++i) {
 				EquivalentStructure.VirtualNode vNode = structure.getVNode(args[i]);
 				if (vNode != null && !vNode.matchedNodes.isEmpty()) {
 					for(ParseTree t : vNode.matchedNodes) {

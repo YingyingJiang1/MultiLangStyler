@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.Token;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.common.TokenNameGetter;
 import org.example.style.rule.StyleContext;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceProperty;
@@ -34,8 +35,6 @@ public class SpaceStyler extends Styler {
         boolean rightSpace = parser.getHws() == rightToken.getType();
         StyleContext context = extractContext(tokens, index);
         SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
-
-
         if (context != null) {
             style.addRule(context, property);
         }
@@ -97,8 +96,8 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
-    public boolean isRelevant(Token token) {
-        return token.getType() == parser.getIdentifier() || getRelevantTokens().contains(token.getText());
+    public boolean isRelevant(List<Token> tokens, int i, Stage stage) {
+        return tokens.get(i).getType() == parser.getIdentifier() || getRelevantTokens().contains(tokens.get(i).getText());
     }
 
     private Token findFirstNonHwsOfLeft(List<Token> tokens, int start) {

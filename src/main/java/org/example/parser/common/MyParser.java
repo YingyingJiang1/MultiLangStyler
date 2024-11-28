@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public interface MyParser {
 
     ParseTree parse(Path filePath) throws IOException;
     TokenStream getTokenStream();
-    void walkTree(int state, List<Styler> stylers);
+    void walkTree(Stage stage, List<Styler> stylers);
 
     boolean isChangeHierarchy(ParseTree t, ParseTree parent);
     boolean belongToStmt(ParseTree t);
