@@ -36,54 +36,49 @@ public class StructureStyler extends Styler {
     public ExtendContext applyStyle(ExtendContext ctx) {
         ++recursiveDepth;
         ParseTree newTree = ctx;
-        try {
-            List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
-            if (equivalentStructures != null) {
+        List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
+        if (equivalentStructures != null) {
         /*if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
           System.out.println("--------------------waiting to match---------------------");
           System.out.println(ctx.getText());
             TreePrinter.printTree(ctx, parser);
         }*/
-                Set<MatchedStructure> matchedStructures = new TreeSet<>();
-                for (EquivalentStructure structure : equivalentStructures) {
-                    int matchedIndex = structure.match(ctx, parser);
-                    StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
-                    StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
-                    int targetIndex = property == null ? -1 : property.preferenceIndex;
-                    if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
-                        matchedStructures.add(new MatchedStructure(structure, matchedIndex));
-                    }
+            Set<MatchedStructure> matchedStructures = new TreeSet<>();
+            for (EquivalentStructure structure : equivalentStructures) {
+                int matchedIndex = structure.match(ctx, parser);
+                StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
+                StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
+                int targetIndex = property == null ? -1 : property.preferenceIndex;
+                if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
+                    matchedStructures.add(new MatchedStructure(structure, matchedIndex));
                 }
+            }
 
-                if (!matchedStructures.isEmpty()) {
-                    Iterator<MatchedStructure> it = matchedStructures.iterator();
-                    boolean converted = false;
-                    while (it.hasNext()) {
-                        MatchedStructure matchedStructure = it.next();
-                        EquivalentStructure targetStructure = matchedStructure.structure;
-                        StyleContext context = new StructPreferenceContext(matchedStructure.structure.getCategory(), matchedStructure.structure.getId());
-                        StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
-                        int to = property.preferenceIndex;
-                        int from = matchedStructure.index;
-                        // Check whether the conversion is performed before.
-                        if (convertionPerformed.get(targetStructure) != null &&
-                                convertionPerformed.get(targetStructure).contains(to)) {
-                            break;
-                        }
-                        newTree = targetStructure.convert(from, to, ctx, parser);
-                        // If converting operation is performed successfully then record the conversion and call recursively.
-                        if (newTree instanceof ExtendContext newCtx) {
-                            convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
-                            convertionPerformed.get(targetStructure).add(to);
-                            applyStyle(newCtx);
-                            break;
-                        }
+            if (!matchedStructures.isEmpty()) {
+                Iterator<MatchedStructure> it = matchedStructures.iterator();
+                boolean converted = false;
+                while (it.hasNext()) {
+                    MatchedStructure matchedStructure = it.next();
+                    EquivalentStructure targetStructure = matchedStructure.structure;
+                    StyleContext context = new StructPreferenceContext(matchedStructure.structure.getCategory(), matchedStructure.structure.getId());
+                    StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
+                    int to = property.preferenceIndex;
+                    int from = matchedStructure.index;
+                    // Check whether the conversion is performed before.
+                    if (convertionPerformed.get(targetStructure) != null &&
+                            convertionPerformed.get(targetStructure).contains(to)) {
+                        break;
+                    }
+                    newTree = targetStructure.convert(from, to, ctx, parser);
+                    // If converting operation is performed successfully then record the conversion and call recursively.
+                    if (newTree instanceof ExtendContext newCtx) {
+                        convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
+                        convertionPerformed.get(targetStructure).add(to);
+                        applyStyle(newCtx);
+                        break;
                     }
                 }
             }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new StylizationException("apply equivalences style failed:" + e.getMessage());
         }
         --recursiveDepth;
         if (recursiveDepth == 0) {

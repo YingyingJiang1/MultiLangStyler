@@ -127,6 +127,10 @@ public class ExtendToken extends CommonToken {
 
 
     public List<Token> getContextTokens() {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
+        }
         return contextTokens;
     }
 

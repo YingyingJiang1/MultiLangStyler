@@ -1,0 +1,69 @@
+package org.example.styler.structure.vtree;
+
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class VirtualNode {
+
+    public ParseTree t = null;
+    // Real nodes the virtual node matched.
+    public List<ParseTree> matchedTrees = new ArrayList<>(0);
+    public String type; // The type of corresponding placeholder.
+    public String repetition; // The number of matches allowed.
+
+
+    public VirtualNode(String type, String repetition) {
+        this.type = type;
+        this.repetition = repetition;
+    }
+
+    public void addMatchedTree(ParseTree tChild) {
+        matchedTrees.add(tChild);
+    }
+
+    public void cleanState() {
+        matchedTrees.clear();
+    }
+
+    public boolean isEmpty() {
+        return t == null;
+    }
+
+    public boolean matches(ParseTree t1, MyParser parser) {
+        return VirtualNodeMatcher.getInstance(parser).isMatched(type, t1, parser);
+    }
+
+    public boolean checkState(MyParser parser) {
+        // Check tree type correct.
+        for (ParseTree tree : matchedTrees) {
+            if (!VirtualNodeMatcher.getInstance(parser).isMatched(type, tree, parser)) {
+                return false;
+            }
+        }
+
+        // Check size correct.
+        int sizeBefore = matchedTrees.size();
+        return repetition.isEmpty() && sizeBefore == 0 ||
+                repetition.equals("*") ||
+                repetition.equals("+") && sizeBefore >= 1 ||
+                repetition.equals("?") && sizeBefore <= 1;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VirtualNode that = (VirtualNode) o;
+        return Objects.equals(t, that.t);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(t);
+    }
+}

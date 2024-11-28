@@ -41,14 +41,14 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	private void doTask(ExtendContext ctx, List<Styler> stylers) {
 		if (stage == Stage.EXTRACT) {
 			for (Styler styler : stylers) {
-				if (styler.isEnable(Styler.EXTRACTION_PROCESS) && styler.isRelevant(ctx, stage)) {
+				if (styler.isEnable(stage) && styler.isRelevant(ctx, stage)) {
 					styler.extractStyle(ctx);
 				}
 			}
 		} else if (stage == Stage.APPLY) {
 			ExtendContext newCtx = ctx;
 			for (Styler styler : stylers) {
-				if(styler.isEnable(Styler.APPLICATION_PROCESS) && styler.isRelevant(newCtx, stage)) {
+				if(styler.isEnable(stage) && styler.isRelevant(newCtx, stage)) {
 					newCtx = styler.applyStyle(newCtx);
 				}
 			}

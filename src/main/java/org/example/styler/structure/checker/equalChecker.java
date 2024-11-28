@@ -2,6 +2,7 @@ package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.vtree.VirtualNode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +28,13 @@ public class equalChecker extends Checker {
       List<String> holderNames = Arrays.stream(arg).toList().subList(1, arg.length);
       for (int i = 0; i < holderNames.size() - 1; i++) {
         String holder1 = holderNames.get(i), holder2 = holderNames.get(i + 1);
-        EquivalentStructure.VirtualNode vNode1 = structure.getVNode(holder1);
-        EquivalentStructure.VirtualNode vNode2 = structure.getVNode(holder2);
+        VirtualNode vNode1 = structure.getVNode(holder1);
+        VirtualNode vNode2 = structure.getVNode(holder2);
         StringBuilder builder1 = new StringBuilder(), builder2 = new StringBuilder();
-        for(ParseTree t : vNode1.matchedNodes) {
+        for(ParseTree t : vNode1.matchedTrees) {
           builder1.append(t.getText());
         }
-        for(ParseTree t : vNode2.matchedNodes) {
+        for(ParseTree t : vNode2.matchedTrees) {
           builder2.append(t.getText());
         }
         if (builder1.compareTo(builder2) != 0) {

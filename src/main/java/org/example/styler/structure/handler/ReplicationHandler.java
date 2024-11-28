@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.ParseTreeFactory;
 import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.vtree.VirtualNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ReplicationHandler extends Handler{
 			// Find the first not empty matchedNodes.
 			for (int i = 1; i < args.length; i++) {
 				String holderName = args[i];
-				matchedNodes = structure.getVNode(holderName).matchedNodes;
+				matchedNodes = structure.getVNode(holderName).matchedTrees;
 				if (!matchedNodes.isEmpty()) {
 					break;
 				}
@@ -41,9 +42,9 @@ public class ReplicationHandler extends Handler{
 			if (!matchedNodes.isEmpty()) {
 				for (int i = 1; i < args.length; i++) {
 					String holderName = args[i];
-					EquivalentStructure.VirtualNode vNode = structure.getVNode(holderName);
-					if(vNode.matchedNodes.isEmpty()) {
-						vNode.matchedNodes = doReplication(matchedNodes);
+					VirtualNode vNode = structure.getVNode(holderName);
+					if(vNode.matchedTrees.isEmpty()) {
+						vNode.matchedTrees = doReplication(matchedNodes);
 					}
 				}
 			}

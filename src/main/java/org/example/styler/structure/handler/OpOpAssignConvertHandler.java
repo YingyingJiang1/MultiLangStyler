@@ -2,9 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.ParseTreeFactory;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.styler.structure.EquivalentStructure;
@@ -69,8 +67,8 @@ public class OpOpAssignConvertHandler extends Handler{
 				continue;
 			}
 
-			List<ParseTree> fromTrees = structure.getVNode(holderNameFrom).matchedNodes;
-			List<ParseTree> toTrees = structure.getVNode(holderNameTo).matchedNodes = new ArrayList<>(fromTrees);
+			List<ParseTree> fromTrees = structure.getVNode(holderNameFrom).matchedTrees;
+			List<ParseTree> toTrees = structure.getVNode(holderNameTo).matchedTrees = new ArrayList<>(fromTrees);
 			for (int i = 0; i < fromTrees.size(); i++) {
 				ParseTree tree = fromTrees.get(i);
 				if(tree instanceof TerminalNode ter) {

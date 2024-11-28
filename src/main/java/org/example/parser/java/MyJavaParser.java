@@ -309,6 +309,11 @@ public class MyJavaParser implements MyParser {
         return type == JavaParser.LBRACE || type == JavaParser.RBRACE;
     }
 
+    @Override
+    public boolean belongToKeyword(Token token) {
+        return token.getType() != JavaParser.IDENTIFIER && token.getText().matches("[a-zA-Z]+");
+    }
+
 //    @Override
 //    public boolean isKeyword(int type) {
 //        return JavaLexer.BOOLEAN <= type && type <= JavaLexer.NON_SEALED ||
@@ -501,16 +506,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public int getType(String text) {
-        if (text == null) {
-            return Integer.MIN_VALUE;
-        }
-        return text.startsWith("RULE") ?
-                parser.getRuleIndex(text) :
-                parser.getTokenType(TokenNameGetter.getInstance().getName(text));
-    }
-
-    @Override
     public int getBlockComment() {
         return JavaParser.BLOCK_COMMENT;
     }
@@ -542,6 +537,16 @@ public class MyJavaParser implements MyParser {
     @Override
     public Set<String> getSeparators() {
         return separators;
+    }
+
+    @Override
+    public Set<String> getBinOps() {
+        return binOps;
+    }
+
+    @Override
+    public Set<String> getUnaryOps() {
+        return unaryOps;
     }
 
     @Override

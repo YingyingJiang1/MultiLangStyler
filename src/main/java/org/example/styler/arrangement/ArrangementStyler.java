@@ -42,80 +42,76 @@ public class ArrangementStyler extends Styler {
 	 *
 	 */
 	public ExtendContext applyStyle(ExtendContext ctx) {
-		try {
-			ArrangementContext context = extractContentContext(ctx);
-			if (context == null) {
-				return ctx;
-			}
-			ArrangementProperty property = (ArrangementProperty) style.getProperty(context);
-			List<ArrangementProperty.ContentArea> areas = property.getAreas();
-			List<ExtendContext> newListCtxs = new ArrayList<>(Collections.nCopies(property.getAreas().size(), null));
+		ArrangementContext context = extractContentContext(ctx);
+		ArrangementProperty property = (ArrangementProperty) style.getProperty(context);
+		if (property == null) {
+			return ctx;
+		}
+
+		List<ArrangementProperty.ContentArea> areas = property.getAreas();
+		List<ExtendContext> newListCtxs = new ArrayList<>(Collections.nCopies(property.getAreas().size(), null));
 
 
-			// Create a new list of declaration lists for the body of type declaration.
-			ExtendContext bodyCtx = (ExtendContext) ctx
-					.getFirstInnerChildByType(parser.getRuleBody());
-			if (bodyCtx == null) {
-				return ctx;
-			}
-			int from = -1, to =  -1;
-			for (int i = 0; i < bodyCtx.getChildCount(); ++i) {
-				ParseTree child = bodyCtx.getChild(i);
-				if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
-					if(from == -1) {
-						from = i;
+		// Create a new list of declaration lists for the body of type declaration.
+		ExtendContext bodyCtx = (ExtendContext) ctx
+				.getFirstInnerChildByType(parser.getRuleBody());
+		if (bodyCtx == null) {
+			return ctx;
+		}
+		int from = -1, to =  -1;
+		for (int i = 0; i < bodyCtx.getChildCount(); ++i) {
+			ParseTree child = bodyCtx.getChild(i);
+			if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
+				if(from == -1) {
+					from = i;
+				}
+				to = i;
+				ExtendContext listCtx = (ExtendContext) child;
+				Feature feature = extractFeature(listCtx);
+				ArrangementProperty.ContentArea area = createArea(listCtx);
+				area.fillArea(feature, null);
+				int minDistance = Integer.MAX_VALUE, targetAreaIndex = -1;
+				for (int j = 0; j < areas.size(); ++j) {
+					int distance = areas.get(j).calDistance(area);
+					if (distance < minDistance) {
+						minDistance = distance;
+						targetAreaIndex = j;
 					}
-					to = i;
-					ExtendContext listCtx = (ExtendContext) child;
-					Feature feature = extractFeature(listCtx);
-					ArrangementProperty.ContentArea area = createArea(listCtx);
-					area.fillArea(feature, null);
-					int minDistance = Integer.MAX_VALUE, targetAreaIndex = -1;
-					for (int j = 0; j < areas.size(); ++j) {
-						int distance = areas.get(j).calDistance(area);
-						if (distance < minDistance) {
-							minDistance = distance;
-							targetAreaIndex = j;
-						}
-					}
-					if (targetAreaIndex == -1) {
-						newListCtxs.add(listCtx);
+				}
+				if (targetAreaIndex == -1) {
+					newListCtxs.add(listCtx);
+				} else {
+					if (newListCtxs.get(targetAreaIndex) == null) {
+						newListCtxs.set(targetAreaIndex, listCtx);
 					} else {
-						if (newListCtxs.get(targetAreaIndex) == null) {
-							newListCtxs.set(targetAreaIndex, listCtx);
-						} else {
-							ExtendContext savedListCtx = newListCtxs.get(targetAreaIndex);
-							for (ParseTree root : listCtx.children) {
-								root.setParent(savedListCtx);
-								savedListCtx.children.add(root);
-							}
+						ExtendContext savedListCtx = newListCtxs.get(targetAreaIndex);
+						for (ParseTree root : listCtx.children) {
+							root.setParent(savedListCtx);
+							savedListCtx.children.add(root);
 						}
 					}
 				}
 			}
+		}
 
-			int count = 0;
-			for (int i = 0; i < newListCtxs.size(); ++i) {
-				ExtendContext listCtx = newListCtxs.get(i);
-				// The children of a list context that has a matched area needed to be arranged.
-				if (count < areas.size()) {
-					if (listCtx == null) {
-						newListCtxs.remove(i);
-						--i;
-					} else {
-						arrangeChildren(listCtx, areas.get(count));
-					}
+		int count = 0;
+		for (int i = 0; i < newListCtxs.size(); ++i) {
+			ExtendContext listCtx = newListCtxs.get(i);
+			// The children of a list context that has a matched area needed to be arranged.
+			if (count < areas.size()) {
+				if (listCtx == null) {
+					newListCtxs.remove(i);
+					--i;
+				} else {
+					arrangeChildren(listCtx, areas.get(count));
 				}
-				++count;
 			}
+			++count;
+		}
 
-			if (from >= 0) {
-				// Update the order of all declaration lists in the newly created list.
-				bodyCtx.replaceChildren(from, to + 1, newListCtxs);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new StylizationException("apply arrangement style failed:" + e.getMessage());
+		if (from >= 0) {
+			// Update the order of all declaration lists in the newly created list.
+			bodyCtx.replaceChildren(from, to + 1, newListCtxs);
 		}
 		return ctx;
 	}

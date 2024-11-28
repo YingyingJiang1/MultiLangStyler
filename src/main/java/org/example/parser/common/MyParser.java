@@ -1,12 +1,14 @@
 package org.example.parser.common;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -28,6 +30,17 @@ public interface MyParser {
             ",",  "(", ")", "{", "}", "[", "]", ";", "#sep<", "#sep>"
     ));
 
+    Set<String> keywords = Set.of(
+            "boolean", "byte", "char", "double", "float", "int", "long", "short", "void",
+            "catch", "do", "else", "finally", "for", "if", "switch", "try", "while", "goto",
+            "break", "case", "continue", "return", "abstract", "assert", "class", "const", "default",
+            "enum", "extends", "final", "implements", "import", "instanceof", "interface", "native",
+            "new", "package", "private", "protected", "public", "static", "strictfp", "super", "synchronized",
+            "this", "throw", "throws", "transient", "volatile", "module", "open", "requires", "exports",
+            "opens", "to", "uses", "provides", "with", "transitive", "var", "yield", "record", "sealed",
+            "permits", "non-sealed","false", "true"
+    );
+
     ParseTree parse(Path filePath) throws IOException;
     TokenStream getTokenStream();
     void walkTree(Stage stage, List<Styler> stylers);
@@ -47,6 +60,7 @@ public interface MyParser {
 
     boolean belongToComment(int type);
     boolean belongToBrace(int type);
+    boolean belongToKeyword(Token token);
 
     ParseTree createExpression(ParserRuleContext parent, int invokingState);
 
@@ -111,7 +125,6 @@ public interface MyParser {
     int getLParen();
     int getRParen();
     int getBang();
-    int getType(String text);
     int getBlockComment();
 
     String getTokenName(int type);
@@ -121,6 +134,8 @@ public interface MyParser {
 
     Set<String> getOperators();
     Set<String> getSeparators();
+    Set<String> getBinOps();
+    Set<String> getUnaryOps();
     Set<Integer> getAllStmts();
     Set<Integer> getCompoundStmts();
     Set<Integer> getSingleStmts();
@@ -130,4 +145,6 @@ public interface MyParser {
     Set<Integer> getLiterals();
 
     int getRuleIndex(String ruleName);
+
+
 }

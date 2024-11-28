@@ -2,13 +2,13 @@ package org.example.styler.format.newline.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
-import org.example.style.grouper.Grouper;
+import org.example.style.grouper.RuleGrouper;
 import org.example.style.rule.StyleContext;
 
 import java.util.*;
 
 public class NewlineContext extends StyleContext {
-    public static Grouper grouper;
+    public static RuleGrouper grouper;
     public int type1, type2; // newline between `type1` node and `type2` node
     // Total text length of left child and right child. This is useful when style conflicts happens.
     Map<Integer, Integer> totalTextLens = new HashMap<>();

@@ -4,7 +4,6 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
-import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 
@@ -55,7 +54,7 @@ public class CondReverserHandler extends Handler{
       if(index1 == from && index2 == to || index1 == to && index2 == from) {
         for (int i = 2; i < args.length; i++) {
           String holderName = args[i];
-          List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedNodes;
+          List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
           for (int j = 0; j < matchedTrees.size(); j++) {
             ParseTree t = matchedTrees.get(j);
             if (t instanceof JavaParser.ExpressionContext ctx) {

@@ -38,7 +38,7 @@ public class Configuration {
   public String styleFile;
   public boolean overrideSource;
   public String useExistedStyle;
-  public String applyResultSaveDir;
+  public String applyResultSaveDir = null;
   public String styleFileSavedPath;
   public boolean testMode;
 

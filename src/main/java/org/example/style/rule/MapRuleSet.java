@@ -34,7 +34,7 @@ public class MapRuleSet implements RuleSet{
     @Override
     public StyleProperty getProperty(StyleContext targetContext) {
         List<? extends StyleProperty> properties = rules.get(targetContext);
-        if (!properties.isEmpty()) {
+        if (properties != null && !properties.isEmpty()) {
             return properties.get(0);
         }
         return null;

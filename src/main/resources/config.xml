@@ -8,6 +8,6 @@
     </extraction_info>
     <application_info override="false">
         <source excludes="">C:\Users\dell\OneDrive\桌面\L138</source>
-        <result_saved_dir></result_saved_dir>
+<!--        <result_saved_dir></result_saved_dir>-->
     </application_info>
 </configuration>

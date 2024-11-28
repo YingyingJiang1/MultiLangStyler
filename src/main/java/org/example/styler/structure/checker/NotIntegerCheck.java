@@ -2,6 +2,7 @@ package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.vtree.VirtualNode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,9 +35,9 @@ public class NotIntegerCheck extends Checker{
 			}
 
 			for(int i = integerEnd; i < args.length; ++i) {
-				EquivalentStructure.VirtualNode vNode = structure.getVNode(args[i]);
-				if (vNode != null && !vNode.matchedNodes.isEmpty()) {
-					for(ParseTree t : vNode.matchedNodes) {
+				VirtualNode vNode = structure.getVNode(args[i]);
+				if (vNode != null && !vNode.matchedTrees.isEmpty()) {
+					for(ParseTree t : vNode.matchedTrees) {
 						if(integers.contains(t.getText())) {
 							return false;
 						}

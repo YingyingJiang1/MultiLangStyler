@@ -8,6 +8,7 @@ import org.example.parser.common.ExtendContext;
 import org.example.parser.common.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.style.Style;
+import org.example.styler.Stage;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.Styler;
@@ -40,7 +41,7 @@ public class NewlineStyler extends Styler {
     public void extractStyle(ExtendContext ctx, Style style) {
         int len = ctx.getChildCount() - 1;
         for(int i = 0; i < len; ++i) {
-            List<Info> infos1 = extractInfos(ctx, i, i + 1, Styler.EXTRACTION_PROCESS);
+            List<Info> infos1 = extractInfos(ctx, i, i + 1, Stage.EXTRACT);
             List<Info> infos = infos1;
             for(Info info : infos) {
                 style.addRule(extractContext(info), extractProperty(info));
@@ -50,7 +51,7 @@ public class NewlineStyler extends Styler {
 
     public ExtendContext applyStyle(ExtendContext ctx, Style style) {
         for(int i = 0; i < ctx.getChildCount() - 1; ++i) {
-            List<Info> infos = extractInfos(ctx, i, i + 1, Styler.APPLICATION_PROCESS);
+            List<Info> infos = extractInfos(ctx, i, i + 1, Stage.APPLY);
             for(Info info : infos) {
                 NewlineContext newlineContext = extractContext(info);
                 NewlineProperty newlineProperty = (NewlineProperty) style.getProperty(newlineContext);
@@ -108,7 +109,7 @@ public class NewlineStyler extends Styler {
         return startLine + countNewline;
     }
 
-    private List<Info> extractInfos(ExtendContext ctx, int index1, int index2, int process) {
+    private List<Info> extractInfos(ExtendContext ctx, int index1, int index2, Stage stage) {
         List<Info> infos = new ArrayList<>();
         Info.InnerInfo info1 = getInfo(ctx, index1, 1);
         Info.InnerInfo info2 = getInfo(ctx, index2, 2);
@@ -116,7 +117,7 @@ public class NewlineStyler extends Styler {
             return  infos;
         }
         // Application process
-        if (process == Styler.APPLICATION_PROCESS) {
+        if (stage == Stage.APPLY) {
             infos.add(new Info(ctx, info1, info2));
             return infos;
         }
@@ -145,7 +146,7 @@ public class NewlineStyler extends Styler {
              * extraction: get a newline between (line1, line2),(line2,line3),(line1,line3)
              * application: insert a newline between (line1,line2),(line2,line3)
              */
-            if (process == Styler.EXTRACTION_PROCESS) {
+            if (stage == Stage.EXTRACT) {
                 Info.InnerInfo info3 = new Info.InnerInfo(info2);
                 info3.line = firstCmtToken.getLine();
                 infos.add(new Info(ctx, info1, info3));

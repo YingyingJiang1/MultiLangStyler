@@ -27,7 +27,7 @@ public class WrapCondHandler extends Handler{
 			if(configuredForm == from && configuredTo == to) {
 				for (int i = 2; i < args.length; i++) {
 					String holderName = args[i];
-					List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedNodes;
+					List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
 					for (int j = 0; j < matchedTrees.size(); j++) {
 						ParseTree t = matchedTrees.get(j);
 						if (t instanceof JavaParser.ExpressionContext ctx) {

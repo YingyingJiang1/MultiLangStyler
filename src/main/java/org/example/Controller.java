@@ -147,24 +147,14 @@ public class Controller {
                 continue;
             }
             ++count;
-            // System.out.println("apply style for file: " + filePath);
 
-            // First round: apply on AST
             Preprocessor preprocessor = new Preprocessor();
             preprocessor.preprocess(parser, Stage.APPLY);
-//            Set<Class> disabledClassed = new HashSet<>(List.of(AntlrBraceStyler.class, NewlineStyler.class);
-//            disable(APPLICATION_PROCESS, disabledClassed);
             parser.walkTree(Stage.APPLY, container.getStylers());
-
-            // Second round: apply on AST
-//            Set<Class> enabledClasses = new HashSet<>(List.of(List.of(AntlrBraceStyler.class, NewlineStyler.class));
-//            enable(enterStylers, APPLICATION_PROCESS, enabledClasses);
-//            parser.walkTree(Styler.APPLICATION_PROCESS, enterStylers, exitStylers);
 
             String code = applyOnTS();
             saveApplyResult(code);
 
-//            Experiment.addApplyResult(curPath.getFileName().toString());
         }
 
 //    System.out.println("-----------------------------------------------------------------");
@@ -245,9 +235,10 @@ public class Controller {
         } else {
             saveDir = curPath.getParent().toString();
         }
+
         String fileName = curPath.getFileName().toString();
         int dotIndex = fileName.lastIndexOf(".");
-        String resPath = saveDir + fileName;
+        String resPath = Paths.get(saveDir, fileName.substring(0, dotIndex) + "-result" + fileName.substring(dotIndex)).toString();
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
             writer.write(programStr);

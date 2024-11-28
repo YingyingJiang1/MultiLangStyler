@@ -3,7 +3,8 @@ package org.example.styler.format.space;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.ExtendToken;
-import org.example.parser.common.TokenNameGetter;
+import org.example.parser.common.TokenGroup;
+import org.example.style.grouper.TokenGrouper;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -23,8 +24,11 @@ public class SpaceStyler extends Styler {
     public SpaceStyler() {
         style.setStyleName("space");
         // There's always a space between keywords and identifiers.
-        style.addRule(new SpaceContext("keyword", "identifier"), new SpaceProperty(true));
-        style.addRule(new SpaceContext("identifier", "keyword"), new SpaceProperty(true));
+        String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
+        style.addRule(new SpaceContext(keyword, identifier), new SpaceProperty(true));
+        style.addRule(new SpaceContext(identifier, keyword), new SpaceProperty(true));
+        style.addRule(new SpaceContext(keyword, keyword), new SpaceProperty(true));
+        style.addRule(new SpaceContext(identifier, identifier), new SpaceProperty(true));
     }
 
 
@@ -60,8 +64,8 @@ public class SpaceStyler extends Styler {
     private SpaceContext extractContext(List<Token> tokens, int index) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         String name = token.getText();
-        String left = TokenNameGetter.getInstance().getName(findFirstNonHwsOfLeft(tokens, index - 1), parser);
-        String right = TokenNameGetter.getInstance().getName(findFirstNonHwsOfRight(tokens, index + 1), parser);
+        String left = generateTokenName(findFirstNonHwsOfLeft(tokens, index - 1));
+        String right = generateTokenName(findFirstNonHwsOfRight(tokens, index + 1));
 
         if (parser.belongToBinOp(name)) {
             // Positions on the left and right of a binary operator are symmetrical.
@@ -97,7 +101,9 @@ public class SpaceStyler extends Styler {
 
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage) {
-        return tokens.get(i).getType() == parser.getIdentifier() || getRelevantTokens().contains(tokens.get(i).getText());
+        int type = tokens.get(i).getType();
+        String text = tokens.get(i).getText();
+        return type == parser.getIdentifier() || parser.getSeparators().contains(text) || parser.getOperators().contains(text) || parser.belongToKeyword(tokens.get(i));
     }
 
     private Token findFirstNonHwsOfLeft(List<Token> tokens, int start) {
@@ -121,5 +127,13 @@ public class SpaceStyler extends Styler {
     private boolean isSuffix(List<Token> tokens, int index) {
         Token left = findFirstNonHwsOfLeft(tokens, index - 1);
         return left != null && left.getType() == parser.getIdentifier();
+    }
+    
+    private String generateTokenName(Token token) {
+        TokenGroup group = TokenGrouper.getInstance().getGroup(token, parser);
+        if (group == TokenGroup.SELF) {
+            return token.getText();
+        }
+        return group.name();
     }
 }

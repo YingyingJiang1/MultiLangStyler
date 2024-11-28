@@ -21,9 +21,6 @@ public abstract class Styler {
     protected boolean enableApplication = true;
     public boolean executeWhenExit = true;
 
-    public static final int EXTRACTION_PROCESS = 1;
-    public static final int APPLICATION_PROCESS = 2;
-
     public Styler(MyParser parser, boolean enableExtraction, boolean enableApplication) {
         this.parser = parser;
         this.enableExtraction = enableExtraction;
@@ -52,33 +49,33 @@ public abstract class Styler {
 
     public void extractStyle(ExtendContext ctx) {}
 
-    public boolean isEnable(int process) {
-        if (process == EXTRACTION_PROCESS) {
+    public boolean isEnable(Stage stage) {
+        if (stage == Stage.EXTRACT) {
             return enableExtraction;
         }
-        if (process == APPLICATION_PROCESS) {
+        if (stage == Stage.APPLY) {
             return enableApplication;
         }
         return true;
     }
 
-    public void enable(int process) {
-        if (process == EXTRACTION_PROCESS) {
-            enableExtraction = true;
-        }
-        if (process == APPLICATION_PROCESS) {
-            enableApplication = true;
-        }
-    }
-
-    public void disable(int process) {
-        if (process == EXTRACTION_PROCESS) {
-            enableExtraction = false;
-        }
-        if (process == APPLICATION_PROCESS) {
-            enableApplication = false;
-        }
-    }
+//    public void enable(int process) {
+//        if (process == EXTRACTION_PROCESS) {
+//            enableExtraction = true;
+//        }
+//        if (process == APPLICATION_PROCESS) {
+//            enableApplication = true;
+//        }
+//    }
+//
+//    public void disable(int process) {
+//        if (process == EXTRACTION_PROCESS) {
+//            enableExtraction = false;
+//        }
+//        if (process == APPLICATION_PROCESS) {
+//            enableApplication = false;
+//        }
+//    }
 
     public void doFinalize() {
         if (style.getStyleName() == "brace_format") {

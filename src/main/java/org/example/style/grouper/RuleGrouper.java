@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RuleGrouper implements Grouper {
+public class RuleGrouper {
 	private static RuleGrouper instance = new RuleGrouper();
 	private static final int START = 1 << 30;
 	public static final int SINGLE_STMT = START + 1;
@@ -40,7 +40,7 @@ public class RuleGrouper implements Grouper {
 	}
 
 
-//	@Override
+//	
 //	public int getGroupId(int type) {
 //		if (singleStmts.contains(type)) {
 //			return SINGLE_STMT;
@@ -55,17 +55,17 @@ public class RuleGrouper implements Grouper {
 //		}
 //	}
 
-	@Override
+	
 	public boolean isGroup(int type) {
 		return type > START;
 	}
 
-	@Override
+	
 	public String getGroupName(String name) {
 		return "";
 	}
 
-	@Override
+	
 	public String getGroupName(int groupId) {
 		if (groupId == SINGLE_STMT) {
 			return "single_stmt";
@@ -80,12 +80,12 @@ public class RuleGrouper implements Grouper {
 		}
 	}
 
-	@Override
+	
 	public int calculateGroupDistance(String group1, String group2) {
 		return 0;
 	}
 
-//	@Override
+//	
 //	public int getGroupId(String groupName) {
 //		return switch (groupName) {
 //			case "single_stmt" -> SINGLE_STMT;
