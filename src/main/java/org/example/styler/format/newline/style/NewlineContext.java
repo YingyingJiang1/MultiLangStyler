@@ -74,7 +74,7 @@ public class NewlineContext extends StyleContext {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NewlineContext context) {
-            return typeName1 == context.typeName1 && typeName2 == context.typeName2;
+            return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2);
         }
         return false;
     }
