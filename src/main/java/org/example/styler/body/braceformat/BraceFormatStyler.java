@@ -33,20 +33,31 @@ public class BraceFormatStyler extends BodyStyler {
         for (int i = 0; i < blocks.size(); ++i) {
             ExtendContext block = blocks.get(i);
             BodyContext context = extractStyleContext(ctx, block);
-            // Specially process the last block of multi-block statement.
-            if (context.bodyType == BodyTypeEnum.MULTI_BLOCK_STMT_BODY && block == ctx.getLastContextChild()) {
-                context.bodyType = BodyTypeEnum.NORMAL_BODY;
-            }
 
             BraceFormatProperty property = (BraceFormatProperty) style.getSimilarProperty(context);
             // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
             if (property != null) {
                 boolean beforeLB = property.beforeLB, afterLB = property.afterLB, beforeRB = property.beforeRB, afterRB = property.afterRB;
+                // Specially process the last block of multi-block statement.
+                if (context.bodyType == BodyTypeEnum.MULTI_BLOCK_STMT_BODY && i == lastIndex) {
+                    context.bodyType = BodyTypeEnum.NORMAL_BODY;
+                    BraceFormatProperty property1 = (BraceFormatProperty) style.getSimilarProperty(context);
+                    if (property1 != null) {
+                        beforeLB = property1.beforeLB;
+                        afterLB = property1.afterLB;
+                        beforeRB = property1.beforeRB;
+                        afterRB = property1.afterRB;
+                    } else if (!afterRB) {
+                        afterRB = true;
+                    }
+                }
+
                 // Process empty body specially.
-                if (context.bodyNumType != BodyNumType.EMPTY && afterLB && beforeRB) {
+                if (context.bodyNumType == BodyNumType.EMPTY && afterLB && beforeRB) {
                     beforeRB = false;
                 }
 
+                // Add vws around braces.
                 if (beforeLB) {
                     addVwsBefore(block, parser.getLBrace());
                 }
@@ -60,8 +71,6 @@ public class BraceFormatStyler extends BodyStyler {
                     addVwsAfter(block, parser.getRBrace());
                 }
             }
-
-            return ctx;
         }
         return ctx;
     }
@@ -77,12 +86,9 @@ public class BraceFormatStyler extends BodyStyler {
             ExtendContext block = (ExtendContext) blocks.get(i);
             // Skip the last block of multi-block statement.
             if (isNotMultiBlockStmt || block != ctx.getLastContextChild()) {
-                TokenInfoField.BraceTokenInfo lbInfo, rbInfo;
-                TokenInfoField.BraceTokenInfo[] infos = getBraceTokenInfo(block);
-                lbInfo = infos[0];
-                rbInfo = infos[1];
-                BraceFormatProperty styleProperty = new BraceFormatProperty(lbInfo.before, lbInfo.after, rbInfo.before, rbInfo.after);
-                style.addRule(extractStyleContext(ctx, block), styleProperty);
+                BodyContext context = extractStyleContext(ctx, block);
+                BraceFormatProperty styleProperty = extractProperty(block);
+                style.addRule(context, styleProperty);
             }
         }
     }
@@ -189,34 +195,45 @@ public class BraceFormatStyler extends BodyStyler {
 
         ExtendContext parent = (ExtendContext) block.parent;
         ExtendContext cur = block;
-        while (parent != null) {
-            if (parent.getChild(0) != cur) {
-
+        Token afterLBToken = getStartToken(block.getChild(1));
+        Token beforeRBToken = getStopToken(block.getChild(block.getChildCount() - 2));
+        Token beforeLBToken = null, afterRBToken = null;
+        while (parent != null && (beforeLBToken == null || afterRBToken == null)) {
+            if (beforeLBToken == null && parent.getChild(0) != cur) {
+                beforeLBToken = getStopToken(parent.getChild(parent.children.indexOf(block) - 1));
+            }
+            if (afterRBToken == null && parent.getChild(parent.getChildCount() - 1) != cur) {
+                afterRBToken = getStartToken(parent.getChild(parent.children.indexOf(block) + 1));
             }
             cur = parent;
             parent = (ExtendContext) parent.parent;
         }
-        Token preLB = getStopToken(parent.getChild(parent.children.indexOf(block) - 1));
-
-        parent = (ExtendContext) parent
-        while (parent.getChild(parent.getChildCount() - 1) == cur) {
-            cur = parent;
-            parent = (ExtendContext) parent.parent;
-        }
-        Token afterLB = getStartToken(block);
 
         boolean beforeLB = true, afterLB = true, beforeRB = true, afterRB = true;
-        if (pre instanceof TerminalNode ter) {
-            int type = ((TerminalNode) pre).getSymbol().getType();
-            if (type == parser.getLBrace()) {
-                return new BraceFormatProperty(true, false, true, true);
-            } else if (type == parser.getRBrace()) {
-                return new BraceFormatProperty(false, true, false, true);
-            }
+        if (beforeLBToken != null) {
+            beforeLB = beforeLBToken.getLine() != lbToken.getLine();
         }
+        if (afterLBToken != null) {
+            afterLB = afterLBToken.getLine() != lbToken.getLine();
+        }
+        if (beforeRBToken != null) {
+            beforeRB = beforeRBToken.getLine() != rbToken.getLine();
+        } if (afterRBToken != null) {
+            afterRB = afterRBToken.getLine() != rbToken.getLine();
+        }
+
+        // Empty block.
+        if (afterLBToken == rbToken) {
+            afterLB = false;
+        }
+
+        return new BraceFormatProperty(beforeLB, afterLB, beforeRB, afterRB);
     }
 
     private Token getStopToken(ParseTree t) {
+        if (t == null) {
+            return null;
+        }
         if (t instanceof TerminalNode ter) {
             return ter.getSymbol();
         } else {
@@ -225,7 +242,9 @@ public class BraceFormatStyler extends BodyStyler {
     }
 
     private Token getStartToken(ParseTree t) {
-        if (t instanceof TerminalNode ter) {
+        if (t == null) {
+            return null;
+        } else if (t instanceof TerminalNode ter) {
             return ter.getSymbol();
         } else {
             return ((ExtendContext) t).start;

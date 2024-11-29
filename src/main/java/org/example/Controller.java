@@ -172,17 +172,10 @@ public class Controller {
         int column = 0;
 
         // Handle the first token.
-        for (int i = 0; tokens.get(i).getType() != parser.getEOF(); ++i) {
+        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
+        for (int i = 1; tokens.get(i).getType() != parser.getEOF(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
-            curToken.setCharPositionInLine(column);
-
-            boolean isVws = parser.getVws() == curTokenType;
-            if (isVws || curToken.getText().endsWith("\n")) {
-                column = 0;
-            } else {
-                column += curToken.getText().length();
-            }
 
             for (Styler styler : container.getStylers()) {
                 if (styler.isRelevant(tokens, i, Stage.APPLY)) {
@@ -196,7 +189,17 @@ public class Controller {
                tokens.addAll(i, contextTokens);
                i += contextTokens.size() - 1;
             }
+
+            for (Token token : contextTokens) {
+                ((ExtendToken) token).setCharPositionInLine(column);
+                if (token.getText().endsWith("\n")) {
+                    column = 0;
+                } else {
+                    column += token.getText().length();
+                }
+            }
         }
+        tokens.remove(0);
     }
 
 
@@ -305,7 +308,7 @@ public class Controller {
                     extToken.setHierarchy(hierarchy);
                 }
             });
-
+            token.contextTokens = null;
             tokens.addAll(contextTokens);
         } else {
             ExtendContext ctx = (ExtendContext) root;

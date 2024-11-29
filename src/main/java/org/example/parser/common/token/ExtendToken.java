@@ -26,7 +26,7 @@ public class ExtendToken extends CommonToken {
     protected int hierarchy = 0;
     public int indention = 0;
     // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
-    private List<Token> contextTokens = null;
+    public List<Token> contextTokens = null;
     public boolean hasTrailingComment = false;
     // The meaning of @info depends on the type of the token.
     public Object info;

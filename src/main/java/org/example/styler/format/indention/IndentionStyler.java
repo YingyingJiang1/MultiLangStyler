@@ -49,8 +49,9 @@ public class IndentionStyler extends Styler {
             String indentionStr = StringUtils.repeat(property.indentionType,
                     curToken.getHierarchy() * property.indentionUnit) +
                     StringUtils.repeat(property.indentionType, curToken.indention);
-//            curToken.setCharPositionInLine(curToken.getCharPositionInLine() + indentionStr.length());
-            curToken.setText(indentionStr + curToken.getText());
+            if (!indentionStr.isEmpty()) {
+                curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
+            }
         }
     }
 
