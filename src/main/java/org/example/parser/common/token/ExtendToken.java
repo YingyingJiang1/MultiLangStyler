@@ -90,7 +90,8 @@ public class ExtendToken extends CommonToken {
             contextTokens.add(this);
         }
         contextTokens.add(token) ;
-        if (!parser.belongToComment(token.getType()) && !(parser.getHws() == token.getType())) {
+        int type = token.getType();
+        if (!parser.belongToComment(type) && !(parser.getHws() == type) && !(parser.getVws() == type)) {
             LoggerFactory.getLogger(ExtendToken.class).warn("Add a default token {} into the non-default context tokens of a token.", token.getText());
         }
     }

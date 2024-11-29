@@ -16,3 +16,68 @@
 2024-11-30 00:46:21,816 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-30 00:48:10,428 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-30 00:50:46,848 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-30 01:06:18,442 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-30 01:06:18,588 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,589 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,589 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,590 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,591 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,591 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,592 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,592 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,593 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,593 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,593 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,594 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,594 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,595 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,595 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,600 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,602 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,602 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,604 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,606 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,607 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,609 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,611 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,612 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,612 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,613 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,614 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,615 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,615 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,617 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+
+ into the non-default context tokens of a token.
+2024-11-30 01:06:18,618 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
+ into the non-default context tokens of a token.
+2024-11-30 01:10:03,613 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml

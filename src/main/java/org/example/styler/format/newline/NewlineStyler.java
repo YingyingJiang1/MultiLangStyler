@@ -20,6 +20,8 @@ import org.example.styler.Styler;
 import org.example.styler.format.newline.style.NewlineStyle;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /*
  * @description
@@ -42,102 +44,9 @@ public class NewlineStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx) {
-        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-            if (ctx.getChild(i) instanceof TerminalNode) {
-                continue;
-            }
-            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
-                ++i;
-                continue;
-            }
-
-            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
-            for(AdjacentCodeBlock adjacentCode : codes) {
-                NewlineProperty property = extractProperty(adjacentCode);
-                NewlineContext context = extractContext(adjacentCode);
-
-                // A newline adjacent to a brace is seen as a part of brace format.
-                if (adjacentCode.child1.token.getType() == parser.getRBrace() ||
-                adjacentCode.child1.token.getType() == parser.getSemi() && context.typeName1.equals(RuleGroup.FUNCTION_DEC.name())) {
-                    --property.newlines;
-                }
-                if (adjacentCode.child2.token.getType() == parser.getLBrace()) {
-                    --property.newlines;
-                }
-
-                // More than one single statement in a line.
-                String singleStmt = RuleGroup.SINGLE_STMT.name();
-                boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
-                if (between2SingleStmts) {
-                    if (property.newlines == 0) {
-                        style.remove(defaultContext);
-                        context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-                        style.addRule(context, property);
-                    }
-                    continue;
-                }
-
-                Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
-                boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
-                if (isStmtLevel && property.newlines > 1) {
-                    context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-                }
-
-                style.addRule(context, property);
-            }
-        }
-    }
-
-    @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
-        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-            if (ctx.getChild(i) instanceof TerminalNode) {
-                continue;
-            }
-            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
-                ++i;
-                continue;
-            }
-
-            List<AdjacentCodeBlock> adjacentCodes = extractCodeBlocks(ctx, i, i + 1, Stage.APPLY);
-            for(AdjacentCodeBlock adjacentCodeBlock : adjacentCodes) {
-                // Must update index here! Because index will change after insertion operation.
-                adjacentCodeBlock.child1.index = i;
-                adjacentCodeBlock.child2.index = i + 1;
-                i += applyProperty(ctx, adjacentCodeBlock);
-            }
-        }
-        return ctx;
-    }
-
-
-    @Override
-    protected Set<Integer> getRelevantRules() {
-        if (parserClass == null || parserClass != parser.getClass()) {
-            relevantRules = new HashSet<>();
-            relevantRules.add(parser.getRuleCompilationUnit());
-            relevantRules.add(parser.getRuleImportDeclarationList());
-            relevantRules.addAll(parser.getMemberLists());
-            relevantRules.add(parser.getRuleAnnotationList());
-            relevantRules.add(parser.getRuleBody());    
-            relevantRules.add(parser.getRuleBlock());
-            relevantRules.add(parser.getRuleModifierList());
-        }
-        return relevantRules;
-    }
-
-    private void framework(ExtendContext ctx) {
-        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-            if (ctx.getChild(i) instanceof TerminalNode) {
-                continue;
-            }
-            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
-                ++i;
-                continue;
-            }
-
-            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
-            for(AdjacentCodeBlock adjacentCode : codes) {
+        Function<AdjacentCodeBlock, Void> extractor = new Function<AdjacentCodeBlock, Void>() {
+            @Override
+            public Void apply(AdjacentCodeBlock adjacentCode) {
                 NewlineContext context = extractContext(adjacentCode);
                 NewlineProperty property = extractProperty(adjacentCode);
 
@@ -159,16 +68,99 @@ public class NewlineStyler extends Styler {
                         context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
                         style.addRule(context, property);
                     }
-                    continue;
+                } else {
+                    Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
+                    boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
+                    if (isStmtLevel && property.newlines > 1) {
+                        context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+                    }
+                    style.addRule(context, property);
+                }
+                return null;
+            }
+        };
+
+        framework(ctx, extractor);
+    }
+
+    @Override
+    public ExtendContext applyStyle(ExtendContext ctx) {
+        Function<AdjacentCodeBlock, Void> applicator = new Function<AdjacentCodeBlock, Void>() {
+            @Override
+            public Void apply(AdjacentCodeBlock adjacentCodeBlock) {
+                // First try to add some blank lines, second try to add a newline.
+                NewlineContext newlineContext = extractContext(adjacentCodeBlock);
+                newlineContext.minTextLength = adjacentCodeBlock.calculateTextLength(2, parser, Stage.APPLY);
+                NewlineProperty newlineProperty = (NewlineProperty) style.getSimilarProperty(newlineContext);
+                if (newlineProperty == null) {
+                    newlineContext.minTextLength = adjacentCodeBlock.calculateTextLength(1,parser, Stage.APPLY);
+                    newlineProperty = (NewlineProperty) style.getSimilarProperty(newlineContext);
                 }
 
-                Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
-                boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
-                if (isStmtLevel && property.newlines > 1) {
-                    context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+                if (newlineProperty == null) {
+                    return null;
                 }
 
-                style.addRule(context, property);
+                int insertionPoint = adjacentCodeBlock.child1.index + 1;
+                if (newlineProperty.newlines > 0) {
+                    // child1: comment. child2: a syntax rule.
+                    if(parser.belongToComment(adjacentCodeBlock.child1.token.getType())) {
+                        String vwsStr = StringUtils.repeat(System.lineSeparator(), newlineProperty.newlines);
+                        Token vwsToken = parser.getTokenFactory().create(parser.getVws(), vwsStr);
+                        // Insert vws before the leading comment.
+                        adjacentCodeBlock.child2.token.addToken(
+                                adjacentCodeBlock.child2.token.indexOfFirstTokenBeforeIf(parser::belongToComment),
+                                vwsToken
+                        );
+                    } else if(insertionPoint >= 0) { // codeBlock1: a rule info
+                        ExtendToken token1 = adjacentCodeBlock.child1.token;
+                        int newlines = newlineProperty.newlines;
+                        newlines -= getNewlineAfter(adjacentCodeBlock.parentCtx, adjacentCodeBlock.child1);
+                        if (newlines > 0) {
+                            Token vws = parser.getTokenFactory().create(parser.getVws(), StringUtils.repeat(System.lineSeparator(), newlines));
+                            adjacentCodeBlock.child1.token.addTokenAfter(vws, parser);
+                            return null;
+                        }
+                    }
+                }
+                return null;
+            }
+        };
+
+        framework(ctx, applicator);
+        return ctx;
+    }
+
+
+    @Override
+    protected Set<Integer> getRelevantRules() {
+        if (parserClass == null || parserClass != parser.getClass()) {
+            relevantRules = new HashSet<>();
+            relevantRules.add(parser.getRuleCompilationUnit());
+            relevantRules.add(parser.getRuleImportDeclarationList());
+            relevantRules.addAll(parser.getMemberLists());
+            relevantRules.add(parser.getRuleAnnotationList());
+            relevantRules.add(parser.getRuleBody());    
+            relevantRules.add(parser.getRuleBlock());
+            relevantRules.add(parser.getRuleModifierList());
+        }
+        return relevantRules;
+    }
+
+    private void framework(ExtendContext ctx, Function<AdjacentCodeBlock, Void> executor) {
+        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+            if (ctx.getChild(i) instanceof TerminalNode) {
+                continue;
+            }
+            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
+                ++i;
+                continue;
+            }
+
+            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
+            for(AdjacentCodeBlock adjacentCode : codes) {
+                NewlineContext context = extractContext(adjacentCode);
+                executor.apply(adjacentCode);
             }
         }
     }
