@@ -78,9 +78,6 @@ public abstract class Styler {
 //    }
 
     public void doFinalize() {
-        if (style.getStyleName() == "brace_format") {
-            System.out.println("");
-        }
         style.fillStyle();
         style.filterRules();
     }

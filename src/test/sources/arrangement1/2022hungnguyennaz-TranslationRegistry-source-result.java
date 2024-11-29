@@ -41,8 +41,6 @@ public final class TranslationRegistry {
     private void addProvider(TranslationProvider provider) {
         providers.add(provider);
     }
-
-
     public String translate(String s) {
         for (TranslationProvider provider:providers) {
             String translation = provider.translate(s);
@@ -56,7 +54,6 @@ public final class TranslationRegistry {
         String translate(String s);
     }
 
-
     @Data
     private static class ResourceBundleProvider implements TranslationProvider {
         private final ResourceBundle bundle;public ResourceBundleProvider(String bundlePath) {
@@ -67,7 +64,6 @@ public final class TranslationRegistry {
             return (bundle.containsKey(s))?bundle.getString(s):null;
         }
     }
-
 
     @Data
     @ToString(exclude = "translations")

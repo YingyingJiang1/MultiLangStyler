@@ -106,6 +106,7 @@ public interface MyParser {
     int getRuleImportDeclarationList();
     int getRuleAnnotationList();
     int getRuleAnnotation();
+    boolean belongToFunctionDec(int ruleIndex);
 
 
 
@@ -154,6 +155,5 @@ public interface MyParser {
     Set<Integer> getArrayInitializerRules();
 
     int getRuleIndex(String ruleName);
-
 
 }

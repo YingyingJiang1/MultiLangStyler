@@ -14,7 +14,10 @@ public class MapRuleSet implements RuleSet{
             context.hashCode();
         }
         List<StyleProperty> properties = rules.computeIfAbsent(context, k -> new ArrayList<>());
-        properties.add(property);
+        if (!properties.contains(property)) {
+            properties.add(property);
+        }
+
 
         List<Integer> ruleFrequencies = frequencies.computeIfAbsent(context, k -> new ArrayList<>());
         int index = properties.size() - 1;

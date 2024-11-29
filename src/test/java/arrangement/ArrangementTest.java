@@ -7,6 +7,7 @@ import org.example.style.ProgramStyle;
 import org.example.styler.body.BodyTypeEnum;
 import org.example.styler.body.BodyContext;
 import org.example.styler.body.BodyNumType;
+import org.example.styler.format.newline.style.NewlineProperty;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.nio.file.Paths;

@@ -53,6 +53,13 @@ public class NewlineStyler extends Styler {
             NewlineProperty property = extractProperty(adjacentCode);
             NewlineContext context = extractContext(adjacentCode);
 
+            // A newline adjacent to a brace is seen as a part of brace format.
+            boolean isBraceBefore = parser.belongToBrace(adjacentCode.child1.token.getType()) ||
+                    context.typeName1.equals(RuleGroup.FUNCTION_DEC.name()) || context.typeName2.equals(RuleGroup.STANDALONE_BLOCK.name());
+            if (isBraceBefore) {
+                --property.newlines;
+            }
+
             // More than one single statement in a line.
             String singleStmt = RuleGroup.SINGLE_STMT.name();
             boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);

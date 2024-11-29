@@ -59,17 +59,10 @@
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>ANY_BODY</block_type>
-        <body_type>ANY</body_type>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
       </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
     </rule>
     <rule>
       <style_context>
@@ -77,13 +70,6 @@
         <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
     </rule>
     <rule>
       <style_context>
@@ -99,6 +85,20 @@
       </style_context>
       <style_property beforeLB="false" afterLB="false" beforeRB="true" afterRB="true"/>
     </rule>
+    <rule>
+      <style_context>
+        <block_type>ANY_BODY</block_type>
+        <body_type>ANY</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
   </style>
   <style name="newline">
     <rule>
@@ -106,16 +106,12 @@
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_context type1="TYPE_DEC" type2="TYPE_DEC" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="typeDeclaration" type2="typeDeclaration" minCodeBockLines="0"/>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context type1="methodDeclaration" type2="methodDeclaration" minCodeBockLines="0"/>
-      <style_property newlines="2"/>
+      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
     </rule>
     <rule>
       <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
@@ -138,8 +134,12 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context type1="COMPOUND_STMT" type2="}" minCodeBockLines="0"/>
+      <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC" minCodeBockLines="0"/>
       <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="COMPOUND_STMT" type2="}" minCodeBockLines="0"/>
+      <style_property newlines="-1"/>
     </rule>
   </style>
   <style name="space">

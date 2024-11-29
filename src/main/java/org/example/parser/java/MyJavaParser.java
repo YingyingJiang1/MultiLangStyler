@@ -437,6 +437,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean belongToFunctionDec(int ruleIndex) {
+        return JavaParser.RULE_methodDeclaration == ruleIndex || JavaParser.RULE_constructorDeclaration == ruleIndex;
+    }
+
+    @Override
     public int getLE() {
         return JavaParser.LE;
     }

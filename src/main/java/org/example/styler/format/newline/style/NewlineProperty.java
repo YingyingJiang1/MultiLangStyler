@@ -4,6 +4,8 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
+import java.util.Objects;
+
 public class NewlineProperty extends StyleProperty {
     /**
      * The number of newlines between two structure.Except in two cases:
@@ -41,5 +43,18 @@ public class NewlineProperty extends StyleProperty {
             newlines = Integer.parseInt(newlinesStr);
         }
         
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(newlines);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof NewlineProperty property) {
+            return newlines == property.newlines;
+        }
+        return false;
     }
 }
