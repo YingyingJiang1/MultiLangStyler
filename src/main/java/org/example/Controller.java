@@ -184,14 +184,6 @@ public class Controller {
                 column += curToken.getText().length();
             }
 
-            // In "(VWS or LINE_COMMENT),(VWS),(})", the second VWS is redundant.
-            if (i > 0) {
-                Token preToken = tokens.get(i - 1), nextToken = tokens.get(i + 1);
-                if (isVws && preToken.getText().endsWith("\n") && parser.getRBrace() == nextToken.getType()) {
-                    continue;
-                }
-            }
-
             for (Styler styler : container.getStylers()) {
                 if (styler.isRelevant(tokens, i, Stage.APPLY)) {
                     styler.applyStyle(tokens, i);

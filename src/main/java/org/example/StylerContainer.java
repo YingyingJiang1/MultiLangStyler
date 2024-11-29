@@ -25,7 +25,7 @@ public class StylerContainer {
         stylers.add(new BraceFormatStyler());
 //        stylers.add(new LineWrappingStyler());
 //        stylers.add(new LineStmtStyler());
-        stylers.add(new NewlineStyler());
+//        stylers.add(new NewlineStyler());
         stylers.add(new SpaceStyler());
 //        stylers.add(new BodyLayoutStyler());
         stylers.add(new IndentionStyler());// `IndentionStyler` must be the last styler.
