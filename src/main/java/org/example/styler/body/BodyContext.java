@@ -17,6 +17,26 @@ public class BodyContext extends StyleContext {
         this.bodyNumType = bodyNumType;
     }
 
+    @Override
+    public double calculateDistance(StyleContext targetContext) {
+        int distance = INIT_DISTANCE;
+        if (targetContext instanceof BodyContext context) {
+            if (bodyType.equals(context.bodyType)) {
+                distance -= context.DEC_WHEN_EQUAL;
+            } else if (context.bodyType.equals(BodyTypeEnum.NORMAL_BODY) || bodyType.equals(BodyTypeEnum.NORMAL_BODY)) {
+                distance -= context.DEC_WHEN_HIGH_SIMILAR;
+            } else if (context.bodyType.equals(BodyTypeEnum.ANY_BODY) || bodyType.equals(BodyTypeEnum.ANY_BODY)) {
+                distance -= context.DEC_WHEN_MIDDLE_SIMILAR;
+            }
+
+            boolean numMeet = bodyNumType.equals(context.bodyNumType) ||
+                    bodyNumType.equals(BodyNumType.ANY) ||
+                    context.bodyNumType.equals(BodyNumType.ANY);
+            return numMeet && distance != INIT_DISTANCE ? distance : INVALID_DISTANCE;
+        }
+
+        return INVALID_DISTANCE;
+    }
 
     @Override
     public void addElement(Element parent, MyParser parser) {

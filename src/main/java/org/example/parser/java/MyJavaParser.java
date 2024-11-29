@@ -347,31 +347,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public int getRuleFieldDeclarationList() {
-        return JavaParser.RULE_fieldDeclarationList;
-    }
-
-    @Override
-    public int getRuleMethodDeclarationList() {
-        return JavaParser.RULE_methodDeclarationList;
-    }
-
-    @Override
-    public int getRuleConstructorDeclarationList() {
-        return JavaParser.RULE_constructorDeclarationList;
-    }
-
-    @Override
-    public int getRuleInitializerList() {
-        return JavaParser.RULE_initializerList;
-    }
-
-    @Override
-    public int getRuleTypeDeclarationList() {
-        return JavaParser.RULE_typeDeclarationList;
-    }
-
-    @Override
     public int getRuleBody() {
         return JavaParser.RULE_body;
     }
@@ -434,6 +409,31 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleWhileStmt() {
         return JavaParser.RULE_whileStmt;
+    }
+
+    @Override
+    public int getRuleDoWhile() {
+        return JavaParser.RULE_doWhileStmt;
+    }
+
+    @Override
+    public int getRuleCompilationUnit() {
+        return JavaParser.RULE_compilationUnit;
+    }
+
+    @Override
+    public int getRuleImportDeclarationList() {
+        return JavaParser.RULE_importDeclarationList;
+    }
+
+    @Override
+    public int getRuleAnnotationList() {
+        return JavaParser.RULE_annotationList;
+    }
+
+    @Override
+    public int getRuleAnnotation() {
+        return JavaParser.RULE_annotation;
     }
 
     @Override
@@ -514,6 +514,16 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getBlockComment() {
         return JavaParser.BLOCK_COMMENT;
+    }
+
+    @Override
+    public int getSub() {
+        return JavaParser.SUB;
+    }
+
+    @Override
+    public int getEOF() {
+        return JavaParser.EOF;
     }
 
     @Override
@@ -631,6 +641,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleIndex(String ruleName) {
         return parser.getRuleIndex(ruleName);
+    }
+
+    @Override
+    public Set<Integer> getArrayInitializerRules() {
+        return Set.of(JavaParser.RULE_initializer, JavaParser.RULE_arrayInitializer, JavaParser.RULE_elementValueArrayInitializer);
     }
 
     @Override

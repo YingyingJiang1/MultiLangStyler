@@ -8,7 +8,9 @@ import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenInfoField;
 import org.example.style.Style;
 
+import org.example.style.rule.StyleProperty;
 import org.example.styler.body.BodyContext;
+import org.example.styler.body.BodyNumType;
 import org.example.styler.body.BodyStyler;
 import org.example.styler.body.braceformat.style.BraceFormatProperty;
 import org.example.styler.body.BodyTypeEnum;
@@ -18,16 +20,17 @@ import java.util.*;
 public class BraceFormatStyler extends BodyStyler {
   private static Set<Integer> relevantRules = null;
 
-  private static final BraceFormatProperty DEFAULT_PROPERTY = new BraceFormatProperty(false, true, true, true);
-
   public BraceFormatStyler() {
     style.setStyleName("brace_format");
-    executeWhenExit = false;
   }
 
   @Override
   public ExtendContext applyStyle(ExtendContext ctx) {
     List<ExtendContext> blocks = getAllBlocks(ctx);
+
+//    if (ctx.getRuleIndex() == parser.getRuleForStmt()) {
+//      System.out.println();
+//    }
 
     // Apply brace information.
     int lastIndex = blocks.size() - 1;
@@ -39,10 +42,7 @@ public class BraceFormatStyler extends BodyStyler {
         context.bodyType = BodyTypeEnum.NORMAL_BODY;
       }
 
-      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getProperty(context);
-      if (braceFormatProperty == null) {
-        braceFormatProperty = DEFAULT_PROPERTY;
-      }
+      BraceFormatProperty braceFormatProperty = (BraceFormatProperty) style.getSimilarProperty(context);
       applyBraceInfo(braceFormatProperty, block);
     }
     return ctx;
@@ -68,6 +68,19 @@ public class BraceFormatStyler extends BodyStyler {
     }
   }
 
+  @Override
+  public void doFinalize() {
+    // Add some default style rules.
+    BodyContext normalBodyContext = new BodyContext(BodyTypeEnum.NORMAL_BODY, BodyNumType.MULTI);
+    StyleProperty property = style.getSimilarProperty(normalBodyContext);
+    StyleProperty defaultProperty = new BraceFormatProperty(false, true, true, true);
+    if (property == null) {
+      style.addRule(normalBodyContext, defaultProperty);
+    }
+    style.addRule(new BodyContext(BodyTypeEnum.ANY_BODY, BodyNumType.ANY), defaultProperty);
+
+    super.doFinalize();
+  }
 
   @Override
   protected Set<Integer> getRelevantRules() {
@@ -132,6 +145,7 @@ public class BraceFormatStyler extends BodyStyler {
     }
   }
 
+  /**
   /**
    * @param ctx A block.
    */

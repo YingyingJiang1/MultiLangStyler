@@ -1,9 +1,17 @@
 package org.example.styler.body;
 
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Styler;
 
+import java.util.*;
+
+import static org.example.styler.body.BodyTypeEnum.*;
+
 public abstract class BodyStyler extends Styler {
+    private static Map<BodyTypeEnum, Set<Integer>> map = null;
+    private static Class<? extends MyParser> parserClass = null;
+
     public BodyStyler() {}
 
     public BodyStyler(boolean executeWhenExit) {
@@ -18,8 +26,36 @@ public abstract class BodyStyler extends Styler {
      * @return
      */
     protected BodyContext extractStyleContext(ExtendContext stmt, ExtendContext block) {
-        BodyTypeEnum blockType = BodyTypeEnum.getBlockType(stmt.getRuleIndex(), parser);
-        return new BodyContext(blockType, getBodyType(block));
+        BodyTypeEnum blockType = getBodyType(stmt.getRuleIndex());
+        return new BodyContext(blockType, getBodyNumType(block));
+    }
+
+    public BodyTypeEnum getBodyType(int rule) {
+        init();
+        for (Map.Entry<BodyTypeEnum, Set<Integer>> entry : map.entrySet()) {
+            if (entry.getValue().contains(rule)) {
+                return entry.getKey();
+            }
+        }
+        return BodyTypeEnum.NORMAL_BODY;
+    }
+
+    private void init() {
+        if (parserClass == null || parserClass != parser.getClass()) {
+            parserClass = parser.getClass();
+            map = new HashMap<>();
+            map.put(BodyTypeEnum.DEC_BODY, new HashSet<>(List.of(
+                    parser.getRuleConstructorDeclaration(),
+                    parser.getRuleMethodDeclaration(),
+                    parser.getRuleTypeDeclaration()
+            )));
+            map.put(MULTI_BLOCK_STMT_BODY, new HashSet<>(List.of(
+                    parser.getRuleIfElseStmt(),
+                    parser.getRuleTryCatchStmt()
+            )));
+            map.put(ARRAY_INITIALIZER_BODY, parser.getArrayInitializerRules());
+            map.put(BodyTypeEnum.DO_WHILE_BODY, Set.of(parser.getRuleDoWhile()));
+        }
     }
 
 
@@ -30,7 +66,7 @@ public abstract class BodyStyler extends Styler {
      * If @ctx is a @BlockContext instance, then empty block, one single statement block or multiple statements block
      * is concerned about.
      */
-    private BodyNumType getBodyType(ExtendContext ctx) {
+    private BodyNumType getBodyNumType(ExtendContext ctx) {
         int stmtNum = ctx.countChildIf(child -> child instanceof ExtendContext); // Exclude LBRACE and RBRACE.
         if (stmtNum == 0) {
             return BodyNumType.EMPTY;

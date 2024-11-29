@@ -2,6 +2,8 @@ package org.example.styler.format.space;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenFactory;
+import org.example.parser.common.token.AmbigousToken;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenGroup;
 import org.example.parser.common.token.TokenGrouper;
@@ -50,12 +52,12 @@ public class SpaceStyler extends Styler {
         StyleContext context = extractContext(tokens, index);
         SpaceProperty property = (SpaceProperty) style.getSimilarProperty(context);
         if (property != null) {
-            if (cur instanceof CommonToken commonToken) {
+            if (cur instanceof ExtendToken extendToken) {
                 if (property.space2) {
-                    commonToken.setText(cur.getText() + " ");
+                    extendToken.addTokenAfter(parser.getTokenFactory().create(parser.getHws(), " "), parser);
                 }
                 if (property.space1) {
-                    commonToken.setText(" " + cur.getText());
+                    extendToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), " "), parser);
                 }
             }
         }
@@ -84,10 +86,10 @@ public class SpaceStyler extends Styler {
         } else if (parser.belongToSeparator(text)) {
             // Positions on the left and right of a separator are considered respectively. And the case is exclusive if the adjacent token is operator,
             // because this case has already been handled in the previous branches.
-            if (!parser.belongToOperator(leftText)) {
+            if (!parser.belongToBinOp(leftText)) {
                 return new SpaceContext(leftName, name);
             }
-            if (!parser.belongToOperator(rightText)) {
+            if (!parser.belongToBinOp(rightText)) {
                 return new SpaceContext(name, rightName);
             }
         } else if (!parser.belongToOperator(rightText) && !parser.belongToSeparator(rightText)) {

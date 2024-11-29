@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -78,6 +79,7 @@ public class Controller {
                 preprocessor.preprocess(parser, Stage.EXTRACT);
                 extractOnTS();
                 extractOnAST();
+//                preprocessor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
             } catch (IOException e) {
                 System.err.println("error in extracting style from file: " + files.getFilePath(i));
             }
@@ -113,7 +115,6 @@ public class Controller {
             tokenStream.fill();
         }
         List<Token> tokens = tokenStream.getTokens();
-        List<Integer> toBeRestored = processAmbiguousToken(tokens);
 
         // Avoid exceptions caused by boundaries.
         int len = tokens.get(tokens.size() - 1).getType() == parser.getHws() ? tokens.size() - 2 : tokens.size() - 1;
@@ -126,13 +127,6 @@ public class Controller {
             }
         }
 
-        // Must restore the type of modified tokens, otherwise things will go wrong in syntactic analysis phase.
-        for (int i : toBeRestored) {
-            if (tokenStream.get(i) instanceof CommonToken) {
-                CommonToken commonToken = (CommonToken) tokenStream.get(i);
-                commonToken.setType(-commonToken.getType());
-            }
-        }
     }
 
     public void applyStyle(FileCollection files) throws IOException {
@@ -155,9 +149,12 @@ public class Controller {
             preprocessor.preprocess(parser, Stage.APPLY);
             parser.walkTree(Stage.APPLY, container.getStylers());
 
-            String code = applyOnTS();
-            saveApplyResult(code);
+            List<Token> tokens = new LinkedList<>();
+            generateTokens(tree, tokens);
+            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
 
+            applyOnTS(tokens);
+            saveApplyResult(tokens, preprocessor);
         }
 
 //    System.out.println("-----------------------------------------------------------------");
@@ -171,20 +168,11 @@ public class Controller {
     /**
      * @apiNote :Apply style on token stream.
      */
-    private String applyOnTS() {
-        List<Token> tokens = new ArrayList<>();
-        // ((ExtendContext) tree).hierarchy = -1; // Set the hierarchy of CompilationUnit to -1.
-        generateTokens(tree, tokens);
-
-        StringBuilder builder = new StringBuilder();
-
-        processAmbiguousToken(tokens);
-
+    private void applyOnTS(List<Token> tokens) {
         int column = 0;
 
         // Handle the first token.
-        int size = tokens.size() - 1;
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; tokens.get(i).getType() != parser.getEOF(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
             curToken.setCharPositionInLine(column);
@@ -210,20 +198,32 @@ public class Controller {
                 }
             }
 
-            builder.append(curToken.getText());
+            List<Token> contextTokens = curToken.getContextTokens();
+            if (contextTokens.size() > 1) {
+               tokens.remove(i);
+               tokens.addAll(i, contextTokens);
+               i += contextTokens.size() - 1;
+            }
         }
-        builder.append(tokens.get(size).getText());
-
-        return builder.toString();
     }
 
 
-    private void saveApplyResult(String programStr) throws IOException {
+    private void saveApplyResult(List<Token> tokens, Preprocessor preprocessor) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        if (tokens.get(tokens.size() - 1).getType() == parser.getEOF()) {
+            tokens = tokens.subList(0, tokens.size() - 1);
+        }
+        for (Token token : tokens) {
+            preprocessor.restoreState(token, parser);
+            builder.append(token.getText());
+        }
+
+        String code = builder.toString();
         Path resFilePath = null;
         String saveDir = null;
         if (conf.overrideSource) {
             resFilePath = curPath;
-            Files.write(resFilePath, programStr.getBytes());
+            Files.write(resFilePath, code.getBytes());
             return;
         } else if (conf.applyResultSaveDir != null) {
             saveDir = conf.applyResultSaveDir;
@@ -239,7 +239,7 @@ public class Controller {
         String resPath = Paths.get(saveDir, fileName.substring(0, dotIndex) + "-result" + fileName.substring(dotIndex)).toString();
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
-            writer.write(programStr);
+            writer.write(code);
         }
     }
 
@@ -272,83 +272,6 @@ public class Controller {
         return null;
     }
 
-    /**
-     * @param tokens
-     * @return
-     * @Description Set real type for '<' and '-'.
-     */
-    private List<Integer> processAmbiguousToken(List<Token> tokens) {
-        List<Integer> toBeRestored = new ArrayList<>();
-        for (int i = 0; i < tokens.size(); i++) {
-            int type = tokens.get(i).getType();
-            if (type == JavaLexer.LT) {
-                toBeRestored.addAll(processAngleBracket(tokens, i));
-            } else if (AntlrHelper.isSub(type)) {
-                toBeRestored.addAll(processNegativeOperator(tokens, i));
-            }
-        }
-        return toBeRestored;
-    }
-
-    /**
-     * @param curIndex index of '-'
-     * @return
-     */
-    private List<Integer> processNegativeOperator(List<Token> tokens, int curIndex) {
-        List<Integer> tokenIndexs = new ArrayList<>(1);
-        int i = curIndex - 1;
-        for (; i >= 0; i--) {
-            if (AntlrHelper.inDefaultChannel(tokens.get(i).getChannel())) {
-                break;
-            }
-        }
-
-        int preType = tokens.get(i).getType();
-        if (preType != JavaLexer.IDENTIFIER && preType != JavaLexer.RPAREN && preType != JavaLexer.RBRACK) {
-            ExtendToken subToken = (ExtendToken) tokens.get(curIndex);
-            subToken.setType(-subToken.getType());
-            tokenIndexs.add(curIndex);
-        }
-
-        return tokenIndexs;
-    }
-
-
-    /**
-     * Try to match angle brackets, and then set the type of all matched tokens to -type.
-     *
-     * @param curIndex Index of '<'
-     */
-    private List<Integer> processAngleBracket(List<Token> tokens, int curIndex) {
-        int count = 1;
-        List<Integer> matchedTokens = new ArrayList<>();
-        matchedTokens.add(curIndex);
-        for (int i = curIndex + 1; i < tokens.size(); ++i) {
-            Token token = tokens.get(i);
-            int tokenType = token.getType();
-            if (tokenType == parser.getLT()) {
-                ++count;
-                matchedTokens.add(i);
-            } else if (tokenType == parser.getGT()) {
-                --count;
-                matchedTokens.add(i);
-            } else if (tokenType != parser.getRuleIdentifier() && tokenType != parser.getComma() &&
-                    tokenType != parser.getHws() && tokenType != parser.getVws()) {
-                break;
-            }
-        }
-        if (count == 0) {
-            for (int i : matchedTokens) {
-                if (tokens.get(i) instanceof CommonToken) {
-                    CommonToken commonToken = (CommonToken) tokens.get(i);
-                    commonToken.setType(-commonToken.getType());
-                }
-            }
-            return matchedTokens;
-        }
-        matchedTokens.clear();
-        return matchedTokens;
-    }
 
 //    private void initTokenToOperationMap() {
 //        if (!tokenToOperationMap.isEmpty()) {

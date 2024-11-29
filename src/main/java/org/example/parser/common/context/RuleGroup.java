@@ -4,7 +4,7 @@ public enum RuleGroup {
     SINGLE_STMT,
     COMPOUND_STMT,
     MEMBER_LIST,
-    MEMBER_DEC,
+    STANDALONE_BLOCK,
     FILE_HEAD_DEC,
     SELF_RULE,
     ;

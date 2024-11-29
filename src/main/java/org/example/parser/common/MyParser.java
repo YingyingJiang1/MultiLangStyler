@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.token.AmbigousToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 
@@ -23,11 +24,11 @@ public interface MyParser {
     ));
 
     Set<String> unaryOps = new HashSet<>(Arrays.asList(
-            "~", "!", "++", "--", "?", "#neg-"
+            "~", "!", "++", "--", "?", AmbigousToken.NEGATIVE.name()
     ));
 
     Set<String> separators = new HashSet<>(Arrays.asList(
-            ",",  "(", ")", "{", "}", "[", "]", ";", "#sep<", "#sep>"
+            ",",  "(", ")", "{", "}", "[", "]", ";", AmbigousToken.LEFT_ANGLE_BRACKET.name(), AmbigousToken.RIGHT_ANGLE_BRACKET.name()
     ));
 
     Set<String> keywords = Set.of(
@@ -87,11 +88,6 @@ public interface MyParser {
     int getRuleIfStmt();
     int getRuleIfElseStmt();
     int getRuleTypeDeclaration();
-    int getRuleFieldDeclarationList();
-    int getRuleMethodDeclarationList();
-    int getRuleConstructorDeclarationList();
-    int getRuleInitializerList();
-    int getRuleTypeDeclarationList();
     int getRuleBody();
     int getRuleModifierList();
     int getRuleTypeType();
@@ -105,6 +101,11 @@ public interface MyParser {
     int getRuleTryCatchStmt();
     int getRuleForStmt();
     int getRuleWhileStmt();
+    int getRuleDoWhile();
+    int getRuleCompilationUnit();
+    int getRuleImportDeclarationList();
+    int getRuleAnnotationList();
+    int getRuleAnnotation();
 
 
 
@@ -126,6 +127,9 @@ public interface MyParser {
     int getRParen();
     int getBang();
     int getBlockComment();
+    int getSub();
+    int getEOF();
+
 
     int getType(String text);
 
@@ -147,6 +151,7 @@ public interface MyParser {
     Set<Integer> getLiterals();
     Set<Integer> getMemberLists();
     Set<Integer> getMemberDecs();
+    Set<Integer> getArrayInitializerRules();
 
     int getRuleIndex(String ruleName);
 

@@ -44,8 +44,8 @@ public class RuleGrouper {
 			return RuleGroup.COMPOUND_STMT;
 		} else if (parser.getMemberLists().contains(ruleIndex)) {
 			return RuleGroup.MEMBER_LIST;
-		} else if (parser.getMemberDecs().contains(ruleIndex)) {
-			return RuleGroup.MEMBER_DEC;
+		} else if (parser.getRuleBlock() == ruleIndex){
+			return RuleGroup.STANDALONE_BLOCK;
 		} else if (parser.belongToFileHeadDec(ruleIndex)) {
 			return RuleGroup.FILE_HEAD_DEC;
 		} else {

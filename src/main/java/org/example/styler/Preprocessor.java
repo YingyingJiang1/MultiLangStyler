@@ -1,14 +1,19 @@
 package org.example.styler;
 
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.token.AmbigousToken;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenInfoField;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /*
  * @description
@@ -17,6 +22,7 @@ import java.util.List;
  */
 public class Preprocessor {
   int curNestingDepth = 0;
+
   public void preprocess(MyParser parser, Stage stage) {
     CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
     for (int i = 0; i < tokenStream.size(); i++) {
@@ -25,6 +31,16 @@ public class Preprocessor {
         processBrace(tokenStream, i);
       }
       processComment(parser, tokenStream, i);
+      processAmbiguousToken(parser, tokenStream, i);
+    }
+  }
+
+  public void restoreState(Token token, MyParser parser) {
+    Set<Integer> ambiguousTokens = Set.of(
+            parser.getLT(), parser.getGT(), parser.getSub()
+    );
+    if (ambiguousTokens.contains(token.getType()) && token instanceof ExtendToken extendToken) {
+      extendToken.setText(AmbigousToken.valueOf(token.getText()).getValue());
     }
   }
 
@@ -137,5 +153,83 @@ public class Preprocessor {
       return true;
     }
     return false;
+  }
+
+  /**
+   * @Description Set real type for '<' and '-'.
+   */
+  private void processAmbiguousToken(MyParser parser, TokenStream tStream,int index) {
+    int type = tStream.get(index).getType();
+    if (type == JavaLexer.LT) {
+      processAngleBracket(tStream, index, parser);
+    } else if (AntlrHelper.isSub(type)) {
+      processNegativeOperator(tStream, index, parser);
+    }
+  }
+
+  /**
+   * @param curIndex index of '-'
+   * @return
+   */
+  private List<Token> processNegativeOperator(TokenStream tStream, int curIndex, MyParser parser) {
+    List<Token> negativeTokens = new ArrayList<>(1);
+    int i = curIndex - 1;
+    for (; i >= 0; i--) {
+      if (AntlrHelper.inDefaultChannel(tStream.get(i).getChannel())) {
+        break;
+      }
+    }
+
+    int preType = tStream.get(i).getType();
+    if (preType != JavaLexer.IDENTIFIER && preType != JavaLexer.RPAREN && preType != JavaLexer.RBRACK) {
+      ExtendToken subToken = (ExtendToken) tStream.get(curIndex);
+//      subToken.setType(-subToken.getType());
+      subToken.setText(AmbigousToken.NEGATIVE.name());
+      negativeTokens.add(tStream.get(curIndex));
+    }
+
+    return negativeTokens;
+  }
+
+
+  /**
+   * Try to match angle brackets, and then set the type of all matched tokens to -type.
+   *
+   * @param curIndex Index of '<'
+   */
+  private List<Token> processAngleBracket(TokenStream tStream, int curIndex, MyParser parser) {
+    int count = 1;
+    List<Token> matchedTokens = new ArrayList<>();
+    matchedTokens.add(tStream.get(curIndex));
+    for (int i = curIndex + 1; i < tStream.size(); ++i) {
+      Token token = tStream.get(i);
+      int tokenType = token.getType();
+      if (tokenType == parser.getLT()) {
+        ++count;
+        matchedTokens.add(token);
+      } else if (tokenType == parser.getGT()) {
+        --count;
+        matchedTokens.add(token);
+      } else if (tokenType != parser.getIdentifier() && tokenType != parser.getComma() &&
+              tokenType != parser.getHws() && tokenType != parser.getVws()) {
+        break;
+      }
+    }
+
+    if (count == 0) {
+      for (Token ambigousToken : matchedTokens) {
+        if (ambigousToken instanceof CommonToken commonToken) {
+//          commonToken.setType(-commonToken.getType());
+          if (commonToken.getType() == parser.getLT()) {
+            commonToken.setText(AmbigousToken.LEFT_ANGLE_BRACKET.name());
+          } else if (commonToken.getType() == parser.getGT()) {
+            commonToken.setText(AmbigousToken.RIGHT_ANGLE_BRACKET.name());
+          }
+        }
+      }
+      return matchedTokens;
+    }
+    matchedTokens.clear();
+    return matchedTokens;
   }
 }
