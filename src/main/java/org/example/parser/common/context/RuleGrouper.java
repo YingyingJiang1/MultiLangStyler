@@ -1,4 +1,4 @@
-package org.example.parser.common.group;
+package org.example.parser.common.context;
 
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;

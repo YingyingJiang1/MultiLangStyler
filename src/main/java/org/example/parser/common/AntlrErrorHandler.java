@@ -2,6 +2,8 @@ package org.example.parser.common;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
+import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
 
 /*

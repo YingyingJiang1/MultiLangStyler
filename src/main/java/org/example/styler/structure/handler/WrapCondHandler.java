@@ -2,9 +2,9 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeFactory;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 

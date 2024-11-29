@@ -3,9 +3,9 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeFactory;
 import org.example.myException.CompilationException;
 import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;

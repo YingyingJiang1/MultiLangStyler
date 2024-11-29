@@ -1,6 +1,4 @@
-package org.example.parser.common;
-
-import org.antlr.v4.runtime.Token;
+package org.example.parser.common.token;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeFactory;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.vtree.VirtualNode;
 

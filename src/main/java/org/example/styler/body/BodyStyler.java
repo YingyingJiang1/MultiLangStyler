@@ -1,6 +1,6 @@
 package org.example.styler.body;
 
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Styler;
 
 public abstract class BodyStyler extends Styler {

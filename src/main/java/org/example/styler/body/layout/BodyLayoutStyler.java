@@ -3,8 +3,8 @@ package org.example.styler.body.layout;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendContext;
-import org.example.parser.common.ExtendToken;
+import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleContext;
 import org.example.styler.body.BodyContext;
 import org.example.styler.body.BodyStyler;
@@ -67,7 +67,9 @@ public class BodyLayoutStyler extends BodyStyler {
                     stop = (ExtendToken) body.stop;
                     stop.hasTrailingComment = true;
                     List<Token> comments = start.getContextTokens().subList(firstLeadingCommentIndex, lastLeadingCommentIndex + 1);
-                    stop.addAllToken(stop.indexInContextTokens(), comments);
+                    for (Token comment : comments) {
+                        stop.addTokenBefore(comment, parser);
+                    }
                     start.getContextTokens().removeAll(comments);
                 }
             }

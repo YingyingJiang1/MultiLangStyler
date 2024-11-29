@@ -3,9 +3,9 @@ package org.example.styler.body.braceformat;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendContext;
-import org.example.parser.common.ExtendToken;
-import org.example.parser.common.TokenInfoField;
+import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.token.ExtendToken;
+import org.example.parser.common.token.TokenInfoField;
 import org.example.style.Style;
 
 import org.example.styler.body.BodyContext;

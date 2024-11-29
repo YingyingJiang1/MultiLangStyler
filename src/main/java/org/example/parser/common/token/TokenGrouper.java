@@ -1,4 +1,4 @@
-package org.example.parser.common.group;
+package org.example.parser.common.token;
 
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;

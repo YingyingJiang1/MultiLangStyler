@@ -1,4 +1,4 @@
-package org.example.parser.common.group;
+package org.example.parser.common.token;
 
 public enum TokenGroup {
     IDENTIFIER,

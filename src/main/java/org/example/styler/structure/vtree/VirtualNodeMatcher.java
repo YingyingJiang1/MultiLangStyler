@@ -2,9 +2,8 @@ package org.example.styler.structure.vtree;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.styler.structure.EquivalentStructure;
 
 import java.util.HashMap;
 import java.util.Map;

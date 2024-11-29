@@ -5,10 +5,9 @@ import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
-import org.example.parser.common.ExtendToken;
-import org.example.parser.common.TokenInfoField;
+import org.example.parser.common.token.ExtendToken;
+import org.example.parser.common.token.TokenInfoField;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -25,7 +24,7 @@ public class Preprocessor {
       if (stage == Stage.EXTRACT) {
         processBrace(tokenStream, i);
       }
-      processComment(tokenStream, i);
+      processComment(parser, tokenStream, i);
     }
   }
 
@@ -61,7 +60,7 @@ public class Preprocessor {
    * @param tokenStream
    * @param tokenIndex
    */
-  private void processComment(CommonTokenStream tokenStream, int tokenIndex) {
+  private void processComment(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
     ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
     if (token.getChannel() != JavaLexer.DEFAULT_TOKEN_CHANNEL) {
       return;
@@ -81,18 +80,15 @@ public class Preprocessor {
         --preIndex;
       }
 
-      List<Token> trailingComments = new ArrayList<>();
       for (int i = 0; i < comments.size(); i++) {
         if(preToken != null && preToken.getLine() == comments.get(i).getLine()){
-          trailingComments.add(comments.get(i));
+          preToken.addTokenAfter(comments.get(i), parser);
+          preToken.hasTrailingComment = true;
         } else {
-          token.addAllToken(token.indexInContextTokens(), comments.subList(i, comments.size()));
+          List<Token> leadingTokens = comments.subList(i, comments.size());
+          leadingTokens.forEach(t -> token.addTokenBefore(t, parser));
           break;
         }
-      }
-      if (!trailingComments.isEmpty()) {
-        preToken.addAllToken(preToken.indexInContextTokens() + 1, trailingComments);
-        preToken.hasTrailingComment = true;
       }
     }
   }

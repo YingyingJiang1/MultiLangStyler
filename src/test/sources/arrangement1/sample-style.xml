@@ -81,15 +81,35 @@
   </style>
   <style name="newline">
     <rule>
+      <style_context type1="importDeclarationList" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context type1="MEMBER_DEC" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="classBodyDeclaration" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_property newlines="3"/>
+    </rule>
+    <rule>
       <style_context type1="FILE_HEAD_DEC" type2="importDeclarationList" minCodeBockLines="0"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_context type1="KEYWORD" type2="classBodyDeclaration" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
+      <style_context type1="KEYWORD" type2="MEMBER_DEC" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
@@ -106,6 +126,10 @@
     </rule>
     <rule>
       <style_context type1="classBodyDeclaration" type2="classBodyDeclaration" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="KEYWORD" type2="MEMBER_LIST" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
   </style>

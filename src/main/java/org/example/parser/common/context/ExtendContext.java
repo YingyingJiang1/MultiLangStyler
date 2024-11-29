@@ -1,10 +1,12 @@
-package org.example.parser.common;
+package org.example.parser.common.context;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.style.ProgramStyle;
 

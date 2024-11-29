@@ -1,8 +1,8 @@
 package org.example.styler.format.linestmt;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.ExtendContext;
-import org.example.parser.common.ExtendToken;
+import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Styler;
 import org.example.styler.format.linestmt.style.LineStmtProperty;
 

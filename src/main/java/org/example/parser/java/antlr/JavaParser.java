@@ -3,7 +3,7 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 
 import java.util.List;
 

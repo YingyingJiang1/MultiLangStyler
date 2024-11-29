@@ -1,7 +1,7 @@
 package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 
 import java.util.List;
 

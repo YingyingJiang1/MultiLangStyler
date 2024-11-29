@@ -1,4 +1,4 @@
-package org.example.parser.common;
+package org.example.parser.common.token;
 
 /*
  * @description

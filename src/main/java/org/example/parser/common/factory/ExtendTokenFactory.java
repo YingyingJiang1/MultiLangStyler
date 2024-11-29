@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.CommonTokenFactory;
 import org.antlr.v4.runtime.TokenSource;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.misc.Pair;
-import org.example.parser.common.ExtendToken;
+import org.example.parser.common.token.ExtendToken;
 
 /*
  * @description

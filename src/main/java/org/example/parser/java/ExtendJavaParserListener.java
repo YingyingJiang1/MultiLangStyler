@@ -1,16 +1,14 @@
 package org.example.parser.java;
 
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.java.antlr.JavaParserBaseListener;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /*
  * @author     : Jiang Yingying

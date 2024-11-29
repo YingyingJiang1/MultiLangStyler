@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.style.Style;
 import org.example.utils.Helper;
-import org.example.parser.common.ExtendContext;
+import org.example.parser.common.context.ExtendContext;
 import org.example.myException.StylizationException;
 import org.example.utils.PermutationGenerator;
 import org.example.styler.Styler;

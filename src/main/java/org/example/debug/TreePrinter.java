@@ -2,7 +2,6 @@ package org.example.debug;
 
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.MyJavaParser;
 import org.example.parser.java.antlr.JavaParser;

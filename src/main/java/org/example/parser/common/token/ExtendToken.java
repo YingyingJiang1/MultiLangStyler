@@ -1,10 +1,12 @@
-package org.example.parser.common;
+package org.example.parser.common.token;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenSource;
 import org.antlr.v4.runtime.misc.Pair;
+import org.example.parser.common.MyParser;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,12 +68,31 @@ public class ExtendToken extends CommonToken {
         contextTokens.add(index, token);
     }
 
-    public void addAllToken(int index, List<Token> tokens) {
+    public void addTokenBefore(Token token, MyParser parser) {
         if (contextTokens == null) {
             contextTokens = new ArrayList<>();
             contextTokens.add(this);
         }
-        contextTokens.addAll(index, tokens);
+        if (parser.getVws() == token.getType()) {
+            contextTokens.add(0, token);
+        } else {
+            int index = contextTokens.indexOf(this);
+            contextTokens.add(index, token);
+            if (!parser.belongToComment(token.getType()) && !(parser.getHws() == token.getType())) {
+                LoggerFactory.getLogger(ExtendToken.class).warn("Add a default token {} into the non-default context tokens of a token.", token.getText());
+            }
+        }
+    }
+
+    public void addTokenAfter(Token token, MyParser parser) {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
+        }
+        contextTokens.add(token) ;
+        if (!parser.belongToComment(token.getType()) && !(parser.getHws() == token.getType())) {
+            LoggerFactory.getLogger(ExtendToken.class).warn("Add a default token {} into the non-default context tokens of a token.", token.getText());
+        }
     }
 
     public int indexInContextTokens() {

@@ -21,7 +21,7 @@ public final class TranslationRegistry {
     static{
         try{
             INSTANCE.addProvider(new JsonProvider("/assets/minecraft/lang/en_us.json"));
-         }
+        }
         catch(Exception ex) {
          }
         try{

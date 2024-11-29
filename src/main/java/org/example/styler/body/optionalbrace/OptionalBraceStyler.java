@@ -2,9 +2,7 @@ package org.example.styler.body.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.ExtendContext;
-import org.example.parser.common.factory.ExtendTokenFactory;
-import org.example.parser.common.ParseTreeFactory;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.java.antlr.JavaParser;

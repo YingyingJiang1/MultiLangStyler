@@ -8,8 +8,8 @@
 //import org.example.parser.java.antlr.JavaLexer;
 //import org.example.parser.java.antlr.JavaParser;
 //import org.example.parser.common.AntlrHelper;
-//import org.example.parser.common.ExtendContext;
-//import org.example.parser.common.ExtendToken;
+//import org.example.parser.common.context.ExtendContext;
+//import org.example.parser.common.token.ExtendToken;
 //import org.example.parser.common.LexerErrorListener;
 //import org.example.style.ProgramStyle;
 //import org.example.style.Style;
