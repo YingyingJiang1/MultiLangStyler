@@ -104,3 +104,5 @@
 2024-11-29 17:00:54,453 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-29 17:01:00,488 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-29 17:01:24,495 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-29 17:20:30,397 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-29 17:21:03,615 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml

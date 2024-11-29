@@ -39,7 +39,6 @@ public final class TranslationRegistry {
             INSTANCE.addProvider(new ResourceBundleProvider("mojang-translations/en_US"));
         }catch (Exception ex) {
         }
-
     }
 
     private void addProvider(TranslationProvider provider) {
@@ -74,7 +73,6 @@ public final class TranslationRegistry {
         public String translate(String s) {
             return (bundle.containsKey(s))?bundle.getString(s):null;
         }
-
     }
 
 
@@ -90,14 +88,11 @@ public final class TranslationRegistry {
                     translations.put(entries.getKey() ,entries.getValue() .getAsString() );
                 }
             }
-
         }
 
         @Override
         public String translate(String s) {
             return translations.get(s);
         }
-
     }
-
 }

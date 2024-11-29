@@ -57,6 +57,12 @@ public class BraceFormatStyler extends BodyStyler {
                     beforeRB = false;
                 }
 
+                // Process continuous }}
+                Token nextToken = block.getNextToken();
+                if (nextToken != null && nextToken.getType() == parser.getRBrace()) {
+                    afterRB = false;
+                }
+
                 // Add vws around braces.
                 if (beforeLB) {
                     addVwsBefore(block, parser.getLBrace());
@@ -192,22 +198,10 @@ public class BraceFormatStyler extends BodyStyler {
 
     private BraceFormatProperty extractProperty(ExtendContext block) {
         Token lbToken = block.start, rbToken = block.stop;
-
-        ExtendContext parent = (ExtendContext) block.parent;
-        ExtendContext cur = block;
         Token afterLBToken = getStartToken(block.getChild(1));
         Token beforeRBToken = getStopToken(block.getChild(block.getChildCount() - 2));
-        Token beforeLBToken = null, afterRBToken = null;
-        while (parent != null && (beforeLBToken == null || afterRBToken == null)) {
-            if (beforeLBToken == null && parent.getChild(0) != cur) {
-                beforeLBToken = getStopToken(parent.getChild(parent.children.indexOf(block) - 1));
-            }
-            if (afterRBToken == null && parent.getChild(parent.getChildCount() - 1) != cur) {
-                afterRBToken = getStartToken(parent.getChild(parent.children.indexOf(block) + 1));
-            }
-            cur = parent;
-            parent = (ExtendContext) parent.parent;
-        }
+        Token beforeLBToken = block.getPrevToken();
+        Token afterRBToken = block.getNextToken();
 
         boolean beforeLB = true, afterLB = true, beforeRB = true, afterRB = true;
         if (beforeLBToken != null) {

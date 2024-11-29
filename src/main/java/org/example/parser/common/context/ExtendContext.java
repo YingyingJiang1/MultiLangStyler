@@ -148,24 +148,6 @@ public class ExtendContext extends ParserRuleContext {
         return count;
     }
 
-    public boolean containsCtxNode(int ctxType) {
-        for (ParseTree root : children) {
-            if (root instanceof ExtendContext && ((ExtendContext) root).getRuleIndex() == ctxType) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean containsTokenChild(int tokenType) {
-        for (ParseTree child : children) {
-            if (child instanceof TerminalNode && ((TerminalNode) child).getSymbol().getType() == tokenType) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void decBraceDepth() {
         --braceDepth;
     }
@@ -180,6 +162,45 @@ public class ExtendContext extends ParserRuleContext {
 
     public static void setStyleObj(ProgramStyle programStyle) {
         ExtendContext.programStyle = programStyle;
+    }
+
+    /**
+     *
+     * @return The next token of the ctx.stop
+     */
+    public Token getNextToken() {
+        ExtendContext parent = (ExtendContext) this.parent;
+        ExtendContext cur = this;
+        Token nextToken = null;
+        while (parent != null) {
+            if (parent.getChild(parent.getChildCount() - 1) != cur) {
+                ParseTree nextTree = parent.getChild(parent.children.indexOf(cur) + 1);
+                nextToken = nextTree instanceof TerminalNode ter ? ter.getSymbol() : ((ExtendContext) nextTree).start;
+                break;
+            }
+            cur = parent;
+            parent = (ExtendContext) parent.parent;
+        }
+        return nextToken;
+    }
+
+    /**
+     * @return The previous token of the ctx.start
+     */
+    public Token getPrevToken() {
+        ExtendContext parent = (ExtendContext) this.parent;
+        ExtendContext cur = this;
+        Token preToken = null;
+        while (parent != null) {
+            if (parent.getChild(0) != cur) {
+                ParseTree preTree = parent.getChild(parent.children.indexOf(cur) - 1);
+                preToken = preTree instanceof TerminalNode ter ? ter.getSymbol() : ((ExtendContext) preTree).stop;
+                break;
+            }
+            cur = parent;
+            parent = (ExtendContext) parent.parent;
+        }
+        return preToken;
     }
 
     @Override
