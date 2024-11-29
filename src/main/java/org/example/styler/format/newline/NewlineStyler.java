@@ -42,75 +42,138 @@ public class NewlineStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx) {
-        ExtendContext parent = (ExtendContext) ctx.getParent();
-        int curIndex = parent.children.indexOf(ctx);
-        if (curIndex + 1 == parent.getChildCount()) {
-            return;
-        }
-
-        List<AdjacentCodeBlock> codes = extractCodeBlocks(parent, curIndex, curIndex + 1, Stage.EXTRACT);
-        for(AdjacentCodeBlock adjacentCode : codes) {
-            NewlineProperty property = extractProperty(adjacentCode);
-            NewlineContext context = extractContext(adjacentCode);
-
-            // A newline adjacent to a brace is seen as a part of brace format.
-            boolean isBraceBefore = parser.belongToBrace(adjacentCode.child1.token.getType()) ||
-                    context.typeName1.equals(RuleGroup.FUNCTION_DEC.name()) || context.typeName2.equals(RuleGroup.STANDALONE_BLOCK.name());
-            if (isBraceBefore) {
-                --property.newlines;
+        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+            if (ctx.getChild(i) instanceof TerminalNode) {
+                continue;
             }
-
-            // More than one single statement in a line.
-            String singleStmt = RuleGroup.SINGLE_STMT.name();
-            boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
-            if (between2SingleStmts) {
-                if (property.newlines == 0) {
-                    style.remove(defaultContext);
-                    context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-                    style.addRule(context, property);
-                }
+            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
+                ++i;
                 continue;
             }
 
-            Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
-            boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
-            if (isStmtLevel && property.newlines > 1) {
-                context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-            }
+            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
+            for(AdjacentCodeBlock adjacentCode : codes) {
+                NewlineProperty property = extractProperty(adjacentCode);
+                NewlineContext context = extractContext(adjacentCode);
 
-            style.addRule(context, property);
+                // A newline adjacent to a brace is seen as a part of brace format.
+                if (adjacentCode.child1.token.getType() == parser.getRBrace() ||
+                adjacentCode.child1.token.getType() == parser.getSemi() && context.typeName1.equals(RuleGroup.FUNCTION_DEC.name())) {
+                    --property.newlines;
+                }
+                if (adjacentCode.child2.token.getType() == parser.getLBrace()) {
+                    --property.newlines;
+                }
+
+                // More than one single statement in a line.
+                String singleStmt = RuleGroup.SINGLE_STMT.name();
+                boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
+                if (between2SingleStmts) {
+                    if (property.newlines == 0) {
+                        style.remove(defaultContext);
+                        context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+                        style.addRule(context, property);
+                    }
+                    continue;
+                }
+
+                Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
+                boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
+                if (isStmtLevel && property.newlines > 1) {
+                    context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+                }
+
+                style.addRule(context, property);
+            }
         }
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx) {
-        ExtendContext parent = (ExtendContext) ctx.getParent();
-        int curIndex = parent.children.indexOf(ctx);
-        if (curIndex + 1 == parent.getChildCount()) {
-            return ctx;
-        }
+        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+            if (ctx.getChild(i) instanceof TerminalNode) {
+                continue;
+            }
+            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
+                ++i;
+                continue;
+            }
 
-        List<AdjacentCodeBlock> adjacentCodes = extractCodeBlocks(parent, curIndex, curIndex + 1, Stage.APPLY);
-        for(AdjacentCodeBlock adjacentCodeBlock : adjacentCodes) {
-            // Must update index here! Because index will change after insertion operation.
-            adjacentCodeBlock.child1.index = curIndex;
-            adjacentCodeBlock.child2.index = curIndex + 1;
-            curIndex += applyProperty(ctx, adjacentCodeBlock);
+            List<AdjacentCodeBlock> adjacentCodes = extractCodeBlocks(ctx, i, i + 1, Stage.APPLY);
+            for(AdjacentCodeBlock adjacentCodeBlock : adjacentCodes) {
+                // Must update index here! Because index will change after insertion operation.
+                adjacentCodeBlock.child1.index = i;
+                adjacentCodeBlock.child2.index = i + 1;
+                i += applyProperty(ctx, adjacentCodeBlock);
+            }
         }
         return ctx;
     }
 
-    /**
-     * Setting parent node as the relevant nodes can achieve a better performance, but it's more complex. Because we need to consider more different situations.
-     * This way has a low efficiency, but it's easy to implement.
-     */
+
     @Override
-    public boolean isRelevant(ExtendContext ctx, Stage stage) {
-        int ruleIndex = ctx.getRuleIndex();
-        return parser.belongToStmt(ctx) || parser.getMemberLists().contains(ruleIndex) || parser.getMemberDecs().contains(ruleIndex) ||
-                (parser.belongToFileHeadDec(ruleIndex) || parser.getRuleImportDeclarationList() == ruleIndex || parser.getRuleAnnotation() == ruleIndex);
+    protected Set<Integer> getRelevantRules() {
+        if (parserClass == null || parserClass != parser.getClass()) {
+            relevantRules = new HashSet<>();
+            relevantRules.add(parser.getRuleCompilationUnit());
+            relevantRules.add(parser.getRuleImportDeclarationList());
+            relevantRules.addAll(parser.getMemberLists());
+            relevantRules.add(parser.getRuleAnnotationList());
+            relevantRules.add(parser.getRuleBody());    
+            relevantRules.add(parser.getRuleBlock());
+            relevantRules.add(parser.getRuleModifierList());
+        }
+        return relevantRules;
     }
 
+    private void framework(ExtendContext ctx) {
+        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+            if (ctx.getChild(i) instanceof TerminalNode) {
+                continue;
+            }
+            if (ctx.getChild(i + 1) instanceof TerminalNode && !parser.isAnnotation(ctx.getChild(i))) {
+                ++i;
+                continue;
+            }
+
+            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
+            for(AdjacentCodeBlock adjacentCode : codes) {
+                NewlineContext context = extractContext(adjacentCode);
+                NewlineProperty property = extractProperty(adjacentCode);
+
+                // A newline adjacent to a brace is seen as a part of brace format.
+                if (adjacentCode.child1.token.getType() == parser.getRBrace() ||
+                        adjacentCode.child1.token.getType() == parser.getSemi() && context.typeName1.equals(RuleGroup.FUNCTION_DEC.name())) {
+                    --property.newlines;
+                }
+                if (adjacentCode.child2.token.getType() == parser.getLBrace()) {
+                    --property.newlines;
+                }
+
+                // More than one single statement in a line.
+                String singleStmt = RuleGroup.SINGLE_STMT.name();
+                boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
+                if (between2SingleStmts) {
+                    if (property.newlines == 0) {
+                        style.remove(defaultContext);
+                        context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+                        style.addRule(context, property);
+                    }
+                    continue;
+                }
+
+                Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
+                boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
+                if (isStmtLevel && property.newlines > 1) {
+                    context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+                }
+
+                style.addRule(context, property);
+            }
+        }
+    }
+    
+    
     private AdjacentCodeBlock.CodeBlock generateCodeBlock(ExtendContext parent, int index, int blockNumber) {
         AdjacentCodeBlock.CodeBlock info = new AdjacentCodeBlock.CodeBlock();
         ParseTree node = parent.getChild(index);
@@ -191,18 +254,19 @@ public class NewlineStyler extends Styler {
         AdjacentCodeBlock.CodeBlock codeBlock1 = adjacentCodeBlock.child1, codeBlock2 = adjacentCodeBlock.child2;
         int newlines = codeBlock2.line - codeBlock1.line;
 
-        if (parser.belongToBrace(codeBlock1.token.getType()) ||
-                (parser.belongToBraceOptionalStmt(codeBlock1.type) && codeBlock1.token.getType() == parser.getSemi())) {
-            --newlines;
-        }
-        if(parser.belongToBrace(codeBlock2.token.getType())) {
-            --newlines;
-        }
-        if (newlines < 0) {
-            newlines = 0;
+        // delete comments line between codeBlock1 and codeBlock2.
+        List<Token> contextTokens = codeBlock2.token.getContextTokens();
+        if (contextTokens != null) {
+            int i = codeBlock2.token.indexInContextTokens();
+            for (int j = 0; j < i; j++) {
+                if (parser.belongToComment(contextTokens.get(j).getType())) {
+                    newlines -= contextTokens.get(i).getText().split("\n").length;
+                }
+            }
         }
         return new NewlineProperty(newlines);
     }
+
 
     /**
      *

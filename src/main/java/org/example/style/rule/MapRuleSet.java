@@ -10,20 +10,13 @@ public class MapRuleSet implements RuleSet{
 
     @Override
     public void addRule(StyleContext context, StyleProperty property) {
-        if (context instanceof BodyContext) {
-            context.hashCode();
-        }
         List<StyleProperty> properties = rules.computeIfAbsent(context, k -> new ArrayList<>());
+        List<Integer> ruleFrequencies = frequencies.computeIfAbsent(context, k -> new ArrayList<>());
         if (!properties.contains(property)) {
             properties.add(property);
-        }
-
-
-        List<Integer> ruleFrequencies = frequencies.computeIfAbsent(context, k -> new ArrayList<>());
-        int index = properties.size() - 1;
-        if (index >= ruleFrequencies.size()) {
             ruleFrequencies.add(1);
         } else {
+            int index = properties.indexOf(property);
             ruleFrequencies.set(index, ruleFrequencies.get(index) + 1);
         }
     }

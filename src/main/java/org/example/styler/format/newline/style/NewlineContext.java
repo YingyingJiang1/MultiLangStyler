@@ -51,15 +51,8 @@ public class NewlineContext extends StyleContext {
         double distance = INIT_DISTANCE;
         boolean textLengthMeet = true;
         if (targetContext instanceof NewlineContext context) {
-            if (Objects.equals(typeName1, context.typeName1)) {
-                distance -= 2;
-            } else if(Objects.equals(typeName1, "") ) {
-                distance -= 1;
-            }
-            if (Objects.equals(typeName2, context.typeName2)) {
-                distance -= 2;
-            } else if(Objects.equals(typeName2, "") ) {
-                distance -= 1;
+            if (Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)) {
+                distance -= DEC_WHEN_EQUAL;
             }
             textLengthMeet = context.minTextLength >= minTextLength;
         }
