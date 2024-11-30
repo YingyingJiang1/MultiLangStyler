@@ -82,6 +82,10 @@ public abstract class Styler {
         style.filterRules();
     }
 
+    public void reset() {
+        style.reset();
+    }
+
     protected Set<Integer> getRelevantRules() {return null;}
 
     protected Set<String> getRelevantTokens() { return null;}

@@ -94,6 +94,11 @@ public class CommonStyle implements DomIO,Style {
         return ruleSet.remove(styleContext);
     }
 
+    @Override
+    public void reset() {
+        ruleSet.clear();
+    }
+
 //    protected void parseListElement(Element parent, MyParser parser, RuleSet ruleSet, String name) {
 //        List<Element> eleList = parent.elements();
 //        for(Element ele : eleList) {

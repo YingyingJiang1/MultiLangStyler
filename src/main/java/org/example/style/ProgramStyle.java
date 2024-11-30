@@ -12,18 +12,12 @@ import java.util.*;
  * @create     : 2024/1/8 22:27
  */
 public class ProgramStyle implements DomIO {
-    List<Style> styles = new ArrayList<Style>();
-    public static final int FORMAT = 0;
-    public static final int LITERAL = 1;
-    public static final int ARRANGEMENT = 2;
-    public static final int NAMING = 3;
-    public static final int COMMENT = 4;
-    public static final int EQUIVALENCES = 5;
+    Map<Class<? extends Style>, Style> styleMap = new HashMap<>();
 
 
     @Override
     public void addElement(Element root, MyParser parser) {
-        for (Style style : styles) {
+        for (Style style : styleMap.values()) {
             if (style instanceof CommonStyle commonStyle) {
                 commonStyle.addElement(root, parser);
             }
@@ -33,7 +27,7 @@ public class ProgramStyle implements DomIO {
 
     @Override
     public void parseElement(Element root, MyParser parser) {
-        for (Style style : styles) {
+        for (Style style : styleMap.values()) {
             if (style instanceof CommonStyle commonStyle) {
                 commonStyle.parseElement(root, parser);
             }
@@ -42,10 +36,14 @@ public class ProgramStyle implements DomIO {
     }
 
     public void add(Style style) {
-        styles.add(style);
+        styleMap.put(style.getClass(), style);
     }
 
     public List<Style> getStyles() {
-        return styles;
+        return styleMap.values().stream().toList();
+    }
+
+    public Style getStyle(Class<? extends Style> stylerClass) {
+        return styleMap.get(stylerClass);
     }
 }

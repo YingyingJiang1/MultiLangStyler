@@ -22,4 +22,6 @@ public interface RuleSet {
     boolean replace(StyleContext oldContext, StyleContext newContext);
 
     StyleProperty remove(StyleContext styleContext);
+
+    void clear();
 }

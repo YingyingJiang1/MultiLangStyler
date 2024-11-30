@@ -97,5 +97,11 @@ public class MapRuleSet implements RuleSet{
         return null;
     }
 
+    @Override
+    public void clear() {
+        rules.clear();
+        frequencies.clear();
+    }
+
 
 }

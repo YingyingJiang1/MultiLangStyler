@@ -7,6 +7,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
 import org.example.io.StyleFileIO;
+import org.example.myException.ApplyException;
+import org.example.myException.ExtractException;
 import org.example.parser.common.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
@@ -39,8 +41,6 @@ public class Controller {
     private MyParser parser;
     private ParseTree tree;
     private StylerContainer container = null;
-//    private final List<Styler> astStylers = new ArrayList<>();
-//    private final List<Styler> tStreamStylers = new ArrayList<>(); // token stream stylers.
     protected Configuration conf;
     Path curPath = null;
 
@@ -51,14 +51,7 @@ public class Controller {
     public Controller() {
     }
 
-
-    private void init(ProgramStyle programStyle) {
-        if (programStyle == null) {
-            container = new StylerContainer();
-        }
-    }
-
-    public ProgramStyle extractStyle(FileCollection files) {
+    public ProgramStyle extractStyle(FileCollection files) throws ExtractException {
         extractInitialize();
         int count = 0;
         for (int i = 0; i < files.size(); i++) {
@@ -80,14 +73,11 @@ public class Controller {
                 extractOnTS();
                 extractOnAST();
 //                preprocessor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
-            } catch (IOException e) {
-                System.err.println("error in extracting style from file: " + files.getFilePath(i));
+            } catch (Exception e) {
+                logger.error("Failed to extract style rules from file: {}", files.getFilePath(i));
+                throw new ExtractException(e.getMessage());
             }
         }
-//    System.out.println("-----------------------------------------------------------------");
-//    System.out.println("extraction result:");
-//    System.out.println("extracted files: " + count + "/" + files.size());
-//    System.out.println("-----------------------------------------------------------------");
 
         extractFinalize();
         return combineStyle();
@@ -98,8 +88,9 @@ public class Controller {
     }
 
     private void extractInitialize() {
-//        TokenOperation.setStyleObj(programStyle);
-//        ExtendContext.setStyleObj(programStyle);
+        for (Styler styler : container.getStylers()) {
+            styler.reset();
+        }
     }
 
     private void extractFinalize() {
@@ -129,39 +120,42 @@ public class Controller {
 
     }
 
-    public void applyStyle(FileCollection files) throws IOException {
+    public void applyStyle(FileCollection files, ProgramStyle programStyle) {
+
+    }
+
+    private void applyStyle(FileCollection files) throws ApplyException {
         applyInitialize();
         int count = 0;
         for (int i = 0; i < files.size(); i++) {
-            curPath = Paths.get(files.getFilePath(i));
-            setParser(curPath);
-            tree = parser.parse(curPath);
-            if (tree == null) {
-                // System.out.println("application failure because of syntax error:" + filePath);
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compilation-error" +
-                        ".txt", true), StandardCharsets.UTF_8));
-                writer.write(curPath.toString());
-                continue;
+            try {
+                curPath = Paths.get(files.getFilePath(i));
+                setParser(curPath);
+                tree = parser.parse(curPath);
+                if (tree == null) {
+                    // System.out.println("application failure because of syntax error:" + filePath);
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("compilation-error" +
+                            ".txt", true), StandardCharsets.UTF_8));
+                    writer.write(curPath.toString());
+                    continue;
+                }
+                ++count;
+
+                Preprocessor preprocessor = new Preprocessor();
+                preprocessor.preprocess(parser, Stage.APPLY);
+                parser.walkTree(Stage.APPLY, container.getStylers());
+
+                List<Token> tokens = new LinkedList<>();
+                generateTokens(tree, tokens);
+                tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
+
+                applyOnTS(tokens);
+                saveApplyResult(tokens, preprocessor);
+            } catch (Exception e) {
+                logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
+                throw new ApplyException(e.getMessage());
             }
-            ++count;
-
-            Preprocessor preprocessor = new Preprocessor();
-            preprocessor.preprocess(parser, Stage.APPLY);
-            parser.walkTree(Stage.APPLY, container.getStylers());
-
-            List<Token> tokens = new LinkedList<>();
-            generateTokens(tree, tokens);
-            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
-
-            applyOnTS(tokens);
-            saveApplyResult(tokens, preprocessor);
         }
-
-//    System.out.println("-----------------------------------------------------------------");
-//    System.out.println("application result:");
-//    System.out.println("applied files: " + count + "/" + files.size());
-//    System.out.println("-----------------------------------------------------------------");
-        // applyFinalize();
     }
 
 
@@ -238,64 +232,19 @@ public class Controller {
         }
     }
 
+
+    private void init(ProgramStyle programStyle) {
+        if (programStyle == null) {
+            container = new StylerContainer();
+        }
+    }
+
     private void applyInitialize() {
 
     }
 
     private void applyFinalize() {
     }
-
-    // Return the first non-comment and non-whitespace token after the @curIndex.
-    private Token getFirstToken(List<Token> tokens, int curIndex) {
-        int type = tokens.get(curIndex).getType();
-        while (curIndex < tokens.size()) {
-            type = tokens.get(curIndex).getType();
-            if (type == JavaLexer.BLOCK_COMMENT || type == JavaLexer.LINE_COMMENT
-                    || type == JavaLexer.HWS || type == JavaLexer.VWS) {
-                ++curIndex;
-            } else {
-                break;
-            }
-        }
-        return tokens.get(curIndex);
-    }
-
-    private Token getNext(List<Token> list, int index) {
-        if (index < list.size()) {
-            return list.get(index);
-        }
-        return null;
-    }
-
-
-//    private void initTokenToOperationMap() {
-//        if (!tokenToOperationMap.isEmpty()) {
-//            return;
-//        }
-//        // Numeric literal
-//        tokenToOperationMap.put(JavaLexer.DECIMAL_LITERAL, new NumericLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.HEX_LITERAL, new NumericLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.OCT_LITERAL, new NumericLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.BINARY_LITERAL, new NumericLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.FLOAT_LITERAL, new NumericLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.HEX_FLOAT_LITERAL, new NumericLiteralTokenOperation());
-//
-//        // String literal
-//        tokenToOperationMap.put(JavaLexer.CHAR_LITERAL, new StrLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.STRING_LITERAL, new StrLiteralTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.TEXT_BLOCK, new StrLiteralTokenOperation());
-//
-//        // Comment
-//        tokenToOperationMap.put(JavaLexer.BLOCK_COMMENT, new CommentTokenOperation());
-//        tokenToOperationMap.put(JavaLexer.LINE_COMMENT, new CommentTokenOperation());
-//
-//        // Horizontal whitespace
-//        // tokenToOperationMap.put(JavaLexer.HWS, new HWSTokenOperation());
-//
-//        // Brace
-//        // tokenToOperationMap.put(JavaLexer.LBRACE, new ProcessBrace());
-//        // tokenToOperationMap.put(JavaLexer.RBRACE, new ProcessBrace());
-//    }
 
     private void generateTokens(ParseTree root, List<Token> tokens) {
         if (root instanceof TerminalNode) {
@@ -333,10 +282,8 @@ public class Controller {
             StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
             applyStyle(conf.applicationCollection);
             return programStyle;
-        } catch (IOException | DocumentException e) {
+        } catch (DocumentException | ExtractException | ApplyException e) {
             logger.error(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            logger.error("{}\nPath: {}", e.getMessage(), curPath.toString());
         }
         return null;
     }

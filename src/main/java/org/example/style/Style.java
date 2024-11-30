@@ -18,4 +18,5 @@ public interface Style {
     boolean contains(StyleContext targetContext);
     void filterRules();
     StyleProperty remove(StyleContext styleContext);
+    void reset();
 }
