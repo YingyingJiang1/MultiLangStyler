@@ -6,6 +6,7 @@ import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
 
 import java.util.*;
+import java.util.Objects;
 
 /*
  * @description
@@ -75,5 +76,18 @@ public class Feature implements DomIO {
                 feature.modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));
             }
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(modifierStatistics);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Feature feature) {
+            return Objects.equals(modifierStatistics, feature.modifierStatistics);
+        }
+        return false;
     }
 }

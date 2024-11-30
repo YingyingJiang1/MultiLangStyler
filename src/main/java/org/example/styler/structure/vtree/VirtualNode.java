@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class VirtualNode {
 
-    public ParseTree t = null;
+    public ParseTree tree = null;
     // Real nodes the virtual node matched.
     public List<ParseTree> matchedTrees = new ArrayList<>(0);
     public String type; // The type of corresponding placeholder.
@@ -30,7 +30,7 @@ public class VirtualNode {
     }
 
     public boolean isEmpty() {
-        return t == null;
+        return tree == null;
     }
 
     public boolean matches(ParseTree t1, MyParser parser) {
@@ -56,14 +56,17 @@ public class VirtualNode {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VirtualNode that = (VirtualNode) o;
-        return Objects.equals(t, that.t);
+       if (o instanceof VirtualNode vnode) {
+           return Objects.equals(tree, vnode.tree) &&
+                   Objects.equals(matchedTrees, vnode.matchedTrees) &&
+                   Objects.equals(type, vnode.type) &&
+                   Objects.equals(repetition, vnode.repetition);
+       }
+       return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(t);
+        return Objects.hash(tree, matchedTrees, type, repetition);
     }
 }

@@ -4,6 +4,8 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
+import java.util.Objects;
+
 public class IndentionProperty extends StyleProperty {
     public int indentionUnit;
     public char indentionType = ' ';
@@ -23,6 +25,18 @@ public class IndentionProperty extends StyleProperty {
     public void parseElement(Element parent, MyParser parser) {
         indentionUnit = Integer.parseInt(parent.attributeValue("indentionUnit"));
         indentionType = parent.attributeValue("indentionType").charAt(0);
-        
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(indentionUnit, indentionType);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof IndentionProperty property) {
+            return indentionUnit == property.indentionUnit && indentionType == property.indentionType;
+        }
+        return false;
     }
 }

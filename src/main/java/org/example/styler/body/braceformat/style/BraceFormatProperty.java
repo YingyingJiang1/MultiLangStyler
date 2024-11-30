@@ -4,6 +4,8 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
+import java.util.Objects;
+
 public class BraceFormatProperty extends StyleProperty {
     public boolean beforeLB, afterLB, beforeRB, afterRB;
 
@@ -46,5 +48,18 @@ public class BraceFormatProperty extends StyleProperty {
         afterLB = parent.attributeValue("afterLB") == null || Boolean.parseBoolean(parent.attributeValue("afterLB"));
         beforeRB = parent.attributeValue("beforeRB") == null || Boolean.parseBoolean(parent.attributeValue("beforeRB"));
         afterRB = parent.attributeValue("afterRB") == null || Boolean.parseBoolean(parent.attributeValue("afterRB"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(beforeLB, afterLB, beforeRB, afterRB);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BraceFormatProperty property) {
+            return beforeLB == property.beforeLB && afterLB == property.afterLB && beforeRB == property.beforeRB && afterRB == property.afterRB;
+        }
+        return false;
     }
 }

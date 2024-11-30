@@ -59,10 +59,10 @@
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>EMPTY</body_type>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
       </style_context>
-      <style_property beforeLB="false" afterLB="false" beforeRB="true" afterRB="true"/>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
     </rule>
     <rule>
       <style_context>
@@ -80,10 +80,10 @@
     </rule>
     <rule>
       <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>SINGLE</body_type>
+        <block_type>DEC_BODY</block_type>
+        <body_type>EMPTY</body_type>
       </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
+      <style_property beforeLB="false" afterLB="false" beforeRB="true" afterRB="true"/>
     </rule>
     <rule>
       <style_context>
@@ -102,31 +102,7 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="FILE_HEAD_DEC" type2="importDeclarationList" minCodeBockLines="0"/>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context type1="TYPE_DEC" type2="TYPE_DEC" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="importDeclarationList" type2="TYPE_DEC" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="FILE_HEAD_DEC" type2="" minCodeBockLines="0"/>
+      <style_context type1="MEMBER_LIST" type2="MEMBER_LIST" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
@@ -134,7 +110,31 @@
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="MEMBER_LIST" type2="MEMBER_LIST" minCodeBockLines="0"/>
+      <style_context type1="FILE_HEAD_DEC" type2="importDeclarationList" minCodeBockLines="0"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context type1="annotation" type2="KEYWORD" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="FILE_HEAD_DEC" type2="" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="TYPE_DEC" type2="TYPE_DEC" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="importDeclarationList" type2="TYPE_DEC" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
   </style>
@@ -161,7 +161,7 @@
     </rule>
     <rule>
       <style_context token="KEYWORD, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="KEYWORD, {"/>
@@ -193,7 +193,7 @@
     </rule>
     <rule>
       <style_context token="IDENTIFIER, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="), )"/>
@@ -241,7 +241,7 @@
     </rule>
     <rule>
       <style_context token="KEYWORD, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
   </style>
   <style name="indention">

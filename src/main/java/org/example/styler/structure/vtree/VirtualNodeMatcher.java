@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class VirtualNodeMatcher {
     private static Map<Class, VirtualNodeMatcher> instances = new HashMap<>(0);
-    private Map<String, Set<Integer>> matchRules = new HashMap<>();
-    private Map<String, Set<Integer>> matchTokens = new HashMap<>();
+    private static Map<String, Set<Integer>> matchRules = new HashMap<>();
+    private static Map<String, Set<Integer>> matchTokens = new HashMap<>();
 
     private VirtualNodeMatcher(MyParser parser) {
         init(parser);
@@ -42,7 +42,7 @@ public class VirtualNodeMatcher {
         }
     }
 
-    private void init(MyParser parser) {
+    private static void init(MyParser parser) {
         matchRules.put("$I", Set.of(parser.getRuleIdentifier(), parser.getRuleExpression()));
         matchRules.put("$C", Set.of(parser.getRuleExpression()));
         matchRules.put("$E", Set.of(parser.getRuleExpression()));

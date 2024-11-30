@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /*
@@ -28,8 +29,6 @@ public class ExtendToken extends CommonToken {
     // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
     public List<Token> contextTokens = null;
     public boolean hasTrailingComment = false;
-    // The meaning of @info depends on the type of the token.
-    public Object info;
 
     public ExtendToken(int type) {
         super(type);
@@ -55,7 +54,6 @@ public class ExtendToken extends CommonToken {
     public ExtendToken clone() {
         ExtendToken ret = new ExtendToken(this);
         ret.hierarchy = hierarchy;
-        ret.info = info;
         ret.contextTokens = contextTokens;
         return ret;
     }
@@ -164,7 +162,20 @@ public class ExtendToken extends CommonToken {
         this.hierarchy = depth;
     }
 
-    public Object getInfo() {
-        return this.info;
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), hierarchy, indention, contextTokens, hasTrailingComment);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ExtendToken other) {
+            return super.equals(obj)
+                    && hierarchy == other.hierarchy
+                    && indention == other.indention
+                    && Objects.equals(contextTokens, other.contextTokens)
+                    && hasTrailingComment == other.hasTrailingComment;
+        }
+        return false;
     }
 }

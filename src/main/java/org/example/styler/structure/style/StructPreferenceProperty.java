@@ -24,4 +24,17 @@ public class StructPreferenceProperty extends StyleProperty {
     public void parseElement(Element parent, MyParser parser) {
         preferenceIndex = Integer.parseInt(parent.attributeValue("preferenceIndex"));
     }
+
+    @Override
+    public int hashCode() {
+        return preferenceIndex;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof StructPreferenceProperty property) {
+            return preferenceIndex == property.preferenceIndex;
+        }
+        return false;
+    }
 }

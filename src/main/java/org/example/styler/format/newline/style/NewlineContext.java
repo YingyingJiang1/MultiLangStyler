@@ -61,13 +61,13 @@ public class NewlineContext extends StyleContext {
 
     @Override
     public int hashCode() {
-        return Objects.hash(typeName1, typeName2);
+        return Objects.hash(typeName1, typeName2, minTextLength);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NewlineContext context) {
-            return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2);
+            return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2) && minTextLength == context.minTextLength;
         }
         return false;
     }

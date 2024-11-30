@@ -9,7 +9,6 @@ import org.example.parser.common.token.AmbigousToken;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
 import org.example.parser.common.token.ExtendToken;
-import org.example.parser.common.token.TokenInfoField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +26,6 @@ public class Preprocessor {
     CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
     for (int i = 0; i < tokenStream.size(); i++) {
       setHierarchy(tokenStream, i);
-      if (stage == Stage.EXTRACT) {
-        processBrace(tokenStream, i);
-      }
       processComment(parser, tokenStream, i);
       processAmbiguousToken(parser, tokenStream, i);
     }
@@ -58,18 +54,18 @@ public class Preprocessor {
       token.setHierarchy(curNestingDepth);
     }
   }
-
-  private void processBrace(CommonTokenStream tokenStream, int curIndex) {
-    if(!AntlrHelper.isBrace(tokenStream.get(curIndex))) {
-      return;
-    }
-
-    // Extract line break information before and after brace.
-    TokenInfoField.BraceTokenInfo info = new TokenInfoField.BraceTokenInfo();
-    info.before = getBeforeNewlineInfo(tokenStream, curIndex);
-    info.after = getAfterNewlineInfo(tokenStream, curIndex);
-    ((ExtendToken) tokenStream.get(curIndex)).info = info;
-  }
+//
+//  private void processBrace(CommonTokenStream tokenStream, int curIndex) {
+//    if(!AntlrHelper.isBrace(tokenStream.get(curIndex))) {
+//      return;
+//    }
+//
+//    // Extract line break information before and after brace.
+//    TokenInfoField.BraceTokenInfo info = new TokenInfoField.BraceTokenInfo();
+//    info.before = getBeforeNewlineInfo(tokenStream, curIndex);
+//    info.after = getAfterNewlineInfo(tokenStream, curIndex);
+//    ((ExtendToken) tokenStream.get(curIndex)).info = info;
+//  }
 
   /**
    * @Description Add comment tokens to the first or last token of the commented statement

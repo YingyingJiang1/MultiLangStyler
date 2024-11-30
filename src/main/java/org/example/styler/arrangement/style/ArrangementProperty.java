@@ -10,6 +10,7 @@ import org.example.style.rule.StyleProperty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class ArrangementProperty extends StyleProperty {
     List<ContentArea> areas = new ArrayList<>();
@@ -112,6 +113,20 @@ public class ArrangementProperty extends StyleProperty {
             feature.parseElement(parent, parser);
             order.parseElement(parent, parser);
         }
+
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(category, feature, order);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof ContentArea area) {
+                return category == area.category && Objects.equals(feature, area.feature) && Objects.equals(order, area.order);
+            }
+            return false;
+        }
     }
 
     public static class FieldDecArea extends ContentArea {
@@ -145,5 +160,18 @@ public class ArrangementProperty extends StyleProperty {
         public InitializerArea(int category) {
             super(category);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(areas);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ArrangementProperty property) {
+            return areas.equals(property.areas);
+        }
+        return false;
     }
 }

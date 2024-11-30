@@ -3,10 +3,9 @@ package org.example.styler.structure.vtree;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.swing.text.StyledEditorKit;
+import java.util.*;
+import java.util.Objects;
 
 public class Forest implements Comparable {
 
@@ -75,5 +74,18 @@ public class Forest implements Comparable {
 
     public List<ParseTree> getTrees() {
         return trees;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trees, realTreeVnodeMap, priority);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Forest forest) {
+            return trees.equals(forest.trees) && realTreeVnodeMap.equals(forest.realTreeVnodeMap) && priority == forest.priority;
+        }
+       return false;
     }
 }

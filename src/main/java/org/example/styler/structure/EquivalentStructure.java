@@ -306,9 +306,9 @@ public class EquivalentStructure {
 				} else {
 					if (vNode.isEmpty()) {
 						vTreeMap.put(child, vNode);
-						vNode.t = child;
+						vNode.tree = child;
 					} else {
-						children.set(i, vNode.t);
+						children.set(i, vNode.tree);
 					}
 				}
 			} else {
@@ -348,4 +348,24 @@ public class EquivalentStructure {
 
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, category, rules, forests, placeholderContainer, bannedTransfer, vTreeMap, checkers, handlers);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof EquivalentStructure structure) {
+			return Objects.equals(id, structure.id) &&
+					Objects.equals(category, structure.category) &&
+					Arrays.equals(rules, structure.rules) &&
+					Objects.equals(forests, structure.forests) &&
+					Objects.equals(placeholderContainer, structure.placeholderContainer) &&
+					Objects.equals(bannedTransfer, structure.bannedTransfer) &&
+					Objects.equals(vTreeMap, structure.vTreeMap) &&
+					Objects.equals(checkers, structure.checkers) &&
+					Objects.equals(handlers, structure.handlers);
+		}
+		return false;
+	}
 }

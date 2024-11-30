@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
-import org.example.parser.common.token.TokenInfoField;
 import org.example.style.Style;
 
 import org.example.style.rule.StyleProperty;
@@ -243,19 +242,5 @@ public class BraceFormatStyler extends BodyStyler {
         } else {
             return ((ExtendContext) t).start;
         }
-    }
-
-    private TokenInfoField.BraceTokenInfo[] getBraceTokenInfo(ExtendContext ctx) {
-        int lbIndex = ctx.findFirstTerChildByType(parser.getLBrace());
-        int rbIndex = ctx.findFirstTerChildByType(parser.getRBrace());
-        TokenInfoField.BraceTokenInfo[] infos = new TokenInfoField.BraceTokenInfo[2];
-        if (lbIndex == -1 || rbIndex == -1) {
-            return infos;
-        }
-        ExtendToken lbToken = (ExtendToken) ((TerminalNode) ctx.getChild(lbIndex)).getSymbol();
-        ExtendToken rbToken = (ExtendToken) ((TerminalNode) ctx.getChild(rbIndex)).getSymbol();
-        infos[0] = (TokenInfoField.BraceTokenInfo) lbToken.info;
-        infos[1] = (TokenInfoField.BraceTokenInfo) rbToken.info;
-        return infos;
     }
 }

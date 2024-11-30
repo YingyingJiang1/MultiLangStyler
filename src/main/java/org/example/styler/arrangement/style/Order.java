@@ -6,6 +6,7 @@ import org.example.parser.common.MyParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /*
  * @description
@@ -134,5 +135,18 @@ public class Order implements DomIO {
         }
         Order.allowedOrderDeviation = orderEle.attribute("allowedOrderDeviation") == null ?
                 0.3 : Double.parseDouble(orderEle.attributeValue("allowedOrderDeviation"));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(logicalOrder, modifierOrder);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Order order) {
+            return Objects.equals(logicalOrder, order.logicalOrder) && Objects.equals(modifierOrder, order.modifierOrder);
+        }
+        return false;
     }
 }

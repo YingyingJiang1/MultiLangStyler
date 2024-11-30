@@ -1,6 +1,7 @@
 package org.example.styler.structure.vtree;
 
 import java.util.*;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,9 +23,13 @@ import java.util.regex.Pattern;
  */
 public class PlaceholderContainer {
 
+
     // key: placeholder value, value:placeholder names
     Map<String, List<String>> valueNameMap = new HashMap<>();
     Map<String, Placeholder> placeholders = new HashMap<>();
+    static int TYPE_GROUP = 1;
+    static int DIGITAL_GROUP = 2;
+    static int REPETITION_GROUP = 3;
     // Ensure each pattern has three groups. If regular1 is a prefix of regular2 then regular1 should be put after regular2.
     static Pattern[] placeholderPatterns = {
             Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
@@ -33,6 +38,7 @@ public class PlaceholderContainer {
             Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
             Pattern.compile("(\\$LITERAL)(\\d*)()")
     };
+
     private static final Map<String, String> placeholderMap = new HashMap<>() {{
         put("$I", "I#id");
         put("$C", "C#id");
@@ -48,9 +54,7 @@ public class PlaceholderContainer {
         put("$LITERAL", "1");
         put("", "");
     }};
-    static int TYPE_GROUP = 1;
-    static int DIGITAL_GROUP = 2;
-    static int REPETITION_GROUP = 3;
+
 
     public PlaceholderContainer(String[] placeholderNames) {
         for (int i = 0; i < placeholderNames.length; i++) {
@@ -175,5 +179,37 @@ public class PlaceholderContainer {
             this.repetition = repetition;
             this.type = type;
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(placeholderName, placeholderValue, index, repetition, type, vNode);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Placeholder placeholder) {
+                return Objects.equals(placeholderName, placeholder.placeholderName) &&
+                        Objects.equals(placeholderValue, placeholder.placeholderValue) &&
+                        Objects.equals(repetition, placeholder.repetition) &&
+                        Objects.equals(type, placeholder.type) &&
+                        Objects.equals(vNode, placeholder.vNode) &&
+                        index == placeholder.index;
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(valueNameMap, placeholders);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof PlaceholderContainer placeholderContainer) {
+            return Objects.equals(valueNameMap, placeholderContainer.valueNameMap) &&
+                    Objects.equals(placeholders, placeholderContainer.placeholders);
+        }
+        return false;
     }
 }

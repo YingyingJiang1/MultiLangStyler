@@ -29,4 +29,17 @@ public class SpaceProperty extends StyleProperty {
             space2 = Boolean.parseBoolean(parent.attributeValue("space2"));
         }
     }
+
+    @Override
+    public int hashCode() {
+        return Boolean.hashCode(space1) + Boolean.hashCode(space2);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SpaceProperty property) {
+            return space1 == property.space1 && space2 == property.space2;
+        }
+        return false;
+    }
 }

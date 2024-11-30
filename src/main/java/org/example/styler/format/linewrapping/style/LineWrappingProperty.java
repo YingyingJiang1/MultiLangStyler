@@ -6,6 +6,7 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 import java.util.*;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,6 +94,23 @@ public class LineWrappingProperty extends StyleProperty {
         return null;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(variance, maxLen, maxLenBefore, breakLocs, succeedLoc);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof LineWrappingProperty property) {
+            return variance == property.variance
+                    && maxLen == property.maxLen
+                    && maxLenBefore == property.maxLenBefore
+                    && breakLocs.equals(property.breakLocs)
+                    && succeedLoc.equals(property.succeedLoc);
+        }
+        return false;
+    }
+
     public static class BreakLoc {
         // Indentation rule
         // Where to add newline, before or after the specific token ?
@@ -107,6 +125,19 @@ public class LineWrappingProperty extends StyleProperty {
             this.reg = Pattern.compile(reg);
             this.after = after;
         }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(reg, after);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof BreakLoc breakLoc) {
+                return Objects.equals(reg, breakLoc.reg) && after == breakLoc.after;
+            }
+            return false;
+        }
     }
 
     public static class SucceedLoc {
@@ -115,6 +146,19 @@ public class LineWrappingProperty extends StyleProperty {
 
         public SucceedLoc(int relativeIndention) {
             this.relativeIndention = relativeIndention;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(relativeIndention);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof SucceedLoc succeedLoc) {
+                return relativeIndention == succeedLoc.relativeIndention;
+            }
+            return false;
         }
     }
 }
