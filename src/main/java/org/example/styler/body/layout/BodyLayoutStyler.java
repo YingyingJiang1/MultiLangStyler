@@ -3,6 +3,7 @@ package org.example.styler.body.layout;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleContext;
@@ -30,12 +31,12 @@ public class BodyLayoutStyler extends BodyStyler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
         int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0) {
             if (!parser.isBlock(ctx.getChild(bodyIndex))) {
                 ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
-                BodyContext context = extractStyleContext(ctx, body);
+                BodyContext context = extractStyleContext(ctx, body, parser);
                 BodyLayoutProperty property = new BodyLayoutProperty();
                 ParseTree preChild = ctx.getChild(bodyIndex - 1);
                 int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
@@ -47,11 +48,11 @@ public class BodyLayoutStyler extends BodyStyler {
     }
 
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0 && !parser.isBlock(ctx.getChild(bodyIndex))) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
-            StyleContext context = extractStyleContext(ctx, body);
+            StyleContext context = extractStyleContext(ctx, body, parser);
             BodyLayoutProperty property = (BodyLayoutProperty) style.getProperty(context);
             ExtendToken stop = (ExtendToken) body.stop;
             if(!property.compactStyle) {
@@ -83,7 +84,7 @@ public class BodyLayoutStyler extends BodyStyler {
     }
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<Integer>(List.of(
                     parser.getRuleIfStmt(), parser.getRuleIfElseStmt(),

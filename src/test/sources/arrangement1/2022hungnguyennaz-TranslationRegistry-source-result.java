@@ -15,21 +15,24 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-@Data@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Data
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TranslationRegistry {
     public static final TranslationRegistry INSTANCE = new TranslationRegistry();//
-    private final List<TranslationProvider>providers = new LinkedList<>();
+    private final List<TranslationProvider> providers = new LinkedList<>();
     static {
         try {
-            INSTANCE.addProvider(new JsonProvider("/assets/minecraft/lang/en_us.json"));
+            INSTANCE.addProvider( new JsonProvider( "/assets/minecraft/lang/en_us.json"));
         }catch (Exception ex) {
         }
+
         try {
-            INSTANCE.addProvider(new JsonProvider("/mojang-translations/en_us.json"));
+            INSTANCE.addProvider( new JsonProvider( "/mojang-translations/en_us.json"));
         }catch (Exception ex) {
         }
+
         try {
-            INSTANCE.addProvider(new ResourceBundleProvider("mojang-translations/en_US"));
+            INSTANCE.addProvider( new ResourceBundleProvider( "mojang-translations/en_US"));
         }catch (Exception ex) {
         }
     }
@@ -39,16 +42,15 @@ public final class TranslationRegistry {
     }
 
     public String translate(String s) {
-        for (TranslationProvider provider:providers) {
-            String translation = provider.translate(s);if (translation != null) {
+        for (TranslationProvider provider : providers) {
+            String translation = provider.translate(s);
+
+            if (translation != null ) {
                 return translation;
             }
         }
-        return s;
-    }
 
-    private interface TranslationProvider {
-        String translate(String s);
+        return s;
     }
 
     @Data
@@ -60,16 +62,19 @@ public final class TranslationRegistry {
 
         @Override
         public String translate(String s) {
-            return (bundle.containsKey(s))?bundle.getString(s):null;
+            return (bundle.containsKey(s)) ? bundle.getString(s) : null;
         }
     }
 
-    @Data@ToString(exclude = "translations")
+    @Data
+    @ToString(exclude = "translations")
     private static class JsonProvider implements TranslationProvider {
-        private final Map<String, String>translations = new HashMap<>();
+        private final Map<String, String> translations = new HashMap<>();
         public JsonProvider(String resourcePath)throws IOException {
             try (InputStreamReader rd = new InputStreamReader(JsonProvider.class.getResourceAsStream(resourcePath), Charsets.UTF_8)) {
-                JsonObject obj = new Gson().fromJson(rd, JsonObject.class);for (Map.Entry<String, JsonElement>entries:obj.entrySet()) {
+                JsonObject obj = new Gson().fromJson(rd, JsonObject.class);
+
+                for (Map.Entry<String, JsonElement> entries : obj.entrySet()) {
                     translations.put(entries.getKey(), entries.getValue().getAsString());
                 }
             }
@@ -79,5 +84,9 @@ public final class TranslationRegistry {
         public String translate(String s) {
             return translations.get(s);
         }
+    }private interface TranslationProvider {
+        String translate(String s);
     }
+
+
 }

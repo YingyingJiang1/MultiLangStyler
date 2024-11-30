@@ -4,7 +4,6 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
-import org.example.debug.TreePrinter;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.MyParser;
@@ -12,7 +11,6 @@ import org.example.parser.common.context.RuleGroup;
 import org.example.parser.common.context.RuleGrouper;
 import org.example.parser.common.token.TokenGroup;
 import org.example.parser.common.token.TokenGrouper;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Stage;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
@@ -20,7 +18,6 @@ import org.example.styler.Styler;
 import org.example.styler.format.newline.style.NewlineStyle;
 
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /*
@@ -43,12 +40,12 @@ public class NewlineStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
         Function<AdjacentCodeBlock, Void> extractor = new Function<AdjacentCodeBlock, Void>() {
             @Override
             public Void apply(AdjacentCodeBlock adjacentCode) {
-                NewlineContext context = extractContext(adjacentCode);
-                NewlineProperty property = extractProperty(adjacentCode);
+                NewlineContext context = extractContext(adjacentCode, parser);
+                NewlineProperty property = extractProperty(adjacentCode, parser);
 
                 // A newline adjacent to a brace is seen as a part of brace format.
                 if (adjacentCode.child1.token.getType() == parser.getRBrace() ||
@@ -80,16 +77,16 @@ public class NewlineStyler extends Styler {
             }
         };
 
-        framework(ctx, extractor);
+        framework(ctx, extractor, parser);
     }
 
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         Function<AdjacentCodeBlock, Void> applicator = new Function<AdjacentCodeBlock, Void>() {
             @Override
             public Void apply(AdjacentCodeBlock adjacentCodeBlock) {
                 // First try to add some blank lines, second try to add a newline.
-                NewlineContext newlineContext = extractContext(adjacentCodeBlock);
+                NewlineContext newlineContext = extractContext(adjacentCodeBlock, parser);
                 newlineContext.minTextLength = adjacentCodeBlock.calculateTextLength(2, parser, Stage.APPLY);
                 NewlineProperty newlineProperty = (NewlineProperty) style.getSimilarProperty(newlineContext);
                 if (newlineProperty == null) {
@@ -115,7 +112,7 @@ public class NewlineStyler extends Styler {
                     } else if(insertionPoint >= 0) { // codeBlock1: a rule info
                         ExtendToken token1 = adjacentCodeBlock.child1.token;
                         int newlines = newlineProperty.newlines;
-                        newlines -= getNewlineAfter(adjacentCodeBlock.parentCtx, adjacentCodeBlock.child1);
+                        newlines -= getNewlineAfter(adjacentCodeBlock.parentCtx, adjacentCodeBlock.child1, parser);
                         if (newlines > 0) {
                             Token vws = parser.getTokenFactory().create(parser.getVws(), StringUtils.repeat(System.lineSeparator(), newlines));
                             adjacentCodeBlock.child1.token.addTokenAfter(vws, parser);
@@ -127,13 +124,13 @@ public class NewlineStyler extends Styler {
             }
         };
 
-        framework(ctx, applicator);
+        framework(ctx, applicator,parser);
         return ctx;
     }
 
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if (parserClass == null || parserClass != parser.getClass()) {
             relevantRules = new HashSet<>();
             relevantRules.add(parser.getRuleCompilationUnit());
@@ -147,7 +144,7 @@ public class NewlineStyler extends Styler {
         return relevantRules;
     }
 
-    private void framework(ExtendContext ctx, Function<AdjacentCodeBlock, Void> executor) {
+    private void framework(ExtendContext ctx, Function<AdjacentCodeBlock, Void> executor, MyParser parser) {
         for (int i = 0; i < ctx.getChildCount() - 1; i++) {
             if (ctx.getChild(i) instanceof TerminalNode) {
                 continue;
@@ -157,9 +154,9 @@ public class NewlineStyler extends Styler {
                 continue;
             }
 
-            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT);
+            List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT, parser);
             for(AdjacentCodeBlock adjacentCode : codes) {
-                NewlineContext context = extractContext(adjacentCode);
+                NewlineContext context = extractContext(adjacentCode, parser);
                 executor.apply(adjacentCode);
             }
         }
@@ -183,9 +180,9 @@ public class NewlineStyler extends Styler {
         return info;
     }
 
-    private NewlineContext extractContext(AdjacentCodeBlock adjacentCodeBlock) {
+    private NewlineContext extractContext(AdjacentCodeBlock adjacentCodeBlock, MyParser parser) {
         AdjacentCodeBlock.CodeBlock codeBlock1 = adjacentCodeBlock.child1, codeBlock2 = adjacentCodeBlock.child2;
-        String typeName1 = getTypeName(codeBlock1), typeName2 = getTypeName(codeBlock2);
+        String typeName1 = getTypeName(codeBlock1, parser), typeName2 = getTypeName(codeBlock2, parser);
         return new NewlineContext(typeName1, typeName2, 0);
     }
 
@@ -203,7 +200,7 @@ public class NewlineStyler extends Styler {
         return startLine + countNewline;
     }
 
-    private List<AdjacentCodeBlock> extractCodeBlocks(ExtendContext parent, int index1, int index2, Stage stage) {
+    private List<AdjacentCodeBlock> extractCodeBlocks(ExtendContext parent, int index1, int index2, Stage stage, MyParser parser) {
         List<AdjacentCodeBlock> adjacentCodes = new ArrayList<>();
         AdjacentCodeBlock.CodeBlock codeBlock1 = generateCodeBlock(parent, index1, 1);
         AdjacentCodeBlock.CodeBlock codeBlock2 = generateCodeBlock(parent, index2, 2);
@@ -242,7 +239,7 @@ public class NewlineStyler extends Styler {
         return adjacentCodes;
     }
 
-    private NewlineProperty extractProperty(AdjacentCodeBlock adjacentCodeBlock) {
+    private NewlineProperty extractProperty(AdjacentCodeBlock adjacentCodeBlock, MyParser parser) {
         AdjacentCodeBlock.CodeBlock codeBlock1 = adjacentCodeBlock.child1, codeBlock2 = adjacentCodeBlock.child2;
         int newlines = codeBlock2.line - codeBlock1.line;
 
@@ -265,9 +262,9 @@ public class NewlineStyler extends Styler {
      * @param adjacentCodeBlock
      * @return the length of the shift to right.
      */
-    private int applyProperty(ExtendContext parent, AdjacentCodeBlock adjacentCodeBlock) {
+    private int applyProperty(ExtendContext parent, AdjacentCodeBlock adjacentCodeBlock, MyParser parser) {
         // First try to add some blank lines, second try to add a newline.
-        NewlineContext newlineContext = extractContext(adjacentCodeBlock);
+        NewlineContext newlineContext = extractContext(adjacentCodeBlock, parser);
         newlineContext.minTextLength = adjacentCodeBlock.calculateTextLength(2, parser, Stage.APPLY);
         NewlineProperty newlineProperty = (NewlineProperty) style.getSimilarProperty(newlineContext);
         if (newlineProperty == null) {
@@ -293,7 +290,7 @@ public class NewlineStyler extends Styler {
             } else if(insertionPoint >= 0) { // codeBlock1: a rule info
                 ExtendToken token1 = adjacentCodeBlock.child1.token;
                 int newlines = newlineProperty.newlines;
-                newlines -= getNewlineAfter(parent, adjacentCodeBlock.child1);
+                newlines -= getNewlineAfter(parent, adjacentCodeBlock.child1, parser);
                 if (newlines > 0) {
                     adjacentCodeBlock.parentCtx.addTerNode(parser.getVws(), StringUtils.repeat(System.lineSeparator(), newlines), insertionPoint);
                     return 1;
@@ -303,7 +300,7 @@ public class NewlineStyler extends Styler {
         return 0;
     }
 
-    private int getNewlineAfter(ExtendContext parent, AdjacentCodeBlock.CodeBlock info) {
+    private int getNewlineAfter(ExtendContext parent, AdjacentCodeBlock.CodeBlock info, MyParser parser) {
         int count = 0;
         // line comment has a newline at the end, so sub 1.
         boolean hasTrailingLineComment = info.token.indexOfLastTokenAfterIf(type -> type == parser.getLineComment()) > 0;
@@ -332,7 +329,7 @@ public class NewlineStyler extends Styler {
         return count;
     }
 
-    private String getTypeName(AdjacentCodeBlock.CodeBlock codeBlock) {
+    private String getTypeName(AdjacentCodeBlock.CodeBlock codeBlock, MyParser parser) {
         int type= codeBlock.type;
         if (codeBlock.type < 0) {
             TokenGroup group = TokenGrouper.getInstance().getGroup(codeBlock.token, parser);

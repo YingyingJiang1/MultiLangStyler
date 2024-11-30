@@ -3,25 +3,16 @@
 <program_style>
   <style name="arrangement">
     <rule>
-      <style_context type="class" statistic="methodDeclarationList=3, typeDeclarationList=3, constructorDeclarationList=1, fieldDeclarationList=4, initializerList=1"/>
+      <style_context type="class" statistic="methodDeclarationList=2, typeDeclarationList=3, fieldDeclarationList=2, initializerList=1"/>
       <style_property>
         <member_list name="fieldDeclarationList">
-          <feature statistic="PRIVATE=1,PUBLIC=3,STATIC=4,FINAL=4"/>
+          <feature statistic="PRIVATE=1,PUBLIC=1,STATIC=1,FINAL=2"/>
           <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_LEXI_ORDER</logical_order>
             <modifier_order>
-              <column1>PRIVATE,PUBLIC</column1>
-              <column2>STATIC</column2>
+              <column1>PUBLIC,PRIVATE</column1>
+              <column2>STATIC,FINAL</column2>
               <column3>FINAL</column3>
-            </modifier_order>
-          </order>
-        </member_list>
-        <member_list name="typeDeclarationList">
-          <feature statistic="DEFAULT=1,STATIC=2"/>
-          <order allowedOrderDeviation="0.3">
-            <logical_order>MODIFIER_ORDER</logical_order>
-            <modifier_order>
-              <column1>STATIC</column1>
             </modifier_order>
           </order>
         </member_list>
@@ -34,21 +25,21 @@
             </modifier_order>
           </order>
         </member_list>
-        <member_list name="constructorDeclarationList">
-          <feature statistic="PRIVATE=1"/>
+        <member_list name="methodDeclarationList">
+          <feature statistic="PRIVATE=1,PUBLIC=1"/>
           <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_LEXI_ORDER</logical_order>
             <modifier_order>
-              <column1>PRIVATE</column1>
+              <column1>PRIVATE,PUBLIC</column1>
             </modifier_order>
           </order>
         </member_list>
-        <member_list name="methodDeclarationList">
-          <feature statistic="PUBLIC=3,STATIC=3"/>
+        <member_list name="typeDeclarationList">
+          <feature statistic="PRIVATE=3,STATIC=2"/>
           <order allowedOrderDeviation="0.3">
             <logical_order>MODIFIER_ORDER</logical_order>
             <modifier_order>
-              <column1>PUBLIC</column1>
+              <column1>PRIVATE</column1>
               <column2>STATIC</column2>
             </modifier_order>
           </order>
@@ -56,57 +47,21 @@
       </style_property>
     </rule>
   </style>
-  <style name="brace_format">
-    <rule>
-      <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>EMPTY</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="false" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>ARRAY_INITIALIZER_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>ANY_BODY</block_type>
-        <body_type>ANY</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-  </style>
   <style name="newline">
+    <rule>
+      <style_context type1="annotation" type2="annotation" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
     <rule>
       <style_context type1="MEMBER_LIST" type2="MEMBER_LIST" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
       <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="COMPOUND_STMT" type2="COMPOUND_STMT" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
@@ -118,15 +73,19 @@
       <style_property newlines="1"/>
     </rule>
     <rule>
+      <style_context type1="COMPOUND_STMT" type2="SINGLE_STMT" minCodeBockLines="0"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
       <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="SINGLE_STMT" type2="" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
+      <style_context type1="SINGLE_STMT" type2="COMPOUND_STMT" minCodeBockLines="81"/>
+      <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="FILE_HEAD_DEC" type2="" minCodeBockLines="0"/>
+      <style_context type1="SINGLE_STMT" type2="COMPOUND_STMT" minCodeBockLines="0"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
@@ -135,20 +94,99 @@
     </rule>
     <rule>
       <style_context type1="importDeclarationList" type2="TYPE_DEC" minCodeBockLines="0"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
+    </rule>
+  </style>
+  <style name="indention">
+    <rule>
+      <style_property indentionUnit="4" indentionType=" "/>
+    </rule>
+  </style>
+  <style name="brace_format">
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>EMPTY</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="false" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="false"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>ARRAY_INITIALIZER_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>ANY_BODY</block_type>
+        <body_type>ANY</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
   </style>
   <style name="space">
     <rule>
+      <style_context token="(, &quot;/mojang-translations/en_us.json&quot;"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context token="IDENTIFIER, ("/>
-      <style_property space1="true" space2="false"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="), KEYWORD"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, )"/>
-      <style_property space1="true" space2="false"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="(, )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="RIGHT_ANGLE_BRACKET, ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, ,"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -156,8 +194,8 @@
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER, ,"/>
-      <style_property space1="true" space2="false"/>
+      <style_context token="(, &quot;/assets/minecraft/lang/en_us.json&quot;"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="KEYWORD, IDENTIFIER"/>
@@ -165,6 +203,14 @@
     </rule>
     <rule>
       <style_context token="KEYWORD, {"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="LEFT_ANGLE_BRACKET, RIGHT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="QUESTION, IDENTIFIER"/>
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
@@ -176,16 +222,20 @@
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context token="}, COMMENT"/>
-      <style_property space1="true" space2="false"/>
+      <style_context token="(, &quot;mojang-translations/en_US&quot;"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="LEFT_ANGLE_BRACKET, IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, {"/>
-      <style_property space1="true" space2="true"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, ;"/>
-      <style_property space1="true" space2="false"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="KEYWORD, ("/>
@@ -197,27 +247,35 @@
     </rule>
     <rule>
       <style_context token="KEYWORD, )"/>
-      <style_property space1="true" space2="false"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="RIGHT_ANGLE_BRACKET, IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, @"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="DOT"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token=",, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
       <style_context token="IDENTIFIER, KEYWORD"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="), )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="}, }"/>
       <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="), )"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="(, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="{, }"/>
@@ -228,19 +286,19 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
+      <style_context token="), ,"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
       <style_context token="}, @"/>
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER, COMMENT"/>
-      <style_property space1="false" space2="true"/>
+      <style_context token=";, @"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD, LITERAL"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="UNARY_OP, LITERAL"/>
+      <style_context token="IDENTIFIER, RIGHT_ANGLE_BRACKET"/>
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
@@ -261,36 +319,43 @@
     </rule>
     <rule>
       <style_context token="(, IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="LITERAL, )"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="COLON"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="), {"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="), ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="KEYWORD, KEYWORD"/>
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context token="{, IDENTIFIER"/>
+      <style_context token="), QUESTION"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, LEFT_ANGLE_BRACKET"/>
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
-      <style_context token=";, IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-  </style>
-  <style name="indention">
-    <rule>
-      <style_property indentionUnit="4" indentionType=" "/>
+      <style_context token="{, IDENTIFIER"/>
+      <style_property space1="true" space2="false"/>
     </rule>
   </style>
 </program_style>

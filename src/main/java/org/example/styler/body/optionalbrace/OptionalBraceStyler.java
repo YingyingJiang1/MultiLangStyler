@@ -2,6 +2,7 @@ package org.example.styler.body.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
@@ -22,7 +23,7 @@ public class OptionalBraceStyler extends BodyStyler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
         int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
@@ -30,17 +31,17 @@ public class OptionalBraceStyler extends BodyStyler {
             // Only consider the body has one statement.
             if (innerStmts.size() == 1) {
                 boolean useBrace = parser.isBlock(body);
-                style.addRule(extractStyleContext(ctx, body), new OptionalBraceProperty(useBrace));
+                style.addRule(extractStyleContext(ctx, body, parser), new OptionalBraceProperty(useBrace));
             }
         }
     }
 
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         int bodyIndex = ctx.indexOfIf(child -> parser.belongToStmt(child));
         if (bodyIndex >= 0) {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
-            BodyContext context = extractStyleContext(ctx, body);
+            BodyContext context = extractStyleContext(ctx, body, parser);
             OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(context);
             if (property.useBrace && body.getRuleIndex() != parser.getRuleBlock()) {
                 // Add {}
@@ -64,7 +65,7 @@ public class OptionalBraceStyler extends BodyStyler {
     }
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<Integer>(List.of(
                     parser.getRuleIfStmt(), parser.getRuleIfElseStmt(),

@@ -3,6 +3,7 @@ package org.example.styler.body.braceformat;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.Style;
@@ -24,14 +25,14 @@ public class BraceFormatStyler extends BodyStyler {
     }
 
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
-        List<ExtendContext> blocks = getAllBlocks(ctx);
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        List<ExtendContext> blocks = getAllBlocks(ctx, parser);
 
         // Apply brace information.
         int lastIndex = blocks.size() - 1;
         for (int i = 0; i < blocks.size(); ++i) {
             ExtendContext block = blocks.get(i);
-            BodyContext context = extractStyleContext(ctx, block);
+            BodyContext context = extractStyleContext(ctx, block, parser);
 
             BraceFormatProperty property = (BraceFormatProperty) style.getSimilarProperty(context);
             // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
@@ -64,16 +65,16 @@ public class BraceFormatStyler extends BodyStyler {
 
                 // Add vws around braces.
                 if (beforeLB) {
-                    addVwsBefore(block, parser.getLBrace());
+                    addVwsBefore(block, parser.getLBrace(), parser);
                 }
                 if (afterLB) {
-                    addVwsAfter(block, parser.getLBrace());
+                    addVwsAfter(block, parser.getLBrace(), parser);
                 }
                 if (beforeRB) {
-                    addVwsBefore(block, parser.getRBrace());
+                    addVwsBefore(block, parser.getRBrace(), parser);
                 }
                 if (afterRB) {
-                    addVwsAfter(block, parser.getRBrace());
+                    addVwsAfter(block, parser.getRBrace(), parser);
                 }
             }
         }
@@ -82,8 +83,8 @@ public class BraceFormatStyler extends BodyStyler {
 
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
-        List<ExtendContext> blocks = getAllBlocks(ctx);
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
+        List<ExtendContext> blocks = getAllBlocks(ctx, parser);
         int ruleIndex = ctx.getRuleIndex();
         boolean isNotMultiBlockStmt = ruleIndex != parser.getRuleIfElseStmt() && ruleIndex != parser.getRuleTryCatchStmt();
         // Extract brace information.
@@ -91,7 +92,7 @@ public class BraceFormatStyler extends BodyStyler {
             ExtendContext block = (ExtendContext) blocks.get(i);
             // Skip the last block of multi-block statement.
             if (isNotMultiBlockStmt || block != ctx.getLastContextChild()) {
-                BodyContext context = extractStyleContext(ctx, block);
+                BodyContext context = extractStyleContext(ctx, block, parser);
                 BraceFormatProperty styleProperty = extractProperty(block);
                 style.addRule(context, styleProperty);
             }
@@ -113,7 +114,7 @@ public class BraceFormatStyler extends BodyStyler {
     }
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<>(Arrays.asList(
                     parser.getRuleTypeDeclaration(),
@@ -143,7 +144,7 @@ public class BraceFormatStyler extends BodyStyler {
      *
      * @param ctx A case group of switch statement.
      */
-    private void addIndentionForCaseGroup(ExtendContext ctx, Style style) {
+    private void addIndentionForCaseGroup(ExtendContext ctx, Style style, MyParser parser) {
         for (ParseTree child : ctx.children) {
             if (parser.isTypeDeclaration(child) || parser.isStatement(child)) {
                 // SKip block statement
@@ -160,13 +161,13 @@ public class BraceFormatStyler extends BodyStyler {
         }
     }
 
-    private void addVwsBefore(ExtendContext ctx, int braceType) {
+    private void addVwsBefore(ExtendContext ctx, int braceType, MyParser parser) {
         ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
         Token vwsToken = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
         token.addToken(token.indexInContextTokens(), vwsToken);
     }
 
-    private void addVwsAfter(ExtendContext ctx, int braceType) {
+    private void addVwsAfter(ExtendContext ctx, int braceType, MyParser parser) {
         ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);
         boolean hasTrailingComment = token.indexOfLastTokenAfterIf(type -> type == parser.getLineComment()) >= 0;
         if (!hasTrailingComment) {
@@ -176,7 +177,7 @@ public class BraceFormatStyler extends BodyStyler {
     }
 
 
-    private List<ExtendContext> getAllBlocks(ExtendContext ctx) {
+    private List<ExtendContext> getAllBlocks(ExtendContext ctx, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
         List<ExtendContext> blocks = new ArrayList<>();
 

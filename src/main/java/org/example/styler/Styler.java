@@ -15,14 +15,12 @@ import java.util.Set;
  * @create     : 2024/1/21 10:44
  */
 public abstract class Styler {
-    protected MyParser parser;
     protected Style style;
     protected boolean enableExtraction = true;
     protected boolean enableApplication = true;
     public boolean executeWhenExit = true;
 
-    public Styler(MyParser parser, boolean enableExtraction, boolean enableApplication) {
-        this.parser = parser;
+    public Styler(boolean enableExtraction, boolean enableApplication) {
         this.enableExtraction = enableExtraction;
         this.enableApplication = enableApplication;
     }
@@ -38,16 +36,16 @@ public abstract class Styler {
 
     public Style getStyle() { return style; }
 
-    public void applyStyle(List<Token> tokens, int index) {
+    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
     }
 
-    public ExtendContext applyStyle(ExtendContext ctx) {
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         return null;
     }
 
-    public void extractStyle(List<Token> tokens, int index) {}
+    public void extractStyle(List<Token> tokens, int index, MyParser parser) {}
 
-    public void extractStyle(ExtendContext ctx) {}
+    public void extractStyle(ExtendContext ctx, MyParser parser) {}
 
     public boolean isEnable(Stage stage) {
         if (stage == Stage.EXTRACT) {
@@ -86,18 +84,19 @@ public abstract class Styler {
         style.reset();
     }
 
-    protected Set<Integer> getRelevantRules() {return null;}
+    protected Set<Integer> getRelevantRules(MyParser parser) {return null;}
 
-    protected Set<String> getRelevantTokens() { return null;}
+    protected Set<String> getRelevantTokens(MyParser parser) { return null;}
 
     /**
-     * @implNote
      * @param ctx
-     * @param stage EXTRACT or APPLY
+     * @param stage  EXTRACT or APPLY
+     * @param parser
      * @return
+     * @implNote
      */
-    public boolean isRelevant(ExtendContext ctx, Stage stage){
-        Set<Integer> relevantRules = getRelevantRules();
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser){
+        Set<Integer> relevantRules = getRelevantRules(parser);
         // Special case: all rules is relevant.
         if (relevantRules == null) {
             return true;
@@ -106,8 +105,8 @@ public abstract class Styler {
         return relevantRules.contains(targetRule);
     }
 
-    public boolean isRelevant(List<Token> tokens, int i, Stage stage){
-        Set<String> relevantTokens = getRelevantTokens();
+    public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser){
+        Set<String> relevantTokens = getRelevantTokens(parser);
         // Special case: all tokens is relevant.
         if (relevantTokens == null) {
             return true;
@@ -115,7 +114,7 @@ public abstract class Styler {
         return relevantTokens.contains(tokens.get(i).getText());
     }
 
-    public void setParser(MyParser parser) {
-        this.parser = parser;
+    public void setStyle(Style style) {
+        this.style = style;
     }
 }

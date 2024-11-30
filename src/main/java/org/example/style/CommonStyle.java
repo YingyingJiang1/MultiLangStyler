@@ -43,11 +43,25 @@ public class CommonStyle implements DomIO,Style {
     }
 
     public StyleProperty getProperty(StyleContext targetContext) {
-        return ruleSet.getProperty(targetContext);
+        StyleProperty property =  ruleSet.getProperty(targetContext);
+        if (property == null) {
+            Style selfStyle = SelfStyle.getStyle(styleName);
+            if (selfStyle != this && selfStyle != null) {
+                property = selfStyle.getProperty(targetContext);
+            }
+        }
+        return property;
     }
 
     public StyleProperty getSimilarProperty(StyleContext targetContext) {
-        return ruleSet.getSimilarProperty(targetContext);
+        StyleProperty property =  ruleSet.getSimilarProperty(targetContext);
+        if (property == null) {
+            Style selfStyle = SelfStyle.getStyle(styleName);
+            if (selfStyle != this && selfStyle != null) {
+                property = selfStyle.getSimilarProperty(targetContext);
+            }
+        }
+        return property;
     }
 
     public List<StyleRule> getRules() {

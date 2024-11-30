@@ -1,6 +1,6 @@
 package org.example.analysis;
 
-import org.example.Controller;
+import org.example.controller.Controller;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.StyleFeatureFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;

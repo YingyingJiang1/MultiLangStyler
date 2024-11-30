@@ -1,6 +1,7 @@
 package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.java.MyJavaParser;
 import org.example.style.rule.StyleContext;
@@ -25,11 +26,11 @@ public class StructureStyler extends Styler {
 
     public StructureStyler() {
         style.setStyleName("equivalences");
-        equivalences = EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser(""));
+        equivalences = EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser());
     }
 
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         ++recursiveDepth;
         ParseTree newTree = ctx;
         List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
@@ -70,7 +71,7 @@ public class StructureStyler extends Styler {
                     if (newTree instanceof ExtendContext newCtx) {
                         convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
                         convertionPerformed.get(targetStructure).add(to);
-                        applyStyle(newCtx);
+                        applyStyle(newCtx, parser);
                         break;
                     }
                 }
@@ -84,7 +85,7 @@ public class StructureStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
         List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
         if (equivalentStructures != null) {
 //            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
@@ -105,7 +106,7 @@ public class StructureStyler extends Styler {
     }
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = parser.getAllStmts();
         }

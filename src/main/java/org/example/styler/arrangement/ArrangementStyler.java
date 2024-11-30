@@ -2,6 +2,7 @@ package org.example.styler.arrangement;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.MyParser;
 import org.example.style.Style;
 import org.example.utils.Helper;
 import org.example.parser.common.context.ExtendContext;
@@ -23,7 +24,7 @@ public class ArrangementStyler extends Styler {
 	private static Set<Integer> relevantRules = null;
 
 	public ArrangementStyler() {
-        style = new ArrangementStyle(parser);
+        style = new ArrangementStyle();
     }
 
 
@@ -41,8 +42,9 @@ public class ArrangementStyler extends Styler {
 	 *  followed by the list contexts without matched area in their original relative order.
 	 *
 	 */
-	public ExtendContext applyStyle(ExtendContext ctx) {
-		ArrangementContext context = extractContentContext(ctx);
+	@Override
+	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+		ArrangementContext context = extractContentContext(ctx, parser);
 		ArrangementProperty property = (ArrangementProperty) style.getProperty(context);
 		if (property == null) {
 			return ctx;
@@ -67,8 +69,8 @@ public class ArrangementStyler extends Styler {
 				}
 				to = i;
 				ExtendContext listCtx = (ExtendContext) child;
-				Feature feature = extractFeature(listCtx);
-				ArrangementProperty.ContentArea area = createArea(listCtx);
+				Feature feature = extractFeature(listCtx, parser);
+				ArrangementProperty.ContentArea area = createArea(listCtx, parser);
 				area.fillArea(feature, null);
 				int minDistance = Integer.MAX_VALUE, targetAreaIndex = -1;
 				for (int j = 0; j < areas.size(); ++j) {
@@ -103,7 +105,7 @@ public class ArrangementStyler extends Styler {
 					newListCtxs.remove(i);
 					--i;
 				} else {
-					arrangeChildren(listCtx, areas.get(count));
+					arrangeChildren(listCtx, areas.get(count), parser);
 				}
 			}
 			++count;
@@ -117,12 +119,13 @@ public class ArrangementStyler extends Styler {
 	}
 
 
-	public void extractStyle(ExtendContext ctx) {
+	@Override
+	public void extractStyle(ExtendContext ctx, MyParser parser) {
 		try {
 			// Extract order info in top level type declaration.
 			boolean isTopLevelDec = parser.isTopUnit(ctx.getParent().getParent());
 			if (isTopLevelDec) {
-				ArrangementContext context = extractContentContext(ctx);
+				ArrangementContext context = extractContentContext(ctx, parser);
 				if (context != null && !style.contains(context)) {
 					ExtendContext bodyCtx = (ExtendContext) ctx
 							.getFirstInnerChildByType(parser.getRuleBody());
@@ -135,8 +138,8 @@ public class ArrangementStyler extends Styler {
 					for (ParseTree child : bodyCtx.children) {
 						if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
 							ExtendContext listCtx = (ExtendContext) child;
-							ArrangementProperty.ContentArea area = createArea(listCtx);
-							area.fillArea(extractFeature(listCtx), extractOrder(listCtx));
+							ArrangementProperty.ContentArea area = createArea(listCtx, parser);
+							area.fillArea(extractFeature(listCtx, parser), extractOrder(listCtx, parser));
 							areas.add(area);
 						}
 					}
@@ -153,7 +156,7 @@ public class ArrangementStyler extends Styler {
 	 * @param ctx TypeDeclarationContext
 	 * @return
 	 */
-	private ArrangementContext extractContentContext(ExtendContext ctx) {
+	private ArrangementContext extractContentContext(ExtendContext ctx, MyParser parser) {
 		ExtendContext headCtx = (ExtendContext) ctx.getChild(1);
 		String typeType = headCtx.getStart().getText();
 		Map<String, Integer> statistic = new HashMap<>();
@@ -170,7 +173,7 @@ public class ArrangementStyler extends Styler {
 		return new ArrangementContext(typeType, statistic);
 	}
 
-	private Feature extractFeature(ExtendContext decListCtx) {
+	private Feature extractFeature(ExtendContext decListCtx, MyParser parser) {
 		Feature feature = new Feature();
 		for (ParseTree root : decListCtx.children) {
 			if (root instanceof TerminalNode) {
@@ -232,7 +235,7 @@ public class ArrangementStyler extends Styler {
 		return D[n][m];
 	}
 
-	private Info extractInfo(ExtendContext ctx) {
+	private Info extractInfo(ExtendContext ctx, MyParser parser) {
 		Info info = new Info();
 		for (int decIndex = 0; decIndex < ctx.getChildCount(); ++decIndex) {
 			if (ctx.children.get(decIndex) instanceof TerminalNode) {
@@ -257,7 +260,7 @@ public class ArrangementStyler extends Styler {
 			}
 
 			// Add identifier.
-			decInfo.identifier = getIdentifierText(dec);
+			decInfo.identifier = getIdentifierText(dec, parser);
 			info.add(decInfo);
 		}
 		return info;
@@ -271,11 +274,11 @@ public class ArrangementStyler extends Styler {
 	 * @param identifierTextList: Each element is the first identifier text of each single declaration.
 	 * @return org.example.style.StructureStyle.Order:
 	 */
-	private Order extractOrder(ExtendContext ctx) {
+	private Order extractOrder(ExtendContext ctx, MyParser parser) {
 
 		Order order = new Order();
 
-		Info info = extractInfo(ctx);
+		Info info = extractInfo(ctx, parser);
 		extractModifierOrder(info, order);
 		extractAlphabeticOrder(info, order);
 
@@ -358,7 +361,7 @@ public class ArrangementStyler extends Styler {
 		}
 	}
 
-	private void arrangeChildren(ExtendContext ctx, ArrangementProperty.ContentArea area) {
+	private void arrangeChildren(ExtendContext ctx, ArrangementProperty.ContentArea area, MyParser parser) {
 
 		Order order = area.getOrder();
 		EnumType logicalOrder = order.getLogicalOrder();
@@ -374,7 +377,7 @@ public class ArrangementStyler extends Styler {
 			}
 			ExtendContext decCtx = (ExtendContext) ctx.getChild(i);
 			ExtendContext modifierListCtx = (ExtendContext) decCtx.getChild(decCtx.indexOfFirstInnerChildByType(parser.getRuleModifierList()));
-			String identifierText = getIdentifierText(decCtx);
+			String identifierText = getIdentifierText(decCtx, parser);
 			List<Integer> modifiers = new ArrayList<>();
 			for (ParseTree modifier : modifierListCtx.children) {
 				if (!(parser.isAnnotation(modifier))) {
@@ -410,7 +413,7 @@ public class ArrangementStyler extends Styler {
 		ctx.updateStopToken();
 	}
 
-	protected Set<Integer> getRelevantRules() {
+	protected Set<Integer> getRelevantRules(MyParser parser) {
 		if (relevantRules == null) {
 			relevantRules = new HashSet<>(Arrays.asList(
 					parser.getRuleTypeDeclaration()
@@ -423,7 +426,7 @@ public class ArrangementStyler extends Styler {
 	 * @param ctx: An instance of FieldDeclarationContext, ConstructorDeclarationContext,
 	 * MethodDeclarationContext, TypeDeclarationContext, InitializerContext
 	 */
-	protected String getIdentifierText(ExtendContext ctx) {
+	protected String getIdentifierText(ExtendContext ctx, MyParser parser) {
 		if (parser.isInitializer(ctx)) {
 			return "";
 		}
@@ -543,7 +546,7 @@ public class ArrangementStyler extends Styler {
 		}
 	}
 
-	private ArrangementProperty.ContentArea createArea(ExtendContext ctx) {
+	private ArrangementProperty.ContentArea createArea(ExtendContext ctx, MyParser parser) {
 		int rule = ctx.getRuleIndex();
 		if (parser.isFieldDeclarationList(ctx)) {
 			return new ArrangementProperty.FieldDecArea(rule);
@@ -560,7 +563,7 @@ public class ArrangementStyler extends Styler {
 	}
 
 
-	private int getFirstListCtxIndex(ExtendContext ctx) {
+	private int getFirstListCtxIndex(ExtendContext ctx, MyParser parser) {
 		return ctx.findFirstChild(
 				root -> parser.isMethodDeclarationList(root) ||
 						parser.isFieldDeclarationList(root) ||

@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleContext;
@@ -27,7 +28,7 @@ public class LineWrappingStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
         if (commentStats == null) {
             commentStats = new DescriptiveStatistics();
             String[] lines = parser.getTokenStream().getText().split("\n");
@@ -39,7 +40,7 @@ public class LineWrappingStyler extends Styler {
             }
         }
 
-        List<Token> tokens = extractRelatedTokens(ctx);
+        List<Token> tokens = extractRelatedTokens(ctx, parser);
         List<MutablePair<Token, Token>> linePairs = findLinePairs(tokens);
         if (!linePairs.isEmpty()) {
             int totalLen = ctx.start.getCharPositionInLine();
@@ -66,13 +67,14 @@ public class LineWrappingStyler extends Styler {
     }
 
     /**
-     * @implNote Choose break locations according to their properties.
      * @param ctx
+     * @param parser
      * @return
+     * @implNote Choose break locations according to their properties.
      */
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
-        List<Token> tokens = extractRelatedTokens(ctx);
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        List<Token> tokens = extractRelatedTokens(ctx, parser);
 
         if (!tokens.isEmpty()) {
             LineWrappingProperty property = (LineWrappingProperty) style.getProperty(new LineWrappingContext(LineWrappingContext.Attr.CODE));
@@ -128,7 +130,7 @@ public class LineWrappingStyler extends Styler {
 
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if(relevantRules == null) {
             relevantRules = new HashSet<Integer>();
             relevantRules.addAll(parser.getSingleStmts());
@@ -138,7 +140,7 @@ public class LineWrappingStyler extends Styler {
         return relevantRules;
     }
 
-    private List<Token> extractRelatedTokens(ExtendContext ctx) {
+    private List<Token> extractRelatedTokens(ExtendContext ctx, MyParser parser) {
         int end = ctx.getChildCount();
         if (!parser.belongToSingleStmt(ctx)) {
             end = ctx.indexOfIf(t -> parser.isBlock(t) || parser.isBody(t));

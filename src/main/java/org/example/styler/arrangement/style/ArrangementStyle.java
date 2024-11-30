@@ -12,7 +12,7 @@ import org.example.style.rule.StyleRule;
  */
 public class ArrangementStyle extends CommonStyle {
     
-    public ArrangementStyle(MyParser parser) {
+    public ArrangementStyle() {
         super();
         styleName = "arrangement";
     }

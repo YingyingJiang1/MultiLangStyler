@@ -1,6 +1,7 @@
 package org.example.styler.format.space;
 
 import org.antlr.v4.runtime.Token;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenGroup;
 import org.example.parser.common.token.TokenGrouper;
@@ -32,11 +33,11 @@ public class SpaceStyler extends Styler {
 
 
     @Override
-    public void extractStyle(List<Token> tokens, int index) {
+    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
         Token leftToken = tokens.get(index - 1), rightToken = tokens.get(index + 1);
         boolean leftSpace = parser.getHws() == leftToken.getType();
         boolean rightSpace = parser.getHws() == rightToken.getType();
-        StyleContext context = extractContext(tokens, index, Stage.EXTRACT);
+        StyleContext context = extractContext(tokens, index, Stage.EXTRACT, parser);
         SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
         if (context != null) {
             style.addRule(context, property);
@@ -44,9 +45,9 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
-    public void applyStyle(List<Token> tokens, int index) {
+    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
         Token cur = tokens.get(index);
-        SpaceContext context = extractContext(tokens, index, Stage.APPLY);
+        SpaceContext context = extractContext(tokens, index, Stage.APPLY, parser);
         SpaceProperty property = (SpaceProperty) style.getProperty(context);
         if (property != null) {
             if (cur instanceof ExtendToken extendToken) {
@@ -60,23 +61,23 @@ public class SpaceStyler extends Styler {
         }
     }
     
-    private SpaceContext extractContext(List<Token> tokens, int index, Stage stage) {
+    private SpaceContext extractContext(List<Token> tokens, int index, Stage stage, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
-        String name = generateTokenName(token);
+        String name = generateTokenName(token, parser);
         String text = token.getText();
-        Token leftToken = stage == Stage.EXTRACT ? findFirstNonWSonLeft(tokens, index - 1) : tokens.get(index - 1);
-        Token rightToken = stage == Stage.EXTRACT ? findFirstNonWSonRight(tokens, index + 1) : tokens.get(index + 1);
+        Token leftToken = stage == Stage.EXTRACT ? findFirstNonWSonLeft(tokens, index - 1, parser) : tokens.get(index - 1);
+        Token rightToken = stage == Stage.EXTRACT ? findFirstNonWSonRight(tokens, index + 1, parser) : tokens.get(index + 1);
         String leftText = leftToken == null ? "" : leftToken.getText();
-        String leftName = generateTokenName(leftToken);
+        String leftName = generateTokenName(leftToken, parser);
 
         String rightText = rightToken == null ? "" : rightToken.getText();
-        String rightName = generateTokenName(rightToken);
+        String rightName = generateTokenName(rightToken, parser);
 
         if (parser.belongToBinOp(text)) {
             // Positions on the left and right of a binary operator are symmetrical.
             return new SpaceContext(name);
         } else if (parser.belongToUnOp(text)) {
-            if (isSuffix(tokens, index)) { // suffix ++, suffix --
+            if (isSuffix(tokens, index, parser)) { // suffix ++, suffix --
                 return new SpaceContext(leftName, name);
             } else { // Right associated operator
                 return new SpaceContext(name, rightName);
@@ -89,7 +90,7 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
-    protected Set<String> getRelevantTokens() {
+    protected Set<String> getRelevantTokens(MyParser parser) {
         if (relevantTokens == null) {
             relevantTokens = new HashSet<>();
             relevantTokens.addAll(parser.getSeparators());
@@ -99,13 +100,13 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
-    public boolean isRelevant(List<Token> tokens, int i, Stage stage) {
+    public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         int type = tokens.get(i).getType();
         String text = tokens.get(i).getText();
         return type == parser.getIdentifier() || parser.getSeparators().contains(text) || parser.getOperators().contains(text) || parser.belongToKeyword(tokens.get(i));
     }
 
-    private Token findFirstNonWSonLeft(List<Token> tokens, int start) {
+    private Token findFirstNonWSonLeft(List<Token> tokens, int start, MyParser parser) {
         for (int left = start; left >= 0; left--) {
             int type = tokens.get(left).getType();
             if (type != parser.getHws() && type != parser.getVws()) {
@@ -115,7 +116,7 @@ public class SpaceStyler extends Styler {
         return null;
     }
 
-    private Token findFirstNonWSonRight(List<Token> tokens, int start) {
+    private Token findFirstNonWSonRight(List<Token> tokens, int start, MyParser parser) {
         for (int right = start; right < tokens.size(); ++right) {
             int type = tokens.get(right).getType();
             if (type != parser.getHws() && type != parser.getVws()) {
@@ -125,12 +126,12 @@ public class SpaceStyler extends Styler {
         return null;
     }
 
-    private boolean isSuffix(List<Token> tokens, int index) {
-        Token left = findFirstNonWSonLeft(tokens, index - 1);
+    private boolean isSuffix(List<Token> tokens, int index, MyParser parser) {
+        Token left = findFirstNonWSonLeft(tokens, index - 1, parser);
         return left != null && left.getType() == parser.getIdentifier();
     }
     
-    private String generateTokenName(Token token) {
+    private String generateTokenName(Token token, MyParser parser) {
         if (token == null) {
             return "";
         }

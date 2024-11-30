@@ -4,6 +4,7 @@ import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
+import org.example.styler.Stage;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,15 @@ public class NewlineStyle extends CommonStyle {
             }
 
             ruleSet.addRule(styleContext, styleProperty);
+        }
+    }
+
+    @Override
+    public StyleProperty getSimilarProperty(StyleContext targetContext) {
+
+        if (newlineProperty == null) {
+            newlineContext.minTextLength = adjacentCodeBlock.calculateTextLength(1,parser, Stage.APPLY);
+            newlineProperty = (NewlineProperty) style.getSimilarProperty(newlineContext);
         }
     }
 }

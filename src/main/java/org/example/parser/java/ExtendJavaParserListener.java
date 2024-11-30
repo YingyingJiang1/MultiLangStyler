@@ -39,15 +39,15 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	private void doTask(ExtendContext ctx, List<Styler> stylers) {
 		if (stage == Stage.EXTRACT) {
 			for (Styler styler : stylers) {
-				if (styler.isEnable(stage) && styler.isRelevant(ctx, stage)) {
-					styler.extractStyle(ctx);
+				if (styler.isEnable(stage) && styler.isRelevant(ctx, stage,parser)) {
+					styler.extractStyle(ctx,parser);
 				}
 			}
 		} else if (stage == Stage.APPLY) {
 			ExtendContext newCtx = ctx;
 			for (Styler styler : stylers) {
-				if(styler.isEnable(stage) && styler.isRelevant(newCtx, stage)) {
-					newCtx = styler.applyStyle(newCtx);
+				if(styler.isEnable(stage) && styler.isRelevant(newCtx, stage,parser)) {
+					newCtx = styler.applyStyle(newCtx,parser);
 				}
 			}
 		}

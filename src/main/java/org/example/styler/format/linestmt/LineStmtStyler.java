@@ -1,6 +1,7 @@
 package org.example.styler.format.linestmt;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Styler;
@@ -17,12 +18,13 @@ public class LineStmtStyler extends Styler {
     }
 
     /**
-     * @implNote One-way application.
      * @param ctx
+     * @param parser
      * @return
+     * @implNote One-way application.
      */
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx) {
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         LineStmtProperty property = (LineStmtProperty) style.getProperty(null);
         if (property.isOneStmtPerLine) {
             for (int i = 0; i < ctx.getChildCount() - 1; i++) {
@@ -39,7 +41,7 @@ public class LineStmtStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx) {
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
         boolean oneStmtPerLine = true;
         for (int i = 0; i < ctx.getChildCount() - 1; i++) {
             ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
@@ -54,7 +56,7 @@ public class LineStmtStyler extends Styler {
     }
 
     @Override
-    protected Set<Integer> getRelevantRules() {
+    protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<>();
             relevantRules.add(parser.getRuleBlock());

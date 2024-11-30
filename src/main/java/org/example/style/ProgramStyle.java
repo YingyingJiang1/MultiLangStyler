@@ -12,7 +12,7 @@ import java.util.*;
  * @create     : 2024/1/8 22:27
  */
 public class ProgramStyle implements DomIO {
-    Map<Class<? extends Style>, Style> styleMap = new HashMap<>();
+    Map<String, Style> styleMap = new HashMap<>();
 
 
     @Override
@@ -36,14 +36,14 @@ public class ProgramStyle implements DomIO {
     }
 
     public void add(Style style) {
-        styleMap.put(style.getClass(), style);
+        styleMap.put(style.getStyleName(), style);
     }
 
     public List<Style> getStyles() {
         return styleMap.values().stream().toList();
     }
 
-    public Style getStyle(Class<? extends Style> stylerClass) {
-        return styleMap.get(stylerClass);
+    public Style getStyle(String styleName) {
+        return styleMap.get(styleName);
     }
 }

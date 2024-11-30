@@ -156,4 +156,5 @@ public interface MyParser {
 
     int getRuleIndex(String ruleName);
 
+    ParseTree getTree();
 }

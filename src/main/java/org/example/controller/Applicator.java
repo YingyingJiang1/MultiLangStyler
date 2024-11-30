@@ -1,0 +1,95 @@
+package org.example.controller;
+
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.StylerContainer;
+import org.example.myException.ApplyException;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.token.ExtendToken;
+import org.example.styler.Preprocessor;
+import org.example.styler.Stage;
+import org.example.styler.Styler;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class Applicator {
+    public static List<Token> applyRules(MyParser parser, StylerContainer container, Preprocessor preprocessor) throws ApplyException {
+        try {
+            preprocessor.preprocess(parser, Stage.APPLY);
+            parser.walkTree(Stage.APPLY, container.getStylers());
+
+            List<Token> tokens = new LinkedList<>();
+            generateTokens(parser.getTree(), tokens, parser);
+            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
+
+            applyOnTS(tokens, parser, container);
+            return tokens;
+        } catch (Exception e) {
+            throw new ApplyException(e.getMessage());
+        }
+    }
+
+
+    /**
+     * @apiNote :Apply style on token stream.
+     */
+    private static void applyOnTS(List<Token> tokens, MyParser parser, StylerContainer container) {
+        int column = 0;
+
+        // Handle the first token.
+        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
+        for (int i = 1; tokens.get(i).getType() != parser.getEOF(); ++i) {
+            ExtendToken curToken = (ExtendToken) tokens.get(i);
+            int curTokenType = curToken.getType();
+
+            for (Styler styler : container.getStylers()) {
+                if (styler.isRelevant(tokens, i, Stage.APPLY, parser)) {
+                    styler.applyStyle(tokens, i, parser);
+                }
+            }
+
+            List<Token> contextTokens = curToken.getContextTokens();
+            if (contextTokens.size() > 1) {
+                tokens.remove(i);
+                tokens.addAll(i, contextTokens);
+                i += contextTokens.size() - 1;
+            }
+
+            for (Token token : contextTokens) {
+                ((ExtendToken) token).setCharPositionInLine(column);
+                if (token.getText().endsWith("\n")) {
+                    column = 0;
+                } else {
+                    column += token.getText().length();
+                }
+            }
+        }
+        tokens.remove(0);
+    }
+
+
+    private static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
+        if (root instanceof TerminalNode) {
+            int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
+            ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());
+            // There are some tokens add around the `token` after style transformations.
+            List<Token> contextTokens = token.getContextTokens();
+            contextTokens.forEach(t -> {
+                if (t instanceof ExtendToken extToken) {
+                    extToken.setHierarchy(hierarchy);
+                }
+            });
+            token.contextTokens = null;
+            tokens.addAll(contextTokens);
+        } else {
+            ExtendContext ctx = (ExtendContext) root;
+            ctx.updateHierarchy(parser);
+            for (ParseTree child : ctx.children) {
+                generateTokens(child, tokens, parser);
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package org.example.styler.comment.density;
 
 import org.antlr.v4.runtime.Token;
+import org.example.parser.common.MyParser;
 import org.example.styler.Styler;
 import org.example.styler.comment.density.style.CommentDensityProperty;
 
@@ -12,7 +13,7 @@ public class CommentDensityStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(List<Token> tokens, int index) {
+    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
         List<Token> commentTokens = tokens.stream().filter(t -> parser.belongToComment(t.getType())).toList();
         double commentLines = commentTokens.stream().reduce(0, (acc, t) -> acc + t.getText().split("\n").length, Integer::sum);
         double totalLines = parser.getTokenStream().getText().split("\n").length;

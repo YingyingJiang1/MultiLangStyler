@@ -61,12 +61,12 @@ public class EquivalentStructure {
 			for (int i = 0; i < codes.length; i++) {
 				boolean flag = codes[i].startsWith("$^");
 				String code = replacePlaceholder(codes[i]);
-				MyJavaParser parser = new MyJavaParser(code);
+				MyJavaParser parser = new MyJavaParser();
 				if (i < rules.length) {
 					rule = rules[i];
 				}
 				int priority = getPriority(code);
-				forests.add(new Forest(parser.parse(rule, flag), priority));
+				forests.add(new Forest(parser.parse(code, rule, flag), priority));
 				uniqueVNodes(placeholderContainer);
 			}
 		} catch (CompilationException e) {

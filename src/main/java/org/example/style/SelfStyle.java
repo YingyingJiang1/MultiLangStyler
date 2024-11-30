@@ -1,9 +1,7 @@
 package org.example.style;
 
 import org.example.Configuration;
-import org.example.Controller;
-import org.example.StylerContainer;
-import org.example.myException.ExtractException;
+import org.example.controller.Controller;
 import org.example.utils.FileCollection;
 import org.slf4j.LoggerFactory;
 
@@ -13,21 +11,23 @@ public class SelfStyle {
     private static ProgramStyle programStyle = null;
 
     public static void extractStyle(Path filePath) {
-        try {
-            FileCollection fileCollection = new FileCollection();
-            fileCollection.add(filePath);
-            Configuration conf = new Configuration();
-            conf.extractionCollection = fileCollection;
+        FileCollection fileCollection = new FileCollection();
+        fileCollection.add(filePath);
+        Configuration conf = new Configuration();
+        conf.extractionCollection = fileCollection;
 
-            Controller controller = new Controller(conf);
-            programStyle = controller.extractStyle(fileCollection);
-            programStyle = new ProgramStyle();
-        } catch (ExtractException e) {
-            LoggerFactory.getLogger(SelfStyle.class).warn("Failed to extract style for the program undergoing style transformation!");
-        }
+        Controller controller = new Controller(conf);
+        programStyle = controller.extractStyle(fileCollection);
     }
 
-    public static Style getStyle(Class<? extends Style> stylerClass) {
-        return programStyle.getStyle(stylerClass);
+    public static Style getStyle(String styleName) {
+        if (programStyle == null) {
+            return null;
+        }
+        return programStyle.getStyle(styleName);
+    }
+
+    public static ProgramStyle getProgramStyle() {
+        return programStyle;
     }
 }

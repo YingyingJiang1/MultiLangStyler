@@ -14,6 +14,7 @@ import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.CompilationException;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -29,9 +30,6 @@ public class MyJavaParser implements MyParser {
     JavaParser parser = null;
     Path curFile = null;
     ParseTree tree = null;
-
-    // 单例模式
-    private static MyJavaParser instance = new MyJavaParser();
 
     private static Set<Integer> changeHierarchyRule = new HashSet<>(Arrays.asList(
             JavaParser.RULE_block, JavaParser.RULE_body, JavaParser.RULE_arrayInitializer,
@@ -64,23 +62,17 @@ public class MyJavaParser implements MyParser {
             JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,JavaParser.RULE_whileStmt
     ));
 
-    private MyJavaParser() {}
-
-    public static MyJavaParser getInstance() {
-        return instance;
-    }
+    public MyJavaParser() {}
 
 
-    public MyJavaParser(String text) {
+    public List<ParseTree> parse(String text, int rule, boolean flag) {
         ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
         Lexer lexer = new JavaLexer(CharStreams.fromString(text));
         lexer.setTokenFactory(tokenFactory);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         parser = new JavaParser(tokenStream);
         parser.setTokenFactory(tokenFactory);
-    }
 
-    public List<ParseTree> parse(int rule, boolean flag) {
         if (flag) {
             rule = JavaParser.RULE_block;
         }
@@ -646,6 +638,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleIndex(String ruleName) {
         return parser.getRuleIndex(ruleName);
+    }
+
+    @Override
+    public ParseTree getTree() {
+        return tree;
     }
 
     @Override

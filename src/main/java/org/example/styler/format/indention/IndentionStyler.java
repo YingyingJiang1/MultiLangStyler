@@ -2,6 +2,7 @@ package org.example.styler.format.indention;
 
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
+import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -16,7 +17,7 @@ public class IndentionStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(List<Token> tokens, int index) {
+    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
             // Extract indention.
@@ -42,7 +43,7 @@ public class IndentionStyler extends Styler {
     }
 
     @Override
-    public void applyStyle(List<Token> tokens, int index) {
+    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
         IndentionProperty property = (IndentionProperty) style.getProperty(null);
         if (property != null) {
@@ -56,7 +57,7 @@ public class IndentionStyler extends Styler {
     }
 
     @Override
-    public boolean isRelevant(List<Token> tokens, int i, Stage stage) {
+    public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         if (stage == Stage.EXTRACT) {
             return tokens.get(i).getType() == parser.getHws() && tokens.get(i).getCharPositionInLine() == 0;
         } else if(stage == Stage.APPLY) {

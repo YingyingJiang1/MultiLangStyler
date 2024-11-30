@@ -25,13 +25,13 @@ public abstract class BodyStyler extends Styler {
      * @param block Block context.
      * @return
      */
-    protected BodyContext extractStyleContext(ExtendContext stmt, ExtendContext block) {
-        BodyTypeEnum blockType = getBodyType(stmt.getRuleIndex());
-        return new BodyContext(blockType, getBodyNumType(block));
+    protected BodyContext extractStyleContext(ExtendContext stmt, ExtendContext block, MyParser parser) {
+        BodyTypeEnum blockType = getBodyType(stmt.getRuleIndex(), parser);
+        return new BodyContext(blockType, getBodyNumType(block, parser));
     }
 
-    public BodyTypeEnum getBodyType(int rule) {
-        init();
+    public BodyTypeEnum getBodyType(int rule, MyParser parser) {
+        init(parser);
         for (Map.Entry<BodyTypeEnum, Set<Integer>> entry : map.entrySet()) {
             if (entry.getValue().contains(rule)) {
                 return entry.getKey();
@@ -40,7 +40,7 @@ public abstract class BodyStyler extends Styler {
         return BodyTypeEnum.NORMAL_BODY;
     }
 
-    private void init() {
+    private void init(MyParser parser) {
         if (parserClass == null || parserClass != parser.getClass()) {
             parserClass = parser.getClass();
             map = new HashMap<>();
@@ -66,7 +66,7 @@ public abstract class BodyStyler extends Styler {
      * If @ctx is a @BlockContext instance, then empty block, one single statement block or multiple statements block
      * is concerned about.
      */
-    private BodyNumType getBodyNumType(ExtendContext ctx) {
+    private BodyNumType getBodyNumType(ExtendContext ctx, MyParser parser) {
         int stmtNum = ctx.countChildIf(child -> child instanceof ExtendContext); // Exclude LBRACE and RBRACE.
         if (stmtNum == 0) {
             return BodyNumType.EMPTY;
