@@ -46,14 +46,14 @@ public class SpaceStyler extends Styler {
     @Override
     public void applyStyle(List<Token> tokens, int index) {
         Token cur = tokens.get(index);
-        StyleContext context = extractContext(tokens, index, Stage.APPLY);
+        SpaceContext context = extractContext(tokens, index, Stage.APPLY);
         SpaceProperty property = (SpaceProperty) style.getProperty(context);
         if (property != null) {
             if (cur instanceof ExtendToken extendToken) {
                 if (property.space2) {
                     extendToken.addTokenAfter(parser.getTokenFactory().create(parser.getHws(), " "), parser);
                 }
-                if (property.space1) {
+                if (context.tokenName2.isEmpty() && property.space1) {
                     extendToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), " "), parser);
                 }
             }
@@ -81,16 +81,8 @@ public class SpaceStyler extends Styler {
             } else { // Right associated operator
                 return new SpaceContext(name, rightName);
             }
-        } else if (parser.belongToSeparator(text)) {
-            // Positions on the left and right of a separator are considered respectively. And the case is exclusive if the adjacent token is operator,
-            // because this case has already been handled in the previous branches.
-            if (!parser.belongToBinOp(leftText)) {
-                return new SpaceContext(leftName, name);
-            }
-            if (!parser.belongToBinOp(rightText)) {
-                return new SpaceContext(name, rightName);
-            }
-        } else if (!parser.belongToOperator(rightText) && !parser.belongToSeparator(rightText)) {
+        } else if (!parser.belongToBinOp(rightText)) {
+            // name is separator, keyword or identifier.
             return new SpaceContext(name, rightName);
         }
         return null;

@@ -141,23 +141,23 @@
   <style name="space">
     <rule>
       <style_context token="IDENTIFIER, ("/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, )"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="(, )"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, ,"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="LITERAL, ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, ,"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="KEYWORD, IDENTIFIER"/>
@@ -165,31 +165,47 @@
     </rule>
     <rule>
       <style_context token="KEYWORD, {"/>
-      <style_property space1="true" space2="false"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token=",, IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="BIN_OP"/>
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER, {"/>
+      <style_context token="}, COMMENT"/>
       <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, {"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, ("/>
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
+      <style_context token="KEYWORD, ("/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token=";, COMMENT"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
       <style_context token="KEYWORD, )"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context token="DOT"/>
       <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token=",, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, KEYWORD"/>
@@ -209,6 +225,10 @@
     </rule>
     <rule>
       <style_context token=";, }"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="}, @"/>
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
@@ -224,8 +244,24 @@
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL, )"/>
-      <style_property space1="false" space2="true"/>
+      <style_context token="}, &lt;EOF&gt;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="}, KEYWORD"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="{, KEYWORD"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token=";, KEYWORD"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="(, IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, IDENTIFIER"/>
@@ -233,7 +269,7 @@
     </rule>
     <rule>
       <style_context token="), {"/>
-      <style_property space1="true" space2="false"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="), ;"/>
@@ -242,6 +278,14 @@
     <rule>
       <style_context token="KEYWORD, KEYWORD"/>
       <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="{, IDENTIFIER"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token=";, IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
     </rule>
   </style>
   <style name="indention">
