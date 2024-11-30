@@ -109,7 +109,42 @@
   <style name="brace_format">
     <rule>
       <style_context>
+        <block_type>ANY_BODY</block_type>
+        <body_type>ANY</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
         <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="false"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
         <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
@@ -123,45 +158,10 @@
     </rule>
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
         <block_type>MULTI_BLOCK_STMT_BODY</block_type>
         <body_type>EMPTY</body_type>
       </style_context>
       <style_property beforeLB="true" afterLB="false" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="false"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>ANY_BODY</block_type>
-        <body_type>ANY</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
   </style>
   <style name="space">

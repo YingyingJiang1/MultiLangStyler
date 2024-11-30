@@ -460,3 +460,5 @@ org.example.myException.ApplyException: class org.antlr.v4.runtime.tree.Terminal
 2024-11-30 15:44:30,529 ERROR --- [main] org.example.controller.Controller.extractStyle/119 : Failed to extract style rules from file: src\test\sources\arrangement1\2022trhacknon-AccessibilityEventCompat-target.java
 2024-11-30 15:53:49,762 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-11-30 15:53:49,926 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-30 19:18:26,491 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-30 19:18:26,722 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
