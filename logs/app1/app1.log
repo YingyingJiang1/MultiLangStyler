@@ -81,3 +81,4 @@
 2024-11-30 01:06:18,618 WARN  --- [main] org.example.parser.common.token.ExtendToken.addTokenAfter/94 : Add a default token 
  into the non-default context tokens of a token.
 2024-11-30 01:10:03,613 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-11-30 01:13:21,294 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src/test/sources/arrangement1\sample-style.xml

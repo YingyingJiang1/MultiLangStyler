@@ -24,12 +24,12 @@ public class SpaceContext extends StyleContext {
 
     @Override
     public double calculateDistance(StyleContext targetContext) {
-        double distance = -2;
+        double distance = INIT_DISTANCE;
         if (targetContext instanceof SpaceContext spaceContext) {
-            distance += Objects.equals(tokenName1, spaceContext.tokenName1) ? 1 : 0;
-            distance += Objects.equals(tokenName2, spaceContext.tokenName2) ? 1 : 0;
+            distance -= Objects.equals(tokenName1, spaceContext.tokenName1) &&
+                    Objects.equals(tokenName2, spaceContext.tokenName2) ? DEC_WHEN_EQUAL : 0;
         }
-        return distance;
+        return distance < INIT_DISTANCE ? distance : INVALID_DISTANCE;
     }
 
     @Override

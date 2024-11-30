@@ -47,7 +47,7 @@ public class SpaceStyler extends Styler {
     public void applyStyle(List<Token> tokens, int index) {
         Token cur = tokens.get(index);
         StyleContext context = extractContext(tokens, index, Stage.APPLY);
-        SpaceProperty property = (SpaceProperty) style.getSimilarProperty(context);
+        SpaceProperty property = (SpaceProperty) style.getProperty(context);
         if (property != null) {
             if (cur instanceof ExtendToken extendToken) {
                 if (property.space2) {
