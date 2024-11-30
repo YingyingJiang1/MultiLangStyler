@@ -26,7 +26,8 @@ public class StructureStyler extends Styler {
 
     public StructureStyler() {
         style.setStyleName("equivalences");
-        equivalences = EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser());
+        equivalences = EquivalentStructureManager.getInstance().loadEquivalences();
+        executeWhenExit = false;
     }
 
     @Override
@@ -108,7 +109,7 @@ public class StructureStyler extends Styler {
     @Override
     protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
-            relevantRules = parser.getAllStmts();
+            relevantRules = Set.of(parser.getRuleStmt());
         }
         return relevantRules;
     }

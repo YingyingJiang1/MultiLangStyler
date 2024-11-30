@@ -14,6 +14,7 @@ import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.CompilationException;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import java.io.IOException;
@@ -61,11 +62,14 @@ public class MyJavaParser implements MyParser {
     private static Set<Integer> braceOptionalBlocks = new HashSet<>(Arrays.asList(
             JavaParser.RULE_ifStmt, JavaParser.RULE_ifElseStmt, JavaParser.RULE_forStmt,JavaParser.RULE_whileStmt
     ));
+    private static List<Integer> parsingRules = List.of(
+            JavaParser.RULE_compilationUnit, JavaParser.RULE_statement
+    );
 
     public MyJavaParser() {}
 
 
-    public List<ParseTree> parse(String text, int rule, boolean flag) {
+    public ParseTree parse(String text, int rule) {
         ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
         Lexer lexer = new JavaLexer(CharStreams.fromString(text));
         lexer.setTokenFactory(tokenFactory);
@@ -73,42 +77,39 @@ public class MyJavaParser implements MyParser {
         parser = new JavaParser(tokenStream);
         parser.setTokenFactory(tokenFactory);
 
-        if (flag) {
-            rule = JavaParser.RULE_block;
-        }
         ParseTree t = switch (rule) {
             case JavaParser.RULE_compilationUnit -> parser.compilationUnit();
             case JavaParser.RULE_statement -> parser.statement();
-//            case JavaParser.RULE_expressionStmt -> parser.expressionStmt();
-//            case JavaParser.RULE_ifStmt -> parser.ifStmt();
-//            case JavaParser.RULE_ifElseStmt -> parser.ifElseStmt();
-//            case JavaParser.RULE_forStmt -> parser.forStmt();
-//            case JavaParser.RULE_whileStmt -> parser.whileStmt();
-//            case JavaParser.RULE_returnStmt -> parser.returnStmt();
-//            case JavaParser.RULE_block -> parser.block();
-//            case JavaParser.RULE_expression -> parser.expression();
-//            case JavaParser.RULE_localVariableDeclarationStmt -> parser.localVariableDeclarationStmt();
             default -> null;
         };
+        return t;
+    }
+
+    @Override
+    public ParseTree parseFromString(String code) {
+        ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
+        Lexer lexer = new JavaLexer(CharStreams.fromString(code));
+        lexer.setTokenFactory(tokenFactory);
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        parser = new JavaParser(tokenStream);
+        parser.setTokenFactory(tokenFactory);
+
+        parser.removeErrorListeners();
+        ExtendContext root = (ExtendContext) parser.compilationUnit();
+        if (parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty()) {
+            parser.reset();
+            root = parser.statement();
+            if (parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty()) {
+                parser.reset();
+                root = parser.expression();
+            }
+        }
         if (parser.getNumberOfSyntaxErrors() > 0) {
-            throw new CompilationException("Code:" + parser.getInputStream().getText());
+            LoggerFactory.getLogger(MyJavaParser.class).error("Failed to parse code from string, " +
+                    "this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.");
+            return null;
         }
-        if (t == null) {
-            throw new CompilationException("No rules are added for code.");
-        }
-        ParseTreeWalker walker = new MyParseTreeWalker();
-        ParseTreeListener listener = new ExtendJavaParserListener(this);
-        List<ParseTree> ret = new ArrayList<>();
-        if (flag) {
-            // t is block context.
-            ((ExtendContext) t).deleteStatementCtx(this);
-            ret = ((ExtendContext) t).children.subList(1, t.getChildCount() - 1);
-            walker.walk(listener, ret.get(0));
-        } else {
-            walker.walk(listener, t);
-            ret.add(t);
-        }
-        return ret;
+        return root;
     }
 
     public ParseTree parse(Path filePath) throws IOException {
@@ -440,6 +441,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleStmt() {
+        return JavaParser.RULE_statement;
+    }
+
+    @Override
     public int getLE() {
         return JavaParser.LE;
     }
@@ -535,8 +541,8 @@ public class MyJavaParser implements MyParser {
             return Integer.MIN_VALUE;
         }
         return text.startsWith("RULE") ?
-                parser.getRuleIndex(text) :
-                parser.getTokenType(TokenNameGetter.getInstance().getName(text));
+                new JavaParser(null).getRuleIndex(text) :
+                new JavaParser(null).getTokenType(TokenNameGetter.getInstance().getName(text));
     }
 
 

@@ -44,6 +44,8 @@ public interface MyParser {
 
 
     ParseTree parse(Path filePath) throws IOException;
+    ParseTree parse(String code, int rule);
+    ParseTree parseFromString(String code);
     TokenStream getTokenStream();
     void walkTree(Stage stage, List<Styler> stylers);
 
@@ -109,6 +111,7 @@ public interface MyParser {
     int getRuleAnnotationList();
     int getRuleAnnotation();
     boolean belongToFunctionDec(int ruleIndex);
+    int getRuleStmt();
 
 
 

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
+import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.slf4j.Logger;
@@ -41,17 +43,15 @@ public class EquivalentStructureManager {
     return instance;
   }
 
-  public Map<Integer, List<EquivalentStructure>> loadEquivalences(MyParser parser) {
+  public Map<Integer, List<EquivalentStructure>> loadEquivalences() {
     if (equivalences != null) {
       return equivalences;
     }
 
+    MyParser parser = new MyJavaParser();
     equivalences = new HashMap<>();
-    for (int ruleIndex : parser.getAllStmts()) {
-      equivalences.put(ruleIndex, new ArrayList<>(0));
-    }
-    equivalences.put(parser.getRuleExpression(), new ArrayList<>(0));
-    equivalences.put(parser.getRuleBlock(), new ArrayList<>(0));
+    equivalences.put(parser.getRuleStmt(), new ArrayList<>());
+    equivalences.put(parser.getRuleExpression(), new ArrayList<>());
 
     try {
       loadConfFile();
@@ -69,16 +69,15 @@ public class EquivalentStructureManager {
         String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
         List<Checker> checkers = parseChecks(node.get("checkers"), objectMapper, parser);
         List<Handler> handlers = parseHandlers(node.get("handlers"), objectMapper, parser);
-        int[] rules = parseRules(node.get("rules"), objectMapper, parser);
+//        int[] rules = parseRules(node.get("rules"), objectMapper, parser);
         Map<Integer, List<Integer>> bannedTransferMap = parseBannedTransferMap(node.get("banned_transfer"), objectMapper, parser);
 
-        EquivalentStructure structure = new EquivalentStructure(id, category, rules, checkers, handlers, bannedTransferMap);
+        EquivalentStructure structure = new EquivalentStructure(id, category, checkers, handlers, bannedTransferMap);
         structure.compile(codes, holders);
 
-        Set<Integer> ruleSet = new HashSet<>(Arrays.stream(rules).boxed().toList());
-        for(int rule : ruleSet) {
+        for (int rule: structure.rulesContained()) {
           if (equivalences.get(rule) == null) {
-              logger.error("rule {} isn't added in equivalences map.", rule);
+            logger.error("rule {} isn't added in equivalences map.", rule);
           } else {
             equivalences.get(rule).add(structure);
           }

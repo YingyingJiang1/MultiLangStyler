@@ -56,6 +56,12 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	//--------------------------------------------------- enterxxx methods ---------------------------------------------------
 
+
+	@Override
+	public void enterStatement(JavaParser.StatementContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
 	@Override
 	public void enterBlock(JavaParser.BlockContext ctx) {
 		ctx.deleteStatementCtx(parser); // Ensure delete statement context when entering block.

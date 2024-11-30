@@ -2,17 +2,25 @@ package org.example.styler.structure;
 
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.logging.Log;
+import org.example.debug.TreePrinter;
+import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.ParseTreeFactory;
 import org.example.myException.CompilationException;
+import org.example.parser.java.ExtendJavaParserListener;
 import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.example.styler.structure.vtree.VirtualNode;
 import org.example.styler.structure.vtree.PlaceholderContainer;
 import org.example.styler.structure.vtree.Forest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -22,10 +30,10 @@ import java.util.*;
  * @create       2024/4/2 23:40
  */
 public class EquivalentStructure {
+	public static Logger logger = LoggerFactory.getLogger(EquivalentStructure.class);
 
 	int id;
 	String category;
-	int[] rules;
 	// Each style of writing will be transformed into a forest.
 	List<Forest> forests = new ArrayList<>();
 	// Stores the corresponding virtual node for a placeholder with the same name.
@@ -35,12 +43,12 @@ public class EquivalentStructure {
 	Map<ParseTree, VirtualNode> vTreeMap = new HashMap<>();
 	List<Checker> checkers = null;
 	List<Handler> handlers = null;
+	Set<Integer> rules = new HashSet<>();
 
-	public EquivalentStructure(int id, String category, int[] rules, List<Checker> checkers,
+	public EquivalentStructure(int id, String category,List<Checker> checkers,
 	                           List<Handler> handlers, Map<Integer, List<Integer>> bannedTransfer) {
 		this.category = category;
 		this.id = id;
-		this.rules = rules;
 		this.checkers = checkers;
 		this.handlers = handlers;
 		this.bannedTransfer = bannedTransfer;
@@ -57,26 +65,53 @@ public class EquivalentStructure {
 	void compile(String[] codes, String[] placeholders) {
 		try {
 			placeholderContainer = new PlaceholderContainer(placeholders);
-			int rule = rules[0];
 			for (int i = 0; i < codes.length; i++) {
-				boolean flag = codes[i].startsWith("$^");
+				boolean multiStmts = codes[i].startsWith("$^");
 				String code = replacePlaceholder(codes[i]);
 				MyJavaParser parser = new MyJavaParser();
-				if (i < rules.length) {
-					rule = rules[i];
-				}
+
 				int priority = getPriority(code);
-				forests.add(new Forest(parser.parse(code, rule, flag), priority));
+				ParseTree tree = parser.parseFromString(code);
+				if (tree == null) {
+					throw new CompilationException("The equivalent structure with id:" + id + " has a compilation error. " +
+							"Please ensure adjacent tokens in configured codes are seperated by space!");
+				}
+				List<ParseTree> trees = new ArrayList<>();
+				if (multiStmts) {
+					if (tree instanceof ExtendContext ctx) {
+						ExtendContext blockCtx = (ExtendContext) ctx.children.get(0);
+						trees.addAll(blockCtx.children.subList(1, blockCtx.children.size() - 1));
+					}
+				} else {
+					trees.add(tree);
+				}
+
+				// Modify the structure of tree.
+				ParseTreeWalker walker = new MyParseTreeWalker();
+        		ParseTreeListener listener = new ExtendJavaParserListener(parser);
+				// Just modify the first tree! Because when exiting the current tree, the ast structure of its right sibling has not been modified yet.
+//				walker.walk(listener, trees.get(0));
+
+				for (ParseTree t : trees) {
+					if (t instanceof  ExtendContext ctx) {
+						rules.add(ctx.getRuleIndex());
+					}
+				}
+
+				forests.add(new Forest(trees, priority));
 				uniqueVNodes(placeholderContainer);
 			}
 		} catch (CompilationException e) {
-			System.err.println("The equivalent structure with id:" + id + " has a compilation error:" + e.getMessage());
-			System.err.println("Please ensure adjacent tokens in configured codes are seperated by space!");
+			logger.error(e.getMessage(), e);
 		}
 	}
 
 	public int getPriority(int index) {
 		return forests.get(index).getPriority();
+	}
+
+	public Set<Integer> rulesContained() {
+		return rules;
 	}
 
 	// get priority for the code.
@@ -112,8 +147,16 @@ public class EquivalentStructure {
 			vtMap.put(forest, i);
 		}
 
-		ExtendContext tParent = (ExtendContext) t.getParent();
-		int startIndex = tParent.children.indexOf(t);
+		// Considering the case where codes of equivalent structure are configured with "$^"
+		int startIndex = 0;
+		List<ParseTree> realTrees = null;
+		if (t.getParent() != null) {
+			ExtendContext tParent = (ExtendContext) t.getParent();
+			startIndex = tParent.children.indexOf(t);
+			realTrees = tParent.children;
+		} else {
+			realTrees = List.of(t);
+		}
 
 		for (Map.Entry<Forest, Integer> entry : vtMap.entrySet()) {
 			Forest forest = entry.getKey();
@@ -121,9 +164,15 @@ public class EquivalentStructure {
 			cleanState();
 
 			int vi = 0, ti = startIndex;
-			for (; vi < forest.size() && ti < tParent.getChildCount(); ++vi,++ti) {
+			for (; vi < forest.size() && ti < realTrees.size(); ++vi,++ti) {
 				ParseTree vt = forest.getTree(vi);
-				ParseTree t1 = tParent.getChild(ti);
+				ParseTree t1 = realTrees.get(ti);
+				if (id == 7) {
+					System.out.println(index);
+					TreePrinter.printTree(t1, parser);
+					TreePrinter.printTree(vt, parser);
+
+				}
 				if (t1 instanceof TerminalNode || vt instanceof TerminalNode) {
 					break;
 				}
@@ -176,9 +225,11 @@ public class EquivalentStructure {
 		}
 
 		// Update old trees to new trees.
-		ExtendContext parent = (ExtendContext) oldTree.getParent();
-		int startIndex = parent.children.indexOf(oldTree);
-		parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
+		if (oldTree.getParent() != null) {
+			ExtendContext parent = (ExtendContext) oldTree.getParent();
+			int startIndex = parent.children.indexOf(oldTree);
+			parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
+		}
 		cleanState();
 		return newTrees.isEmpty() ? null : newTrees.get(0);
 	}
@@ -358,7 +409,7 @@ public class EquivalentStructure {
 		if (obj instanceof EquivalentStructure structure) {
 			return Objects.equals(id, structure.id) &&
 					Objects.equals(category, structure.category) &&
-					Arrays.equals(rules, structure.rules) &&
+					Objects.equals(rules, structure.rules) &&
 					Objects.equals(forests, structure.forests) &&
 					Objects.equals(placeholderContainer, structure.placeholderContainer) &&
 					Objects.equals(bannedTransfer, structure.bannedTransfer) &&

@@ -6,6 +6,7 @@ import org.example.styler.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.example.styler.structure.StructureStyler;
 
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class StylerContainer {
 
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
-//        stylers.add(new StructureStyler());
+        stylers.add(new StructureStyler());
 //        stylers.add(new OptionalBraceStyler());
         stylers.add(new BraceFormatStyler());
 //        stylers.add(new LineWrappingStyler());

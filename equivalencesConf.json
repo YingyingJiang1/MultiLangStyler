@@ -59,7 +59,37 @@
     "rules": ["ifStmt","ifElseStmt"],
     "handlers": [{"class": "CondReverserHandler", "argsList": [["0", "1", "$C"]]}]
   },
-
+  {
+    "id": 7,
+    "codes":["return $C ;",
+      "$^ if ( $C ) { return true ; } return false ;",
+      "$^ if ( $C ) return true ; return false ;",
+      "if ( $C ) { return true ; } else { return false ; }",
+      "if ( $C ) return true ; else return false ; ",
+      "if ( $C ) return true ; else { return false ; }"
+    ],
+    "banned_transfer": [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]],
+    "holders": ["$C"],
+    "rules": ["returnStmt","ifStmt","ifStmt","ifElseStmt", "ifElseStmt", "ifElseStmt"]
+  },
+  {
+    "id": 9,
+    "codes": [
+      "return $C;",
+      "return $C ? false : true ;",
+      "$^ if ( $C ) { return false; } return true;",
+      "$^ if ( $C ) return false; return true;",
+      "if ( $C ) { return false ; } else { return true ; }",
+      "if ( $C ) return false ;  else return true ;",
+      "if ( $C ) return false ;  else { return true ; }"
+    ],
+    "banned_transfer": [[0, 1],[0, 2],[0, 3], [0, 4], [0, 5], [0, 6]],
+    "holders": ["$C"],
+    "rules": ["returnStmt","returnStmt","ifStmt","ifStmt","ifElseStmt","ifElseStmt", "ifElseStmt"],
+    "handlers": [{"class": "CondReverserHandler", "argsList": [
+      ["0", "1", "$C"],["0", "2", "$C"],["0", "3", "$C"], ["0", "4", "$C"],["0", "5", "$C"],["0", "6", "$C"]
+    ]}]
+  },
   {
     "id": 10,
     "codes": [
@@ -67,7 +97,6 @@
       "$^ if ( $C ) { return $E; } return $E1;",
       "$^ if ( $C ) return $E; return $E1;",
       "if ( $C ) { return $E ; } else { return $E1 ; }",
-      "if ( $C ) { return $E ; } else return $E1 ; ",
       "if ( $C ) return $E ;  else return $E1 ;",
       "if ( $C ) return $E ;  else { return $E1 ; }"
     ],
