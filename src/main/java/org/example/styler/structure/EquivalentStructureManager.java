@@ -1,13 +1,24 @@
 package org.example.styler.structure;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.PrettyPrinter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.core.util.Separators;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.parser.common.MyParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -19,7 +30,8 @@ import java.util.*;
 public class EquivalentStructureManager {
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
   private static Map<Integer, List<EquivalentStructure>> equivalences = null;
-  JsonNode config = null;
+  JsonNode configJson = null;
+  public String confFile = "/equivalencesConf.json";
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
 
 
@@ -42,12 +54,9 @@ public class EquivalentStructureManager {
     equivalences.put(parser.getRuleBlock(), new ArrayList<>(0));
 
     try {
-      String resourceFile = "/equivalencesConf.json";
-      InputStream is = getClass().getResourceAsStream(resourceFile);
+      loadConfFile();
       ObjectMapper objectMapper = new ObjectMapper();
-      config =  objectMapper.readTree(is);
-
-      for(JsonNode node : config) {
+      for(JsonNode node : configJson) {
         // Skip comment
         if (node.get("id") == null) {
           continue;
@@ -80,6 +89,25 @@ public class EquivalentStructureManager {
       logger.error("Exception details:", e);
     }
     return equivalences;
+  }
+
+  public void writeJsonData(String file) throws IOException {
+    if (configJson != null) {
+      ObjectMapper objectMapper = new ObjectMapper();
+      int id = 1;
+      for (JsonNode node : configJson) {
+        if (node.get("id") != null) {
+          ((ObjectNode) node).put("id", id++);
+        }
+      }
+      objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(file), configJson);
+    }
+  }
+
+  public void loadConfFile() throws IOException {
+    InputStream is = getClass().getResourceAsStream(confFile);
+    ObjectMapper objectMapper = new ObjectMapper();
+    configJson =  objectMapper.readTree(is);
   }
 
   private List<Checker> parseChecks(JsonNode checkersNode, ObjectMapper objectMapper, MyParser parser) {

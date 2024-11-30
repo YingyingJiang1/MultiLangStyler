@@ -42,6 +42,7 @@ public interface MyParser {
             "permits", "non-sealed","false", "true"
     );
 
+
     ParseTree parse(Path filePath) throws IOException;
     TokenStream getTokenStream();
     void walkTree(Stage stage, List<Styler> stylers);

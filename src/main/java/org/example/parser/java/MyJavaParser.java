@@ -78,15 +78,16 @@ public class MyJavaParser implements MyParser {
         }
         ParseTree t = switch (rule) {
             case JavaParser.RULE_compilationUnit -> parser.compilationUnit();
-            case JavaParser.RULE_expressionStmt -> parser.expressionStmt();
-            case JavaParser.RULE_ifStmt -> parser.ifStmt();
-            case JavaParser.RULE_ifElseStmt -> parser.ifElseStmt();
-            case JavaParser.RULE_forStmt -> parser.forStmt();
-            case JavaParser.RULE_whileStmt -> parser.whileStmt();
-            case JavaParser.RULE_returnStmt -> parser.returnStmt();
-            case JavaParser.RULE_block -> parser.block();
-            case JavaParser.RULE_expression -> parser.expression();
-            case JavaParser.RULE_localVariableDeclarationStmt -> parser.localVariableDeclarationStmt();
+            case JavaParser.RULE_statement -> parser.statement();
+//            case JavaParser.RULE_expressionStmt -> parser.expressionStmt();
+//            case JavaParser.RULE_ifStmt -> parser.ifStmt();
+//            case JavaParser.RULE_ifElseStmt -> parser.ifElseStmt();
+//            case JavaParser.RULE_forStmt -> parser.forStmt();
+//            case JavaParser.RULE_whileStmt -> parser.whileStmt();
+//            case JavaParser.RULE_returnStmt -> parser.returnStmt();
+//            case JavaParser.RULE_block -> parser.block();
+//            case JavaParser.RULE_expression -> parser.expression();
+//            case JavaParser.RULE_localVariableDeclarationStmt -> parser.localVariableDeclarationStmt();
             default -> null;
         };
         if (parser.getNumberOfSyntaxErrors() > 0) {

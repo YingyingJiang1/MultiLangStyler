@@ -1,0 +1,320 @@
+[ "Adjacent tokens should be seperated by space!", {
+  "id" : 1,
+  "category" : "Increment/decrement preferences",
+  "codes" : [ "$I ++ ;", "++ $I ;", "$I += 1 ;", "$I = $I1 + 1 ;", "$I = 1 + $I1 ;" ],
+  "holders" : [ "$I", "$I1" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 3, "$I", "$I1" ], [ 4, "$I", "$I1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 3, "$I", "$I1" ], [ 4, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 2,
+  "category" : "Increment/decrement preferences",
+  "codes" : [ "$I -- ;", "-- $I ;", "$I -= 1 ;", "$I = $I1 - 1 ;" ],
+  "holders" : [ "$I", "$I1" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 3, "$I", "$I1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 3, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 3,
+  "category" : "",
+  "codes" : [ "$E = $E1 + $E2;", "$E += $E2;" ],
+  "holders" : [ "$E", "$E1", "$E2" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  }, {
+    "class" : "NotIntegerChecker",
+    "argsList" : [ [ 1, "$E2" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ],
+  "comment" : "note: + may be used on String!"
+}, {
+  "id" : 4,
+  "category" : "",
+  "codes" : [ "$E = $E1 - $E2;", "$E -= $E2;" ],
+  "holders" : [ "$E", "$E1", "$E2" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  }, {
+    "class" : "NotIntegerChecker",
+    "argsList" : [ [ 1, "$E2" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ]
+}, {
+  "id" : 5,
+  "codes" : [ "if ( $C ) $S ", "if ( $C ) { } else $S" ],
+  "banned_transfer" : [ [ 0, 1 ] ],
+  "holders" : [ "$C", "$S" ],
+  "rules" : [ "ifStmt", "ifElseStmt" ],
+  "handlers" : [ {
+    "class" : "CondReverserHandler",
+    "argsList" : [ [ "0", "1", "$C" ] ]
+  } ]
+}, {
+  "id" : 6,
+  "codes" : [ "return $C ;", "$^ if ( $C ) { return true ; } return false ;", "$^ if ( $C ) return true ; return false ;", "if ( $C ) { return true ; } else { return false ; }", "if ( $C ) return true ; else return false ; ", "if ( $C ) return true ; else { return false ; }" ],
+  "banned_transfer" : [ [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], [ 0, 5 ] ],
+  "holders" : [ "$C" ],
+  "rules" : [ "returnStmt", "ifStmt", "ifStmt", "ifElseStmt", "ifElseStmt", "ifElseStmt" ]
+}, {
+  "id" : 7,
+  "codes" : [ "return $C;", "return $C ? false : true ;", "$^ if ( $C ) { return false; } return true;", "$^ if ( $C ) return false; return true;", "if ( $C ) { return false ; } else { return true ; }", "if ( $C ) return false ;  else return true ;", "if ( $C ) return false ;  else { return true ; }" ],
+  "banned_transfer" : [ [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 0, 4 ], [ 0, 5 ], [ 0, 6 ] ],
+  "holders" : [ "$C" ],
+  "rules" : [ "returnStmt", "returnStmt", "ifStmt", "ifStmt", "ifElseStmt", "ifElseStmt", "ifElseStmt" ],
+  "handlers" : [ {
+    "class" : "CondReverserHandler",
+    "argsList" : [ [ "0", "1", "$C" ], [ "0", "2", "$C" ], [ "0", "3", "$C" ], [ "0", "4", "$C" ], [ "0", "5", "$C" ], [ "0", "6", "$C" ] ]
+  } ]
+}, {
+  "id" : 8,
+  "codes" : [ "return $C ? $E : $E1 ;", "$^ if ( $C ) { return $E; } return $E1;", "$^ if ( $C ) return $E; return $E1;", "if ( $C ) { return $E ; } else { return $E1 ; }", "if ( $C ) return $E ;  else return $E1 ;", "if ( $C ) return $E ;  else { return $E1 ; }" ],
+  "holders" : [ "$C", "$E", "$E1" ],
+  "rules" : [ "returnStmt", "ifStmt", "ifStmt", "ifElseStmt", "ifElseStmt", "ifElseStmt" ]
+}, {
+  "id" : 9,
+  "codes" : [ "if ( $C && $C1 ) $S", "if ( $C ) { if ( $C1 ) $S }", "if ( $C ) if ( $C1 ) $S " ],
+  "holders" : [ "$C", "$C1", "$S" ],
+  "rules" : [ "ifStmt" ],
+  "handlers" : [ {
+    "class" : "WrapCondHandler",
+    "argsList" : [ [ 1, 0, "$C", "$C1" ], [ 2, 0, "$C", "$C1" ] ]
+  } ]
+}, {
+  "id" : 10,
+  "codes" : [ "if ( $C ) $S else { $S(ifStmt) }", "if ( $C ) $S else $S(ifStmt)" ],
+  "banned_transfer" : [ [ 1, 0 ] ],
+  "holders" : [ "$C", "$S", "$S(ifStmt)" ],
+  "rules" : [ "ifElseStmt" ]
+}, {
+  "id" : 11,
+  "codes" : [ "if ( $C ) $S else { $S(ifElseStmt) }", "if ( $C ) $S else $S(ifElseStmt)" ],
+  "banned_transfer" : [ [ 1, 0 ] ],
+  "holders" : [ "$C", "$S", "$S(ifElseStmt)" ],
+  "rules" : [ "ifElseStmt" ]
+}, {
+  "id" : 12,
+  "codes" : [ "for ( ; ; ) $S", "while ( true ) $S " ],
+  "holders" : [ "$S" ],
+  "rules" : [ "forStmt", "whileStmt" ]
+}, {
+  "id" : 13,
+  "codes" : [ "! $C", "$C == false" ],
+  "holders" : [ "$C" ],
+  "rules" : [ "expression" ]
+}, {
+  "id" : 14,
+  "codes" : [ "$I = $C ? $E : $E1 ;", "if ( $C ) { $I = $E ; } else { $I1 = $E1 ; }", "if ( $C ) $I = $E ; else $I1 = $E1 ;", "if ( $C ) { $I = $E ; } else $I1 = $E1 ;", "if ( $C ) $I = $E ; else { $I1 = $E1 ; }" ],
+  "holders" : [ "$C", "$I", "$I1", "$E", "$E1" ],
+  "rules" : [ "expressionStmt", "ifElseStmt", "ifElseStmt", "ifElseStmt", "ifElseStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 1, "$I", "$I1" ], [ 2, "$I", "$I1" ], [ 3, "$I", "$I1" ], [ 4, "$I", "$I1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 1, "$I", "$I1" ], [ 2, "$I", "$I1" ], [ 3, "$I", "$I1" ], [ 4, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 15,
+  "codes" : [ "$^ $M $T $I2 ; $I = $C ? $E : $E1 ;", "$M $T $I = $C ? $E : $E1 ;", "$^ $M $T $I2 ; if ( $C ) { $I = $E ; } else { $I1 = $E1 ; }", "$^ $M $T $I2 ; if ( $C ) $I = $E ; else $I1 = $E1 ;", "$^ $M $T $I2 ; if ( $C ) { $I = $E ; } else $I1 = $E1 ;", "$^ $M $T $I2 ; if ( $C ) $I = $E ; else { $I1 = $E1 ; }" ],
+  "holders" : [ "$M", "$T", "$C", "$I", "$I1", "$I2", "$E", "$E1" ],
+  "rules" : [ "localVariableDeclarationStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$I", "$I2" ], [ 2, "$I", "$I1", "$I2" ], [ 3, "$I", "$I1", "$I2" ], [ 4, "$I", "$I1", "$I2" ], [ 5, "$I", "$I1", "$I2" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 2, "$I", "$I1", "$I2" ], [ 3, "$I", "$I1", "$I2" ], [ 4, "$I", "$I1", "$I2" ], [ 5, "$I", "$I1", "$I2" ] ]
+  } ]
+}, {
+  "id" : 16,
+  "codes" : [ "for ( ; $C ; ) $S", "while ( $C ) $S" ],
+  "holders" : [ "$C", "$S" ],
+  "rules" : [ "forStmt", "whileStmt" ]
+}, {
+  "id" : 17,
+  "codes" : [ "$E = $E1 << $E2;", "$E <<= $E2;" ],
+  "holders" : [ "$E", "$E1", "$E2" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ]
+}, {
+  "id" : 18,
+  "codes" : [ "$E = $E1 >> $E2;", "$E >>= $E2;" ],
+  "holders" : [ "$E", "$E1", "$E2" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ]
+}, {
+  "id" : 19,
+  "codes" : [ "$E = $E1 >>> $E2;", "$E >>>= $E2;" ],
+  "holders" : [ "$E", "$E1", "$E2" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ]
+}, {
+  "id" : 20,
+  "codes" : [ "$E = $E1 $HOMO_BOP $E2;", "$E $HOMO_BOP_ASSIGN $E1;" ],
+  "holders" : [ "$E", "$E1", "$E2", "$HOMO_BOP", "$HOMO_BOP_ASSIGN" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E2" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  }, {
+    "class" : "OpOpAssignConvertHandler",
+    "argsList" : [ [ 0, 1, "$HOMO_BOP", "$HOMO_BOP_ASSIGN" ] ]
+  } ],
+  "comment" : "exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT)."
+}, {
+  "id" : 21,
+  "codes" : [ "$E = $E1 $HOMO_BOP $E2;", "$E $HOMO_BOP_ASSIGN $E2;" ],
+  "holders" : [ "$E", "$E1", "$E2", "$HOMO_BOP", "$HOMO_BOP_ASSIGN" ],
+  "rules" : [ "expressionStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$E", "$E1" ] ]
+  }, {
+    "class" : "OpOpAssignConvertHandler",
+    "argsList" : [ [ 0, 1, "$HOMO_BOP", "$HOMO_BOP_ASSIGN" ] ]
+  } ],
+  "comment" : "exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT)."
+}, {
+  "id" : 22,
+  "codes" : [ "$^ $M $T $I = $E ; return $I1 ;", "return $E ;" ],
+  "banned_transfer" : [ [ 1, 0 ] ],
+  "holders" : [ "$M", "$T", "$I", "$I1", "$E" ],
+  "rules" : [ "localVariableDeclarationStmt", "returnStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 23,
+  "codes" : [ "$^ $M $T $I ; $I1 = $E ;", "$M $T $I = $E;" ],
+  "holders" : [ "$M", "$T", "$I", "$I1", "$E" ],
+  "rules" : [ "localVariableDeclarationStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 24,
+  "codes" : [ "$^ $M $T $I = $E ; if($C) { $I1 = $E1 ; }", "$^ $M $T $I = $E ; if($C) $I1 = $E1 ;", "$M $T $I = $E1;" ],
+  "banned_transfer" : [ [ 2, 0 ], [ 2, 1 ] ],
+  "holders" : [ "$M", "$T", "$I", "$I1", "$E", "$E1" ],
+  "rules" : [ "localVariableDeclarationStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 25,
+  "codes" : [ "$^ $M $T $I ; if($C) { $I1 = $E1 ; }", "$^ $M $T $I ; if($C) $I1 = $E1 ;", "$M $T $I = $E1;" ],
+  "holders" : [ "$M", "$T", "$I", "$I1", "$E1" ],
+  "rules" : [ "localVariableDeclarationStmt" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 0, "$I", "$I1" ] ]
+  } ]
+}, {
+  "id" : 26,
+  "category" : "Operator preferences",
+  "codes" : [ "$E < $E1", "$E1 > $E" ],
+  "holders" : [ "$E", "$E1" ],
+  "rules" : [ "expression" ],
+  "checkers" : [ ],
+  "handlers" : [ ]
+}, {
+  "id" : 27,
+  "category" : "Operator preferences",
+  "codes" : [ "$E <= $E1", "$E1 >= $E" ],
+  "holders" : [ "$E", "$E1" ],
+  "rules" : [ "expression" ],
+  "checkers" : [ ],
+  "handlers" : [ ]
+}, {
+  "id" : 28,
+  "category" : "Operator preferences",
+  "codes" : [ "$E == false", "! $E" ],
+  "holders" : [ "$E" ],
+  "rules" : [ "expression" ],
+  "checkers" : [ ],
+  "handlers" : [ ]
+}, {
+  "id" : 29,
+  "category" : "Operator preferences",
+  "codes" : [ "$E == true", "$E" ],
+  "holders" : [ "$E" ],
+  "rules" : [ "expression" ],
+  "checkers" : [ ],
+  "handlers" : [ ]
+}, {
+  "id" : 30,
+  "category" : "Numerical literals",
+  "codes" : [ "$LITERAL == $E", "$E == $LITERAL" ],
+  "holders" : [ "$E", "$LITERAL" ],
+  "rules" : [ "expression" ],
+  "checkers" : [ ],
+  "handlers" : [ ]
+} ]
