@@ -1,5 +1,6 @@
 package org.example.parser.java;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
@@ -70,6 +71,10 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+		// Change child of body to list-type nodes.
+		ExtendContext body = ctx.getFirstCtxChildIf(child -> parser.isBody(child));
+		body.expandChildren(parser);
+
 		doTask(ctx, enterStylers);
 	}
 

@@ -34,9 +34,6 @@ public class NewlineStyler extends Styler {
         style = new NewlineStyle();
         style.setStyleName("newline");
 
-        // In most cases: add a newline after single statement.
-        style.addRule(defaultContext, new NewlineProperty(1));
-        style.addRule(new NewlineContext(RuleGroup.FILE_HEAD_DEC.name(), ""), new NewlineProperty(1));
     }
 
     @Override
@@ -56,23 +53,8 @@ public class NewlineStyler extends Styler {
                     --property.newlines;
                 }
 
-                // More than one single statement in a line.
-                String singleStmt = RuleGroup.SINGLE_STMT.name();
-                boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
-                if (between2SingleStmts) {
-                    if (property.newlines == 0) {
-                        style.remove(defaultContext);
-                        context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-                        style.addRule(context, property);
-                    }
-                } else {
-                    Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
-                    boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
-                    if (isStmtLevel && property.newlines > 1) {
-                        context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-                    }
-                    style.addRule(context, property);
-                }
+                setMinTextLength(adjacentCode, context, property, parser);
+                style.addRule(context, property);
                 return null;
             }
         };
@@ -126,6 +108,23 @@ public class NewlineStyler extends Styler {
 
         framework(ctx, applicator,parser);
         return ctx;
+    }
+
+    private void setMinTextLength(AdjacentCodeBlock adjacentCode, NewlineContext context, NewlineProperty property, MyParser parser) {
+        // More than one single statement in a line.
+        String singleStmt = RuleGroup.SINGLE_STMT.name();
+        boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
+        if (between2SingleStmts) {
+            if (property.newlines == 0) {
+                context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+            }
+        } else {
+            Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
+            boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
+            if (isStmtLevel && property.newlines > 1) {
+                context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
+            }
+        }
     }
 
 

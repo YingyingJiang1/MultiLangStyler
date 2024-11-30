@@ -264,6 +264,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isClassBodyDeclaration(ParseTree child) {
+        return child instanceof JavaParser.ClassBodyDeclarationContext;
+    }
+
+    @Override
     public int getRuleExpression() {
         return JavaParser.RULE_expression;
     }

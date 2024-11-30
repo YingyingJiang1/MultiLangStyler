@@ -26,13 +26,4 @@ public class NewlineStyle extends CommonStyle {
             ruleSet.addRule(styleContext, styleProperty);
         }
     }
-
-    @Override
-    public StyleProperty getSimilarProperty(StyleContext targetContext) {
-
-        if (newlineProperty == null) {
-            newlineContext.minTextLength = adjacentCodeBlock.calculateTextLength(1,parser, Stage.APPLY);
-            newlineProperty = (NewlineProperty) style.getSimilarProperty(newlineContext);
-        }
-    }
 }

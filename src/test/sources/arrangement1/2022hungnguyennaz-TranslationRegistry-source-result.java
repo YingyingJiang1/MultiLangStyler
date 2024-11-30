@@ -18,7 +18,8 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TranslationRegistry {
-    public static final TranslationRegistry INSTANCE = new TranslationRegistry();//
+    public static final TranslationRegistry INSTANCE = new TranslationRegistry();
+    //
     private final List<TranslationProvider> providers = new LinkedList<>();
     static {
         try {
@@ -84,9 +85,9 @@ public final class TranslationRegistry {
         public String translate(String s) {
             return translations.get(s);
         }
-    }private interface TranslationProvider {
-        String translate(String s);
     }
 
-
+    private interface TranslationProvider {
+        String translate(String s);
+    }
 }

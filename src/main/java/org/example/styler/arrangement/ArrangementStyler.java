@@ -25,6 +25,7 @@ public class ArrangementStyler extends Styler {
 
 	public ArrangementStyler() {
         style = new ArrangementStyle();
+		executeWhenExit = false;
     }
 
 

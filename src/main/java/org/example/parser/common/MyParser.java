@@ -81,6 +81,7 @@ public interface MyParser {
     boolean isBlock(ParseTree t);
     boolean isCatchClause(ParseTree t);
     boolean isTypeDeclaration(ParseTree t);
+    boolean isClassBodyDeclaration(ParseTree child);
 
     int getRuleBlock();
     int getRuleExpression();
@@ -157,4 +158,5 @@ public interface MyParser {
     int getRuleIndex(String ruleName);
 
     ParseTree getTree();
+
 }
