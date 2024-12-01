@@ -51,13 +51,13 @@ public class PlaceholderContainer {
         put("$T", "T#id");
         put("$M", "");
         put("$EXP_LIST", "I#id=0,J#id=1");
-        put("$S(ifStmt)", "if(IFCOND>#id){}");
-        put("$S(ifElseStmt)", "if(IFELSECOND>#id){}else{}");
+        put("$S(ifStmt)", "if(IFCOND#id>0){}");
+        put("$S(ifElseStmt)", "if(IFELSECOND#id>0){}else{}");
         put("$S(expStmt)", "I#id=0;");
         put("$S", "RV#id=LV#id;");
         put("$HOMO_BOP", "+");
         put("$HOMO_BOP_ASSIGN", "+=");
-        put("$LITERAL", "#id");
+        put("$LITERAL", "1#id");
         put("$VAR_DEC", "int VAR#id");
     }};
 

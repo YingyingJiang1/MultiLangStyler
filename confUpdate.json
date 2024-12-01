@@ -187,7 +187,7 @@
   "id" : 16,
   "name" : "loop4",
   "category" : "Loops",
-  "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S }", "$VAR_DEC while ( $E1 ) { $S $S(expStmt)+ }" ],
+  "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S }", "$VAR_DEC ; while ( $E1 ) { $S $S(expStmt)+ }" ],
   "holders" : [ "$S", "$E_LIST", "$E_LIST1", "$E" ],
   "checker" : [ {
     "checker_description" : "检查1号写法中的$S(expStmt)+，他们必须对更新了表达式的值"
@@ -201,7 +201,7 @@
   "id" : 17,
   "name" : "check_then_return",
   "category" : "Check then return preferences",
-  "codes" : [ "return $E ? $E : $E1 ;", "$^ if ( $E ) { return $E; } return $E1;", "$^ if ( $E ) return $E; return $E1;", "if ( $E ) { return $E ; } else { return $E1 ; }", "if ( $E ) { return $E ; } else return $E1 ; ", "if ( $E ) return $E ;  else return $E1 ;", "if ( $E ) return $E ;  else { return $E1 ; }" ],
+  "codes" : [ "return $E ? $E1 : $E2 ;", "if ( $E ) { return $E1 ; } else { return $E2 ; }" ],
   "holders" : [ "$E", "$E", "$E1" ]
 }, {
   "id" : 18,

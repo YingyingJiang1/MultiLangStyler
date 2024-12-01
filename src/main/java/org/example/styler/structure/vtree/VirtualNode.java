@@ -34,7 +34,12 @@ public class VirtualNode {
     }
 
     public boolean matches(ParseTree t1, MyParser parser) {
-        return VirtualNodeMatcher.getInstance(parser).isMatched(type, t1, parser);
+        boolean isMatched = VirtualNodeMatcher.getInstance(parser).isMatched(type, t1, parser);
+        if (isMatched) {
+            addMatchedTree(t1);
+            return true;
+        }
+        return repetition.equals("*") || repetition.equals("?");
     }
 
     public boolean checkState(MyParser parser) {
@@ -53,6 +58,13 @@ public class VirtualNode {
                 repetition.equals("?") && sizeBefore <= 1;
     }
 
+    public int moveStep() {
+        if (repetition.equals("*") || repetition.equals("+") || repetition.equals("?") && matchedTrees.isEmpty()) {
+            return 0;
+        }
+        return 1;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -68,5 +80,19 @@ public class VirtualNode {
     @Override
     public int hashCode() {
         return Objects.hash(tree, matchedTrees, type, repetition);
+    }
+
+    public boolean isRollback() {
+        if (matchedTrees.isEmpty()) {
+            return false;
+        }
+        return repetition.equals("*") ||  repetition.equals("+") && matchedTrees.size() > 1 || repetition.equals("?");
+    }
+
+    public ParseTree removeLastMatchedTree() {
+        if (matchedTrees.isEmpty()) {
+            return null;
+        }
+        return matchedTrees.remove(matchedTrees.size() - 1);
     }
 }

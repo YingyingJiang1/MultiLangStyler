@@ -295,21 +295,38 @@ public class EquivalentStructure {
 				// Different match strategies for virtual node and non-virtual node.
 				if (virtualNode != null) {
 					matched = virtualNode.matches(tChild, parser);
-					if (matched) {
-						virtualNode.addMatchedTree(tChild);
-					}
 				} else {
 					matched = isMatched(vtChild, tChild, forest, parser);
 				}
 
 				if (matched) {
-					++vi;
-					++i;
-				} else {
-					if(!forest.addMatchedRealTree(vtChild, tChild)) {
-						return false;
+					if (virtualNode != null) {
+						vi += virtualNode.moveStep();
+					} else {
+						++vi;
 					}
 					++i;
+				} else {
+					// Rollback status when left sibling of vtChild can be matched repeatedly.
+					if (vi - 1 >= 0) {
+						ParseTree preVtChild = vt.getChild(vi - 1);
+						VirtualNode preVNode = vTreeMap.get(preVtChild);
+						if (preVNode != null && preVNode.isRollback()) {
+							ParseTree matchedTree = preVNode.removeLastMatchedTree();
+							if (matchedTree != null) {
+								matched = isMatched(vtChild, matchedTree, forest, parser);
+								if (matched) {
+									if (virtualNode != null) {
+										vi += virtualNode.moveStep();
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (!matched) {
+					return false;
 				}
 			}
 			return vi == vt.getChildCount() && i == t.getChildCount();
@@ -343,19 +360,11 @@ public class EquivalentStructure {
 			ParseTree child = children.get(i);
 			VirtualNode vNode = placeholderContainer.getVNodeByText(child.getText());
 			if (vNode != null) {
-				if(!vNode.repetition.isEmpty()) { // Handle the virtual node whose placeholder name is end up with '*','+' or '?'.
-					checkRepeatableVNode(children, i);
-					children.remove(i);
-					ParseTree next = children.get(i);
-					forest.addVNodeMap(next, vNode);
-					--i;
+				if (vNode.isEmpty()) {
+					vTreeMap.put(child, vNode);
+					vNode.tree = child;
 				} else {
-					if (vNode.isEmpty()) {
-						vTreeMap.put(child, vNode);
-						vNode.tree = child;
-					} else {
-						children.set(i, vNode.tree);
-					}
+					children.set(i, vNode.tree);
 				}
 			} else {
 				doUnique(child, forest);
