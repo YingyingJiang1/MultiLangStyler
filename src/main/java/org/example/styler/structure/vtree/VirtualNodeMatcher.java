@@ -43,7 +43,7 @@ public class VirtualNodeMatcher {
     }
 
     private static void init(MyParser parser) {
-        matchRules.put("$I", Set.of(parser.getRuleIdentifier(), parser.getRuleExpression()));
+        matchRules.put("$I", Set.of(parser.getRuleIdentifier()));
         matchRules.put("$C", Set.of(parser.getRuleExpression()));
         matchRules.put("$E", Set.of(parser.getRuleExpression()));
         matchRules.put("$S", parser.getAllStmts());
