@@ -44,7 +44,6 @@ public class VirtualNodeMatcher {
 
     private static void init(MyParser parser) {
         matchRules.put("$I", Set.of(parser.getRuleIdentifier()));
-        matchRules.put("$C", Set.of(parser.getRuleExpression()));
         matchRules.put("$E", Set.of(parser.getRuleExpression()));
         matchRules.put("$S", Set.of(parser.getRuleStmt()));
         matchRules.put("$T", Set.of(parser.getRuleTypeType()));
@@ -52,10 +51,14 @@ public class VirtualNodeMatcher {
 
         matchRules.put("$S(ifStmt)", Set.of(parser.getRuleIfStmt()));
         matchRules.put("$S(ifElseStmt)", Set.of(parser.getRuleIfElseStmt()));
+        matchRules.put("$S(expStmt)", Set.of(parser.getRuleExpStmt()));
+
+        matchRules.put("$EXP_LIST", Set.of(parser.getRuleExpressionList()));
 
         matchTokens.put("$I", Set.of(parser.getIdentifier()));
         matchTokens.put("$HOMO_BOP", parser.getHomoOps());
         matchTokens.put("$HOMO_BOP_ASSIGN", parser.getOpAssign());
         matchTokens.put("$LITERAL", parser.getLiterals());
+        matchTokens.put("$VAR_DEC", parser.getLiterals());
     }
 }

@@ -22,11 +22,10 @@ public class StructurePreferenceTest {
     String language = "java";
     @Test
     void test() throws IOException {
-        String source = "if(a>0)if(b>0)return 0;";
-        String source1 = "";
-        transform(source1, source);
-        System.out.println(MyParserFactory.createParser(language).parseFromString(source).toStringTree(new JavaParser(null)));
-        System.out.println(MyParserFactory.createParser(language).parseFromString(source1).toStringTree(new JavaParser(null)));
+        EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
+        manager.loadEquivalences();
+        manager.writeJsonData("confUpdate.json");
+        EquivalentStructureManager.getInstance().loadEquivalences();
 //        testA();
 
     }

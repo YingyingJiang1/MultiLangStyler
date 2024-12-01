@@ -59,9 +59,9 @@ public class EquivalentStructure {
 		this.checkers = checkers;
 	}
 
-	void compile(String[] codes, String[] placeholders) {
+	void compile(String[] codes) {
 		try {
-			placeholderContainer = new PlaceholderContainer(placeholders);
+			placeholderContainer = PlaceholderContainer.createInstance(codes);
 			for (int i = 0; i < codes.length; i++) {
 				boolean multiStmts = codes[i].startsWith("$^");
 				String code = replacePlaceholder(codes[i]);
@@ -82,12 +82,6 @@ public class EquivalentStructure {
 				} else {
 					trees.add(tree);
 				}
-
-				// Modify the structure of tree.
-				ParseTreeWalker walker = new MyParseTreeWalker();
-        		ParseTreeListener listener = new ExtendJavaParserListener(parser);
-				// Just modify the first tree! Because when exiting the current tree, the ast structure of its right sibling has not been modified yet.
-//				walker.walk(listener, trees.get(0));
 
 				for (ParseTree t : trees) {
 					if (t instanceof  ExtendContext ctx) {
@@ -336,11 +330,15 @@ public class EquivalentStructure {
 	}
 
 	// param t is a real tree.
-	private void doUnique(ParseTree parent, Forest forest) {
-		if (!(parent instanceof ExtendContext)) {
+
+	/**
+	 * @apiNote Associates a placeholder-generated tree in the tree to a specific virtual node.
+	 */
+	private void doUnique(ParseTree tree, Forest forest) {
+		if (!(tree instanceof ExtendContext)) {
 			return;
 		}
-		List<ParseTree> children = ((ExtendContext) parent).children;
+		List<ParseTree> children = ((ExtendContext) tree).children;
 		for (int i = 0; i < children.size(); i++) {
 			ParseTree child = children.get(i);
 			VirtualNode vNode = placeholderContainer.getVNodeByText(child.getText());

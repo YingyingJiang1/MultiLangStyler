@@ -112,6 +112,9 @@ public interface MyParser {
     int getRuleAnnotation();
     boolean belongToFunctionDec(int ruleIndex);
     int getRuleStmt();
+    int getRuleExpStmt();
+    int getRuleExpressionList();
+
 
 
 
@@ -162,5 +165,4 @@ public interface MyParser {
     int getRuleIndex(String ruleName);
 
     ParseTree getTree();
-
 }

@@ -66,14 +66,14 @@ public class EquivalentStructureManager {
         int id = node.get("id").asInt();
         String category = node.get("category") == null ? "" : node.get("category").asText();
         String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
-        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
+//        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
         List<Checker> checkers = parseChecks(node.get("checkers"), objectMapper, parser);
         List<Handler> handlers = parseHandlers(node.get("handlers"), objectMapper, parser);
 //        int[] rules = parseRules(node.get("rules"), objectMapper, parser);
         Map<Integer, List<Integer>> bannedTransferMap = parseBannedTransferMap(node.get("banned_transfer"), objectMapper, parser);
 
         EquivalentStructure structure = new EquivalentStructure(id, category, checkers, handlers, bannedTransferMap);
-        structure.compile(codes, holders);
+        structure.compile(codes);
 
         for (int rule: structure.rulesContained()) {
           if (equivalences.get(rule) == null) {
@@ -114,6 +114,9 @@ public class EquivalentStructureManager {
     if (checkersNode != null) {
       checkers = new ArrayList<>();
       for(JsonNode checkerNode : checkersNode) {
+        if (checkerNode.get("class") == null) {
+          continue;
+        }
         Checker checker = Checker.createChecker(checkerNode.get("class").asText(),
                 objectMapper.convertValue(checkerNode.get("argsList"), String[][].class));
         checkers.add(checker);
@@ -127,6 +130,9 @@ public class EquivalentStructureManager {
     if (handlersNode != null) {
       handlers = new ArrayList<>();
       for(JsonNode handlerNode : handlersNode) {
+        if (handlerNode.get("class") == null) {
+          continue;
+        }
         Handler handler = Handler.createHandler(handlerNode.get("class").asText(),
                 objectMapper.convertValue(handlerNode.get("argsList"), String[][].class), parser);
         handlers.add(handler);

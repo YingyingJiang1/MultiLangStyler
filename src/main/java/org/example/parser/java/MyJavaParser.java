@@ -112,7 +112,7 @@ public class MyJavaParser implements MyParser {
         }
         if (parser.getNumberOfSyntaxErrors() > 0) {
             LoggerFactory.getLogger(MyJavaParser.class).error("Failed to parse code from string, " +
-                    "this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.");
+                    "this program is only able to parse the expression-level, stmt-level and top-level(RULE_compilationUnit) code.");
             return null;
         }
         return root;
@@ -446,6 +446,16 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleStmt() {
         return JavaParser.RULE_statement;
+    }
+
+    @Override
+    public int getRuleExpStmt() {
+        return JavaParser.RULE_expressionStmt;
+    }
+
+    @Override
+    public int getRuleExpressionList() {
+        return JavaParser.RULE_expressionList;
     }
 
     @Override

@@ -33,36 +33,48 @@ public class PlaceholderContainer {
     // Ensure each pattern has three groups. If regular1 is a prefix of regular2 then regular1 should be put after regular2.
     static Pattern[] placeholderPatterns = {
             Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
-            Pattern.compile("(\\$[ICSEMVT^])(\\d*)([*+?]?)"),
+            Pattern.compile("(\\$VAR_DEC)(\\d*)([*+?]?)"),
+            Pattern.compile("(\\$EXP_LIST)(\\d*)([*+?]?)"),
+            Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
+            Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
+            Pattern.compile("(\\$[ISEMVT^])(\\d*)([*+?]?)"),
             Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
             Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
             Pattern.compile("(\\$LITERAL)(\\d*)()")
     };
 
+    // Make sure each placeholder type has a different placeholder values.
     private static final Map<String, String> placeholderMap = new HashMap<>() {{
         put("$I", "I#id");
-        put("$C", "C#id");
         put("$E", "E#id");
         put("$V", "V#id");
         put("$T", "T#id");
         put("$M", "");
-        put("$S(ifStmt)", "if(true){}");
-        put("$S(ifElseStmt)", "if(true){}else{}");
+        put("$EXP_LIST", "I#id=0,J#id=1");
+        put("$S(ifStmt)", "if(IFCOND>#id){}");
+        put("$S(ifElseStmt)", "if(IFELSECOND>#id){}else{}");
+        put("$S(expStmt)", "I#id=0;");
         put("$S", "RV#id=LV#id;");
         put("$HOMO_BOP", "+");
         put("$HOMO_BOP_ASSIGN", "+=");
-        put("$LITERAL", "1");
-        put("", "");
+        put("$LITERAL", "#id");
+        put("$VAR_DEC", "int VAR#id");
     }};
 
 
-    public PlaceholderContainer(String[] placeholderNames) {
-        for (int i = 0; i < placeholderNames.length; i++) {
-            String placeholderName = placeholderNames[i];
-            Placeholder placeholderObj = createPlaceholder(placeholderName, i);
-            placeholderObj.vNode = new VirtualNode(placeholderObj.type, placeholderObj.repetition);
-            placeholders.put(placeholderName, placeholderObj);
+    public static PlaceholderContainer createInstance(String[] codes) {
+        PlaceholderContainer container = new PlaceholderContainer();
+        for(String code : codes) {
+            String[] tokens = code.split(" ");
+            for (String token : tokens) {
+                if (token.startsWith("$")) {
+                    Placeholder placeholderObj = container.createPlaceholder(token);
+                    placeholderObj.vNode = new VirtualNode(placeholderObj.type, placeholderObj.repetition);
+                    container.placeholders.put(token, placeholderObj);
+                }
+            }
         }
+        return container;
     }
 
     public Placeholder getPlaceholder(String placeholderName) {
@@ -132,23 +144,7 @@ public class PlaceholderContainer {
     }
 
 
-    /**
-     * @param text
-     * @return
-     * @apiNote This method can handle the case where different placeholder names has the same placeholder value.
-     * But there may be some bugs.
-     */
-    public VirtualNode getVNodeByText(String text, boolean modifyState) {
-        String placeholderName = getPlaceholderName(text, modifyState);
-        Placeholder placeholder = placeholders.get(placeholderName);
-        if (placeholder != null) {
-            return placeholder.vNode;
-        }
-        return null;
-    }
-
-
-    private Placeholder createPlaceholder(String placeholderName, int index) {
+    private Placeholder createPlaceholder(String placeholderName) {
         String type = "", digitalId = "", repetition = "";
         for (Pattern placeholderPattern : placeholderPatterns) {
             Matcher matcher = placeholderPattern.matcher(placeholderName);
@@ -161,28 +157,26 @@ public class PlaceholderContainer {
         String placeholderValue = placeholderMap.getOrDefault(type, "").replace("#id", digitalId);
         valueNameMap.computeIfAbsent(placeholderValue, v -> new ArrayList<>());
         valueNameMap.get(placeholderValue).add(placeholderName);
-        return new Placeholder(placeholderName, placeholderValue, index, repetition, type);
+        return new Placeholder(placeholderName, placeholderValue, repetition, type);
     }
 
     public static class Placeholder {
         String placeholderName;
         String placeholderValue;
-        int index;
         String repetition;
         String type;
         VirtualNode vNode = null;
 
-        public Placeholder(String placeholderName, String placeholderValue, int index, String repetition, String type) {
+        public Placeholder(String placeholderName, String placeholderValue, String repetition, String type) {
             this.placeholderName = placeholderName;
             this.placeholderValue = placeholderValue;
-            this.index = index;
             this.repetition = repetition;
             this.type = type;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(placeholderName, placeholderValue, index, repetition, type, vNode);
+            return Objects.hash(placeholderName, placeholderValue, repetition, type, vNode);
         }
 
         @Override
@@ -192,8 +186,7 @@ public class PlaceholderContainer {
                         Objects.equals(placeholderValue, placeholder.placeholderValue) &&
                         Objects.equals(repetition, placeholder.repetition) &&
                         Objects.equals(type, placeholder.type) &&
-                        Objects.equals(vNode, placeholder.vNode) &&
-                        index == placeholder.index;
+                        Objects.equals(vNode, placeholder.vNode);
             }
             return false;
         }
