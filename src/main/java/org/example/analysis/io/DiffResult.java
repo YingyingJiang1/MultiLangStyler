@@ -1,4 +1,4 @@
-package org.example.analysis.ioformat;
+package org.example.analysis.io;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,11 +1,12 @@
 package org.example.analysis.feature.impl;
 
-import org.example.analysis.feature.featurevalue.StyleVector;
+import org.example.analysis.feature.featurevalue.*;
 import org.example.analysis.feature.StyleFeature;
-import org.example.analysis.feature.featurevalue.OrderedFeatureValue;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.arrangement.style.ArrangementProperty;
+import org.example.styler.arrangement.style.EnumType;
+import org.example.styler.arrangement.style.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,12 @@ public class ArrangementStyleFeature extends StyleFeature {
             if (rule.getStyleProperty() instanceof ArrangementProperty property) {
                 // member list order
                 List<String> memberList = new ArrayList<>();
-                property.getAreas().forEach(area -> memberList.add(area.getClass().getSimpleName()));
+                for (ArrangementProperty.ContentArea area   : property.getAreas()) {
+                    memberList.add(area.getClass().getSimpleName());
+                    boolean  isLogicalOrder = area.getOrder().getLogicalOrder() != EnumType.UNKNOWN;
+                    String key = "has a logical order in " + area.getClass().getSimpleName();
+                    fv.addFeature("has a logical order in a ", new BooleanFeatureValue(isLogicalOrder));
+                }
                 fv.addFeature("Member list order", new OrderedFeatureValue(memberList));
             }
         }

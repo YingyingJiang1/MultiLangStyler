@@ -1,10 +1,11 @@
-package org.example.analysis.ioformat;
+package org.example.analysis.io;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InputPair {
     private String problemName;
+    private List<String> authors;
     private List<String> files = new ArrayList<String>();
 
     public InputPair(String problemName, String file1, String file2) {

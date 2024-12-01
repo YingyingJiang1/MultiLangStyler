@@ -1,11 +1,10 @@
-package org.example.experiment;
+package org.example.analysis.input;
 
 /*
  * @description
  * @author       Yingying Jiang
  * @create       2024/4/22 3:01
  */
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
