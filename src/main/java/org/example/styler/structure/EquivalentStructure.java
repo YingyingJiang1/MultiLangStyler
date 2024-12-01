@@ -1,10 +1,7 @@
 package org.example.styler.structure;
 
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.*;
 import org.apache.commons.logging.Log;
 import org.example.debug.TreePrinter;
 import org.example.parser.common.MyParseTreeWalker;
@@ -167,12 +164,6 @@ public class EquivalentStructure {
 			for (; vi < forest.size() && ti < realTrees.size(); ++vi,++ti) {
 				ParseTree vt = forest.getTree(vi);
 				ParseTree t1 = realTrees.get(ti);
-				if (id == 7) {
-					System.out.println(index);
-					TreePrinter.printTree(t1, parser);
-					TreePrinter.printTree(vt, parser);
-
-				}
 				if (t1 instanceof TerminalNode || vt instanceof TerminalNode) {
 					break;
 				}
@@ -181,6 +172,8 @@ public class EquivalentStructure {
 				if (rule1 != rule2) {
 					break;
 				}
+				TreePrinter.printTree(t1, parser);
+				TreePrinter.printTree(vt, parser);
 				if (!isMatched(vt, t1, forest, parser)) {
 					break;
 				}
@@ -286,11 +279,15 @@ public class EquivalentStructure {
 		if (vt instanceof TerminalNode && t instanceof TerminalNode) {
 			return vt.getText().equals(t.getText());
 		}
-		if (vt instanceof ExtendContext && t instanceof ExtendContext) {
-			ExtendContext vtCtx = (ExtendContext) vt;
-			ExtendContext ctx = (ExtendContext) t;
+		if (vt instanceof ExtendContext vtCtx && t instanceof ExtendContext ctx) {
 			// Match root.
-			if(!ruleMatches(vtCtx, ctx)) {
+			boolean matchResult = ruleMatches(vtCtx, ctx);
+			if(!matchResult) {
+				boolean isBraceOptionalCase = vtCtx.getRuleIndex() == parser.getRuleBlock() && vtCtx.getChildCount() == 3;
+				if (isBraceOptionalCase) {
+					ExtendContext stmtCtx = (ExtendContext) vtCtx.getChild(1);
+					return isMatched(stmtCtx.getChild(0), t, forest, parser);
+				}
 				return false;
 			}
 

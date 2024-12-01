@@ -22,8 +22,9 @@ public class StructurePreferenceTest {
     String language = "java";
     @Test
     void test() throws IOException {
-        String source = "for(int i = 0, b = 0; i < 10; i++) {}";
-        String source1 = "for(int x = 0; i < 10; i++) {}";
+        String source = "if(a>0)if(b>0)return 0;";
+        String source1 = "";
+        transform(source1, source);
         System.out.println(MyParserFactory.createParser(language).parseFromString(source).toStringTree(new JavaParser(null)));
         System.out.println(MyParserFactory.createParser(language).parseFromString(source1).toStringTree(new JavaParser(null)));
 //        testA();

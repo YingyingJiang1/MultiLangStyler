@@ -58,8 +58,7 @@
     "category": "Continuous logic and conditions preferences",
     "codes":[
       "if ( $E && $E1 ) $S",
-      "if ( $E ) { if ( $E1 ) $S }",
-      "if ( $E ) if ( $E1 ) $S "],
+      "if ( $E ) { if ( $E1 ) $S }"],
     "holders": ["$E", "$E1", "$S"],
     "handlers": [
       {

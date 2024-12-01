@@ -156,3 +156,13 @@ java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.Js
 	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
 	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
 	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+2024-12-01 18:57:30,791 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 18:57:41,547 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 18:59:37,285 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:06:24,859 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:06:29,365 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:07:07,780 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:07:57,786 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:09:51,896 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:14:00,515 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.
+2024-12-01 19:14:39,858 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/114 : Failed to parse code from string, this program is only able to parse the stmt-level and top-level(RULE_compilationUnit) code.

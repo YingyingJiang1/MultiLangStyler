@@ -46,7 +46,7 @@ public class VirtualNodeMatcher {
         matchRules.put("$I", Set.of(parser.getRuleIdentifier()));
         matchRules.put("$C", Set.of(parser.getRuleExpression()));
         matchRules.put("$E", Set.of(parser.getRuleExpression()));
-        matchRules.put("$S", parser.getAllStmts());
+        matchRules.put("$S", Set.of(parser.getRuleStmt()));
         matchRules.put("$T", Set.of(parser.getRuleTypeType()));
         matchRules.put("$M", Set.of(parser.getRuleModifierList()));
 
