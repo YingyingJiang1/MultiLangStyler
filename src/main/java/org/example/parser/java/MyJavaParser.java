@@ -95,6 +95,12 @@ public class MyJavaParser implements MyParser {
         parser.setTokenFactory(tokenFactory);
 
         parser.removeErrorListeners();
+
+        tree = tryParse();
+        return tree;
+    }
+
+    private ParseTree tryParse() {
         ExtendContext root = (ExtendContext) parser.compilationUnit();
         if (parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty()) {
             parser.reset();
@@ -121,10 +127,7 @@ public class MyJavaParser implements MyParser {
         parser = new JavaParser(tokenStream);
         parser.setTokenFactory(tokenFactory);
         // this.parser.setErrorHandler(new AntlrErrorHandler());
-        tree = parser.compilationUnit();
-        if (parser.getNumberOfSyntaxErrors() > 0) {
-            tree = null;
-        }
+        tree = tryParse();
         return tree;
     }
 

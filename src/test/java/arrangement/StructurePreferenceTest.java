@@ -22,7 +22,11 @@ public class StructurePreferenceTest {
     String language = "java";
     @Test
     void test() throws IOException {
-        testA();
+        String source = "for(int i = 0, b = 0; i < 10; i++) {}";
+        String source1 = "for(int x = 0; i < 10; i++) {}";
+        System.out.println(MyParserFactory.createParser(language).parseFromString(source).toStringTree(new JavaParser(null)));
+        System.out.println(MyParserFactory.createParser(language).parseFromString(source1).toStringTree(new JavaParser(null)));
+//        testA();
 
     }
 
@@ -41,6 +45,7 @@ public class StructurePreferenceTest {
 
     @Test
     void testA() {
+
         String source = "if (a == b) { return 1;}else return 0;";
         String target = "return a==b?1:0;";
         transform(source, target);
