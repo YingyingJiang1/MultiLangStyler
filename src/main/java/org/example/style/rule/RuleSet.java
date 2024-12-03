@@ -19,7 +19,7 @@ public interface RuleSet {
      */
     void filterRules();
 
-    boolean replace(StyleContext oldContext, StyleContext newContext);
+    boolean updateKey(StyleContext oldContext, StyleContext newContext);
 
     StyleProperty remove(StyleContext styleContext);
 

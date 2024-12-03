@@ -1,5 +1,6 @@
 package org.example.analysis.feature.featurevalue;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,4 +15,7 @@ public class StyleVector {
         featureValueMap.put(featureName, featureValue);
     }
 
+    public Map<String, FeatureValue> getFeatureValueMap() {
+        return featureValueMap;
+    }
 }

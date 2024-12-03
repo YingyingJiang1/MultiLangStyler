@@ -4,7 +4,6 @@ import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
-import org.example.styler.Stage;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +18,10 @@ public class NewlineStyle extends CommonStyle {
                     Objects.equals(context.typeName2, context1.typeName2)).toList();
             for (StyleRule rule : rules) {
                 if (Objects.equals(rule.styleProperty, styleProperty) && context.minTextLength < ((NewlineContext) rule.styleContext).minTextLength) {
-                    ruleSet.replace(rule.styleContext, styleContext);
+                    ruleSet.updateKey(rule.styleContext, styleContext);
                 }
             }
-
-            ruleSet.addRule(styleContext, styleProperty);
         }
+        super.addRule(styleContext, styleProperty);
     }
 }

@@ -77,12 +77,13 @@ public class MapRuleSet implements RuleSet{
     }
 
     @Override
-    public boolean replace(StyleContext oldContext, StyleContext newContext) {
+    public boolean updateKey(StyleContext oldContext, StyleContext newContext) {
         List<StyleProperty> properties = rules.remove(oldContext);
         if (properties == null) {
             return false;
         }
         rules.put(newContext, properties);
+        frequencies.put(newContext, frequencies.remove(oldContext));
         return true;
     }
 

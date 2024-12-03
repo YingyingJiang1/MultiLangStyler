@@ -166,8 +166,8 @@ public class EquivalentStructure {
 				if (rule1 != rule2) {
 					break;
 				}
-				TreePrinter.printTree(t1, parser);
-				TreePrinter.printTree(vt, parser);
+//				TreePrinter.printTree(t1, parser);
+//				TreePrinter.printTree(vt, parser);
 				if (!isMatched(vt, t1, forest, parser)) {
 					break;
 				}

@@ -6,4 +6,8 @@ public class BooleanFeatureValue implements FeatureValue{
     public BooleanFeatureValue(boolean value) {
         this.value = value;
     }
+
+    public boolean isValue() {
+        return value;
+    }
 }

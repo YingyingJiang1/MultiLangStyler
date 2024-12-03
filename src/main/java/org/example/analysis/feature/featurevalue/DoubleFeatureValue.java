@@ -6,4 +6,8 @@ public class DoubleFeatureValue implements FeatureValue{
     public DoubleFeatureValue(double value) {
         this.value = value;
     }
+
+    public double getValue() {
+        return value;
+    }
 }

@@ -1,4 +1,6 @@
 package org.example.analysis.feature.featurevalue;
 
-public interface FeatureValue {
+import java.io.Serializable;
+
+public interface FeatureValue extends Serializable {
 }

@@ -4,21 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InputPair {
-    private String problemName;
-    private List<String> authors;
-    private List<String> files = new ArrayList<String>();
+    private String problemID;
+    private String problemNumber;
+    private String[] authors;
+    private String[] files;
 
-    public InputPair(String problemName, String file1, String file2) {
-        this.problemName = problemName;
-        files.add(file1);
-        files.add(file2);
+    public InputPair(String problemNumber, String problemID, String[] authors, String[] files) {
+        this.problemID = problemID;
+        this.problemNumber = problemNumber;
+        this.authors = authors;
+        this.files = files;
     }
 
     public String getFile1() {
-        return files.get(0);
+        return files[0];
     }
 
     public String getFile2() {
-        return files.get(1);
+        return files[1];
+    }
+
+    public String getProblemNumber() {
+        return problemNumber;
     }
 }

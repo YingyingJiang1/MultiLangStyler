@@ -15,4 +15,8 @@ public class VectorFeatureValue implements FeatureValue{
     public void add(boolean value) {
         bitVector.add(value);
     }
+
+    public List<Boolean> getBitVector() {
+        return bitVector;
+    }
 }

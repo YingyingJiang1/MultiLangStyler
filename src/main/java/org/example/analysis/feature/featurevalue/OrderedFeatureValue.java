@@ -10,5 +10,7 @@ public class OrderedFeatureValue implements FeatureValue{
         this.orderedStrs = orderedStrs;
     }
 
-
+    public List<String> getOrderedStrs() {
+        return orderedStrs;
+    }
 }

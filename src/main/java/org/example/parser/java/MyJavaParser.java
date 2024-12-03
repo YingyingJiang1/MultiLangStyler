@@ -14,12 +14,15 @@ import org.example.parser.java.antlr.JavaParser;
 import org.example.myException.CompilationException;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 /*
  * @description
@@ -27,6 +30,7 @@ import java.util.*;
  * @create       2024/4/5 22:08
  */
 public class MyJavaParser implements MyParser {
+    public static Logger logger =LoggerFactory.getLogger(MyJavaParser.class);
 
     JavaParser parser = null;
     Path curFile = null;
@@ -101,18 +105,33 @@ public class MyJavaParser implements MyParser {
     }
 
     private ParseTree tryParse() {
+        Predicate<ExtendContext> parseFailTester = new Predicate<ExtendContext>() {
+            @Override
+            public boolean test(ExtendContext root) {
+                return parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
+            }
+        };
+
         ExtendContext root = (ExtendContext) parser.compilationUnit();
-        if (parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty()) {
+        if (parseFailTester.test(root)) {
             parser.reset();
-            root = parser.statement();
-            if (parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty()) {
+            root = parser.typeDeclaration();
+            if (parseFailTester.test(root)) {
                 parser.reset();
-                root = parser.expression();
+                root = parser.methodDeclaration();
+                if (parseFailTester.test(root)) {
+                    parser.reset();
+                    root = parser.statement();
+                    if (parseFailTester.test(root)) {
+                        parser.reset();
+                        root = parser.expression();
+                    }
+                }
             }
         }
         if (parser.getNumberOfSyntaxErrors() > 0) {
-            LoggerFactory.getLogger(MyJavaParser.class).error("Failed to parse code from string, " +
-                    "this program is only able to parse the expression-level, stmt-level and top-level(RULE_compilationUnit) code.");
+            logger.error("Failed to parse code, " +
+                    "this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.");
             return null;
         }
         return root;
@@ -127,6 +146,7 @@ public class MyJavaParser implements MyParser {
         parser = new JavaParser(tokenStream);
         parser.setTokenFactory(tokenFactory);
         // this.parser.setErrorHandler(new AntlrErrorHandler());
+        parser.removeErrorListeners();
         tree = tryParse();
         return tree;
     }

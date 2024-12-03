@@ -45,7 +45,7 @@
 
     <appender name="STDOUT_INFO" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>adjacentCodeBlock</level>
+            <level>info</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
@@ -108,8 +108,6 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-
-    <logger name="ch.qos.logback" level="off"></logger>
 
     <!-- 根记录器 -->
     <root level="adjacentCodeBlock">

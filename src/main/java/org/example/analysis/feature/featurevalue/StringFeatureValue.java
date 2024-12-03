@@ -6,4 +6,8 @@ public class StringFeatureValue implements FeatureValue {
     public StringFeatureValue(String value) {
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
 }
