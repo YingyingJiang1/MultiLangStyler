@@ -479,6 +479,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleFieldDeclarationList() {
+        return JavaParser.RULE_fieldDeclarationList;
+    }
+
+    @Override
     public int getLE() {
         return JavaParser.LE;
     }

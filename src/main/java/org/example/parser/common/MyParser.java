@@ -114,6 +114,7 @@ public interface MyParser {
     int getRuleStmt();
     int getRuleExpStmt();
     int getRuleExpressionList();
+    int getRuleFieldDeclarationList();
 
 
 
@@ -165,4 +166,6 @@ public interface MyParser {
     int getRuleIndex(String ruleName);
 
     ParseTree getTree();
+
+
 }

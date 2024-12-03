@@ -1,11 +1,15 @@
 package org.example.styler.format.linestmt;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.rule.StyleProperty;
+import org.example.style.rule.StyleRule;
 import org.example.styler.Styler;
-import org.example.styler.format.linestmt.style.LineStmtProperty;
+import org.example.styler.format.linestmt.style.LineStmtContext;
+import org.example.styler.format.newline.style.NewlineProperty;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +21,13 @@ public class LineStmtStyler extends Styler {
         style.setStyleName("line_stmt");
     }
 
+    @Override
+    public void doFinalize() {
+        // Add a rule representing there is a newline between two single statements.
+        style.addRule(LineStmtContext.DEFAULT, new NewlineProperty(1));
+        super.doFinalize();
+    }
+
     /**
      * @param ctx
      * @param parser
@@ -25,42 +36,74 @@ public class LineStmtStyler extends Styler {
      */
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        LineStmtProperty property = (LineStmtProperty) style.getProperty(null);
-        if (property.isOneStmtPerLine) {
-            for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-                ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
-                if (parser.belongToStmt(cur) && parser.belongToStmt(next)) {
-                    if (((ExtendContext) cur).stop.getLine() == ((ExtendContext) next).start.getLine()) {
-                        ExtendToken token = (ExtendToken) ((ExtendContext) cur).stop;
-                        token.setText(token.getText() + System.lineSeparator());
+        ExtendContext firstStmtChild = ctx.getFirstCtxChildIf(parser::belongToStmt);
+        if (firstStmtChild == null) {
+            return ctx;
+        }
+
+        int indentionLength = firstStmtChild.start.getCharPositionInLine();
+        int curLength =  indentionLength;
+        for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+            ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
+            if (parser.belongToSingleStmt(cur) && parser.belongToSingleStmt(next)) {
+                ExtendContext curCtx = (ExtendContext) cur, nextCtx = (ExtendContext) next;
+                int stmtLength = curCtx.stop.getCharPositionInLine() + curCtx.stop.getText().length() - curCtx.start.getCharPositionInLine();
+                curLength += stmtLength;
+
+                StyleProperty property = style.getProperty(new LineStmtContext(curLength));
+                if (property != null && property instanceof NewlineProperty newlineProperty) {
+                    if (newlineProperty.newlines == 1) {
+                        Token vws = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
+                        ((ExtendToken)curCtx.stop).addTokenAfter(vws, parser);
+                        curLength = indentionLength;
                     }
                 }
+
             }
         }
         return ctx;
     }
 
+    // Only extract the max sum text length of single statements in one line.
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        boolean oneStmtPerLine = true;
+        int maxTextLengthInLine = 0, textLengthInLine = 0;
         for (int i = 0; i < ctx.getChildCount() - 1; i++) {
             ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
-            if (parser.belongToStmt(cur) && parser.belongToStmt(next)) {
-                if (((ExtendContext) cur).stop.getLine() == ((ExtendContext) next).start.getLine()) {
-                    oneStmtPerLine = false;
+            if (parser.belongToSingleStmt(cur) && parser.belongToSingleStmt(next)) {
+                ExtendContext curCtx = (ExtendContext) cur, nextCtx = (ExtendContext) next;
+                if (curCtx.stop.getLine() == nextCtx.start.getLine()) {
+                    textLengthInLine = nextCtx.stop.getCharPositionInLine() + nextCtx.stop.getText().length();
+                } else {
+                    textLengthInLine = 0;
+                }
+
+                if (textLengthInLine > maxTextLengthInLine) {
+                    maxTextLengthInLine = textLengthInLine;
+                }
+            }
+        }
+
+        // If the max text length is not zero, add a rule to style the max text length in one line.
+        if (maxTextLengthInLine > 0) {
+            for (StyleRule rule : style.getRules()) {
+                if (rule.getStyleContext() instanceof LineStmtContext context && context.maxTextLength < maxTextLengthInLine) {
+                    style.remove(context);
+                    style.addRule(new LineStmtContext(maxTextLengthInLine), new NewlineProperty(0));
                     break;
                 }
             }
         }
-        style.addRule(null, new LineStmtProperty(oneStmtPerLine));
     }
+
+
 
     @Override
     protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<>();
             relevantRules.add(parser.getRuleBlock());
-            relevantRules.add(parser.getRuleBody());
+            relevantRules.add(parser.getRuleFieldDeclarationList());
         }
         return relevantRules;
     }

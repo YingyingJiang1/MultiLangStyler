@@ -5,7 +5,6 @@ import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.format.linestmt.style.LineStmtProperty;
 
 import java.util.List;
 import java.util.Map;
