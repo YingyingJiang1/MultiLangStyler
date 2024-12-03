@@ -30,8 +30,8 @@ public class MapRuleSet implements RuleSet{
     @Override
     public StyleProperty getProperty(StyleContext targetContext) {
         List<StyleProperty> properties = rules.get(targetContext);
-        if (properties != null && !properties.isEmpty()) {
-            return selectProperty(properties);
+        if (properties != null) {
+            return properties.get(0);
         }
         return null;
     }
@@ -47,7 +47,7 @@ public class MapRuleSet implements RuleSet{
             if(distance >= 0 && distance < minDis) {
                 minDis = distance;
                 if (!entry.getValue().isEmpty()) {
-                    res = selectProperty(entry.getValue());
+                    res = entry.getValue().get(0);
                 }
             }
         }
@@ -68,12 +68,24 @@ public class MapRuleSet implements RuleSet{
 
     @Override
     public void filterRules() {
+        List<StyleContext> toBeRemoved = new ArrayList<>();
         for (Map.Entry<StyleContext, List<StyleProperty>> entry : rules.entrySet()) {
             int maxFrequency = frequencies.get(entry.getKey()).stream().max(Comparator.comparingInt(i -> i)).get();
-            StyleProperty property = entry.getValue().get(frequencies.get(entry.getKey()).indexOf(maxFrequency));
-            entry.getValue().clear();
-            entry.getValue().add(property);
+            boolean existsConflict = frequencies.get(entry.getKey()).stream().filter(i -> i == maxFrequency).count() > 1;
+            if (existsConflict) {
+                toBeRemoved.add(entry.getKey());
+            } else {
+                int targetIndex = frequencies.get(entry.getKey()).indexOf(maxFrequency);
+                StyleProperty property = entry.getValue().get(targetIndex);
+                entry.getValue().clear();
+                entry.getValue().add(property);
+            }
         }
+
+        for (StyleContext context : toBeRemoved) {
+            rules.remove(context);
+        }
+        frequencies.clear();
     }
 
     @Override
@@ -92,8 +104,8 @@ public class MapRuleSet implements RuleSet{
         if (rules.containsKey(styleContext)) {
             List<StyleProperty> properties = rules.remove(styleContext);
             frequencies.remove(styleContext);
-            if (properties != null && !properties.isEmpty()) {
-                return selectProperty(properties);
+            if (properties != null) {
+                return properties.get(0);
             }
         }
         return null;
@@ -108,14 +120,6 @@ public class MapRuleSet implements RuleSet{
     @Override
     public Map<StyleContext, List<StyleProperty>> getRuleMap() {
         return rules;
-    }
-
-    /**
-     * Select strategy: randomly select
-     */
-    private StyleProperty selectProperty(List<StyleProperty> properties) {
-        int index = new Random().nextInt(0, properties.size());
-        return properties.get(index);
     }
 
 }

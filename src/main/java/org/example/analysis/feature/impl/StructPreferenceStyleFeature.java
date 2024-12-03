@@ -29,18 +29,15 @@ public class StructPreferenceStyleFeature extends StyleFeature {
         List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance()
                 .loadEquivalences(MyParserFactory.createParser(DiffAnalyzer.language));
 
-        for (Map.Entry<StyleContext, List<StyleProperty>> entry : style.getRuleMap().entrySet()) {
-            if (entry.getKey() instanceof  StructPreferenceContext context) {
+        for (StyleRule rule : style.getRules()) {
+            if (rule.getStyleContext() instanceof  StructPreferenceContext context &&
+            rule.getStyleProperty() instanceof StructPreferenceProperty property) {
                 EquivalentStructure structure = equivalences.stream().filter(e -> e.getId() == context.getStructID()).toList().get(0);
                 String styleType = structure.getCategory();
 
                 // set writings
                 List<Boolean> writings = new java.util.ArrayList<>(Collections.nCopies(structure.getWrittingNum(), false));
-                for (StyleProperty property : entry.getValue()) {
-                    if (property instanceof StructPreferenceProperty preferenceProperty) {
-                        writings.set(preferenceProperty.getPreferenceIndex(), true);
-                    }
-                }
+                writings.set(property.getPreferenceIndex(), true);
 
 
                 StyleVector sv = st2svMap.computeIfAbsent(styleType, k -> new StyleVector());
