@@ -1,6 +1,3 @@
-package arrangement;
-
-
 import org.example.Configuration;
 import org.example.controller.Controller;
 import org.example.style.ProgramStyle;
@@ -9,7 +6,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 
-public class ArrangementTest {
+public class ArrangementTest extends CommonTest {
     @Test
     public void executeTest() {
 //        test1();

@@ -7,6 +7,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.linestmt.style.LineStmtContext;
 import org.example.styler.format.newline.style.NewlineProperty;
@@ -86,26 +87,22 @@ public class LineStmtStyler extends Styler {
 
         // If the max text length is not zero, add a rule to style the max text length in one line.
         if (maxTextLengthInLine > 0) {
-            for (StyleRule rule : style.getRules()) {
-                if (rule.getStyleContext() instanceof LineStmtContext context && context.maxTextLength < maxTextLengthInLine) {
+            if (style.getRules().isEmpty()) {
+                style.addRule(new LineStmtContext(maxTextLengthInLine), new NewlineProperty(0));
+            } else {
+                if (style.getRules().get(0).getStyleContext() instanceof LineStmtContext context && context.maxTextLength < maxTextLengthInLine) {
                     style.remove(context);
                     style.addRule(new LineStmtContext(maxTextLengthInLine), new NewlineProperty(0));
-                    break;
                 }
             }
         }
     }
 
 
-
     @Override
-    protected Set<Integer> getRelevantRules(MyParser parser) {
-        if (relevantRules == null) {
-            relevantRules = new HashSet<>();
-            relevantRules.add(parser.getRuleBlock());
-            relevantRules.add(parser.getRuleFieldDeclarationList());
-        }
-        return relevantRules;
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+        int ruleIndex = ctx.getRuleIndex();
+        return parser.getRuleBlock() == ruleIndex || parser.getRuleFieldDeclarationList() == ruleIndex;
     }
 
 }

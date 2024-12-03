@@ -4,6 +4,8 @@ import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
 
+import java.util.Objects;
+
 /**
  * @description Try to concentrate type conversions in a single file.
  */
@@ -60,5 +62,18 @@ public class StyleRule implements DomIO {
             styleProperty.parseElement(parent, parser);
         }
         
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(styleContext, styleProperty);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof StyleRule other) {
+            return Objects.equals(styleContext, other.styleContext) && Objects.equals(styleProperty, other.styleProperty);
+        }
+        return false;
     }
 }

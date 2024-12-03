@@ -1,0 +1,73 @@
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.MyParserFactory;
+import org.example.style.Style;
+import org.example.styler.Stage;
+import org.example.styler.Styler;
+import org.example.styler.structure.StructureStyler;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CommonTest {
+    protected static void transform(String source, String target, Styler styler, String language) {
+        MyParser parser = MyParserFactory.createParser(language);
+        ExtendContext t = (ExtendContext) parser.parseFromString(target);
+        styler.extractStyle(t, parser);
+
+        ExtendContext t1 = (ExtendContext) parser.parseFromString(source);
+        ExtendContext newTree = styler.applyStyle(t1, parser);
+        assertEquals(t.getText(), newTree.getText());
+    }
+
+    protected static Style extractFromString(String code, Styler styler, String language) {
+        MyParser parser = MyParserFactory.createParser(language);
+        ExtendContext t = (ExtendContext) parser.parseFromString(code);
+        parser.walkTree(Stage.EXTRACT, List.of(styler));
+        styler.extractStyle(t, parser);
+        styler.doFinalize();
+        return styler.getStyle();
+    }
+
+
+    protected static Style extractFromSrcFile(Path srcPath, Styler styler, String language) {
+        try {
+            MyParser parser = MyParserFactory.createParser(language);
+            ExtendContext t = (ExtendContext) parser.parse(srcPath);
+            parser.walkTree(Stage.EXTRACT, List.of(styler));
+            styler.extractStyle(t, parser);
+            styler.doFinalize();
+            return styler.getStyle();
+        } catch (IOException e) {
+            LoggerFactory.getLogger(CommonTest.class).error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    protected static ExtendContext apply2String(String code, Styler styler, String language) {
+        MyParser parser = MyParserFactory.createParser(language);
+        ExtendContext t1 = (ExtendContext) parser.parseFromString(code);
+        parser.walkTree(Stage.APPLY, List.of(styler));
+        return styler.applyStyle(t1, parser);
+    }
+
+    protected static ExtendContext apply2srcFile(Path srcPath, Styler styler, String language) {
+        try {
+            MyParser parser = MyParserFactory.createParser(language);
+            ExtendContext t1 = (ExtendContext) parser.parse(srcPath);
+            parser.walkTree(Stage.APPLY, List.of(styler));
+            return styler.applyStyle(t1, parser);
+        } catch (IOException e) {
+            LoggerFactory.getLogger(CommonTest.class).error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+}

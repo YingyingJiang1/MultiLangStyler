@@ -104,6 +104,10 @@ public class MyJavaParser implements MyParser {
         return tree;
     }
 
+    /**
+     * Alternative implementation: modify the rule in JavaParser.g4，Add more productions to the compilationUnit rule.
+     * But must be careful when return the root, root should be the child of compilationUnit node if the production used is new added.
+     */
     private ParseTree tryParse() {
         Predicate<ExtendContext> parseFailTester = new Predicate<ExtendContext>() {
             @Override
