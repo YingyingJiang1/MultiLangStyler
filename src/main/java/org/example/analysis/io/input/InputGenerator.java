@@ -27,17 +27,18 @@ public class InputGenerator {
 
 	public static List<InputPair> generateHumanPairs(String jsonFile) throws IOException {
 		MetaData metaData = loadMetaData(jsonFile);
+		List<InputPair> inputPairs = new ArrayList<>();
 		for (Solution solution : metaData.getSolutions()) {
 			for (int i = 0; i < solution.humanAuthors.length; i++) {
 				for (int j = i + 1; j < solution.humanAuthors.length; j++) {
 					String[] authors = {solution.humanAuthors[i], solution.humanAuthors[j]};
 					String[] files = {solution.getHumanSolutionFile(i), solution.getHumanSolutionFile(j)};
 					InputPair inputPair = new InputPair(solution.problemNumber, solution.problemID, authors, files);
+					inputPairs.add(inputPair);
 				}
-				
 			}
 		}
-		List<InputPair> inputPairs = new ArrayList<>();
+
 		return inputPairs;
 	}
 
@@ -48,7 +49,7 @@ public class InputGenerator {
 			for (int i = 0; i < solution.llmAuthors.length; i++) {
 				for (int j = i + 1; j < solution.llmAuthors.length; j++) {
 					String[] authors = {solution.llmAuthors[i], solution.llmAuthors[j]};
-					String[] files = {solution.getLLMSolutionFile(i), solution.getHumanSolutionFile(j)};
+					String[] files = {solution.getLLMSolutionFile(i), solution.getLLMSolutionFile(j)};
 					inputPairs.add(new InputPair(solution.problemNumber, solution.problemID, authors, files));
 				}
 			}

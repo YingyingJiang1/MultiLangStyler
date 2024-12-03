@@ -49,10 +49,6 @@ public class StyleType {
         public static String styleType = "Comment density";
     }
 
-    public static class OperatorPreferences {
-        public static String styleType = "Operator preferences";
-    }
-
     public static class NumericalLiterals {
         public static String styleType = "Numerical literals";
     }
@@ -73,30 +69,6 @@ public class StyleType {
 
     public static class NumberOfVarInOneDecStmt {
         public static String styleType = "Number of variables in one declaration statement";
-    }
-
-    public static class AssignmentStmtPreferences {
-        public static String styleType = "Assignment statement preferences";
-    }
-
-    public static class IncrementDecrementPreferences {
-        public static String styleType = "Increment/decrement preferences";
-    }
-
-    public static class ContinuousAndCondPreferences {
-        public static String styleType = "Continuous logic and conditions preferences";
-    }
-
-    public static class ContinuousOrCondPreferences {
-        public static String styleType = "Continuous logic or conditions preferences";
-    }
-
-    public static class Mutlibranch {
-        public static String styleType = "Mutlibranch";
-    }
-
-    public static class ContinuousAssignOrCallPreferences {
-        public static String styleType = "Continuous assignments or calls preferences";
     }
 
     public static class ContainComplexBoolExp {
@@ -123,26 +95,6 @@ public class StyleType {
         public static String styleType = "Location of variable initialization";
     }
 
-    public static class Loops {
-        public static String styleType = "Loops";
-    }
-
-    public static class ReturnStmt {
-        public static String styleType = "Return statements";
-    }
-
-    // Block style types
-    public static class CheckThenReturnPreferences {
-        public static String styleType = "Check then return preferences";
-    }
-
-    public static class CheckThenAssignPreferences {
-        public static String styleType = "Check then assign preferences";
-    }
-
-    public static class ContinuePreferences {
-        public static String styleType = "Continue preferences";
-    }
 
     public static class PresenceOfDefaultLabel {
         public static String styleType = "Presence of the `default` label";

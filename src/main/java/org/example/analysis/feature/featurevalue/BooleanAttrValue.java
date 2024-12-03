@@ -18,4 +18,8 @@ public class BooleanAttrValue implements AttrValue {
         }
         return -1;
     }
+
+    public boolean isValue() {
+        return value;
+    }
 }

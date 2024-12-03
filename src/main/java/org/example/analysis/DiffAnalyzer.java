@@ -3,9 +3,13 @@ package org.example.analysis;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
-import org.example.analysis.feature.StyleFeature;
+import org.example.analysis.feature.FeatureExtractor;
 import org.example.analysis.feature.StyleFeatureFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.io.InputPair;
@@ -24,85 +28,73 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DiffAnalyzer {
     public static Logger logger =LoggerFactory.getLogger(DiffAnalyzer.class);
 
     static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
-    public static final List<StyleFeature> styleFeatures = List.of(
+    public static final List<FeatureExtractor> FEATURE_EXTRACTORS = List.of(
 
     );
     public static String language = "java";
 
     public static void main(String[] args) throws IOException {
         String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
-        List<InputPair> programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
-        Map<String, Table> result = analyze(programPairs, "human-llm.json");
+        List<InputPair> programPairs = null;
+        List<Table> result = null;
+
+        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
+        System.out.println("human-llm pairs: " + programPairs.size());
+        result = analyze(programPairs);
+        writeResult2excel(result, "human-llm-result");
+
+        programPairs = InputGenerator.generateHumanPairs(metaFile);
+        System.out.println("human pairs: " + programPairs.size());
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "human-human-result");
+
+        programPairs = InputGenerator.generateLLMPairs(metaFile);
+        System.out.println("llm pairs: " + programPairs.size());
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "llm-llm-result");
+
     }
 
 
-    public static Map<String, Table> analyze(List<InputPair> programPairs, String resultFileName) throws IOException {
+    public static List<Table> analyze(List<InputPair> programPairs) throws IOException {
         String tempResultFile = "tmp_result.json";
         FileOutputStream out = new FileOutputStream(tempResultFile, true);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
         SequenceWriter tmpWriter = objectMapper.writer().writeValuesAsArray(generator);
 
-        Map<String, Table> disOfStyles = new HashMap<>();
+        Map<String, Map<String, List<Double>>> disOfStyles = new HashMap<>();
         int count = 0;
         try {
             for (InputPair pair : programPairs) {
                 ++count;
                 logger.info("Analyzing {} pair, problem number:{}", count, pair.getProblemNumber());
+
                 String problemNumber = pair.getProblemNumber();
                 Path path1 = Paths.get(dir, problemNumber, pair.getFile1());
                 Path path2 = Paths.get(dir, problemNumber, pair.getFile2());
-                // extract style
-                FileCollection files1 = new FileCollection();
-                files1.add(path1);
-                ProgramStyle programStyle1 = new Controller().extractStyle(files1);
-                FileCollection files2 = new FileCollection();
-                files2.add(path2);
-                ProgramStyle programStyle2 = new Controller().extractStyle(files2);
+                Map<String, StyleVector> style2vecMap1 = new HashMap<>();
+                Map<String, StyleVector> style2vecMap2 = new HashMap<>();
 
-
-                // transform a program style into a styl vector.
-                Map<String, StyleVector> styleVecs1 = new HashMap<>();
-                Map<String, StyleVector> styleVecs2 = new HashMap<>();
-                extractStyleFeatures(programStyle1.getStyles(), styleVecs1);
-                extractStyleFeatures(programStyle2.getStyles(), styleVecs2);
-
-                // extract specific type of styles which can not be gained from previous step.
-                MyParser parser1 = MyParserFactory.createParser(language);
-                parser1.parse(path1);
-                MyParser parser2 = MyParserFactory.createParser(language);
-                parser2.parse(path2);
-                for (StyleFeature  feature : styleFeatures) {
-                    feature.toFeatureVector(parser1, styleVecs1);
-                    feature.toFeatureVector(parser2, styleVecs2);
-                }
-
-                // 写入中间结果
-                tmpWriter.write(styleVecs1);
-                tmpWriter.write(System.lineSeparator());
-                tmpWriter.write(styleVecs1);
-                tmpWriter.write(System.lineSeparator());
-
+                extractStyleVectorFromStyleObj(path1, style2vecMap1);
+                extractStyleVectorFromStyleObj(path2, style2vecMap2);
+                extractStyleVectorFromTree(path1, style2vecMap1);
+                extractStyleVectorFromTree(path2, style2vecMap2);
 
                 // 为每种风格计算每一对程序对之间的风格距离向量，并以表格形式存储
-                for (String styleName : styleVecs1.keySet()) {
-                    StyleVector vec1 = styleVecs1.get(styleName);
-                    if (styleVecs2.get(styleName) != null) {
-                        Map<String,Double> disOfAttrs = styleVecs1.get(styleName).calculateDistance(styleVecs2.get(styleName));
-                        disOfStyles.putIfAbsent(styleName, Table.create(styleName));
-                        Table table = disOfStyles.get(styleName);
+                for (String styleName : style2vecMap1.keySet()) {
+                    StyleVector vec1 = style2vecMap1.get(styleName);
+                    if (style2vecMap2.get(styleName) != null) {
+                        Map<String,Double> disOfAttrs = style2vecMap1.get(styleName).calculateDistance(style2vecMap2.get(styleName));
+                        Map<String, List<Double>> column = disOfStyles.computeIfAbsent(styleName, k -> new HashMap<>());
                         for (Map.Entry<String, Double> entry : disOfAttrs.entrySet()) {
-                            Column<Double> column = DoubleColumn.create(entry.getKey(), entry.getValue());
-                            table.addColumns(column);
+                            column.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(entry.getValue());
                         }
                     }
                 }
@@ -111,26 +103,78 @@ public class DiffAnalyzer {
             LoggerFactory.getLogger(DiffAnalyzer.class).error("Analysis terminated at the {}/{} pair.", count, programPairs.size(), e);
         }
 
-        logger.info("Get style distance vector of program pairs on {} style types. Result are saved in {}", disOfStyles.size(), resultFileName);
-        new ObjectMapper().writeValue(new FileOutputStream(resultFileName), disOfStyles.values());
-        return disOfStyles;
-    }
-
-    private static List<InputPair> generatePairs(String file) {
-        List<InputPair> inputPairs = new ArrayList<>();
-        return inputPairs;
-    }
-
-
-    private static void extractStyleFeatures(List<Style> styles, Map<String, StyleVector> styleFeatures) {
-        for (Style style: styles) {
-            StyleFeature styleFeature = StyleFeatureFactory.createStyleDiff(style.getStyleName());
-            if (styleFeature != null) {
-                styleFeature.toFeatureVector(style, styleFeatures);
+        List<Table> result = new ArrayList<>();
+        for (Map.Entry<String, Map<String, List<Double>>> entry : disOfStyles.entrySet()) {
+            Table table = Table.create(entry.getKey());
+            for (Map.Entry<String, List<Double>> distanceEntry : entry.getValue().entrySet()) {
+                Column<Double> column = DoubleColumn.create(distanceEntry.getKey(), distanceEntry.getValue().toArray(Double[]::new));
+                table.addColumns(column);
             }
+            result.add(table);
+        }
+
+        logger.info("Get style distance vector of program pairs on {} style types.", disOfStyles.size());
+        return result;
+    }
+
+    private static void extractStyleVectorFromStyleObj(Path path, Map<String, StyleVector> style2vecMap) {
+        FileCollection files = new FileCollection();
+        files.add(path);
+        ProgramStyle programStyle = new Controller().extractStyle(files);
+
+        for (Style style: programStyle.getStyles()) {
+            FeatureExtractor featureExtractor = StyleFeatureFactory.createStyleDiff(style.getStyleName());
+            if (featureExtractor != null) {
+                featureExtractor.toFeatureVector(style, style2vecMap);
+            }
+        }
+    }
+    private static void extractStyleVectorFromTree(Path path, Map<String, StyleVector> style2vecMap) throws IOException {
+        MyParser parser = MyParserFactory.createParser(language);
+        parser.parse(path);
+        for (FeatureExtractor feature : FEATURE_EXTRACTORS) {
+            feature.toFeatureVector(parser, style2vecMap);
         }
     }
 
 
+    public static void writeResult2excel(List<Table> result, String resultFileName) {
+        // 创建一个工作簿
+        try (Workbook workbook = new XSSFWorkbook()) {
+
+            // 遍历每个Table并将其写入不同的工作表
+            for (Table table : result) {
+                // 获取表名（作为工作表名称）
+                String sheetName = table.name();
+
+                // 创建工作表
+                Sheet sheet = workbook.createSheet(sheetName);
+
+                // 添加表头（列名）
+                Row headerRow = sheet.createRow(0);
+                for (int i = 0; i < table.columnCount(); i++) {
+                    headerRow.createCell(i).setCellValue(table.column(i).name());
+                }
+
+                // 填充数据
+                for (int i = 0; i < table.rowCount(); i++) {
+                    Row row = sheet.createRow(i + 1);
+                    for (int j = 0; j < table.columnCount(); j++) {
+                        Object cellValue = table.get(i, j);
+                        row.createCell(j).setCellValue(cellValue.toString());
+                    }
+                }
+            }
+
+            // 将工作簿写入文件
+            try (FileOutputStream fileOut = new FileOutputStream(resultFileName + ".xlsx")) {
+                workbook.write(fileOut);
+            }
+
+            logger.info("Successfully write result to {}", resultFileName);
+        } catch (IOException e) {
+            logger.error("Failed to write result to {}", resultFileName, e);
+        }
+    }
 
 }

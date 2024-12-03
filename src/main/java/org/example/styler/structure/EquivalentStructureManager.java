@@ -56,13 +56,7 @@ public class EquivalentStructureManager {
         EquivalentStructure structure = new EquivalentStructure(id, category, checkers, handlers, bannedTransferMap);
         structure.compile(codes);
 
-        for (int rule: structure.rulesContained()) {
-          if (equivalences.get(rule) == null) {
-            logger.error("rule {} isn't added in equivalences map.", rule);
-          } else {
-            equivalences.add(structure);
-          }
-        }
+        equivalences.add(structure);
       }
     } catch (Exception e) {
       logger.error("Failed to load equivalent structures: {}", e.getMessage());

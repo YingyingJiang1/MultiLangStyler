@@ -1,10 +1,11 @@
 package org.example.analysis.feature.featurevalue;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MapAttrValue implements AttrValue {
-    Map<String, AttrValue> value;
+    Map<String, AttrValue> value = new HashMap<String, AttrValue>();
 
     @Override
     public double calculateDistance(AttrValue other) {
@@ -23,5 +24,9 @@ public class MapAttrValue implements AttrValue {
 
     public void addValue(String key, AttrValue value) {
         this.value.put(key, value);
+    }
+
+    public Map<String, AttrValue> getValue() {
+        return value;
     }
 }

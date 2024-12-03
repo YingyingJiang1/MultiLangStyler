@@ -15,64 +15,64 @@ public class StyleFeatureFactory {
             "struct_preference", new StructPreferenceStyleDiffCreator()
     );
 
-    public static StyleFeature createStyleDiff(String styleName) {
+    public static FeatureExtractor createStyleDiff(String styleName) {
         DiffCreator creator = diffCreatorMap.get(styleName);
         return creator == null ? null : creator.create();
     }
     
     private static class DiffCreator {
-        public StyleFeature create() {
+        public FeatureExtractor create() {
             return null;
         }
     }
     
     private static class ArrangementStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new ArrangementStyleFeature();
+        public FeatureExtractor create() {
+            return new ArrangementFeatureExtractor();
         }
     }
     
     private static class BodyLayoutStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new BraceFormatStyleFeature();
+        public FeatureExtractor create() {
+            return new BraceFormatFeatureExtractor();
         }
     }
     
     private static class IndentionStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new IndentionStyleFeature();
+        public FeatureExtractor create() {
+            return new IndentionFeatureExtractor();
         }
     }
     
     private static class LineWrappingStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new LineWrappingStyleFeature();
+        public FeatureExtractor create() {
+            return new LineWrappingFeatureExtractor();
         }
     }
 
     
     private static class OptionalBraceStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new OptionalBraceStyleFeature();
+        public FeatureExtractor create() {
+            return new OptionalBraceFeatureExtractor();
         }
     }
     
     private static class SpaceStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new SpaceStyleFeature();
+        public FeatureExtractor create() {
+            return new SpaceFeatureExtractor();
         }
     }
     
     private static class StructPreferenceStyleDiffCreator extends DiffCreator {
         @Override
-        public StyleFeature create() {
-            return new StructPreferenceStyleFeature();
+        public FeatureExtractor create() {
+            return new StructPreferenceFeatureExtractor();
         }
     }
     
