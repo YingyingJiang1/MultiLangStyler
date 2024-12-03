@@ -19,7 +19,7 @@ public class LineStmtStyler extends Styler {
     private static Set<Integer> relevantRules = null;
 
     public LineStmtStyler() {
-        style.setStyleName("line_stmt");
+        style.setStyleName("line_statement");
     }
 
     @Override

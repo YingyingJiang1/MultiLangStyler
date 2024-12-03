@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.analysis.feature.impl.BlankLineFeatureExtractor;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
 import org.example.analysis.feature.FeatureExtractor;
@@ -35,7 +36,7 @@ public class DiffAnalyzer {
 
     static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
     public static final List<FeatureExtractor> FEATURE_EXTRACTORS = List.of(
-
+            new BlankLineFeatureExtractor()
     );
     public static String language = "java";
 

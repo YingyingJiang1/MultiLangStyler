@@ -12,7 +12,8 @@ public class StyleFeatureFactory {
             "indention", new IndentionStyleDiffCreator(),
             "optional_brace", new OptionalBraceStyleDiffCreator(),
             "space", new SpaceStyleDiffCreator(),
-            "struct_preference", new StructPreferenceStyleDiffCreator()
+            "line_statement", new LineStatementStyleDiffCreator(),
+            "structure_preference", new StructPreferenceStyleDiffCreator()
     );
 
     public static FeatureExtractor createStyleDiff(String styleName) {
@@ -73,6 +74,13 @@ public class StyleFeatureFactory {
         @Override
         public FeatureExtractor create() {
             return new StructPreferenceFeatureExtractor();
+        }
+    }
+
+    private static class LineStatementStyleDiffCreator extends DiffCreator {
+        @Override
+        public FeatureExtractor create() {
+            return new LineStmtFeatureExtractor();
         }
     }
     
