@@ -6,12 +6,14 @@ import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Style {
     void addRule(StyleContext styleContext, StyleProperty styleProperty);
     StyleProperty getProperty(StyleContext targetContext);
     StyleProperty getSimilarProperty(StyleContext targetContext);
     List<StyleRule> getRules();
+    Map<StyleContext, List<StyleProperty>> getRuleMap();
     String getStyleName() ;
     void fillStyle();
     void setStyleName(String styleName);

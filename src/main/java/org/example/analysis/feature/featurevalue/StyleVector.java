@@ -1,21 +1,28 @@
 package org.example.analysis.feature.featurevalue;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StyleVector {
-    Map<String, FeatureValue> featureValueMap = new HashMap<String, FeatureValue>(0);
+    Map<String, AttrValue> attrValueMap = new HashMap<String, AttrValue>(0);
 
-    public double calculateDistance(StyleVector fv) {
-        return 0;
+    public void addAttrValue(String attrName, AttrValue attrValue) {
+        attrValueMap.put(attrName, attrValue);
     }
 
-    public void addFeature(String featureName, FeatureValue featureValue) {
-        featureValueMap.put(featureName, featureValue);
+    public Map<String, AttrValue> getAttrValueMap() {
+        return attrValueMap;
     }
 
-    public Map<String, FeatureValue> getFeatureValueMap() {
-        return featureValueMap;
+    public Map<String, Double> calculateDistance(StyleVector other) {
+        Map<String, Double> ret = new HashMap<>();
+        assert attrValueMap.keySet().equals(other.attrValueMap.keySet());
+
+
+        for (String attrName : attrValueMap.keySet()) {
+            double attrDistance = attrValueMap.get(attrName).calculateDistance(other.attrValueMap.get(attrName));
+            ret.put(attrName, attrDistance);
+        }
+        return ret;
     }
 }

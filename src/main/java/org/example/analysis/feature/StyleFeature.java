@@ -8,8 +8,8 @@ import java.util.Map;
 
 public abstract class StyleFeature {
 
-    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {}
+    public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {}
 
-    public void toFeatureVector(MyParser parser, Map<String, StyleVector> styleFeatures) {}
+    public void toFeatureVector(MyParser parser, Map<String, StyleVector> st2svMap) {}
 
 }

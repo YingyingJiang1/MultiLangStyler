@@ -1,9 +1,11 @@
 package org.example.analysis.feature.impl;
 
-import org.example.analysis.feature.featurevalue.FeatureValue;
+import org.example.analysis.StyleType.BraceFormat;
+import org.example.analysis.feature.featurevalue.AttrValue;
+import org.example.analysis.feature.featurevalue.MapAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.StyleFeature;
-import org.example.analysis.feature.featurevalue.VectorFeatureValue;
+import org.example.analysis.feature.featurevalue.VectorAttrValue;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.body.BodyContext;
@@ -14,20 +16,23 @@ import java.util.Map;
 
 public class BraceFormatStyleFeature extends StyleFeature {
     @Override
-    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
-        StyleVector fv = new StyleVector();
+    public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
+        StyleVector sv = new StyleVector();
+        MapAttrValue mapAttrValue = new MapAttrValue();
+
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof BodyContext context &&
                     rule.getStyleProperty() instanceof BraceFormatProperty property) {
-                String fName = generateFeatureName(context);
-                FeatureValue fValue = new VectorFeatureValue(List.of(
+                String attrName = context.bodyType.name() + "-" + context.bodyNumType.name();
+                AttrValue vectorValue = new VectorAttrValue(List.of(
                         property.beforeLB, property.afterLB, property.beforeRB, property.afterRB
                 ));
-                fv.addFeature(fName, fValue);
+                mapAttrValue.addValue(attrName, vectorValue);
             }
         }
 
-        styleFeatures.put("Brace format", fv);
+        sv.addAttrValue(BraceFormat.newlineAroundBraceAttr, mapAttrValue);
+        st2svMap.put(BraceFormat.styleType, sv);
     }
 
     private String generateFeatureName(BodyContext context) {

@@ -1,6 +1,7 @@
 package org.example.style.rule;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RuleSet {
     void addRule(StyleContext context, StyleProperty property);
@@ -24,4 +25,6 @@ public interface RuleSet {
     StyleProperty remove(StyleContext styleContext);
 
     void clear();
+
+    Map<StyleContext, List<StyleProperty>> getRuleMap();
 }

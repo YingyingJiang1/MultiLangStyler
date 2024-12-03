@@ -1,6 +1,7 @@
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.java.MyJavaParser;
 import org.example.styler.Styler;
 import org.example.styler.structure.EquivalentStructureManager;
 import org.example.styler.structure.StructureStyler;
@@ -15,9 +16,9 @@ public class StructurePreferenceTest extends CommonTest {
     @Test
     void test() throws IOException {
         EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
-        manager.loadEquivalences();
+        manager.loadEquivalences(new MyJavaParser());
         manager.writeJsonData("confUpdate.json");
-        EquivalentStructureManager.getInstance().loadEquivalences();
+        EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser());
 //        testA();
 
     }

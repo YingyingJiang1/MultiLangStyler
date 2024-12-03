@@ -1,7 +1,6 @@
 package org.example.analysis;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import org.example.analysis.io.input.InputGenerator;
@@ -9,16 +8,17 @@ import org.example.controller.Controller;
 import org.example.analysis.feature.StyleFeature;
 import org.example.analysis.feature.StyleFeatureFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.analysis.io.DiffResult;
 import org.example.analysis.io.InputPair;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.java.MyJavaParser;
 import org.example.style.ProgramStyle;
 import org.example.style.Style;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tech.tablesaw.api.DoubleColumn;
+import tech.tablesaw.api.Table;
+import tech.tablesaw.columns.Column;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,18 +41,18 @@ public class DiffAnalyzer {
     public static void main(String[] args) throws IOException {
         String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
         List<InputPair> programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
-        DiffResult result = analyze(programPairs, "human-llm.json");
+        Map<String, Table> result = analyze(programPairs, "human-llm.json");
     }
 
 
-    public static DiffResult analyze(List<InputPair> programPairs, String resultFileName) throws IOException {
+    public static Map<String, Table> analyze(List<InputPair> programPairs, String resultFileName) throws IOException {
         String tempResultFile = "tmp_result.json";
         FileOutputStream out = new FileOutputStream(tempResultFile, true);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
         SequenceWriter tmpWriter = objectMapper.writer().writeValuesAsArray(generator);
 
-        DiffResult diffResult = new DiffResult();
+        Map<String, Table> disOfStyles = new HashMap<>();
         int count = 0;
         try {
             for (InputPair pair : programPairs) {
@@ -81,7 +81,6 @@ public class DiffAnalyzer {
                 parser1.parse(path1);
                 MyParser parser2 = MyParserFactory.createParser(language);
                 parser2.parse(path2);
-
                 for (StyleFeature  feature : styleFeatures) {
                     feature.toFeatureVector(parser1, styleVecs1);
                     feature.toFeatureVector(parser2, styleVecs2);
@@ -94,23 +93,27 @@ public class DiffAnalyzer {
                 tmpWriter.write(System.lineSeparator());
 
 
+                // 为每种风格计算每一对程序对之间的风格距离向量，并以表格形式存储
                 for (String styleName : styleVecs1.keySet()) {
                     StyleVector vec1 = styleVecs1.get(styleName);
                     if (styleVecs2.get(styleName) != null) {
-                        boolean consistent = isConsistent(vec1, styleVecs2.get(styleName));
-                        diffResult.add(styleName, pair, consistent);
+                        Map<String,Double> disOfAttrs = styleVecs1.get(styleName).calculateDistance(styleVecs2.get(styleName));
+                        disOfStyles.putIfAbsent(styleName, Table.create(styleName));
+                        Table table = disOfStyles.get(styleName);
+                        for (Map.Entry<String, Double> entry : disOfAttrs.entrySet()) {
+                            Column<Double> column = DoubleColumn.create(entry.getKey(), entry.getValue());
+                            table.addColumns(column);
+                        }
                     }
                 }
-
             }
         } catch (Exception e) {
             LoggerFactory.getLogger(DiffAnalyzer.class).error("Analysis terminated at the {}/{} pair.", count, programPairs.size(), e);
         }
 
-
-
-        new ObjectMapper().writeValue(new FileOutputStream(resultFileName), diffResult);
-        return diffResult;
+        logger.info("Get style distance vector of program pairs on {} style types. Result are saved in {}", disOfStyles.size(), resultFileName);
+        new ObjectMapper().writeValue(new FileOutputStream(resultFileName), disOfStyles.values());
+        return disOfStyles;
     }
 
     private static List<InputPair> generatePairs(String file) {
@@ -118,10 +121,6 @@ public class DiffAnalyzer {
         return inputPairs;
     }
 
-
-    private static boolean isConsistent(StyleVector fv1, StyleVector fv2) {
-        return fv1.calculateDistance(fv2) < 0.5;
-    }
 
     private static void extractStyleFeatures(List<Style> styles, Map<String, StyleVector> styleFeatures) {
         for (Style style: styles) {
@@ -131,5 +130,7 @@ public class DiffAnalyzer {
             }
         }
     }
+
+
 
 }

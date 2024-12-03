@@ -17,7 +17,7 @@ import java.util.*;
  * @create       2024/4/2 23:51
  */
 public class StructureStyler extends Styler {
-    private Map<Integer, List<EquivalentStructure>> equivalences;
+    private Map<Integer, List<EquivalentStructure>> equivalencesMap = null;
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
     private int recursiveDepth = 0;
 
@@ -25,16 +25,16 @@ public class StructureStyler extends Styler {
 
 
     public StructureStyler() {
-        style.setStyleName("equivalences");
-        equivalences = EquivalentStructureManager.getInstance().loadEquivalences();
+        style.setStyleName("structure_preference");
         executeWhenExit = false;
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        loadEquivalences(parser);
         ++recursiveDepth;
         ParseTree newTree = ctx;
-        List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ctx.getRuleIndex());
         if (equivalentStructures != null) {
         /*if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
           System.out.println("--------------------waiting to match---------------------");
@@ -87,7 +87,8 @@ public class StructureStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        List<EquivalentStructure> equivalentStructures = equivalences.get(ctx.getRuleIndex());
+        loadEquivalences(parser);
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ctx.getRuleIndex());
         if (equivalentStructures != null) {
 //            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
 //                System.out.println("--------------------waiting to match---------------------");
@@ -112,6 +113,19 @@ public class StructureStyler extends Styler {
             relevantRules = Set.of(parser.getRuleStmt());
         }
         return relevantRules;
+    }
+
+    private void loadEquivalences(MyParser parser) {
+        if (equivalencesMap == null) {
+            List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser);
+            equivalencesMap = new HashMap<>();
+            for (EquivalentStructure equivalence : equivalences) {
+                for (int rule : equivalence.rules) {
+                    // create map for efficiency, avoid to traverse all configured structures.
+                    equivalencesMap.computeIfAbsent(rule, v -> new ArrayList<>()).add(equivalence);
+                }
+            }
+        }
     }
 
     static class MatchedStructure implements Comparable<MatchedStructure> {

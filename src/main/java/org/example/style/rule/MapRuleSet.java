@@ -105,6 +105,11 @@ public class MapRuleSet implements RuleSet{
         frequencies.clear();
     }
 
+    @Override
+    public Map<StyleContext, List<StyleProperty>> getRuleMap() {
+        return rules;
+    }
+
     /**
      * Select strategy: randomly select
      */

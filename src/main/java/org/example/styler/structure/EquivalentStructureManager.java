@@ -1,25 +1,15 @@
 package org.example.styler.structure;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.PrettyPrinter;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.core.util.Separators;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
-import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -31,7 +21,7 @@ import java.util.*;
  */
 public class EquivalentStructureManager {
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
-  private static Map<Integer, List<EquivalentStructure>> equivalences = null;
+  private static List<EquivalentStructure> equivalences = new ArrayList<>();
   JsonNode configJson = null;
   public String confFile = "/equivalencesConf.json";
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
@@ -43,16 +33,7 @@ public class EquivalentStructureManager {
     return instance;
   }
 
-  public Map<Integer, List<EquivalentStructure>> loadEquivalences() {
-    if (equivalences != null) {
-      return equivalences;
-    }
-
-    MyParser parser = new MyJavaParser();
-    equivalences = new HashMap<>();
-    equivalences.put(parser.getRuleStmt(), new ArrayList<>());
-    equivalences.put(parser.getRuleExpression(), new ArrayList<>());
-
+  public List<EquivalentStructure> loadEquivalences(MyParser parser) {
     try {
       loadConfFile();
       ObjectMapper objectMapper = new ObjectMapper();
@@ -79,7 +60,7 @@ public class EquivalentStructureManager {
           if (equivalences.get(rule) == null) {
             logger.error("rule {} isn't added in equivalences map.", rule);
           } else {
-            equivalences.get(rule).add(structure);
+            equivalences.add(structure);
           }
         }
       }

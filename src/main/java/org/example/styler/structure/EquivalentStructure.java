@@ -423,4 +423,9 @@ public class EquivalentStructure {
 		}
 		return false;
 	}
+
+	public int getWrittingNum() {
+		return forests.size();
+	}
 }
+

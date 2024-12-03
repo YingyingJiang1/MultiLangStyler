@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.style.Style;
+import org.example.utils.DistanceCalculator;
 import org.example.utils.Helper;
 import org.example.parser.common.context.ExtendContext;
 import org.example.myException.StylizationException;
@@ -201,40 +202,6 @@ public class ArrangementStyler extends Styler {
 		return feature;
 	}
 
-	private static int calculateEditDistance(List<?> list1, List<?> list2) {
-		int n = list1.size();
-		int m = list2.size();
-
-		// 有一个字符串为空串
-		if (n * m == 0) {
-			return n + m;
-		}
-
-		// DP 数组
-		int[][] D = new int[n + 1][m + 1];
-
-		// 边界状态初始化
-		for (int i = 0; i < n + 1; i++) {
-			D[i][0] = i;
-		}
-		for (int j = 0; j < m + 1; j++) {
-			D[0][j] = j;
-		}
-
-		// 计算所有 DP 值
-		for (int i = 1; i < n + 1; i++) {
-			for (int j = 1; j < m + 1; j++) {
-				int left = D[i - 1][j] + 1;
-				int down = D[i][j - 1] + 1;
-				int left_down = D[i - 1][j - 1];
-				if (!list1.get(i - 1).equals(list2.get(j - 1))) {
-					left_down += 1;
-				}
-				D[i][j] = Math.min(left, Math.min(down, left_down));
-			}
-		}
-		return D[n][m];
-	}
 
 	private Info extractInfo(ExtendContext ctx, MyParser parser) {
 		Info info = new Info();
@@ -307,7 +274,7 @@ public class ArrangementStyler extends Styler {
 				if (identifiers.isEmpty()) {
 					continue;
 				}
-				int editDistance = calculateEditDistance(identifiers, identifiers.stream().sorted().toList());
+				int editDistance = DistanceCalculator.calculateEditDistance(identifiers, identifiers.stream().sorted().toList());
 				if(!order.inOrder((double) editDistance / identifiers.size())) {
 					inAlphabeticOrder = false;
 					break;
@@ -319,7 +286,7 @@ public class ArrangementStyler extends Styler {
 		} else {
 			List<String> identifiers = info.getIdentifiers();
 			List<String> sortedIdentifiers = identifiers.stream().sorted().toList();
-			int editDistance = calculateEditDistance(identifiers, sortedIdentifiers);
+			int editDistance = DistanceCalculator.calculateEditDistance(identifiers, sortedIdentifiers);
 			if (order.inOrder((double) editDistance / identifiers.size())) {
 				order.setLogicalOrder(EnumType.LEXI_ORDER);
 			}
@@ -341,7 +308,7 @@ public class ArrangementStyler extends Styler {
 				for (int modifier : modifierOrder) {
 					targetModifierList.addAll(Collections.nCopies(modifierMap.get(modifier), modifier));
 				}
-				int editDistance = calculateEditDistance(curModifierList, targetModifierList);
+				int editDistance = DistanceCalculator.calculateEditDistance(curModifierList, targetModifierList);
 				if (editDistance < minEditDistance) {
 					minEditDistance = editDistance;
 					targetModifierOrder = modifierOrder;
@@ -511,7 +478,7 @@ public class ArrangementStyler extends Styler {
 
 		int len = sortedList.size();
 
-		int dis = calculateEditDistance(identifierText, sortedList);
+		int dis = DistanceCalculator.calculateEditDistance(identifierText, sortedList);
 		return dis / (double) len < allowedDeviation;
 	}
 

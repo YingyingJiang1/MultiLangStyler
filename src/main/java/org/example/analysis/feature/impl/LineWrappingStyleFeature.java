@@ -2,7 +2,7 @@ package org.example.analysis.feature.impl;
 
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.StyleFeature;
-import org.example.analysis.feature.featurevalue.VectorFeatureValue;
+import org.example.analysis.feature.featurevalue.VectorAttrValue;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.format.linewrapping.style.LineWrappingContext;
@@ -18,23 +18,23 @@ public class LineWrappingStyleFeature extends StyleFeature {
      */
     int maxLen = 80;
     @Override
-    public void toFeatureVector(Style style, Map<String, StyleVector> styleFeatures) {
-        StyleVector fv = new StyleVector();
+    public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
+        StyleVector sv = new StyleVector();
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof LineWrappingContext context &&
             rule.getStyleProperty() instanceof LineWrappingProperty property) {
                 if (context.attr == LineWrappingContext.Attr.CODE) {
                     if (property.maxLen == property.maxLenBefore) {
-                        fv.addFeature("Wrapping long line", new VectorFeatureValue(List.of(true)));
+                        sv.addAttrValue("Wrapping long line", new VectorAttrValue(List.of(true)));
                     } else if (property.maxLen > maxLen) {
-                        fv.addFeature("Wrapping long line", new VectorFeatureValue(List.of(false)));
+                        sv.addAttrValue("Wrapping long line", new VectorAttrValue(List.of(false)));
                     } else {
-                        fv = null; // indeterminate
+                        sv = null; // indeterminate
                     }
                 }
             }
         }
-        styleFeatures.put("Line wrapping", fv);
+        st2svMap.put("Line wrapping", sv);
     }
 
 }
