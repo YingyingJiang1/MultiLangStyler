@@ -12,9 +12,7 @@ public class NewlineContext extends StyleContext {
     // Syntax rule types adjacent to the newline character.
     public String typeName1, typeName2;
     // The minimum sum of code blocks preceding and following the newline.
-    // This field is useful in the following cases:
-    // 1. more than one newline(blank lines) between two statement-level code blocks
-    // 2. No newline between two single statements
+    // This field is useful in the following case: more than one newline(blank lines) between two statement-level code blocks
     // Other cases, this field is set to 0.
     public int minTextLength;
 

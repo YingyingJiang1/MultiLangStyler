@@ -111,19 +111,11 @@ public class NewlineStyler extends Styler {
     }
 
     private void setMinTextLength(AdjacentCodeBlock adjacentCode, NewlineContext context, NewlineProperty property, MyParser parser) {
-        // More than one single statement in a line.
-        String singleStmt = RuleGroup.SINGLE_STMT.name();
-        boolean between2SingleStmts = context.typeName1.equals(singleStmt) && context.typeName2.equals(singleStmt);
-        if (between2SingleStmts) {
-            if (property.newlines == 0) {
-                context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-            }
-        } else {
-            Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
-            boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
-            if (isStmtLevel && property.newlines > 1) {
-                context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
-            }
+        // When there are more than one newline between two statement-level code blocks, text length of these two blocks are taken into consideration.
+        Set<String> stmtNames = Set.of(RuleGroup.SINGLE_STMT.name(), RuleGroup.COMPOUND_STMT.name());
+        boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
+        if (isStmtLevel && property.newlines > 1) {
+            context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
         }
     }
 
@@ -156,6 +148,10 @@ public class NewlineStyler extends Styler {
             List<AdjacentCodeBlock> codes = extractCodeBlocks(ctx, i, i + 1, Stage.EXTRACT, parser);
             for(AdjacentCodeBlock adjacentCode : codes) {
                 NewlineContext context = extractContext(adjacentCode, parser);
+                // Skip this case, because it's processed in the line statement.
+                if (context.typeName1.equals(RuleGroup.SINGLE_STMT.name()) && context.typeName2.equals(RuleGroup.SINGLE_STMT.name())) {
+                    continue;
+                }
                 executor.apply(adjacentCode);
             }
         }
