@@ -24,10 +24,6 @@ public class ParseTreeFactory {
     return instance;
   }
 
-  public static TerminalNode createTerminalNode(ExtendToken symbol) {
-    return new TerminalNodeImpl(symbol);
-  }
-
 
   /**
    * @apiNote If @children is null, then copy children from @t.

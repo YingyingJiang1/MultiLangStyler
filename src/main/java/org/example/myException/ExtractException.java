@@ -5,9 +5,7 @@ public class ExtractException extends Exception{
         super();
     }
 
-    public ExtractException(String message) {
-        super(message);
+    public ExtractException(String message, Throwable cause) {
+        super(message, cause);
     }
-
-
 }

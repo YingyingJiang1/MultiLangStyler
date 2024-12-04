@@ -3,10 +3,12 @@ package org.example;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.ArrangementStyler;
 import org.example.styler.body.braceformat.BraceFormatStyler;
+import org.example.styler.body.layout.BodyLayoutStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.example.styler.literal.usage.LiteralUsageStyler;
 import org.example.styler.structure.StructureStyler;
 
 
@@ -19,6 +21,7 @@ public class StylerContainer {
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
         stylers.add(new StructureStyler());
+        stylers.add(new LiteralUsageStyler());
 //        stylers.add(new OptionalBraceStyler());
         stylers.add(new BraceFormatStyler());
 //        stylers.add(new LineWrappingStyler());

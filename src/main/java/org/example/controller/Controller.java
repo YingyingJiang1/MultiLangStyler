@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.DocumentException;
 import org.example.Configuration;
 import org.example.StylerContainer;
+import org.example.debug.TreePrinter;
 import org.example.io.StyleFileIO;
 import org.example.myException.ApplyException;
 import org.example.myException.ExtractException;
@@ -63,7 +64,8 @@ public class Controller {
             }
             StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
             applyStyle(conf.applicationCollection);
-            StyleFileIO.write(SelfStyle.getProgramStyle(), conf.styleFileSavedPath, parser);
+            Path selfStylePath = Paths.get(Paths.get(conf.styleFileSavedPath).getParent().toString(), "self-style.xml");
+            StyleFileIO.write(SelfStyle.getProgramStyle(), selfStylePath.toString(), parser);
             return programStyle;
         } catch (DocumentException e) {
             logger.error(e.getMessage());
@@ -115,6 +117,7 @@ public class Controller {
 
                 Preprocessor preprocessor = new Preprocessor();
                 Extractor.extractRules(parser, container, preprocessor);
+                TreePrinter.printTree(parser.getRoot(), parser);
             } catch (Exception e) {
                 logger.error("Failed to extract style rules from file: {}", files.getFilePath(i));
                 logger.trace("Exception details:", e);

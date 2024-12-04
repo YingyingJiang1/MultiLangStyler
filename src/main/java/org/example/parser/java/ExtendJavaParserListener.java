@@ -1,6 +1,7 @@
 package org.example.parser.java;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.ListenerState;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
@@ -20,6 +21,7 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	public List<Styler> enterStylers = new ArrayList<>();
 	public List<Styler> exitStylers = new ArrayList<>();
 	private MyParser parser;
+	private ListenerState listenerState = new ListenerState();
 
 	public ExtendJavaParserListener(Stage stage, List<Styler> stylers, MyParser parser) {
 		this.stage = stage;
@@ -54,6 +56,10 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 		}
 	}
 
+	public ListenerState getListenerState() {
+		return listenerState;
+	}
+
 	//--------------------------------------------------- enterxxx methods ---------------------------------------------------
 
 
@@ -64,6 +70,11 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterBlock(JavaParser.BlockContext ctx) {
+		if (parser.isStatement(ctx.parent)) {
+			listenerState.curBlock = ctx;
+		} else {
+			listenerState.curMethodBody = ctx;
+		}
 		ctx.deleteStatementCtx(parser); // Ensure delete statement context when entering block.
 		ctx.incBraceDepth();
 		doTask(ctx, enterStylers);
@@ -71,6 +82,7 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void enterBody(JavaParser.BodyContext ctx) {
+		listenerState.curClassBody = ctx;
 		ctx.incBraceDepth();
 		doTask(ctx, enterStylers);
 	}

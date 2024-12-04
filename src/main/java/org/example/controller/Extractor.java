@@ -23,7 +23,7 @@ public class Extractor {
             extractOnTS(parser, container);
             extractOnAST(parser, container);
         } catch (Exception e) {
-            throw new ExtractException(e.getMessage());
+            throw new ExtractException(e.getMessage(), e);
         }
     }
 

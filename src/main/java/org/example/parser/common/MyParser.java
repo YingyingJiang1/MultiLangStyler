@@ -9,7 +9,6 @@ import org.example.parser.common.token.AmbigousToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -56,6 +55,7 @@ public interface MyParser {
     boolean belongToSingleStmt(ParseTree t);
     boolean belongToBraceOptionalStmt(int rule);
     boolean belongToFileHeadDec(int rule);
+    boolean belongToVarDeclarations(int ruleIndex);
 
 
     boolean belongToBinOp(String name);
@@ -65,6 +65,10 @@ public interface MyParser {
     boolean belongToComment(int type);
     boolean belongToBrace(int type);
     boolean belongToKeyword(Token token);
+    boolean belongToIntLiteral(int type);
+    boolean belongToFloadLiteral(int type);
+    boolean belongToLiteralType(int type);
+    boolean belongToLiteral(int type);
 
     ParseTree createExpression(ParserRuleContext parent, int invokingState);
 
@@ -115,6 +119,7 @@ public interface MyParser {
     int getRuleExpStmt();
     int getRuleExpressionList();
     int getRuleFieldDeclarationList();
+    int getRuleLiteral();
 
 
 
@@ -141,6 +146,9 @@ public interface MyParser {
     int getEOF();
 
 
+    int getCharLiteralType();
+
+
     int getType(String text);
 
     String getTokenName(int type);
@@ -165,7 +173,10 @@ public interface MyParser {
 
     int getRuleIndex(String ruleName);
 
-    ParseTree getTree();
+    ParseTree getRoot();
+    ListenerState getListenerState();
+
+    String getConstantModifier();
 
 
 }

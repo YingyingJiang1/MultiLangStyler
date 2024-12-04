@@ -8,4 +8,6 @@ package org.example.myException;
    public ApplyException() {super();}
 
   public ApplyException(String message) {super(message);}
+
+    public ApplyException(String message, Throwable cause) {super(message, cause);}
 }

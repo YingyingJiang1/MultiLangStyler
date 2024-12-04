@@ -2,7 +2,6 @@ package org.example.parser.java;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
@@ -11,17 +10,14 @@ import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.token.TokenNameGetter;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.myException.CompilationException;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 /*
@@ -34,7 +30,9 @@ public class MyJavaParser implements MyParser {
 
     JavaParser parser = null;
     Path curFile = null;
-    ParseTree tree = null;
+    ParseTree root = null;
+    ExtendJavaParserListener listener;
+
 
     private static Set<Integer> changeHierarchyRule = new HashSet<>(Arrays.asList(
             JavaParser.RULE_block, JavaParser.RULE_body, JavaParser.RULE_arrayInitializer,
@@ -69,6 +67,11 @@ public class MyJavaParser implements MyParser {
     private static List<Integer> parsingRules = List.of(
             JavaParser.RULE_compilationUnit, JavaParser.RULE_statement
     );
+    private static Set<Integer> literals = Set.of(
+            JavaParser.NULL_LITERAL, JavaParser.BINARY_LITERAL, JavaParser.BOOL_LITERAL,
+            JavaParser.CHAR_LITERAL, JavaParser.DECIMAL_LITERAL, JavaParser.HEX_LITERAL,
+            JavaParser.OCT_LITERAL, JavaParser.FLOAT_LITERAL, JavaParser.HEX_FLOAT_LITERAL
+    );
 
     public MyJavaParser() {}
 
@@ -100,8 +103,8 @@ public class MyJavaParser implements MyParser {
 
         parser.removeErrorListeners();
 
-        tree = tryParse();
-        return tree;
+        root = tryParse();
+        return root;
     }
 
     /**
@@ -151,8 +154,8 @@ public class MyJavaParser implements MyParser {
         parser.setTokenFactory(tokenFactory);
         // this.parser.setErrorHandler(new AntlrErrorHandler());
         parser.removeErrorListeners();
-        tree = tryParse();
-        return tree;
+        root = tryParse();
+        return root;
     }
 
     public boolean isCompilationError() {
@@ -165,9 +168,9 @@ public class MyJavaParser implements MyParser {
 
     @Override
     public void walkTree(Stage stage, List<Styler> stylers) {
-        ExtendJavaParserListener listener = new ExtendJavaParserListener(stage, stylers, this);
+        listener = new ExtendJavaParserListener(stage, stylers, this);
         ParseTreeWalker walker = new MyParseTreeWalker();
-        walker.walk(listener, tree);
+        walker.walk(listener, root);
     }
 
 
@@ -313,6 +316,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean belongToVarDeclarations(int ruleIndex) {
+        return ruleIndex == JavaParser.RULE_localVariableDeclaration || ruleIndex == JavaParser.RULE_fieldDeclaration;
+    }
+
+    @Override
     public ParseTree createExpression(ParserRuleContext parent, int invokingState) {
         return new JavaParser.ExpressionContext(parent, invokingState);
     }
@@ -350,6 +358,22 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToKeyword(Token token) {
         return token.getType() != JavaParser.IDENTIFIER && token.getText().matches("[a-zA-Z]+");
+    }
+
+    @Override
+    public boolean belongToIntLiteral(int type) {
+        return type == JavaParser.DECIMAL_LITERAL || type == JavaParser.HEX_LITERAL || type == JavaParser.OCT_LITERAL ||
+                type == JavaParser.BINARY_LITERAL;
+    }
+
+    @Override
+    public boolean belongToFloadLiteral(int type) {
+        return type == JavaParser.FLOAT_LITERAL || type == JavaParser.HEX_FLOAT_LITERAL;
+    }
+
+    @Override
+    public boolean belongToLiteral(int type) {
+        return getLiterals().contains(type);
     }
 
     @Override
@@ -488,6 +512,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleLiteral() {
+        return JavaParser.RULE_literal;
+    }
+
+    @Override
     public int getLE() {
         return JavaParser.LE;
     }
@@ -575,6 +604,16 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getEOF() {
         return JavaParser.EOF;
+    }
+
+    @Override
+    public boolean belongToLiteralType(int type) {
+        return type == JavaParser.STRING_LITERAL || type == JavaParser.TEXT_BLOCK;
+    }
+
+    @Override
+    public int getCharLiteralType() {
+        return JavaParser.CHAR_LITERAL;
     }
 
     @Override
@@ -672,11 +711,7 @@ public class MyJavaParser implements MyParser {
 
     @Override
     public Set<Integer> getLiterals() {
-        return Set.of(
-                JavaParser.NULL_LITERAL, JavaParser.BINARY_LITERAL, JavaParser.BOOL_LITERAL,
-                JavaParser.CHAR_LITERAL, JavaParser.DECIMAL_LITERAL, JavaParser.HEX_LITERAL,
-                JavaParser.OCT_LITERAL, JavaParser.FLOAT_LITERAL, JavaParser.HEX_FLOAT_LITERAL
-        );
+        return literals;
     }
 
     @Override
@@ -695,8 +730,18 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public ParseTree getTree() {
-        return tree;
+    public ParseTree getRoot() {
+        return root;
+    }
+
+    @Override
+    public ListenerState getListenerState() {
+        return listener.getListenerState();
+    }
+
+    @Override
+    public String getConstantModifier() {
+        return "final";
     }
 
     @Override

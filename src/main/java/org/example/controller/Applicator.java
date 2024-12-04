@@ -22,13 +22,13 @@ public class Applicator {
             parser.walkTree(Stage.APPLY, container.getStylers());
 
             List<Token> tokens = new LinkedList<>();
-            generateTokens(parser.getTree(), tokens, parser);
+            generateTokens(parser.getRoot(), tokens, parser);
             tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
 
             applyOnTS(tokens, parser, container);
             return tokens;
         } catch (Exception e) {
-            throw new ApplyException(e.getMessage());
+            throw new ApplyException(e.getMessage(), e);
         }
     }
 

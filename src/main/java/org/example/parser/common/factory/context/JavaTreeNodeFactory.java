@@ -24,4 +24,14 @@ public class JavaTreeNodeFactory implements TreeNodeFactory {
     public TerminalNode createTerminal(Token symbol) {
         return new TerminalNodeImpl(symbol);
     }
+
+    @Override
+    public ExtendContext createFieldDeclarationList(ExtendContext parent) {
+        return new JavaParser.FieldDeclarationListContext(parent, parent.invokingState);
+    }
+
+    public TerminalNode createTerminalNode(Token symbol) {
+        return new TerminalNodeImpl(symbol);
+    }
+
 }

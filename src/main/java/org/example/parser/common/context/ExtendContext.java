@@ -502,4 +502,12 @@ public class ExtendContext extends ParserRuleContext {
     }
 
 
+    public void insertChild(int i, ParseTree child) {
+        children.set(i, child);
+        if (child instanceof ExtendContext childCtx) {
+            childCtx.parent = this;
+        }
+        updateStartToken();
+        updateStopToken();
+    }
 }
