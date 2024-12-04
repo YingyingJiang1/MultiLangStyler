@@ -5,8 +5,8 @@ import org.example.analysis.feature.featurevalue.*;
 import org.example.analysis.feature.FeatureExtractor;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.arrangement.style.ArrangementProperty;
-import org.example.styler.arrangement.style.EnumType;
+import org.example.styler.arrangement.classmember.style.ArrangementProperty;
+import org.example.styler.arrangement.classmember.style.EnumType;
 
 import java.util.ArrayList;
 import java.util.List;

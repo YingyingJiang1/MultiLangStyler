@@ -1,6 +1,5 @@
-package org.example.styler.arrangement.style;
+package org.example.styler.arrangement.classmember.style;
 
-import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;

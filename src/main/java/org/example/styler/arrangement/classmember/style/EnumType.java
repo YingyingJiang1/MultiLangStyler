@@ -1,4 +1,4 @@
-package org.example.styler.arrangement.style;
+package org.example.styler.arrangement.classmember.style;
 
 /*
  * @description

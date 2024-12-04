@@ -2,11 +2,16 @@ package org.example.styler.literal.usage;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.ListenerState;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.style.rule.StyleContext;
+import org.example.semantic.Resolver;
+import org.example.semantic.symbol.Symbol;
+import org.example.semantic.symbol.VarSym;
+import org.example.semantic.type.ReferenceType;
+import org.example.semantic.type.Type;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -42,7 +47,10 @@ public class LiteralUsageStyler extends Styler {
                         style.addRule(context, new LiteralUsageProperty(false));
                     }
                 } else if(ter.getSymbol().getType() == parser.getIdentifier()) {
-                    System.out.println("NumericLiteralStyler@extractStyle:提取使用常量声明");
+                    Symbol symbol = Resolver.getInstance().resolve(ter.getSymbol().getText(), parser.getRoot());
+                    if (symbol instanceof VarSym varSym && varSym.isConst(parser.getConstKeyword())) {
+                        style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
+                    }
                 }
             }
         }
@@ -62,6 +70,29 @@ public class LiteralUsageStyler extends Styler {
                 return new LiteralUsageContext(LiteralEnum.FLOAT_NUMBER);
             }
         }
+        return null;
+    }
+
+    private LiteralUsageContext extractStyleContext(VarSym var) {
+        String typeName = var.getTypeName();
+        switch (typeName) {
+            case "int", "long" -> {
+                return new LiteralUsageContext(LiteralEnum.INT_NUMBER);
+            }
+            case "float", "double" -> {
+                return new LiteralUsageContext(LiteralEnum.FLOAT_NUMBER);
+            }
+            case "char" -> {
+                return new LiteralUsageContext(LiteralEnum.CHAR);
+            }
+            default -> {
+                Type type = var.getType();
+                if (type instanceof ReferenceType refType &&
+                        refType.getFullName().equals(GlobalInfo.getSpecialClass().getStringClassFullName()))
+                    return new LiteralUsageContext(LiteralEnum.STRING);
+            }
+        }
+
         return null;
     }
 
@@ -118,7 +149,7 @@ public class LiteralUsageStyler extends Styler {
             case STRING -> "String";
         };
         String tokenName = generateTokenName();
-        String consModifier = parser.getConstantModifier();
+        String consModifier = parser.getConstKeyword();
         String code = String.format("%s %s %s = %s;", consModifier, type, tokenName, literalToken.getText());
 
         ExtendContext tree = (ExtendContext) parser.parseFromString(code);

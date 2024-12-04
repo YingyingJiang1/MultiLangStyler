@@ -176,7 +176,5 @@ public interface MyParser {
     ParseTree getRoot();
     ListenerState getListenerState();
 
-    String getConstantModifier();
-
-
+    String getConstKeyword();
 }

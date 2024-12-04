@@ -11,6 +11,7 @@ public abstract class Symbol {
     ExtendContext declarationNode;
     Scope scope;
     List<Token> references;
+    List<String> modifiers;
 
     public Token getToken() {
         return null;

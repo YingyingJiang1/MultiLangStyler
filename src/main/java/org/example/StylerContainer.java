@@ -1,9 +1,8 @@
 package org.example;
 
 import org.example.styler.Styler;
-import org.example.styler.arrangement.ArrangementStyler;
+import org.example.styler.arrangement.classmember.ArrangementStyler;
 import org.example.styler.body.braceformat.BraceFormatStyler;
-import org.example.styler.body.layout.BodyLayoutStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
 import org.example.styler.format.newline.NewlineStyler;

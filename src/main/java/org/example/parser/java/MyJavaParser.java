@@ -740,7 +740,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public String getConstantModifier() {
+    public String getConstKeyword() {
         return "final";
     }
 

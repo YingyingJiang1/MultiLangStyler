@@ -8,6 +8,7 @@ import org.dom4j.DocumentException;
 import org.example.Configuration;
 import org.example.StylerContainer;
 import org.example.debug.TreePrinter;
+import org.example.global.GlobalInfo;
 import org.example.io.StyleFileIO;
 import org.example.myException.ApplyException;
 import org.example.myException.ExtractException;
@@ -84,6 +85,7 @@ public class Controller {
             try {
                 curPath = Paths.get(files.getFilePath(i));
                 String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+                GlobalInfo.setLanguage(language);
                 parser = MyParserFactory.createParser(language);
                 ParseTree tree = parser.parse(curPath);
                 if (tree == null) {
