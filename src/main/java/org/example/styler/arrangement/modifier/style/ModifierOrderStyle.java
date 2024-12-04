@@ -21,12 +21,28 @@ public class ModifierOrderStyle extends CommonStyle {
                 ruleSet.addRule(styleContext, styleProperty);
             } else {
                 for (StyleProperty p : properties) {
-                    if (p instanceof ModifierOrderProperty modifierProperty) {
-
+                    if (p instanceof ModifierOrderProperty existedProperty) {
+                        if (isSubsequence(property.order, existedProperty.order)) {
+                            property.order = existedProperty.order;
+                        } else if (isSubsequence(existedProperty.order, property.order)) {
+                            existedProperty.order = property.order;
+                        }
                     }
                 }
                 ruleSet.addRule(styleContext, styleProperty);
             }
         }
+    }
+
+    private boolean isSubsequence(List<String> sub, List<String> sequence) {
+        int n = sub.size(), m = sequence.size();
+        int i = 0, j = 0;
+        while (i < n && j < m) {
+            if (sub.get(i).equals(sequence.get(j))) {
+                i++;
+            }
+            j++;
+        }
+        return i == n;
     }
 }

@@ -794,3 +794,17 @@ Caused by: java.lang.NullPointerException: Cannot invoke "org.example.parser.com
 2024-12-04 14:09:00,186 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\self-style.xml
 2024-12-04 16:21:58,426 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\style.xml
 2024-12-04 16:21:58,620 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\self-style.xml
+2024-12-04 17:16:10,900 ERROR --- [main] org.example.controller.Controller.extractStyle/124 : Failed to extract style rules from file: src\test\sources\pair2\0826-most-profit-assigning-work-target.java
+2024-12-04 17:16:10,923 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\style.xml
+2024-12-04 17:16:12,014 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\self-style.xml
+2024-12-04 17:16:47,799 ERROR --- [main] org.example.controller.Controller.extractStyle/124 : Failed to extract style rules from file: src\test\sources\pair2\0826-most-profit-assigning-work-target.java
+2024-12-04 17:16:47,814 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\style.xml
+2024-12-04 17:16:48,713 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\self-style.xml
+2024-12-04 17:17:23,644 ERROR --- [main] org.example.controller.Controller.extractStyle/124 : Failed to extract style rules from file: src\test\sources\pair2\0826-most-profit-assigning-work-target.java
+2024-12-04 17:17:23,661 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\style.xml
+2024-12-04 17:17:24,579 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\self-style.xml
+2024-12-04 17:18:30,101 ERROR --- [main] org.example.controller.Controller.extractStyle/123 : Failed to extract style rules from file: src\test\sources\pair2\0826-most-profit-assigning-work-target.java
+2024-12-04 17:18:30,115 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\style.xml
+2024-12-04 17:18:31,000 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair2\self-style.xml
+2024-12-04 17:19:38,283 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair1\style.xml
+2024-12-04 17:19:38,437 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\pair1\self-style.xml

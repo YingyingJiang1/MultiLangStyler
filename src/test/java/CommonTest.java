@@ -21,12 +21,12 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommonTest {
+    String srcsDir = "src/test/sources";
 
     @Test
     void test() {
-        String dir = "D:\\jyy\\科研\\style\\transformer\\src\\test\\sources\\pair1";
-        transform(Paths.get(dir, "0826-most-profit-assigning-work-result.java"),
-                Paths.get(dir, "0826-most-profit-assigning-work-target.java"));
+        transform(Paths.get(srcsDir, "pair1", "0826-most-profit-assigning-work-result.java"),
+                Paths.get(srcsDir, "pair1", "0826-most-profit-assigning-work-target.java"));
 
     }
 

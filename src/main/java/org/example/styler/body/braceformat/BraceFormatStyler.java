@@ -102,13 +102,13 @@ public class BraceFormatStyler extends BodyStyler {
     @Override
     public void doFinalize() {
         // Add some default style rules.
-        BodyContext normalBodyContext = new BodyContext(BodyTypeEnum.NORMAL_BODY, BodyNumType.MULTI);
-        StyleProperty property = style.getSimilarProperty(normalBodyContext);
-        StyleProperty defaultProperty = new BraceFormatProperty(false, true, true, true);
-        if (property == null) {
-            style.addRule(normalBodyContext, defaultProperty);
-        }
-        style.addRule(new BodyContext(BodyTypeEnum.ANY_BODY, BodyNumType.ANY), defaultProperty);
+//        BodyContext normalBodyContext = new BodyContext(BodyTypeEnum.NORMAL_BODY, BodyNumType.MULTI);
+//        StyleProperty property = style.getSimilarProperty(normalBodyContext);
+//        StyleProperty defaultProperty = new BraceFormatProperty(false, true, true, true);
+//        if (property == null) {
+//            style.addRule(normalBodyContext, defaultProperty);
+//        }
+//        style.addRule(new BodyContext(BodyTypeEnum.ANY_BODY, BodyNumType.ANY), defaultProperty);
 
         super.doFinalize();
     }

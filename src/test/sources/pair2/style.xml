@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+  <style name="arrangement"/>
+  <style name="line_statement">
+    <rule>
+      <style_context maxTextLength="0"/>
+      <style_property newlines="1"/>
+    </rule>
+  </style>
+  <style name="newline"/>
+  <style name="indention"/>
+  <style name="modifier_order"/>
+  <style name="brace_format"/>
+  <style name="structure_preference"/>
+  <style name="space"/>
+  <style name="numeric_literal"/>
+</program_style>

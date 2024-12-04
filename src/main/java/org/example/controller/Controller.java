@@ -69,7 +69,7 @@ public class Controller {
             StyleFileIO.write(SelfStyle.getProgramStyle(), selfStylePath.toString(), parser);
             return programStyle;
         } catch (DocumentException e) {
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -119,7 +119,6 @@ public class Controller {
 
                 Preprocessor preprocessor = new Preprocessor();
                 Extractor.extractRules(parser, container, preprocessor);
-                TreePrinter.printTree(parser.getRoot(), parser);
             } catch (Exception e) {
                 logger.error("Failed to extract style rules from file: {}", files.getFilePath(i));
                 logger.trace("Exception details:", e);

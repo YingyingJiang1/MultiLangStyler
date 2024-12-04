@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class ModifierOrderProperty extends StyleProperty {
-    List<String> order = new ArrayList<String>(0);
+    public List<String> order = new ArrayList<String>(0);
+
+    public ModifierOrderProperty(List<String> modifiers) {
+        order = modifiers;
+    }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
