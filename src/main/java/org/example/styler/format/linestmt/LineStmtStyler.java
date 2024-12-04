@@ -51,7 +51,7 @@ public class LineStmtStyler extends Styler {
                 int stmtLength = curCtx.stop.getCharPositionInLine() + curCtx.stop.getText().length() - curCtx.start.getCharPositionInLine();
                 curLength += stmtLength;
 
-                StyleProperty property = style.getProperty(new LineStmtContext(curLength));
+                StyleProperty property = style.getSimilarProperty(new LineStmtContext(curLength));
                 if (property != null && property instanceof NewlineProperty newlineProperty) {
                     if (newlineProperty.newlines == 1) {
                         Token vws = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
