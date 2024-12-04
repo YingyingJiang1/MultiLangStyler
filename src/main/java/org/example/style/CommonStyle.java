@@ -6,7 +6,6 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.*;
 
 import java.util.List;
-import java.util.Map;
 
 /*
  * @description: Base class of all specific style classes. If new instance of `RuleSet` is defined, then the following methods
@@ -100,7 +99,7 @@ public class CommonStyle implements DomIO,Style {
     }
 
     @Override
-    public void filterRules() {
+    public List<StyleContext> filterRules() {
         ruleSet.filterRules();
     }
 

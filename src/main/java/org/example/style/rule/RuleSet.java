@@ -5,8 +5,11 @@ import java.util.Map;
 
 public interface RuleSet {
     void addRule(StyleContext context, StyleProperty property);
+
     boolean contains(StyleContext targetContext);
+
     StyleProperty getProperty(StyleContext targetContext);
+
     List<StyleProperty> getProperties(StyleContext targetContext);
 
     /**
@@ -15,14 +18,17 @@ public interface RuleSet {
      * @return
      */
     StyleProperty getSimilarProperty(StyleContext targetContext);
+
     List<StyleRule> getRules();
     /**
      * @description: When more than one rule with the same style context appears, the rule with the largest frequency is retained.
+     * @return the style contexts of removed rules.
      */
-    void filterRules();
+    List<StyleContext> filterRules();
 
     boolean updateKey(StyleContext oldContext, StyleContext newContext);
 
     StyleProperty remove(StyleContext styleContext);
 
-    void clear();}
+    void clear();
+}

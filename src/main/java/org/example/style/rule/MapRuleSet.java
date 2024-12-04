@@ -72,7 +72,7 @@ public class MapRuleSet implements RuleSet{
     }
 
     @Override
-    public void filterRules() {
+    public List<StyleContext> filterRules() {
         List<StyleContext> toBeRemoved = new ArrayList<>();
         for (Map.Entry<StyleContext, List<StyleProperty>> entry : rules.entrySet()) {
             int maxFrequency = frequencies.get(entry.getKey()).stream().max(Comparator.comparingInt(i -> i)).get();
@@ -91,6 +91,7 @@ public class MapRuleSet implements RuleSet{
             rules.remove(context);
         }
         frequencies.clear();
+        return toBeRemoved;
     }
 
     @Override

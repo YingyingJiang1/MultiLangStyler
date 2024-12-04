@@ -1,12 +1,10 @@
 package org.example.style;
 
-import org.example.io.DomIO;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Style {
     void addRule(StyleContext styleContext, StyleProperty styleProperty);
@@ -17,7 +15,7 @@ public interface Style {
     void fillStyle();
     void setStyleName(String styleName);
     boolean contains(StyleContext targetContext);
-    void filterRules();
+    List<StyleContext> filterRules();
     StyleProperty remove(StyleContext styleContext);
     void reset();
 }

@@ -11,11 +11,14 @@ import org.example.Configuration;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.style.ProgramStyle;
+import org.example.style.Style;
+import org.example.style.rule.StyleContext;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 /*
  * @description:
@@ -32,6 +35,15 @@ public class StyleFileIO {
             Document document = reader.read(new File(file));
             Element root = document.getRootElement();
             programStyle.parseElement(root, parser);
+            for (Style style : programStyle.getStyles()) {
+                List<StyleContext> removedContexts = style.filterRules();
+                if (removedContexts != null) {
+                    for (StyleContext context : removedContexts) {
+                        logger.warn("the rule of {} style with a style context {} has been removed, because you configured more than one property for the same context.",
+                                style.getStyleName(), context);
+                    }
+                }
+            }
         } catch (DocumentException e) {
             logger.error("read style file error. Target path: {}", file);
         }
