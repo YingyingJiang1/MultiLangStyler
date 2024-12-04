@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.slf4j.Logger;
@@ -33,9 +34,10 @@ public class EquivalentStructureManager {
     return instance;
   }
 
-  public List<EquivalentStructure> loadEquivalences(MyParser parser) {
+  public List<EquivalentStructure> loadEquivalences(Class<? extends MyParser> parserClass) {
     try {
       loadConfFile();
+      MyParser parser = MyParserFactory.createParser(parserClass);
       ObjectMapper objectMapper = new ObjectMapper();
       for(JsonNode node : configJson) {
         // Skip comment

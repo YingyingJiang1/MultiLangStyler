@@ -2,6 +2,7 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.java.MyJavaParser;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Styler;
 import org.example.styler.structure.EquivalentStructureManager;
 import org.example.styler.structure.StructureStyler;
@@ -14,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StructurePreferenceTest extends CommonTest {
     String language = "java";
     @Test
-    void test() throws IOException {
+    void test() {
         EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
-        manager.loadEquivalences(new MyJavaParser());
-        manager.writeJsonData("confUpdate.json");
-        EquivalentStructureManager.getInstance().loadEquivalences(new MyJavaParser());
+        manager.loadEquivalences(MyJavaParser.class);
+//        manager.writeJsonData("confUpdate.json");
+        EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class);
 //        testA();
 
     }

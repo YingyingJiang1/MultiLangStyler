@@ -1,4 +1,6 @@
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.Configuration;
+import org.example.controller.Controller;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
@@ -6,6 +8,8 @@ import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.StructureStyler;
+import org.example.utils.FileCollection;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -17,6 +21,26 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommonTest {
+
+    @Test
+    void test() {
+        String dir = "D:\\jyy\\科研\\style\\transformer\\src\\test\\sources\\pair1";
+        transform(Paths.get(dir, "0826-most-profit-assigning-work-result.java"),
+                Paths.get(dir, "0826-most-profit-assigning-work-target.java"));
+
+    }
+
+    protected static void transform(Path sourcePath, Path targetPath) {
+        Configuration conf = new Configuration();
+        conf.extractionCollection = new FileCollection();
+        conf.extractionCollection.add(targetPath);
+        conf.applicationCollection = new FileCollection();
+        conf.applicationCollection.add(sourcePath);
+        conf.styleFileSavedPath = targetPath.getParent().toString() + "\\style.xml";
+        Controller controller = new Controller(conf);
+        controller.execute();
+    }
+
     protected static void transform(String source, String target, Styler styler, String language) {
         MyParser parser = MyParserFactory.createParser(language);
         ExtendContext t = (ExtendContext) parser.parseFromString(target);

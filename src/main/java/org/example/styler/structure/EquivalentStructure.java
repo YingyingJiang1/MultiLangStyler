@@ -3,7 +3,6 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.*;
 import org.apache.commons.logging.Log;
-import org.example.debug.TreePrinter;
 import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;

@@ -3,7 +3,7 @@ package pair1;
 class Solution {
     public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
         int n = difficulty.length;
-        List<Job> jobs = new ArrayList<>(n);
+
         for (int i = 0; i < n; i++) {
             jobs.add(new Job(difficulty[i], profit[i]));
         }

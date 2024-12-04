@@ -10,9 +10,7 @@ import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
 import org.example.parser.common.token.ExtendToken;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /*
  * @description
@@ -36,7 +34,9 @@ public class Preprocessor {
             parser.getLT(), parser.getGT(), parser.getSub()
     );
     if (ambiguousTokens.contains(token.getType()) && token instanceof ExtendToken extendToken) {
-      extendToken.setText(AmbigousToken.valueOf(token.getText()).getValue());
+      Optional<AmbigousToken> ambigousTokenEnum = Arrays.stream(AmbigousToken.values())
+              .filter(e -> e.name().equals(token.getText())).findAny();
+        ambigousTokenEnum.ifPresent(ambigousToken -> extendToken.setText(ambigousToken.getValue()));
     }
   }
 

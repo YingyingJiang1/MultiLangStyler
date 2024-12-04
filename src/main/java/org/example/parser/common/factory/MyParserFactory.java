@@ -17,4 +17,16 @@ public class MyParserFactory {
         }
         return parser;
     }
+
+    public static MyParser createParser(Class<? extends MyParser> parserClass) {
+        MyParser parser =  switch (parserClass.getSimpleName()) {
+            case "MyJavaParser" -> new MyJavaParser();
+            default -> null;
+        };
+        if (parser == null) {
+            LoggerFactory.getLogger(MyParserFactory.class).info("Unsupported parser class: " + parserClass.getSimpleName() + ".");
+            System.exit(0);
+        }
+        return parser;
+    }
 }

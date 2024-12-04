@@ -2,17 +2,19 @@ package pair1;
 
 class Solution {
     public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
-        for (int i = 0; i < profit.length; i++) {
-            pq.add(new int[]{difficulty[i], profit[i]});
+        for (int i = 0;i < profit.length;i++) {
+            pq.add(new int[]{
+            difficulty[i], profit[i]
+            }
+            );
         }
-        Arrays.sort(worker);
-        int p = 0;
-        for (int i = worker.length-1; i >= 0 && !pq.isEmpty(); i--) {
+        Arrays.sort(worker);int p = 0;
+        for (int i = worker.length - 1;i >= 0&&!pq.isEmpty();i--) {
             if (worker[i] >= pq.peek()[0]) {
                 p += pq.peek()[1];
             }
             else{
-                while (!pq.isEmpty() && worker[i] < pq.peek()[0]) {
+                while (!pq.isEmpty() &&worker[i] < pq.peek()[0]) {
                     pq.poll();
                 }
                 if (!pq.isEmpty()) {
@@ -23,4 +25,3 @@ class Solution {
         return p;
     }
 }
-
