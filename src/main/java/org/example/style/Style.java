@@ -13,7 +13,6 @@ public interface Style {
     StyleProperty getProperty(StyleContext targetContext);
     StyleProperty getSimilarProperty(StyleContext targetContext);
     List<StyleRule> getRules();
-    Map<StyleContext, List<StyleProperty>> getRuleMap();
     String getStyleName() ;
     void fillStyle();
     void setStyleName(String styleName);

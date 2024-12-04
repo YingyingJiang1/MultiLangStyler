@@ -69,11 +69,6 @@ public class CommonStyle implements DomIO,Style {
         return ruleSet.getRules();
     }
 
-    @Override
-    public Map<StyleContext, List<StyleProperty>> getRuleMap() {
-        return ruleSet.getRuleMap();
-    }
-
     public String getStyleName() {
         return styleName;
     }

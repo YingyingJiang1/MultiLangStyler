@@ -7,6 +7,7 @@ public interface RuleSet {
     void addRule(StyleContext context, StyleProperty property);
     boolean contains(StyleContext targetContext);
     StyleProperty getProperty(StyleContext targetContext);
+    List<StyleProperty> getProperties(StyleContext targetContext);
 
     /**
      * Returns the property whose context has the min distance to the target context.
@@ -24,7 +25,4 @@ public interface RuleSet {
 
     StyleProperty remove(StyleContext styleContext);
 
-    void clear();
-
-    Map<StyleContext, List<StyleProperty>> getRuleMap();
-}
+    void clear();}

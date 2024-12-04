@@ -37,6 +37,11 @@ public class MapRuleSet implements RuleSet{
     }
 
     @Override
+    public List<StyleProperty> getProperties(StyleContext targetContext) {
+        return rules.get(targetContext);
+    }
+
+    @Override
     public StyleProperty getSimilarProperty(StyleContext targetContext) {
         StyleProperty res = null;
         double minDis = Double.MAX_VALUE;
