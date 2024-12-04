@@ -24,7 +24,7 @@ public class CommonTest {
 
     @Test
     void test() {
-        String dir = "D:\\jyy\\科研\\style\\transformer\\src\\test\\sources\\pair1";
+        String dir = "./src/test/sources/pair1";
         transform(Paths.get(dir, "0826-most-profit-assigning-work-result.java"),
                 Paths.get(dir, "0826-most-profit-assigning-work-target.java"));
 
