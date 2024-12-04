@@ -792,3 +792,5 @@ Caused by: java.lang.NullPointerException: Cannot invoke "org.example.parser.com
 2024-12-04 14:04:24,822 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\self-style.xml
 2024-12-04 14:08:59,964 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\style.xml
 2024-12-04 14:09:00,186 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\self-style.xml
+2024-12-04 16:21:58,426 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\style.xml
+2024-12-04 16:21:58,620 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\literalusage\pair1\self-style.xml

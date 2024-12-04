@@ -122,9 +122,4 @@ public class MapRuleSet implements RuleSet{
         frequencies.clear();
     }
 
-    @Override
-    public Map<StyleContext, List<StyleProperty>> getRuleMap() {
-        return rules;
-    }
-
 }

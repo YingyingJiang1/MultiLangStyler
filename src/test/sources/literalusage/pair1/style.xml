@@ -22,8 +22,8 @@
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
+        <block_type>ANY_BODY</block_type>
+        <body_type>ANY</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -36,8 +36,8 @@
     </rule>
     <rule>
       <style_context>
-        <block_type>ANY_BODY</block_type>
-        <body_type>ANY</body_type>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
