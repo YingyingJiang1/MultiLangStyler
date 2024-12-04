@@ -13,6 +13,7 @@ import java.util.*;
 
 public class ModifierOrderStyler extends Styler {
     public ModifierOrderStyler() {
+        style = new ModifierOrderStyle();
         style.setStyleName("modifier_order");
     }
 

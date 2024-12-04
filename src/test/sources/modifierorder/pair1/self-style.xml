@@ -41,7 +41,7 @@
   </style>
   <style name="modifier_order">
     <rule>
-      <style_property order="static, protected"/>
+      <style_property order="protected, static, final"/>
     </rule>
   </style>
   <style name="brace_format">

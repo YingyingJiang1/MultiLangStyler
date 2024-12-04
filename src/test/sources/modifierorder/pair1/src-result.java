@@ -16,8 +16,8 @@ import java.util.Queue;
 // use the newline character in a String in the textQueue to break the text up into a second line if needed
 public class Textbox {
     protected static boolean isActive;
-    protected final final  int x = 22;
-    protected     protected  int currentTextItemHovered = 1;
-    protected     protected  int compiledCount = 0;
+    protected static final int x = 22;
+    protected static int currentTextItemHovered = 1;
+    protected static int compiledCount = 0;
     protected int choice = 0;
 }

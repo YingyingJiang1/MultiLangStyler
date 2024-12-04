@@ -919,3 +919,7 @@ Caused by: java.lang.IndexOutOfBoundsException: Index: 460, Size: 460
 2024-12-04 18:16:35,572 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\self-style.xml
 2024-12-04 18:16:39,252 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\style.xml
 2024-12-04 18:16:39,316 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\self-style.xml
+2024-12-04 18:20:55,871 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\style.xml
+2024-12-04 18:21:20,772 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\self-style.xml
+2024-12-04 18:21:41,865 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\style.xml
+2024-12-04 18:21:41,922 INFO  --- [main] org.example.io.StyleFileIO.write/52 : style result saved in:src\test\sources\modifierorder\pair1\self-style.xml
