@@ -27,6 +27,11 @@
       <style_property indentionUnit="4" indentionType=" "/>
     </rule>
   </style>
+  <style name="modifier_order">
+    <rule>
+      <style_property order=""/>
+    </rule>
+  </style>
   <style name="brace_format">
     <rule>
       <style_context>
@@ -38,14 +43,7 @@
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>ANY_BODY</block_type>
-        <body_type>ANY</body_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -59,7 +57,7 @@
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
+        <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -159,6 +157,10 @@
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
+      <style_context token="IDENTIFIER, UNARY_OP"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
       <style_context token="}, &lt;EOF&gt;"/>
       <style_property space1="false" space2="false"/>
     </rule>
@@ -173,6 +175,10 @@
     <rule>
       <style_context token="{, KEYWORD"/>
       <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="UNARY_OP, )"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="(, IDENTIFIER"/>
@@ -196,6 +202,10 @@
     </rule>
     <rule>
       <style_context token="), {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD, KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>

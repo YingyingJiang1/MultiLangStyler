@@ -1,2 +1,13 @@
-1. 重写所有property的hashcode 和 equals 
-2. SpaceStyler: 在);和).之间错误添加空格
+1. space style中添加的默认规则在filterRule之前消失了？？
+```java
+ public SpaceStyler() {
+    style.setStyleName("space");
+    // There's always a space between keywords and identifiers.
+    String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
+    style.addRule(new SpaceContext(keyword, identifier), new SpaceProperty(true));
+    style.addRule(new SpaceContext(identifier, keyword), new SpaceProperty(true));
+    style.addRule(new SpaceContext(keyword, keyword), new SpaceProperty(true));
+    style.addRule(new SpaceContext(identifier, identifier), new SpaceProperty(true));
+}
+
+```

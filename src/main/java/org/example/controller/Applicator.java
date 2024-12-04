@@ -23,7 +23,7 @@ public class Applicator {
 
             List<Token> tokens = new LinkedList<>();
             generateTokens(parser.getRoot(), tokens, parser);
-            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
+//            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
 
             applyOnTS(tokens, parser, container);
             return tokens;
@@ -40,8 +40,8 @@ public class Applicator {
         int column = 0;
 
         // Handle the first token.
-        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
-        for (int i = 1; tokens.get(i).getType() != parser.getEOF(); ++i) {
+//        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
+        for (int i = 0; i < tokens.size(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
 
@@ -67,7 +67,8 @@ public class Applicator {
                 }
             }
         }
-        tokens.remove(0);
+//        tokens.remove(0);
+
     }
 
 

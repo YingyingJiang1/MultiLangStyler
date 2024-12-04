@@ -34,9 +34,12 @@ public class SpaceStyler extends Styler {
 
     @Override
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {
-        Token leftToken = tokens.get(index - 1), rightToken = tokens.get(index + 1);
-        boolean leftSpace = parser.getHws() == leftToken.getType();
-        boolean rightSpace = parser.getHws() == rightToken.getType();
+
+        Token leftToken = index - 1 < 0 ? null : tokens.get(index - 1);
+        Token rightToken = index + 1 >= tokens.size() ? null :tokens.get(index + 1);
+        boolean leftSpace = leftToken != null && parser.getHws() == leftToken.getType();
+        boolean rightSpace = rightToken != null && parser.getHws() == rightToken.getType();
+
         StyleContext context = extractContext(tokens, index, Stage.EXTRACT, parser);
         SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
         if (context != null) {
@@ -65,24 +68,19 @@ public class SpaceStyler extends Styler {
         ExtendToken token = (ExtendToken) tokens.get(index);
         String name = generateTokenName(token, parser);
         String text = token.getText();
-        Token leftToken = stage == Stage.EXTRACT ? findFirstNonWSonLeft(tokens, index - 1, parser) : tokens.get(index - 1);
-        Token rightToken = stage == Stage.EXTRACT ? findFirstNonWSonRight(tokens, index + 1, parser) : tokens.get(index + 1);
-        String leftText = leftToken == null ? "" : leftToken.getText();
-        String leftName = generateTokenName(leftToken, parser);
-
-        String rightText = rightToken == null ? "" : rightToken.getText();
-        String rightName = generateTokenName(rightToken, parser);
-
         if (parser.belongToBinOp(text)) {
             // Positions on the left and right of a binary operator are symmetrical.
             return new SpaceContext(name);
-        } else if (parser.belongToUnOp(text)) {
-            if (isSuffix(tokens, index, parser)) { // suffix ++, suffix --
-                return new SpaceContext(leftName, name);
-            } else { // Right associated operator
-                return new SpaceContext(name, rightName);
-            }
-        } else if (!parser.belongToBinOp(rightText)) {
+        }
+
+        if (index + 1 >= tokens.size()) {
+            return null;
+        }
+        Token rightToken = stage == Stage.EXTRACT ? findFirstNonWSonRight(tokens, index + 1, parser) : tokens.get(index + 1);
+
+        String rightText = rightToken == null ? "" : rightToken.getText();
+        String rightName = generateTokenName(rightToken, parser);
+        if (!parser.belongToBinOp(rightText)) {
             // name is separator, keyword or identifier.
             return new SpaceContext(name, rightName);
         }

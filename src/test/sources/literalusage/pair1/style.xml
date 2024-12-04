@@ -19,11 +19,12 @@
       <style_property indentionUnit="4" indentionType=" "/>
     </rule>
   </style>
+  <style name="modifier_order"/>
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>ANY_BODY</block_type>
-        <body_type>ANY</body_type>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -31,13 +32,6 @@
       <style_context>
         <block_type>DEC_BODY</block_type>
         <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -127,6 +121,10 @@
     <rule>
       <style_context token="{, COMMENT"/>
       <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="DOT"/>

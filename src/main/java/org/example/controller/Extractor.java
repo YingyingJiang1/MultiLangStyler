@@ -41,7 +41,7 @@ public class Extractor {
 
         // Avoid exceptions caused by boundaries.
         int len = tokens.get(tokens.size() - 1).getType() == parser.getHws() ? tokens.size() - 2 : tokens.size() - 1;
-        for (int i = 1; i < len; ++i) { // @i begins at 1 to avoid exceptions caused by boundaries.
+        for (int i = 0; i < len; ++i) {
             Token token = tokens.get(i);
             for (Styler styler : container.getStylers()) {
                 if (styler.isRelevant(tokens, i, Stage.EXTRACT, parser)) {
