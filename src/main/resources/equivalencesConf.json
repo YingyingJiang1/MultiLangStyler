@@ -331,5 +331,45 @@
     "id" : 33,
     "category" : "Array declaration style",
     "codes" : [ "$M $T [][] $I = $ARRAY_INITIALIZER ;", "$M $T $I [][] = $ARRAY_INITIALIZER ;" ]
+  },
+  {
+    "id": 34,
+    "category": "Continue preferences",
+    "codes": ["if ( $E ) { continue ; } else $S ;", "if ( $E ) $S"],
+    "checkers": [
+      {
+        "checker_description": "检查所有写法为循环语句的结尾"
+      }
+    ],
+    "handlers": [
+      {
+        "class": "CondReverserHandler", "argsList": [[0, 1, "$E"]]
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "category": "Continue preferences",
+    "codes": ["$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { $S+ }"],
+    "checkers": [
+      {
+        "checker_description": "检查所有写法为循环语句的结尾"
+      }
+    ],
+    "handlers": [
+      {
+        "class": "CondReverserHandler", "argsList": [[0, 1, "$E"]]
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "category": "Continue preferences",
+    "codes": ["$^ if ( $E ) { $S+ continue ; }  $S1+", "if ( $E ) { $S+ } else { $S1+ }"],
+    "checkers": [
+      {
+        "checker_description": "检查所有写法为循环语句的结尾"
+      }
+    ]
   }
 ]
