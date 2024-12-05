@@ -2,7 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.vtree.VirtualNode;
 
@@ -54,7 +54,7 @@ public class ReplicationHandler extends Handler{
 	private List<ParseTree> doReplication(List<ParseTree> trees) {
 		List<ParseTree> ret = new ArrayList<>(trees.size());
 		for (ParseTree tree : trees) {
-			ret.add(ParseTreeFactory.getInstance().copyTree(tree, false));
+			ret.add(ParseTreeUtil.getInstance().copyTree(tree, false));
 		}
 		return ret;
 	}

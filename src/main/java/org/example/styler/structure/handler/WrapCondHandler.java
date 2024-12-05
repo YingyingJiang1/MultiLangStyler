@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 
@@ -32,7 +32,7 @@ public class WrapCondHandler extends Handler{
 						ParseTree t = matchedTrees.get(j);
 						if (t instanceof JavaParser.ExpressionContext ctx) {
 							if(containsLogicalOp(ctx)) {
-								matchedTrees.set(j, ParseTreeFactory.getInstance().encapsulateExpWithParen(ctx, parser));
+								matchedTrees.set(j, ParseTreeUtil.getInstance().encapsulateExpWithParen(ctx, parser));
 							}
 						}
 					}

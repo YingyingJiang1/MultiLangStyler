@@ -2,8 +2,7 @@ package org.example.styler.ifelse;
 
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.ParseTreeFactory;
-import org.example.parser.common.factory.context.TreeNodeFactory;
+import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -48,8 +47,8 @@ public class IfElseBodyOrderStyler extends Styler {
 
                 // negate condition
                 ExtendContext conditionCtx = (ExtendContext) ctx.getChild(1);
-                ExtendContext negatedExp = ParseTreeFactory.getInstance()
-                        .negateExpression((ExtendContext) conditionCtx.getChild(1), parser);
+                ExtendContext negatedExp = ParseTreeUtil.getInstance()
+                        .negateExpressionSmart((ExtendContext) conditionCtx.getChild(1), parser);
                 conditionCtx.replaceChild(conditionCtx.getChild(1), negatedExp);
             }
         }

@@ -7,7 +7,7 @@ public intget(intkey){
         }
     }
     v.freq+=1;
-    if(!freqList.get(v.freq)!=null){
+    if(freqList.get(v.freq)==null){
         DoublyLinkedList d=newDoublyLinkedList();
         d.addNode(v);
         freqList.put(v.freq,d);

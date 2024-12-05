@@ -3150,3 +3150,7 @@ Caused by: java.lang.NullPointerException: Cannot invoke "String.equals(Object)"
 2024-12-05 19:09:46,387 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\self-style.xml
 2024-12-05 19:10:56,489 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\style.xml
 2024-12-05 19:10:56,683 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\self-style.xml
+2024-12-05 19:14:39,569 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\style.xml
+2024-12-05 19:14:39,747 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\self-style.xml
+2024-12-05 19:27:31,872 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\style.xml
+2024-12-05 19:27:32,018 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\ifelse\pair1\self-style.xml

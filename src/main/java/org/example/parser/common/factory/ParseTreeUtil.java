@@ -12,20 +12,40 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * @description
  * @author       Yingying Jiang
  * @create       2024/4/5 16:26
  */
-public class ParseTreeFactory {
-  public static Logger logger = LoggerFactory.getLogger(ParseTreeFactory.class);
+public class ParseTreeUtil {
+  public static Logger logger = LoggerFactory.getLogger(ParseTreeUtil.class);
 
-  private static ParseTreeFactory instance = new ParseTreeFactory();
+  private static ParseTreeUtil instance = new ParseTreeUtil();
 
-  public static ParseTreeFactory getInstance() {
+  public static ParseTreeUtil getInstance() {
     return instance;
+  }
+
+  // key: compare operator, value: reversing compare operator
+  static Map<String, String> compareOpMap ;
+  static Map<String, String> logicalOpMap;
+
+  static {
+    compareOpMap = new HashMap<>();
+    compareOpMap.put(">", "<=");
+    compareOpMap.put("<", ">=");
+    compareOpMap.put(">=", "<");
+    compareOpMap.put("<=", ">=");
+    compareOpMap.put("==", "!=");
+    compareOpMap.put("!=", "==");
+
+    logicalOpMap = new HashMap<>();
+    logicalOpMap.put("&&", "||");
+    logicalOpMap.put("||", "&&");
   }
 
   public ParseTree copyTree(ParseTree t , boolean shallow) {
@@ -79,7 +99,7 @@ public class ParseTreeFactory {
 
   /**
    * @apiNote Create a negative expression of @expCtx,
-   * the parent of the negative expression is the same as @expCtx's parent.
+   * @implNote just wrap the original expression and add a "!" token in the front.
    * @param expCtx
    * @return
    */
@@ -93,13 +113,54 @@ public class ParseTreeFactory {
       ExtendContext notExpression = (ExtendContext) parser.createExpression(parent, expCtx.invokingState);
       List<ParseTree> children = new ArrayList<>();
       ParseTree bangChild = new TerminalNodeImpl(parser.getTokenFactory().create(parser.getBang(), "!"));
+      ExtendContext wrapped = encapsulateExpWithParen(expCtx, parser);
       children.add(bangChild);
-      children.add(expCtx);
+      children.add(wrapped);
       notExpression.children.clear();
       notExpression.addChildren(children);
       return notExpression;
     }
   }
+
+  /**
+   * @apiNote Create a negative expression of @expCtx,
+   * @implNote just wrap the original expression and add a "!" token in the front.
+   * @param expCtx
+   * @return
+   */
+  public ExtendContext negateExpressionSmart(ExtendContext expCtx, MyParser parser) {
+    ExtendToken op = (ExtendToken) getOp(expCtx, parser);
+    String reversedOp = compareOpMap.get(op.getText());
+    if (reversedOp != null) {
+      // reverse compare or logical operator
+      op.setType(parser.getType(reversedOp));
+      op.setText(reversedOp);
+      return expCtx;
+    }
+
+    reversedOp = logicalOpMap.get(op.getText());
+    ExtendContext exp = expCtx;
+    if (reversedOp != null) {
+      exp = ParseTreeUtil.getInstance().encapsulateExpWithParen(expCtx, parser);
+    }
+    // expression -> !expression or !expression -> expression
+    ExtendContext notExp = ParseTreeUtil.getInstance().negateExpression(exp, parser);
+    return notExp;
+  }
+
+  /**
+   * Find the comparison and logical operators.
+   * @param ctx
+   * @return
+   */
+  private Token getOp(ExtendContext ctx, MyParser parser) {
+    List<TerminalNode> ters = ctx.getAllTerminalsIf(v -> true);
+    if (ters.isEmpty()) {
+      return parser.getTokenFactory().create(0, "");
+    }
+    return ters.get(0).getSymbol();
+  }
+
 
   public ExtendContext encapsulateExpWithParen(ExtendContext expCtx, MyParser parser) {
     if (expCtx.start.getType() == parser.getLParen() && expCtx.stop.getType() == parser.getRParen()) {

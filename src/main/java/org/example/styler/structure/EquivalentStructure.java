@@ -4,7 +4,7 @@ package org.example.styler.structure;
 import org.antlr.v4.runtime.tree.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.myException.CompilationException;
 import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
@@ -233,14 +233,14 @@ public class EquivalentStructure {
 			if (vNode != null) {
 				children.addAll(vNode.matchedTrees);
 			} else if(child instanceof TerminalNode) {
-				children.add(ParseTreeFactory.getInstance().copyTree(child, false));
+				children.add(ParseTreeUtil.getInstance().copyTree(child, false));
 			} else {
 				children.add(createTree(child, forest));
 			}
 		}
 
 		// Create parent
-		ParseTree root = ParseTreeFactory.getInstance().copyNode(t);
+		ParseTree root = ParseTreeUtil.getInstance().copyNode(t);
 		if (root instanceof ExtendContext rootCtx) {
 			rootCtx.children.clear();
 			rootCtx.addChildren(children);

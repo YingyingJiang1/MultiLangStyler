@@ -3,7 +3,7 @@ package org.example.styler.declaration;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.common.token.ExtendToken;
@@ -128,7 +128,7 @@ public class DeclarationNumberStyler extends Styler {
         ctx.children = new ArrayList<ParseTree>();
 
         // Copy declaration statement with an empty declarators.
-        ParseTreeFactory factory = ParseTreeFactory.getInstance();
+        ParseTreeUtil factory = ParseTreeUtil.getInstance();
         List<ParseTree> declarationStmtList = new ArrayList<>();
         declarationStmtList.add(decStmt);
         for (int i = 0; i < declaratorList.size() - 1; i++) {

@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.ParseTreeFactory;
+import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
@@ -61,7 +61,7 @@ public class CondReverserHandler extends Handler{
           for (int j = 0; j < matchedTrees.size(); j++) {
             ParseTree t = matchedTrees.get(j);
             if (t instanceof JavaParser.ExpressionContext ctx) {
-              matchedTrees.set(j, reverseCond(ctx, parser));
+              matchedTrees.set(j, ParseTreeUtil.getInstance().negateExpressionSmart(ctx, parser));
             }
           }
         }
@@ -69,47 +69,4 @@ public class CondReverserHandler extends Handler{
     }
   }
 
-
-  /**
-   *
-   * @param ctx
-   * @return whether has unwrapped logical or expression
-   */
-  private ParseTree reverseCond(ExtendContext ctx, MyParser parser) {
-    ExtendToken op = (ExtendToken) getOp(ctx, parser);
-    String reversedOp = compareOpMap.get(op.getText());
-    if (reversedOp != null) {
-      // reverse compare or logical operator
-      op.setType(parser.getType(reversedOp));
-      op.setText(reversedOp);
-      return ctx;
-    }
-
-    reversedOp = logicalOpMap.get(op.getText());
-    ExtendContext exp = ctx;
-    if (reversedOp != null) {
-      exp = ParseTreeFactory.getInstance().encapsulateExpWithParen(ctx, parser);
-    }
-    // expression -> !expression or !expression -> expression
-    ExtendContext notExp = ParseTreeFactory.getInstance().negateExpression(exp, parser);
-    return notExp;
-  }
-
-  private boolean wrappedByParen(ExtendContext ctx) {
-    ExtendContext parent = (ExtendContext) ctx.getParent();
-    return parent instanceof JavaParser.ExpressionContext && parent.start.getText().equals("(") && parent.stop.getText().equals(")");
-  }
-
-  /**
-   * Find the comparison and logical operators.
-   * @param ctx
-   * @return
-   */
-  private Token getOp(ExtendContext ctx, MyParser parser) {
-    List<TerminalNode> ters = ctx.getAllTerminalsIf(v -> true);
-    if (ters.isEmpty()) {
-      return parser.getTokenFactory().create(0, "");
-    }
-    return ters.get(0).getSymbol();
-  }
 }
