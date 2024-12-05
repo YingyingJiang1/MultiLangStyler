@@ -9,6 +9,7 @@ import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.example.styler.ifelse.IfElseBodyOrderStyler;
 import org.example.styler.literal.usage.LiteralUsageStyler;
 import org.example.styler.structure.StructureStyler;
 
@@ -25,6 +26,7 @@ public class StylerContainer {
         stylers.add(new LiteralUsageStyler());
         stylers.add(new ModifierOrderStyler());
         stylers.add(new DeclarationNumberStyler());
+        stylers.add(new IfElseBodyOrderStyler());
 //        stylers.add(new OptionalBraceStyler());
         stylers.add(new BraceFormatStyler());
 //        stylers.add(new LineWrappingStyler());
