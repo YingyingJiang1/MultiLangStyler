@@ -100,7 +100,7 @@ public class CommonStyle implements DomIO,Style {
 
     @Override
     public List<StyleContext> filterRules() {
-        ruleSet.filterRules();
+        return ruleSet.filterRules();
     }
 
     @Override

@@ -40,7 +40,7 @@ public abstract class Styler {
     }
 
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        return null;
+        return ctx;
     }
 
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {}

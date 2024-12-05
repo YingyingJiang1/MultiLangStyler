@@ -2,32 +2,32 @@ package org.example.styler.declaration.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
-import org.example.style.rule.StyleProperty;
+import org.example.style.rule.StyleContext;
 
 import java.util.Objects;
 
-public class DeclarationNumberProperty extends StyleProperty {
-    public boolean declareOne;
+public class DeclarationNumberContext extends StyleContext {
+    public boolean hasComment;
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("declare_one", Boolean.toString(declareOne));
+        parent.addAttribute("has_comment", Boolean.toString(hasComment));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        declareOne = Boolean.parseBoolean(parent.attributeValue("declare_one"));
+        hasComment = Boolean.parseBoolean(parent.attributeValue("has_comment"));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(declareOne);
+        return Objects.hash(hasComment);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DeclarationNumberProperty other) {
-            return other.declareOne == declareOne;
+        if (obj instanceof DeclarationNumberContext other) {
+            return other.hasComment == hasComment;
         }
         return false;
     }

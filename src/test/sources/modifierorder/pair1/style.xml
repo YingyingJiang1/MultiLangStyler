@@ -48,6 +48,7 @@
       <style_property order="protected, static, final"/>
     </rule>
   </style>
+  <style name="declaration-number"/>
   <style name="brace_format">
     <rule>
       <style_context>
@@ -108,10 +109,5 @@
       <style_property space1="false" space2="false"/>
     </rule>
   </style>
-  <style name="numeric_literal">
-    <rule>
-      <style_context literal_type="INT_NUMBER"/>
-      <style_property declare_constant_for_use="false"/>
-    </rule>
-  </style>
+  <style name="numeric_literal"/>
 </program_style>

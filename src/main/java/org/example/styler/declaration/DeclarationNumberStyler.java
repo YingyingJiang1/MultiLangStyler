@@ -1,5 +1,6 @@
 package org.example.styler.declaration;
 
+import org.example.debug.TreePrinter;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Stage;
@@ -12,7 +13,7 @@ public class DeclarationNumberStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        super.extractStyle(ctx, parser);
+        TreePrinter.printTree(ctx, parser);
     }
 
     @Override
