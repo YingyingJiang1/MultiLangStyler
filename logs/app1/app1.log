@@ -699,3 +699,7 @@ Caused by: java.lang.IndexOutOfBoundsException: Index 2 out of bounds for length
 2024-12-05 11:03:41,773 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\arrangement1\self-style.xml
 2024-12-05 11:13:39,003 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src/test/sources/arrangement1\sample-style.xml
 2024-12-05 11:13:39,353 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\arrangement1\self-style.xml
+2024-12-05 11:16:22,336 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-12-05 11:16:22,692 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\arrangement1\self-style.xml
+2024-12-05 11:17:09,597 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src/test/sources/arrangement1\sample-style.xml
+2024-12-05 11:17:10,076 INFO  --- [main] org.example.io.StyleFileIO.write/64 : style result saved in:src\test\sources\arrangement1\self-style.xml

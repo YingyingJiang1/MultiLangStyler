@@ -301,6 +301,16 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isVariableDeclarator(ParseTree t) {
+        return t instanceof JavaParser.VariableDeclaratorContext;
+    }
+
+    @Override
+    public boolean isTypeType(ParseTree tree) {
+        return tree instanceof JavaParser.TypeTypeContext;
+    }
+
+    @Override
     public int getRuleExpression() {
         return JavaParser.RULE_expression;
     }

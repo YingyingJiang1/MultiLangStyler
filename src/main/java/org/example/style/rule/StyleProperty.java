@@ -2,6 +2,6 @@ package org.example.style.rule;
 
 import org.example.io.DomIO;
 
-public abstract class StyleProperty implements DomIO {
+public abstract class StyleProperty implements DomIO, Comparable<StyleProperty> {
     void fillStyle() {}
 }

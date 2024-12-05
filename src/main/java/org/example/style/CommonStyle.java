@@ -4,6 +4,7 @@ import org.dom4j.Element;
 import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.*;
+import org.example.style.rule.filter.MaxFrequencyFilter;
 
 import java.util.List;
 
@@ -100,8 +101,9 @@ public class CommonStyle implements DomIO,Style {
 
     @Override
     public List<StyleContext> filterRules() {
-        return ruleSet.filterRules();
+        return ruleSet.filterRules(MaxFrequencyFilter.getInstance());
     }
+
 
     @Override
     public StyleProperty remove(StyleContext styleContext) {

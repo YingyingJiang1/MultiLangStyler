@@ -1,7 +1,8 @@
 package org.example.style.rule;
 
+import org.example.style.rule.filter.StylePropertyFilter;
+
 import java.util.List;
-import java.util.Map;
 
 public interface RuleSet {
     void addRule(StyleContext context, StyleProperty property);
@@ -24,7 +25,7 @@ public interface RuleSet {
      * @description: When more than one rule with the same style context appears, the rule with the largest frequency is retained.
      * @return the style contexts of removed rules.
      */
-    List<StyleContext> filterRules();
+    List<StyleContext> filterRules(StylePropertyFilter filter);
 
     boolean updateKey(StyleContext oldContext, StyleContext newContext);
 

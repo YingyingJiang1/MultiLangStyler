@@ -27,7 +27,7 @@ public class ExtendToken extends CommonToken {
     protected int hierarchy = 0;
     public int indention = 0;
     // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
-    public List<Token> contextTokens = null;
+    private List<Token> contextTokens = null;
     public boolean hasTrailingComment = false;
 
     public ExtendToken(int type) {
@@ -154,12 +154,20 @@ public class ExtendToken extends CommonToken {
         return contextTokens;
     }
 
+    public boolean hasContextTokens(Predicate<Integer> cond) {
+        return contextTokens != null && contextTokens.stream().anyMatch(t -> cond.test(t.getType()));
+    }
+
     public int getHierarchy() {
         return hierarchy;
     }
 
     public void setHierarchy(int depth) {
         this.hierarchy = depth;
+    }
+
+    public void resetContextTokens() {
+        contextTokens = null;
     }
 
     @Override

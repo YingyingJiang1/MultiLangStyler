@@ -9,6 +9,10 @@ import java.util.Objects;
 public class DeclarationNumberContext extends StyleContext {
     public boolean hasComment;
 
+    public DeclarationNumberContext(boolean hasComment) {
+        this.hasComment = hasComment;
+    }
+
     @Override
     public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("has_comment", Boolean.toString(hasComment));

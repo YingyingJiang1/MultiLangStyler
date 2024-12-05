@@ -89,6 +89,8 @@ public interface MyParser {
     boolean isCatchClause(ParseTree t);
     boolean isTypeDeclaration(ParseTree t);
     boolean isClassBodyDeclaration(ParseTree child);
+    boolean isVariableDeclarator(ParseTree t);
+    boolean isTypeType(ParseTree tree);
 
     int getRuleBlock();
     int getRuleExpression();
@@ -177,4 +179,5 @@ public interface MyParser {
     ListenerState getListenerState();
 
     String getConstKeyword();
+
 }

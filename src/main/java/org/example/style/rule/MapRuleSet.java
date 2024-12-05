@@ -1,6 +1,6 @@
 package org.example.style.rule;
 
-import org.example.styler.body.BodyContext;
+import org.example.style.rule.filter.StylePropertyFilter;
 
 import java.util.*;
 
@@ -72,18 +72,15 @@ public class MapRuleSet implements RuleSet{
     }
 
     @Override
-    public List<StyleContext> filterRules() {
+    public List<StyleContext> filterRules(StylePropertyFilter filter) {
         List<StyleContext> toBeRemoved = new ArrayList<>();
         for (Map.Entry<StyleContext, List<StyleProperty>> entry : rules.entrySet()) {
-            int maxFrequency = frequencies.get(entry.getKey()).stream().max(Comparator.comparingInt(i -> i)).get();
-            boolean existsConflict = frequencies.get(entry.getKey()).stream().filter(i -> i == maxFrequency).count() > 1;
+            List<StyleProperty> properties = filter.get(entry.getValue(), frequencies.get(entry.getKey()));
+            boolean existsConflict = properties.size() > 1;
             if (existsConflict) {
                 toBeRemoved.add(entry.getKey());
             } else {
-                int targetIndex = frequencies.get(entry.getKey()).indexOf(maxFrequency);
-                StyleProperty property = entry.getValue().get(targetIndex);
-                entry.getValue().clear();
-                entry.getValue().add(property);
+                entry.setValue(properties);
             }
         }
 
