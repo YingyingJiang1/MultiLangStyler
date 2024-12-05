@@ -33,6 +33,7 @@ public class PlaceholderContainer {
     // Ensure each pattern has three groups. If regular1 is a prefix of regular2 then regular1 should be put after regular2.
     static Pattern[] placeholderPatterns = {
             Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
+            Pattern.compile("(\\$ARRAY_INITIALIZER)(\\d*)()"),
             Pattern.compile("(\\$VAR_DEC)(\\d*)([*+?]?)"),
             Pattern.compile("(\\$EXP_LIST)(\\d*)([*+?]?)"),
             Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
@@ -44,12 +45,15 @@ public class PlaceholderContainer {
     };
 
     // Make sure each placeholder type has a different placeholder values.
+    // For the placeholder has the same value, such as $M,$ARRAY_INITIALIZER,$HOMO_BOP..., if a configured structure has more
+    // than one kind of that placeholder($M1,$M2 is seen as two kinds of $M), it may go wrong.
     private static final Map<String, String> placeholderMap = new HashMap<>() {{
         put("$I", "I#id");
         put("$E", "E#id");
         put("$V", "V#id");
         put("$T", "T#id");
         put("$M", "");
+        put("$ARRAY_INITIALIZER", "{}");
         put("$EXP_LIST", "I#id=0,J#id=1");
         put("$S(ifStmt)", "if(IFCOND#id>0){}");
         put("$S(ifElseStmt)", "if(IFELSECOND#id>0){}else{}");

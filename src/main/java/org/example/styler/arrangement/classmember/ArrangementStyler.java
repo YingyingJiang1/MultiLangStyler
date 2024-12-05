@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.style.Style;
+import org.example.styler.Stage;
 import org.example.styler.arrangement.classmember.style.*;
 import org.example.utils.DistanceCalculator;
 import org.example.utils.Helper;
@@ -123,34 +124,25 @@ public class ArrangementStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		try {
-			// Extract order info in top level type declaration.
-			boolean isTopLevelDec = parser.isTopUnit(ctx.getParent().getParent());
-			if (isTopLevelDec) {
-				ArrangementContext context = extractContentContext(ctx, parser);
-				if (context != null && !style.contains(context)) {
-					ExtendContext bodyCtx = (ExtendContext) ctx
-							.getFirstInnerChildByType(parser.getRuleBody());
-					if (bodyCtx == null) {
-						return ;
-					}
+		ArrangementContext context = extractContentContext(ctx, parser);
+		if (context != null && !style.contains(context)) {
+			ExtendContext bodyCtx = (ExtendContext) ctx
+					.getFirstInnerChildByType(parser.getRuleBody());
+			if (bodyCtx == null) {
+				return ;
+			}
 
-					ArrangementProperty property = new ArrangementProperty();
-					List<ArrangementProperty.ContentArea> areas = property.getAreas();
-					for (ParseTree child : bodyCtx.children) {
-						if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
-							ExtendContext listCtx = (ExtendContext) child;
-							ArrangementProperty.ContentArea area = createArea(listCtx, parser);
-							area.fillArea(extractFeature(listCtx, parser), extractOrder(listCtx, parser));
-							areas.add(area);
-						}
-					}
-					style.addRule(context, property);
+			ArrangementProperty property = new ArrangementProperty();
+			List<ArrangementProperty.ContentArea> areas = property.getAreas();
+			for (ParseTree child : bodyCtx.children) {
+				if (child instanceof ExtendContext && parser.belongToMemberList(child)) {
+					ExtendContext listCtx = (ExtendContext) child;
+					ArrangementProperty.ContentArea area = createArea(listCtx, parser);
+					area.fillArea(extractFeature(listCtx, parser), extractOrder(listCtx, parser));
+					areas.add(area);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new StylizationException("extract arrangement style failed:" + e.getMessage());
+			style.addRule(context, property);
 		}
 	}
 
@@ -381,13 +373,9 @@ public class ArrangementStyler extends Styler {
 		ctx.updateStopToken();
 	}
 
-	protected Set<Integer> getRelevantRules(MyParser parser) {
-		if (relevantRules == null) {
-			relevantRules = new HashSet<>(Arrays.asList(
-					parser.getRuleTypeDeclaration()
-			));
-		}
-		return relevantRules;
+	@Override
+	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+		return ctx.getRuleIndex() == parser.getRuleTypeDeclaration();
 	}
 
 	/*

@@ -1,5 +1,6 @@
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Configuration;
+import org.example.StylerContainer;
 import org.example.controller.Controller;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -39,16 +40,6 @@ public class CommonTest {
         conf.styleFileSavedPath = targetPath.getParent().toString() + "\\style.xml";
         Controller controller = new Controller(conf);
         controller.execute();
-    }
-
-    protected static void transform(String source, String target, Styler styler, String language) {
-        MyParser parser = MyParserFactory.createParser(language);
-        ExtendContext t = (ExtendContext) parser.parseFromString(target);
-        styler.extractStyle(t, parser);
-
-        ExtendContext t1 = (ExtendContext) parser.parseFromString(source);
-        ExtendContext newTree = styler.applyStyle(t1, parser);
-        assertEquals(t.getText(), newTree.getText());
     }
 
     protected static Style extractFromString(String code, Styler styler, String language) {
