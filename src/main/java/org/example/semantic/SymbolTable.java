@@ -17,9 +17,9 @@ public class SymbolTable {
     public Logger logger = LoggerFactory.getLogger(SymbolTable.class);
 
     // Map for fast searching. Key is the root node of declaration.
-    Map<ParseTree, VarSym> vars = new HashMap<>(0);
-    Map<ParseTree, MethodSym> methods = new HashMap<>(0);
-    Map<ParseTree, ClassSym> classes = new HashMap<>(0);
+    private Map<ParseTree, VarSym> vars = new HashMap<>(0);
+    private Map<ParseTree, MethodSym> methods = new HashMap<>(0);
+    private Map<ParseTree, ClassSym> classes = new HashMap<>(0);
 
     public void addSym(ParseTree declarationRoot, Symbol symbol) {
         if (symbol instanceof VarSym) {
@@ -33,4 +33,27 @@ public class SymbolTable {
         }
     }
 
+    public void addVarSym(VarSym varSym) {
+        vars.put(varSym.getDeclarationNode(), varSym);
+    }
+
+    public void addMethodSym(MethodSym methodSym) {
+        methods.put(methodSym.getDeclarationNode(), methodSym);
+    }
+
+    public void addClassSym(ClassSym classSym) {
+        classes.put(classSym.getDeclarationNode(), classSym);
+    }
+
+    public Symbol getSymbol(ParseTree node) {
+        if (vars.get(node) != null) {
+            return vars.get(node);
+        } else if (methods.get(node) != null) {
+            return methods.get(node);
+        } else if (classes.get(node) != null) {
+            return classes.get(node);
+        } else {
+            return null;
+        }
+    }
 }

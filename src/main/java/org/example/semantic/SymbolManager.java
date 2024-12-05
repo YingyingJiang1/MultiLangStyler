@@ -1,11 +1,17 @@
 package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
+import org.example.semantic.symbol.ClassSym;
+import org.example.semantic.symbol.MethodSym;
+import org.example.semantic.symbol.Symbol;
+import org.example.semantic.symbol.VarSym;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STRestartNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Manage the symbol tables for all files.
@@ -14,10 +20,12 @@ public class SymbolManager {
     public Logger logger = LoggerFactory.getLogger(SymbolManager.class);
     private static Map<ParseTree, SymbolTable> symbolTables = new HashMap<>(0);
 
-    public static SymbolTable createSymbolTable(ParseTree root) {
+    public static SymbolTable createSymbolTable(ParseTree root, MyParser parser) {
         SymbolTable symbolTable =  new SymbolTable();
 
-        doCreate(root, symbolTable);
+        if (root instanceof ExtendContext ctx) {
+            doCreate(ctx, symbolTable, new Stack<>(), parser);
+        }
 
         symbolTables.put(root, symbolTable);
         return symbolTable;
@@ -31,16 +39,52 @@ public class SymbolManager {
      *
      * @return the symbol table if it exists, otherwise it will try to create one.
      */
-    public static SymbolTable createAndGetSymbolTable(ParseTree root) {
+    public static SymbolTable createAndGetSymbolTable(ParseTree root, MyParser parser) {
         SymbolTable st = symbolTables.get(root);
         if (st == null) {
-            st = createSymbolTable(root);
+            st = createSymbolTable(root, parser);
         }
         return st;
     }
 
-    private static void doCreate(ParseTree root, SymbolTable symbolTable) {
-    }
 
+    private static void doCreate(ExtendContext root, SymbolTable symbolTable, Stack<Symbol> containerSymbolStack, MyParser parser) {
+        boolean isContainerSymbol = false;
+        Symbol symbol = null;
+        if (parser.isTypeDeclaration(root)) {
+            ClassSym classSym = ClassSym.createSym(root, parser);
+            symbolTable.addClassSym(classSym);
+            containerSymbolStack.push(classSym);
+            symbol  = classSym;
+            isContainerSymbol = true;
+        } else if(parser.belongToFunctionDec(root.getRuleIndex())) {
+            MethodSym methodSym = new MethodSym(root, getModifierKeywords(root, parser));
+            symbol = methodSym;
+            symbolTable.addMethodSym(methodSym);
+            isContainerSymbol = true;
+        } else if(parser.belongToVarDeclarationStmt(root.getRuleIndex())) {
+            VarSym varSym = new VarSym(root, getModifierKeywords(root, parser));
+            symbol = varSym;
+            symbolTable.addVarSym(varSym);
+        }
+
+        if (symbol != null && !containerSymbolStack.isEmpty()) {
+            symbol.setContainingSymbol(containerSymbolStack.peek());
+        }
+        if (isContainerSymbol) {
+            containerSymbolStack.push(symbol);
+        }
+
+        for (ParseTree child : root.children) {
+            if (child instanceof ExtendContext ctx) {
+                doCreate(ctx, symbolTable, containerSymbolStack, parser);
+            }
+        }
+
+        if (isContainerSymbol) {
+            containerSymbolStack.pop();
+        }
+
+    }
 
 }
