@@ -301,8 +301,8 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean isVariableDeclarator(ParseTree t) {
-        return t instanceof JavaParser.VariableDeclaratorContext;
+    public boolean isVariableDeclarators(ParseTree t) {
+        return t instanceof JavaParser.VariableDeclaratorsContext;
     }
 
     @Override
@@ -326,8 +326,8 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean belongToVarDeclarations(int ruleIndex) {
-        return ruleIndex == JavaParser.RULE_localVariableDeclaration || ruleIndex == JavaParser.RULE_fieldDeclaration;
+    public boolean belongToVarDeclarationStmt(int ruleIndex) {
+        return ruleIndex == JavaParser.RULE_localVariableDeclarationStmt || ruleIndex == JavaParser.RULE_fieldDeclaration;
     }
 
     @Override
@@ -524,6 +524,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleLiteral() {
         return JavaParser.RULE_literal;
+    }
+
+    @Override
+    public int getRuleVariableDeclarators() {
+        return JavaParser.RULE_variableDeclarators;
     }
 
     @Override

@@ -63,12 +63,12 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
-//  public void addChild(ParseTree t) {
-//    children.add(t);
-//    t.setParent(this);
-//    updateStartToken();
-//    updateStopToken();
-//  }
+  public void addChild(ParseTree t) {
+    children.add(t);
+    t.setParent(this);
+    updateStartToken();
+    updateStopToken();
+  }
 
     public void addChildren(List<ParseTree> trees) {
         for (ParseTree t : trees) {

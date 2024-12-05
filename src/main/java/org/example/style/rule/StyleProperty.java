@@ -4,4 +4,9 @@ import org.example.io.DomIO;
 
 public abstract class StyleProperty implements DomIO, Comparable<StyleProperty> {
     void fillStyle() {}
+
+    @Override
+    public int compareTo(StyleProperty o) {
+        return 0;
+    }
 }

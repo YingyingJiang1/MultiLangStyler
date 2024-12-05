@@ -54,7 +54,7 @@ public class ReplicationHandler extends Handler{
 	private List<ParseTree> doReplication(List<ParseTree> trees) {
 		List<ParseTree> ret = new ArrayList<>(trees.size());
 		for (ParseTree tree : trees) {
-			ret.add(ParseTreeFactory.getInstance().copyFrom(tree, null, false));
+			ret.add(ParseTreeFactory.getInstance().copyTree(tree, false));
 		}
 		return ret;
 	}

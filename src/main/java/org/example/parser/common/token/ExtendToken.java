@@ -52,9 +52,21 @@ public class ExtendToken extends CommonToken {
 
     @Override
     public ExtendToken clone() {
-        ExtendToken ret = new ExtendToken(this);
+        // Here we must call this.getText(), cannot use this.text because it might be null.
+        ExtendToken ret = new ExtendToken(this.getType(), this.getText());
         ret.hierarchy = hierarchy;
-        ret.contextTokens = contextTokens;
+        if (this.contextTokens == null) {
+            ret.contextTokens = null;
+        } else {
+            ret.contextTokens = new ArrayList<>();
+            for (Token token : this.contextTokens) {
+                if (token == this) {
+                    ret.contextTokens.add(ret);
+                } else if (token instanceof ExtendToken extToken) {
+                    ret.contextTokens.add(extToken.clone());
+                }
+            }
+        }
         return ret;
     }
 

@@ -55,7 +55,7 @@ public interface MyParser {
     boolean belongToSingleStmt(ParseTree t);
     boolean belongToBraceOptionalStmt(int rule);
     boolean belongToFileHeadDec(int rule);
-    boolean belongToVarDeclarations(int ruleIndex);
+    boolean belongToVarDeclarationStmt(int ruleIndex);
 
 
     boolean belongToBinOp(String name);
@@ -89,7 +89,7 @@ public interface MyParser {
     boolean isCatchClause(ParseTree t);
     boolean isTypeDeclaration(ParseTree t);
     boolean isClassBodyDeclaration(ParseTree child);
-    boolean isVariableDeclarator(ParseTree t);
+    boolean isVariableDeclarators(ParseTree t);
     boolean isTypeType(ParseTree tree);
 
     int getRuleBlock();
@@ -122,6 +122,7 @@ public interface MyParser {
     int getRuleExpressionList();
     int getRuleFieldDeclarationList();
     int getRuleLiteral();
+    int getRuleVariableDeclarators();
 
 
 
@@ -179,5 +180,6 @@ public interface MyParser {
     ListenerState getListenerState();
 
     String getConstKeyword();
+
 
 }

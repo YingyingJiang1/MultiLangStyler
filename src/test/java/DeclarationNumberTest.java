@@ -1,0 +1,12 @@
+import org.junit.jupiter.api.Test;
+
+import java.nio.file.Paths;
+
+public class DeclarationNumberTest extends CommonTest{
+    String dir = "src/test/sources/declarationNumber";
+    @Test
+    void testPair1() {
+//        transform(Paths.get(dir, "pair1", "src.java"), Paths.get(dir, "pair1", "target.java"));
+        transform(Paths.get(dir, "pair1", "target.java"), Paths.get(dir, "pair1", "src.java"));
+    }
+}

@@ -7,7 +7,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.java.antlr.JavaParser;
 
 public class JavaTreeNodeFactory implements TreeNodeFactory {
-    private static JavaTreeNodeFactory instance = new JavaTreeNodeFactory();
+    private static final JavaTreeNodeFactory instance = new JavaTreeNodeFactory();
 
     private JavaTreeNodeFactory() {}
 
@@ -28,10 +28,6 @@ public class JavaTreeNodeFactory implements TreeNodeFactory {
     @Override
     public ExtendContext createFieldDeclarationList(ExtendContext parent) {
         return new JavaParser.FieldDeclarationListContext(parent, parent.invokingState);
-    }
-
-    public TerminalNode createTerminalNode(Token symbol) {
-        return new TerminalNodeImpl(symbol);
     }
 
 }

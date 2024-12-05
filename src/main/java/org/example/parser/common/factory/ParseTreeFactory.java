@@ -8,6 +8,8 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,79 +20,62 @@ import java.util.List;
  * @create       2024/4/5 16:26
  */
 public class ParseTreeFactory {
+  public static Logger logger = LoggerFactory.getLogger(ParseTreeFactory.class);
+
   private static ParseTreeFactory instance = new ParseTreeFactory();
 
   public static ParseTreeFactory getInstance() {
     return instance;
   }
 
+  public ParseTree copyTree(ParseTree t , boolean shallow) {
+    ParseTree newNode = copyNode(t);
+
+    // Recursively copy children.
+    if (newNode instanceof ExtendContext newCtx) {
+      ExtendContext oldCtx =  (ExtendContext) t;
+      if (shallow) {
+        newCtx.addChildren(oldCtx.children);
+      } else {
+        List<ParseTree> newChildren = new ArrayList<>();
+        for (ParseTree child : oldCtx.children) {
+          newChildren.add(copyTree(child, shallow));
+        }
+        newCtx.addChildren(newChildren);
+      }
+    }
+
+    return newNode;
+  }
 
   /**
-   * @apiNote If @children is null, then copy children from @t.
-   * If @children is not null then set the children of new created context to @children.
-   * @param t
-   * @param children
-   * @param shallow Determines shallow or deep copy of children.
+   * deep copy
+   * @param node node to be copied.
    * @return
    */
-  public ParseTree copyFrom(ParseTree t, List<ParseTree> children, boolean shallow) {
-    ExtendContext parent = (ExtendContext) t.getParent();
-    if (t instanceof TerminalNode terminalNode) {
+  public ParseTree copyNode(ParseTree node) {
+    ExtendContext parent = (ExtendContext) node.getParent();
+    if (node instanceof TerminalNode terminalNode) {
       ExtendToken token = ((ExtendToken) terminalNode.getSymbol()).clone();
       TerminalNode newTer = new TerminalNodeImpl(token);
       newTer.setParent(parent);
       return newTer;
     } else {
-
-      ExtendContext oldCtx = (ExtendContext) t;
+      ExtendContext oldCtx = (ExtendContext) node;
       ExtendContext newCtx = null;
       try {
         newCtx = oldCtx.clone();
       } catch (CloneNotSupportedException e) {
-        System.err.println(e.getMessage());
+        logger.error(e.getMessage(), e);
       }
 
-      /*int rule = oldCtx.getRuleIndex();
-      newCtx = switch (rule) {
-        case JavaParser.RULE_expression -> new JavaParser.ExpressionContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_expressionStmt -> new JavaParser.ExpressionStmtContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_parExpression -> new JavaParser.ParExpressionContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_block -> new JavaParser.BlockContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_ifStmt -> new JavaParser.IfStmtContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_ifElseStmt -> new JavaParser.IfElseStmtContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_forStmt -> new JavaParser.ForStmtContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_forControl -> new JavaParser.ForControlContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_whileStmt -> new JavaParser.WhileStmtContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_returnStmt -> new JavaParser.ReturnStmtContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_identifier -> new JavaParser.IdentifierContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_literal -> new JavaParser.LiteralContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_modifierList -> new JavaParser.ModifierListContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_annotationList -> new JavaParser.AnnotationListContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_typeType -> new JavaParser.TypeTypeContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_localVariableDeclaration -> new JavaParser.LocalVariableDeclarationContext(parent, oldCtx.invokingState);
-        case JavaParser.RULE_localVariableDeclarationStmt -> new JavaParser.LocalVariableDeclarationStmtContext(parent, oldCtx.invokingState);
-        default -> newCtx;
-      };*/
       if (newCtx == null) {
-        throw new RuntimeException("copy tree node \"" + t.getClass().getSimpleName() + "\" failed!");
-      }
-
-      // add children
-      if (children != null) {
-        newCtx.children.clear();
-        newCtx.addChildren(children);
-      } else if(shallow) {
-        newCtx.addChildren(oldCtx.children);
-      } else {
-        List<ParseTree> newChildren = new ArrayList<>();
-        for(ParseTree child : oldCtx.children) {
-          newChildren.add(copyFrom(child, null, false));
-        }
-        newCtx.addChildren(newChildren);
+        throw new RuntimeException("copy tree node \"" + node.getClass().getSimpleName() + "\" failed!");
       }
       return newCtx;
     }
   }
+
 
   /**
    * @apiNote Create a negative expression of @expCtx,

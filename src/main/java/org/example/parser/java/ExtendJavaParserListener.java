@@ -292,7 +292,6 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
-		ctx.expandChildIf(root -> root instanceof JavaParser.VariableDeclaratorsContext);
 		doTask(ctx, exitStylers);
 	}
 
@@ -453,7 +452,6 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitVariableDeclarators(JavaParser.VariableDeclaratorsContext ctx) {
-//		ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -650,7 +648,6 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
-		ctx.expandChildIf(child -> child instanceof JavaParser.VariableDeclaratorsContext);
 		doTask(ctx, exitStylers);
 	}
 

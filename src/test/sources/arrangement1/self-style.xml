@@ -117,13 +117,6 @@
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
         <block_type>DEC_BODY</block_type>
         <body_type>MULTI</body_type>
       </style_context>
@@ -142,6 +135,13 @@
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>EMPTY</body_type>
+      </style_context>
+      <style_property beforeLB="true" afterLB="false" beforeRB="true" afterRB="true"/>
     </rule>
     <rule>
       <style_context>
@@ -152,17 +152,17 @@
     </rule>
     <rule>
       <style_context>
-        <block_type>ARRAY_INITIALIZER_BODY</block_type>
+        <block_type>NORMAL_BODY</block_type>
         <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
     <rule>
       <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>EMPTY</body_type>
+        <block_type>ARRAY_INITIALIZER_BODY</block_type>
+        <body_type>MULTI</body_type>
       </style_context>
-      <style_property beforeLB="true" afterLB="false" beforeRB="true" afterRB="true"/>
+      <style_property beforeLB="true" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
   </style>
   <style name="structure_preference"/>

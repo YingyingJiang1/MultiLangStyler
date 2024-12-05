@@ -2,13 +2,10 @@ package org.example.styler.structure;
 
 
 import org.antlr.v4.runtime.tree.*;
-import org.apache.commons.logging.Log;
-import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.ParseTreeFactory;
 import org.example.myException.CompilationException;
-import org.example.parser.java.ExtendJavaParserListener;
 import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
@@ -236,17 +233,20 @@ public class EquivalentStructure {
 			if (vNode != null) {
 				children.addAll(vNode.matchedTrees);
 			} else if(child instanceof TerminalNode) {
-				children.add(ParseTreeFactory.getInstance().copyFrom(child, null, false));
+				children.add(ParseTreeFactory.getInstance().copyTree(child, false));
 			} else {
 				children.add(createTree(child, forest));
 			}
 		}
 
 		// Create parent
-		ParseTree newTree = ParseTreeFactory.getInstance().copyFrom(t, children, false);
+		ParseTree root = ParseTreeFactory.getInstance().copyNode(t);
+		if (root instanceof ExtendContext rootCtx) {
+			rootCtx.children.clear();
+			rootCtx.addChildren(children);
+		}
 
-		// ParseTreeFactory.getInstance().replaceTree(t.getParent(), newTree, t);
-		return newTree;
+		return root;
 	}
 
 	private void cleanState() {

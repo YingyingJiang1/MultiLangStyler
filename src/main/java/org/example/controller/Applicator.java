@@ -83,7 +83,7 @@ public class Applicator {
                     extToken.setHierarchy(hierarchy);
                 }
             });
-            token.contextTokens = null;
+            token.resetContextTokens();
             tokens.addAll(contextTokens);
         } else {
             ExtendContext ctx = (ExtendContext) root;
