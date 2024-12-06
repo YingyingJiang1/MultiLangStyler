@@ -4,10 +4,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.symbol.ClassSym;
-import org.example.semantic.symbol.MethodSym;
+import org.example.semantic.symbol.FunctionSym;
 import org.example.semantic.symbol.Symbol;
 import org.example.semantic.symbol.VarSym;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STRestartNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,12 +57,12 @@ public class SymbolManager {
             symbol  = classSym;
             isContainerSymbol = true;
         } else if(parser.belongToFunctionDec(root.getRuleIndex())) {
-            MethodSym methodSym = new MethodSym(root, getModifierKeywords(root, parser));
-            symbol = methodSym;
-            symbolTable.addMethodSym(methodSym);
+            FunctionSym functionSym = FunctionSym.createSym(root, parser);
+            symbol = functionSym;
+            symbolTable.addMethodSym(functionSym);
             isContainerSymbol = true;
-        } else if(parser.belongToVarDeclarationStmt(root.getRuleIndex())) {
-            VarSym varSym = new VarSym(root, getModifierKeywords(root, parser));
+        } else if(parser.isFieldDeclaration(root) || parser.belongToLocalDeclaration(root)) {
+            VarSym varSym = VarSym.createSym(root, parser);
             symbol = varSym;
             symbolTable.addVarSym(varSym);
         }

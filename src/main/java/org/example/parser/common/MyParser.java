@@ -56,6 +56,7 @@ public interface MyParser {
     boolean belongToBraceOptionalStmt(int rule);
     boolean belongToFileHeadDec(int rule);
     boolean belongToVarDeclarationStmt(int ruleIndex);
+    boolean belongToFunctionHead(int ruleIndex);
 
 
     boolean belongToBinOp(String name);
@@ -123,6 +124,7 @@ public interface MyParser {
     int getRuleFieldDeclarationList();
     int getRuleLiteral();
     int getRuleVariableDeclarators();
+    int getRuleFormalParameter();
 
 
 
@@ -180,6 +182,5 @@ public interface MyParser {
     ListenerState getListenerState();
 
     String getConstKeyword();
-
 
 }

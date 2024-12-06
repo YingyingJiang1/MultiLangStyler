@@ -1,9 +1,9 @@
 package org.example.semantic.symbol;
 
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,24 +11,29 @@ public class ClassSym extends Symbol{
     String path;
     List<ClassSym> parents = new ArrayList<ClassSym>();
     List<VarSym> vars = new ArrayList<VarSym>();
-    List<MethodSym> methods = new ArrayList<MethodSym>();
+    List<FunctionSym> methods = new ArrayList<FunctionSym>();
     List<ClassSym> innerClasses = new ArrayList<ClassSym>();
 
-    public ClassSym(ExtendContext declarationNode, List<String> modifiers) {
-        super(declarationNode, modifiers);
+    public static ClassSym createSym(ExtendContext declarationNode, MyParser parser) {
+        ExtendContext declarationHead = getTypeDeclarationHead(declarationNode, parser);
+        ClassSym classSym = new ClassSym(declarationNode,
+                parseIdentifier(declarationHead, parser),
+                parseModifierKeywords(declarationNode, parser));
+        classSym.parents = parseParents(classSym.declarationNode, parser);
+        classSym.path = parsePath(parser);
+        return classSym;
     }
 
-    public static ClassSym createSym(ExtendContext declarationNode, MyParser parser) {
-        ClassSym classSym = new ClassSym(declarationNode, getModifierKeywords(declarationNode, parser));
-        System.out.println("to do: 解析父类");
-        return classSym;
+
+    private ClassSym(ExtendContext declarationNode, TerminalNode terminalNode, List<String> modifierKeywords) {
+        super(declarationNode, terminalNode, modifierKeywords);
     }
 
     public void addSymbol(Symbol symbol) {
         if (symbol instanceof VarSym) {
             vars.add((VarSym) symbol);
-        } else if (symbol instanceof MethodSym) {
-            methods.add((MethodSym) symbol);
+        } else if (symbol instanceof FunctionSym) {
+            methods.add((FunctionSym) symbol);
         } else if (symbol instanceof ClassSym) {
             innerClasses.add((ClassSym) symbol);
         } else {
@@ -45,7 +50,7 @@ public class ClassSym extends Symbol{
         vars.add(symbol);
     }
 
-    public void addMethod(MethodSym symbol) {
+    public void addMethod(FunctionSym symbol) {
         methods.add(symbol);
     }
 
@@ -53,4 +58,17 @@ public class ClassSym extends Symbol{
         innerClasses.add(symbol);
     }
 
+    private static List<ClassSym> parseParents(ExtendContext declarationNode, MyParser parser) {
+        System.out.println("to do: implement ClassSym@paseParents");
+        return null;
+    }
+
+    private static String parsePath(MyParser parser) {
+        System.out.println("to do: implement ClassSym@parsePath");
+        return null;
+    }
+
+    private static ExtendContext getTypeDeclarationHead(ExtendContext declarationNode, MyParser parser) {
+        return (ExtendContext) declarationNode.getChild(1);
+    }
 }

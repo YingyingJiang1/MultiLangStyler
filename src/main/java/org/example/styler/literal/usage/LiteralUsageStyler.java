@@ -47,7 +47,7 @@ public class LiteralUsageStyler extends Styler {
                         style.addRule(context, new LiteralUsageProperty(false));
                     }
                 } else if(ter.getSymbol().getType() == parser.getIdentifier()) {
-                    Symbol symbol = Resolver.getInstance().resolve(ter.getSymbol().getText(), parser.getRoot());
+                    Symbol symbol = Resolver.getInstance().resolve(ter, parser.getRoot(), parser);
                     if (symbol instanceof VarSym varSym && varSym.isConst(parser.getConstKeyword())) {
                         style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
                     }

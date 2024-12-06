@@ -331,6 +331,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean belongToFunctionHead(int ruleIndex) {
+        return ruleIndex == JavaParser.RULE_methodHead || ruleIndex == JavaParser.RULE_constructorHead;
+    }
+
+    @Override
     public ParseTree createExpression(ParserRuleContext parent, int invokingState) {
         return new JavaParser.ExpressionContext(parent, invokingState);
     }
@@ -529,6 +534,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleVariableDeclarators() {
         return JavaParser.RULE_variableDeclarators;
+    }
+
+    @Override
+    public int getRuleFormalParameter() {
+        return JavaParser.RULE_formalParameter;
     }
 
     @Override
