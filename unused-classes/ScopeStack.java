@@ -1,7 +1,6 @@
 package org.example.semantic;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.semantic.symbol.Symbol;
+import org.example.semantic.intf.Symbol;
 
 import java.util.*;
 

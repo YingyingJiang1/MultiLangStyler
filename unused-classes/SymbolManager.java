@@ -3,10 +3,10 @@ package org.example.semantic;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.semantic.symbol.ClassSym;
-import org.example.semantic.symbol.FunctionSym;
-import org.example.semantic.symbol.Symbol;
-import org.example.semantic.symbol.VarSym;
+import org.example.semantic.intf.ClassSym;
+import org.example.semantic.intf.FunctionSym;
+import org.example.semantic.intf.Symbol;
+import org.example.semantic.intf.VarSym;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

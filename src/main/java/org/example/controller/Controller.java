@@ -22,6 +22,7 @@ import org.example.style.Style;
 import org.example.styler.Preprocessor;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.naming.NamingFormatStyler;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +82,9 @@ public class Controller {
 
     private void applyStyle(FileCollection files) {
         applyInitialize();
+
+        NamingFormatStyler  namingFormatStyler = container.findStyler(NamingFormatStyler.class);
+
         for (int i = 0; i < files.size(); i++) {
             try {
                 curPath = Paths.get(files.getFilePath(i));
@@ -92,24 +96,37 @@ public class Controller {
                     logger.info("Failed to apply style rules to file '{}' because of compilation error.", curPath.toString());
                     continue;
                 }
+
                 SelfStyle.extractStyle(curPath);
+
+
+
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
-                saveApplyResult(tokens, preprocessor);
+                String code = toString(tokens, preprocessor);
+                if (namingFormatStyler != null) {
+                    code = namingFormatStyler.applyStyle(code);
+                }
+                saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
                 logger.error("Exception details:", e);
             }
         }
+
         applyFinalize();
     }
 
     public ProgramStyle extractStyle(FileCollection files) {
         extractInitialize();
+
+        NamingFormatStyler  namingFormatStyler = container.findStyler(NamingFormatStyler.class);
+
         for (int i = 0; i < files.size(); i++) {
             try {
                 curPath = Paths.get(files.getFilePath(i));
                 String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+                GlobalInfo.setLanguage(language);
                 parser = MyParserFactory.createParser(language);
                 ParseTree tree = parser.parse(curPath);
                 if (tree == null) {
@@ -119,6 +136,9 @@ public class Controller {
 
                 Preprocessor preprocessor = new Preprocessor();
                 Extractor.extractRules(parser, container, preprocessor);
+                if (namingFormatStyler != null) {
+                    namingFormatStyler.extractStyle(parser.getTokenStream().getText());
+                }
             } catch (Exception e) {
                 logger.error("Failed to extract style rules from file: {}", files.getFilePath(i));
                 logger.trace("Exception details:", e);
@@ -159,9 +179,7 @@ public class Controller {
         return programStyle;
     }
 
-
-
-    private void saveApplyResult(List<Token> tokens, Preprocessor preprocessor) throws IOException {
+    private String toString(List<Token> tokens, Preprocessor preprocessor) {
         StringBuilder builder = new StringBuilder();
         if (tokens.get(tokens.size() - 1).getType() == parser.getEOF()) {
             tokens = tokens.subList(0, tokens.size() - 1);
@@ -170,8 +188,10 @@ public class Controller {
             preprocessor.restoreState(token, parser);
             builder.append(token.getText());
         }
+        return builder.toString();
+    }
 
-        String code = builder.toString();
+    private void saveApplyResult(String code) throws IOException {
         Path resFilePath = null;
         String saveDir = null;
         if (conf.overrideSource) {

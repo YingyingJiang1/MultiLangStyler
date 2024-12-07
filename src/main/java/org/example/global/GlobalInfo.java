@@ -29,4 +29,8 @@ public class GlobalInfo {
     public static SpecialClass getSpecialClass() {
         return specialClass;
     }
+
+    public static String getLanguage() {
+        return language;
+    }
 }

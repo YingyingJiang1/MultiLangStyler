@@ -7,11 +7,9 @@ import org.example.parser.common.ListenerState;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.semantic.Resolver;
-import org.example.semantic.symbol.Symbol;
-import org.example.semantic.symbol.VarSym;
-import org.example.semantic.type.ReferenceType;
-import org.example.semantic.type.Type;
+import org.example.semantic.ResolverFactory;
+import org.example.semantic.intf.Symbol;
+import org.example.semantic.intf.VarSym;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -47,8 +45,8 @@ public class LiteralUsageStyler extends Styler {
                         style.addRule(context, new LiteralUsageProperty(false));
                     }
                 } else if(ter.getSymbol().getType() == parser.getIdentifier()) {
-                    Symbol symbol = Resolver.getInstance().resolve(ter, parser.getRoot(), parser);
-                    if (symbol instanceof VarSym varSym && varSym.isConst(parser.getConstKeyword())) {
+                    Symbol symbol = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolve(ter, parser);
+                    if (symbol instanceof VarSym varSym && varSym.isConst()) {
                         style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
                     }
                 }
@@ -86,9 +84,8 @@ public class LiteralUsageStyler extends Styler {
                 return new LiteralUsageContext(LiteralEnum.CHAR);
             }
             default -> {
-                Type type = var.getType();
-                if (type instanceof ReferenceType refType &&
-                        refType.getFullName().equals(GlobalInfo.getSpecialClass().getStringClassFullName()))
+                if (var.isReference() &&
+                        var.getFullTypeName().equals(GlobalInfo.getSpecialClass().getStringClassFullName()))
                     return new LiteralUsageContext(LiteralEnum.STRING);
             }
         }

@@ -123,6 +123,12 @@
             <artifactId>javaparser-symbol-solver-core</artifactId>
             <version>3.26.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.30</version>
+        </dependency>
+
 
     </dependencies>
 

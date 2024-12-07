@@ -5,6 +5,7 @@ import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.*;
 import org.example.style.rule.filter.MaxFrequencyFilter;
+import org.example.styler.naming.style.NamingFormatContext;
 
 import java.util.List;
 
@@ -52,6 +53,11 @@ public class CommonStyle implements DomIO,Style {
             }
         }
         return property;
+    }
+
+    @Override
+    public List<StyleProperty> getProperties(NamingFormatContext context) {
+        return ruleSet.getProperties(context);
     }
 
     public StyleProperty getSimilarProperty(StyleContext targetContext) {

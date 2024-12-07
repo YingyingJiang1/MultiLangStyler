@@ -153,7 +153,7 @@ public class MyJavaParser implements MyParser {
         parser = new JavaParser(tokenStream);
         parser.setTokenFactory(tokenFactory);
         // this.parser.setErrorHandler(new AntlrErrorHandler());
-        parser.removeErrorListeners();
+//        parser.removeErrorListeners();
         root = tryParse();
         return root;
     }

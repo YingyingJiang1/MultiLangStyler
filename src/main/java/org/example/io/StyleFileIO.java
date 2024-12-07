@@ -51,6 +51,10 @@ public class StyleFileIO {
     }
 
     public static void write(ProgramStyle programStyle, String file, MyParser parser) {
+        if (programStyle == null) {
+            logger.info("no style to save in file {}, because `programStyle` is null.", file);
+            return;
+        }
         try {
             // 创建xml文件并写入内容
             Document document = DocumentHelper.createDocument();
