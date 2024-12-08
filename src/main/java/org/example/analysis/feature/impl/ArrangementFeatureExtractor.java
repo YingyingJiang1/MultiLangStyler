@@ -2,7 +2,7 @@ package org.example.analysis.feature.impl;
 
 import org.example.analysis.StyleType.Arrangement;
 import org.example.analysis.feature.featurevalue.*;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.arrangement.classmember.style.ArrangementProperty;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ArrangementFeatureExtractor extends FeatureExtractor {
+public class ArrangementFeatureExtractor extends StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();

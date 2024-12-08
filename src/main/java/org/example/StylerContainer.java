@@ -5,6 +5,10 @@ import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
 import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.body.braceformat.BraceFormatStyler;
+import org.example.styler.body.layout.BodyLayoutStyler;
+import org.example.styler.body.optionalbrace.OptionalBraceStyler;
+import org.example.styler.comment.density.CommentDensityStyler;
+import org.example.styler.comment.syntax.CommentSyntaxStyler;
 import org.example.styler.declaration.DeclarationNumberStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
@@ -25,17 +29,19 @@ public class StylerContainer {
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
         stylers.add(new StructureStyler());
-//        stylers.add(new LiteralUsageStyler());
+        stylers.add(new LiteralUsageStyler());
         stylers.add(new ModifierOrderStyler());
         stylers.add(new DeclarationNumberStyler());
         stylers.add(new IfElseBodyOrderStyler());
-//        stylers.add(new OptionalBraceStyler());
+        stylers.add(new OptionalBraceStyler());
         stylers.add(new BraceFormatStyler());
 //        stylers.add(new LineWrappingStyler());
         stylers.add(new LineStmtStyler());
         stylers.add(new NewlineStyler());
+        stylers.add(new CommentSyntaxStyler());
+        stylers.add(new CommentDensityStyler());
         stylers.add(new SpaceStyler());
-//        stylers.add(new BodyLayoutStyler());
+        stylers.add(new BodyLayoutStyler());
         stylers.add(new IndentionStyler());// `IndentionStyler` must be the last styler.
 
         stylers.add(new NamingFormatStyler());

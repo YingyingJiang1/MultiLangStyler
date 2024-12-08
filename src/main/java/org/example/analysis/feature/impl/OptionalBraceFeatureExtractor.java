@@ -3,14 +3,14 @@ package org.example.analysis.feature.impl;
 import org.example.analysis.StyleType.OptionalBrace;
 import org.example.analysis.feature.featurevalue.BooleanAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
 import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
 
 import java.util.Map;
 
-public class OptionalBraceFeatureExtractor extends FeatureExtractor {
+public class OptionalBraceFeatureExtractor extends StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();

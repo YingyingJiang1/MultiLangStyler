@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.DiffAnalyzer;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.*;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.style.Style;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class StructPreferenceFeatureExtractor extends FeatureExtractor {
+public class StructPreferenceFeatureExtractor extends StyleFeatureExtractor {
     /**
      * All style types:
      *

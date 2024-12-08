@@ -4,7 +4,7 @@ import org.example.analysis.StyleType.BraceFormat;
 import org.example.analysis.feature.featurevalue.AttrValue;
 import org.example.analysis.feature.featurevalue.MapAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.VectorAttrValue;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
@@ -14,7 +14,7 @@ import org.example.styler.body.braceformat.style.BraceFormatProperty;
 import java.util.List;
 import java.util.Map;
 
-public class BraceFormatFeatureExtractor extends FeatureExtractor {
+public class BraceFormatFeatureExtractor extends StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();

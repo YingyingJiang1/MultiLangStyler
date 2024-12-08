@@ -5,7 +5,7 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class CommentSyntaxProperty extends StyleProperty {
-    String syntax;
+    public String syntax;
 
     public CommentSyntaxProperty(String syntax) {
         this.syntax = syntax;
@@ -13,11 +13,12 @@ public class CommentSyntaxProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-
+        parent.addAttribute("syntax", syntax);
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+        syntax = parent.attributeValue("syntax");
     }
 
     @Override

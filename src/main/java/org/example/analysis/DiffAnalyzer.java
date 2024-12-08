@@ -10,7 +10,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.analysis.feature.impl.BlankLineFeatureExtractor;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.StyleFeatureFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.io.InputPair;
@@ -35,7 +35,7 @@ public class DiffAnalyzer {
     public static Logger logger =LoggerFactory.getLogger(DiffAnalyzer.class);
 
     static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
-    public static final List<FeatureExtractor> FEATURE_EXTRACTORS = List.of(
+    public static final List<StyleFeatureExtractor> FEATURE_EXTRACTORS = List.of(
             new BlankLineFeatureExtractor()
     );
     public static String language = "java";
@@ -124,7 +124,7 @@ public class DiffAnalyzer {
         ProgramStyle programStyle = new Controller().extractStyle(files);
 
         for (Style style: programStyle.getStyles()) {
-            FeatureExtractor featureExtractor = StyleFeatureFactory.createStyleDiff(style.getStyleName());
+            StyleFeatureExtractor featureExtractor = StyleFeatureFactory.createExtractor(style.getStyleName());
             if (featureExtractor != null) {
                 featureExtractor.toFeatureVector(style, style2vecMap);
             }
@@ -133,7 +133,7 @@ public class DiffAnalyzer {
     private static void extractStyleVectorFromTree(Path path, Map<String, StyleVector> style2vecMap) throws IOException {
         MyParser parser = MyParserFactory.createParser(language);
         parser.parse(path);
-        for (FeatureExtractor feature : FEATURE_EXTRACTORS) {
+        for (StyleFeatureExtractor feature : FEATURE_EXTRACTORS) {
             feature.toFeatureVector(parser, style2vecMap);
         }
     }

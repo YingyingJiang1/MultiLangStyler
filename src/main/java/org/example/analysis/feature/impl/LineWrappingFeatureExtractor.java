@@ -1,6 +1,6 @@
 package org.example.analysis.feature.impl;
 
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.featurevalue.VectorAttrValue;
 import org.example.style.Style;
@@ -11,7 +11,7 @@ import org.example.styler.format.linewrapping.style.LineWrappingProperty;
 import java.util.List;
 import java.util.Map;
 
-public class LineWrappingFeatureExtractor extends FeatureExtractor {
+public class LineWrappingFeatureExtractor extends StyleFeatureExtractor {
     /**
      * oracle java convention:Avoid lines longer than 80 characters, since they're not handled well by many terminals and tools.
      * google java guide:column limit:100

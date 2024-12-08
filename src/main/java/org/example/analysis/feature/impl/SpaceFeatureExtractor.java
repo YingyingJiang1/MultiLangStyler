@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.StyleType.Space;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.featurevalue.VectorAttrValue;
 import org.example.style.Style;
@@ -12,7 +12,7 @@ import org.example.styler.format.space.style.SpaceProperty;
 import java.util.List;
 import java.util.Map;
 
-public class SpaceFeatureExtractor extends FeatureExtractor {
+public class SpaceFeatureExtractor extends StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();

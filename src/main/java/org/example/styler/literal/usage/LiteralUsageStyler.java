@@ -29,7 +29,7 @@ public class LiteralUsageStyler extends Styler {
     private Map<String, Token> declaredConstants = new HashMap<>(0);
 
     public LiteralUsageStyler() {
-        style.setStyleName("numeric_literal");
+        style.setStyleName("literal_usage");
     }
 
     @Override

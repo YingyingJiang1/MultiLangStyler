@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.StyleType.LayoutOfControlStmtWithoutBraces;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.BooleanAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.style.Style;
@@ -10,7 +10,7 @@ import org.example.styler.body.layout.style.BodyLayoutProperty;
 
 import java.util.Map;
 
-public class BodyLayoutFeatureExtractor extends FeatureExtractor {
+public class BodyLayoutFeatureExtractor extends StyleFeatureExtractor {
 
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {

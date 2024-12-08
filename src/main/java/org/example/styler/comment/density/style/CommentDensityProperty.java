@@ -5,19 +5,20 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class CommentDensityProperty extends StyleProperty {
-    double density;
+    public double lineDensity;
 
-    public CommentDensityProperty(double density) {
-        this.density = density;
+    public CommentDensityProperty(double lineDensity) {
+        this.lineDensity = lineDensity;
     }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-
+        parent.addAttribute("density", String.valueOf(lineDensity));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+        lineDensity = Double.parseDouble(parent.attributeValue("density"));
     }
 
     @Override

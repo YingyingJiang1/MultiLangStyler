@@ -8,7 +8,7 @@ import org.example.styler.naming.SymbolType;
 import java.util.Objects;
 
 public class NamingFormatContext extends StyleContext {
-    SymbolType symbolType;
+    public SymbolType symbolType;
 
     public NamingFormatContext(SymbolType symbolType) {
         this.symbolType = symbolType;

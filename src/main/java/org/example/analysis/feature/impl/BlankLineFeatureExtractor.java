@@ -1,7 +1,7 @@
 package org.example.analysis.feature.impl;
 
 import org.example.analysis.StyleType.BlankLine;
-import org.example.analysis.feature.FeatureExtractor;
+import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.feature.featurevalue.DoubleAttrValue;
 import org.example.parser.common.MyParser;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BlankLineFeatureExtractor extends FeatureExtractor {
+public class BlankLineFeatureExtractor extends StyleFeatureExtractor {
     @Override
     public void toFeatureVector(MyParser parser, Map<String, StyleVector> st2svMap) {
         String[] lines = parser.getTokenStream().getText().split("\n");

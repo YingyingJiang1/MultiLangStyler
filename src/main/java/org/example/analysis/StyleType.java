@@ -26,8 +26,11 @@ public class StyleType {
         public static String reasonablenessAttr = "Avg distance of adjacent blank lines";
     }
 
-    public static class LineWrapping {
-        public static String styleType = "Line wrapping";
+    public static class LineLength {
+        public static String styleType = "Line length";
+        public static String maxLineLengthAttr = "Max line length";
+        public static String avgLineLengthAttr = "Avg line length";
+        public static String varianceAttr = "Variance of line length";
     }
 
     public static class BraceFormat {
@@ -40,21 +43,23 @@ public class StyleType {
         public static String inCompactModeAttr = "In compact mode";
     }
 
-    public static class MultiLineCommentSyntax {
-        public static String styleType = "Mutliple-line comment syntax";
-
+    public static class CommentSyntax {
+        public static String styleType = "Comment syntax";
     }
 
     public static class CommentDensity {
         public static String styleType = "Comment density";
+        public static String LineDensityAttr = "Line density";
     }
 
     public static class NumericalLiterals {
         public static String styleType = "Numerical literals";
     }
 
-    public static class NamingConvention {
-        public static String styleType = "Naming convention";
+    public static class NamingFormat {
+        public static String styleType = "Naming format";
+        public static String caseFormatAttr = "Case format";
+        public static String maxLengthAttr = "Max length";
     }
 
     public static class ModifiersOrder {
