@@ -9,7 +9,6 @@ import org.example.styler.arrangement.classmember.style.*;
 import org.example.utils.DistanceCalculator;
 import org.example.utils.Helper;
 import org.example.parser.common.context.ExtendContext;
-import org.example.myException.StylizationException;
 import org.example.utils.PermutationGenerator;
 import org.example.styler.Styler;
 
@@ -520,7 +519,7 @@ public class ArrangementStyler extends Styler {
 
 
 	private int getFirstListCtxIndex(ExtendContext ctx, MyParser parser) {
-		return ctx.findFirstChild(
+		return ctx.indexOfFirstChild(
 				root -> parser.isMethodDeclarationList(root) ||
 						parser.isFieldDeclarationList(root) ||
 						parser.isConstructorDeclarationList(root) ||

@@ -1,6 +1,7 @@
 package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.vtree.VirtualNode;
 
@@ -19,12 +20,9 @@ public class NotIntegerCheck extends Checker{
 
 	/**
 	 * args:[digit1, digit2,..., holderName1, holderName2,...]
-	 * @param structure
-	 * @param index
-	 * @return
 	 */
 	@Override
-	public boolean check(EquivalentStructure structure, int index) {
+	public boolean check(EquivalentStructure structure, int index, MyParser parser) {
 		Set<String> integers = new HashSet<>();
 		for(String[] args : argsList) {
 			int integerEnd = 0;

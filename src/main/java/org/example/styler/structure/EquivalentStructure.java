@@ -168,7 +168,7 @@ public class EquivalentStructure {
 					break;
 				}
 			}
-			if(vi == forest.size() && forest.isContextMatched(parser) && check(index))  {
+			if(vi == forest.size() && forest.isContextMatched(parser) && check(index, parser))  {
 				return index;
 			}
 		}
@@ -176,12 +176,12 @@ public class EquivalentStructure {
 		return -1;
 	}
 
-	private boolean check(int index) {
+	private boolean check(int index, MyParser parser) {
 		if (checkers == null) {
 			return true;
 		}
 		for (Checker checker : checkers) {
-			if (!checker.check(this, index)) {
+			if (!checker.check(this, index, parser)) {
 				return false;
 			}
 		}

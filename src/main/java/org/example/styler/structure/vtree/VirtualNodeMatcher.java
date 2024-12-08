@@ -57,7 +57,7 @@ public class VirtualNodeMatcher {
 
         matchTokens.put("$I", Set.of(parser.getIdentifier()));
         matchTokens.put("$HOMO_BOP", parser.getHomoOps());
-        matchTokens.put("$HOMO_BOP_ASSIGN", parser.getOpAssign());
+        matchTokens.put("$HOMO_BOP_ASSIGN", parser.getCompoundAssign());
         matchTokens.put("$LITERAL", parser.getLiterals());
         matchTokens.put("$VAR_DEC", parser.getLiterals());
     }

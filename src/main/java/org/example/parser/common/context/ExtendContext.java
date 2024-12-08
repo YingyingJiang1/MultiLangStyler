@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
-import org.example.style.ProgramStyle;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -22,10 +21,10 @@ public class ExtendContext extends ParserRuleContext {
     public int hierarchy = 0;
     protected static int braceDepth = 0;
 
-    public ExtendContext getFirstCtxChildIf(Predicate<ParseTree> test) {
+    public ExtendContext getFirstCtxChildIf(Predicate<ExtendContext> test) {
         for (ParseTree child : children) {
-            if (child instanceof ExtendContext && test.test(child)) {
-                return (ExtendContext) child;
+            if (child instanceof ExtendContext childCtx && test.test(childCtx)) {
+                return childCtx ;
             }
         }
         return null;
@@ -386,7 +385,7 @@ public class ExtendContext extends ParserRuleContext {
     }
 
     // Return the index of the first child satisfying the @cond.
-    public int findFirstChild(Predicate<ParseTree> cond) {
+    public int indexOfFirstChild(Predicate<ParseTree> cond) {
         for (int i = 0; i < this.children.size(); ++i) {
             ParseTree treeNode = this.children.get(i);
             if (cond.test(treeNode)) {

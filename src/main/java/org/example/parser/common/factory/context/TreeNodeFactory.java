@@ -6,6 +6,7 @@ import org.example.parser.common.context.ExtendContext;
 
 public interface TreeNodeFactory {
     ExtendContext createBlock(ExtendContext parent);
+    ExtendContext createExpressionList(ExtendContext parent);
     TerminalNode createTerminal(Token symbol);
 
     ExtendContext createFieldDeclarationList(ExtendContext parent);

@@ -21,6 +21,12 @@ public class JavaTreeNodeFactory implements TreeNodeFactory {
     }
 
     @Override
+    public ExtendContext createExpressionList(ExtendContext parent) {
+        return new JavaParser.ExpressionListContext(parent, -1);
+    }
+
+
+    @Override
     public TerminalNode createTerminal(Token symbol) {
         return new TerminalNodeImpl(symbol);
     }

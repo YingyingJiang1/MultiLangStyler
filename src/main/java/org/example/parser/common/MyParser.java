@@ -57,6 +57,8 @@ public interface MyParser {
     boolean belongToFileHeadDec(int rule);
     boolean belongToVarDeclarationStmt(int ruleIndex);
     boolean belongToFunctionHead(int ruleIndex);
+    boolean belongToLoop(int ruleIndex);
+
 
 
     boolean belongToBinOp(String name);
@@ -170,7 +172,7 @@ public interface MyParser {
     Set<Integer> getSingleStmts();
     Set<Integer> getDecHeads();
     Set<Integer> getHomoOps(); // All operands have the same type.
-    Set<Integer> getOpAssign();
+    Set<Integer> getCompoundAssign();
     Set<Integer> getLiterals();
     Set<Integer> getMemberLists();
     Set<Integer> getMemberDecs();

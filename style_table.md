@@ -11,7 +11,7 @@
 | token       | Comment density                                  | Comment lines as a percentage of total rows                  |         |                   | :bug:              |
 | token       | Operator preferences                             | Alternative operators preferences: (>,<),(<=,>=),(==False, !),(=\=True,$\empty$) |         | 3                 | :bug:              |
 | token       | Numerical literals                               | Use hard-code literals(except -1,0,1) or  constant declarations. |         | oracle            | :question:         |
-| token       | **Naming convention**                            | format,genders(nouns/verbs...) and length of name of packages,classes, interfaces, methods, variables and constants. |         | 1,oracle,google   |                    |
+| token       | **Naming convention**                            | format,genders(nouns/verbs...) and length of name of packages,classes, interfaces, methods, variables and constants. |         | 1,oracle,google   | :white_check_mark: |
 | token       | Modifiers order                                  | Order of all modifiers                                       |         | google convention | :white_check_mark: |
 | statement   | Optional brace                                   | Whether use {} in control statement with only one simple statement in body. |         | 2,oracle,google,8 | :bug:              |
 | statement   | Number of variables in one declaration statement | One variable or multiple variables are declared in one statement. |         | 1,3,oracle,google | :white_check_mark: |

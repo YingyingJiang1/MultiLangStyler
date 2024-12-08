@@ -94,9 +94,8 @@
     "argsList" : [ [ 1, "$E2", "$E3" ], [ 2, "$E1", "$E3" ] ]
   },
   {
-    "case_handled" : "从0号写法向1号写法转换，包含超过2个赋值时，例如a = b = c = d,此时最终会生成：a=d;c=d;b=d'c=d;额外生成一条c=d;语句",
-    "handler_description" : "实现一个handler，使用满足条件的某个子树来替换当前树。",
-    "implementation_description" : "当$E2是一个赋值表达式时，使用其等号左边的表达式替换$E2"
+    "class" : "AssignCallExpHandler",
+    "argsList" : [ [0, 1, "$E3"]]
   } ],
   "future work" : "处理两个以上的分离赋值，识别不在连续位置的分离表达式"
 },
@@ -116,11 +115,11 @@
     "class" : "ReplicationHandler",
     "argsList" : [ [ 1, "$E", "$E1" ] ]
   },
-  {
-    "case_handled" : "从0号写法向1号写法转换，包含超过2个函数调用时，例如：e.call(1).call(2).call(3);会生成e.call(1).call(2);e.call(1).call(3)；的中间结果",
-    "handler_description" : "实现一个handler，使用满足条件的某个子树来替换当前树。",
-    "implementation_description" : "当$E1是一个函数调用表达式时，使用其dot左边的表达式替换$E1"
-  } ],
+    {
+      "class" : "AssignCallExpHandler",
+      "argsList" : [ [0, 1, "$E1"]]
+    }
+  ],
   "future_work" : "识别不在连续位置的分离调用"
 },
   {
@@ -141,8 +140,14 @@
   "category" : "Loops",
   "codes" : [ "for ( $E_LIST ; $E1 ; ) $S", "$S(expStmt)+ while ( $E1 ) $S" ],
   "handlers" : [ {
-    "handler_description" : "将表达式list修改为若干表达式语句"
-  } ]
+    "class" : "Exp2ExpStmtHandler",
+    "argsList" : [ [ 0, 1, "$E_LIST", "$S(expStmt)"]]
+  },
+    {
+      "class" : "ExpStmt2ExpHandler",
+      "argsList" : [ [ 1, 0, "$S(expStmt)","$E_LIST"]]
+    }
+  ]
 },
   {
   "id" : 13,
@@ -338,7 +343,8 @@
     "codes": ["if ( $E ) { continue ; } else $S ;", "if ( $E ) $S"],
     "checkers": [
       {
-        "checker_description": "检查所有写法为循环语句的结尾"
+        "checkers": "ContinuePreferenceChecker",
+        "argsList": [[1, "$S"]]
       }
     ],
     "handlers": [
@@ -353,7 +359,8 @@
     "codes": ["$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { $S+ }"],
     "checkers": [
       {
-        "checker_description": "检查所有写法为循环语句的结尾"
+        "checkers": "ContinuePreferenceChecker",
+        "argsList": [[1, "$S"]]
       }
     ],
     "handlers": [
@@ -368,7 +375,8 @@
     "codes": ["$^ if ( $E ) { $S+ continue ; }  $S1+", "if ( $E ) { $S+ } else { $S1+ }"],
     "checkers": [
       {
-        "checker_description": "检查所有写法为循环语句的结尾"
+        "checkers": "ContinuePreferenceChecker",
+        "argsList": [[1, "$S"]]
       }
     ]
   }

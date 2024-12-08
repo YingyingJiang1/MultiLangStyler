@@ -1,6 +1,7 @@
 package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.vtree.VirtualNode;
 
@@ -19,7 +20,7 @@ public class equalChecker extends Checker {
   }
 
   @Override
-  public boolean check(EquivalentStructure structure, int index) {
+  public boolean check(EquivalentStructure structure, int index, MyParser parser) {
     for(String[] arg : argsList) {
       int checkIndex = Integer.parseInt(arg[0]);
       if (index != checkIndex) {

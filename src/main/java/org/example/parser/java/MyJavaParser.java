@@ -336,6 +336,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean belongToLoop(int ruleIndex) {
+        return ruleIndex == JavaParser.RULE_forStmt || ruleIndex == JavaParser.RULE_whileStmt || ruleIndex == JavaParser.RULE_doWhileStmt;
+    }
+
+    @Override
     public ParseTree createExpression(ParserRuleContext parent, int invokingState) {
         return new JavaParser.ExpressionContext(parent, invokingState);
     }
@@ -727,7 +732,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public Set<Integer> getOpAssign() {
+    public Set<Integer> getCompoundAssign() {
         return Set.of(
                 JavaParser.ADD_ASSIGN, JavaParser.SUB_ASSIGN, JavaParser.MUL_ASSIGN, JavaParser.DIV_ASSIGN, JavaParser.MOD_ASSIGN,
                 JavaParser.AND_ASSIGN, JavaParser.OR_ASSIGN, JavaParser.XOR_ASSIGN
