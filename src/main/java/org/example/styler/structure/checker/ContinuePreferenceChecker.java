@@ -23,34 +23,32 @@ public class ContinuePreferenceChecker extends Checker{
                 continue;
             }
             int configuredIndex = Integer.parseInt(args[0]);
-            if (configuredIndex != index) {
-                continue;
-            }
+            if (configuredIndex == index) {
+                String holderName = args[1];
+                List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
+                if (realTrees.isEmpty()) {
+                    return false;
+                }
 
-            String holderName = args[1];
-            List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
-            if (realTrees.isEmpty()) {
-                return false;
-            }
+                ExtendContext startNode = (ExtendContext) realTrees.get(realTrees.size() - 1);
+                // loop ends with a if/if-else statement.
+                ExtendContext ifStmt = findFirstAncestorIf(startNode,
+                        node -> node.getRuleIndex() == parser.getRuleIfStmt() || node.getRuleIndex() == parser.getRuleIfElseStmt());
+                ExtendContext parent = (ExtendContext) ifStmt.getParent().getParent();
+                if (parent == null) {
+                    return false;
+                }
 
-            ExtendContext startNode = (ExtendContext) realTrees.get(realTrees.size() - 1);
-            // loop ends with a if/if-else statement.
-            ExtendContext ifStmt = findFirstAncestorIf(startNode,
-                    node -> node.getRuleIndex() == parser.getRuleIfStmt() || node.getRuleIndex() == parser.getRuleIfElseStmt());
-            ExtendContext parent = (ExtendContext) ifStmt.getParent().getParent();
-            if (parent == null) {
-                return false;
-            }
-
-            // Body of loop has no {}: loop <-- stmt <-- ifStmt
-            if (parser.belongToLoop(parent.getRuleIndex())) {
-                return true;
-            }
-            // Body of loop has a {}: loop <-- stmt <-- block <-- ifStmt
-            if (parent.getRuleIndex() == parser.getRuleBlock()
-                    && parent.getChild(parent.getChildCount() - 1) == ifStmt
-            && parser.belongToLoop(parent.getParent().getParent().getRuleIndex())) {
-                return true;
+                // Body of loop has no {}: loop <-- stmt <-- ifStmt
+                if (parser.belongToLoop(parent.getRuleIndex())) {
+                    return true;
+                }
+                // Body of loop has a {}: loop <-- stmt <-- block <-- ifStmt
+                if (parent.getRuleIndex() == parser.getRuleBlock()
+                        && parent.getChild(parent.getChildCount() - 1) == ifStmt
+                        && parser.belongToLoop(parent.getParent().getParent().getRuleIndex())) {
+                    return true;
+                }
             }
         }
         return true;

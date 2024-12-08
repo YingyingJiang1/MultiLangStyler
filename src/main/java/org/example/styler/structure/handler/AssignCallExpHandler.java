@@ -9,6 +9,10 @@ import org.example.styler.structure.EquivalentStructure;
 import java.util.List;
 
 public class AssignCallExpHandler extends Handler{
+    public AssignCallExpHandler(String[][] argsList) {
+        super(argsList);
+    }
+
     /**
      * args:[[from, to, holderName1,holderName2,...]]
      */

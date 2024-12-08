@@ -14,6 +14,10 @@ public abstract class Handler {
   public static Logger logger = LoggerFactory.getLogger(Handler.class);
   String[][] argsList;
 
+  public Handler(String[][] argsList) {
+    this.argsList = argsList;
+  }
+
   public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {}
 
   public static Handler createHandler(String cls, String[][] argsList, MyParser parser) {
@@ -22,6 +26,9 @@ public abstract class Handler {
       case "ReplicationHandler" -> new ReplicationHandler(argsList);
       case "WrapCondHandler" -> new WrapCondHandler(argsList);
       case "OpOpAssignConvertHandler" -> new OpOpAssignConvertHandler(argsList);
+      case "ExpStmt2ExpHandler" -> new ExpStmt2ExpHandler(argsList);
+      case "Exp2ExpStmtHandler" -> new Exp2ExpStmtHandler(argsList);
+      case "AssignCallExpHandler" -> new AssignCallExpHandler(argsList);
       default -> null;
     };
     if (handler == null) {

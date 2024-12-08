@@ -284,7 +284,8 @@
     "argsList" : [ [ 0, "$I", "$E1" ] ]
   },
   {
-    "checker" : "要求$E不为标识符"
+    "checker" : "NotIdentifierExpChecker",
+    "argsList" : [ [ 1, "$E" ] ]
   } ],
   "handlers" : [ {
     "handler_description" : "为$M $T $I对应的终端节点设置文本值"

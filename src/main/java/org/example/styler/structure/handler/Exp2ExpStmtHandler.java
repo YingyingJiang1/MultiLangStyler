@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Exp2ExpStmtHandler extends Handler{
+    public Exp2ExpStmtHandler(String[][] argsList) {
+        super(argsList);
+    }
+
     /**
      * args: [[from, to, $E/$E_LIST, $S(expStmt)]]
      * When transform from `from` to `to`, transform the matched trees of $E/$E_LIST to expression statements and move them into

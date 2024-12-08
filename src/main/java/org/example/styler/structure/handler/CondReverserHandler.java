@@ -39,7 +39,7 @@ public class CondReverserHandler extends Handler{
   }
 
   public CondReverserHandler(String[][] argsList) {
-    this.argsList = argsList;
+    super(argsList);
   }
 
   /**

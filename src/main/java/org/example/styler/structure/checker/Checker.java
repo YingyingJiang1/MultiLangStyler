@@ -25,6 +25,7 @@ public abstract class Checker {
       case "ContinuePreferenceChecker" -> new ContinuePreferenceChecker();
       case "EqualChecker" -> new equalChecker(argsList);
       case "NotIntegerChecker" -> new NotIntegerCheck(argsList);
+      case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker();
       default -> null;
     };
     if (checker == null) {

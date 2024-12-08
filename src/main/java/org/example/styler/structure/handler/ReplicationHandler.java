@@ -20,7 +20,7 @@ public class ReplicationHandler extends Handler{
 	 * @param argsList [toIndex, holder1, holder2,...]
 	 */
 	public ReplicationHandler(String[][] argsList) {
-		this.argsList = argsList;
+		super(argsList);
 	}
 	@Override
 	public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {

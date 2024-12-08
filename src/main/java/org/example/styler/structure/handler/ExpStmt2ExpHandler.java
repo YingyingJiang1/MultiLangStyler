@@ -14,6 +14,10 @@ import java.util.List;
 
 public class ExpStmt2ExpHandler extends Handler{
 
+    public ExpStmt2ExpHandler(String[][] argsList) {
+        super(argsList);
+    }
+
     /**
      * args: [[from, to, $S(expStmt), $E/$E_LIST]]
      * When transform from `from` to `to`, transform the matched trees of $S(expStmt) to expressions and move them into

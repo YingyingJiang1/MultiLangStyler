@@ -20,7 +20,7 @@
 | statement   | Continuous logic and conditions preferences      | Nested if                                                    |         | 1,2,3,8           | :bug:              |
 | statement   | Continuous logic or conditions preferences       |                                                              |         | 1,2,3,8           | :bug:              |
 | statement   | Mutlibranch                                      | Cascading if-else or switch.                                 |         | 1,3               |                    |
-| statement   | Continuous assignments or calls preferences      |                                                              |         | oracle            |                    |
+| statement   | Continuous assignments or calls preferences      |                                                              |         | oracle            | :question:         |
 | statement   | Contain complex bool expression                  |                                                              |         |                   |                    |
 | statement   | Array declaration style                          |                                                              |         | google convention | :question:         |
 | statement   | Update multiple variables in one statement       |                                                              |         | 1,oracle          |                    |

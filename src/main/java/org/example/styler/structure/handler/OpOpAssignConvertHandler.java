@@ -36,7 +36,7 @@ public class OpOpAssignConvertHandler extends Handler{
 
 	}
 	public OpOpAssignConvertHandler(String[][] argsList) {
-		this.argsList = argsList;
+		super(argsList);
 	}
 
 	/**

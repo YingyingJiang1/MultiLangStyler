@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class WrapCondHandler extends Handler{
 	public WrapCondHandler(String[][] argsList) {
-		this.argsList = argsList;
+		super(argsList);
 	}
 
 	@Override
