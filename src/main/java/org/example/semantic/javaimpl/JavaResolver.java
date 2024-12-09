@@ -8,6 +8,7 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
 import com.github.javaparser.resolution.declarations.ResolvedValueDeclaration;
 import com.github.javaparser.resolution.model.SymbolReference;
@@ -18,7 +19,9 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.SymbolTable;
+import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.FunctionSym;
 import org.example.semantic.intf.Resolver;
 import org.example.semantic.intf.Symbol;
@@ -70,7 +73,44 @@ public class JavaResolver implements Resolver {
 
     @Override
     public Symbol resolve(TerminalNode identifierNode, MyParser parser) {
-        System.out.println("to do: implement JavaResolver@resolve");
+        SymbolTable st = SymbolTableManager.getInstance().getSymbolTable(parser.getRoot());
+        List<Symbol> symbols = st.getSymbolsHasSameName(identifierNode.getText());
+        for (Symbol symbol : symbols) {
+            if (symbol.isReference(identifierNode)) {
+                return symbol;
+            }
+            if (symbol instanceof JavaSymbol javaSymbol) {
+                if (findContext(javaSymbol.declaration).equals(findContext(identifierNode, parser))) {
+                    symbol.addReference(identifierNode);
+                    return symbol;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String findContext(TerminalNode node, MyParser parser) {
+        ExtendContext parent = (ExtendContext) node.getParent();
+        while (parent != null) {
+            if (parser.belongToStmt(parent)) {
+                return parent.getText();
+            }
+            parent = (ExtendContext) parent.getParent();
+        }
+        return null;
+    }
+
+    private String findContext(ResolvedValueDeclaration declaration) {
+        if (declaration == null) {
+            return null;
+        }
+        Node node = declaration.toAst().get();
+        while (node.getParentNode().isPresent()) {
+            if (node instanceof Statement) {
+                return node.toString();
+            }
+            node = node.getParentNode().get();
+        }
         return null;
     }
 

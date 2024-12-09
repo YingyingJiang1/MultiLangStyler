@@ -4,6 +4,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.resolution.declarations.ResolvedValueDeclaration;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.semantic.intf.Reference;
 import org.example.semantic.intf.Symbol;
 import org.example.styler.naming.SymbolType;
@@ -16,6 +17,7 @@ public class JavaSymbol implements Symbol {
     SymbolType symbolType;
     ResolvedValueDeclaration declaration;
     List<Reference> references = new ArrayList<>();
+    List<TerminalNode> nodeReferences = new ArrayList<>();
     List<String> modifiers;
 
     public JavaSymbol(SymbolType symbolType, ResolvedValueDeclaration declaration,
@@ -50,5 +52,15 @@ public class JavaSymbol implements Symbol {
     @Override
     public void addReference(Reference reference) {
         references.add(reference);
+    }
+
+    @Override
+    public void addReference(TerminalNode identifierNode) {
+        nodeReferences.add(identifierNode);
+    }
+
+    @Override
+    public boolean isReference(TerminalNode identifierNode) {
+        return nodeReferences.contains(identifierNode);
     }
 }
