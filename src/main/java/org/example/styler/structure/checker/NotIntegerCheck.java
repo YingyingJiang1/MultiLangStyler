@@ -14,12 +14,13 @@ import java.util.Set;
  * @create       2024/4/13 17:16
  */
 public class NotIntegerCheck extends Checker{
+
 	public NotIntegerCheck(String[][] argsList) {
-		this.argsList = argsList;
+		super(argsList);
 	}
 
 	/**
-	 * args:[digit1, digit2,..., holderName1, holderName2,...]
+	 * argsList:[digit1, digit2,..., holderName1, holderName2,...]
 	 */
 	@Override
 	public boolean check(EquivalentStructure structure, int index, MyParser parser) {

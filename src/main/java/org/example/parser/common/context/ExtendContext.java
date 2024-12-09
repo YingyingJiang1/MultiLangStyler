@@ -295,10 +295,10 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
-    public ExtendContext getLastContextChild() {
+    public ExtendContext getLastCtxChildIf(Predicate<ExtendContext> test) {
         for (int i = children.size() - 1; i >= 0; --i) {
-            if (children.get(i) instanceof ExtendContext) {
-                return (ExtendContext) children.get(i);
+            if (children.get(i) instanceof ExtendContext childCtx && test.test(childCtx)) {
+                return childCtx;
             }
         }
         return null;

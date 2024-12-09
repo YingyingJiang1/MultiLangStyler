@@ -10,8 +10,12 @@ import java.util.function.Predicate;
 
 public class ContinuePreferenceChecker extends Checker{
 
+    public ContinuePreferenceChecker(String[][] argsList) {
+        super(argsList);
+    }
+
     /**
-     * args: [[index of writing, holderName]]
+     * argsList: [[index of writing, holderName]]
      * This checker is defined for "continue preferences".
      * The implementation of this method is based on the configuration of the "continue preferences" in the configuration file.
      */

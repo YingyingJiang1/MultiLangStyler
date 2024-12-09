@@ -7,11 +7,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.example.analysis.feature.impl.BlankLineFeatureExtractor;
+import org.example.analysis.feature.ParserFeatureExtractor;
+import org.example.analysis.feature.impl.parser.BlankLineFeature;
+import org.example.analysis.feature.impl.parser.LineLengthFeature;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
 import org.example.analysis.feature.StyleFeatureExtractor;
-import org.example.analysis.feature.StyleFeatureFactory;
+import org.example.analysis.feature.FeatureExtractorFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.io.InputPair;
 import org.example.parser.common.MyParser;
@@ -35,8 +37,9 @@ public class DiffAnalyzer {
     public static Logger logger =LoggerFactory.getLogger(DiffAnalyzer.class);
 
     static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
-    public static final List<StyleFeatureExtractor> FEATURE_EXTRACTORS = List.of(
-            new BlankLineFeatureExtractor()
+    public static final List<ParserFeatureExtractor> FEATURE_EXTRACTORS = List.of(
+            new BlankLineFeature(),
+            new LineLengthFeature()
     );
     public static String language = "java";
 
@@ -124,7 +127,7 @@ public class DiffAnalyzer {
         ProgramStyle programStyle = new Controller().extractStyle(files);
 
         for (Style style: programStyle.getStyles()) {
-            StyleFeatureExtractor featureExtractor = StyleFeatureFactory.createExtractor(style.getStyleName());
+            StyleFeatureExtractor featureExtractor = FeatureExtractorFactory.createExtractor(style.getStyleName());
             if (featureExtractor != null) {
                 featureExtractor.toFeatureVector(style, style2vecMap);
             }
@@ -133,7 +136,7 @@ public class DiffAnalyzer {
     private static void extractStyleVectorFromTree(Path path, Map<String, StyleVector> style2vecMap) throws IOException {
         MyParser parser = MyParserFactory.createParser(language);
         parser.parse(path);
-        for (StyleFeatureExtractor feature : FEATURE_EXTRACTORS) {
+        for (ParserFeatureExtractor feature : FEATURE_EXTRACTORS) {
             feature.toFeatureVector(parser, style2vecMap);
         }
     }

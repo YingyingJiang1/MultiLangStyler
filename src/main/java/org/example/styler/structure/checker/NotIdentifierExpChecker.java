@@ -8,8 +8,13 @@ import org.example.styler.structure.EquivalentStructure;
 import java.util.List;
 
 public class NotIdentifierExpChecker extends Checker{
+
+    public NotIdentifierExpChecker(String[][] argsList) {
+        super(argsList);
+    }
+
     /**
-     * args: [[index of writing, holderName1, holderName2, ...]]
+     * argsList: [[index of writing, holderName1, holderName2, ...]]
      */
     @Override
     public boolean check(EquivalentStructure structure, int index, MyParser parser) {

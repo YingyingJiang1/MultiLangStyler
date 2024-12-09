@@ -16,7 +16,7 @@ import java.util.List;
 public class equalChecker extends Checker {
 
   public equalChecker(String[][] argsList) {
-    this.argsList = argsList;
+    super(argsList);
   }
 
   @Override

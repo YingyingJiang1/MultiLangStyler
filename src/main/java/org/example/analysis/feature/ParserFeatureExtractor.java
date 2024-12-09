@@ -5,7 +5,7 @@ import org.example.parser.common.MyParser;
 
 import java.util.Map;
 
-public abstract class ParserFeatureExtractor {
-    public void toFeatureVector(MyParser parser, Map<String, StyleVector> st2svMap) {}
+public interface ParserFeatureExtractor {
+    void toFeatureVector(MyParser parser, Map<String, StyleVector> st2svMap);
 
 }

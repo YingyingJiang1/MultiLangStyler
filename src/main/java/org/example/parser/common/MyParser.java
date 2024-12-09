@@ -94,6 +94,8 @@ public interface MyParser {
     boolean isClassBodyDeclaration(ParseTree child);
     boolean isVariableDeclarators(ParseTree t);
     boolean isTypeType(ParseTree tree);
+    boolean isReturnStmt(ParseTree lastTree);
+    boolean isContinueStmt(ParseTree lastTree);
 
     int getRuleBlock();
     int getRuleExpression();
@@ -118,7 +120,6 @@ public interface MyParser {
     int getRuleCompilationUnit();
     int getRuleImportDeclarationList();
     int getRuleAnnotationList();
-    int getRuleAnnotation();
     boolean belongToFunctionDec(int ruleIndex);
     int getRuleStmt();
     int getRuleExpStmt();
@@ -126,7 +127,11 @@ public interface MyParser {
     int getRuleFieldDeclarationList();
     int getRuleLiteral();
     int getRuleVariableDeclarators();
-    int getRuleFormalParameter();
+    int getRuleParExpression();
+    int getRuleformalParameterList();
+    int getRuleSwitchStmt();
+
+
 
 
 

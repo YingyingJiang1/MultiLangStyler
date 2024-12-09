@@ -20,7 +20,10 @@ public class StyleVector {
 
 
         for (String attrName : attrValueMap.keySet()) {
-            double attrDistance = attrValueMap.get(attrName).calculateDistance(other.attrValueMap.get(attrName));
+            double attrDistance = -1;
+            if (attrValueMap.get(attrName) != null && other.attrValueMap.get(attrName) != null) {
+                attrDistance = attrValueMap.get(attrName).calculateDistance(other.attrValueMap.get(attrName));
+            }
             ret.put(attrName, attrDistance);
         }
         return ret;

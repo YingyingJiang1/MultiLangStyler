@@ -91,7 +91,7 @@ public class BraceFormatStyler extends BodyStyler {
         for (int i = 0; i < blocks.size(); ++i) {
             ExtendContext block = (ExtendContext) blocks.get(i);
             // Skip the last block of multi-block statement.
-            if (isNotMultiBlockStmt || block != ctx.getLastContextChild()) {
+            if (isNotMultiBlockStmt || block != ctx.getLastCtxChildIf(t -> true)) {
                 BodyContext context = extractStyleContext(ctx, block, parser);
                 BraceFormatProperty styleProperty = extractProperty(block);
                 style.addRule(context, styleProperty);

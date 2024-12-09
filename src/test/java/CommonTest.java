@@ -26,8 +26,8 @@ public class CommonTest {
 
     @Test
     void test() {
-        transform(Paths.get(srcsDir, "pair1", "0826-most-profit-assigning-work-result.java"),
-                Paths.get(srcsDir, "pair1", "0826-most-profit-assigning-work-target.java"));
+        transform(Paths.get("D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L001\\deepseek-coder.java"),
+                Paths.get("D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L001\\deepseek-coder.java"));
 
     }
 

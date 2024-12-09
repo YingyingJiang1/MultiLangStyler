@@ -14,6 +14,11 @@ public abstract class Checker {
   public static Logger logger = LoggerFactory.getLogger(Checker.class);
 
   String[][] argsList;
+
+  public Checker(String[][] argsList) {
+    this.argsList = argsList;
+  }
+
   /**
    * @param index  index of writing to be checked.
    * @param parser
@@ -22,10 +27,11 @@ public abstract class Checker {
 
   public static Checker createChecker(String cls, String[][] argsList) {
     Checker checker = switch (cls) {
-      case "ContinuePreferenceChecker" -> new ContinuePreferenceChecker();
+      case "ContinuePreferenceChecker" -> new ContinuePreferenceChecker(argsList);
       case "EqualChecker" -> new equalChecker(argsList);
       case "NotIntegerChecker" -> new NotIntegerCheck(argsList);
-      case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker();
+      case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker(argsList);
+      case "IdentifierExpChecker" -> new IdentifierExpChecker(argsList);
       default -> null;
     };
     if (checker == null) {

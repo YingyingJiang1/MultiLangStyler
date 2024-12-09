@@ -52,8 +52,8 @@ public class StyleType {
         public static String LineDensityAttr = "Line density";
     }
 
-    public static class NumericalLiterals {
-        public static String styleType = "Numerical literals";
+    public static class LiteralUsage {
+        public static String styleType = "Literal usage";
     }
 
     public static class NamingFormat {
@@ -64,6 +64,7 @@ public class StyleType {
 
     public static class ModifiersOrder {
         public static String styleType = "Modifiers order";
+        public static String orderAttr = "Order";
     }
 
     // Statement style types
@@ -76,8 +77,10 @@ public class StyleType {
         public static String styleType = "Number of variables in one declaration statement";
     }
 
-    public static class ContainComplexBoolExp {
-        public static String styleType = "Contain complex bool expression";
+    public static class MostComplexBoolExp {
+        public static String styleType = "The most complex bool expression";
+        public static String maxLengthAttr = "Max text length of all boolean expressions";
+        public static String maxPredicateNum = "Max number of predicates of all boolean expressions";
     }
 
     public static class ArrayDeclarationStyle {
@@ -93,11 +96,16 @@ public class StyleType {
     }
 
     public static class LocOfVarDeclaration {
-        public static String styleType = "Location of variabe declaration";
+        public static String styleType = "Location of variable declaration";
+        public static String locationAttr = "Location";
     }
 
     public static class LocOfVarInitialization {
         public static String styleType = "Location of variable initialization";
+    }
+
+    public static class Mutlibranch {
+        public static String styleType = "Mutlibranch";
     }
 
 
@@ -119,6 +127,7 @@ public class StyleType {
 
     public static class OrderOfIfElseBodies {
         public static String styleType = "Order of if-else bodies";
+        public static String shortBodyComesFirstAttr = "body with less lines comes first";
     }
 
     // Expression style types
@@ -141,10 +150,14 @@ public class StyleType {
     // Function style types
     public static class OrderOfFunctionPara {
         public static String styleType = "Order of function parameters";
+        public static String logicalOrderAttr = "Logical order";
+        public static String separateSameTypeAttr = "Separate parameters of same type";
     }
 
     public static class FunctionComplexity {
         public static String styleType = "Function complexity";
+        public static String maxNestingDepth = "Max nesting depth of all functions";
+        public static String maxLines = "Max number of lines of all functions";
     }
 
     // Class style types

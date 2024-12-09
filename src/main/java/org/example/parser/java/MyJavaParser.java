@@ -311,6 +311,16 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isReturnStmt(ParseTree t) {
+        return t instanceof JavaParser.ReturnStmtContext;
+    }
+
+    @Override
+    public boolean isContinueStmt(ParseTree t) {
+        return t instanceof JavaParser.ContinueStmtContext;
+    }
+
+    @Override
     public int getRuleExpression() {
         return JavaParser.RULE_expression;
     }
@@ -502,11 +512,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public int getRuleAnnotation() {
-        return JavaParser.RULE_annotation;
-    }
-
-    @Override
     public boolean belongToFunctionDec(int ruleIndex) {
         return JavaParser.RULE_methodDeclaration == ruleIndex || JavaParser.RULE_constructorDeclaration == ruleIndex;
     }
@@ -539,11 +544,6 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleVariableDeclarators() {
         return JavaParser.RULE_variableDeclarators;
-    }
-
-    @Override
-    public int getRuleFormalParameter() {
-        return JavaParser.RULE_formalParameter;
     }
 
     @Override
@@ -772,6 +772,21 @@ public class MyJavaParser implements MyParser {
     @Override
     public String getConstKeyword() {
         return "final";
+    }
+
+    @Override
+    public int getRuleParExpression() {
+        return JavaParser.RULE_parExpression;
+    }
+
+    @Override
+    public int getRuleformalParameterList() {
+        return JavaParser.RULE_formalParameterList;
+    }
+
+    @Override
+    public int getRuleSwitchStmt() {
+        return JavaParser.RULE_switchStmt;
     }
 
     @Override
