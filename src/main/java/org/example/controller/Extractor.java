@@ -23,6 +23,7 @@ public class Extractor {
             extractOnTS(parser, container);
             extractOnAST(parser, container);
         } catch (Exception e) {
+            LoggerFactory.getLogger(Extractor.class).error(e.getMessage(), e);
             throw new ExtractException(e.getMessage(), e);
         }
     }

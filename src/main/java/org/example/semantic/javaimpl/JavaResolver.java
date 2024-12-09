@@ -5,6 +5,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.resolution.UnsolvedSymbolException;
@@ -81,6 +82,13 @@ public class JavaResolver implements Resolver {
             List<String> modifiers = new ArrayList<String>();
             Symbol symbol = createSymbol(variable.resolve(), modifiers);
             Optional<Node> cur = variable.getParentNode();
+
+            st.addSym(symbol);
+        });
+        cu.findAll(Parameter.class).forEach(parameter -> {
+            List<String> modifiers = new ArrayList<String>();
+            Symbol symbol = createSymbol(parameter.resolve(), modifiers);
+            Optional<Node> cur = parameter.getParentNode();
 
             st.addSym(symbol);
         });

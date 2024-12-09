@@ -134,11 +134,12 @@ public class Controller {
                     continue;
                 }
 
-                Preprocessor preprocessor = new Preprocessor();
-                Extractor.extractRules(parser, container, preprocessor);
                 if (namingFormatStyler != null) {
                     namingFormatStyler.extractStyle(parser.getTokenStream().getText());
                 }
+                Preprocessor preprocessor = new Preprocessor();
+                Extractor.extractRules(parser, container, preprocessor);
+
             } catch (Exception e) {
                 logger.error("Failed to extract style rules from file: {}", files.getFilePath(i));
                 logger.trace("Exception details:", e);

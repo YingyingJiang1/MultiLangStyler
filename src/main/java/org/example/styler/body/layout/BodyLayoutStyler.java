@@ -54,6 +54,10 @@ public class BodyLayoutStyler extends BodyStyler {
             ExtendContext body = (ExtendContext) ctx.getChild(bodyIndex);
             StyleContext context = extractStyleContext(ctx, body, parser);
             BodyLayoutProperty property = (BodyLayoutProperty) style.getProperty(context);
+            if (property == null) {
+                return ctx;
+            }
+
             ExtendToken stop = (ExtendToken) body.stop;
             if(!property.compactStyle) {
                 ExtendToken extStart = (ExtendToken) body.start;

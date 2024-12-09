@@ -20,7 +20,8 @@ public class NamingFormatStyler extends Styler {
         style.setStyleName("naming_format");
     }
 
-    public void extractStyle(String code) {Resolver resolver = ResolverFactory.createResolver(GlobalInfo.getLanguage());
+    public void extractStyle(String code) {
+        Resolver resolver = ResolverFactory.createResolver(GlobalInfo.getLanguage());
         SymbolTable st = resolver.parse(code);
         List<Symbol> symbols = st.getAllSymbols();
         for (Symbol symbol : symbols) {

@@ -6,8 +6,11 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.java.antlr.JavaParserBaseListener;
+import org.example.parser.java.antlr.JavaParserListener;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.List;
  * @create     : 2024/1/22 17:32
  */
 public class ExtendJavaParserListener extends JavaParserBaseListener {
+	public static Logger logger = LoggerFactory.getLogger(JavaParserListener.class);
 	public Stage stage;
 	public List<Styler> enterStylers = new ArrayList<>();
 	public List<Styler> exitStylers = new ArrayList<>();
@@ -43,14 +47,22 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 		if (stage == Stage.EXTRACT) {
 			for (Styler styler : stylers) {
 				if (styler.isEnable(stage) && styler.isRelevant(ctx, stage,parser)) {
-					styler.extractStyle(ctx,parser);
+					try {
+						styler.extractStyle(ctx,parser);
+					} catch (Exception e) {
+						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage);
+					}
 				}
 			}
 		} else if (stage == Stage.APPLY) {
 			ExtendContext newCtx = ctx;
 			for (Styler styler : stylers) {
 				if(styler.isEnable(stage) && styler.isRelevant(newCtx, stage,parser)) {
-					newCtx = styler.applyStyle(newCtx,parser);
+					try {
+						newCtx = styler.applyStyle(newCtx,parser);
+					} catch (Exception e) {
+						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage);
+					}
 				}
 			}
 		}
@@ -476,32 +488,15 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitFormalParameters(JavaParser.FormalParametersContext ctx) {
-		ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
-	@Override
-	public void exitReceiverParameter(JavaParser.ReceiverParameterContext ctx) {
-		ctx.expandChildren(parser);
-		doTask(ctx, exitStylers);
-	}
 
 	@Override
 	public void exitFormalParameterList(JavaParser.FormalParameterListContext ctx) {
-		ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
-	@Override
-	public void exitFormalParameter(JavaParser.FormalParameterContext ctx) {
-		ctx.expandChildIf(child -> child instanceof JavaParser.VariableDeclaratorIdContext);
-	}
-
-	@Override
-	public void exitLastFormalParameter(JavaParser.LastFormalParameterContext ctx) {
-		ctx.expandChildren(parser);
-		doTask(ctx, exitStylers);
-	}
 
 	@Override
 	public void exitLambdaLVTIList(JavaParser.LambdaLVTIListContext ctx) {
