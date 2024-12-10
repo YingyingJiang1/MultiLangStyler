@@ -295,10 +295,6 @@ public class MyJavaParser implements MyParser {
         return t instanceof JavaParser.TypeDeclarationContext;
     }
 
-    @Override
-    public boolean isClassBodyDeclaration(ParseTree child) {
-        return child instanceof JavaParser.ClassBodyDeclarationContext;
-    }
 
     @Override
     public boolean isVariableDeclarators(ParseTree t) {
@@ -318,6 +314,26 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean isContinueStmt(ParseTree t) {
         return t instanceof JavaParser.ContinueStmtContext;
+    }
+
+    @Override
+    public boolean isLocalVarDeclaration(ParseTree t) {
+        return t instanceof JavaParser.LocalVariableDeclarationContext;
+    }
+
+    @Override
+    public boolean isLambdaExpression(ParseTree t) {
+        return t instanceof JavaParser.LambdaExpressionContext;
+    }
+
+    @Override
+    public boolean isCompilationUnit(ParseTree t) {
+        return t instanceof JavaParser.CompilationUnitContext;
+    }
+
+    @Override
+    public boolean isTypeParameter(ParseTree t) {
+        return t instanceof JavaParser.TypeParametersContext;
     }
 
     @Override
@@ -348,6 +364,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToLoop(int ruleIndex) {
         return ruleIndex == JavaParser.RULE_forStmt || ruleIndex == JavaParser.RULE_whileStmt || ruleIndex == JavaParser.RULE_doWhileStmt;
+    }
+
+    @Override
+    public boolean belongToParameter(ParseTree t) {
+        return t instanceof JavaParser.FormalParameterContext || t instanceof JavaParser.LambdaLVTIParameterContext;
     }
 
     @Override
@@ -547,6 +568,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleVariableDeclarator() {
+        return JavaParser.RULE_variableDeclarator;
+    }
+
+    @Override
     public int getLE() {
         return JavaParser.LE;
     }
@@ -649,6 +675,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getDefaultChannel() {
         return JavaLexer.DEFAULT_TOKEN_CHANNEL;
+    }
+
+    @Override
+    public int getVar() {
+        return JavaParser.VAR;
     }
 
     @Override
@@ -802,6 +833,26 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleSwitchStmt() {
         return JavaParser.RULE_switchStmt;
+    }
+
+    @Override
+    public int getRuleTypeParameters() {
+        return JavaParser.RULE_typeParameters;
+    }
+
+    @Override
+    public int getRulePackageDeclaration() {
+        return JavaParser.RULE_packageDeclaration;
+    }
+
+    @Override
+    public int getRuleQualifiedName() {
+        return JavaParser.RULE_qualifiedName;
+    }
+
+    @Override
+    public int getRuleTypeList() {
+        return JavaParser.RULE_typeList;
     }
 
     @Override

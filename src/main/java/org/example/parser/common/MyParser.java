@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenFactory;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.AmbigousToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -58,6 +59,8 @@ public interface MyParser {
     boolean belongToVarDeclarationStmt(int ruleIndex);
     boolean belongToFunctionHead(int ruleIndex);
     boolean belongToLoop(int ruleIndex);
+    boolean belongToParameter(ParseTree t);
+
 
 
 
@@ -72,6 +75,7 @@ public interface MyParser {
     boolean belongToFloadLiteral(int type);
     boolean belongToLiteralType(int type);
     boolean belongToLiteral(int type);
+
 
     ParseTree createExpression(ParserRuleContext parent, int invokingState);
 
@@ -91,11 +95,18 @@ public interface MyParser {
     boolean isBlock(ParseTree t);
     boolean isCatchClause(ParseTree t);
     boolean isTypeDeclaration(ParseTree t);
-    boolean isClassBodyDeclaration(ParseTree child);
     boolean isVariableDeclarators(ParseTree t);
     boolean isTypeType(ParseTree tree);
-    boolean isReturnStmt(ParseTree lastTree);
+    boolean isReturnStmt(ParseTree t);
     boolean isContinueStmt(ParseTree lastTree);
+    boolean isLocalVarDeclaration(ParseTree t);
+    boolean isLambdaExpression(ParseTree t);
+    boolean isCompilationUnit(ParseTree t);
+    boolean isTypeParameter(ParseTree t);
+
+
+
+
 
     int getRuleBlock();
     int getRuleExpression();
@@ -127,9 +138,15 @@ public interface MyParser {
     int getRuleFieldDeclarationList();
     int getRuleLiteral();
     int getRuleVariableDeclarators();
+    int getRuleVariableDeclarator();
     int getRuleParExpression();
     int getRuleformalParameterList();
     int getRuleSwitchStmt();
+    int getRuleTypeParameters();
+
+    int getRulePackageDeclaration();
+    int getRuleQualifiedName();
+    int getRuleTypeList();
 
 
 
@@ -159,6 +176,7 @@ public interface MyParser {
     int getMul();
     int getRBrack();
     int getDefaultChannel();
+    int getVar();
 
 
 

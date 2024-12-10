@@ -19,4 +19,8 @@ public class SymbolTableManager {
     public SymbolTable getSymbolTable(ParseTree root) {
         return stMap.get(root);
     }
+
+    public void addSymbolTable(ParseTree root, SymbolTable st) {
+        stMap.put(root, st);
+    }
 }

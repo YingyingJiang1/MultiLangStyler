@@ -1,9 +1,15 @@
 package org.example.semantic.intf.symbol;
 
-public interface VarSym extends Symbol {
-    String getTypeName();
-    String getFullTypeName();
-    boolean isPrimitive();
-    boolean isReference();
-    boolean isConst();
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.parser.common.context.ExtendContext;
+import org.example.semantic.intf.type.Type;
+import org.example.styler.naming.SymbolType;
+
+public class VarSym extends Symbol {
+    private Type type;
+
+    public VarSym(Type type, TerminalNode astNode, ExtendContext modifierListNode, SymbolType symbolType) {
+        super(astNode, modifierListNode, symbolType);
+    }
+
 }
