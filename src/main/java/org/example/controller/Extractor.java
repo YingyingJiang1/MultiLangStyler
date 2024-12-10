@@ -21,6 +21,7 @@ public class Extractor {
         try {
             preprocessor.preprocess(parser, Stage.EXTRACT);
             extractOnTS(parser, container);
+            preprocessor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
             extractOnAST(parser, container);
         } catch (Exception e) {
             LoggerFactory.getLogger(Extractor.class).error(e.getMessage(), e);

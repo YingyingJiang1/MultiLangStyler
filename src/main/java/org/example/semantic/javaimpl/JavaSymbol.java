@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.semantic.intf.Reference;
 import org.example.semantic.intf.Symbol;
 import org.example.styler.naming.SymbolType;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,16 @@ import java.util.List;
 public class JavaSymbol implements Symbol {
     SymbolType symbolType;
     ResolvedValueDeclaration declaration;
+    Node defNode;
     List<Reference> references = new ArrayList<>();
     List<TerminalNode> nodeReferences = new ArrayList<>();
-    List<String> modifiers;
+    List<String> modifiers = new ArrayList<>();
 
     public JavaSymbol(SymbolType symbolType, ResolvedValueDeclaration declaration,
-                      List<String> modifiers) {
+                      Node defNode) {
         this.symbolType = symbolType;
         this.declaration = declaration;
-        this.modifiers = modifiers;
+        this.defNode = defNode;
     }
 
     @Override
@@ -62,5 +62,10 @@ public class JavaSymbol implements Symbol {
     @Override
     public boolean isReference(TerminalNode identifierNode) {
         return nodeReferences.contains(identifierNode);
+    }
+
+    @Override
+    public Node getDefNode() {
+        return defNode;
     }
 }

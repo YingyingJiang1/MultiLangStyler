@@ -12,4 +12,5 @@ public interface Symbol {
     void addReference(Reference reference);
     void addReference(TerminalNode identifierNode);
     boolean isReference(TerminalNode identifierNode);
+    Object getDefNode();
 }

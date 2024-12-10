@@ -33,6 +33,6 @@ public class CommentSyntaxStyler extends Styler {
 
     @Override
     public void applyStyle(List<Token> tokens, int index, MyParser parser) {
-        System.out.println("TODO: implement CommentSyntaxStyler@applyStyle");
+//        System.out.println("TODO: implement CommentSyntaxStyler@applyStyle");
     }
 }

@@ -10,6 +10,7 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceProperty;
+import org.example.styler.format.space.style.SpaceStyle;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,13 +23,8 @@ public class SpaceStyler extends Styler {
     static Set<String> relevantTokens = null;
 
     public SpaceStyler() {
+        style = new SpaceStyle();
         style.setStyleName("space");
-        // There's always a space between keywords and identifiers.
-        String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
-        style.addRule(new SpaceContext(keyword, identifier), new SpaceProperty(true));
-        style.addRule(new SpaceContext(identifier, keyword), new SpaceProperty(true));
-        style.addRule(new SpaceContext(keyword, keyword), new SpaceProperty(true));
-        style.addRule(new SpaceContext(identifier, identifier), new SpaceProperty(true));
     }
 
 
@@ -40,8 +36,10 @@ public class SpaceStyler extends Styler {
         boolean leftSpace = leftToken != null && parser.getHws() == leftToken.getType();
         boolean rightSpace = rightToken != null && parser.getHws() == rightToken.getType();
 
-        StyleContext context = extractContext(tokens, index, Stage.EXTRACT, parser);
+        SpaceContext context = extractContext(tokens, index, Stage.EXTRACT, parser);
         SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
+
+        String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
         if (context != null) {
             style.addRule(context, property);
         }

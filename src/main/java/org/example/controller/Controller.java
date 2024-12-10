@@ -104,10 +104,11 @@ public class Controller {
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
                 String code = toString(tokens, preprocessor);
+                System.out.println(code);
                 if (namingFormatStyler != null) {
                     code = namingFormatStyler.applyStyle(code);
                 }
-                saveApplyResult(code);
+//                saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
                 logger.error("Exception details:", e);
@@ -185,8 +186,8 @@ public class Controller {
         if (tokens.get(tokens.size() - 1).getType() == parser.getEOF()) {
             tokens = tokens.subList(0, tokens.size() - 1);
         }
+        preprocessor.restoreState(tokens, parser);
         for (Token token : tokens) {
-            preprocessor.restoreState(token, parser);
             builder.append(token.getText());
         }
         return builder.toString();

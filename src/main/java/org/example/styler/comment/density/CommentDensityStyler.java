@@ -23,6 +23,6 @@ public class CommentDensityStyler extends Styler {
 
     @Override
     public void applyStyle(List<Token> tokens, int index, MyParser parser) {
-        System.out.println("to do: implement CommentDensityStyler@applyStyle");
+//        System.out.println("to do: implement CommentDensityStyler@applyStyle");
     }
 }

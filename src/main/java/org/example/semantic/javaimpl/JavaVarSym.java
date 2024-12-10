@@ -1,6 +1,7 @@
 package org.example.semantic.javaimpl;
 
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.resolution.declarations.ResolvedValueDeclaration;
 import org.example.semantic.intf.VarSym;
@@ -11,8 +12,8 @@ import java.util.List;
 public class JavaVarSym extends JavaSymbol implements VarSym {
 
     public JavaVarSym(SymbolType symbolType, ResolvedValueDeclaration declaration,
-                      List<String> modifiers) {
-        super(symbolType, declaration, modifiers);
+                      Node defNode) {
+        super(symbolType, declaration, defNode);
     }
 
 

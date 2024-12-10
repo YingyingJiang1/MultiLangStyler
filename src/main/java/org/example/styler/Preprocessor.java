@@ -29,14 +29,16 @@ public class Preprocessor {
     }
   }
 
-  public void restoreState(Token token, MyParser parser) {
+  public void restoreState(List<Token> tokens, MyParser parser) {
     Set<Integer> ambiguousTokens = Set.of(
             parser.getLT(), parser.getGT(), parser.getSub()
     );
-    if (ambiguousTokens.contains(token.getType()) && token instanceof ExtendToken extendToken) {
-      Optional<AmbigousToken> ambigousTokenEnum = Arrays.stream(AmbigousToken.values())
-              .filter(e -> e.name().equals(token.getText())).findAny();
+    for (Token token : tokens) {
+      if (ambiguousTokens.contains(token.getType()) && token instanceof ExtendToken extendToken) {
+        Optional<AmbigousToken> ambigousTokenEnum = Arrays.stream(AmbigousToken.values())
+                .filter(e -> e.name().equals(token.getText())).findAny();
         ambigousTokenEnum.ifPresent(ambigousToken -> extendToken.setText(ambigousToken.getValue()));
+      }
     }
   }
 
