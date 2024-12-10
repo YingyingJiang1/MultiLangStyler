@@ -1,10 +1,6 @@
 package org.example.semantic;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.semantic.intf.ClassSym;
-import org.example.semantic.intf.FunctionSym;
-import org.example.semantic.intf.Symbol;
-import org.example.semantic.intf.VarSym;
+import org.example.semantic.intf.symbol.Symbol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

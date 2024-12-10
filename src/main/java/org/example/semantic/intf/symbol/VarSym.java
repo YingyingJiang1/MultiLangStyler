@@ -1,4 +1,4 @@
-package org.example.semantic.intf;
+package org.example.semantic.intf.symbol;
 
 public interface VarSym extends Symbol {
     String getTypeName();

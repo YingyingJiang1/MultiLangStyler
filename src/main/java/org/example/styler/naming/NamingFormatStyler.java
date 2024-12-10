@@ -6,13 +6,12 @@ import org.example.global.GlobalInfo;
 import org.example.semantic.ResolverFactory;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.Resolver;
-import org.example.semantic.intf.Symbol;
+import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Styler;
 import org.example.styler.naming.style.NamingFormatContext;
 import org.example.styler.naming.style.NamingFormatProperty;
 
-import java.io.File;
 import java.util.List;
 
 public class NamingFormatStyler extends Styler {
