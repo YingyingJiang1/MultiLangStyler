@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class Symbol {
-    protected String name;
     protected TerminalNode identifierNode;
     protected List<TerminalNode> references = new ArrayList<>(0);
     protected ExtendContext modifierListNode;
@@ -27,7 +26,7 @@ public abstract class Symbol {
     public Symbol() {}
 
     public String getName() {
-        return name;
+        return identifierNode.getText();
     }
 
     public void modifyName(String name) {

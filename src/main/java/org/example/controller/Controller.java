@@ -83,8 +83,6 @@ public class Controller {
     private void applyStyle(FileCollection files) {
         applyInitialize();
 
-        NamingFormatStyler  namingFormatStyler = container.findStyler(NamingFormatStyler.class);
-
         for (int i = 0; i < files.size(); i++) {
             try {
                 curPath = Paths.get(files.getFilePath(i));
@@ -99,14 +97,9 @@ public class Controller {
 
                 SelfStyle.extractStyle(curPath);
 
-
-
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
                 String code = toString(tokens, preprocessor);
-                if (namingFormatStyler != null) {
-                    code = namingFormatStyler.applyStyle(code);
-                }
 //                saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
@@ -120,8 +113,6 @@ public class Controller {
     public ProgramStyle extractStyle(FileCollection files) {
         extractInitialize();
 
-        NamingFormatStyler  namingFormatStyler = container.findStyler(NamingFormatStyler.class);
-
         for (int i = 0; i < files.size(); i++) {
             try {
                 curPath = Paths.get(files.getFilePath(i));
@@ -134,9 +125,6 @@ public class Controller {
                     continue;
                 }
 
-                if (namingFormatStyler != null) {
-                    namingFormatStyler.extractStyle(parser.getTokenStream().getText());
-                }
                 Preprocessor preprocessor = new Preprocessor();
                 Extractor.extractRules(parser, container, preprocessor);
 

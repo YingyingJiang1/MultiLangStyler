@@ -261,11 +261,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean isTopUnit(ParseTree t) {
-        return t instanceof JavaParser.CompilationUnitContext;
-    }
-
-    @Override
     public boolean isBody(ParseTree t) {
         return t instanceof JavaParser.BodyContext;
     }

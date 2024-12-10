@@ -3,11 +3,14 @@ package org.example.styler.naming;
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.example.global.GlobalInfo;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.ResolverFactory;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.Resolver;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.naming.style.NamingFormatContext;
 import org.example.styler.naming.style.NamingFormatProperty;
@@ -19,9 +22,9 @@ public class NamingFormatStyler extends Styler {
         style.setStyleName("naming_format");
     }
 
-    public void extractStyle(String code) {
-        Resolver resolver = ResolverFactory.createResolver(GlobalInfo.getLanguage());
-        SymbolTable st = resolver.parse(code);
+    @Override
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
+        SymbolTable st = GlobalInfo.getResolver().getSymbolTable(parser.getRoot());
         List<Symbol> symbols = st.getAllSymbols();
         for (Symbol symbol : symbols) {
             String name = symbol.getName();
@@ -52,9 +55,9 @@ public class NamingFormatStyler extends Styler {
         }
     }
 
-    public String applyStyle(String code) {
-        Resolver resolver = ResolverFactory.createResolver(GlobalInfo.getLanguage());
-        SymbolTable st = resolver.parse(code);
+    @Override
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        SymbolTable st = GlobalInfo.getResolver().getSymbolTable(parser.getRoot());
         List<Symbol> symbols = st.getAllSymbols();
         for (Symbol symbol : symbols) {
             SymbolType symbolType = symbol.getSymbolType();
@@ -78,7 +81,7 @@ public class NamingFormatStyler extends Styler {
                 }
             }
         }
-        return resolver.getParsedSourceCode();
+        return ctx;
     }
 
     private String abbreviateName(String name, int maxLength) {
@@ -110,5 +113,10 @@ public class NamingFormatStyler extends Styler {
             return Character.isUpperCase(name.charAt(0)) ? CaseFormat.UPPER_CAMEL : CaseFormat.LOWER_CAMEL;
         }
         return null;
+    }
+
+    @Override
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+        return parser.isCompilationUnit(ctx);
     }
 }

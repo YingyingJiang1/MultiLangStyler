@@ -1,6 +1,7 @@
 package org.example.parser.java;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.ListenerState;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
@@ -650,6 +651,7 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	public void exitIdentifier(JavaParser.IdentifierContext ctx) {
 		ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
+		GlobalInfo.getResolver().resolve(ctx.getFirstTerChildByType(parser.getIdentifier()), parser);
 	}
 
 	@Override

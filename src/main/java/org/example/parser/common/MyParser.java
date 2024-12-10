@@ -88,7 +88,6 @@ public interface MyParser {
     boolean isConstructorDeclarationList(ParseTree t);
     boolean isInitializerList(ParseTree t);
     boolean isTypeDeclarationList(ParseTree t);
-    boolean isTopUnit(ParseTree t);
     boolean isBody(ParseTree t);
     boolean isAnnotation(ParseTree t);
     boolean isVws(ParseTree t);

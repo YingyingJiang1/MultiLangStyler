@@ -7,7 +7,6 @@ import org.example.parser.common.ListenerState;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.semantic.ResolverFactory;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.style.rule.StyleProperty;
@@ -45,8 +44,8 @@ public class LiteralUsageStyler extends Styler {
                         style.addRule(context, new LiteralUsageProperty(false));
                     }
                 } else if(ter.getSymbol().getType() == parser.getIdentifier()) {
-                    Symbol symbol = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolve(ter, parser);
-                    if (symbol instanceof VarSym varSym && varSym.isConst()) {
+                    Symbol symbol = GlobalInfo.getResolver().resolve(ter, parser);
+                    if (symbol instanceof VarSym varSym && varSym.hasModifier(parser.getConstKeyword())) {
                         style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
                     }
                 }
@@ -72,7 +71,7 @@ public class LiteralUsageStyler extends Styler {
     }
 
     private LiteralUsageContext extractStyleContext(VarSym var) {
-        String typeName = var.getTypeName();
+        String typeName = var.getType().getName();
         switch (typeName) {
             case "int", "long" -> {
                 return new LiteralUsageContext(LiteralEnum.INT_NUMBER);
@@ -84,8 +83,7 @@ public class LiteralUsageStyler extends Styler {
                 return new LiteralUsageContext(LiteralEnum.CHAR);
             }
             default -> {
-                if (var.isReference() &&
-                        var.getFullTypeName().equals(GlobalInfo.getSpecialClass().getStringClassFullName()))
+                if (typeName.equals(GlobalInfo.getSpecialClass().getStringQualifiedName()))
                     return new LiteralUsageContext(LiteralEnum.STRING);
             }
         }

@@ -13,4 +13,8 @@ public abstract class Type {
     public Symbol resolve() {
         return null;
     }
+
+    public String getName() {
+        return astNode.getText();
+    }
 }

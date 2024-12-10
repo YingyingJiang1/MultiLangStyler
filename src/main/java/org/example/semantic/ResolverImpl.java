@@ -18,68 +18,62 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.plaf.synth.SynthCheckBoxUI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ResolverImpl implements Resolver {
     public static Logger logger = LoggerFactory.getLogger(ResolverImpl.class);
+    private Map<ParseTree, SymbolTable> symbolTableMap = new HashMap<>();
+
+
     @Override
     public Symbol resolve(TerminalNode identifierNode, MyParser parser) {
-        return null;
+        ParseTree root = parser.getRoot();
+        if (symbolTableMap.get(root) == null) {
+            symbolTableMap.put(root, new SymbolTable());
+        }
+        SymbolTable st = symbolTableMap.get(root);
+        return doResolve(st, identifierNode, parser);
     }
 
     @Override
-    public SymbolTable resolve(MyParser parser) {
-        ParseTree root = parser.getRoot();
-        if (SymbolTableManager.getInstance().getSymbolTable(root) != null) {
-            return SymbolTableManager.getInstance().getSymbolTable(root);
-        }
-
-        SymbolTable st = new SymbolTable();
-        doResolve(st, root, parser);
-
-        SymbolTableManager.getInstance().addSymbolTable(root, st);
-        return st;
+    public SymbolTable getSymbolTable(ParseTree root) {
+        return symbolTableMap.get(root);
     }
 
-    private void doResolve(SymbolTable st, ParseTree root, MyParser parser) {
-        if (root instanceof TerminalNode ter) {
-            if (ter.getSymbol().getType() == parser.getIdentifier()) {
-                ExtendContext parent = (ExtendContext) ter.getParent();
-                Symbol symbol = null;
-                while (parent != null) {
-                    int ruleIndex = parent.getRuleIndex();
-                    if (parser.isFieldDeclaration(parent) || parser.isLocalVarDeclaration(parent)) {
-                        symbol = resolveVarDeclaration(parent, ter, parser);
-                        break;
-                    } else if (parser.belongToFunctionDec(ruleIndex)) {
-                        symbol = resolveFunctionDeclaration(parent, ter, parser);
-                        break;
-                    } else if (parser.isTypeDeclaration(parent)) {
-                        symbol = resolveTypeDeclaration(st, parent, ter, parser);
-                        break;
-                    } else if (parser.belongToParameter(parent)) {
-                        symbol = resolveParameter(parent, ter, parser);
-                        break;
-                    } else if (parser.isTypeParameter(parent)) {
-                        symbol = resolveTypeParameter(parent, ter, parser);
-                        break;
-                    } else if (ruleIndex == parser.getRuleExpression()) {
-                        resolveReference(st, ter, parser);
-                        break;
-                    }
-                    parent = (ExtendContext) parent.getParent();
+    private Symbol doResolve(SymbolTable st, TerminalNode identifierNode, MyParser parser) {
+        Symbol symbol = null;
+        if (identifierNode.getSymbol().getType() == parser.getIdentifier()) {
+            ExtendContext parent = (ExtendContext) identifierNode.getParent();
+            while (parent != null) {
+                int ruleIndex = parent.getRuleIndex();
+                if (parser.isFieldDeclaration(parent) || parser.isLocalVarDeclaration(parent)) {
+                    symbol = resolveVarDeclaration(parent, identifierNode, parser);
+                    break;
+                } else if (parser.belongToFunctionDec(ruleIndex)) {
+                    symbol = resolveFunctionDeclaration(parent, identifierNode, parser);
+                    break;
+                } else if (parser.isTypeDeclaration(parent)) {
+                    symbol = resolveTypeDeclaration(st, parent, identifierNode, parser);
+                    break;
+                } else if (parser.belongToParameter(parent)) {
+                    symbol = resolveParameter(parent, identifierNode, parser);
+                    break;
+                } else if (parser.isTypeParameter(parent)) {
+                    symbol = resolveTypeParameter(parent, identifierNode, parser);
+                    break;
+                } else if (ruleIndex == parser.getRuleExpression()) {
+                    resolveReference(st, identifierNode, parser);
+                    break;
                 }
-                if (symbol != null) {
-                    st.addSymbol(symbol, parser);
-                }
+                parent = (ExtendContext) parent.getParent();
             }
-            return;
+            if (symbol != null) {
+                st.addSymbol(symbol, parser);
+            }
         }
-
-        ExtendContext ctx = (ExtendContext) root;
-        for (ParseTree child : ctx.children) {
-            doResolve(st, child, parser);
-        }
+        return symbol;
     }
 
     private Type resolveType(ExtendContext typeNode, MyParser parser) {

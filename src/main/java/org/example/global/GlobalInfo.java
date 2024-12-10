@@ -2,6 +2,8 @@ package org.example.global;
 
 import org.example.global.specialclass.JavaSpecialClass;
 import org.example.global.specialclass.SpecialClass;
+import org.example.semantic.ResolverFactory;
+import org.example.semantic.intf.Resolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,12 +13,15 @@ public class GlobalInfo {
     private static String language = "";
     private static String pathSeparator;
     private static SpecialClass specialClass;
+    private static Resolver resolver;
+
 
     public static void setLanguage(String language) {
         GlobalInfo.language = language;
         if (language.equals("java")) {
             pathSeparator = ".";
             specialClass = new JavaSpecialClass();
+            resolver = ResolverFactory.createResolver(language);
         } else {
             logger.error("Unsupported language: " + language);
         }
@@ -32,5 +37,9 @@ public class GlobalInfo {
 
     public static String getLanguage() {
         return language;
+    }
+
+    public static Resolver getResolver() {
+        return resolver;
     }
 }

@@ -12,4 +12,8 @@ public class VarSym extends Symbol {
         super(astNode, modifierListNode, symbolType);
     }
 
+    public Type getType() {
+        return type;
+    }
+
 }

@@ -37,9 +37,11 @@ public class SymbolTable {
         ParseTree curScope = getOuterScope(identifierNode, parser);
         while (curScope != null) {
             List<Symbol> symbols = symbolMap.get(curScope);
-            for (Symbol symbol : symbols ) {
-                if (symbol.getName().equals(name)) {
-                    return symbol;
+            if (symbols != null) {
+                for (Symbol symbol : symbols ) {
+                    if (symbol.getName().equals(name)) {
+                        return symbol;
+                    }
                 }
             }
             curScope = getOuterScope(curScope, parser);
@@ -52,7 +54,7 @@ public class SymbolTable {
      * @return Location where the symbol is defined, including: compound statements, method declarations, type declarations
      */
     private ParseTree getOuterScope(ParseTree node, MyParser parser) {
-        ParseTree parent = node;
+        ParseTree parent = node.getParent();
         while (parent != null) {
             if (parent instanceof ExtendContext ctx){
                 int ruleIndex = ctx.getRuleIndex();
