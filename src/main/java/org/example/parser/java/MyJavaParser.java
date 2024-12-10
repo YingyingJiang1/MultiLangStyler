@@ -637,6 +637,21 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getMul() {
+        return JavaParser.MUL;
+    }
+
+    @Override
+    public int getRBrack() {
+        return JavaParser.RBRACK;
+    }
+
+    @Override
+    public int getDefaultChannel() {
+        return JavaLexer.DEFAULT_TOKEN_CHANNEL;
+    }
+
+    @Override
     public boolean belongToLiteralType(int type) {
         return type == JavaParser.STRING_LITERAL || type == JavaParser.TEXT_BLOCK;
     }

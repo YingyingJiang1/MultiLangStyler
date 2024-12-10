@@ -33,7 +33,7 @@ public class StylerContainer {
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
         stylers.add(new StructureStyler());
-        stylers.add(new LiteralUsageStyler());
+//        stylers.add(new LiteralUsageStyler());
         stylers.add(new ModifierOrderStyler());
         stylers.add(new DeclarationNumberStyler());
         stylers.add(new DeclarationLocationStyler());

@@ -156,6 +156,12 @@ public interface MyParser {
     int getBlockComment();
     int getSub();
     int getEOF();
+    int getMul();
+    int getRBrack();
+    int getDefaultChannel();
+
+
+
 
 
     int getCharLiteralType();

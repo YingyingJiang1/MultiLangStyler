@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.AmbigousToken;
+import org.example.parser.common.token.TokenGroup;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
 import org.example.parser.common.token.ExtendToken;
@@ -31,7 +32,7 @@ public class Preprocessor {
 
   public void restoreState(List<Token> tokens, MyParser parser) {
     Set<Integer> ambiguousTokens = Set.of(
-            parser.getLT(), parser.getGT(), parser.getSub()
+            parser.getLT(), parser.getGT(), parser.getSub(), parser.getMul()
     );
     for (Token token : tokens) {
       if (ambiguousTokens.contains(token.getType()) && token instanceof ExtendToken extendToken) {
@@ -158,10 +159,22 @@ public class Preprocessor {
    */
   private void processAmbiguousToken(MyParser parser, TokenStream tStream,int index) {
     int type = tStream.get(index).getType();
-    if (type == JavaLexer.LT) {
+    if (type == parser.getLT()) {
       processAngleBracket(tStream, index, parser);
-    } else if (AntlrHelper.isSub(type)) {
+    } else if (type == parser.getSub()) {
       processNegativeOperator(tStream, index, parser);
+    } else if (type == parser.getMul()) {
+      processWildcard(tStream, index, parser);
+    }
+  }
+
+  private void processWildcard(TokenStream tStream, int index, MyParser parser) {
+    Token leftToken = findFirstDefaultToken(tStream, index, parser);
+    if (leftToken == null) {
+      return;
+    }
+    if (leftToken.getText().equals(".") && tStream.get(index) instanceof ExtendToken extToken) {
+      extToken.setText(AmbigousToken.WILDCARD.name());
     }
   }
 
@@ -171,15 +184,13 @@ public class Preprocessor {
    */
   private List<Token> processNegativeOperator(TokenStream tStream, int curIndex, MyParser parser) {
     List<Token> negativeTokens = new ArrayList<>(1);
-    int i = curIndex - 1;
-    for (; i >= 0; i--) {
-      if (AntlrHelper.inDefaultChannel(tStream.get(i).getChannel())) {
-        break;
-      }
+    Token leftToken = findFirstDefaultToken(tStream, curIndex, parser);
+    if (leftToken == null) {
+      return negativeTokens;
     }
 
-    int preType = tStream.get(i).getType();
-    if (preType != JavaLexer.IDENTIFIER && preType != JavaLexer.RPAREN && preType != JavaLexer.RBRACK) {
+    int leftType = leftToken.getType();
+    if (leftType != parser.getIdentifier() && leftType != parser.getRParen() && leftType != parser.getRBrack()) {
       ExtendToken subToken = (ExtendToken) tStream.get(curIndex);
 //      subToken.setType(-subToken.getType());
       subToken.setText(AmbigousToken.NEGATIVE.name());
@@ -187,6 +198,19 @@ public class Preprocessor {
     }
 
     return negativeTokens;
+  }
+
+  private Token findFirstDefaultToken(TokenStream tokenStream, int curIndex, MyParser parser) {
+    int i = curIndex - 1;
+    for (; i >= 0; i--) {
+      if (tokenStream.get(i).getChannel() == parser.getDefaultChannel()) {
+        break;
+      }
+    }
+    if (i >= 0) {
+      return tokenStream.get(i);
+    }
+    return null;
   }
 
 

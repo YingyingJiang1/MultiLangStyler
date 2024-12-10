@@ -104,7 +104,6 @@ public class Controller {
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
                 String code = toString(tokens, preprocessor);
-                System.out.println(code);
                 if (namingFormatStyler != null) {
                     code = namingFormatStyler.applyStyle(code);
                 }
