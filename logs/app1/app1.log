@@ -5576,3 +5576,5 @@ Caused by: java.io.IOException: Stream closed
 2024-12-12 17:20:05,156 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L055\style.xml
 2024-12-12 17:20:55,276 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L055\style.xml
 2024-12-12 17:20:55,710 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L055\self-style.xml
+2024-12-12 22:58:10,280 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L055\style.xml
+2024-12-12 22:58:10,694 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L055\self-style.xml

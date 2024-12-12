@@ -7,7 +7,7 @@ import org.example.styler.arrangement.param.ParameterOrderStyler;
 import org.example.styler.body.braceformat.BraceFormatStyler;
 import org.example.styler.body.layout.BodyLayoutStyler;
 import org.example.styler.body.optionalbrace.OptionalBraceStyler;
-import org.example.styler.exp.ComplexBoolExpStyler;
+import org.example.styler.exp.ExpressionStyler;
 import org.example.styler.comment.density.CommentDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
@@ -37,7 +37,7 @@ public class StylerContainer {
         stylers.add(new DeclarationNumberStyler());
         stylers.add(new DeclarationLocationStyler());
         stylers.add(new IfElseBodyOrderStyler());
-        stylers.add(new ComplexBoolExpStyler());
+        stylers.add(new ExpressionStyler());
         stylers.add(new FunctionComplexityStyler());
         stylers.add(new ParameterOrderStyler());
         stylers.add(new OptionalBraceStyler());

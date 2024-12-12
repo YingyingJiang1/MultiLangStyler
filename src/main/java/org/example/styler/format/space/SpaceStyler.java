@@ -41,6 +41,9 @@ public class SpaceStyler extends Styler {
 
         String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
         if (context != null) {
+            if (!context.tokenName2.isEmpty()) {
+                property.space1 = false;
+            }
             style.addRule(context, property);
         }
     }

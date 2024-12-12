@@ -6,41 +6,40 @@ import org.example.style.rule.StyleProperty;
 
 import java.util.Objects;
 
-public class ComplexBoolExpProperty extends StyleProperty {
+public class ExpressionProperty extends StyleProperty {
     public int maxExpressionLength;
-    public int maxLogicalOpNum;
     public int maxSubExpNum;
 
-    public ComplexBoolExpProperty(int length, int maxPredicateNum) {
+    public ExpressionProperty(int length, int maxPredicateNum) {
         this.maxExpressionLength = length;
-        this.maxLogicalOpNum = maxPredicateNum;
+        this.maxSubExpNum = maxPredicateNum;
     }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("maxExpressionLength", Integer.toString(maxExpressionLength));
-        parent.addAttribute("maxPredicateNum", Integer.toString(maxLogicalOpNum));
+        parent.addAttribute("maxSubExpNum", Integer.toString(maxSubExpNum));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
         maxExpressionLength = Integer.parseInt(parent.attributeValue("maxExpressionLength"));
-        maxLogicalOpNum = Integer.parseInt(parent.attributeValue("maxPredicateNum"));
+        maxSubExpNum = Integer.parseInt(parent.attributeValue("maxSubExpNum"));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
                 maxExpressionLength,
-                maxLogicalOpNum
+                maxSubExpNum
         );
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof ComplexBoolExpProperty property) {
+        if (obj instanceof ExpressionProperty property) {
             return maxExpressionLength == property.maxExpressionLength
-                    && maxLogicalOpNum == property.maxLogicalOpNum;
+                    && maxSubExpNum == property.maxSubExpNum;
         }
         return false;
     }
