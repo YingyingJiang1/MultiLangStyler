@@ -14,7 +14,7 @@ public class ClassSym extends Symbol{
     Symbol outerClass;
 
     public ClassSym(List<ExtendContext> parents, String path, List<Symbol> typeParameters, Symbol outerClass,
-                    TerminalNode astNode, ExtendContext modifierListNode, SymbolType symbolType) {
+                    ExtendContext astNode, ExtendContext modifierListNode, SymbolType symbolType) {
         super(astNode, modifierListNode, symbolType);
         this.parents = parents;
         this.path = path;

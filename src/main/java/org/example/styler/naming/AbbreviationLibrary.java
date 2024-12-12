@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -18,13 +19,6 @@ public class AbbreviationLibrary {
     private static Map<String, String> abbreviationMap = null;
 
     public static AbbreviationLibrary getInstance() {
-        if (abbreviationMap == null) {
-            try {
-                loadAbbreviationLibrary("src/main/resources/abbr.yaml");
-            } catch (IOException e) {
-                LoggerFactory.getLogger(AbbreviationLibrary.class).error("Failed to load abbreviation library", e);
-            }
-        }
         return instance;
     }
 
@@ -32,13 +26,15 @@ public class AbbreviationLibrary {
     }
 
 
-    public static void loadAbbreviationLibrary(String yamlFile) throws IOException {
+    public void loadAbbreviationLibrary(String yamlFile) throws IOException {
         Yaml yaml = new Yaml();
         // 解析 YAML 文件
-        FileReader reader = new FileReader(yamlFile);
-        List<Map<String, Object>> data = yaml.load(reader);
+//        FileReader reader = new FileReader(yamlFile);
+        InputStream is = getClass().getResourceAsStream(yamlFile);
+        List<Map<String, Object>> data = yaml.load(is);
 
         // 解析数据并填充缩写词库
+        abbreviationMap = new HashMap<>();
         for (Map<String, Object> entry : data) {
             String word = (String) entry.get("word");
             List<Map<String, String>> abbrs = (List<Map<String, String>>) entry.get("abbrs");
@@ -49,6 +45,13 @@ public class AbbreviationLibrary {
     }
 
     public String lookUpAbbreviation(String word) {
+        if (abbreviationMap == null) {
+            try {
+                loadAbbreviationLibrary("/abbr.yml");
+            } catch (IOException e) {
+                LoggerFactory.getLogger(AbbreviationLibrary.class).error("Failed to load abbreviation library", e);
+            }
+        }
         return abbreviationMap.get(word);
     }
 

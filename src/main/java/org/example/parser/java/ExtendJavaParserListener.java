@@ -51,7 +51,7 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 					try {
 						styler.extractStyle(ctx,parser);
 					} catch (Exception e) {
-						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage);
+						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage, e);
 					}
 				}
 			}
@@ -62,7 +62,7 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 					try {
 						newCtx = styler.applyStyle(newCtx,parser);
 					} catch (Exception e) {
-						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage);
+						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage, e);
 					}
 				}
 			}
@@ -651,7 +651,6 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 	public void exitIdentifier(JavaParser.IdentifierContext ctx) {
 		ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
-		GlobalInfo.getResolver().resolve(ctx.getFirstTerChildByType(parser.getIdentifier()), parser);
 	}
 
 	@Override

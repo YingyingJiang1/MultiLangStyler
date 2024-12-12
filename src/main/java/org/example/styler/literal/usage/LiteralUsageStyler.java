@@ -36,19 +36,15 @@ public class LiteralUsageStyler extends Styler {
         if (((ExtendContext) ctx.parent).getRuleIndex() != parser.getRuleExpression()) {
             return;
         }
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            if (ctx.getChild(i) instanceof TerminalNode ter) {
-                if (parser.belongToLiteral(ter.getSymbol().getType())) {
-                    LiteralUsageContext context = extractStyleContext(ter.getSymbol(), parser);
-                    if (context != null) {
-                        style.addRule(context, new LiteralUsageProperty(false));
-                    }
-                } else if(ter.getSymbol().getType() == parser.getIdentifier()) {
-                    Symbol symbol = GlobalInfo.getResolver().resolve(ter, parser);
-                    if (symbol instanceof VarSym varSym && varSym.hasModifier(parser.getConstKeyword())) {
-                        style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
-                    }
-                }
+        if (parser.belongToLiteral(ctx.getRuleIndex())) {
+            LiteralUsageContext context = extractStyleContext(ctx.start, parser);
+            if (context != null) {
+                style.addRule(context, new LiteralUsageProperty(false));
+            }
+        } else if(parser.isIdentifier(ctx)) {
+            Symbol symbol = GlobalInfo.getResolver().resolve(ctx, parser);
+            if (symbol instanceof VarSym varSym && varSym.hasModifier(parser.getConstKeyword())) {
+                style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
             }
         }
 
@@ -167,8 +163,4 @@ public class LiteralUsageStyler extends Styler {
         return ruleIndex == parser.getRuleLiteral() || ruleIndex == parser.getRuleIdentifier();
     }
 
-    @Override
-    public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
-        return parser.belongToLiteral(tokens.get(i).getType());
-    }
 }

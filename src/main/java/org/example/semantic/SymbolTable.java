@@ -32,7 +32,7 @@ public class SymbolTable {
     }
 
 
-    public Symbol getSymbol(TerminalNode identifierNode, MyParser parser) {
+    public Symbol getSymbol(ExtendContext identifierNode, MyParser parser) {
         String name = identifierNode.getText();
         ParseTree curScope = getOuterScope(identifierNode, parser);
         while (curScope != null) {

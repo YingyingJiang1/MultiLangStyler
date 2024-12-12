@@ -1,5 +1,4 @@
 class B {
-
     public int test_b = 1;
 
     void test() {

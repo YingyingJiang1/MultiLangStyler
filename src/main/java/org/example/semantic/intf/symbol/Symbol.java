@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public abstract class Symbol {
-    protected TerminalNode identifierNode;
-    protected List<TerminalNode> references = new ArrayList<>(0);
+    protected ExtendContext identifierNode;
+    protected List<ExtendContext> references = new ArrayList<>(0);
     protected ExtendContext modifierListNode;
     protected SymbolType symbolType;
 
-    public Symbol(TerminalNode identifierNode, ExtendContext modifierListNode, SymbolType symbolType) {
+    public Symbol(ExtendContext identifierNode, ExtendContext modifierListNode, SymbolType symbolType) {
         this.identifierNode = identifierNode;
         this.modifierListNode = modifierListNode;
         this.symbolType = symbolType;
@@ -30,10 +30,10 @@ public abstract class Symbol {
     }
 
     public void modifyName(String name) {
-        ExtendToken extendToken = (ExtendToken) identifierNode.getSymbol();
+        ExtendToken extendToken = (ExtendToken) identifierNode.start;
         extendToken.setText(name);
-        for (TerminalNode reference : references) {
-            extendToken = (ExtendToken) reference.getSymbol();
+        for (ExtendContext reference : references) {
+            extendToken = (ExtendToken) reference.start;
             extendToken.setText(name);
         }
     }
@@ -42,11 +42,11 @@ public abstract class Symbol {
         return symbolType;
     }
 
-    public TerminalNode getIdentifierNode() {
+    public ExtendContext getIdentifierNode() {
         return identifierNode;
     }
 
-    public void addReference(TerminalNode reference) {
+    public void addReference(ExtendContext reference) {
         references.add(reference);
     }
 

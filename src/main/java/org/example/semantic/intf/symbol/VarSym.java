@@ -8,7 +8,7 @@ import org.example.styler.naming.SymbolType;
 public class VarSym extends Symbol {
     private Type type;
 
-    public VarSym(Type type, TerminalNode astNode, ExtendContext modifierListNode, SymbolType symbolType) {
+    public VarSym(Type type, ExtendContext astNode, ExtendContext modifierListNode, SymbolType symbolType) {
         super(astNode, modifierListNode, symbolType);
     }
 

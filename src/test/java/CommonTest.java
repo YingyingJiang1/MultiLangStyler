@@ -26,7 +26,7 @@ public class CommonTest {
 
     @Test
     void test() {
-        String src = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L055\\claude35sonnet.java";
+        String src = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L054\\human-mohamedmamdouh20.java";
         String target = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L055\\claude35sonnet.java";
         transform(Paths.get(src),
                 Paths.get(target));

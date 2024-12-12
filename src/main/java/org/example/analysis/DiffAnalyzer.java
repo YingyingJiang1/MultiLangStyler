@@ -110,12 +110,17 @@ public class DiffAnalyzer {
         List<Table> result = new ArrayList<>();
         for (Map.Entry<String, Map<String, List<Double>>> entry : disOfStyles.entrySet()) {
             Table table = Table.create(entry.getKey());
-            for (Map.Entry<String, List<Double>> distanceEntry : entry.getValue().entrySet()) {
-                Column<Double> column = DoubleColumn.create(distanceEntry.getKey(), distanceEntry.getValue().toArray(Double[]::new));
-                table.addColumns(column);
+            try {
+                for (Map.Entry<String, List<Double>> distanceEntry : entry.getValue().entrySet()) {
+                    Column<Double> column = DoubleColumn.create(distanceEntry.getKey(), distanceEntry.getValue().toArray(Double[]::new));
+                    table.addColumns(column);
+                }
+            } catch (Exception e) {
+                logger.error("Failed to create table {}.", table.name());
             }
             result.add(table);
         }
+
 
         logger.info("Get style distance vector of program pairs on {} style types.", disOfStyles.size());
         return result;
@@ -144,7 +149,8 @@ public class DiffAnalyzer {
 
     public static void writeResult2excel(List<Table> result, String resultFileName) {
         // 创建一个工作簿
-        try (Workbook workbook = new XSSFWorkbook()) {
+        try (Workbook workbook = new XSSFWorkbook();
+             FileOutputStream fileOut = new FileOutputStream(resultFileName + ".xlsx")) {
 
             // 遍历每个Table并将其写入不同的工作表
             for (Table table : result) {
@@ -161,20 +167,22 @@ public class DiffAnalyzer {
                 }
 
                 // 填充数据
-                for (int i = 0; i < table.rowCount(); i++) {
-                    Row row = sheet.createRow(i + 1);
-                    for (int j = 0; j < table.columnCount(); j++) {
-                        Object cellValue = table.get(i, j);
-                        row.createCell(j).setCellValue(cellValue.toString());
+                try {
+                    for (int i = 0; i < table.rowCount(); i++) {
+                        Row row = sheet.createRow(i + 1);
+                        for (int j = 0; j < table.columnCount(); j++) {
+                            Object cellValue = table.get(i, j);
+                            row.createCell(j).setCellValue(cellValue.toString());
+                        }
                     }
+                } catch (Exception e) {
+                    logger.error("Failed to write table {}.", table.name());
                 }
+
             }
 
             // 将工作簿写入文件
-            try (FileOutputStream fileOut = new FileOutputStream(resultFileName + ".xlsx")) {
-                workbook.write(fileOut);
-            }
-
+            workbook.write(fileOut);
             logger.info("Successfully write result to {}", resultFileName);
         } catch (IOException e) {
             logger.error("Failed to write result to {}", resultFileName, e);

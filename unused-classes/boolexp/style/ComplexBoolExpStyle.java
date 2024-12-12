@@ -1,4 +1,4 @@
-package org.example.styler.boolexp.style;
+package org.example.styler.exp.style;
 
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;

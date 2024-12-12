@@ -1,4 +1,4 @@
-package org.example.styler.boolexp.style;
+package org.example.styler.exp.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

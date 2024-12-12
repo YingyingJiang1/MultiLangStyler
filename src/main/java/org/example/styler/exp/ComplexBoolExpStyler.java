@@ -1,4 +1,4 @@
-package org.example.styler.boolexp;
+package org.example.styler.exp;
 
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;
@@ -6,7 +6,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.boolexp.style.ComplexBoolExpProperty;
+import org.example.styler.exp.style.ComplexBoolExpProperty;
 
 import java.util.List;
 
@@ -44,8 +44,8 @@ public class ComplexBoolExpStyler extends Styler {
                 if (length > property.maxExpressionLength) {
                     property.maxExpressionLength = length;
                 }
-                if (predicateNum > property.maxPredicateNum) {
-                    property.maxPredicateNum = predicateNum;
+                if (predicateNum > property.maxLogicalOpNum) {
+                    property.maxLogicalOpNum = predicateNum;
                 }
             }
         }

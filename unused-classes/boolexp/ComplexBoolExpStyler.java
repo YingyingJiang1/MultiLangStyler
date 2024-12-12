@@ -1,12 +1,12 @@
-package org.example.styler.boolexp;
+package org.example.styler.exp;
 
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.boolexp.style.ComplexBoolExpProperty;
-import org.example.styler.boolexp.style.ComplexBoolExpStyle;
+import org.example.styler.exp.style.ComplexBoolExpProperty;
+import org.example.styler.exp.style.ComplexBoolExpStyle;
 
 import java.util.List;
 

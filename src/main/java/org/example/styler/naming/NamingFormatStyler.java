@@ -24,7 +24,11 @@ public class NamingFormatStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        SymbolTable st = GlobalInfo.getResolver().getSymbolTable(parser.getRoot());
+        SymbolTable st = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolveAll(parser.getRoot(), parser);
+        if (st == null) {
+            return;
+        }
+
         List<Symbol> symbols = st.getAllSymbols();
         for (Symbol symbol : symbols) {
             String name = symbol.getName();
@@ -57,7 +61,11 @@ public class NamingFormatStyler extends Styler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        SymbolTable st = GlobalInfo.getResolver().getSymbolTable(parser.getRoot());
+        SymbolTable st = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolveAll(parser.getRoot(), parser);
+        if (st == null) {
+            return ctx;
+        }
+
         List<Symbol> symbols = st.getAllSymbols();
         for (Symbol symbol : symbols) {
             SymbolType symbolType = symbol.getSymbolType();
@@ -100,6 +108,7 @@ public class NamingFormatStyler extends Styler {
                 name = name.replace(words[0], abbreviation);
                 curLen -= words[0].length() - abbreviation.length();
             }
+            i++;
         }
 
         return name;
@@ -114,6 +123,7 @@ public class NamingFormatStyler extends Styler {
         }
         return null;
     }
+
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {

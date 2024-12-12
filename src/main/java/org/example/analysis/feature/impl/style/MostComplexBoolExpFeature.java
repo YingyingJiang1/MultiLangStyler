@@ -7,7 +7,7 @@ import org.example.analysis.feature.featurevalue.MapAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.boolexp.style.ComplexBoolExpProperty;
+import org.example.styler.exp.style.ComplexBoolExpProperty;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class MostComplexBoolExpFeature implements StyleFeatureExtractor {
             if (rule.getStyleProperty() instanceof ComplexBoolExpProperty property) {
                 MapAttrValue mapAttrValue = new MapAttrValue();
                 mapAttrValue.addValue(MostComplexBoolExp.maxLengthAttr, new DoubleAttrValue(property.maxExpressionLength));
-                mapAttrValue.addValue(MostComplexBoolExp.maxPredicateNum, new DoubleAttrValue(property.maxPredicateNum));
+                mapAttrValue.addValue(MostComplexBoolExp.maxPredicateNum, new DoubleAttrValue(property.maxLogicalOpNum));
                 sv.addAttrValue("Complexity", mapAttrValue);
             }
         }

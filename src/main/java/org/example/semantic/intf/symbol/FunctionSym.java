@@ -12,7 +12,7 @@ public class FunctionSym extends Symbol{
     List<Symbol> typeParameters;
 
 
-    public FunctionSym(Type retType, List<Symbol> typeParameters, TerminalNode astNode, ExtendContext modifierListNode, SymbolType symbolType) {
+    public FunctionSym(Type retType, List<Symbol> typeParameters, ExtendContext astNode, ExtendContext modifierListNode, SymbolType symbolType) {
         super(astNode, modifierListNode, symbolType);
         this.retType = retType;
         this.typeParameters = typeParameters;
