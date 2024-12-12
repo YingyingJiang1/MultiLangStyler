@@ -28,7 +28,7 @@ public class BlankLineFeature implements ParserFeatureExtractor {
         for (int i = 0; i < emptyLines.size() - 1; i++) {
             totalDistance += emptyLines.get(i + 1) - emptyLines.get(i);
         }
-        sv.addAttrValue(BlankLine.reasonablenessAttr, new DoubleAttrValue(emptyLines.isEmpty() ? 0 : totalDistance / (double) (emptyLines.size() - 1)));
+        sv.addAttrValue(BlankLine.reasonablenessAttr, new DoubleAttrValue(emptyLines.size() < 2 ? 0 : totalDistance / (double) (emptyLines.size() - 1)));
 
         st2svMap.put(BlankLine.styleType, sv);
     }
