@@ -30,7 +30,7 @@ public class VectorAttrValue implements AttrValue {
             for (int i = 0; i < value.size(); i++) {
                 distance += value.get(i) == otherVector.value.get(i) ? 0 : 1;
             }
-            return Math.sqrt(distance) / value.size();
+            return distance / value.size();
         }
         return 0;
     }

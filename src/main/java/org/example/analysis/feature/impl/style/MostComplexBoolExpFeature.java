@@ -1,6 +1,6 @@
 package org.example.analysis.feature.impl.style;
 
-import org.example.analysis.StyleType.MostComplexBoolExp;
+import org.example.analysis.StyleType.MostComplexExp;
 import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.DoubleAttrValue;
 import org.example.analysis.feature.featurevalue.MapAttrValue;
@@ -19,11 +19,11 @@ public class MostComplexBoolExpFeature implements StyleFeatureExtractor {
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleProperty() instanceof ExpressionProperty property) {
                 MapAttrValue mapAttrValue = new MapAttrValue();
-                mapAttrValue.addValue(MostComplexBoolExp.maxLengthAttr, new DoubleAttrValue(property.maxExpressionLength));
-                mapAttrValue.addValue(MostComplexBoolExp.maxPredicateNum, new DoubleAttrValue(property.maxSubExpNum));
+                mapAttrValue.addValue(MostComplexExp.maxLengthAttr, new DoubleAttrValue(property.maxExpressionLength));
+                mapAttrValue.addValue(MostComplexExp.maxSubExpNum, new DoubleAttrValue(property.maxSubExpNum));
                 sv.addAttrValue("Complexity", mapAttrValue);
             }
         }
-        st2svMap.put(MostComplexBoolExp.styleType, sv);
+        st2svMap.put(MostComplexExp.styleType, sv);
     }
 }

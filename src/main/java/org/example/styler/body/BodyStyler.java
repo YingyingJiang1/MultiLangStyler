@@ -1,5 +1,7 @@
 package org.example.styler.body;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Styler;
@@ -22,12 +24,13 @@ public abstract class BodyStyler extends Styler {
     /**
      *
      * @param stmt Statement context which the block belongs to.
-     * @param block Block context.
+     * @param body body of stmt.
      * @return
      */
-    protected BodyContext extractStyleContext(ExtendContext stmt, ExtendContext block, MyParser parser) {
+    protected BodyContext extractStyleContext(ExtendContext stmt, ParseTree body, MyParser parser) {
         BodyTypeEnum blockType = getBodyType(stmt.getRuleIndex(), parser);
-        return new BodyContext(blockType, getBodyNumType(block, parser));
+        BodyNumType bodyNum = body instanceof TerminalNode ? BodyNumType.EMPTY : getBodyNumType((ExtendContext) body, parser);
+        return new BodyContext(blockType,bodyNum);
     }
 
     public BodyTypeEnum getBodyType(int rule, MyParser parser) {

@@ -28,4 +28,8 @@ public class StyleVector {
         }
         return ret;
     }
+
+    public boolean isEmpty() {
+        return attrValueMap.isEmpty();
+    }
 }

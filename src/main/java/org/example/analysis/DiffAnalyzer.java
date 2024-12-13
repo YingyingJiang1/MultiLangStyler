@@ -3,7 +3,6 @@ package org.example.analysis;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SequenceWriter;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -24,9 +23,12 @@ import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.tablesaw.api.DoubleColumn;
+import tech.tablesaw.api.Row;
+import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.columns.Column;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -50,7 +52,9 @@ public class DiffAnalyzer {
 
         programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
         System.out.println("human-llm pairs: " + programPairs.size());
+//        programPairs = programPairs.subList(0, 20);
         result = analyze(programPairs);
+        saveFinalResult(result, programPairs.size(), "human-llm-final-result.csv");
         writeResult2excel(result, "human-llm-result");
 
         programPairs = InputGenerator.generateHumanPairs(metaFile);
@@ -65,6 +69,38 @@ public class DiffAnalyzer {
 
     }
 
+    private static void saveFinalResult(List<Table> result, int totalPair, String filename) {
+        Table finalResult = Table.create("final-result");
+        for (Table table : result) {
+            int consistency = 0, inconsistency = 0;
+            for (int i = 0; i < table.rowCount(); i++) {
+                Row row = table.row(i);
+                List<Double> attrDistances = new ArrayList<Double>();
+                for (int j = 0; j < row.columnCount(); j++) {
+                    if (row.getDouble(j) >= 0) {
+                        attrDistances.add(row.getDouble(j));
+                    }
+                }
+                double normalizedMod = Math.sqrt(attrDistances.stream().reduce(0.0, (sum, d) -> Math.pow(d, 2))) / Math.sqrt(attrDistances.size());
+                if (normalizedMod < 0.5) {
+                    consistency++;
+                } else if(normalizedMod > 0.5) {
+                    inconsistency++;
+                }
+            }
+            int noStyle = totalPair - table.rowCount();
+            Table row = Table.create();
+            row.addColumns(StringColumn.create("style type", table.name()));
+            row.addColumns(DoubleColumn.create("consistency", consistency));
+            row.addColumns(DoubleColumn.create("inconsistency", inconsistency));
+            row.addColumns(DoubleColumn.create("no style", noStyle));
+            finalResult.addRow(finalResult.rowCount(), row);
+        }
+
+        finalResult.write().csv(filename);
+
+    }
+
 
     public static List<Table> analyze(List<InputPair> programPairs) throws IOException {
         String tempResultFile = "tmp_result.json";
@@ -73,7 +109,7 @@ public class DiffAnalyzer {
         JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
         SequenceWriter tmpWriter = objectMapper.writer().writeValuesAsArray(generator);
 
-        Map<String, Map<String, List<Double>>> disOfStyles = new HashMap<>();
+        Map<String, List<PairDistance>> disOfStyles = new HashMap<>();
         int count = 0;
         try {
             for (InputPair pair : programPairs) {
@@ -94,12 +130,10 @@ public class DiffAnalyzer {
                 // 为每种风格计算每一对程序对之间的风格距离向量，并以表格形式存储
                 for (String styleName : style2vecMap1.keySet()) {
                     StyleVector vec1 = style2vecMap1.get(styleName);
-                    if (style2vecMap2.get(styleName) != null) {
-                        Map<String,Double> disOfAttrs = style2vecMap1.get(styleName).calculateDistance(style2vecMap2.get(styleName));
-                        Map<String, List<Double>> column = disOfStyles.computeIfAbsent(styleName, k -> new HashMap<>());
-                        for (Map.Entry<String, Double> entry : disOfAttrs.entrySet()) {
-                            column.computeIfAbsent(entry.getKey(), k -> new ArrayList<>()).add(entry.getValue());
-                        }
+                    StyleVector vec2 = style2vecMap2.get(styleName);
+                    if (vec2 != null) {
+                        PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
+                        disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
                     }
                 }
             }
@@ -108,17 +142,28 @@ public class DiffAnalyzer {
         }
 
         List<Table> result = new ArrayList<>();
-        for (Map.Entry<String, Map<String, List<Double>>> entry : disOfStyles.entrySet()) {
+        for (Map.Entry<String, List<PairDistance>> entry : disOfStyles.entrySet()) {
             Table table = Table.create(entry.getKey());
             try {
-                for (Map.Entry<String, List<Double>> distanceEntry : entry.getValue().entrySet()) {
-                    Column<Double> column = DoubleColumn.create(distanceEntry.getKey(), distanceEntry.getValue().toArray(Double[]::new));
+                // 统一距离向量长度
+                List<PairDistance> allDistances = entry.getValue();
+                Set<String> attrNames = new HashSet<>();
+                for (PairDistance distance : allDistances) {
+                    attrNames.addAll(distance.distanceMap.keySet());
+                }
+                for (PairDistance distance : allDistances) {
+                    distance.uniformLength(attrNames);
+                }
+
+                for (String attrName : attrNames) {
+                    List<Double> columns = allDistances.stream().map(d -> d.distanceMap.get(attrName)).toList();
+                    Column<Double> column = DoubleColumn.create(attrName, columns);
                     table.addColumns(column);
                 }
+                result.add(table);
             } catch (Exception e) {
-                logger.error("Failed to create table {}.", table.name());
+                logger.error("Failed to create table {}.", table.name(), e);
             }
-            result.add(table);
         }
 
 
@@ -161,7 +206,8 @@ public class DiffAnalyzer {
                 Sheet sheet = workbook.createSheet(sheetName);
 
                 // 添加表头（列名）
-                Row headerRow = sheet.createRow(0);
+
+                org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
                 for (int i = 0; i < table.columnCount(); i++) {
                     headerRow.createCell(i).setCellValue(table.column(i).name());
                 }
@@ -169,7 +215,7 @@ public class DiffAnalyzer {
                 // 填充数据
                 try {
                     for (int i = 0; i < table.rowCount(); i++) {
-                        Row row = sheet.createRow(i + 1);
+                        org.apache.poi.ss.usermodel.Row row = sheet.createRow(i + 1);
                         for (int j = 0; j < table.columnCount(); j++) {
                             Object cellValue = table.get(i, j);
                             row.createCell(j).setCellValue(cellValue.toString());
@@ -187,6 +233,23 @@ public class DiffAnalyzer {
         } catch (IOException e) {
             logger.error("Failed to write result to {}", resultFileName, e);
         }
+    }
+
+    private static class PairDistance {
+        Map<String, Double> distanceMap = new HashMap<>();
+
+        public PairDistance(Map<String, Double> distanceMap) {
+            this.distanceMap = distanceMap;
+        }
+
+        public void uniformLength(Set<String> attrNames) {
+            for (String attrName : attrNames) {
+                if (!distanceMap.containsKey(attrName)) {
+                    distanceMap.put(attrName, -1.0);
+                }
+            }
+        }
+
     }
 
 }

@@ -77,10 +77,10 @@ public class StyleType {
         public static String styleType = "Number of variables in one declaration statement";
     }
 
-    public static class MostComplexBoolExp {
-        public static String styleType = "The most complex bool expression";
-        public static String maxLengthAttr = "Max text length of all boolean expressions";
-        public static String maxPredicateNum = "Max number of predicates of all boolean expressions";
+    public static class MostComplexExp {
+        public static String styleType = "The most complex expression";
+        public static String maxLengthAttr = "Max text length of all expressions";
+        public static String maxSubExpNum = "Max number of sub-expressions of all expressions";
     }
 
     public static class ArrayDeclarationStyle {
