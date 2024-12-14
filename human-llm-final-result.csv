@@ -1,0 +1,28 @@
+style type,consistency,inconsistency,no style
+Continue preferences,26.0,0.0,912.0
+Continuous logic or conditions preferences,26.0,0.0,912.0
+Return statements,29.0,0.0,909.0
+Comment density,0.0,0.0,938.0
+Array declaration style,2.0,0.0,936.0
+Brace format,866.0,72.0,0.0
+Location of variable declaration,892.0,46.0,0.0
+Order of if-else bodies,52.0,886.0,0.0
+Naming format,920.0,18.0,0.0
+Comment syntax,0.0,0.0,938.0
+One statement in one line,919.0,19.0,0.0
+Modifiers order,930.0,8.0,0.0
+Ordering of class contents,921.0,17.0,0.0
+Order of function parameters,330.0,608.0,0.0
+Space,869.0,69.0,0.0
+Line length,1.0,937.0,0.0
+Optional brace,494.0,444.0,0.0
+The most complex expression,93.0,845.0,0.0
+Indention,935.0,3.0,0.0
+Function complexity,938.0,0.0,0.0
+Mutlibranch,2.0,936.0,0.0
+Continuous logic and conditions preferences,2.0,1.0,935.0
+Layout of control statement without braces,41.0,897.0,0.0
+Blank line,131.0,807.0,0.0
+Number of variables in one declaration statement,150.0,788.0,0.0
+Increment or decrement preferences,9.0,0.0,929.0
+Assignment statement preferences,3.0,0.0,935.0

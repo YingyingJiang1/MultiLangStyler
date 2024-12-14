@@ -48,6 +48,9 @@ public class EquivalentStructureManager {
         // Parse json data.
         int id = node.get("id").asInt();
         String category = node.get("category") == null ? "" : node.get("category").asText();
+        if (category.isEmpty()) {
+          logger.warn("Category is empty for equivalent structure: {}", id);
+        }
         String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
 //        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
         List<Checker> checkers = parseChecks(node.get("checkers"), objectMapper, parser);

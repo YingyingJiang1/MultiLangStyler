@@ -81,7 +81,7 @@ public class SpaceStyler extends Styler {
 
         String rightText = rightToken == null ? "" : rightToken.getText();
         String rightName = generateTokenName(rightToken, parser);
-        if (!parser.belongToBinOp(rightText)) {
+        if (!parser.belongToBinOp(rightText) && !rightName.equals("<EOF>")) {
             // name is separator, keyword or identifier.
             return new SpaceContext(name, rightName);
         }
@@ -135,9 +135,9 @@ public class SpaceStyler extends Styler {
             return "";
         }
         TokenGroup group = TokenGrouper.getInstance().getGroup(token, parser);
-        if (group == TokenGroup.SELF_TOKEN) {
-            return token.getText().replaceAll("\\s", "");
+        if (group != TokenGroup.SELF_TOKEN) {
+            return group.name();
         }
-        return group.name();
+        return token.getText();
     }
 }

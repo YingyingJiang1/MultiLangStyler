@@ -70,7 +70,8 @@ public class MyJavaParser implements MyParser {
     private static Set<Integer> literals = Set.of(
             JavaParser.NULL_LITERAL, JavaParser.BINARY_LITERAL, JavaParser.BOOL_LITERAL,
             JavaParser.CHAR_LITERAL, JavaParser.DECIMAL_LITERAL, JavaParser.HEX_LITERAL,
-            JavaParser.OCT_LITERAL, JavaParser.FLOAT_LITERAL, JavaParser.HEX_FLOAT_LITERAL
+            JavaParser.OCT_LITERAL, JavaParser.FLOAT_LITERAL, JavaParser.HEX_FLOAT_LITERAL,
+            JavaParser.STRING_LITERAL, JavaParser.TEXT_BLOCK
     );
 
     public MyJavaParser() {}

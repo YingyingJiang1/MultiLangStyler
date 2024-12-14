@@ -20,7 +20,8 @@ import java.util.Set;
 public interface MyParser {
     Set<String> binOps = new HashSet<>(Arrays.asList(
             "+", "-", "*", "/",  "%", "&", "|", "^", "=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=",
-            "<<=", ">>=", ">>>=", "<", ">", "<=", ">=", "==", "!=", ":", "::", ".", "->"
+            "<<=", ">>=", ">>>=", "<", ">", "<=", ">=", "==", "!=", ":", "::", ".", "->",
+            "&&", "||", "instanceof"
     ));
 
     Set<String> unaryOps = new HashSet<>(Arrays.asList(

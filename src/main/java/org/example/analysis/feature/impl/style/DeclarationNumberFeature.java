@@ -1,5 +1,6 @@
 package org.example.analysis.feature.impl.style;
 
+import org.example.analysis.StyleType;
 import org.example.analysis.feature.StyleFeatureExtractor;
 import org.example.analysis.feature.featurevalue.DoubleAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
@@ -21,6 +22,6 @@ public class DeclarationNumberFeature implements StyleFeatureExtractor {
                 sv.addAttrValue(name, new DoubleAttrValue(property.maxVariableCount));
             }
         }
-        st2svMap.put(style.getStyleName(), sv);
+        st2svMap.put(StyleType.NumberOfVarInOneDecStmt.styleType, sv);
     }
 }

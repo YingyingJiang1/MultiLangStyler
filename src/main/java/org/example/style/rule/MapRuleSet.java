@@ -1,8 +1,11 @@
 package org.example.style.rule;
 
 import org.example.style.rule.filter.StylePropertyFilter;
+import org.example.styler.structure.style.StructPreferenceContext;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class MapRuleSet implements RuleSet{
     protected Map<StyleContext, List<StyleProperty>> rules = new HashMap<>();
@@ -79,6 +82,10 @@ public class MapRuleSet implements RuleSet{
             boolean existsConflict = properties.size() > 1;
             if (existsConflict) {
                 toBeRemoved.add(entry.getKey());
+                LoggerFactory.getLogger(MapRuleSet.class).debug("Conflict style exists: {}", entry.getKey());
+                if (entry.getKey() instanceof StructPreferenceContext context) {
+                    LoggerFactory.getLogger(MapRuleSet.class).debug("id: {}, category: {}", context.getStructID(), context.getStructCategory());
+                }
             } else {
                 entry.setValue(properties);
             }

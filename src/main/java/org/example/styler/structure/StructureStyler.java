@@ -5,9 +5,11 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.java.MyJavaParser;
 import org.example.style.rule.StyleContext;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
+import smile.util.SparseArray;
 
 import java.util.*;
 
@@ -32,6 +34,7 @@ public class StructureStyler extends Styler {
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         loadEquivalences(parser);
+        int ruIndex = ctx.getChild(0) instanceof ExtendContext childCtx ? childCtx.getRuleIndex() : ctx.getRuleIndex();
         ++recursiveDepth;
         ParseTree newTree = ctx;
         List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ctx.getRuleIndex());
@@ -88,7 +91,8 @@ public class StructureStyler extends Styler {
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         loadEquivalences(parser);
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ctx.getRuleIndex());
+        int ruIndex = ctx.getChild(0) instanceof ExtendContext childCtx ? childCtx.getRuleIndex() : ctx.getRuleIndex();
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
         if (equivalentStructures != null) {
 //            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
 //                System.out.println("--------------------waiting to match---------------------");
@@ -108,11 +112,8 @@ public class StructureStyler extends Styler {
     }
 
     @Override
-    protected Set<Integer> getRelevantRules(MyParser parser) {
-        if (relevantRules == null) {
-            relevantRules = Set.of(parser.getRuleStmt());
-        }
-        return relevantRules;
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+        return ctx.getRuleIndex() == parser.getRuleStmt();
     }
 
     private void loadEquivalences(MyParser parser) {

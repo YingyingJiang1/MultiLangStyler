@@ -6,7 +6,7 @@ import org.example.style.rule.StyleContext;
 import org.example.styler.exp.ExpType;
 
 public class ExpressionContext extends StyleContext {
-    ExpType expType;
+    public ExpType expType;
 
     public ExpressionContext(ExpType expType) {
         this.expType = expType;

@@ -80,8 +80,10 @@ public class EquivalentStructure {
 				}
 
 				for (ParseTree t : trees) {
-					if (t instanceof  ExtendContext ctx) {
-						rules.add(ctx.getRuleIndex());
+					if (t instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleStmt()) {
+						ParseTree child = ctx.getChild(0);
+						int ruleIndex = child instanceof ExtendContext childCtx ? childCtx.getRuleIndex() : ctx.getRuleIndex();
+						rules.add(ruleIndex);
 					}
 				}
 

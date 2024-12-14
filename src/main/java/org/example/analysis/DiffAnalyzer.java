@@ -28,6 +28,7 @@ import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.columns.Column;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,10 +53,11 @@ public class DiffAnalyzer {
 
         programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
         System.out.println("human-llm pairs: " + programPairs.size());
-//        programPairs = programPairs.subList(0, 20);
+//        programPairs = programPairs.subList(0, 2);
         result = analyze(programPairs);
-        saveFinalResult(result, programPairs.size(), "human-llm-final-result.csv");
         writeResult2excel(result, "human-llm-result");
+        saveFinalResult(result, programPairs.size(), "human-llm-final-result");
+
 
         programPairs = InputGenerator.generateHumanPairs(metaFile);
         System.out.println("human pairs: " + programPairs.size());
@@ -70,7 +72,13 @@ public class DiffAnalyzer {
     }
 
     private static void saveFinalResult(List<Table> result, int totalPair, String filename) {
-        Table finalResult = Table.create("final-result");
+
+        List<String> styleTypes = new ArrayList<String>();
+        Map<String, List<Integer>> statistics = Map.of(
+                "consistency", new ArrayList<Integer>(),
+                "inconsistency", new ArrayList<Integer>(),
+                "no style", new ArrayList<Integer>()
+        );
         for (Table table : result) {
             int consistency = 0, inconsistency = 0;
             for (int i = 0; i < table.rowCount(); i++) {
@@ -82,22 +90,28 @@ public class DiffAnalyzer {
                     }
                 }
                 double normalizedMod = Math.sqrt(attrDistances.stream().reduce(0.0, (sum, d) -> Math.pow(d, 2))) / Math.sqrt(attrDistances.size());
-                if (normalizedMod < 0.5) {
+                if (normalizedMod == 0) {
                     consistency++;
-                } else if(normalizedMod > 0.5) {
+                } else {
                     inconsistency++;
                 }
             }
             int noStyle = totalPair - table.rowCount();
-            Table row = Table.create();
-            row.addColumns(StringColumn.create("style type", table.name()));
-            row.addColumns(DoubleColumn.create("consistency", consistency));
-            row.addColumns(DoubleColumn.create("inconsistency", inconsistency));
-            row.addColumns(DoubleColumn.create("no style", noStyle));
-            finalResult.addRow(finalResult.rowCount(), row);
+            styleTypes.add(table.name());
+            statistics.get("consistency").add(consistency);
+            statistics.get("inconsistency").add(inconsistency);
+            statistics.get("no style").add(noStyle);
         }
 
-        finalResult.write().csv(filename);
+        Table finalResult = Table.create("final-result")
+                        .addColumns(
+
+                                StringColumn.create("style type", styleTypes),
+                                DoubleColumn.create("consistency", statistics.get("consistency")),
+                                DoubleColumn.create("inconsistency", statistics.get("inconsistency")),
+                                DoubleColumn.create("no style", statistics.get("no style"))
+                        );
+        finalResult.write().csv(filename + ".csv");
 
     }
 
@@ -199,21 +213,22 @@ public class DiffAnalyzer {
 
             // 遍历每个Table并将其写入不同的工作表
             for (Table table : result) {
-                // 获取表名（作为工作表名称）
-                String sheetName = table.name();
-
-                // 创建工作表
-                Sheet sheet = workbook.createSheet(sheetName);
-
-                // 添加表头（列名）
-
-                org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
-                for (int i = 0; i < table.columnCount(); i++) {
-                    headerRow.createCell(i).setCellValue(table.column(i).name());
-                }
-
-                // 填充数据
                 try {
+                    // 获取表名（作为工作表名称）
+                    String sheetName = table.name();
+
+                    // 创建工作表
+                    Sheet sheet = workbook.createSheet(sheetName);
+
+                    // 添加表头（列名）
+
+                    org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
+                    for (int i = 0; i < table.columnCount(); i++) {
+                        headerRow.createCell(i).setCellValue(table.column(i).name());
+                    }
+
+                    // 填充数据
+
                     for (int i = 0; i < table.rowCount(); i++) {
                         org.apache.poi.ss.usermodel.Row row = sheet.createRow(i + 1);
                         for (int j = 0; j < table.columnCount(); j++) {

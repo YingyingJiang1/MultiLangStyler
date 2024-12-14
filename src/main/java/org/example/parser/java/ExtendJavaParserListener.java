@@ -88,7 +88,7 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 		} else {
 			listenerState.curMethodBody = ctx;
 		}
-		ctx.deleteStatementCtx(parser); // Ensure delete statement context when entering block.
+		// ctx.deleteStatementCtx(parser); // Ensure delete statement context when entering block.
 		ctx.incBraceDepth();
 		doTask(ctx, enterStylers);
 	}
@@ -338,49 +338,49 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitIfStmt(JavaParser.IfStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitIfElseStmt(JavaParser.IfElseStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitForStmt(JavaParser.ForStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitWhileStmt(JavaParser.WhileStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitDoWhileStmt(JavaParser.DoWhileStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitLabelStmt(JavaParser.LabelStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitSwitchStmt(JavaParser.SwitchStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitSyncStmt(JavaParser.SyncStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -406,13 +406,13 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitPackageDeclaration(JavaParser.PackageDeclarationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -423,43 +423,43 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitTypeParameters(JavaParser.TypeParametersContext ctx) {
-		ctx.expandChildren(parser);
+//		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTypeParameter(JavaParser.TypeParameterContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTypeBound(JavaParser.TypeBoundContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitEnumConstants(JavaParser.EnumConstantsContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitConstDeclarationList(JavaParser.ConstDeclarationListContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitConstDeclaration(JavaParser.ConstDeclarationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitConstantDeclarator(JavaParser.ConstantDeclaratorContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -470,20 +470,20 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 
 	@Override
 	public void exitTypeArgument(JavaParser.TypeArgumentContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitQualifiedNameList(JavaParser.QualifiedNameListContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -501,37 +501,37 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitLambdaLVTIList(JavaParser.LambdaLVTIListContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitQualifiedName(JavaParser.QualifiedNameContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitLiteral(JavaParser.LiteralContext ctx) {
-		ctx.expandChildren(parser);
+//		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitIntegerLiteral(JavaParser.IntegerLiteralContext ctx) {
-		ctx.expandChildren(parser);
+//		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitFloatLiteral(JavaParser.FloatLiteralContext ctx) {
-		ctx.expandChildren(parser);
+//		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAltAnnotationQualifiedName(JavaParser.AltAnnotationQualifiedNameContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -542,97 +542,97 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitAnnotation(JavaParser.AnnotationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitElementValuePairs(JavaParser.ElementValuePairsContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitElementValuePair(JavaParser.ElementValuePairContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitElementValue(JavaParser.ElementValueContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAnnotationTypeElementDeclaration(JavaParser.AnnotationTypeElementDeclarationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAnnotationTypeElementRest(JavaParser.AnnotationTypeElementRestContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAnnotationMethodOrConstantRest(JavaParser.AnnotationMethodOrConstantRestContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAnnotationMethodRest(JavaParser.AnnotationMethodRestContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAnnotationConstantRest(JavaParser.AnnotationConstantRestContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitDefaultValue(JavaParser.DefaultValueContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitModuleDeclaration(JavaParser.ModuleDeclarationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitModuleDirective(JavaParser.ModuleDirectiveContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitRequiresModifier(JavaParser.RequiresModifierContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitRecordHeader(JavaParser.RecordHeaderContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitRecordComponentList(JavaParser.RecordComponentListContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitRecordComponent(JavaParser.RecordComponentContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -649,181 +649,181 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitIdentifier(JavaParser.IdentifierContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTypeIdentifier(JavaParser.TypeIdentifierContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitCatchType(JavaParser.CatchTypeContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitResourceSpecification(JavaParser.ResourceSpecificationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitResources(JavaParser.ResourcesContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitResource(JavaParser.ResourceContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitSwitchLabel(JavaParser.SwitchLabelContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitForControl(JavaParser.ForControlContext ctx) {
-		// ctx.expandChildren(parser);
+		// // ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitForInit(JavaParser.ForInitContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitEnhancedForControl(JavaParser.EnhancedForControlContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitParExpression(JavaParser.ParExpressionContext ctx) {
-		// ctx.expandChildren(parser);
+		// // ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitExpressionList(JavaParser.ExpressionListContext ctx) {
-		ctx.expandChildren(parser);
-		doTask(ctx, exitStylers);
-	}
-
-	@Override
-	public void exitMethodCall(JavaParser.MethodCallContext ctx) {
-		ctx.expandChildren(parser);
-		doTask(ctx, exitStylers);
-	}
-
-	@Override
-	public void exitExpression(JavaParser.ExpressionContext ctx) {
 		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
+	public void exitMethodCall(JavaParser.MethodCallContext ctx) {
+		// ctx.expandChildren(parser);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
+	public void exitExpression(JavaParser.ExpressionContext ctx) {
+		// // ctx.expandChildren(parser);
+		doTask(ctx, exitStylers);
+	}
+
+	@Override
 	public void exitPattern(JavaParser.PatternContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitLambdaExpression(JavaParser.LambdaExpressionContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitLambdaParameters(JavaParser.LambdaParametersContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitLambdaBody(JavaParser.LambdaBodyContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitGuardedPattern(JavaParser.GuardedPatternContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitClassType(JavaParser.ClassTypeContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitCreator(JavaParser.CreatorContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitCreatedName(JavaParser.CreatedNameContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitInnerCreator(JavaParser.InnerCreatorContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitArrayCreatorRest(JavaParser.ArrayCreatorRestContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitClassCreatorRest(JavaParser.ClassCreatorRestContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitExplicitGenericInvocation(JavaParser.ExplicitGenericInvocationContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTypeArgumentsOrDiamond(JavaParser.TypeArgumentsOrDiamondContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitNonWildcardTypeArguments(JavaParser.NonWildcardTypeArgumentsContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTypeList(JavaParser.TypeListContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -869,67 +869,67 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitLocalVariableDeclarationStmt(JavaParser.LocalVariableDeclarationStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitStatement(JavaParser.StatementContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitAssertStmt(JavaParser.AssertStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTryCatchStmt(JavaParser.TryCatchStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitTryResourceStmt(JavaParser.TryResourceStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitReturnStmt(JavaParser.ReturnStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitThrowStmt(JavaParser.ThrowStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitBreakStmt(JavaParser.BreakStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitContinueStmt(JavaParser.ContinueStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitYieldStmt(JavaParser.YieldStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitExpressionStmt(JavaParser.ExpressionStmtContext ctx) {
-		ctx.deleteStatementCtx(parser);
+		// ctx.deleteStatementCtx(parser);
 		doTask(ctx, exitStylers);
 	}
 
@@ -957,25 +957,25 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	@Override
 	public void exitTypeArguments(JavaParser.TypeArgumentsContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitSuperSuffix(JavaParser.SuperSuffixContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitExplicitGenericInvocationSuffix(JavaParser.ExplicitGenericInvocationSuffixContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 
 	@Override
 	public void exitArguments(JavaParser.ArgumentsContext ctx) {
-		ctx.expandChildren(parser);
+		// ctx.expandChildren(parser);
 		doTask(ctx, exitStylers);
 	}
 

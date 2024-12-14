@@ -13,7 +13,7 @@ import javax.script.ScriptContext;
 
 public class ExpressionStyler extends Styler {
     public ExpressionStyler() {
-        style.setStyleName("most_complex_bool_expression");
+        style.setStyleName("most_complex_expression");
     }
 
     @Override

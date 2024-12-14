@@ -25,7 +25,39 @@ public class FeatureExtractorFactory {
         put("function_complexity", new FunctionComplexityFeatureCreator());
         put("parameter_order", new ParameterOrderFeatureCreator());
         put("multi_branch", new MultiBranchFeatureCreator());
+        put("body_layout", new BodyLayoutFeatureCreator());
+        put("declaration_location", new DeclarationLocationFeatureCreator());
+        put("if_else_body_order", new IFElseOBodyOrderFeatureCreator());
+        put("most_complex_expression", new MostComplexExpFeatureCreator());
     }};
+
+    private static class MostComplexExpFeatureCreator extends ExtractorCreator {
+        @Override
+        public StyleFeatureExtractor create() {
+            return new MostComplexExpFeature();
+        }
+    }
+
+    private static class IFElseOBodyOrderFeatureCreator extends ExtractorCreator {
+        @Override
+        public StyleFeatureExtractor create() {
+            return new IfElseBodyOrderFeature();
+        }
+    }
+
+    private static class DeclarationLocationFeatureCreator extends ExtractorCreator {
+        @Override
+        public StyleFeatureExtractor create() {
+            return new DeclarationLocationFeature();
+        }
+    }
+
+    private static class BodyLayoutFeatureCreator extends ExtractorCreator {
+        @Override
+        public StyleFeatureExtractor create() {
+            return new BodyLayoutFeature();
+        }
+    }
 
 
     private static class MultiBranchFeatureCreator extends ExtractorCreator {

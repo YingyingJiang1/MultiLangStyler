@@ -8,6 +8,7 @@ import org.example.parser.common.factory.MyParserFactory;
 import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.structure.EquivalentStructureManager;
 import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,10 @@ public class CommonTest {
     String srcsDir = "src/test/sources";
 
     @Test
-    void test() {
+    void test() throws IOException {
+//        EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
+//        manager.loadConfFile();
+//        manager.writeJsonData("D:\\jyy\\科研\\style\\transformer\\src\\main\\resources\\equivalencesConf.json");
         String src = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L131\\human-lil_toeturtle.java";
         String target = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L055\\claude35sonnet.java";
         transform(Paths.get(src),

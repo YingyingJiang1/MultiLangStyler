@@ -3,17 +3,23 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.java.MyJavaParser;
 import org.example.parser.java.antlr.JavaParser;
+import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.styler.structure.EquivalentStructureManager;
 import org.example.styler.structure.StructureStyler;
+import org.example.styler.structure.style.StructPreferenceContext;
+import org.example.styler.structure.style.StructPreferenceProperty;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StructurePreferenceTest extends CommonTest {
     String language = "java";
+    String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
     @Test
     void test() {
         EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
@@ -25,12 +31,41 @@ public class StructurePreferenceTest extends CommonTest {
     }
 
 
+    void resultOfTest(Style style, int targetId, int targetIndex) {
+        StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(new StructPreferenceContext("", targetId));
+        assertEquals(targetIndex, property.getPreferenceIndex());
+    }
 
     @Test
-    void testA() {
+    void testInc() {
+        int id = 1;
+        String target = "i+=1;";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 2);
 
-        String source = "if (a == b) { return 1;}else return 0;";
-        String target = "return a==b?1:0;";
-
+        target = "i=i+1;";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 3);
     }
+
+    @Test
+    void testAssign() {
+        int id = 3;
+        String target = "id +=5;";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 1);
+
+        target = "id = id + 4;";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
+    @Test
+    void testNestingIf() {
+        int id = 4;
+        Path target = Paths.get(dir, "L003\\deepseek-coder.java") ;
+        Style style = extractFromSrcFile(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
 }
