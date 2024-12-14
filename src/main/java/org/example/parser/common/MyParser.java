@@ -147,7 +147,7 @@ public interface MyParser {
     int getRulePackageDeclaration();
     int getRuleQualifiedName();
     int getRuleTypeList();
-
+    ParseTree getSpecificStmt(ExtendContext stmt);
 
 
 

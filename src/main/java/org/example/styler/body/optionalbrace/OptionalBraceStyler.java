@@ -26,11 +26,12 @@ public class OptionalBraceStyler extends BodyStyler {
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree child = ctx.getChild(i);
-            if (parser.belongToStmt(child)) {
-                if (child instanceof TerminalNode) {
+            if (child instanceof ExtendContext childCtx && childCtx.getRuleIndex() == parser.getRuleStmt()) {
+                ParseTree specificStmt = parser.getSpecificStmt(childCtx);
+                if (specificStmt instanceof TerminalNode) {
                     style.addRule(extractStyleContext(ctx, child, parser), new OptionalBraceProperty(false));
                 } else {
-                    ExtendContext body = (ExtendContext) child;
+                    ExtendContext body = (ExtendContext) specificStmt;
                     List<ParseTree> innerStmts = body.children.stream().filter(parser::belongToStmt).toList();
                     // Only consider the body has one statement.
                     if (innerStmts.size() == 1) {
@@ -47,12 +48,13 @@ public class OptionalBraceStyler extends BodyStyler {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree child = ctx.getChild(i);
             if (parser.belongToStmt(child)) {
-                BodyContext context = extractStyleContext(ctx, child, parser);
+                ParseTree specificStmt = parser.getSpecificStmt((ExtendContext) child);
+                BodyContext context = extractStyleContext(ctx, specificStmt, parser);
                 OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(context);
                 if (property == null) {
                     return ctx;
                 }
-                if (property.useBrace && !parser.isBlock(child)) {
+                if (property.useBrace && !parser.isBlock(specificStmt)) {
                     // Add {}
                     TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
                     ExtendContext block = factory.createBlock(ctx);

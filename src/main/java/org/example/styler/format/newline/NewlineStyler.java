@@ -158,12 +158,15 @@ public class NewlineStyler extends Styler {
     }
     
     
-    private AdjacentCodeBlock.CodeBlock generateCodeBlock(ExtendContext parent, int index, int blockNumber) {
+    private AdjacentCodeBlock.CodeBlock generateCodeBlock(ExtendContext parent, int index, int blockNumber, MyParser parser) {
         AdjacentCodeBlock.CodeBlock info = new AdjacentCodeBlock.CodeBlock();
         ParseTree node = parent.getChild(index);
         if (node instanceof ExtendContext ctx) {
             info.token = (ExtendToken) (blockNumber == 1 ? ctx.getStop() : ctx.getStart());
             info.type = ctx.getRuleIndex();
+            if (parser.isStatement(ctx) && ctx.getChild(0) instanceof ExtendContext childCtx) {
+                info.type = childCtx.getRuleIndex();
+            }
         } else {
             info.token = (ExtendToken) ((TerminalNode) node).getSymbol();
             info.type = -info.token.getType();
@@ -182,23 +185,10 @@ public class NewlineStyler extends Styler {
     }
 
 
-    private int getLine(int startLine, String text) {
-        if(text.startsWith("//")) {
-            return startLine;
-        }
-        int countNewline = 0;
-        for (int i = 0; i < text.length(); i++) {
-            if(text.charAt(i) == '\n') {
-                ++countNewline;
-            }
-        }
-        return startLine + countNewline;
-    }
-
     private List<AdjacentCodeBlock> extractCodeBlocks(ExtendContext parent, int index1, int index2, Stage stage, MyParser parser) {
         List<AdjacentCodeBlock> adjacentCodes = new ArrayList<>();
-        AdjacentCodeBlock.CodeBlock codeBlock1 = generateCodeBlock(parent, index1, 1);
-        AdjacentCodeBlock.CodeBlock codeBlock2 = generateCodeBlock(parent, index2, 2);
+        AdjacentCodeBlock.CodeBlock codeBlock1 = generateCodeBlock(parent, index1, 1, parser);
+        AdjacentCodeBlock.CodeBlock codeBlock2 = generateCodeBlock(parent, index2, 2, parser);
         if(codeBlock1.token.getType() == parser.getVws() || codeBlock2.token.getType() == parser.getVws()) {
             return adjacentCodes;
         }

@@ -190,7 +190,9 @@ public class MyJavaParser implements MyParser {
     public boolean belongToStmt(ParseTree t) {
         if (t instanceof ExtendContext ctx) {
             // block is included ??
-            return singleStmts.contains(ctx.getRuleIndex()) || compoundStmts.contains(ctx.getRuleIndex()) || ctx.getRuleIndex() == JavaParser.RULE_block;
+            return ctx.getRuleIndex() == JavaParser.RULE_statement ||
+                    singleStmts.contains(ctx.getRuleIndex()) ||
+                    compoundStmts.contains(ctx.getRuleIndex()) || ctx.getRuleIndex() == JavaParser.RULE_block;
         }
         return ((TerminalNode) t).getSymbol().getType() == JavaParser.SEMI;
     }
@@ -849,6 +851,14 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleTypeList() {
         return JavaParser.RULE_typeList;
+    }
+
+    @Override
+    public ParseTree getSpecificStmt(ExtendContext stmt) {
+        if (stmt instanceof JavaParser.StatementContext) {
+            return stmt.getChild(0);
+        }
+        return stmt;
     }
 
     @Override

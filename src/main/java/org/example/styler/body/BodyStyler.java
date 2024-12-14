@@ -23,8 +23,8 @@ public abstract class BodyStyler extends Styler {
 
     /**
      *
-     * @param stmt Statement context which the block belongs to.
-     * @param body body of stmt.
+     * @param stmt Specific statement which the block belongs to.
+     * @param body body(a specific statement) of stmt.
      * @return
      */
     protected BodyContext extractStyleContext(ExtendContext stmt, ParseTree body, MyParser parser) {
@@ -70,10 +70,11 @@ public abstract class BodyStyler extends Styler {
      * is concerned about.
      */
     private BodyNumType getBodyNumType(ExtendContext ctx, MyParser parser) {
-        int stmtNum = ctx.countChildIf(child -> child instanceof ExtendContext); // Exclude LBRACE and RBRACE.
+        List<ExtendContext> stmts = ctx.getAllContextsIf(parser::belongToStmt); // Exclude LBRACE and RBRACE.
+        int stmtNum = stmts.size();
         if (stmtNum == 0) {
             return BodyNumType.EMPTY;
-        } else if(stmtNum == 1 && parser.belongToSingleStmt(ctx.getFirstCtxChildIf(child -> true))) {
+        } else if(stmtNum == 1 && parser.belongToSingleStmt(parser.getSpecificStmt(stmts.get(0)))) {
             return BodyNumType.SINGLE;
         } else {
             return BodyNumType.MULTI;
