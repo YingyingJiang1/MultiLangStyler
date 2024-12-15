@@ -212,12 +212,6 @@
   "checkers" : [ ],
   "handlers" : [ ]
 }, {
-  "id" : 21,
-  "category" : "Operator preferences",
-  "codes" : [ "$E == true", "$E" ],
-  "checkers" : [ ],
-  "handlers" : [ ]
-}, {
   "id" : 22,
   "category" : "Literal position in bool expression",
   "codes" : [ "$LITERAL == $E", "$E == $LITERAL" ],

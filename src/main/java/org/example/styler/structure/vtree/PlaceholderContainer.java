@@ -1,5 +1,9 @@
 package org.example.styler.structure.vtree;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
+
 import java.util.*;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -134,13 +138,18 @@ public class PlaceholderContainer {
      * @return
      * @apiNote This method can't handle the case where different placeholder names has the same placeholder value.
      */
-    public VirtualNode getVNodeByText(String text) {
-        String placeholderName = getPlaceholderName(text);
+    public VirtualNode getVNode(ParseTree node, MyParser parser) {
+        String placeholderName = getPlaceholderName(node.getText());
         Placeholder placeholder = placeholders.get(placeholderName);
-        if (placeholder != null) {
-            return placeholder.vNode;
+
+        if (placeholder == null) {
+            return null;
         }
-        return null;
+
+        if (placeholder.placeholderName.startsWith("$LITERAL") && !parser.isLiteral(node)) {
+            return null;
+        }
+        return placeholder.vNode;
     }
 
     public VirtualNode getVNodeByPlaceholderName(String placeholderName) {

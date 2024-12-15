@@ -103,6 +103,7 @@ public interface MyParser {
     boolean isLambdaExpression(ParseTree t);
     boolean isCompilationUnit(ParseTree t);
     boolean isTypeParameter(ParseTree t);
+    boolean isLiteral(ParseTree node);
 
 
 
@@ -143,12 +144,13 @@ public interface MyParser {
     int getRuleformalParameterList();
     int getRuleSwitchStmt();
     int getRuleTypeParameters();
+    int getRuleLocalVarDeclaration();
 
     int getRulePackageDeclaration();
     int getRuleQualifiedName();
     int getRuleTypeList();
     ParseTree getSpecificStmt(ExtendContext stmt);
-
+    int getSpecificStmtType(ExtendContext ctx);
 
 
 

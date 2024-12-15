@@ -335,6 +335,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isLiteral(ParseTree node) {
+        return node instanceof JavaParser.LiteralContext;
+    }
+
+    @Override
     public int getRuleExpression() {
         return JavaParser.RULE_expression;
     }
@@ -839,6 +844,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleLocalVarDeclaration() {
+        return JavaParser.RULE_localVariableDeclaration;
+    }
+
+    @Override
     public int getRulePackageDeclaration() {
         return JavaParser.RULE_packageDeclaration;
     }
@@ -859,6 +869,14 @@ public class MyJavaParser implements MyParser {
             return stmt.getChild(0);
         }
         return stmt;
+    }
+
+    @Override
+    public int getSpecificStmtType(ExtendContext ctx) {
+        if (ctx.getChild(0) instanceof ExtendContext specificStmt) {
+            return specificStmt.getRuleIndex();
+        }
+        return ctx.getRuleIndex();
     }
 
     @Override

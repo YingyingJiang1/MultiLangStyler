@@ -53,7 +53,7 @@ public class EquivalentStructureManager {
         }
         String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
 //        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
-        List<Checker> checkers = parseChecks(node.get("checkers"), objectMapper, parser);
+        List<Checker> checkers = parseCheckers(node.get("checkers"), objectMapper, parser);
         List<Handler> handlers = parseHandlers(node.get("handlers"), objectMapper, parser);
 //        int[] rules = parseRules(node.get("rules"), objectMapper, parser);
         Map<Integer, List<Integer>> bannedTransferMap = parseBannedTransferMap(node.get("banned_transfer"), objectMapper, parser);
@@ -89,7 +89,7 @@ public class EquivalentStructureManager {
     configJson =  objectMapper.readTree(is);
   }
 
-  private List<Checker> parseChecks(JsonNode checkersNode, ObjectMapper objectMapper, MyParser parser) {
+  private List<Checker> parseCheckers(JsonNode checkersNode, ObjectMapper objectMapper, MyParser parser) {
     List<Checker> checkers = null;
     if (checkersNode != null) {
       checkers = new ArrayList<>();

@@ -80,15 +80,17 @@ public class EquivalentStructure {
 				}
 
 				for (ParseTree t : trees) {
-					if (t instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleStmt()) {
-						ParseTree child = ctx.getChild(0);
-						int ruleIndex = child instanceof ExtendContext childCtx ? childCtx.getRuleIndex() : ctx.getRuleIndex();
+					if (t instanceof ExtendContext ctx) {
+						int ruleIndex = ctx.getRuleIndex();
+						if (ctx.getRuleIndex() == parser.getRuleStmt()) {
+							ruleIndex = parser.getSpecificStmtType(ctx);
+						}
 						rules.add(ruleIndex);
 					}
 				}
 
 				forests.add(new Forest(trees, priority));
-				uniqueVNodes(placeholderContainer);
+				uniqueVNodes(placeholderContainer, parser);
 			}
 		} catch (CompilationException e) {
 			logger.error(e.getMessage(), e);
@@ -339,10 +341,10 @@ public class EquivalentStructure {
 	/**
 	 * @apiNote After the method is called, parent filed of ParseTree is invalid.
 	 */
-	private void uniqueVNodes(PlaceholderContainer placeholderContainer) {
+	private void uniqueVNodes(PlaceholderContainer placeholderContainer, MyParser parser) {
 		for (Forest forest : forests) {
 			for(ParseTree t : forest.getTrees()) {
-				doUnique(t, forest);
+				doUnique(t, forest, parser);
 			}
 		}
 	}
@@ -352,14 +354,14 @@ public class EquivalentStructure {
 	/**
 	 * @apiNote Associates a placeholder-generated tree in the tree to a specific virtual node.
 	 */
-	private void doUnique(ParseTree tree, Forest forest) {
+	private void doUnique(ParseTree tree, Forest forest, MyParser parser) {
 		if (!(tree instanceof ExtendContext)) {
 			return;
 		}
 		List<ParseTree> children = ((ExtendContext) tree).children;
 		for (int i = 0; i < children.size(); i++) {
 			ParseTree child = children.get(i);
-			VirtualNode vNode = placeholderContainer.getVNodeByText(child.getText());
+			VirtualNode vNode = placeholderContainer.getVNode(child, parser);
 			if (vNode != null) {
 				if (vNode.isEmpty()) {
 					vTreeMap.put(child, vNode);
@@ -368,19 +370,8 @@ public class EquivalentStructure {
 					children.set(i, vNode.tree);
 				}
 			} else {
-				doUnique(child, forest);
+				doUnique(child, forest, parser);
 			}
-		}
-	}
-
-	private void checkRepeatableVNode (List<ParseTree> children, int i) {
-		if (i == children.size() - 1) {
-			throw new CompilationException("wrong structure: placeholder name ending with '*','+' or '?' can't occur at the end.");
-		}
-		ParseTree next = children.get(i + 1);
-		VirtualNode vNode = placeholderContainer.getVNodeByText(next.getText());
-		if(vNode != null && !vNode.repetition.isEmpty()) {
-			throw new CompilationException("wrong structure: placeholder name ending with '*','+' or '?' can't occur continuously.");
 		}
 	}
 

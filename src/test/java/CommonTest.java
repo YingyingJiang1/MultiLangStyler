@@ -31,7 +31,7 @@ public class CommonTest {
 //        manager.loadConfFile();
 //        manager.writeJsonData("D:\\jyy\\科研\\style\\transformer\\src\\main\\resources\\equivalencesConf.json");
         String src = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L131\\human-lil_toeturtle.java";
-        String target = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L055\\claude35sonnet.java";
+        String target = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes\\L015\\deepseek-coder.java";
         transform(Paths.get(src),
                 Paths.get(target));
 

@@ -68,4 +68,20 @@ public class StructurePreferenceTest extends CommonTest {
         resultOfTest(style, id, 0);
     }
 
+    @Test
+    void testOpPrefer() {
+        int id = 18;
+        String target = "a < b";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
+    @Test
+    void testLiteralPosition() {
+        int id = 22;
+        String target = "x == 1";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 1);
+    }
+
 }

@@ -28,16 +28,19 @@ public class StructureStyler extends Styler {
 
     public StructureStyler() {
         style.setStyleName("structure_preference");
-        executeWhenExit = false;
+//        executeWhenExit = false;
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         loadEquivalences(parser);
-        int ruIndex = ctx.getChild(0) instanceof ExtendContext childCtx ? childCtx.getRuleIndex() : ctx.getRuleIndex();
+        int ruIndex = ctx.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt() && parser.getSpecificStmt(ctx) instanceof ExtendContext specificStmt) {
+            ruIndex = specificStmt.getRuleIndex();
+        }
         ++recursiveDepth;
         ParseTree newTree = ctx;
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ctx.getRuleIndex());
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
         if (equivalentStructures != null) {
         /*if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
           System.out.println("--------------------waiting to match---------------------");
@@ -91,8 +94,11 @@ public class StructureStyler extends Styler {
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         loadEquivalences(parser);
-        int ruIndex = ctx.getChild(0) instanceof ExtendContext childCtx ? childCtx.getRuleIndex() : ctx.getRuleIndex();
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
+        int ruleIndex = ctx.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt() && parser.getSpecificStmt(ctx) instanceof ExtendContext specificStmt) {
+            ruleIndex = specificStmt.getRuleIndex();
+        }
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
         if (equivalentStructures != null) {
 //            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
 //                System.out.println("--------------------waiting to match---------------------");
@@ -113,7 +119,7 @@ public class StructureStyler extends Styler {
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return ctx.getRuleIndex() == parser.getRuleStmt();
+        return ctx.getRuleIndex() == parser.getRuleStmt() || ctx.getRuleIndex() == parser.getRuleExpression();
     }
 
     private void loadEquivalences(MyParser parser) {
