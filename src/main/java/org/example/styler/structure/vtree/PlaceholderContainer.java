@@ -146,7 +146,11 @@ public class PlaceholderContainer {
             return null;
         }
 
-        if (placeholder.placeholderName.startsWith("$LITERAL") && !parser.isLiteral(node)) {
+        if (placeholder.type.equals("$LITERAL") && !parser.isLiteral(node)) {
+            return null;
+        }
+        // $S(STMT_TYPE) should be linked to a specific statement.
+        if (placeholder.type.matches("\\$S\\([a-zA-Z]\\)") && parser.isStatement(node)) {
             return null;
         }
         return placeholder.vNode;

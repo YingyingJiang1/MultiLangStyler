@@ -84,4 +84,12 @@ public class StructurePreferenceTest extends CommonTest {
         resultOfTest(style, id, 1);
     }
 
+    @Test
+    void testRedudantCode() {
+        int id = 32;
+        String target = "void test() {if (a > 0) a++; b += 3;}";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
 }

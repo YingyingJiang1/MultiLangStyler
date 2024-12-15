@@ -279,20 +279,27 @@ public class EquivalentStructure {
 		if (vt instanceof ExtendContext vtCtx && t instanceof ExtendContext ctx) {
 			// Match root.
 			boolean matchResult = ruleMatches(vtCtx, ctx);
+			VirtualNode virtualNode = vTreeMap.get(vt);
+			if (virtualNode != null) {
+				return virtualNode.matches(t, parser);
+			}
+			// A second try to match the root when real tree has a body without {}.
 			if(!matchResult) {
 				boolean isBraceOptionalCase = vtCtx.getRuleIndex() == parser.getRuleBlock() && vtCtx.getChildCount() == 3;
 				if (isBraceOptionalCase) {
 					ExtendContext stmtCtx = (ExtendContext) vtCtx.getChild(1);
-					return isMatched(stmtCtx.getChild(0), t, forest, parser);
+					return isMatched(stmtCtx, t.getParent(), forest, parser);
 				}
 				return false;
 			}
+
+
 
 			// Match children
 			int vi = 0, i = 0;
 			while (vi < vt.getChildCount() && i < t.getChildCount()) {
 				ParseTree vtChild = vt.getChild(vi), tChild = t.getChild(i);
-				VirtualNode virtualNode = vTreeMap.get(vtChild);
+				virtualNode = vTreeMap.get(vtChild);
 				boolean matched = false;
 
 				// Different match strategies for virtual node and non-virtual node.
@@ -354,24 +361,25 @@ public class EquivalentStructure {
 	/**
 	 * @apiNote Associates a placeholder-generated tree in the tree to a specific virtual node.
 	 */
-	private void doUnique(ParseTree tree, Forest forest, MyParser parser) {
-		if (!(tree instanceof ExtendContext)) {
+	private void doUnique(ParseTree node, Forest forest, MyParser parser) {
+		if (!(node instanceof ExtendContext)) {
 			return;
 		}
-		List<ParseTree> children = ((ExtendContext) tree).children;
-		for (int i = 0; i < children.size(); i++) {
-			ParseTree child = children.get(i);
-			VirtualNode vNode = placeholderContainer.getVNode(child, parser);
-			if (vNode != null) {
-				if (vNode.isEmpty()) {
-					vTreeMap.put(child, vNode);
-					vNode.tree = child;
-				} else {
-					children.set(i, vNode.tree);
-				}
+		VirtualNode vNode = placeholderContainer.getVNode(node, parser);
+		if (vNode != null) {
+			if (vNode.isEmpty()) {
+				vTreeMap.put(node, vNode);
+				vNode.tree = node;
 			} else {
-				doUnique(child, forest, parser);
+				if (node.getParent() != null) {
+					((ExtendContext) node.getParent()).replaceChild(node, vNode.tree);
+				}
 			}
+			return;
+		}
+
+		for (ParseTree child : ((ExtendContext) node).children) {
+			doUnique(child, forest, parser);
 		}
 	}
 
