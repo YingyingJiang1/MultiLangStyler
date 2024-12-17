@@ -90,4 +90,12 @@ public class StructurePreferenceTest extends CommonTest {
         resultOfTest(style, id, 0);
     }
 
+    @Test
+    void testContinue() {
+        int id = 30;
+        String target = "void test() {while(true){if (a > 0) continue; c--; b += 3;}}";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
 }

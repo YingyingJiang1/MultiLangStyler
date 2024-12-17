@@ -25,8 +25,8 @@ public class ContinuePreferenceChecker extends Checker{
             ExtendContext startNode = (ExtendContext) realTrees.get(realTrees.size() - 1);
             // Check loop ends with a statement with the `startNode` as the root.
             boolean checkResult = checkLoopEnd(startNode, parser);
-            if (!checkResult) {
-                return false;
+            if (checkResult) {
+                continue;
             }
 
             // Check loop ends with an if/if-else statement.
