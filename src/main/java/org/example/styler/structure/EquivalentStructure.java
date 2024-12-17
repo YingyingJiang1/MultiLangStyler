@@ -179,12 +179,22 @@ public class EquivalentStructure {
 					++vi;
 				}
 			}
-			if(forest.isContextMatched(parser) && check(index, parser))  {
+			if(isContextMatched(forest.getvNodes(), parser) && check(index, parser))  {
 				return index;
 			}
 		}
 		cleanState();
 		return -1;
+	}
+
+
+	private boolean isContextMatched(List<VirtualNode> vNodes, MyParser parser) {
+		for (VirtualNode vNode :vNodes) {
+			if (!vNode.checkState(parser)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private boolean check(int index, MyParser parser) {
@@ -239,7 +249,6 @@ public class EquivalentStructure {
 		// Create children
 		List<ParseTree> children = new ArrayList<>();
 		for (ParseTree child : ctx.children) {
-			children.addAll(forest.getMatchedRealTrees(child));
 			VirtualNode vNode = vTreeMap.get(child);
 			if (vNode != null) {
 				children.addAll(vNode.matchedTrees);
@@ -263,9 +272,6 @@ public class EquivalentStructure {
 	private void cleanState() {
 		for(VirtualNode vNode : vTreeMap.values()) {
 			vNode.cleanState();
-		}
-		for(Forest vt : forests) {
-			vt.cleanContextState();
 		}
 	}
 
@@ -371,6 +377,7 @@ public class EquivalentStructure {
 					((ExtendContext) node.getParent()).replaceChild(node, vNode.tree);
 				}
 			}
+			forest.addVNode(vNode);
 			return;
 		}
 

@@ -98,4 +98,13 @@ public class StructurePreferenceTest extends CommonTest {
         resultOfTest(style, id, 0);
     }
 
+
+    @Test
+    void testCascadingIf() {
+        int id = 5;
+        String target = "if (a || b) return c;";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
 }
