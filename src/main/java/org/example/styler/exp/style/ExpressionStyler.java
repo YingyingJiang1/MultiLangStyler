@@ -9,8 +9,6 @@ import org.example.styler.Styler;
 import org.example.styler.exp.style.ExpressionContext;
 import org.example.styler.exp.style.ExpressionProperty;
 
-import javax.script.ScriptContext;
-
 public class ExpressionStyler extends Styler {
     public ExpressionStyler() {
         style.setStyleName("most_complex_expression");
@@ -27,7 +25,7 @@ public class ExpressionStyler extends Styler {
         if (ctx.getRuleIndex() == parser.getRuleExpStmt()) {
             expType = expression.getAllTerminalsIf(ter -> ter.getText().equals("?") || ter.getText().equals(":")).size() == 2
                     ? ExpType.TERNARY_EXP
-                    : ExpType.EXP_OF_EXP_STMT;
+                    : ExpType.TOP_EXP;
         } else if (ctx.getRuleIndex() == parser.getRuleParExpression()) {
             expType = ExpType.CONDITIONAL_EXP;
         }

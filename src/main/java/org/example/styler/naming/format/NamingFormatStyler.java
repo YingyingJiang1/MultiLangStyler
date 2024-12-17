@@ -1,4 +1,4 @@
-package org.example.styler.naming;
+package org.example.styler.naming.format;
 
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
@@ -7,29 +7,24 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.ResolverFactory;
 import org.example.semantic.SymbolTable;
-import org.example.semantic.intf.Resolver;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
-import org.example.styler.Styler;
-import org.example.styler.naming.style.NamingFormatContext;
-import org.example.styler.naming.style.NamingFormatProperty;
+import org.example.styler.naming.NamingStyler;
+import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.format.style.NamingFormatContext;
+import org.example.styler.naming.format.style.NamingFormatProperty;
 
 import java.util.List;
 
-public class NamingFormatStyler extends Styler {
+public class NamingFormatStyler extends NamingStyler {
     public NamingFormatStyler() {
         style.setStyleName("naming_format");
     }
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        SymbolTable st = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolveAll(parser.getRoot(), parser);
-        if (st == null) {
-            return;
-        }
-
-        List<Symbol> symbols = st.getAllSymbols();
+        List<Symbol> symbols = getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             String name = symbol.getName();
             SymbolType symbolType = symbol.getSymbolType();
@@ -61,12 +56,7 @@ public class NamingFormatStyler extends Styler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        SymbolTable st = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolveAll(parser.getRoot(), parser);
-        if (st == null) {
-            return ctx;
-        }
-
-        List<Symbol> symbols = st.getAllSymbols();
+        List<Symbol> symbols = getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             SymbolType symbolType = symbol.getSymbolType();
             NamingFormatContext context = new NamingFormatContext(symbolType);
