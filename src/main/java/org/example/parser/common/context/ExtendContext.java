@@ -423,19 +423,18 @@ public class ExtendContext extends ParserRuleContext {
     }
 
 
-    public List<Token> getAllTokensRecIf(Predicate<Token> cond) {
-        List<Token> tokens = new ArrayList<>();
+    public List<TerminalNode> getAllTerminalsRecIf(Predicate<TerminalNode> cond) {
+        List<TerminalNode> terminalNodeList = new ArrayList<>();
         for (ParseTree root : children) {
-            if (root instanceof TerminalNode) {
-                Token token = ((TerminalNode) root).getSymbol();
-                if (cond.test(token)) {
-                    tokens.add(token);
+            if (root instanceof TerminalNode terminalNode) {
+                if (cond.test(terminalNode)) {
+                    terminalNodeList.add(terminalNode);
                 }
             } else {
-                tokens.addAll(((ExtendContext) root).getAllTokensRecIf(cond));
+                terminalNodeList.addAll(((ExtendContext) root).getAllTerminalsRecIf(cond));
             }
         }
-        return tokens;
+        return terminalNodeList;
     }
 
     public void printChildren() {

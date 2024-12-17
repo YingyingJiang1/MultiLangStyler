@@ -21,4 +21,17 @@ public class UpdateVarContext extends StyleContext {
     public void parseElement(Element parent, MyParser parser) {
         expType = ExpType.valueOf(parent.attributeValue("expType"));
     }
+
+    @Override
+    public int hashCode() {
+        return expType.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UpdateVarContext) {
+            return expType.equals(((UpdateVarContext) obj).expType);
+        }
+        return false;
+    }
 }

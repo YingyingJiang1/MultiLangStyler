@@ -8789,3 +8789,7 @@
 2024-12-17 15:38:31,522 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
 2024-12-17 15:38:31,522 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: null
 2024-12-17 15:38:31,522 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.space.style.SpaceContext@bc72a38f
+2024-12-17 16:30:42,729 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.body.BodyContext@4d665128
+2024-12-17 16:30:42,957 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L016\style.xml
+2024-12-17 16:30:43,140 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.body.BodyContext@4d665128
+2024-12-17 16:30:43,175 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L016\self-style.xml

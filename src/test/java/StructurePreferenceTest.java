@@ -21,13 +21,13 @@ public class StructurePreferenceTest extends CommonTest {
     String language = "java";
     String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
     @Test
-    void test() {
-        EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
-        manager.loadEquivalences(MyJavaParser.class);
+    void test() throws IOException {
+//        EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
+//        manager.loadEquivalences(MyJavaParser.class);
 //        manager.writeJsonData("confUpdate.json");
-        EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class);
-//        testA();
+//        EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class);
 
+        transform(Paths.get(dir, "L016\\claude35sonnet.java"), Paths.get(dir, "L016\\claude35sonnet.java"));
     }
 
 
