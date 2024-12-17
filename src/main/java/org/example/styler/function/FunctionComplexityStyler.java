@@ -8,6 +8,7 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.function.style.FunctionComplexityProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionComplexityStyler extends Styler {
@@ -19,7 +20,7 @@ public class FunctionComplexityStyler extends Styler {
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         int lines = ctx.stop.getLine() - ctx.start.getLine() + 1;
         ExtendContext body = (ExtendContext) ctx.getChild(ctx.getChildCount() - 1);
-        int maxNestedDepth = calculateMaxStmtNestingDepth(ctx, parser);
+        int maxNestedDepth = calculateMaxStmtNestingDepth(body, parser);
 
         List<StyleProperty> properties = style.getProperties(null);
         if (properties != null) {
@@ -55,25 +56,39 @@ public class FunctionComplexityStyler extends Styler {
 
     // 遍历语法树
     private int doCalculate(ExtendContext node, MyParser parser) {
-        boolean isSingleStmt = parser.getSingleStmts().contains(node.getRuleIndex());
+        ExtendContext specificStmt = (ExtendContext) parser.getSpecificStmt(node);
+        int specificStmtType = specificStmt.getRuleIndex();
+        boolean isSingleStmt = parser.getSingleStmts().contains(specificStmtType);
         if (isSingleStmt) {
-            return 1;
+            return 0;
         }
 
-        boolean isControlStructure = parser.getCompoundStmts().contains(node.getRuleIndex());
+        boolean isControlStructure = parser.getCompoundStmts().contains(specificStmtType);
         if (isControlStructure) {
             int maxDepthOfSubStmt = 0;
-            for (int i = 0; i < node.getChildCount(); i++) {
-                if (parser.belongToStmt(node.getChild(i))) {
-                    int depth = doCalculate((ExtendContext) node.getChild(i), parser);
+            List<ExtendContext> innerStmts = new ArrayList<>();
+            for (ParseTree child : specificStmt.children) {
+                if (child instanceof ExtendContext ctx && parser.belongToStmt(child)) {
+                    ExtendContext specificStmt1 = parser.getSpecificStmt(ctx);
+                    if (specificStmt1.getRuleIndex() == parser.getRuleBlock()) {
+                        innerStmts.addAll(specificStmt1.getAllContextsIf(parser::belongToStmt));
+                    } else {
+                        innerStmts.add(ctx);
+                    }
+                }
+            }
+
+            for (int i = 0; i < innerStmts.size(); i++) {
+                if (parser.belongToStmt(innerStmts.get(i))) {
+                    int depth = 1 + doCalculate(innerStmts.get(i), parser);
                     if (depth > maxDepthOfSubStmt) {
                         maxDepthOfSubStmt = depth;
                     }
                 }
             }
 
-            return maxDepthOfSubStmt + 1;
+            return maxDepthOfSubStmt;
         }
-        return -1; // Exception
+        return 0;
     }
 }

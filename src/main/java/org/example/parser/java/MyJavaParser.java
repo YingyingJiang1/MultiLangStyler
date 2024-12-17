@@ -864,9 +864,9 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public ParseTree getSpecificStmt(ExtendContext stmt) {
-        if (stmt instanceof JavaParser.StatementContext) {
-            return stmt.getChild(0);
+    public ExtendContext getSpecificStmt(ExtendContext stmt) {
+        if (stmt instanceof JavaParser.StatementContext && stmt.getChild(0) instanceof ExtendContext ctx) {
+            return ctx;
         }
         return stmt;
     }
