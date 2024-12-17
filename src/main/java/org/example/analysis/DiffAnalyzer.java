@@ -39,7 +39,9 @@ import java.util.*;
 public class DiffAnalyzer {
     public static Logger logger =LoggerFactory.getLogger(DiffAnalyzer.class);
 
-    static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
+//    static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
+    static String dir = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\codes";
+
     public static final List<ParserFeatureExtractor> FEATURE_EXTRACTORS = List.of(
             new BlankLineFeature(),
             new LineLengthFeature()
@@ -47,7 +49,9 @@ public class DiffAnalyzer {
     public static String language = "java";
 
     public static void main(String[] args) throws IOException {
-        String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
+//        String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
+        String metaFile = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\meta.json";
+
         List<InputPair> programPairs = null;
         List<Table> result = null;
 
