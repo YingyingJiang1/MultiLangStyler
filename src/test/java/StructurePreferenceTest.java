@@ -107,4 +107,21 @@ public class StructurePreferenceTest extends CommonTest {
         resultOfTest(style, id, 0);
     }
 
+    @Test
+    void testReturn() {
+        int id = 23;
+        String target = "if (cond) {int ret = test(); return ret;}";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+
+        target = "if (cond) {return test();}";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 1);
+
+        id = 24;
+        target = "if (cond) {return (a+b);}";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
 }

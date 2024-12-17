@@ -153,6 +153,15 @@ public class PlaceholderContainer {
         if (placeholder.type.matches("\\$S\\([a-zA-Z]\\)") && parser.isStatement(node)) {
             return null;
         }
+        if (placeholder.type.equals("$I") && !parser.isIdentifier(node)) {
+            return null;
+        }
+        if (placeholder.type.equals("$E")) {
+            boolean isExpression = node instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression();
+            if (!isExpression) {
+                return null;
+            }
+        }
         return placeholder.vNode;
     }
 

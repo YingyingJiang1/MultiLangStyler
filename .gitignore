@@ -1,4 +1,4 @@
-logs/
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -7,7 +7,7 @@ target/
 ### IntelliJ IDEA ###
 .idea/
 *.iws
-*.iml
+*.i
 *.ipr
 
 ### Eclipse ###

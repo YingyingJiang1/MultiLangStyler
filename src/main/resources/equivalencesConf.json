@@ -222,7 +222,6 @@
   "name" : "return_tmp_var",
   "category" : "Return statements",
   "codes" : [ "$^ $M $T $I = $E ; return $E1 ;", "return $E ;" ],
-  "banned_transfer" : [ [ 1, 0 ] ],
   "checkers" : [ {
     "class" : "EqualChecker",
     "argsList" : [ [ 0, "$I", "$E1" ] ]
