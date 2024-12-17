@@ -126,7 +126,7 @@ public class FeatureExtractorFactory {
     private static class CommentDensityCreator extends ExtractorCreator {
         @Override
         public StyleFeatureExtractor create() {
-            return new CommentDensity();
+            return new CommentDensityFeature();
         }
     }
     

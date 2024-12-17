@@ -1,4 +1,4 @@
-package org.example.styler.practice.updatevar;
+package org.example.styler.exp.updatevar;
 
 import org.example.styler.Styler;
 

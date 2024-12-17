@@ -1,4 +1,17 @@
-package org.example.styler.practice.updatevar.style;
+package org.example.styler.exp.updatevar.style;
 
-public class UpdateVarContext {
+import org.dom4j.Element;
+import org.example.parser.common.MyParser;
+import org.example.style.rule.StyleContext;
+
+public class UpdateVarContext extends StyleContext {
+    @Override
+    public void addElement(Element parent, MyParser parser) {
+
+    }
+
+    @Override
+    public void parseElement(Element parent, MyParser parser) {
+
+    }
 }

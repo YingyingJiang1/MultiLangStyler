@@ -1,4 +1,4 @@
-package org.example.styler.practice.updatevar.style;
+package org.example.styler.exp.updatevar.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

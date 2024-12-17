@@ -1,4 +1,4 @@
-package org.example.styler.naming.usage;
+package org.example.styler.practice;
 
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;

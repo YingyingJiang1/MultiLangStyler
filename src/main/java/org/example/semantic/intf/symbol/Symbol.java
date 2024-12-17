@@ -58,5 +58,7 @@ public abstract class Symbol {
     }
 
 
-
+    public List<ExtendContext> getReferences() {
+        return references;
+    }
 }

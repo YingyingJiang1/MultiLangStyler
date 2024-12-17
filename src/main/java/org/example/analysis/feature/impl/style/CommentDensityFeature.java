@@ -10,7 +10,7 @@ import org.example.styler.comment.density.style.CommentDensityProperty;
 
 import java.util.Map;
 
-public class CommentDensity implements StyleFeatureExtractor {
+public class CommentDensityFeature implements StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();
