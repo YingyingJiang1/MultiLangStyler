@@ -8793,3 +8793,52 @@
 2024-12-17 16:30:42,957 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L016\style.xml
 2024-12-17 16:30:43,140 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.body.BodyContext@4d665128
 2024-12-17 16:30:43,175 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L016\self-style.xml
+2024-12-17 17:18:52,991 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 1 pair, problem number:L001
+2024-12-17 17:18:53,595 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.space.style.SpaceContext@bc72ab4f
+2024-12-17 17:18:53,841 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 2 pair, problem number:L001
+2024-12-17 17:18:53,884 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.space.style.SpaceContext@bc72ab4f
+2024-12-17 17:18:54,064 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 3 pair, problem number:L001
+2024-12-17 17:18:54,211 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 4 pair, problem number:L001
+2024-12-17 17:18:54,314 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 5 pair, problem number:L001
+2024-12-17 17:18:54,419 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 6 pair, problem number:L001
+2024-12-17 17:18:54,525 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 7 pair, problem number:L001
+2024-12-17 17:18:54,563 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:54,622 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 8 pair, problem number:L001
+2024-12-17 17:18:54,656 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:54,707 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 9 pair, problem number:L002
+2024-12-17 17:18:54,862 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:54,939 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.space.style.SpaceContext@fa40bcad
+2024-12-17 17:18:54,954 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 10 pair, problem number:L002
+2024-12-17 17:18:55,049 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:55,099 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.comment.syntax.style.CommentSyntaxContext@7315266d
+2024-12-17 17:18:55,115 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 11 pair, problem number:L002
+2024-12-17 17:18:55,180 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.comment.syntax.style.CommentSyntaxContext@7315266d
+2024-12-17 17:18:55,238 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.space.style.SpaceContext@fa40bcad
+2024-12-17 17:18:55,255 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 12 pair, problem number:L002
+2024-12-17 17:18:55,310 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.comment.syntax.style.CommentSyntaxContext@7315266d
+2024-12-17 17:18:55,353 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.comment.syntax.style.CommentSyntaxContext@7315266d
+2024-12-17 17:18:55,369 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 13 pair, problem number:L002
+2024-12-17 17:18:55,487 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.space.style.SpaceContext@fa40bcad
+2024-12-17 17:18:55,504 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 14 pair, problem number:L002
+2024-12-17 17:18:55,623 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.comment.syntax.style.CommentSyntaxContext@7315266d
+2024-12-17 17:18:55,640 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 15 pair, problem number:L003
+2024-12-17 17:18:55,800 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:55,884 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@32
+2024-12-17 17:18:55,884 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 19, category: Operator preferences
+2024-12-17 17:18:55,896 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 16 pair, problem number:L003
+2024-12-17 17:18:55,968 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:56,038 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31
+2024-12-17 17:18:56,038 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 18, category: Operator preferences
+2024-12-17 17:18:56,051 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 17 pair, problem number:L003
+2024-12-17 17:18:56,130 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:18:56,190 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31
+2024-12-17 17:18:56,191 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 18, category: Operator preferences
+2024-12-17 17:18:56,229 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 18 pair, problem number:L003
+2024-12-17 17:18:56,422 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@32
+2024-12-17 17:18:56,425 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 19, category: Operator preferences
+2024-12-17 17:18:56,437 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 19 pair, problem number:L003
+2024-12-17 17:18:56,615 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31
+2024-12-17 17:18:56,615 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 18, category: Operator preferences
+2024-12-17 17:18:56,632 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 20 pair, problem number:L003
+2024-12-17 17:18:56,776 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31
+2024-12-17 17:18:56,777 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 18, category: Operator preferences

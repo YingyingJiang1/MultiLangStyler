@@ -35,12 +35,15 @@ public class CommentDensityStyler extends Styler {
 
     @Override
     public void doFinalize() {
-        double commentLines = commentTokens.stream()
-                .reduce(0, (acc, t) -> acc + t.getText().split("\n").length, Integer::sum);
-        style.addRule(null, new CommentDensityProperty(commentLines / totalLines));
-        // Reset
-        commentTokens = null;
-        totalLines = -1;
+        if (commentTokens != null) {
+            double commentLines = commentTokens.stream()
+                    .reduce(0, (acc, t) -> acc + t.getText().split("\n").length, Integer::sum);
+            style.addRule(null, new CommentDensityProperty(commentLines / totalLines));
+            // Reset
+            commentTokens = null;
+            totalLines = -1;
+        }
+
     }
 
     @Override
