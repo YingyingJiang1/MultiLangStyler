@@ -155,7 +155,7 @@ public class EquivalentStructure {
 			cleanState();
 
 			int vi = 0, ti = startIndex;
-			for (; vi < forest.size() && ti < realTrees.size(); ++vi,++ti) {
+			for (; vi < forest.size() && ti < realTrees.size(); ++ti) {
 				ParseTree vt = forest.getTree(vi);
 				ParseTree t1 = realTrees.get(ti);
 				if (t1 instanceof TerminalNode || vt instanceof TerminalNode) {
@@ -171,8 +171,15 @@ public class EquivalentStructure {
 				if (!isMatched(vt, t1, forest, parser)) {
 					break;
 				}
+
+				VirtualNode virtualNode = vTreeMap.get(vt);
+				if (virtualNode != null) {
+					vi += virtualNode.moveStep();
+				} else {
+					++vi;
+				}
 			}
-			if(vi == forest.size() && forest.isContextMatched(parser) && check(index, parser))  {
+			if(forest.isContextMatched(parser) && check(index, parser))  {
 				return index;
 			}
 		}
@@ -285,7 +292,8 @@ public class EquivalentStructure {
 			}
 			// A second try to match the root when real tree has a body without {}.
 			if(!matchResult) {
-				boolean isBraceOptionalCase = vtCtx.getRuleIndex() == parser.getRuleBlock() && vtCtx.getChildCount() == 3;
+				boolean isBraceOptionalCase = vtCtx.getRuleIndex() == parser.getRuleBlock()
+						&& vtCtx.getAllContextsIf(parser::belongToStmt).size() == 1;
 				if (isBraceOptionalCase) {
 					ExtendContext stmtCtx = (ExtendContext) vtCtx.getChild(1);
 					return isMatched(stmtCtx, t.getParent(), forest, parser);
@@ -317,21 +325,9 @@ public class EquivalentStructure {
 					}
 					++i;
 				} else {
-					// Rollback status when left sibling of vtChild can be matched repeatedly.
-					if (vi - 1 >= 0) {
-						ParseTree preVtChild = vt.getChild(vi - 1);
-						VirtualNode preVNode = vTreeMap.get(preVtChild);
-						if (preVNode != null && preVNode.isRollback()) {
-							ParseTree matchedTree = preVNode.removeLastMatchedTree();
-							if (matchedTree != null) {
-								matched = isMatched(vtChild, matchedTree, forest, parser);
-								if (matched) {
-									if (virtualNode != null) {
-										vi += virtualNode.moveStep();
-									}
-								}
-							}
-						}
+					if (virtualNode != null && virtualNode.moveStep() == 0) {
+						matched = true;
+						++vi;
 					}
 				}
 

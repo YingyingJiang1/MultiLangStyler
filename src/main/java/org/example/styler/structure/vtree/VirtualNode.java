@@ -52,7 +52,7 @@ public class VirtualNode {
 
         // Check size correct.
         int sizeBefore = matchedTrees.size();
-        return repetition.isEmpty() && sizeBefore == 0 ||
+        return repetition.isEmpty() && sizeBefore == 1 ||
                 repetition.equals("*") ||
                 repetition.equals("+") && sizeBefore >= 1 ||
                 repetition.equals("?") && sizeBefore <= 1;
