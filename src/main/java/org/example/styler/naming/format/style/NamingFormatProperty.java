@@ -1,4 +1,4 @@
-package org.example.styler.naming.style;
+package org.example.styler.naming.format.style;
 
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;

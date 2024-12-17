@@ -10,21 +10,23 @@ import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
-import org.example.styler.naming.NamingStyler;
+import org.example.styler.Styler;
+import org.example.styler.naming.AbbreviationLibrary;
+import org.example.styler.naming.SymbolTableManager;
 import org.example.styler.naming.SymbolType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 
 import java.util.List;
 
-public class NamingFormatStyler extends NamingStyler {
+public class NamingFormatStyler extends Styler {
     public NamingFormatStyler() {
         style.setStyleName("naming_format");
     }
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        List<Symbol> symbols = getAllSymbols(parser);
+        List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             String name = symbol.getName();
             SymbolType symbolType = symbol.getSymbolType();
@@ -56,7 +58,7 @@ public class NamingFormatStyler extends NamingStyler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        List<Symbol> symbols = getAllSymbols(parser);
+        List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             SymbolType symbolType = symbol.getSymbolType();
             NamingFormatContext context = new NamingFormatContext(symbolType);

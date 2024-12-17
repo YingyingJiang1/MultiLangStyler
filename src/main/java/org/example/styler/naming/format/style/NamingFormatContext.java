@@ -1,4 +1,4 @@
-package org.example.styler.naming.style;
+package org.example.styler.naming.format.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

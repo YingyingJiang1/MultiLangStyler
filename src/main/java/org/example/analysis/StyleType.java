@@ -87,8 +87,8 @@ public class StyleType {
         public static String styleType = "Array declaration style";
     }
 
-    public static class UpdateMultiVarsInOneStmt {
-        public static String styleType = "Update multiple variables in one statement";
+    public static class VarUpdating {
+        public static String styleType = "Variable updating";
     }
 
     public static class LocOfLoopVar {

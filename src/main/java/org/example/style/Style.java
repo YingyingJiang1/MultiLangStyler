@@ -3,14 +3,13 @@ package org.example.style;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
-import org.example.styler.naming.style.NamingFormatContext;
 
 import java.util.List;
 
 public interface Style {
     void addRule(StyleContext styleContext, StyleProperty styleProperty);
     StyleProperty getProperty(StyleContext targetContext);
-    List<StyleProperty> getProperties(NamingFormatContext context);
+    List<StyleProperty> getProperties(StyleContext context);
     StyleProperty getSimilarProperty(StyleContext targetContext);
     List<StyleRule> getRules();
     String getStyleName() ;

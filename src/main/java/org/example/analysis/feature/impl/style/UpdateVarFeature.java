@@ -11,7 +11,7 @@ import org.example.styler.exp.updatevar.style.UpdateVarProperty;
 
 import java.util.Map;
 
-public class VarUpdatingFeature implements StyleFeatureExtractor {
+public class UpdateVarFeature implements StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();

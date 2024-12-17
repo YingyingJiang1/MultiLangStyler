@@ -13,9 +13,9 @@ import java.util.Set;
  * @author       Yingying Jiang
  * @create       2024/4/13 17:16
  */
-public class NotIntegerCheck extends Checker{
+public class NotIntegerChecker extends Checker{
 
-	public NotIntegerCheck(String[][] argsList) {
+	public NotIntegerChecker(String[][] argsList) {
 		super(argsList);
 	}
 

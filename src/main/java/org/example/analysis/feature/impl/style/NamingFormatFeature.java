@@ -8,12 +8,13 @@ import org.example.analysis.feature.featurevalue.StringAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.naming.style.NamingFormatContext;
-import org.example.styler.naming.style.NamingFormatProperty;
+import org.example.styler.naming.format.style.NamingFormatContext;
+import org.example.styler.naming.format.style.NamingFormatProperty;
+
 
 import java.util.Map;
 
-public class NamingFormat implements StyleFeatureExtractor {
+public class NamingFormatFeature implements StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();

@@ -29,7 +29,7 @@ public abstract class Checker {
     Checker checker = switch (cls) {
       case "ContinuePreferenceChecker" -> new ContinuePreferenceChecker(argsList);
       case "EqualChecker" -> new equalChecker(argsList);
-      case "NotIntegerChecker" -> new NotIntegerCheck(argsList);
+      case "NotIntegerChecker" -> new NotIntegerChecker(argsList);
       case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker(argsList);
       case "IdentifierExpChecker" -> new IdentifierExpChecker(argsList);
       default -> null;

@@ -29,7 +29,15 @@ public class FeatureExtractorFactory {
         put("declaration_location", new DeclarationLocationFeatureCreator());
         put("if_else_body_order", new IFElseOBodyOrderFeatureCreator());
         put("most_complex_expression", new MostComplexExpFeatureCreator());
+        put("update_variable", new UpdateVariableFeatureCreator());
     }};
+
+    private static class UpdateVariableFeatureCreator extends ExtractorCreator {
+        @Override
+        public StyleFeatureExtractor create() {
+            return new UpdateVarFeature();
+        }
+    }
 
     private static class MostComplexExpFeatureCreator extends ExtractorCreator {
         @Override
@@ -107,14 +115,14 @@ public class FeatureExtractorFactory {
     private static class NamingFormatCreator extends ExtractorCreator {
         @Override
         public StyleFeatureExtractor create() {
-            return new NamingFormat();
+            return new NamingFormatFeature();
         }
     }
 
     private static class CommentSyntaxCreator extends ExtractorCreator {
         @Override
         public StyleFeatureExtractor create() {
-            return new CommentSyntax();
+            return new CommentSyntaxFeature();
         }
     }
 

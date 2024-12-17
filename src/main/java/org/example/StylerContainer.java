@@ -19,7 +19,7 @@ import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.function.FunctionComplexityStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.ifelse.multibranch.MultiBranchStyler;
-import org.example.styler.naming.NamingFormatStyler;
+import org.example.styler.naming.format.NamingFormatStyler;
 import org.example.styler.structure.StructureStyler;
 
 
@@ -68,14 +68,6 @@ public class StylerContainer {
         return null;
     }
 
-    public int indexOfStyler(Class<NamingFormatStyler> namingFormatStylerClass) {
-        for (int i = 0; i < stylers.size(); i++) {
-            if (stylers.get(i).getClass() == namingFormatStylerClass) {
-                return i;
-            }
-        }
-        return -1;
-    }
 
     public Styler remove(int index) {
         return stylers.remove(index);
@@ -85,12 +77,4 @@ public class StylerContainer {
         stylers.add(index, styler);
     }
 
-    public NamingFormatStyler findStyler(Class<? extends Styler> stylerClass) {
-        for (Styler styler : stylers) {
-            if (styler.getClass() == stylerClass) {
-                return (NamingFormatStyler) styler;
-            }
-        }
-        return null;
-    }
 }

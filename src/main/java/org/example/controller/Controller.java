@@ -22,7 +22,6 @@ import org.example.style.Style;
 import org.example.styler.Preprocessor;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.naming.NamingFormatStyler;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
