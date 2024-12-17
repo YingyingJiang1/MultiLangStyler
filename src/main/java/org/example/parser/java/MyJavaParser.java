@@ -880,6 +880,21 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleContinueStmt() {
+        return JavaParser.RULE_continueStmt;
+    }
+
+    @Override
+    public int getRuleBreakStmt() {
+        return JavaParser.RULE_breakStmt;
+    }
+
+    @Override
+    public int getRuleReturnStmt() {
+        return JavaParser.RULE_returnStmt;
+    }
+
+    @Override
     public Set<Integer> getArrayInitializerRules() {
         return Set.of(JavaParser.RULE_initializer, JavaParser.RULE_arrayInitializer, JavaParser.RULE_elementValueArrayInitializer);
     }

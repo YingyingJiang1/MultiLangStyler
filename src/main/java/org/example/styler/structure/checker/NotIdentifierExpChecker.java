@@ -13,32 +13,19 @@ public class NotIdentifierExpChecker extends Checker{
         super(argsList);
     }
 
-    /**
-     * argsList: [[index of writing, holderName1, holderName2, ...]]
-     */
     @Override
-    public boolean check(EquivalentStructure structure, int index, MyParser parser) {
-        for (String[] args : argsList) {
-            if (args.length < 2) {
-                logger.error("Arguments of NotIdentifierExpChecker error: length < 2");
-                continue;
-            }
-
-            int indexToCheck = Integer.parseInt(args[0]);
-            if (indexToCheck == index) {
-                for (int i = 1; i < args.length; i++) {
-                    String holderName = args[i];
-                    List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
-                    for (ParseTree realTree : realTrees) {
-                        if (realTree instanceof ExtendContext ctx && parser.getRuleExpression() == ctx.getRuleIndex()) {
-                            if (ctx.getChildCount() == 1 && parser.isIdentifier( ctx.getChild(0))) {
-                                return false;
-                            }
-                        }
+    protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
+        for (String holderName : args) {
+            List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
+            for (ParseTree realTree : realTrees) {
+                if (realTree instanceof ExtendContext ctx && parser.getRuleExpression() == ctx.getRuleIndex()) {
+                    if (ctx.getChildCount() == 1 && parser.isIdentifier( ctx.getChild(0))) {
+                        return false;
                     }
                 }
             }
         }
         return true;
     }
+
 }

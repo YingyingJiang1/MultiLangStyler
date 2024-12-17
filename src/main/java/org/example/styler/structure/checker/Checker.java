@@ -1,9 +1,14 @@
 package org.example.styler.structure.checker;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
 
 /*
  * @description
@@ -20,10 +25,29 @@ public abstract class Checker {
   }
 
   /**
-   * @param index  index of writing to be checked.
-   * @param parser
+   * argsList: [[index of writing, ...]]
    */
-  public boolean check(EquivalentStructure structure, int index, MyParser parser) {return true;}
+  public boolean check(EquivalentStructure structure, int index, MyParser parser) {
+    for (String[] args : argsList) {
+      if (args.length < 2) {
+        logger.error("Arguments of LoopEndChecker error: length < 2");
+        continue;
+      }
+      int configuredIndex = Integer.parseInt(args[0]);
+      if (configuredIndex == index) {
+        List<String> args1 = Arrays.stream(args).toList().subList(1, args.length);
+        boolean ret = doCheck(structure, args1, parser);
+        if (!ret) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
+    return true;
+  }
 
   public static Checker createChecker(String cls, String[][] argsList) {
     Checker checker = switch (cls) {
@@ -32,6 +56,7 @@ public abstract class Checker {
       case "NotIntegerChecker" -> new NotIntegerChecker(argsList);
       case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker(argsList);
       case "IdentifierExpChecker" -> new IdentifierExpChecker(argsList);
+      case "NoStmtChecker" -> new NoStmtChecker(argsList);
       default -> null;
     };
     if (checker == null) {

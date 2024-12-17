@@ -151,6 +151,11 @@ public interface MyParser {
     int getRuleTypeList();
     ParseTree getSpecificStmt(ExtendContext stmt);
     int getSpecificStmtType(ExtendContext ctx);
+    int getRuleContinueStmt();
+
+    int getRuleBreakStmt();
+
+    int getRuleReturnStmt();
 
 
 

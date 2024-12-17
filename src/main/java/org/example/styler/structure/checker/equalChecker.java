@@ -20,29 +20,23 @@ public class equalChecker extends Checker {
   }
 
   @Override
-  public boolean check(EquivalentStructure structure, int index, MyParser parser) {
-    for(String[] arg : argsList) {
-      int checkIndex = Integer.parseInt(arg[0]);
-      if (index != checkIndex) {
-        continue;
+  protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
+    for (int i = 0; i < args.size() - 1; i++) {
+      String holder1 = args.get(i), holder2 = args.get(i + 1);
+      VirtualNode vNode1 = structure.getVNode(holder1);
+      VirtualNode vNode2 = structure.getVNode(holder2);
+      StringBuilder builder1 = new StringBuilder(), builder2 = new StringBuilder();
+      for(ParseTree t : vNode1.matchedTrees) {
+        builder1.append(t.getText());
       }
-      List<String> holderNames = Arrays.stream(arg).toList().subList(1, arg.length);
-      for (int i = 0; i < holderNames.size() - 1; i++) {
-        String holder1 = holderNames.get(i), holder2 = holderNames.get(i + 1);
-        VirtualNode vNode1 = structure.getVNode(holder1);
-        VirtualNode vNode2 = structure.getVNode(holder2);
-        StringBuilder builder1 = new StringBuilder(), builder2 = new StringBuilder();
-        for(ParseTree t : vNode1.matchedTrees) {
-          builder1.append(t.getText());
-        }
-        for(ParseTree t : vNode2.matchedTrees) {
-          builder2.append(t.getText());
-        }
-        if (builder1.compareTo(builder2) != 0) {
-          return false;
-        }
+      for(ParseTree t : vNode2.matchedTrees) {
+        builder2.append(t.getText());
+      }
+      if (builder1.compareTo(builder2) != 0) {
+        return false;
       }
     }
     return true;
   }
+
 }

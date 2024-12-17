@@ -14,58 +14,52 @@ public class ContinuePreferenceChecker extends Checker{
         super(argsList);
     }
 
-    /**
-     * argsList: [[index of writing, holderName]]
-     * This checker is defined for "continue preferences".
-     * The implementation of this method is based on the configuration of the "continue preferences" in the configuration file.
-     */
     @Override
-    public boolean check(EquivalentStructure structure, int index, MyParser parser) {
-        for (String[] args : argsList) {
-            if (args.length < 2) {
-                logger.error("Arguments of LoopEndChecker error: length < 2");
-                continue;
+    protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
+        for (String holderName : args) {
+            List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
+            if (realTrees.isEmpty()) {
+                return false;
             }
-            int configuredIndex = Integer.parseInt(args[0]);
-            if (configuredIndex == index) {
-                String holderName = args[1];
-                List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
-                if (realTrees.isEmpty()) {
-                    return false;
-                }
 
-                ExtendContext startNode = (ExtendContext) realTrees.get(realTrees.size() - 1);
-                // loop ends with a if/if-else statement.
-                ExtendContext ifStmt = findFirstAncestorIf(startNode,
-                        node -> node.getRuleIndex() == parser.getRuleIfStmt() || node.getRuleIndex() == parser.getRuleIfElseStmt());
-                ExtendContext parent = (ExtendContext) ifStmt.getParent().getParent();
-                if (parent == null) {
-                    return false;
-                }
-
-                // Body of loop has no {}: loop <-- stmt <-- ifStmt
-                if (parser.belongToLoop(parent.getRuleIndex())) {
-                    return true;
-                }
-                // Body of loop has a {}: loop <-- stmt <-- block <-- ifStmt
-                if (parent.getRuleIndex() == parser.getRuleBlock()
-                        && parent.getChild(parent.getChildCount() - 1) == ifStmt
-                        && parser.belongToLoop(parent.getParent().getParent().getRuleIndex())) {
-                    return true;
-                }
+            ExtendContext startNode = (ExtendContext) realTrees.get(realTrees.size() - 1);
+            // Check loop ends with a statement with the `startNode` as the root.
+            boolean checkResult = checkLoopEnd(startNode, parser);
+            if (!checkResult) {
+                return false;
             }
+
+            // Check loop ends with an if/if-else statement.
+            ParseTree ifStmt = startNode.getParent().getParent();
+            checkResult = checkLoopEnd((ExtendContext) ifStmt.getParent(), parser);
+            if (!checkResult) {
+                return false;
+            }
+
         }
         return true;
     }
 
-    private ExtendContext findFirstAncestorIf(ExtendContext start, Predicate<ExtendContext> predicate) {
-        ExtendContext current = start;
-        while (current != null) {
-            if (predicate.test(current)) {
-                return current;
-            }
-            current = (ExtendContext) current.parent;
+    private boolean checkLoopEnd(ExtendContext stmt, MyParser parser) {
+        if (stmt == null || stmt.getParent() == null) {
+            return false;
         }
-        return null;
+
+        ExtendContext loop = (ExtendContext) stmt.getParent();
+        // Body of loop has no {}: loop <-- `stmt`
+        if (parser.belongToLoop(loop.getRuleIndex())) {
+            return true;
+        }
+
+        // Body of loop has a {}: loop <-- stmt <-- block <-- `stmt`
+        if (loop.getParent() == null || loop.getParent().getParent() == null) {
+            return false;
+        }
+        return loop.getRuleIndex() == parser.getRuleBlock()
+                && loop.getLastCtxChildIf(parser::isStatement) == stmt
+                && parser.belongToLoop(loop.getParent().getParent().getRuleIndex());
     }
+
+
+
 }
