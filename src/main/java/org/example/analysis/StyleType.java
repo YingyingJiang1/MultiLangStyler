@@ -65,7 +65,7 @@ public class StyleType {
     }
 
     public static class OneStatementInOneLine {
-        public static String styleType = "One statement in one line";
+        public static String styleType = "One statement a line";
         public static String oneStmtPerLineAttr = "One statement per line";
     }
 
@@ -88,7 +88,7 @@ public class StyleType {
     }
 
     public static class LayoutOfControlStmtWithoutBraces {
-        public static String styleType = "Layout of control statement without braces";
+        public static String styleType = "Layout of control statement";
         public static String inCompactModeAttr = "In compact mode";
     }
 
@@ -123,7 +123,7 @@ public class StyleType {
     }
 
     public static class NumberOfVarInOneDecStmt {
-        public static String styleType = "Number of variables in one declaration statement";
+        public static String styleType = "Number of a declaration";
     }
 
     public static class MostComplexExp {
