@@ -14,7 +14,7 @@ public class DoubleAttrValue implements AttrValue {
     @Override
     public double calculateDistance(AttrValue other) {
         if (other instanceof DoubleAttrValue otherDouble) {
-            return Math.abs(value - otherDouble.value);
+            return Math.round(Math.abs(value - otherDouble.value) * 100.0) / 100.0;
         }
         return -1;
     }
