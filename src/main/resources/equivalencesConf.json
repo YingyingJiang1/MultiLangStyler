@@ -56,14 +56,14 @@
   "id" : 5,
   "name" : "cascading if",
   "category" : "Continuous logic or conditions preferences",
-  "codes" : [ "if ( $E || $E1 ) $S", "if ( $E ) $S if ( $E1 ) $S1 " ],
+  "codes" : [ "if ( $E || $E1 ) $S", "$^ if ( $E ) $S if ( $E1 ) $S1 " ],
   "checkers" : [ {
     "class" : "EqualChecker",
-    "argsList" : [ [ 0, "$S", "$S1" ] ]
+    "argsList" : [ [ 1, "$S", "$S1" ] ]
   } ],
   "handlers" : [ {
     "class" : "ReplicationHandler",
-    "argsList" : [ [ 0, "$S", "$S1" ] ]
+    "argsList" : [ [ 1, "$S", "$S1" ] ]
   } ]
 }, {
   "id" : 6,
