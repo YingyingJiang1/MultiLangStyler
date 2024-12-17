@@ -227,7 +227,7 @@
     "class" : "EqualChecker",
     "argsList" : [ [ 0, "$I", "$E1" ] ]
   }, {
-    "checker" : "NotIdentifierExpChecker",
+    "class" : "NotIdentifierExpChecker",
     "argsList" : [ [ 1, "$E" ] ]
   } ],
   "handlers" : [ {
@@ -254,25 +254,13 @@
   "id" : 28,
   "category" : "Array declaration style",
   "codes" : [ "$M $T [][] $I = $ARRAY_INITIALIZER ;", "$M $T $I [][] = $ARRAY_INITIALIZER ;" ]
-}, {
-  "id" : 29,
-  "category" : "Continue preferences",
-  "codes" : [ "if ( $E ) { continue ; } else $S ;", "if ( $E ) $S" ],
-  "checkers" : [ {
-    "checkers" : "ContinuePreferenceChecker",
-    "argsList" : [ [ 1, "$S" ] ]
-  } ],
-  "handlers" : [ {
-    "class" : "CondReverserHandler",
-    "argsList" : [ [ 0, 1, "$E" ] ]
-  } ]
-}, {
+},  {
   "id" : 30,
   "category" : "Continue preferences",
-  "codes" : [ "$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { $S+ }" ],
+  "codes" : [ "$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { continue ; } else { $S+ }","if ( $E ) { $S+ }" ],
   "checkers" : [ {
     "checkers" : "ContinuePreferenceChecker",
-    "argsList" : [ [ 1, "$S" ] ]
+    "argsList" : [ [ 0, "$S+" ] ,[ 1, "$E" ],[ 2, "$E" ]]
   } ],
   "handlers" : [ {
     "class" : "CondReverserHandler",
@@ -281,18 +269,24 @@
 }, {
   "id" : 31,
   "category" : "Continue preferences",
-  "codes" : [ "$^ if ( $E ) { $S+ continue ; }  $S1+", "if ( $E ) { $S+ } else { $S1+ }" ],
+  "codes" : [ "$^ if ( $E ) { $S+ continue ; }  $S1+", "if ( $E ) { $S+ continue ; } else { $S1+ }","if ( $E ) { $S+ } else { $S1+ }" ],
   "checkers" : [ {
-    "checkers" : "ContinuePreferenceChecker",
-    "argsList" : [ [ 1, "$S" ] ]
-  } ]
+    "class" : "ContinuePreferenceChecker",
+    "argsList" : [ [ 0, "$S1+" ] ,[ 1, "$E" ],[ 2, "$E" ]]
+  },{
+    "class" : "NoStmtChecker",
+    "argsList" : [ [2, "continueStmt", "$S+"]]
+  }  ]
 }, {
   "id" : 32,
   "category" : "Redundant code",
   "codes" : [ "$^ if ( $E ) { $S+ }  $S1", "if ( $E ) { $S+ $S1 } else { $S2 }" ],
   "checkers" : [ {
-    "checkers" : "EqualChecker",
+    "class" : "EqualChecker",
     "argsList" : [ [ 1, "$S1", "$S2" ] ]
+  } ,{
+    "class" : "NoStmtChecker",
+    "argsList" : [ [ 0, "continueStmt", "breakStmt", "returnStmt", "$S+" ] ]
   } ],
   "handlers" : [ {
     "class" : "ReplicationHandler",
