@@ -146,23 +146,35 @@ public class PlaceholderContainer {
             return null;
         }
 
-        if (placeholder.type.equals("$LITERAL") && !parser.isLiteral(node)) {
+        boolean ret = checkNodeType(node, placeholder, parser);
+        if (!ret) {
             return null;
         }
+
+        return placeholder.vNode;
+    }
+
+    private boolean checkNodeType(ParseTree node, Placeholder placeholder, MyParser parser) {
         // $S(STMT_TYPE) should be linked to a specific statement.
         if (placeholder.type.matches("\\$S\\([a-zA-Z]\\)") && parser.isStatement(node)) {
-            return null;
+            return false;
         }
-        if (placeholder.type.equals("$I") && !parser.isIdentifier(node)) {
-            return null;
+
+        switch (placeholder.type) {
+            case "$LITERAL":
+                return parser.isLiteral(node);
+            case "$I":
+                return parser.isIdentifier(node);
+            case "$E":
+                boolean isExpression = node instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression();
+                return isExpression;
+            case "$T":
+                return parser.isTypeType(node);
+            case "$M":
+                return  node instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleModifierList();
+            default:
+                return true;
         }
-        if (placeholder.type.equals("$E")) {
-            boolean isExpression = node instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression();
-            if (!isExpression) {
-                return null;
-            }
-        }
-        return placeholder.vNode;
     }
 
     public VirtualNode getVNodeByPlaceholderName(String placeholderName) {

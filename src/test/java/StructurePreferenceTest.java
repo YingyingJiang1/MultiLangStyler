@@ -84,10 +84,16 @@ public class StructurePreferenceTest extends CommonTest {
 
     @Test
     void testRedudantCode() {
+        String target = null;
+        Style style = null;
         int id = 32;
-        String target = "void test() {if (a > 0) a++; b += 3;}";
-        Style style = extractFromString(target, new StructureStyler(), "java");
-        resultOfTest(style, id, 0);
+//        target = "void test() {if (a > 0) a++; b += 3;}";
+//        style = extractFromString(target, new StructureStyler(), "java");
+//        resultOfTest(style, id, 0);
+
+        target = "void test() {if (a > 0) { a++; b += 3;} else {b+=3;}}";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 1);
     }
 
     @Test
@@ -122,6 +128,31 @@ public class StructurePreferenceTest extends CommonTest {
         target = "if (cond) {return (a+b);}";
         style = extractFromString(target, new StructureStyler(), "java");
         resultOfTest(style, id, 0);
+    }
+
+    @Test
+    void testArrayDec() {
+        int id = 25;
+        String target = "String[] a;";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+    }
+
+    @Test
+    void testCheckThenAssign() {
+        int id = 16;
+        String target = "void test() {int a = 1; if (b > 0) { a = b; }}";
+        Style style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 0);
+        target = "void test() {int a = b > 0 ? b : 1;}";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 1);
+
+        id =17;
+        target = "void test() {if (b > 0) a = b; else a = 1;}";
+        style = extractFromString(target, new StructureStyler(), "java");
+        resultOfTest(style, id, 1);
+
     }
 
 }
