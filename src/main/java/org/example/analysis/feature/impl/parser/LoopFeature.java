@@ -1,5 +1,6 @@
 package org.example.analysis.feature.impl.parser;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.analysis.StyleType;
 import org.example.analysis.feature.ParserFeatureExtractor;
 import org.example.analysis.feature.featurevalue.DoubleAttrValue;
@@ -35,6 +36,12 @@ public class LoopFeature implements ParserFeatureExtractor {
             loopFrequency.put(StyleType.Loops.whileAttr, loopFrequency.getOrDefault(StyleType.Loops.whileAttr, 0) + 1);
         } else if (root.getRuleIndex() == parser.getRuleDoWhileStmt()) {
             loopFrequency.put(StyleType.Loops.doWhileAttr,  loopFrequency.getOrDefault(StyleType.Loops.doWhileAttr, 0) + 1);
+        }
+
+        for (ParseTree child : root.children) {
+            if (child instanceof ExtendContext ctx && parser.belongToStmt(child)) {
+                traverse(ctx, parser, loopFrequency);
+            }
         }
     }
 }
