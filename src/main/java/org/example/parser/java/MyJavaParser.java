@@ -516,7 +516,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public int getRuleDoWhile() {
+    public int getRuleDoWhileStmt() {
         return JavaParser.RULE_doWhileStmt;
     }
 

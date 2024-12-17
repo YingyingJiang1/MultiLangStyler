@@ -152,6 +152,14 @@ public class StyleType {
         public static String shortBodyComesFirstAttr = "body with less lines comes first";
     }
 
+    public static class Loops {
+        public static String styleType = "Loops";
+        public static String forAttr = "for";
+        public static String whileAttr = "while";
+        public static String doWhileAttr = "do-while";
+        public static String forEachAttr = "for-each";
+    }
+
 
     // Function style types
     public static class OrderOfFunctionPara {

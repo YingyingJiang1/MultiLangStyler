@@ -57,7 +57,7 @@ public abstract class BodyStyler extends Styler {
                     parser.getRuleTryCatchStmt()
             )));
             map.put(ARRAY_INITIALIZER_BODY, parser.getArrayInitializerRules());
-            map.put(BodyTypeEnum.DO_WHILE_BODY, Set.of(parser.getRuleDoWhile()));
+            map.put(BodyTypeEnum.DO_WHILE_BODY, Set.of(parser.getRuleDoWhileStmt()));
         }
     }
 

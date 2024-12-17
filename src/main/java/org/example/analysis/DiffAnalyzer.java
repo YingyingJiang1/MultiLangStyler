@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.analysis.feature.ParserFeatureExtractor;
 import org.example.analysis.feature.impl.parser.BlankLineFeature;
 import org.example.analysis.feature.impl.parser.LineLengthFeature;
+import org.example.analysis.feature.impl.parser.LoopFeature;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
 import org.example.analysis.feature.StyleFeatureExtractor;
@@ -42,7 +43,8 @@ public class DiffAnalyzer {
     static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
     public static final List<ParserFeatureExtractor> FEATURE_EXTRACTORS = List.of(
             new BlankLineFeature(),
-            new LineLengthFeature()
+            new LineLengthFeature(),
+            new LoopFeature()
     );
     public static String language = "java";
 
@@ -182,6 +184,15 @@ public class DiffAnalyzer {
 
         logger.info("Get style distance vector of program pairs on {} style types.", disOfStyles.size());
         return result;
+    }
+
+    private static void initStyleMap(Map<String, StyleVector> styleMap) {
+        List<String> styleTypes = StyleType.getAllStyleTypes();
+        for (String type : styleTypes) {
+            if (!styleMap.containsKey(type)) {
+                styleMap.put(type, new StyleVector());
+            }
+        }
     }
 
     private static void extractStyleVectorFromStyleObj(Path path, Map<String, StyleVector> style2vecMap) {

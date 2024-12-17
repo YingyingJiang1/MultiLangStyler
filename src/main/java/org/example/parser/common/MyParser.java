@@ -128,7 +128,7 @@ public interface MyParser {
     int getRuleTryCatchStmt();
     int getRuleForStmt();
     int getRuleWhileStmt();
-    int getRuleDoWhile();
+    int getRuleDoWhileStmt();
     int getRuleCompilationUnit();
     int getRuleImportDeclarationList();
     int getRuleAnnotationList();
