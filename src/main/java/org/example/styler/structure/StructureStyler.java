@@ -35,8 +35,8 @@ public class StructureStyler extends Styler {
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         loadEquivalences(parser);
         int ruIndex = ctx.getRuleIndex();
-        if (ctx.getRuleIndex() == parser.getRuleStmt() && parser.getSpecificStmt(ctx) instanceof ExtendContext specificStmt) {
-            ruIndex = specificStmt.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
+            ruIndex = parser.getSpecificStmt(ctx).getRuleIndex();
         }
         ++recursiveDepth;
         ParseTree newTree = ctx;
@@ -95,8 +95,8 @@ public class StructureStyler extends Styler {
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         loadEquivalences(parser);
         int ruleIndex = ctx.getRuleIndex();
-        if (ctx.getRuleIndex() == parser.getRuleStmt() && parser.getSpecificStmt(ctx) instanceof ExtendContext specificStmt) {
-            ruleIndex = specificStmt.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
+            ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
         }
         List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
         if (equivalentStructures != null) {

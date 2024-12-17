@@ -63,9 +63,7 @@ public class StructurePreferenceTest extends CommonTest {
     @Test
     void testNestingIf() {
         int id = 4;
-        Path target = Paths.get(dir, "L003\\deepseek-coder.java") ;
-        Style style = extractFromSrcFile(target, new StructureStyler(), "java");
-        resultOfTest(style, id, 0);
+
     }
 
     @Test

@@ -8842,3 +8842,34 @@
 2024-12-17 17:18:56,632 INFO  --- [main] org.example.analysis.DiffAnalyzer.analyze/132 : Analyzing 20 pair, problem number:L003
 2024-12-17 17:18:56,776 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31
 2024-12-17 17:18:56,777 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/87 : id: 18, category: Operator preferences
+2024-12-17 17:28:14,013 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:28:14,084 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L003\style.xml
+2024-12-17 17:28:14,188 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:28:14,217 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L003\self-style.xml
+2024-12-17 17:52:47,277 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 17:52:47,400 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:52:47,549 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
+2024-12-17 17:55:45,006 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 17:55:45,134 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:55:51,030 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 17:55:51,264 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:55:51,714 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
+2024-12-17 17:56:51,990 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 17:56:59,392 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:56:59,764 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
+2024-12-17 17:57:36,671 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 17:57:36,864 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 17:57:37,176 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
+2024-12-17 18:01:32,820 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 18:01:43,429 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 18:01:43,737 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 18:01:44,553 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
+2024-12-17 18:10:30,655 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 18:10:30,765 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 18:10:30,894 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
+2024-12-17 18:11:24,723 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 18:11:24,950 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 18:12:46,787 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 18:15:46,547 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\style.xml
+2024-12-17 18:15:46,686 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.format.newline.style.NewlineContext@a5283dbc
+2024-12-17 18:15:46,972 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:D:\jyy\科研\style\style-transformation\dataset\data\codes\L015\self-style.xml
