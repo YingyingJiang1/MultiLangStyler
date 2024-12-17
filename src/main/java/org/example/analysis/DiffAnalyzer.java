@@ -77,6 +77,19 @@ public class DiffAnalyzer {
 
     }
 
+    private static void calculateAvgDistance(List<Table> result, int totalPair, String filename) {
+        Map<String, Double> avgDistanceMap = new HashMap<>();
+        for (Table table : result) {
+            String styleType = table.name();
+            for (int i = 0; i < table.rowCount(); i++) {
+                Row row = table.row(i);
+                for (int j = 0; j < row.columnCount(); j++) {
+
+                }
+            }
+        }
+    }
+
     private static void saveFinalResult(List<Table> result, int totalPair, String filename) {
 
         List<String> styleTypes = new ArrayList<String>();
