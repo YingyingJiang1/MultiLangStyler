@@ -11,7 +11,7 @@ import org.example.styler.comment.syntax.style.CommentSyntaxProperty;
 
 import java.util.Map;
 
-public class CommentSyntax implements StyleFeatureExtractor {
+public class CommentSyntaxFeature implements StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();
