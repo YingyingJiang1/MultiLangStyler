@@ -311,6 +311,7 @@ public class EquivalentStructure {
 
 			// Match children
 			int vi = 0, i = 0;
+			int state = 0;
 			while (vi < vt.getChildCount() && i < t.getChildCount()) {
 				ParseTree vtChild = vt.getChild(vi), tChild = t.getChild(i);
 				virtualNode = vTreeMap.get(vtChild);
@@ -334,7 +335,25 @@ public class EquivalentStructure {
 					if (virtualNode != null && virtualNode.moveStep() == 0) {
 						matched = true;
 						++vi;
+					} else {
+						// Rollback status when left sibling of vtChild can be matched repeatedly.
+						if (vi - 1 >= 0) {
+							ParseTree preVtChild = vt.getChild(vi - 1);
+							VirtualNode preVNode = vTreeMap.get(preVtChild);
+							if (preVNode != null && preVNode.isRollback()) {
+								ParseTree matchedTree = preVNode.removeLastMatchedTree();
+								if (matchedTree != null) {
+									matched = isMatched(vtChild, matchedTree, forest, parser);
+									if (matched) {
+										if (virtualNode != null) {
+											vi += virtualNode.moveStep();
+										}
+									}
+								}
+							}
+						}
 					}
+
 				}
 
 				if (!matched) {
