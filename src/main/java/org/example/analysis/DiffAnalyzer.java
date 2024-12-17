@@ -121,7 +121,6 @@ public class DiffAnalyzer {
         FileOutputStream out = new FileOutputStream(tempResultFile, true);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
-        SequenceWriter tmpWriter = objectMapper.writer().writeValuesAsArray(generator);
 
         Map<String, List<PairDistance>> disOfStyles = new HashMap<>();
         int count = 0;
@@ -135,6 +134,8 @@ public class DiffAnalyzer {
                 Path path2 = Paths.get(dir, problemNumber, pair.getFile2());
                 Map<String, StyleVector> style2vecMap1 = new HashMap<>();
                 Map<String, StyleVector> style2vecMap2 = new HashMap<>();
+                initStyleMap(style2vecMap1);
+                initStyleMap(style2vecMap2);
 
                 extractStyleVectorFromStyleObj(path1, style2vecMap1);
                 extractStyleVectorFromStyleObj(path2, style2vecMap2);
@@ -145,10 +146,8 @@ public class DiffAnalyzer {
                 for (String styleName : style2vecMap1.keySet()) {
                     StyleVector vec1 = style2vecMap1.get(styleName);
                     StyleVector vec2 = style2vecMap2.get(styleName);
-                    if (vec2 != null) {
-                        PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
-                        disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
-                    }
+                    PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
+                    disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
                 }
             }
         } catch (Exception e) {
