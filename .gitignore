@@ -7,7 +7,7 @@ target/
 ### IntelliJ IDEA ###
 .idea/
 *.iws
-*.iml
+*.i
 *.ipr
 
 ### Eclipse ###

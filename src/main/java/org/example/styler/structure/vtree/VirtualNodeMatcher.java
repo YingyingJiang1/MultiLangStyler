@@ -58,7 +58,6 @@ public class VirtualNodeMatcher {
 
         matchRules.put("$EXP_LIST", Set.of(parser.getRuleExpressionList()));
 
-        matchTokens.put("$I", Set.of(parser.getIdentifier()));
         matchTokens.put("$HOMO_BOP", parser.getHomoOps());
         matchTokens.put("$HOMO_BOP_ASSIGN", parser.getCompoundAssign());
     }

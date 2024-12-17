@@ -28,9 +28,7 @@ public class OrderedAttrValue implements AttrValue {
             if (newValue.isEmpty()) {
                 return -1;
             }
-            double editDistance = DistanceCalculator.calculateEditDistance(newValue, newOtherValue);
-            double maxDistance = newValue.size() - 1;
-            return maxDistance == 0 ? 0 : DistanceCalculator.calculateEditDistance(newValue, newOtherValue) / maxDistance;
+            return DistanceCalculator.calculateEditDistance(newValue, newOtherValue);
         }
         return -1;
     }
