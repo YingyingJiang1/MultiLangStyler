@@ -12,6 +12,7 @@ import org.example.styler.comment.density.CommentDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.declaration.number.DeclarationNumberStyler;
+import org.example.styler.exp.updatevar.UpdateVarStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linestmt.LineStmtStyler;
 import org.example.styler.format.newline.NewlineStyler;
@@ -31,15 +32,16 @@ public class StylerContainer {
 
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
-        stylers.add(new StructureStyler());
 //        stylers.add(new LiteralUsageStyler());
         stylers.add(new ModifierOrderStyler());
         stylers.add(new DeclarationNumberStyler());
         stylers.add(new DeclarationLocationStyler());
         stylers.add(new IfElseBodyOrderStyler());
         stylers.add(new ExpressionStyler());
+        stylers.add(new UpdateVarStyler());
         stylers.add(new FunctionComplexityStyler());
         stylers.add(new ParameterOrderStyler());
+        stylers.add(new StructureStyler());
         stylers.add(new OptionalBraceStyler());
         stylers.add(new BraceFormatStyler());
         stylers.add(new MultiBranchStyler());
