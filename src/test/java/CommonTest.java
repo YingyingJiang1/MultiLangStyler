@@ -37,6 +37,8 @@ public class CommonTest {
 
     }
 
+
+
     protected static void transform(Path sourcePath, Path targetPath) {
         Configuration conf = new Configuration();
         conf.extractionCollection = new FileCollection();

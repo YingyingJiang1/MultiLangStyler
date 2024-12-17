@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.analysis.feature.ParserFeatureExtractor;
 import org.example.analysis.feature.impl.parser.BlankLineFeature;
 import org.example.analysis.feature.impl.parser.LineLengthFeature;
+import org.example.analysis.feature.impl.parser.LoopFeature;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
 import org.example.analysis.feature.StyleFeatureExtractor;
@@ -44,7 +45,8 @@ public class DiffAnalyzer {
 
     public static final List<ParserFeatureExtractor> FEATURE_EXTRACTORS = List.of(
             new BlankLineFeature(),
-            new LineLengthFeature()
+            new LineLengthFeature(),
+            new LoopFeature()
     );
     public static String language = "java";
 
@@ -125,7 +127,6 @@ public class DiffAnalyzer {
         FileOutputStream out = new FileOutputStream(tempResultFile, true);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
-        SequenceWriter tmpWriter = objectMapper.writer().writeValuesAsArray(generator);
 
         Map<String, List<PairDistance>> disOfStyles = new HashMap<>();
         int count = 0;
@@ -139,6 +140,8 @@ public class DiffAnalyzer {
                 Path path2 = Paths.get(dir, problemNumber, pair.getFile2());
                 Map<String, StyleVector> style2vecMap1 = new HashMap<>();
                 Map<String, StyleVector> style2vecMap2 = new HashMap<>();
+                initStyleMap(style2vecMap1);
+                initStyleMap(style2vecMap2);
 
                 extractStyleVectorFromStyleObj(path1, style2vecMap1);
                 extractStyleVectorFromStyleObj(path2, style2vecMap2);
@@ -149,10 +152,8 @@ public class DiffAnalyzer {
                 for (String styleName : style2vecMap1.keySet()) {
                     StyleVector vec1 = style2vecMap1.get(styleName);
                     StyleVector vec2 = style2vecMap2.get(styleName);
-                    if (vec2 != null) {
-                        PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
-                        disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
-                    }
+                    PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
+                    disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
                 }
             }
         } catch (Exception e) {
@@ -187,6 +188,15 @@ public class DiffAnalyzer {
 
         logger.info("Get style distance vector of program pairs on {} style types.", disOfStyles.size());
         return result;
+    }
+
+    private static void initStyleMap(Map<String, StyleVector> styleMap) {
+        List<String> styleTypes = StyleType.getAllStyleTypes();
+        for (String type : styleTypes) {
+            if (!styleMap.containsKey(type)) {
+                styleMap.put(type, new StyleVector());
+            }
+        }
     }
 
     private static void extractStyleVectorFromStyleObj(Path path, Map<String, StyleVector> style2vecMap) {

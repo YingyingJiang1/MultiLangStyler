@@ -145,10 +145,10 @@ public class LiteralUsageStyler extends Styler {
 
         ExtendContext tree = (ExtendContext) parser.parseFromString(code);
         parent.insertChild(0, tree);
-        Optional<Token> token = tree.getAllTokensRecIf(t -> t.getType() == parser.getIdentifier()).stream().findAny();
-        if (token.isPresent()) {
-            declaredConstants.put(tokenName, token.get());
-            return token.get();
+        Optional<TerminalNode> terminalNode = tree.getAllTerminalsRecIf(t -> t.getSymbol().getType() == parser.getIdentifier()).stream().findAny();
+        if (terminalNode.isPresent()) {
+            declaredConstants.put(tokenName, terminalNode.get().getSymbol());
+            return terminalNode.get().getSymbol();
         }
         return null;
     }

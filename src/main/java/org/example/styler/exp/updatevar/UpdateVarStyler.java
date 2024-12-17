@@ -22,11 +22,10 @@ public class UpdateVarStyler extends Styler {
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         ExpType expType = null;
         List<ExtendContext> targetExpressions = new ArrayList<ExtendContext>();
-        if (ctx.getRuleIndex() == parser.getRuleParExpression()) {
+        if (ctx.getParent() instanceof ExtendContext parentCtx && parentCtx.getRuleIndex() == parser.getRuleParExpression()) {
             expType = ExpType.CONDITIONAL_EXP;
-            ExtendContext expression = ctx.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleExpression());
-            targetExpressions.add(expression);
-        } else if (ctx.getRuleIndex() == parser.getRuleExpression()) {
+            targetExpressions.add(ctx);
+        } else {
             expType = ExpType.RVALUE_EXP;
             int assignOpIndex = ctx.indexOfFirstChild(child -> child instanceof TerminalNode ter
                     && (ter.getText().equals("=") || parser.getCompoundAssign().contains(ter.getSymbol().getType())));
@@ -41,7 +40,7 @@ public class UpdateVarStyler extends Styler {
         }
 
         for (ExtendContext targetExpression : targetExpressions) {
-            List<TerminalNode> updateVarOp = targetExpression.getAllTerminalsIf(child -> child.getText().equals("=")
+            List<TerminalNode> updateVarOp = targetExpression.getAllTerminalsRecIf(child -> child.getText().equals("=")
                     || child.getText().equals("++") || child.getText().equals("--")
             || parser.getCompoundAssign().contains(child.getSymbol().getType()));
             if (!updateVarOp.isEmpty()) {
@@ -67,6 +66,6 @@ public class UpdateVarStyler extends Styler {
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
-        return ruleIndex == parser.getRuleParExpression() || ruleIndex == parser.getRuleExpression();
+        return ruleIndex == parser.getRuleExpression();
     }
 }

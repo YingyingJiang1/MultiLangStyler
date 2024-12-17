@@ -1,6 +1,55 @@
 package org.example.analysis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StyleType {
+    private static List<String> styleTypes = null;
+    public static List<String> getAllStyleTypes() {
+         if (styleTypes != null) {
+             return styleTypes;
+         }
+         styleTypes = new ArrayList<>();
+         styleTypes.add(Indention.styleType);
+         styleTypes.add(Space.styleType);
+         styleTypes.add(OneStatementInOneLine.styleType);
+         styleTypes.add(BlankLine.styleType);
+         styleTypes.add(LineLength.styleType);
+         styleTypes.add(BraceFormat.styleType);
+         styleTypes.add(LayoutOfControlStmtWithoutBraces.styleType);
+         styleTypes.add(CommentSyntax.styleType);
+         styleTypes.add(CommentDensity.styleType);
+         styleTypes.add(LiteralUsage.styleType);
+         styleTypes.add(NamingFormat.styleType);
+         styleTypes.add(ModifiersOrder.styleType);
+         styleTypes.add(OptionalBrace.styleType);
+         styleTypes.add(NumberOfVarInOneDecStmt.styleType);
+         styleTypes.add(MostComplexExp.styleType);
+         styleTypes.add(VarUpdating.styleType);
+         styleTypes.add(LocOfVarDeclaration.styleType);
+         styleTypes.add(Mutlibranch.styleType);
+         styleTypes.add(OrderOfIfElseBodies.styleType);
+         styleTypes.add(OrderOfFunctionPara.styleType);
+         styleTypes.add(FunctionComplexity.styleType);
+         styleTypes.add(Arrangement.styleType);
+
+         styleTypes.add("Increment or decrement preferences");
+         styleTypes.add("Assignment statement preferences");
+         styleTypes.add("Continuous logic and conditions preferences");
+         styleTypes.add("Continuous logic or conditions preferences");
+         styleTypes.add("Continuous assignments or calls preferences");
+         styleTypes.add("Check then return preferences");
+         styleTypes.add("Check then assign preferences");
+         styleTypes.add("Operator preferences");
+         styleTypes.add("Literal position in bool expression");
+         styleTypes.add("Return statements");
+         styleTypes.add("Array declaration style");
+         styleTypes.add("Continue preferences");
+         styleTypes.add("Redundant code");
+        return styleTypes;
+    }
+
+
 
     // Token style types
     public static class Indention {
@@ -83,46 +132,19 @@ public class StyleType {
         public static String maxSubExpNum = "Max number of sub-expressions of all expressions";
     }
 
-    public static class ArrayDeclarationStyle {
-        public static String styleType = "Array declaration style";
-    }
-
     public static class VarUpdating {
         public static String styleType = "Variable updating";
     }
 
-    public static class LocOfLoopVar {
-        public static String styleType = "Location of looping variable";
-    }
 
     public static class LocOfVarDeclaration {
         public static String styleType = "Location of variable declaration";
         public static String locationAttr = "Location";
     }
 
-    public static class LocOfVarInitialization {
-        public static String styleType = "Location of variable initialization";
-    }
 
     public static class Mutlibranch {
         public static String styleType = "Mutlibranch";
-    }
-
-
-    public static class PresenceOfDefaultLabel {
-        public static String styleType = "Presence of the `default` label";
-    }
-
-    public static class CreateVarForMultiUses {
-        public static String styleType = "Create a variable for multiple uses";
-    }
-
-    public static class RedundantCode {
-        public static String styleType = "Redundant code";
-    }
-
-    public static class ContainUnusedCode {
-        public static String styleType = "Contain unused code";
     }
 
     public static class OrderOfIfElseBodies {
@@ -130,22 +152,14 @@ public class StyleType {
         public static String shortBodyComesFirstAttr = "body with less lines comes first";
     }
 
-    // Expression style types
-    public static class LiteralPosInBoolExp {
-        public static String styleType = "Literal position in bool expression";
+    public static class Loops {
+        public static String styleType = "Loops";
+        public static String forAttr = "for";
+        public static String whileAttr = "while";
+        public static String doWhileAttr = "do-while";
+        public static String forEachAttr = "for-each";
     }
 
-    public static class FieldAccess {
-        public static String styleType = "Field access in class";
-    }
-
-    public static class StaticMembersAccess {
-        public static String styleType = "Static members access";
-    }
-
-    public static class ParenInExp {
-        public static String styleType = "Parentheses in expressions";
-    }
 
     // Function style types
     public static class OrderOfFunctionPara {

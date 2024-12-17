@@ -20,4 +20,18 @@ public class UpdateVarProperty extends StyleProperty {
     public void parseElement(Element parent, MyParser parser) {
         allowUpdatingInExp = Boolean.parseBoolean(parent.attributeValue("allowUpdatingInExp"));
     }
+
+    @Override
+    public int hashCode() {
+        return Boolean.hashCode(allowUpdatingInExp);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UpdateVarProperty) {
+            return allowUpdatingInExp == ((UpdateVarProperty) obj).allowUpdatingInExp;
+        } else {
+            return false;
+        }
+    }
 }
