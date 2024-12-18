@@ -40,8 +40,8 @@ import java.util.*;
 public class DiffAnalyzer {
     public static Logger logger =LoggerFactory.getLogger(DiffAnalyzer.class);
 
-//    static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
-    static String dir = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\codes";
+    static String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
+//    static String dir = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\codes";
 
     public static final List<ParserFeatureExtractor> FEATURE_EXTRACTORS = List.of(
             new BlankLineFeature(),
@@ -51,29 +51,28 @@ public class DiffAnalyzer {
     public static String language = "java";
 
     public static void main(String[] args) throws IOException {
-//        String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
-        String metaFile = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\meta.json";
+        String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
+//        String metaFile = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\meta.json";
 
         List<InputPair> programPairs = null;
         List<Table> result = null;
 
-        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
-        System.out.println("human-llm pairs: " + programPairs.size());
-//        programPairs = programPairs.subList(0, 2);
-        result = analyze(programPairs);
-        writeResult2excel(result, "human-llm-result");
-        saveFinalResult(result, programPairs.size(), "human-llm-final-result");
+//        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
+//        System.out.println("human-llm pairs: " + programPairs.size());
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "human-llm-result");
+//        saveFinalResult(result, programPairs.size(), "human-llm-final-result");
 
 
         programPairs = InputGenerator.generateHumanPairs(metaFile);
         System.out.println("human pairs: " + programPairs.size());
         result = analyze(programPairs);
         writeResult2excel(result, "human-human-result");
-
-        programPairs = InputGenerator.generateLLMPairs(metaFile);
-        System.out.println("llm pairs: " + programPairs.size());
-        result = analyze(programPairs);
-        writeResult2excel(result, "llm-llm-result");
+//
+//        programPairs = InputGenerator.generateLLMPairs(metaFile);
+//        System.out.println("llm pairs: " + programPairs.size());
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "llm-llm-result");
 
     }
 
