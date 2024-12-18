@@ -67,13 +67,13 @@ public class DiffAnalyzer {
 
         programPairs = InputGenerator.generateHumanPairs(metaFile);
         System.out.println("human pairs: " + programPairs.size());
-//        result = analyze(programPairs);
-//        writeResult2excel(result, "human-human-result");
+        result = analyze(programPairs);
+        writeResult2excel(result, "human-human-result");
 
         programPairs = InputGenerator.generateLLMPairs(metaFile);
         System.out.println("llm pairs: " + programPairs.size());
-//        result = analyze(programPairs);
-//        writeResult2excel(result, "llm-llm-result");
+        result = analyze(programPairs);
+        writeResult2excel(result, "llm-llm-result");
 
     }
 

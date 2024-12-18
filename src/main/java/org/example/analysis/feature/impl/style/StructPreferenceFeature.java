@@ -34,12 +34,13 @@ public class StructPreferenceFeature implements StyleFeatureExtractor {
                 String styleType = structure.getCategory();
 
                 // set writings
-                List<Boolean> writings = new java.util.ArrayList<>(Collections.nCopies(structure.getWrittingNum(), false));
-                writings.set(property.getPreferenceIndex(), true);
+//                List<Boolean> writings = new java.util.ArrayList<>(Collections.nCopies(structure.getWrittingNum(), false));
+//                writings.set(property.getPreferenceIndex(), true);
 
 
                 StyleVector sv = st2svMap.computeIfAbsent(styleType, k -> new StyleVector());
-                sv.addAttrValue("struct id:" + context.getStructID(), new VectorAttrValue(writings));
+                StringAttrValue value = new StringAttrValue(Integer.toString(property.getPreferenceIndex()));
+                sv.addAttrValue("struct id:" + context.getStructID(), value);
             }
         }
     }

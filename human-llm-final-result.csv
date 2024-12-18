@@ -13,8 +13,9 @@ Naming format,920.0,18.0,0.0
 Loops,0.0,0.0,938.0
 Comment syntax,0.0,0.0,938.0
 Continuous assignments or calls preferences,938.0,0.0,0.0
-One statement in one line,935.0,3.0,0.0
+One statement a line,935.0,3.0,0.0
 Modifiers order,904.0,34.0,0.0
+Number of a declaration,23.0,915.0,0.0
 Literal usage,0.0,0.0,938.0
 Ordering of class contents,869.0,69.0,0.0
 Order of function parameters,330.0,608.0,0.0
@@ -28,9 +29,13 @@ Function complexity,528.0,410.0,0.0
 Operator preferences,874.0,64.0,0.0
 Mutlibranch,2.0,936.0,0.0
 Redundant code,308.0,630.0,0.0
+Layout of control statement,89.0,849.0,0.0
 Continuous logic and conditions preferences,40.0,898.0,0.0
+<<<<<<< HEAD
 Layout of control statement without braces,89.0,849.0,0.0
 Number of variables in one declaration statement,23.0,915.0,0.0
+=======
+>>>>>>> 14d030821d43f0dea5c3472484a7cdc030194e13
 Blank line,131.0,807.0,0.0
 Increment or decrement preferences,822.0,116.0,0.0
 Literal position in bool expression,292.0,646.0,0.0
