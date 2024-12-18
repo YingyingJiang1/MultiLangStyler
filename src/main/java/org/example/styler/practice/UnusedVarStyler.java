@@ -31,4 +31,11 @@ public class UnusedVarStyler extends Styler {
 
         style.addRule(null, new UnusedVarProperty(hasUnusedVar));
     }
+
+    @Override
+    public void doFinalize() {
+        if (style.getProperty(null) == null) {
+            style.addRule(null, new UnusedVarProperty(false));
+        }
+    }
 }

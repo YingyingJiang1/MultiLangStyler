@@ -46,7 +46,7 @@
 }, {
   "id" : 4,
   "name" : "nesting if",
-  "category" : "Continuous logic and conditions preferences",
+  "category" : "Continuous logic and preferences",
   "codes" : [ "if ( $E && $E1 ) $S", "if ( $E ) { if ( $E1 ) $S }" ],
   "handlers" : [ {
     "class" : "WrapCondHandler",
@@ -55,7 +55,7 @@
 }, {
   "id" : 5,
   "name" : "cascading if",
-  "category" : "Continuous logic or conditions preferences",
+  "category" : "Continuous logic or preferences",
   "codes" : [ "if ( $E || $E1 ) $S", "$^ if ( $E ) $S if ( $E1 ) $S1 " ],
   "checkers" : [ {
     "class" : "EqualChecker",

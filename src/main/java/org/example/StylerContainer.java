@@ -21,6 +21,7 @@ import org.example.styler.function.FunctionComplexityStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.ifelse.multibranch.MultiBranchStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
+import org.example.styler.practice.UnusedVarStyler;
 import org.example.styler.structure.StructureStyler;
 
 
@@ -55,6 +56,7 @@ public class StylerContainer {
         stylers.add(new IndentionStyler());// `IndentionStyler` must be the last styler.
 
         stylers.add(new NamingFormatStyler());
+        stylers.add(new UnusedVarStyler());
 
     }
 

@@ -165,6 +165,9 @@ public class DiffAnalyzer {
                 for (String styleName : style2vecMap1.keySet()) {
                     StyleVector vec1 = style2vecMap1.get(styleName);
                     StyleVector vec2 = style2vecMap2.get(styleName);
+                    if (vec2 == null) {
+                        System.out.println(styleName);
+                    }
                     PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
                     disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
                 }

@@ -25,7 +25,7 @@
 | statement   | Array declaration style                     |                                                              |                |         | google convention | :white_check_mark: | :question:         |
 | statement   | Variable updating                           |                                                              |                |         | 1,oracle          |                    |                    |
 | statement   | ~~Location of looping variable~~            |                                                              |                |         | 2,8               |                    |                    |
-| statement   | Location of local variabe declaration       |                                                              |                |         | 1,oracle          | :white_check_mark: |                    |
+| statement   | Location of local variable declaration      |                                                              |                |         | 1,oracle          | :white_check_mark: |                    |
 | statement   | ~~Location of variable initialization~~     |                                                              |                |         | 1,oracle          |                    |                    |
 | statement   | Loops                                       |                                                              |                |         | 1,2,3,8           | :white_check_mark: |                    |
 | statement   | Return statements                           | Whether a `return` statement with a value uses parentheses   |                |         | oracle            | :white_check_mark: | :bug:              |

@@ -35,8 +35,8 @@ public class StyleType {
 
          styleTypes.add("Increment or decrement preferences");
          styleTypes.add("Assignment statement preferences");
-         styleTypes.add("Continuous logic and conditions preferences");
-         styleTypes.add("Continuous logic or conditions preferences");
+         styleTypes.add("Continuous logic and preferences");
+         styleTypes.add("Continuous logic or preferences");
          styleTypes.add("Continuous assignments or calls preferences");
          styleTypes.add("Check then return preferences");
          styleTypes.add("Check then assign preferences");
@@ -50,6 +50,10 @@ public class StyleType {
     }
 
 
+    public static class UnusedVar {
+        public static String styleType = "Contain unused local variables";
+        public static String unusedVarAttr = "Contain";
+    }
 
     // Token style types
     public static class Indention {
@@ -127,7 +131,7 @@ public class StyleType {
     }
 
     public static class MostComplexExp {
-        public static String styleType = "The most complex expression";
+        public static String styleType = "Expression complexity";
         public static String maxLengthAttr = "Max text length of all expressions";
         public static String maxSubExpNum = "Max number of sub-expressions of all expressions";
     }
@@ -138,7 +142,7 @@ public class StyleType {
 
 
     public static class LocOfVarDeclaration {
-        public static String styleType = "Location of variable declaration";
+        public static String styleType = "Location of local variable declaration";
         public static String locationAttr = "Location";
     }
 
