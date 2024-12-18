@@ -27,4 +27,8 @@ public class InputPair {
     public String getProblemNumber() {
         return problemNumber;
     }
+
+    public String[] getAuthors() {
+        return authors;
+    }
 }

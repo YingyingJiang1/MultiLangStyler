@@ -56,24 +56,43 @@ public class DiffAnalyzer {
 
         List<InputPair> programPairs = null;
         List<Table> result = null;
+        int authorPairs = 0;
 
-//        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
-//        System.out.println("human-llm pairs: " + programPairs.size());
+        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
+        authorPairs = calculateAuthorGroup(programPairs);
+        System.out.println("human-llm pairs: " + programPairs.size());
+        System.out.println("human-llm author pairs: " + authorPairs);
 //        result = analyze(programPairs);
 //        writeResult2excel(result, "human-llm-result");
 //        saveFinalResult(result, programPairs.size(), "human-llm-final-result");
-//
-//
-//        programPairs = InputGenerator.generateHumanPairs(metaFile);
-//        System.out.println("human pairs: " + programPairs.size());
+
+        programPairs = InputGenerator.generateLLMPairs(metaFile);
+        authorPairs = calculateAuthorGroup(programPairs);
+        System.out.println("llm pairs: " + programPairs.size());
+        System.out.println("llm author pairs: " + authorPairs);
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "llm-llm-result");
+
+
+        programPairs = InputGenerator.generateHumanPairs(metaFile);
+        authorPairs = calculateAuthorGroup(programPairs);
+        System.out.println("human pairs: " + programPairs.size());
+        System.out.println("human author pairs: " + authorPairs);
 //        result = analyze(programPairs);
 //        writeResult2excel(result, "human-human-result");
 
-        programPairs = InputGenerator.generateLLMPairs(metaFile);
-        System.out.println("llm pairs: " + programPairs.size());
-        result = analyze(programPairs);
-        writeResult2excel(result, "llm-llm-result");
+    }
 
+    private static int calculateAuthorGroup(List<InputPair> pairs) {
+        Set<String> authorGroup = new HashSet<>();
+        for (InputPair pair : pairs) {
+            String group = Arrays.toString(pair.getAuthors());
+            String reversedGroup = Arrays.toString(new String[]{pair.getAuthors()[1], pair.getAuthors()[0]});
+            if (!authorGroup.contains(group) && !authorGroup.contains(reversedGroup)) {
+                authorGroup.add(group);
+            }
+        }
+        return authorGroup.size();
     }
 
     private static void calculateAvgDistance(List<Table> result, int totalPair, String filename) {
