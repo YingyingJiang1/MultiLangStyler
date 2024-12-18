@@ -57,18 +57,17 @@ public class DiffAnalyzer {
         List<InputPair> programPairs = null;
         List<Table> result = null;
 
-        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
-        System.out.println("human-llm pairs: " + programPairs.size());
-//        programPairs = programPairs.subList(0, 2);
-        result = analyze(programPairs);
-        writeResult2excel(result, "human-llm-result");
-        saveFinalResult(result, programPairs.size(), "human-llm-final-result");
-
-
-        programPairs = InputGenerator.generateHumanPairs(metaFile);
-        System.out.println("human pairs: " + programPairs.size());
-        result = analyze(programPairs);
-        writeResult2excel(result, "human-human-result");
+//        programPairs = InputGenerator.generateHumanLLMPairs(metaFile);
+//        System.out.println("human-llm pairs: " + programPairs.size());
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "human-llm-result");
+//        saveFinalResult(result, programPairs.size(), "human-llm-final-result");
+//
+//
+//        programPairs = InputGenerator.generateHumanPairs(metaFile);
+//        System.out.println("human pairs: " + programPairs.size());
+//        result = analyze(programPairs);
+//        writeResult2excel(result, "human-human-result");
 
         programPairs = InputGenerator.generateLLMPairs(metaFile);
         System.out.println("llm pairs: " + programPairs.size());
