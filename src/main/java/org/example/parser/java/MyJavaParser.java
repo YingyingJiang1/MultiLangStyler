@@ -12,10 +12,14 @@ import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.searcher.impl.ArgumentsSearcherImpl;
+import org.example.utils.searcher.intf.ArgumentsSearcher;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
 import org.example.utils.searcher.intf.DecStmtSearcher;
+import org.example.utils.searcher.intf.FunctionDecSearcher;
 import org.example.utils.searcher.javaimpl.JavaCUSearcher;
 import org.example.utils.searcher.javaimpl.JavaDecStmtSearcher;
+import org.example.utils.searcher.javaimpl.JavaFunctionDecSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +42,8 @@ public class MyJavaParser implements MyParser {
     ExtendJavaParserListener listener;
     DecStmtSearcher decStmtSearcher = JavaDecStmtSearcher.getInstance();
     CompilationUnitSearcher cuSearcher = JavaCUSearcher.getInstance();
+    FunctionDecSearcher functionDecSearcher = JavaFunctionDecSearcher.getInstance();
+    ArgumentsSearcher argumentsSearcher = ArgumentsSearcherImpl.getInstance();
 
 
     private static Set<Integer> changeHierarchyRule = new HashSet<>(Arrays.asList(
@@ -851,6 +857,16 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public FunctionDecSearcher getFunctionDecSearcher() {
+        return functionDecSearcher;
+    }
+
+    @Override
+    public ArgumentsSearcher getArgumentsSearcher() {
+        return argumentsSearcher;
+    }
+
+    @Override
     public int getRuleParExpression() {
         return JavaParser.RULE_parExpression;
     }
@@ -858,6 +874,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleformalParameterList() {
         return JavaParser.RULE_formalParameterList;
+    }
+
+    @Override
+    public int getRuleFormalParameter() {
+        return JavaParser.RULE_formalParameter;
     }
 
     @Override
@@ -919,6 +940,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleBreakStmt() {
         return JavaParser.RULE_breakStmt;
+    }
+
+    @Override
+    public int getRuleArguments() {
+        return JavaParser.RULE_arguments;
     }
 
     @Override

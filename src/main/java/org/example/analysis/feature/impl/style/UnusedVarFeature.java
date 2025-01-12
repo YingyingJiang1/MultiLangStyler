@@ -6,7 +6,7 @@ import org.example.analysis.feature.featurevalue.BooleanAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.practice.UnusedVarProperty;
+import org.example.styler.practice.style.UnusedCodeProperty;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class UnusedVarFeature implements StyleFeatureExtractor {
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         StyleVector sv = new StyleVector();
         for (StyleRule rule : style.getRules()) {
-            if (rule.getStyleProperty() instanceof UnusedVarProperty property) {
+            if (rule.getStyleProperty() instanceof UnusedCodeProperty property) {
                 sv.addAttrValue(StyleType.UnusedVar.unusedVarAttr, new BooleanAttrValue(property.hasUnusedVar));
             }
         }
