@@ -7,8 +7,8 @@ import org.example.analysis.feature.featurevalue.MapAttrValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.exp.style.ExpressionContext;
-import org.example.styler.exp.style.ExpressionProperty;
+import org.example.styler.exp.complexity.style.ExpressionContext;
+import org.example.styler.exp.complexity.style.ExpressionProperty;
 
 import java.util.Map;
 

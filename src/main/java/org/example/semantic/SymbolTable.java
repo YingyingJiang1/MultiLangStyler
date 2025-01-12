@@ -1,7 +1,6 @@
 package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
@@ -19,7 +18,7 @@ public class SymbolTable {
     private Map<ParseTree, List<Symbol>> symbolMap = new HashMap<>(0);
 
     public void addSymbol(Symbol symbol, MyParser parser) {
-        ParseTree  defLocation = getOuterScope(symbol.getIdentifierNode(), parser);
+        ParseTree  defLocation = getOuterScope(symbol.getDecIdentifierNode(), parser);
         symbolMap.computeIfAbsent(defLocation, k -> new ArrayList<>()).add(symbol);
     }
 

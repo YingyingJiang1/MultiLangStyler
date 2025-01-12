@@ -340,6 +340,16 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isVariableDeclaratorId(ParseTree t) {
+        return t instanceof JavaParser.VariableDeclaratorIdContext;
+    }
+
+    @Override
+    public boolean isVariableInitializer(ParseTree t) {
+        return t instanceof JavaParser.VariableInitializerContext;
+    }
+
+    @Override
     public int getRuleExpression() {
         return JavaParser.RULE_expression;
     }

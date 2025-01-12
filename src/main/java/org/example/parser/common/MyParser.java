@@ -104,6 +104,8 @@ public interface MyParser {
     boolean isCompilationUnit(ParseTree t);
     boolean isTypeParameter(ParseTree t);
     boolean isLiteral(ParseTree node);
+    boolean isVariableDeclaratorId(ParseTree t);
+    boolean isVariableInitializer(ParseTree t);
 
 
 

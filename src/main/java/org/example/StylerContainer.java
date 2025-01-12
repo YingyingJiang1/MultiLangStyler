@@ -7,7 +7,7 @@ import org.example.styler.arrangement.param.ParameterOrderStyler;
 import org.example.styler.body.braceformat.BraceFormatStyler;
 import org.example.styler.body.layout.BodyLayoutStyler;
 import org.example.styler.body.optionalbrace.OptionalBraceStyler;
-import org.example.styler.exp.ExpressionStyler;
+import org.example.styler.exp.complexity.ExpressionStyler;
 import org.example.styler.comment.density.CommentDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;

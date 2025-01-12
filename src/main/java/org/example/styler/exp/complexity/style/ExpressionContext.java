@@ -1,4 +1,4 @@
-package org.example.styler.exp.style;
+package org.example.styler.exp.complexity.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

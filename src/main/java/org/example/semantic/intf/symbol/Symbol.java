@@ -1,18 +1,14 @@
 package org.example.semantic.intf.symbol;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.naming.SymbolType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class Symbol {
-    protected ExtendContext identifierNode;
+    protected ExtendContext identifierNode; // identifier node in declaration statement.
     protected List<ExtendContext> references = new ArrayList<>(0);
     protected ExtendContext modifierListNode;
     protected SymbolType symbolType;
@@ -42,7 +38,7 @@ public abstract class Symbol {
         return symbolType;
     }
 
-    public ExtendContext getIdentifierNode() {
+    public ExtendContext getDecIdentifierNode() {
         return identifierNode;
     }
 
