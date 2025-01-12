@@ -57,6 +57,7 @@ public abstract class Checker {
       case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker(argsList);
       case "IdentifierExpChecker" -> new IdentifierExpChecker(argsList);
       case "NoStmtChecker" -> new NoStmtChecker(argsList);
+      case "ContainExpChecker" -> new ContainExpChecker(argsList);
       default -> null;
     };
     if (checker == null) {

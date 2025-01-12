@@ -29,11 +29,16 @@ public abstract class Handler {
       case "ExpStmt2ExpHandler" -> new ExpStmt2ExpHandler(argsList);
       case "Exp2ExpStmtHandler" -> new Exp2ExpStmtHandler(argsList);
       case "AssignCallExpHandler" -> new AssignCallExpHandler(argsList);
+      case "ReplaceExpHandler" -> new ReplaceExpHandler(argsList);
       default -> null;
     };
     if (handler == null) {
       LoggerFactory.getLogger(Handler.class).error("Handler not found: " + cls);
     }
     return handler;
+  }
+
+  protected void doHandle(MyParser parser) {
+
   }
 }
