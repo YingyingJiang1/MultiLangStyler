@@ -45,6 +45,11 @@ public class Applicator {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
 
+            // Skip deleted tokens.
+            if (curTokenType == -1) {
+                continue;
+            }
+
             for (Styler styler : container.getStylers()) {
                 if (styler.isRelevant(tokens, i, Stage.APPLY, parser)) {
                     styler.applyStyle(tokens, i, parser);

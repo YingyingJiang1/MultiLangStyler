@@ -28,6 +28,9 @@ public class CommentSyntaxProperty extends StyleProperty {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj instanceof CommentSyntaxProperty property) {
+            return syntax.equals(property.syntax);
+        }
+        return false;
     }
 }

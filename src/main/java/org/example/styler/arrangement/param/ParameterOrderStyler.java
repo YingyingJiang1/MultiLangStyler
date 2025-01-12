@@ -77,6 +77,11 @@ public class ParameterOrderStyler extends Styler {
     }
 
     @Override
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        return super.applyStyle(ctx, parser);
+    }
+
+    @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         return ctx.getRuleIndex() == parser.getRuleformalParameterList();
     }
