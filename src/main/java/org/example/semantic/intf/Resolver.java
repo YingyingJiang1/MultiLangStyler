@@ -6,6 +6,7 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.symbol.Symbol;
+import org.example.semantic.intf.type.Type;
 
 import java.io.File;
 
@@ -14,5 +15,5 @@ public interface Resolver {
     Symbol resolve(ExtendContext identifierNode, MyParser parser);
     SymbolTable resolveAll(ParseTree root, MyParser parser);
     SymbolTable getSymbolTable(ParseTree root);
-
+    Type resolveExpression(ExtendContext expression, MyParser parser);
 }

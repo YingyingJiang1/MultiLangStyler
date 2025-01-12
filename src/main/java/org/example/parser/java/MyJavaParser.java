@@ -12,6 +12,10 @@ import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.searcher.intf.CompilationUnitSearcher;
+import org.example.utils.searcher.intf.DecStmtSearcher;
+import org.example.utils.searcher.javaimpl.JavaCUSearcher;
+import org.example.utils.searcher.javaimpl.JavaDecStmtSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +36,8 @@ public class MyJavaParser implements MyParser {
     Path curFile = null;
     ParseTree root = null;
     ExtendJavaParserListener listener;
+    DecStmtSearcher decStmtSearcher = JavaDecStmtSearcher.getInstance();
+    CompilationUnitSearcher cuSearcher = JavaCUSearcher.getInstance();
 
 
     private static Set<Integer> changeHierarchyRule = new HashSet<>(Arrays.asList(
@@ -88,6 +94,7 @@ public class MyJavaParser implements MyParser {
         ParseTree t = switch (rule) {
             case JavaParser.RULE_compilationUnit -> parser.compilationUnit();
             case JavaParser.RULE_statement -> parser.statement();
+            case JavaParser.RULE_importDeclarationList -> parser.importDeclarationList();
             default -> null;
         };
         return t;
@@ -834,6 +841,16 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public DecStmtSearcher getDecStmtSearcher() {
+        return decStmtSearcher;
+    }
+
+    @Override
+    public CompilationUnitSearcher getCUSearcher() {
+        return cuSearcher;
+    }
+
+    @Override
     public int getRuleParExpression() {
         return JavaParser.RULE_parExpression;
     }
@@ -856,6 +873,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleLocalVarDeclaration() {
         return JavaParser.RULE_localVariableDeclaration;
+    }
+
+    @Override
+    public int getRuleImportDeclaration() {
+        return JavaParser.RULE_importDeclaration;
     }
 
     @Override

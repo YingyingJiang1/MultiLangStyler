@@ -53,6 +53,12 @@ public class ResolverImpl implements Resolver {
         return symbolTableMap.get(root);
     }
 
+    @Override
+    public Type resolveExpression(ExtendContext expression, MyParser parser) {
+        System.out.println("todo: implement resolveExpression in ResolverImpl");
+        return null;
+    }
+
     private void doResolveRec(SymbolTable st, ExtendContext node, MyParser parser) {
         if (parser.isIdentifier(node)) {
             doResolve(st, node, parser);

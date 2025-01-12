@@ -48,6 +48,17 @@ public class SymbolTable {
         return null;
     }
 
+    public boolean hasSymbol(String text) {
+        for (List<Symbol> symbols : symbolMap.values()) {
+            for (Symbol symbol : symbols) {
+                if (symbol.getName().equals(text)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      *
      * @return Location where the symbol is defined, including: compound statements, method declarations, type declarations

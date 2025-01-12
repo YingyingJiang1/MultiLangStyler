@@ -125,11 +125,10 @@ public class DeclarationLocationStyler extends Styler {
      */
     private void moveToFirstUse(ExtendContext block, ExtendContext stmt, MyParser parser) {
         ExtendContext decStmt = parser.getSpecificStmt(stmt);
+        List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
         List<ExtendContext> declaratorList = decStmt.getAllContextsByTypeRec(parser.getRuleVariableDeclarator());
         Resolver resolver = GlobalInfo.getResolver();
-        for (ExtendContext declarator : declaratorList) {
-            ExtendContext identifierNode = declarator.getFirstCtxChildIf(parser::isVariableDeclaratorId).getFirstInnerChildByType(parser.getRuleIdentifier());
-
+        for (ExtendContext identifierNode : decIdentifiers) {
             // Get index of first statement that uses these declared variables.
             List<ExtendContext> references = resolver.resolve(identifierNode, parser).getReferences();
             int minUsingIndex =  Integer.MAX_VALUE;
@@ -142,7 +141,7 @@ public class DeclarationLocationStyler extends Styler {
 
             // Get the index of last statement that declares the variables used in the initializers of the declaration statement.
             int maxIndex = -1;
-            ExtendContext initializer = declarator.getFirstCtxChildIf(parser::isVariableInitializer);
+            ExtendContext initializer = parser.getDecStmtSearcher().searchInitializer(decStmt, identifierNode, parser);
             if (initializer != null) {
                 List<ExtendContext> initializerReferences = initializer.getAllContextsByTypeRec(parser.getRuleIdentifier());
                 for (ExtendContext ref : initializerReferences) {

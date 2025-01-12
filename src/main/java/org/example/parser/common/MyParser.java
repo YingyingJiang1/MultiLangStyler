@@ -9,6 +9,8 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.AmbigousToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.searcher.intf.CompilationUnitSearcher;
+import org.example.utils.searcher.intf.DecStmtSearcher;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -148,6 +150,7 @@ public interface MyParser {
     int getRuleTypeParameters();
     int getRuleLocalVarDeclaration();
 
+    int getRuleImportDeclaration();
     int getRulePackageDeclaration();
     int getRuleQualifiedName();
     int getRuleTypeList();
@@ -222,5 +225,8 @@ public interface MyParser {
     ListenerState getListenerState();
 
     String getConstKeyword();
+
+    DecStmtSearcher getDecStmtSearcher();
+    CompilationUnitSearcher getCUSearcher();
 
 }

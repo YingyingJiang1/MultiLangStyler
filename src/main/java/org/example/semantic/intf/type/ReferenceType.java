@@ -16,6 +16,13 @@ public class ReferenceType extends Type{
     @Override
     public String getName() {
         if (symbol instanceof ClassSym classSym) {
+            return classSym.getName();
+        }
+        return null;
+    }
+
+    public String getQualifiedName() {
+        if (symbol instanceof ClassSym classSym) {
             return classSym.getQualifiedName();
         }
         return null;

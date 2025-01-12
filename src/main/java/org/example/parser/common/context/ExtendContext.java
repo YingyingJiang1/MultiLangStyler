@@ -109,6 +109,17 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
+    public ExtendContext findFirstParentIf(Predicate<ExtendContext> cond) {
+        ParseTree parent = getParent();
+        while (parent != null) {
+            if (parent instanceof ExtendContext parentCtx && cond.test(parentCtx)) {
+                return parentCtx;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
     /*
      * Put the children of the context instance on one line,
      * then calculate and return the column length(excluding all horizontal whitespace length).
