@@ -14,8 +14,6 @@ import org.example.styler.comment.syntax.style.CommentSyntaxProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ibm.icu.text.PluralRules.Operand.i;
-
 public class CommentSyntaxStyler extends Styler {
     public CommentSyntaxStyler() {
         style.setStyleName("comment_syntax");

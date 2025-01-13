@@ -3,13 +3,11 @@ package org.example.styler.structure;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.java.MyJavaParser;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
-import smile.util.SparseArray;
 
 import java.util.*;
 

@@ -103,18 +103,22 @@ public class DeclarationLocationStyler extends Styler {
      */
     private void moveToBlockStart(ExtendContext block, int index, MyParser parser) {
         ExtendContext stmt = (ExtendContext) block.getChild(index);
-        ExtendContext decStmt = parser.getSpecificStmt(stmt);
         int j = index - 1;
         for (; j >= 0; j--) {
-            boolean isDecStmt = block.getChild(j) instanceof ExtendContext stmt1 && parser.belongToVarDeclarationStmt(parser.getSpecificStmtType(stmt1));
-            if (isDecStmt) {
-                break;
+            if (block.getChild(j) instanceof ExtendContext stmt1) {
+                if (parser.belongToVarDeclarationStmt(parser.getSpecificStmtType(stmt1))) {
+                    break;
+                }
+            } else {
+                break; // reach {
             }
         }
 
         int insertionPoint = j + 1;
-        block.removeChildIf(child -> child == stmt);
-        block.insertChild(insertionPoint, stmt);
+        if (index != insertionPoint) {
+            block.removeChildIf(child -> child == stmt);
+            block.insertChild(insertionPoint, stmt);
+        }
     }
 
     /**

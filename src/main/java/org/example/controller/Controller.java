@@ -63,12 +63,17 @@ public class Controller {
             } else {
                 programStyle = extractStyle(conf.extractionCollection);
             }
-            StyleFileIO.write(programStyle, conf.styleFileSavedPath, parser);
-            applyStyle(conf.applicationCollection);
-            Path selfStylePath = Paths.get(Paths.get(conf.styleFileSavedPath).getParent().toString(), "self-style.xml");
-            StyleFileIO.write(SelfStyle.getProgramStyle(), selfStylePath.toString(), parser);
+
+            if (conf.getStyleOutPath() != null) {
+                StyleFileIO.write(programStyle, conf.getStyleOutPath(), parser);
+            }
+
+            String code = applyStyle(conf.applicationCollection);
+            saveApplyResult(code);
+//            Path selfStylePath = Paths.get(Paths.get(conf.getStyleOutPath()).getParent().toString(), "self-style.xml");
+//            StyleFileIO.write(SelfStyle.getProgramStyle(), selfStylePath.toString(), parser);
             return programStyle;
-        } catch (DocumentException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return null;
@@ -79,9 +84,9 @@ public class Controller {
         applyStyle(files);
     }
 
-    private void applyStyle(FileCollection files) {
+    private String applyStyle(FileCollection files) {
         applyInitialize();
-
+        String code = null;
         for (int i = 0; i < files.size(); i++) {
             try {
                 curPath = Paths.get(files.getFilePath(i));
@@ -98,15 +103,14 @@ public class Controller {
 
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
-                String code = toString(tokens, preprocessor);
-//                saveApplyResult(code);
+                code = toString(tokens, preprocessor);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
                 logger.error("Exception details:", e);
             }
         }
-
         applyFinalize();
+        return code;
     }
 
     public ProgramStyle extractStyle(FileCollection files) {
@@ -128,8 +132,7 @@ public class Controller {
                 Extractor.extractRules(parser, container, preprocessor);
 
             } catch (Exception e) {
-                logger.error("Failed to extract style rules from file: {}", files.getFilePath(i));
-                logger.trace("Exception details:", e);
+                logger.error("Failed to extract style rules from file: {}", files.getFilePath(i), e);
             }
         }
 
@@ -179,13 +182,6 @@ public class Controller {
         return builder.toString();
     }
 
-    private void saveApplyResult(String code) throws IOException {
-        String resPath = conf.getCodeOutPath(curPath.toString());
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
-            writer.write(code);
-        }
-    }
-
 
     private void init(ProgramStyle programStyle) {
         container = new StylerContainer();
@@ -197,6 +193,20 @@ public class Controller {
                 }
             }
         }
+    }
+
+
+    private void saveApplyResult(String code) throws IOException {
+        if (code == null) {
+            return;
+        }
+        String resPath = conf.getCodeOutPath(curPath.toString());
+        if (resPath != null) {
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
+                writer.write(code);
+            }
+        }
+
     }
 
 

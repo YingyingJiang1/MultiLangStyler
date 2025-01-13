@@ -20,7 +20,7 @@ public class ArrangementTest extends CommonTest {
         conf.extractionCollection.add(Paths.get(dir + File.separator + "2022trhacknon-AccessibilityEventCompat-target.java"));
         conf.applicationCollection.clear();
         conf.applicationCollection.add(Paths.get(dir + File.separator + "2022hungnguyennaz-TranslationRegistry-source.java"));
-        conf.styleFileSavedPath = dir + File.separator + "sample-style.xml";
+        conf.setStyleOutPath(dir + File.separator + "sample-style.xml");
         Controller controller = new Controller(conf);
         ProgramStyle programStyle = controller.execute();
 

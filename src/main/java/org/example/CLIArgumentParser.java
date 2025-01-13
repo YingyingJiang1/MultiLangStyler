@@ -1,10 +1,14 @@
 package org.example;
 
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class CLIArgumentParser {
+    public static Logger logger = LoggerFactory.getLogger(CLIArgumentParser.class);
+    
     public static Configuration parseArgs(String[] args) {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
@@ -34,27 +38,26 @@ public class CLIArgumentParser {
             }
 
             // 参数验证
-            validateParameters(config);
-
-            return config;
+            if (validateParameters(config)) {
+                return config;
+            }
 
         } catch (ParseException e) {
             // 打印帮助信息并退出
-            System.err.println("Error parsing command line arguments: " + e.getMessage());
+            logger.error("Error parsing command line arguments: " + e.getMessage(), e);
             printHelp(options);
-            System.exit(1);
         }
         return null;
     }
 
-    private static void validateParameters(Configuration config) {
+    private static boolean validateParameters(Configuration config) {
         String src = config.getSrc();
         String target = config.getTarget();
         String styleOutPath = config.getStyleOutPath();
 
         if (target == null || (src == null &&  styleOutPath == null)) {
-            System.err.println("Wrong usage.\n Correct argument usage:\n -src <path> -target <path> \n or \n -target <path> -so <path>");
-            System.exit(1);
+            logger.error("Wrong usage.\n Correct argument usage:\n -src <arg> -target <arg> \n or \n -target <arg> -so <arg>");
+            return false;
         }
 
         // 检查 -src 和 -target 是否符合规则
@@ -62,33 +65,20 @@ public class CLIArgumentParser {
         String resOutFile = config.getResOutFile();
         String resOutDir = config.getResOutDir();
 
-        if (resOutFile != null && resOutDir != null) {
-            System.err.println("Error: -f and -d cannot be specified at the same time.");
-            System.exit(1);
-        }
-
-        if (resOutFile != null && !new File((resOutFile)).isFile()) {
-            System.err.println("Error: -f must be a file.");
-            System.exit(1);
-        } else if (resOutDir != null && !new File(resOutDir).isDirectory()) {
-            System.err.println("Error: -d must be a directory.");
-            System.exit(1);
-        }
-
         if (srcFile.isFile() && resOutDir != null) {
-            System.err.println("Error: If -src is a file, use -f to specify the output file.");
-            System.exit(1);
+            logger.error("Error: If -src is a file, use -f to specify the output file.");
+            return false;
         } else if (srcFile.isDirectory() && resOutFile != null) {
-            System.err.println("Error: If -src is a directory, use -d to specify the output directory.");
-            System.exit(1);
+            logger.error("Error: If -src is a directory, use -d to specify the output directory.");
+            return false;
         }
-
+        return true;
     }
 
     private static void printHelp(Options options) {
         // 创建帮助生成器
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Transformer arguments:", options);
+        formatter.printHelp("-src <arg> -target <arg> [-f/-d <arg>] [-so <arg>]\n or \n -target <arg> -so <arg>\n", options);
     }
 
     private static Options getOptions() {
@@ -100,7 +90,6 @@ public class CLIArgumentParser {
         Option outputDirOption = new Option("d", true, "Output directory path of transformed codes, file name is the same as the original file name");
         Option styleOutOption = new Option("so", "style-out", true, "Output path for the style file (optional)");
 
-        srcOption.setRequired(true);
         targetOption.setRequired(true);
 
         options.addOption(srcOption);

@@ -25,7 +25,7 @@ public class Configuration {
   Element root = null;
 
   public String styleFile;
-  public String styleFileSavedPath;
+//  public String styleFileSavedPath;
 
   private String src;
   private String target;
@@ -45,7 +45,7 @@ public class Configuration {
     Element extractionInfo = root.element("extraction_info");
     extractionCollection = collectFile(extractionInfo.element("source").getText());
     styleFile = extractionInfo.elementText("style_file").replace("${root}", System.getProperty("user.dir"));
-    styleFileSavedPath = extractionInfo.elementText("style_path").replace("${root}", System.getProperty("user.dir"));
+//    styleFileSavedPath = extractionInfo.elementText("style_path").replace("${root}", System.getProperty("user.dir"));
 
     Element applicationInfo = root.element("application_info");
 //    overrideSource = applicationInfo.elementText("override").equals("true");
@@ -64,7 +64,7 @@ public class Configuration {
 
 
   private FileCollection collectFile(String path) {
-    List<String> sourcePaths = new ArrayList<>();
+    List<String> sourcePaths = Arrays.stream(path.split(";")).toList();
     FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
     collection.difference(FileCollector.getJavaFileCollection(List.of()));
     return collection;
@@ -122,7 +122,8 @@ public class Configuration {
     } else if (resOutDir != null) {
       return resOutDir + File.separator + new File((srcPath)).getName();
     } else {
-      return srcPath;
+      return null;
+//      return srcPath;
     }
   }
 

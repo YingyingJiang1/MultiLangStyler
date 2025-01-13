@@ -67,7 +67,7 @@ public class StyleFileIO {
             writer.close();
             logger.info("style result saved in:{}", file);
         } catch (IOException e) {
-            logger.error("write style file error. target path:{}", file);
+            logger.error("write style file error. target path:{}", file, e);
         }
     }
 

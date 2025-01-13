@@ -2,7 +2,7 @@
  * Data from "https://github.com/abbrcode/abbreviations-in-code"
  */
 
-package org.example.styler.naming;
+package org.example.styler.naming.format;
 
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;

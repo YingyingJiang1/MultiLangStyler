@@ -20,6 +20,7 @@ import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.function.FunctionComplexityStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.ifelse.multibranch.MultiBranchStyler;
+import org.example.styler.literal.usage.LiteralUsageStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
 import org.example.styler.practice.UnusedCodeStyler;
 import org.example.styler.structure.StructureStyler;
@@ -33,21 +34,21 @@ public class StylerContainer {
 
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
-//        stylers.add(new LiteralUsageStyler());
+        stylers.add(new LiteralUsageStyler());
         stylers.add(new ModifierOrderStyler());
         stylers.add(new DeclarationNumberStyler());
         stylers.add(new DeclarationLocationStyler());
-        stylers.add(new IfElseBodyOrderStyler());
-        stylers.add(new ExpressionStyler());
-        stylers.add(new UpdateVarStyler());
-        stylers.add(new FunctionComplexityStyler());
-        stylers.add(new ParameterOrderStyler());
-        stylers.add(new StructureStyler());
-        stylers.add(new OptionalBraceStyler());
+//        stylers.add(new IfElseBodyOrderStyler());
+//        stylers.add(new ExpressionStyler());
+//        stylers.add(new UpdateVarStyler());
+//        stylers.add(new FunctionComplexityStyler());
+//        stylers.add(new ParameterOrderStyler());
+//        stylers.add(new StructureStyler());
+//        stylers.add(new OptionalBraceStyler());
         stylers.add(new BraceFormatStyler());
         stylers.add(new MultiBranchStyler());
 //        stylers.add(new LineWrappingStyler());
-        stylers.add(new LineStmtStyler());
+//        stylers.add(new LineStmtStyler());
         stylers.add(new NewlineStyler());
         stylers.add(new CommentSyntaxStyler());
         stylers.add(new CommentDensityStyler());
