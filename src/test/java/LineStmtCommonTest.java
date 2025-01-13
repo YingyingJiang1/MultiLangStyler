@@ -1,14 +1,10 @@
-import org.example.style.Style;
 import org.example.style.rule.StyleRule;
-import org.example.styler.Styler;
-import org.example.styler.format.linestmt.LineStmtStyler;
-import org.example.styler.format.linestmt.style.LineStmtContext;
+import org.example.styler.format.newline.LineStmtStyler;
+import org.example.styler.format.newline.style.LineStmtContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

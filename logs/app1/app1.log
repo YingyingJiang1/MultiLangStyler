@@ -7,3 +7,15 @@
 2025-01-13 21:10:55,845 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
 2025-01-13 21:11:13,867 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
 2025-01-13 21:11:37,189 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
+2025-01-13 21:31:49,641 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31. Class of style property: class java.util.ArrayList
+2025-01-13 21:31:49,736 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
+2025-01-13 21:37:11,532 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31. Class of style property: class java.util.ArrayList
+2025-01-13 21:37:11,620 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
+2025-01-13 21:37:28,570 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31. Class of style property: class java.util.ArrayList
+2025-01-13 21:37:28,651 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
+2025-01-13 21:39:54,916 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31. Class of style property: class java.util.ArrayList
+2025-01-13 21:39:55,002 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
+2025-01-13 21:44:35,672 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31. Class of style property: class java.util.ArrayList
+2025-01-13 21:44:35,759 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml
+2025-01-13 21:47:21,913 DEBUG --- [main] org.example.style.rule.MapRuleSet.filterRules/85 : Conflict style exists: org.example.styler.structure.style.StructPreferenceContext@31. Class of style property: class java.util.ArrayList
+2025-01-13 21:47:22,007 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:src\test\sources\pair1\style.xml

@@ -1,4 +1,4 @@
-package org.example.styler.format.linestmt;
+package org.example.styler.format.newline;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -6,13 +6,11 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.format.linestmt.style.LineStmtContext;
+import org.example.styler.format.newline.style.LineStmtContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class LineStmtStyler extends Styler {
@@ -52,7 +50,7 @@ public class LineStmtStyler extends Styler {
                 curLength += stmtLength;
 
                 StyleProperty property = style.getSimilarProperty(new LineStmtContext(curLength));
-                if (property != null && property instanceof NewlineProperty newlineProperty) {
+                if (property instanceof NewlineProperty newlineProperty) {
                     if (newlineProperty.newlines == 1) {
                         Token vws = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
                         ((ExtendToken)curCtx.stop).addTokenAfter(vws, parser);

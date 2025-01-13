@@ -1,4 +1,4 @@
-package org.example.styler.format.linestmt.style;
+package org.example.styler.format.newline.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

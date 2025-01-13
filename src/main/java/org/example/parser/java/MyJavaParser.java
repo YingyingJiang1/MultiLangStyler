@@ -226,7 +226,7 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToSingleStmt(ParseTree t) {
         if (t instanceof ExtendContext ctx) {
-            return singleStmts.contains(ctx.getRuleIndex());
+            return singleStmts.contains(getSpecificStmtType(ctx));
         }
         return false;
     }
@@ -926,7 +926,7 @@ public class MyJavaParser implements MyParser {
 
     @Override
     public int getSpecificStmtType(ExtendContext ctx) {
-        if (ctx.getChild(0) instanceof ExtendContext specificStmt) {
+        if (ctx instanceof JavaParser.StatementContext && ctx.getChild(0) instanceof ExtendContext specificStmt) {
             return specificStmt.getRuleIndex();
         }
         return ctx.getRuleIndex();

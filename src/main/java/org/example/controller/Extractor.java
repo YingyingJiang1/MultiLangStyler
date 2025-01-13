@@ -2,18 +2,13 @@ package org.example.controller;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.StylerContainer;
 import org.example.myException.ExtractException;
 import org.example.parser.common.MyParser;
-import org.example.style.ProgramStyle;
-import org.example.styler.Preprocessor;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class Extractor {

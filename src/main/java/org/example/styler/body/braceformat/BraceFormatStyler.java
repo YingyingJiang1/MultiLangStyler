@@ -100,20 +100,6 @@ public class BraceFormatStyler extends BodyStyler {
     }
 
     @Override
-    public void doFinalize() {
-        // Add some default style rules.
-//        BodyContext normalBodyContext = new BodyContext(BodyTypeEnum.NORMAL_BODY, BodyNumType.MULTI);
-//        StyleProperty property = style.getSimilarProperty(normalBodyContext);
-//        StyleProperty defaultProperty = new BraceFormatProperty(false, true, true, true);
-//        if (property == null) {
-//            style.addRule(normalBodyContext, defaultProperty);
-//        }
-//        style.addRule(new BodyContext(BodyTypeEnum.ANY_BODY, BodyNumType.ANY), defaultProperty);
-
-        super.doFinalize();
-    }
-
-    @Override
     protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<>(Arrays.asList(
@@ -132,34 +118,6 @@ public class BraceFormatStyler extends BodyStyler {
     }
 
     //--------------------------------------------------- Private methods ---------------------------------------------------
-
-    /**
-     * This method process the following scenario:
-     * case CONST:
-     * if(...) {
-     * ...
-     * }
-     * The above case group statement is not wrapped by {},
-     * but the statement in the case group should be indented one level more than the case label.
-     *
-     * @param ctx A case group of switch statement.
-     */
-    private void addIndentionForCaseGroup(ExtendContext ctx, Style style, MyParser parser) {
-        for (ParseTree child : ctx.children) {
-            if (parser.isTypeDeclaration(child) || parser.isStatement(child)) {
-                // SKip block statement
-                if (child.getChildCount() > 0 && parser.isBlock(child.getChild(0))) {
-                    continue;
-                }
-                List<Token> tokens = ((ExtendContext) child).getAllTokensRec();
-                for (Token token : tokens) {
-                    if (token instanceof ExtendToken extendToken) {
-                        extendToken.setHierarchy(1 + extendToken.getHierarchy());
-                    }
-                }
-            }
-        }
-    }
 
     private void addVwsBefore(ExtendContext ctx, int braceType, MyParser parser) {
         ExtendToken token = (ExtendToken) ctx.getFirstTokenByType(braceType);

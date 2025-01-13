@@ -1,37 +1,24 @@
 package org.example.controller;
 
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.dom4j.DocumentException;
 import org.example.Configuration;
 import org.example.StylerContainer;
-import org.example.debug.TreePrinter;
 import org.example.global.GlobalInfo;
 import org.example.io.StyleFileIO;
-import org.example.myException.ApplyException;
-import org.example.myException.ExtractException;
 import org.example.parser.common.*;
-import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.token.ExtendToken;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyle;
 import org.example.style.Style;
-import org.example.styler.Preprocessor;
-import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedList;
 import java.util.List;
 
 /*

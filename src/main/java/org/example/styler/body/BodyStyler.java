@@ -28,7 +28,7 @@ public abstract class BodyStyler extends Styler {
      * @return
      */
     protected BodyContext extractStyleContext(ExtendContext stmt, ParseTree body, MyParser parser) {
-        BodyTypeEnum blockType = getBodyType(stmt.getRuleIndex(), parser);
+        BodyTypeEnum blockType = getBodyType(parser.getSpecificStmtType(stmt), parser);
         BodyNumType bodyNum = body instanceof TerminalNode ? BodyNumType.EMPTY : getBodyNumType((ExtendContext) body, parser);
         return new BodyContext(blockType,bodyNum);
     }

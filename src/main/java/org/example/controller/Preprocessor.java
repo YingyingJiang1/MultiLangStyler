@@ -1,4 +1,4 @@
-package org.example.styler;
+package org.example.controller;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -6,10 +6,10 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.AmbigousToken;
-import org.example.parser.common.token.TokenGroup;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
 import org.example.parser.common.token.ExtendToken;
+import org.example.styler.Stage;
 
 import java.util.*;
 
@@ -109,52 +109,6 @@ public class Preprocessor {
   }
 
   /**
-   * @implNote
-   * Consider the following scenario:
-   * if(...) {
-   *   int a = 1;\r\n // This newline together with ';' are matched as SEMI token,so it isn't a newline before RBRACE token.
-   *   \r\n -> This is a real newline before RBRACE.
-   * }
-   *
-   * @param tokenStream
-   * @param curIndex index of LBRACE or RBRACE.
-   * @return
-   */
-  private boolean getBeforeNewlineInfo(CommonTokenStream tokenStream, int curIndex) {
-    int preIndex = curIndex - 1;
-    if(preIndex < 0) {
-      return false;
-    }
-    Token preToken = tokenStream.get(preIndex), curToken = tokenStream.get(curIndex);
-    boolean isIndentionHws = preToken.getType() == JavaLexer.HWS && preToken.getCharPositionInLine() == 0;
-    if (curToken.getType() == JavaLexer.LBRACE &&
-        (isIndentionHws || preToken.getLine() != curToken.getLine())) {
-      return true;
-    } else if (curToken.getType() == JavaLexer.RBRACE){
-      while (preToken.getType() == JavaLexer.HWS) {
-        --preIndex;
-        preToken = tokenStream.get(preIndex);
-      }
-      if (preToken.getType() == JavaLexer.VWS) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  private boolean getAfterNewlineInfo(CommonTokenStream tokenStream, int curIndex) {
-    int afterIndex = curIndex + 1;
-    while (afterIndex < tokenStream.size() && AntlrHelper.isHws(tokenStream.get(afterIndex))) {
-      ++afterIndex;
-    }
-    if(afterIndex < tokenStream.size() && AntlrHelper.isVws(tokenStream.get(afterIndex))) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * @Description Set real type for '<' and '-'.
    */
   private void processAmbiguousToken(MyParser parser, TokenStream tStream,int index) {
@@ -232,8 +186,7 @@ public class Preprocessor {
       } else if (tokenType == parser.getGT()) {
         --count;
         matchedTokens.add(token);
-      } else if (tokenType != parser.getIdentifier() && tokenType != parser.getComma() &&
-              tokenType != parser.getHws() && tokenType != parser.getVws()) {
+      } else if (parser.belongToOperator(token.getText()) && !token.getText().equals("[") && !token.getText().equals("]") && !token.getText().equals("?")) {
         break;
       }
     }
