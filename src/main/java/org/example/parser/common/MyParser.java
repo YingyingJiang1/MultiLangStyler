@@ -194,20 +194,13 @@ public interface MyParser {
     int getDefaultChannel();
     int getVar();
 
-
-
-
-
     int getCharLiteralType();
-
-
     int getType(String text);
 
     String getTokenName(int type);
     String getRuleName(int type);
 
     TokenFactory getTokenFactory();
-
     Set<String> getOperators();
     Set<String> getSeparators();
     Set<String> getBinOps();

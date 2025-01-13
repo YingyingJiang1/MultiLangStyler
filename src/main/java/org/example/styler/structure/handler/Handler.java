@@ -5,6 +5,9 @@ import org.example.styler.structure.EquivalentStructure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * @description
  * @author       Yingying Jiang
@@ -18,7 +21,18 @@ public abstract class Handler {
     this.argsList = argsList;
   }
 
-  public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {}
+  public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
+    for(String[] args : argsList) {
+      if (args.length < 2) {
+        logger.error("Arguments error: at least 2 arguments required but got {}", args.length);
+        continue;
+      }
+      int index1 = Integer.parseInt(args[0]), index2 = Integer.parseInt(args[1]);
+      if(index1 == from && index2 == to || index1 == to && index2 == from) {
+        doHandle(structure, Arrays.stream(args).toList().subList(1, args.length),  parser);
+      }
+    }
+  }
 
   public static Handler createHandler(String cls, String[][] argsList, MyParser parser) {
     Handler handler =  switch (cls) {
@@ -29,7 +43,7 @@ public abstract class Handler {
       case "ExpStmt2ExpHandler" -> new ExpStmt2ExpHandler(argsList);
       case "Exp2ExpStmtHandler" -> new Exp2ExpStmtHandler(argsList);
       case "AssignCallExpHandler" -> new AssignCallExpHandler(argsList);
-      case "ReplaceExpHandler" -> new ReplaceExpHandler(argsList);
+      case "ReplaceHandler" -> new ReplaceHandler(argsList);
       default -> null;
     };
     if (handler == null) {
@@ -38,7 +52,7 @@ public abstract class Handler {
     return handler;
   }
 
-  protected void doHandle(MyParser parser) {
+  protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
 
   }
 }

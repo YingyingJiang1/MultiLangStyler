@@ -14,28 +14,21 @@ public class AssignCallExpHandler extends Handler{
     }
 
     /**
-     * args:[[from, to, holderName1,holderName2,...]]
+     *
+     * @param structure
+     * @param args args:[[holderName1,holderName2,...]]
+     * @param parser
      */
     @Override
-    public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
-        for (String[] args : argsList) {
-            if (args.length < 3) {
-                logger.error("Arguments of AssignCallExpHandler error: length < 3");
-                continue;
-            }
-            int index1 = Integer.parseInt(args[0]);
-            int index2 = Integer.parseInt(args[1]);
-            if (index1 == from && index2 == to) {
-                for (int i = 2; i < args.length; i++) {
-                    String holderName = args[i];
-                    List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
-                    for (ParseTree tree : matchedTrees) {
-                        if (tree instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression()) {
-                            if (ctx.getChild(1) instanceof TerminalNode terminalNode
+    protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
+        for (int i = 2; i < args.size(); i++) {
+            String holderName = args.get(i);
+            List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
+            for (ParseTree tree : matchedTrees) {
+                if (tree instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression()) {
+                    if (ctx.getChild(1) instanceof TerminalNode terminalNode
                             && (terminalNode.getText().equals(".") || terminalNode.getText().equals("="))) {
-                                ((ExtendContext) ctx.parent).replaceChild(ctx, ctx.getChild(0));
-                            }
-                        }
+                        ((ExtendContext) ctx.parent).replaceChild(ctx, ctx.getChild(0));
                     }
                 }
             }

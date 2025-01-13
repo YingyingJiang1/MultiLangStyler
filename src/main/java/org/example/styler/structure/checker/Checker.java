@@ -1,8 +1,6 @@
 package org.example.styler.structure.checker;
 
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +55,7 @@ public abstract class Checker {
       case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker(argsList);
       case "IdentifierExpChecker" -> new IdentifierExpChecker(argsList);
       case "NoStmtChecker" -> new NoStmtChecker(argsList);
-      case "ContainExpChecker" -> new ContainExpChecker(argsList);
+      case "ContainChecker" -> new ContainChecker(argsList);
       default -> null;
     };
     if (checker == null) {

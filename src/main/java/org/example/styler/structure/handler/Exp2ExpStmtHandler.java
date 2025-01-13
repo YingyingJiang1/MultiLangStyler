@@ -17,44 +17,39 @@ public class Exp2ExpStmtHandler extends Handler{
         super(argsList);
     }
 
+
     /**
-     * args: [[from, to, $E/$E_LIST, $S(expStmt)]]
+     * args: [[$E/$E_LIST, $S(expStmt)]]
      * When transform from `from` to `to`, transform the matched trees of $E/$E_LIST to expression statements and move them into
      * the matched trees of $S(expStmt)
      */
     @Override
-    public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
-        for(String[] args : argsList) {
-            if (args.length != 4) {
-                logger.error("Arguments of Exp2ExpStmtHandler error: length != 4");
-                continue;
-            }
-            int index1 = Integer.parseInt(args[0]);
-            int index2 = Integer.parseInt(args[1]);
-            if (index1 == from && index2 == to) {
-                String expHolderName = args[2];
-                String expStmtHolderName = args[3];
-                List<ParseTree> expList = structure.getVNode(expHolderName).matchedTrees;
-                List<ParseTree> expStmtList = new ArrayList<>();
+    protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
+        if (args.size() < 2) {
+            logger.error("Arguments error in {}.doHandle: at least 2 arguments required.", this.getClass().getName());
+            return;
+        }
+        String expHolderName = args.get(0);
+        String expStmtHolderName = args.get(1);
+        List<ParseTree> expList = structure.getVNode(expHolderName).matchedTrees;
+        List<ParseTree> expStmtList = new ArrayList<>();
 
-                for (ParseTree tree : expList) {
-                    if (tree instanceof ExtendContext ctx) {
-                        if (ctx.getRuleIndex() == parser.getRuleExpression()) {
-                            expStmtList.add(toExpStmt(ctx, parser));
-                        } else if (ctx.getRuleIndex() == parser.getRuleExpressionList()) {
-                            for (ParseTree child : ctx.children) {
-                                if (child instanceof ExtendContext childCtx) {
-                                    expStmtList.add(toExpStmt(childCtx, parser));
-                                }
-                            }
+        for (ParseTree tree : expList) {
+            if (tree instanceof ExtendContext ctx) {
+                if (ctx.getRuleIndex() == parser.getRuleExpression()) {
+                    expStmtList.add(toExpStmt(ctx, parser));
+                } else if (ctx.getRuleIndex() == parser.getRuleExpressionList()) {
+                    for (ParseTree child : ctx.children) {
+                        if (child instanceof ExtendContext childCtx) {
+                            expStmtList.add(toExpStmt(childCtx, parser));
                         }
                     }
                 }
-
-                structure.getVNode(expHolderName).matchedTrees.clear();
-                structure.getVNode(expStmtHolderName).matchedTrees.addAll(expStmtList);
             }
         }
+
+        structure.getVNode(expHolderName).matchedTrees.clear();
+        structure.getVNode(expStmtHolderName).matchedTrees.addAll(expStmtList);
     }
 
     private ExtendContext toExpStmt(ExtendContext expression, MyParser parser) {

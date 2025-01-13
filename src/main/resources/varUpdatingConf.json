@@ -1,0 +1,63 @@
+[{
+  "id" : 33,
+  "category" : "Variable updating",
+  "codes" : [ "$^ $I ++ ; $S(expStmt)", "$^ ++ $I ; $S(expStmt)", "$^ $I += 1 ; $S(expStmt)", "$^ $I = $I1 + 1 ; $S(expStmt)"],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 3, "$I", "$I1" ] ]
+  } ,{
+    "class" : "ContainChecker",
+    "argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+  } ],
+  "handlers" : [ {
+    "class" : "修改第一个$I为 ++$I",
+    "argsList" : [[]]
+  } ]
+},{
+"id" : 34,
+"category" : "Variable updating",
+"codes" : [ "$^ $I -- ; $S(expStmt)", "$^ -- $I ; $S(expStmt)", "$^ $I -= 1 ; $S(expStmt)", "$^ $I = $I1 - 1 ; $S(expStmt)"],
+"checkers" : [ {
+"class" : "EqualChecker",
+"argsList" : [ [ 3, "$I", "$I1" ] ]
+} ,{
+"class" : "ContainChecker",
+"argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+} ],
+"handlers" : [ {
+"class" : "修改第一个$I为 --$I",
+"argsList" : [ ]
+} ]
+},
+{
+"id" : 35,
+"category" : "Variable updating",
+"codes" : [ "$^ $S(expStmt) $I ++ ;", "$^ $S(expStmt) ++ $I ;", "$^ $S(expStmt) $I += 1 ;", "$^ $S(expStmt) $I = $I1 + 1 ;"],
+"checkers" : [ {
+"class" : "EqualChecker",
+"argsList" : [ [ 3, "$I", "$I1" ] ]
+} ,{
+"class" : "ContainChecker",
+"argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+} ],
+"handlers" : [ {
+"class" : "修改最后一个$I为 $I++",
+"argsList" : [ ]
+} ]
+}, {
+"id" : 36,
+"category" : "Variable updating",
+"codes" : [ "$^ $S(expStmt) $I -- ;", "$^ $S(expStmt) -- $I ;", "$^ $S(expStmt) $I -= 1 ;", "$^ $S(expStmt) $I = $I1 - 1 ;"],
+"checkers" : [ {
+"class" : "EqualChecker",
+"argsList" : [ [ 3, "$I", "$I1" ] ]
+} ,{
+"class" : "ContainChecker",
+"argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+} ],
+"handlers" : [ {
+"class" : "修改最后一个$I为 $I--",
+"argsList" : [ ]
+} ]
+}
+]

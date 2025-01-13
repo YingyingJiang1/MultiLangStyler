@@ -3,8 +3,8 @@ package org.example.styler.structure.handler;
 import org.example.parser.common.MyParser;
 import org.example.styler.structure.EquivalentStructure;
 
-public class ReplaceExpHandler extends Handler{
-    public ReplaceExpHandler(String[][] argsList) {
+public class ReplaceHandler extends Handler{
+    public ReplaceHandler(String[][] argsList) {
         super(argsList);
     }
 

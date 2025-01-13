@@ -21,20 +21,15 @@ public class WrapCondHandler extends Handler{
 	}
 
 	@Override
-	public void handle(EquivalentStructure structure, int from, int to, MyParser parser) {
-		for(String[] args : argsList) {
-			int configuredForm = Integer.parseInt(args[0]), configuredTo = Integer.parseInt(args[1]);
-			if(configuredForm == from && configuredTo == to) {
-				for (int i = 2; i < args.length; i++) {
-					String holderName = args[i];
-					List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
-					for (int j = 0; j < matchedTrees.size(); j++) {
-						ParseTree t = matchedTrees.get(j);
-						if (t instanceof JavaParser.ExpressionContext ctx) {
-							if(containsLogicalOp(ctx)) {
-								matchedTrees.set(j, ParseTreeUtil.getInstance().encapsulateExpWithParen(ctx, parser));
-							}
-						}
+	protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
+		for (int i = 2; i < args.size(); i++) {
+			String holderName = args.get(i);
+			List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
+			for (int j = 0; j < matchedTrees.size(); j++) {
+				ParseTree t = matchedTrees.get(j);
+				if (t instanceof JavaParser.ExpressionContext ctx) {
+					if(containsLogicalOp(ctx)) {
+						matchedTrees.set(j, ParseTreeUtil.getInstance().encapsulateExpWithParen(ctx, parser));
 					}
 				}
 			}
