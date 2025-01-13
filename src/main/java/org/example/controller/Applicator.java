@@ -44,6 +44,14 @@ public class Applicator {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             int curTokenType = curToken.getType();
 
+            // Handle case: \n\n} -> \n}
+            if (curTokenType == parser.getRBrace() &&
+                    tokens.get(i - 1).getType() == parser.getVws() && tokens.get(i - 2).getType() == parser.getVws()) {
+                if (tokens.get(i - 2) instanceof ExtendToken extToken) {
+                    extToken.setText(""); // Virtually remove the token.
+                }
+            }
+
             // Skip deleted tokens.
             if (curTokenType == -1) {
                 continue;

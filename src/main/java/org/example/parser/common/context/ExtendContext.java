@@ -36,8 +36,9 @@ public class ExtendContext extends ParserRuleContext {
     public void updateHierarchy(MyParser parser) {
         ExtendContext targetAncestor = findFirstParentIf(p -> parser.getCompoundStmts().contains(p.getRuleIndex()) || parser.getRuleBody() == p.getRuleIndex() || parser.getRuleBlock() == p.getRuleIndex());
         if (targetAncestor != null) {
-            boolean isIndenpendentBlock = parser.isInitializer(this) || getRuleIndex() == parser.getRuleBlock() && findFirstParentIf(parser::isStatement) != targetAncestor;
-            if (!isIndenpendentBlock) {
+            boolean isDependentBlock = parser.getSpecificStmtType(this) == parser.getRuleBlock() &&
+                    findFirstParentIf(p -> parser.getCompoundStmts().contains(p.getRuleIndex())) == targetAncestor;
+            if (isDependentBlock) {
                 if (getParent() instanceof ExtendContext parentCtx) {
                     hierarchy = parentCtx.hierarchy;
                 }

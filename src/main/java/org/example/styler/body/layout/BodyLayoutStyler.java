@@ -90,7 +90,7 @@ public class BodyLayoutStyler extends BodyStyler {
                             start.getContextTokens().removeAll(comments);
                         }
                     }
-                    // Add vws if Body has a trailing comment.
+                    // Add vws if Body doesn't have a trailing comment.
                     if(!(stop.hasTrailingComment)) {
                         ctx.addTerNode(parser.getVws(), System.lineSeparator(), i + 1); // Add vws after statement
                     }
