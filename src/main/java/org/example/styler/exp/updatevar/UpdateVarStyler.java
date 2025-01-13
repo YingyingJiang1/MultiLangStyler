@@ -1,52 +1,58 @@
 package org.example.styler.exp.updatevar;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.exp.ExpType;
 import org.example.styler.exp.updatevar.style.UpdateVarContext;
 import org.example.styler.exp.updatevar.style.UpdateVarProperty;
+import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.EquivalentStructureManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateVarStyler extends Styler {
+    private List<EquivalentStructure> structures;
+
     public UpdateVarStyler() {
         style.setStyleName("update_variable");
+        structures = EquivalentStructureManager.getInstance().loadEquivalences(MyParserFactory.createParser(GlobalInfo.getLanguage()).getClass(), "/varUpdatingConf.json");
     }
+
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        ExpType expType = null;
-        List<ExtendContext> targetExpressions = new ArrayList<ExtendContext>();
-        if (ctx.getParent() instanceof ExtendContext parentCtx && parentCtx.getRuleIndex() == parser.getRuleParExpression()) {
-            expType = ExpType.CONDITIONAL_EXP;
-            targetExpressions.add(ctx);
-        } else {
-            expType = ExpType.RVALUE_EXP;
-            int assignOpIndex = ctx.indexOfFirstChild(child -> child instanceof TerminalNode ter
-                    && (ter.getText().equals("=") || parser.getCompoundAssign().contains(ter.getSymbol().getType())));
-            if (assignOpIndex >= 0) {
-                for (int i = assignOpIndex; i < ctx.getChildCount(); i++) {
-                    ParseTree child = ctx.getChild(i);
-                    if (child instanceof ExtendContext childCtx && childCtx.getRuleIndex() == parser.getRuleExpression()) {
-                        targetExpressions.add(childCtx);
-                    }
-                }
+        UpdateVarContext styleContext = extractStyleContext(ctx, parser);
+
+        UpdateVarProperty styleProperty = null;
+        EquivalentStructure matchedStructure = null;
+        for (EquivalentStructure structure : structures) {
+            int matchedIndex = structure.match(ctx, parser);
+            if (matchedIndex != -1) {
+                styleProperty = new UpdateVarProperty(true);
+                matchedStructure = structure;
+                break;
             }
         }
-
-        for (ExtendContext targetExpression : targetExpressions) {
-            List<TerminalNode> updateVarOp = targetExpression.getAllTerminalsRecIf(child -> child.getText().equals("=")
-                    || child.getText().equals("++") || child.getText().equals("--")
-            || parser.getCompoundAssign().contains(child.getSymbol().getType()));
-            if (!updateVarOp.isEmpty()) {
-                style.addRule(new UpdateVarContext(expType), new UpdateVarProperty(true));
-
+        if (matchedStructure == null) {
+            List<Token> ops = new ArrayList<>(ctx.getAllTokensRec().stream().filter(token -> !token.getText().equals(".") && parser.belongToOperator(token.getText())).toList());
+            List<Token> updateOps = ops.stream().filter(op -> op.getText().equals("=") || op.getText().equals("++") || op.getText().equals("--") || parser.getCompoundAssign().contains(op.getType())).toList();
+            ops.removeAll(updateOps);
+            if (updateOps.size() > 1) {
+                styleProperty = new UpdateVarProperty(false);
             }
+
+        }
+
+        if (styleProperty != null) {
+            style.addRule(styleContext, styleProperty);
         }
     }
 
@@ -66,6 +72,16 @@ public class UpdateVarStyler extends Styler {
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
-        return ruleIndex == parser.getRuleExpression();
+        return ruleIndex == parser.getRuleExpStmt();
     }
+
+    private UpdateVarContext extractStyleContext(ExtendContext ctx, MyParser parser) {
+        if (ctx.getRuleIndex() == parser.getRuleExpStmt()) {
+            return new UpdateVarContext(ExpType.RVALUE_EXP);
+        } else {
+            return null;
+        }
+    }
+
+
 }

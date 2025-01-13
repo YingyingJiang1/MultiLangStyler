@@ -24,7 +24,6 @@ public class EquivalentStructureManager {
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
   private static List<EquivalentStructure> equivalences = new ArrayList<>();
   JsonNode configJson = null;
-  public String confFile = "/equivalencesConf.json";
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
 
 
@@ -34,9 +33,9 @@ public class EquivalentStructureManager {
     return instance;
   }
 
-  public List<EquivalentStructure> loadEquivalences(Class<? extends MyParser> parserClass) {
+  public List<EquivalentStructure> loadEquivalences(Class<? extends MyParser> parserClass, String confFile) {
     try {
-      loadConfFile();
+      loadConfFile(confFile);
       MyParser parser = MyParserFactory.createParser(parserClass);
       ObjectMapper objectMapper = new ObjectMapper();
       for(JsonNode node : configJson) {
@@ -45,22 +44,7 @@ public class EquivalentStructureManager {
           continue;
         }
 
-        // Parse json data.
-        int id = node.get("id").asInt();
-        String category = node.get("category") == null ? "" : node.get("category").asText();
-        if (category.isEmpty()) {
-          logger.warn("Category is empty for equivalent structure: {}", id);
-        }
-        String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
-//        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
-        List<Checker> checkers = parseCheckers(node.get("checkers"), objectMapper, parser);
-        List<Handler> handlers = parseHandlers(node.get("handlers"), objectMapper, parser);
-//        int[] rules = parseRules(node.get("rules"), objectMapper, parser);
-        Map<Integer, List<Integer>> bannedTransferMap = parseBannedTransferMap(node.get("banned_transfer"), objectMapper, parser);
-
-        EquivalentStructure structure = new EquivalentStructure(id, category, checkers, handlers, bannedTransferMap);
-        structure.compile(codes);
-
+        EquivalentStructure structure = EquivalentStructure.create(node, parserClass);
         equivalences.add(structure);
       }
     } catch (Exception e) {
@@ -83,69 +67,13 @@ public class EquivalentStructureManager {
     }
   }
 
-  public void loadConfFile() throws IOException {
+  public void loadConfFile(String confFile) throws IOException {
     InputStream is = getClass().getResourceAsStream(confFile);
     ObjectMapper objectMapper = new ObjectMapper();
     configJson =  objectMapper.readTree(is);
   }
 
-  private List<Checker> parseCheckers(JsonNode checkersNode, ObjectMapper objectMapper, MyParser parser) {
-    List<Checker> checkers = null;
-    if (checkersNode != null) {
-      checkers = new ArrayList<>();
-      for(JsonNode checkerNode : checkersNode) {
-        if (checkerNode.get("class") == null) {
-          continue;
-        }
-        Checker checker = Checker.createChecker(checkerNode.get("class").asText(),
-                objectMapper.convertValue(checkerNode.get("argsList"), String[][].class));
-        checkers.add(checker);
-      }
-    }
-    return checkers;
-  }
 
-  private List<Handler> parseHandlers(JsonNode handlersNode, ObjectMapper objectMapper, MyParser parser) {
-    List<Handler> handlers = null;
-    if (handlersNode != null) {
-      handlers = new ArrayList<>();
-      for(JsonNode handlerNode : handlersNode) {
-        if (handlerNode.get("class") == null) {
-          continue;
-        }
-        Handler handler = Handler.createHandler(handlerNode.get("class").asText(),
-                objectMapper.convertValue(handlerNode.get("argsList"), String[][].class), parser);
-        handlers.add(handler);
-      }
-    }
-    return null;
-  }
-
-  private int[] parseRules(JsonNode rulesNode, ObjectMapper objectMapper, MyParser parser) {
-    String[] ruleNames = objectMapper.convertValue(rulesNode, String[].class);
-    int[] rules = new int[ruleNames.length];
-    for (int i = 0; i < ruleNames.length; i++) {
-      String ruleName = ruleNames[i];
-      int rule = parser.getRuleIndex(ruleName);
-      rules[i] = rule;
-    }
-    return rules;
-  }
-
-  private Map<Integer, List<Integer>> parseBannedTransferMap(JsonNode bannedTransfersNode, ObjectMapper objectMapper, MyParser parser) {
-    Map<Integer, List<Integer>> bannedTransferMap = null;
-    String[][] bannedTransfers = objectMapper.convertValue(bannedTransfersNode, String[][].class);
-    if (bannedTransfers != null) {
-      bannedTransferMap = new HashMap<>();
-      for(String[] bannedTransfer : bannedTransfers) {
-        int from = Integer.parseInt(bannedTransfer[0]);
-        int to = Integer.parseInt(bannedTransfer[1]);
-        bannedTransferMap.computeIfAbsent(from, v -> new ArrayList<>());
-        bannedTransferMap.get(from).add(to);
-      }
-    }
-    return bannedTransferMap;
-  }
 
 
 }

@@ -419,7 +419,7 @@ public class MyJavaParser implements MyParser {
 
     @Override
     public boolean belongToOperator(String name) {
-        return belongToBinOp(name) || belongToUnOp(name);
+        return belongToBinOp(name) || belongToUnOp(name) || name.equals("[") || name.equals("]") || name.equals("(") || name.equals(")");
     }
 
     @Override

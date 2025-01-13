@@ -1,63 +1,64 @@
 [{
-  "id" : 33,
+  "id" : 1,
   "category" : "Variable updating",
-  "codes" : [ "$^ $I ++ ; $S(expStmt)", "$^ ++ $I ; $S(expStmt)", "$^ $I += 1 ; $S(expStmt)", "$^ $I = $I1 + 1 ; $S(expStmt)"],
+  "codes" : [ "$^ $E ++ ; $S(expStmt)", "$^ ++ $E ; $S(expStmt)", "$^ $E += 1 ; $S(expStmt)", "$^ $E = $E1 + 1 ; $S(expStmt)"],
   "checkers" : [ {
     "class" : "EqualChecker",
-    "argsList" : [ [ 3, "$I", "$I1" ] ]
+    "argsList" : [ [ 3, "$E", "$E1" ] ]
   } ,{
     "class" : "ContainChecker",
-    "argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+    "argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
   } ],
-  "handlers" : [ {
-    "class" : "修改第一个$I为 ++$I",
-    "argsList" : [[]]
-  } ]
+  "handlers" : [
+    {
+      "class" : "",
+      "argsList" : [["$E", 1, "$E", "++ $E"]]
+    }]
 },{
-"id" : 34,
+"id" : 2,
 "category" : "Variable updating",
-"codes" : [ "$^ $I -- ; $S(expStmt)", "$^ -- $I ; $S(expStmt)", "$^ $I -= 1 ; $S(expStmt)", "$^ $I = $I1 - 1 ; $S(expStmt)"],
+"codes" : [ "$^ $E -- ; $S(expStmt)", "$^ -- $E ; $S(expStmt)", "$^ $E -= 1 ; $S(expStmt)", "$^ $E = $E1 - 1 ; $S(expStmt)"],
 "checkers" : [ {
 "class" : "EqualChecker",
-"argsList" : [ [ 3, "$I", "$I1" ] ]
+"argsList" : [ [ 3, "$E", "$E1" ] ]
 } ,{
 "class" : "ContainChecker",
-"argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+"argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
 } ],
 "handlers" : [ {
-"class" : "修改第一个$I为 --$I",
-"argsList" : [ ]
-} ]
+  "class" : "",
+  "argsList" : [["$E", 1, "$E", "-- $E"]]
+}]
 },
 {
-"id" : 35,
+"id" : 3,
 "category" : "Variable updating",
-"codes" : [ "$^ $S(expStmt) $I ++ ;", "$^ $S(expStmt) ++ $I ;", "$^ $S(expStmt) $I += 1 ;", "$^ $S(expStmt) $I = $I1 + 1 ;"],
+"codes" : [ "$^ $S(expStmt) $E ++ ;", "$^ $S(expStmt) ++ $E ;", "$^ $S(expStmt) $E += 1 ;", "$^ $S(expStmt) $E = $E1 + 1 ;"],
 "checkers" : [ {
 "class" : "EqualChecker",
-"argsList" : [ [ 3, "$I", "$I1" ] ]
+"argsList" : [ [ 3, "$E", "$E1" ] ]
 } ,{
 "class" : "ContainChecker",
-"argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+"argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
 } ],
 "handlers" : [ {
-"class" : "修改最后一个$I为 $I++",
-"argsList" : [ ]
-} ]
+  "class" : "",
+  "argsList" : [["$E", -1, "$E", "$E ++"]]
+}]
 }, {
-"id" : 36,
+"id" : 4,
 "category" : "Variable updating",
-"codes" : [ "$^ $S(expStmt) $I -- ;", "$^ $S(expStmt) -- $I ;", "$^ $S(expStmt) $I -= 1 ;", "$^ $S(expStmt) $I = $I1 - 1 ;"],
+"codes" : [ "$^ $S(expStmt) $E -- ;", "$^ $S(expStmt) -- $E ;", "$^ $S(expStmt) $E -= 1 ;", "$^ $S(expStmt) $E = $E1 - 1 ;"],
 "checkers" : [ {
 "class" : "EqualChecker",
-"argsList" : [ [ 3, "$I", "$I1" ] ]
+"argsList" : [ [ 3, "$E", "$E1" ] ]
 } ,{
 "class" : "ContainChecker",
-"argsList" : [ [0, "$S(expStmt)", "$I" ],  [1, "$S(expStmt)", "$I" ],  [2, "$S(expStmt)", "$I" ],  [3, "$S(expStmt)", "$I" ]]
+"argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
 } ],
 "handlers" : [ {
-"class" : "修改最后一个$I为 $I--",
-"argsList" : [ ]
-} ]
+  "class" : "",
+  "argsList" : [["$E", -1, "$E", "$E --"]]
+}]
 }
 ]

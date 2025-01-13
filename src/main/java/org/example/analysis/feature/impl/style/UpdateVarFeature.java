@@ -18,7 +18,7 @@ public class UpdateVarFeature implements StyleFeatureExtractor {
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof UpdateVarContext context &&
             rule.getStyleProperty() instanceof UpdateVarProperty property) {
-                sv.addAttrValue(context.expType.name(), new BooleanAttrValue(property.allowUpdatingInExp));
+                sv.addAttrValue(context.expType.name(), new BooleanAttrValue(property.updateInStmt));
             }
         }
         st2svMap.put(StyleType.VarUpdating.styleType, sv);

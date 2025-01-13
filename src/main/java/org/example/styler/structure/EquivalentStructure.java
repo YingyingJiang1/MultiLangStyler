@@ -1,9 +1,12 @@
 package org.example.styler.structure;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antlr.v4.runtime.tree.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.myException.CompilationException;
 import org.example.parser.java.MyJavaParser;
@@ -45,6 +48,26 @@ public class EquivalentStructure {
 		this.checkers = checkers;
 		this.handlers = handlers;
 		this.bannedTransfer = bannedTransfer;
+	}
+
+	public static EquivalentStructure create(JsonNode node, Class<? extends MyParser> parserClass) {
+		// Parse json data.
+		int id = node.get("id").asInt();
+		String category = node.get("category") == null ? "" : node.get("category").asText();
+		if (category.isEmpty()) {
+			logger.warn("Category is empty for equivalent structure: {}", id);
+		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		MyParser parser = MyParserFactory.createParser(parserClass);
+		String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
+//        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
+		List<Checker> checkers = parseCheckers(node.get("checkers"), objectMapper, parser);
+		List<Handler> handlers = parseHandlers(node.get("handlers"), objectMapper, parser);
+//        int[] rules = parseRules(node.get("rules"), objectMapper, parser);
+		Map<Integer, List<Integer>> bannedTransferMap = parseBannedTransferMap(node.get("banned_transfer"), objectMapper, parser);
+		EquivalentStructure structure = new EquivalentStructure(id, category, checkers, handlers, bannedTransferMap);
+		structure.compile(codes);
+		return structure;
 	}
 
 	public void setHandlers(List<Handler> handlers) {
@@ -446,8 +469,51 @@ public class EquivalentStructure {
 		return false;
 	}
 
-	public int getWrittingNum() {
-		return forests.size();
+	private static List<Checker> parseCheckers(JsonNode checkersNode, ObjectMapper objectMapper, MyParser parser) {
+		List<Checker> checkers = null;
+		if (checkersNode != null) {
+			checkers = new ArrayList<>();
+			for(JsonNode checkerNode : checkersNode) {
+				if (checkerNode.get("class") == null) {
+					continue;
+				}
+				Checker checker = Checker.createChecker(checkerNode.get("class").asText(),
+						objectMapper.convertValue(checkerNode.get("argsList"), String[][].class));
+				checkers.add(checker);
+			}
+		}
+		return checkers;
+	}
+
+	private static List<Handler> parseHandlers(JsonNode handlersNode, ObjectMapper objectMapper, MyParser parser) {
+		List<Handler> handlers = null;
+		if (handlersNode != null) {
+			handlers = new ArrayList<>();
+			for(JsonNode handlerNode : handlersNode) {
+				if (handlerNode.get("class") == null) {
+					continue;
+				}
+				Handler handler = Handler.createHandler(handlerNode.get("class").asText(),
+						objectMapper.convertValue(handlerNode.get("argsList"), String[][].class), parser);
+				handlers.add(handler);
+			}
+		}
+		return null;
+	}
+
+	private static Map<Integer, List<Integer>> parseBannedTransferMap(JsonNode bannedTransfersNode, ObjectMapper objectMapper, MyParser parser) {
+		Map<Integer, List<Integer>> bannedTransferMap = null;
+		String[][] bannedTransfers = objectMapper.convertValue(bannedTransfersNode, String[][].class);
+		if (bannedTransfers != null) {
+			bannedTransferMap = new HashMap<>();
+			for(String[] bannedTransfer : bannedTransfers) {
+				int from = Integer.parseInt(bannedTransfer[0]);
+				int to = Integer.parseInt(bannedTransfer[1]);
+				bannedTransferMap.computeIfAbsent(from, v -> new ArrayList<>());
+				bannedTransferMap.get(from).add(to);
+			}
+		}
+		return bannedTransferMap;
 	}
 }
 

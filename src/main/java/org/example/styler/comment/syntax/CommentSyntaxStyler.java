@@ -34,14 +34,7 @@ public class CommentSyntaxStyler extends Styler {
             if (targetProperty.syntax.equals("//")) {
                 block2lineComment(tokens, index, parser);
             } else if (targetProperty.syntax.equals("/*")) {
-                // 转换为多行注释 "/*...*/"
-                if (styleContext.getType() == CommentType.SINGLE_LINE) {
-                    // 将单行注释转换为多行注释
-                    String commentText = tokens.get(index).getText().trim();
-                    String multiLineComment = "/* " + commentText + " */";
-                    // 替换原注释
-                    replaceComment(tokens, index, multiLineComment);
-                }
+                line2blockComment(tokens, index, parser);
             }
         }
     }

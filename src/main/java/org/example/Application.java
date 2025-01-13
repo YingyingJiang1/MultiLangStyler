@@ -12,14 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
   public static void main(String[] args) {
-    Configuration conf = new Configuration();
-    try {
-      conf.loadConf();
-      Controller controller = new Controller(conf);
-      controller.execute();
-    } catch (DocumentException | IOException e) {
-      System.out.println("Failed to load configuration");
-    }
+    Configuration config = CLIArgumentParser.parseArgs(args);
+    Controller controller = new Controller(config);
+    controller.execute();
     SpringApplication.run(Application.class, args);
   }
 

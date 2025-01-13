@@ -18,23 +18,34 @@ public class FunctionComplexityStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        int lines = ctx.stop.getLine() - ctx.start.getLine() + 1;
-        ExtendContext body = (ExtendContext) ctx.getChild(ctx.getChildCount() - 1);
-        int maxNestedDepth = calculateMaxStmtNestingDepth(body, parser);
-
+       FunctionComplexityProperty property = extractStyleProperty(ctx, parser);
         List<StyleProperty> properties = style.getProperties(null);
         if (properties != null) {
-            FunctionComplexityProperty property = (FunctionComplexityProperty) properties.get(0);
-            if (lines > property.maxLines) {
-                property.maxLines = lines;
+            FunctionComplexityProperty targetProperty = (FunctionComplexityProperty) properties.get(0);
+            if (property.maxLines > targetProperty.maxLines) {
+                targetProperty.maxLines = property.maxLines ;
             }
-            if (maxNestedDepth > property.maxNestingDepth) {
-                property.maxNestingDepth = maxNestedDepth;
+            if (property.maxNestingDepth > targetProperty.maxNestingDepth) {
+                targetProperty.maxNestingDepth = property.maxNestingDepth;
             }
         } else {
-            style.addRule(null, new FunctionComplexityProperty(lines, maxNestedDepth));
+            style.addRule(null, property);
         }
     }
+
+    @Override
+    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        FunctionComplexityProperty property = extractStyleProperty(ctx, parser);
+        if (style.getProperty(null) instanceof FunctionComplexityProperty targetProperty) {
+            boolean isMoreComplex = property.maxNestingDepth > targetProperty.maxNestingDepth
+                    || property.maxLines > targetProperty.maxLines;
+            if (isMoreComplex) {
+                encapsulateCode(ctx, property, targetProperty, parser);
+            }
+        }
+        return ctx;
+    }
+
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
@@ -90,5 +101,18 @@ public class FunctionComplexityStyler extends Styler {
             return maxDepthOfSubStmt;
         }
         return 0;
+    }
+
+    private FunctionComplexityProperty extractStyleProperty(ExtendContext ctx, MyParser parser) {
+        int lines = ctx.stop.getLine() - ctx.start.getLine() + 1;
+        ExtendContext body = (ExtendContext) ctx.getChild(ctx.getChildCount() - 1);
+        int maxNestedDepth = calculateMaxStmtNestingDepth(body, parser);
+        return new FunctionComplexityProperty(lines, maxNestedDepth);
+    }
+
+    private void encapsulateCode(ExtendContext ctx, FunctionComplexityProperty property, FunctionComplexityProperty targetProperty, MyParser parser) {
+        // to do: 标记代码段
+
+        // do encapsulation
     }
 }

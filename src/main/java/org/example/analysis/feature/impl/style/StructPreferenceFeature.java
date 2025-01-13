@@ -25,7 +25,7 @@ public class StructPreferenceFeature implements StyleFeatureExtractor {
     @Override
     public void toFeatureVector(Style style, Map<String, StyleVector> st2svMap) {
         List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance()
-                .loadEquivalences(MyParserFactory.createParser(DiffAnalyzer.language).getClass());
+                .loadEquivalences(MyParserFactory.createParser(DiffAnalyzer.language).getClass(), "/equivalencesConf.json");
 
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof  StructPreferenceContext context &&

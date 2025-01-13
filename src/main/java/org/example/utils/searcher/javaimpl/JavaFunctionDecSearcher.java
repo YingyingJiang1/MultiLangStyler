@@ -24,6 +24,10 @@ public class JavaFunctionDecSearcher implements FunctionDecSearcher {
 
     @Override
     public int indexOfParameter(ExtendContext functionDec, ExtendContext parameter, MyParser parser) {
-        System.out.println("to do : implement this");
+        if (functionDec.getChild(1) instanceof ExtendContext functionHead) {
+            ExtendContext paramList = functionHead.getContextRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleformalParameterList());
+            return paramList.indexOfIf(child -> child == parameter);
+        }
+        return -1;
     }
 }

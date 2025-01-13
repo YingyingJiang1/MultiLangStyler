@@ -124,7 +124,7 @@ public class StructureStyler extends Styler {
 
     private void loadEquivalences(MyParser parser) {
         if (equivalencesMap == null) {
-            List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass());
+            List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), "/equivalencesConf.json");
             equivalencesMap = new HashMap<>();
             for (EquivalentStructure equivalence : equivalences) {
                 for (int rule : equivalence.rules) {

@@ -15,7 +15,7 @@ public class UpdateVarTest extends CommonTest{
         String code = "a = arr[x++];";
         Style style = extractFromString(code, new UpdateVarStyler(), "java");
         UpdateVarProperty property = (UpdateVarProperty)style.getProperty(new UpdateVarContext(ExpType.RVALUE_EXP));
-        Assertions.assertTrue(property.allowUpdatingInExp);
+        Assertions.assertTrue(property.updateInStmt);
     }
 
 

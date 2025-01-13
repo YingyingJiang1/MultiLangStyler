@@ -22,25 +22,19 @@ import java.util.*;
 @ConfigurationProperties(prefix = "config")
 public class Configuration {
 
-  public void print() {
-    System.out.println("Extraction files: " + extractionCollection.toString());
-    System.out.println("Application files: " + applicationCollection.toString());
-    System.out.println("Style file saved directory: " + styleFile);
-    System.out.println("Override source: " + overrideSource);
-    System.out.println("Use existed style: " + useExistedStyle);
-    System.out.println("Apply result saved directory: " + applyResultSaveDir);
-    System.out.println("Test mode: " + testMode);
-  }
-
   Element root = null;
+
+  public String styleFile;
+  public String styleFileSavedPath;
+
+  private String src;
+  private String target;
+  public boolean overrideSource = false;
   public FileCollection extractionCollection = new FileCollection();
   public FileCollection applicationCollection = new FileCollection();
-  public String styleFile;
-  public boolean overrideSource;
-  public String useExistedStyle;
-  public String applyResultSaveDir = null;
-  public String styleFileSavedPath;
-  public boolean testMode;
+  private String resOutFile;
+  private String resOutDir;
+  private String styleOutPath;
 
   public void loadConf() throws IOException, DocumentException {
     InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
@@ -48,8 +42,20 @@ public class Configuration {
     Document document = reader.read(inputStream);
     root = document.getRootElement();
 
-    loadExtractionInfo(root);
-    loadApplicationInfo(root);
+    Element extractionInfo = root.element("extraction_info");
+    extractionCollection = collectFile(extractionInfo.element("source").getText());
+    styleFile = extractionInfo.elementText("style_file").replace("${root}", System.getProperty("user.dir"));
+    styleFileSavedPath = extractionInfo.elementText("style_path").replace("${root}", System.getProperty("user.dir"));
+
+    Element applicationInfo = root.element("application_info");
+//    overrideSource = applicationInfo.elementText("override").equals("true");
+    Element source = applicationInfo.element("source");
+    applicationCollection = collectFile(source.getText());
+
+
+//    if (applicationInfo.element("result_saved_dir") != null) {
+//      applyResultSaveDir = applicationInfo.element("result_saved_dir").getText();
+//    }
   }
 
   public String getStyleFile() {
@@ -57,31 +63,70 @@ public class Configuration {
   }
 
 
-  private void loadApplicationInfo(Element root) {
-    Element applicationInfo = root.element("application_info");
-//    overrideSource = applicationInfo.elementText("override").equals("true");
-    applicationCollection = loadSource(applicationInfo);
+  private FileCollection collectFile(String path) {
+    List<String> sourcePaths = new ArrayList<>();
+    FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
+    collection.difference(FileCollector.getJavaFileCollection(List.of()));
+    return collection;
+  }
 
+  public String getResOutFile() {
+    return resOutFile;
+  }
 
-    if (applicationInfo.element("result_saved_dir") != null) {
-      applyResultSaveDir = applicationInfo.element("result_saved_dir").getText();
+  public String getResOutDir() {
+    return resOutDir;
+  }
+
+  public void setSrc(String src) {
+    this.src = src;
+    applicationCollection = collectFile(src);
+  }
+
+  public void setTarget(String target) {
+    this.target = target;
+    if (target.endsWith(".xml")) {
+      styleFile = target;
+    } else {
+      extractionCollection = collectFile(target);
     }
   }
 
-  private void loadExtractionInfo(Element root) {
-    Element extractionInfo = root.element("extraction_info");
-    extractionCollection = loadSource(extractionInfo);
-    styleFile = extractionInfo.elementText("style_file").replace("${root}", System.getProperty("user.dir"));
-    styleFileSavedPath = extractionInfo.elementText("style_path").replace("${root}", System.getProperty("user.dir"));
+  public void setStyleOutPath(String styleOut) {
+    this.styleOutPath = styleOut;
   }
 
-  private FileCollection loadSource(Element info) {
-    Element source = info.element("source");
-    List<String> sourcePaths = new ArrayList<>();
-    List<String> excludes = Arrays.stream(source.attributeValue("excludes").split(";")).toList();
-    sourcePaths = Arrays.stream(source.getText().split(";")).toList();
-    FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
-    collection.difference(FileCollector.getJavaFileCollection(excludes));
-    return collection;
+  public String getTarget() {
+    return target;
+  }
+
+  public String getSrc() {
+    return src;
+  }
+
+  public void setResOutFile(String resOutFile) {
+    this.resOutFile = resOutFile;
+  }
+
+  public void setResOutDir(String resOutDir) {
+    this.resOutDir = resOutDir;
+  }
+
+  public void setOverrideSource(boolean overrideSource) {
+    this.overrideSource = overrideSource;
+  }
+
+  public String getCodeOutPath(String srcPath) {
+    if (resOutFile != null) {
+      return resOutFile;
+    } else if (resOutDir != null) {
+      return resOutDir + File.separator + new File((srcPath)).getName();
+    } else {
+      return srcPath;
+    }
+  }
+
+  public String getStyleOutPath() {
+    return styleOutPath;
   }
 }

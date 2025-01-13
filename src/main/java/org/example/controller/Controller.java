@@ -180,25 +180,7 @@ public class Controller {
     }
 
     private void saveApplyResult(String code) throws IOException {
-        Path resFilePath = null;
-        String saveDir = null;
-        if (conf.overrideSource) {
-            resFilePath = curPath;
-            Files.write(resFilePath, code.getBytes());
-            return;
-        } else if (conf.applyResultSaveDir != null) {
-            saveDir = conf.applyResultSaveDir;
-            if (!saveDir.endsWith(File.separator)) {
-                saveDir = saveDir + File.separator;
-            }
-        } else {
-            saveDir = curPath.getParent().toString();
-        }
-
-        String fileName = curPath.getFileName().toString();
-        int dotIndex = fileName.lastIndexOf(".");
-        String resPath = Paths.get(saveDir, fileName.substring(0, dotIndex) + "-result" + fileName.substring(dotIndex)).toString();
-
+        String resPath = conf.getCodeOutPath(curPath.toString());
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
             writer.write(code);
         }
