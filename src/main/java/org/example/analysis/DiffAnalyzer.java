@@ -1,12 +1,8 @@
 package org.example.analysis;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellAddress;
-import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.analysis.feature.ParserFeatureExtractor;
 import org.example.analysis.feature.impl.parser.BlankLineFeature;
@@ -25,10 +21,7 @@ import org.example.style.Style;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.tablesaw.api.DoubleColumn;
-import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
-import tech.tablesaw.columns.Column;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -155,9 +148,9 @@ public class DiffAnalyzer {
 //
 //    }
 
-    private static Map<String, DistanceVec> calculateStyleDis(InputPair pair, List<String> allStyles) throws IOException {
+    private static PairDistance calculateStyleDis(InputPair pair, List<String> allStyles) throws IOException {
         Map<String, DistanceVec> style2disMap = new HashMap<>();
-        String problemNumber = pair.getProblemNumber();
+        String problemNumber = pair.getProblemId();
         Path path1 = Paths.get(dir, problemNumber, pair.getFile1());
         Path path2 = Paths.get(dir, problemNumber, pair.getFile2());
         Map<String, StyleVector> style2vecMap1 = new HashMap<>();
@@ -186,19 +179,24 @@ public class DiffAnalyzer {
                 style2disMap.put(styleName, new DistanceVec(null));
             }
         }
-        return style2disMap;
+
+        PairDistance pairDistance = new PairDistance(pair.getProblemId(),
+                pair.getAuthor1(), pair.getAuthor2(),
+                Paths.get(pair.getFile1()).getFileName().toString(), Paths.get(pair.getFile2()).getFileName().toString(),
+                style2disMap);
+        return pairDistance;
     }
 
 
-    public static List<Map<String, DistanceVec>> calculateStyleDis(List<InputPair> programPairs, List<String> allStyles) throws IOException {
+    public static List<PairDistance> calculateStyleDis(List<InputPair> programPairs, List<String> allStyles) throws IOException {
 
-        List<Map<String, DistanceVec>> result = new ArrayList<>();
+        List<PairDistance> result = new ArrayList<>();
         int count = 0;
         try {
             for (InputPair pair : programPairs) {
                 ++count;
-                logger.info("Analyzing {} pair, problem number:{}", count, pair.getProblemNumber());
-                Map<String, DistanceVec> styleDis = calculateStyleDis(pair, allStyles);
+                logger.info("Analyzing {} pair, problem number:{}", count, pair.getProblemId());
+                PairDistance styleDis = calculateStyleDis(pair, allStyles);
                 result.add(styleDis);
             }
         } catch (Exception e) {
@@ -236,7 +234,8 @@ public class DiffAnalyzer {
         }
     }
 
-   private static void appendResult2excel(Map<String, DistanceVec> styleDistance, Workbook workbook) {
+   private static void appendResult2excel(PairDistance pairDistance, Workbook workbook) {
+        Map<String, DistanceVec> styleDistance = pairDistance.distanceMap;
        for (Map.Entry<String, DistanceVec> entry : styleDistance.entrySet()) {
            try {
                // 获取工作表名称
@@ -247,16 +246,28 @@ public class DiffAnalyzer {
                if (sheet == null) {
                    sheet = workbook.createSheet(sheetName);
                    Row headRow = sheet.createRow(0);
-                   for (int i = 0; i < headers.size(); i++) {
+                   int index = 0;
+                   headRow.createCell(index++).setCellValue("problemId");
+                   headRow.createCell(index++).setCellValue("author1");
+                   headRow.createCell(index++).setCellValue("file1");
+                   headRow.createCell(index++).setCellValue("author2");
+                   headRow.createCell(index++).setCellValue("file2");
+                   for (int i = index; i < headers.size(); i++) {
                        headRow.createCell(i).setCellValue(headers.get(i));
                    }
                }
 
                // 添加一行数据
                Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+               int index = 0;
+               row.createCell(index++).setCellValue(pairDistance.problemId);
+               row.createCell(index++).setCellValue(pairDistance.author1);
+               row.createCell(index++).setCellValue(pairDistance.file1);
+               row.createCell(index++).setCellValue(pairDistance.author2);
+               row.createCell(index++).setCellValue(pairDistance.file2);
                for (String header : headers) {
                    double value = entry.getValue() == null ? -1.0 : entry.getValue().getValue(header);
-                   row.createCell(row.getLastCellNum() + 1).setCellValue(value);
+                   row.createCell(index++).setCellValue(value);
                }
            } catch (Exception e) {
                logger.error("Failed to add a row for sheet {}.", entry.getKey());
@@ -265,14 +276,14 @@ public class DiffAnalyzer {
        }
    }
 
-    public static void appendResult2excel(List<Map<String, DistanceVec>> styleDistanceList, String resultFilePath) {
+    public static void appendResult2excel(List<PairDistance> pairDistanceList, String resultFilePath) {
         // 创建一个工作簿
         try (Workbook workbook = new XSSFWorkbook();
              FileOutputStream fileOut = new FileOutputStream(resultFilePath, true)) {
 
             // 遍历每个Table并将其写入不同的工作表
-            for (Map<String, DistanceVec> styleDistance : styleDistanceList) {
-                appendResult2excel(styleDistance, workbook);
+            for (PairDistance pairDistance : pairDistanceList) {
+                appendResult2excel(pairDistance, workbook);
             }
             // 将工作簿写入文件
             workbook.write(fileOut);
@@ -299,6 +310,27 @@ public class DiffAnalyzer {
 
         public Double getValue(String name) {
             return distanceMap.get(name);
+        }
+    }
+
+    private static class PairDistance{
+        String problemId;
+        String author1, author2;
+        String file1;
+        String file2;
+        Map<String, DistanceVec> distanceMap;
+
+        public PairDistance(String problemId, String author1, String author2, String file1, String file2, Map<String, DistanceVec> distanceMap) {
+            this.problemId = problemId;
+            this.author1 = author1;
+            this.author2 = author2;
+            this.file1 = file1;
+            this.file2 = file2;
+            this.distanceMap = distanceMap;
+        }
+
+        public PairDistance() {
+
         }
     }
 

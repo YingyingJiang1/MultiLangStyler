@@ -1,8 +1,5 @@
 package org.example.analysis.io;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class InputPair {
     private String problemID;
     private String problemNumber;
@@ -24,8 +21,16 @@ public class InputPair {
         return files[1];
     }
 
-    public String getProblemNumber() {
-        return problemNumber;
+    public String getAuthor1() {
+        return authors[0];
+    }
+
+    public String getAuthor2() {
+        return authors[1];
+    }
+
+    public String getProblemId() {
+        return problemID;
     }
 
     public String[] getAuthors() {
