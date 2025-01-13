@@ -2,9 +2,11 @@ package org.example.analysis;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SequenceWriter;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.analysis.feature.ParserFeatureExtractor;
 import org.example.analysis.feature.impl.parser.BlankLineFeature;
@@ -24,13 +26,10 @@ import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.tablesaw.api.DoubleColumn;
-import tech.tablesaw.api.Row;
 import tech.tablesaw.api.StringColumn;
 import tech.tablesaw.api.Table;
 import tech.tablesaw.columns.Column;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -51,7 +50,11 @@ public class DiffAnalyzer {
     public static String language = "java";
 
     public static void main(String[] args) throws IOException {
-//        String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
+
+    }
+
+    private static void analyzeAll() throws IOException {
+        //        String metaFile = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\meta.json";
         String metaFile = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\dataset\\data\\meta.json";
 
         List<InputPair> programPairs = null;
@@ -80,8 +83,8 @@ public class DiffAnalyzer {
         System.out.println("human author pairs: " + authorPairs);
 //        result = analyze(programPairs);
 //        writeResult2excel(result, "human-human-result");
-
     }
+
 
     private static int calculateAuthorGroup(List<InputPair> pairs) {
         Set<String> authorGroup = new HashSet<>();
@@ -95,132 +98,112 @@ public class DiffAnalyzer {
         return authorGroup.size();
     }
 
-    private static void calculateAvgDistance(List<Table> result, int totalPair, String filename) {
-        Map<String, Double> avgDistanceMap = new HashMap<>();
-        for (Table table : result) {
-            String styleType = table.name();
-            for (int i = 0; i < table.rowCount(); i++) {
-                Row row = table.row(i);
-                for (int j = 0; j < row.columnCount(); j++) {
+//    private static void calculateAvgDistance(List<Table> result, int totalPair, String filename) {
+//        Map<String, Double> avgDistanceMap = new HashMap<>();
+//        for (Table table : result) {
+//            String styleType = table.name();
+//            for (int i = 0; i < table.rowCount(); i++) {
+//                Row row = table.row(i);
+//                for (int j = 0; j < row.columnCount(); j++) {
+//
+//                }
+//            }
+//        }
+//    }
 
-                }
+//    private static void saveFinalResult(List<Table> result, int totalPair, String filename) {
+//
+//        List<String> styleTypes = new ArrayList<String>();
+//        Map<String, List<Integer>> statistics = Map.of(
+//                "consistency", new ArrayList<Integer>(),
+//                "inconsistency", new ArrayList<Integer>(),
+//                "no style", new ArrayList<Integer>()
+//        );
+//        for (Table table : result) {
+//            int consistency = 0, inconsistency = 0;
+//            for (int i = 0; i < table.rowCount(); i++) {
+//                Row row = table.row(i);
+//                List<Double> attrDistances = new ArrayList<Double>();
+//                for (int j = 0; j < row.columnCount(); j++) {
+//                    if (row.getDouble(j) >= 0) {
+//                        attrDistances.add(row.getDouble(j));
+//                    }
+//                }
+//                double normalizedMod = Math.sqrt(attrDistances.stream().reduce(0.0, (sum, d) -> Math.pow(d, 2))) / Math.sqrt(attrDistances.size());
+//                if (normalizedMod == 0) {
+//                    consistency++;
+//                } else {
+//                    inconsistency++;
+//                }
+//            }
+//            int noStyle = totalPair - table.rowCount();
+//            styleTypes.add(table.name());
+//            statistics.get("consistency").add(consistency);
+//            statistics.get("inconsistency").add(inconsistency);
+//            statistics.get("no style").add(noStyle);
+//        }
+//
+//        Table finalResult = Table.create("final-result")
+//                        .addColumns(
+//
+//                                StringColumn.create("style type", styleTypes),
+//                                DoubleColumn.create("consistency", statistics.get("consistency")),
+//                                DoubleColumn.create("inconsistency", statistics.get("inconsistency")),
+//                                DoubleColumn.create("no style", statistics.get("no style"))
+//                        );
+//        finalResult.write().csv(filename + ".csv");
+//
+//    }
+
+    private static Map<String, DistanceVec> calculateStyleDis(InputPair pair, List<String> allStyles) throws IOException {
+        Map<String, DistanceVec> style2disMap = new HashMap<>();
+        String problemNumber = pair.getProblemNumber();
+        Path path1 = Paths.get(dir, problemNumber, pair.getFile1());
+        Path path2 = Paths.get(dir, problemNumber, pair.getFile2());
+        Map<String, StyleVector> style2vecMap1 = new HashMap<>();
+        Map<String, StyleVector> style2vecMap2 = new HashMap<>();
+        initStyleMap(style2vecMap1);
+        initStyleMap(style2vecMap2);
+
+        extractStyleVectorFromStyleObj(path1, style2vecMap1);
+        extractStyleVectorFromStyleObj(path2, style2vecMap2);
+        extractStyleVectorFromTree(path1, style2vecMap1);
+        extractStyleVectorFromTree(path2, style2vecMap2);
+
+        // 为每种风格计算每一对程序对之间的风格距离向量，并以表格形式存储
+        for (String styleName : style2vecMap1.keySet()) {
+            StyleVector vec1 = style2vecMap1.get(styleName);
+            StyleVector vec2 = style2vecMap2.get(styleName);
+            if (vec2 == null) {
+                System.out.println(styleName);
+            }
+            DistanceVec distanceVec = new DistanceVec(vec1.calculateDistance(vec2));
+            style2disMap.put(styleName, distanceVec);
+        }
+
+        for (String styleName : allStyles) {
+            if (!style2disMap.containsKey(styleName)) {
+                style2disMap.put(styleName, new DistanceVec(null));
             }
         }
-    }
-
-    private static void saveFinalResult(List<Table> result, int totalPair, String filename) {
-
-        List<String> styleTypes = new ArrayList<String>();
-        Map<String, List<Integer>> statistics = Map.of(
-                "consistency", new ArrayList<Integer>(),
-                "inconsistency", new ArrayList<Integer>(),
-                "no style", new ArrayList<Integer>()
-        );
-        for (Table table : result) {
-            int consistency = 0, inconsistency = 0;
-            for (int i = 0; i < table.rowCount(); i++) {
-                Row row = table.row(i);
-                List<Double> attrDistances = new ArrayList<Double>();
-                for (int j = 0; j < row.columnCount(); j++) {
-                    if (row.getDouble(j) >= 0) {
-                        attrDistances.add(row.getDouble(j));
-                    }
-                }
-                double normalizedMod = Math.sqrt(attrDistances.stream().reduce(0.0, (sum, d) -> Math.pow(d, 2))) / Math.sqrt(attrDistances.size());
-                if (normalizedMod == 0) {
-                    consistency++;
-                } else {
-                    inconsistency++;
-                }
-            }
-            int noStyle = totalPair - table.rowCount();
-            styleTypes.add(table.name());
-            statistics.get("consistency").add(consistency);
-            statistics.get("inconsistency").add(inconsistency);
-            statistics.get("no style").add(noStyle);
-        }
-
-        Table finalResult = Table.create("final-result")
-                        .addColumns(
-
-                                StringColumn.create("style type", styleTypes),
-                                DoubleColumn.create("consistency", statistics.get("consistency")),
-                                DoubleColumn.create("inconsistency", statistics.get("inconsistency")),
-                                DoubleColumn.create("no style", statistics.get("no style"))
-                        );
-        finalResult.write().csv(filename + ".csv");
-
+        return style2disMap;
     }
 
 
-    public static List<Table> analyze(List<InputPair> programPairs) throws IOException {
-        String tempResultFile = "tmp_result.json";
-        FileOutputStream out = new FileOutputStream(tempResultFile, true);
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
+    public static List<Map<String, DistanceVec>> calculateStyleDis(List<InputPair> programPairs, List<String> allStyles) throws IOException {
 
-        Map<String, List<PairDistance>> disOfStyles = new HashMap<>();
+        List<Map<String, DistanceVec>> result = new ArrayList<>();
         int count = 0;
         try {
             for (InputPair pair : programPairs) {
                 ++count;
                 logger.info("Analyzing {} pair, problem number:{}", count, pair.getProblemNumber());
-
-                String problemNumber = pair.getProblemNumber();
-                Path path1 = Paths.get(dir, problemNumber, pair.getFile1());
-                Path path2 = Paths.get(dir, problemNumber, pair.getFile2());
-                Map<String, StyleVector> style2vecMap1 = new HashMap<>();
-                Map<String, StyleVector> style2vecMap2 = new HashMap<>();
-                initStyleMap(style2vecMap1);
-                initStyleMap(style2vecMap2);
-
-                extractStyleVectorFromStyleObj(path1, style2vecMap1);
-                extractStyleVectorFromStyleObj(path2, style2vecMap2);
-                extractStyleVectorFromTree(path1, style2vecMap1);
-                extractStyleVectorFromTree(path2, style2vecMap2);
-
-                // 为每种风格计算每一对程序对之间的风格距离向量，并以表格形式存储
-                for (String styleName : style2vecMap1.keySet()) {
-                    StyleVector vec1 = style2vecMap1.get(styleName);
-                    StyleVector vec2 = style2vecMap2.get(styleName);
-                    if (vec2 == null) {
-                        System.out.println(styleName);
-                    }
-                    PairDistance pairDistance = new PairDistance(vec1.calculateDistance(vec2));
-                    disOfStyles.computeIfAbsent(styleName, k -> new ArrayList<>()).add(pairDistance);
-                }
+                Map<String, DistanceVec> styleDis = calculateStyleDis(pair, allStyles);
+                result.add(styleDis);
             }
         } catch (Exception e) {
             LoggerFactory.getLogger(DiffAnalyzer.class).error("Analysis terminated at the {}/{} pair.", count, programPairs.size(), e);
         }
-
-        List<Table> result = new ArrayList<>();
-        for (Map.Entry<String, List<PairDistance>> entry : disOfStyles.entrySet()) {
-            Table table = Table.create(entry.getKey());
-            try {
-                // 统一距离向量长度
-                List<PairDistance> allDistances = entry.getValue();
-                Set<String> attrNames = new HashSet<>();
-                for (PairDistance distance : allDistances) {
-                    attrNames.addAll(distance.distanceMap.keySet());
-                }
-                for (PairDistance distance : allDistances) {
-                    distance.uniformLength(attrNames);
-                }
-
-                for (String attrName : attrNames) {
-                    List<Double> columns = allDistances.stream().map(d -> d.distanceMap.get(attrName)).toList();
-                    Column<Double> column = DoubleColumn.create(attrName, columns);
-                    table.addColumns(column);
-                }
-                result.add(table);
-            } catch (Exception e) {
-                logger.error("Failed to create table {}.", table.name(), e);
-            }
-        }
-
-
-        logger.info("Get style distance vector of program pairs on {} style types.", disOfStyles.size());
         return result;
     }
 
@@ -253,66 +236,70 @@ public class DiffAnalyzer {
         }
     }
 
+   private static void appendResult2excel(Map<String, DistanceVec> styleDistance, Workbook workbook) {
+       for (Map.Entry<String, DistanceVec> entry : styleDistance.entrySet()) {
+           try {
+               // 获取工作表名称
+               String sheetName = entry.getKey();
+               Sheet sheet = workbook.getSheet(sheetName);
 
-    public static void writeResult2excel(List<Table> result, String resultFileName) {
+               List<String> headers = entry.getValue().getNames();
+               if (sheet == null) {
+                   sheet = workbook.createSheet(sheetName);
+                   Row headRow = sheet.createRow(0);
+                   for (int i = 0; i < headers.size(); i++) {
+                       headRow.createCell(i).setCellValue(headers.get(i));
+                   }
+               }
+
+               // 添加一行数据
+               Row row = sheet.createRow(sheet.getLastRowNum() + 1);
+               for (String header : headers) {
+                   double value = entry.getValue() == null ? -1.0 : entry.getValue().getValue(header);
+                   row.createCell(row.getLastCellNum() + 1).setCellValue(value);
+               }
+           } catch (Exception e) {
+               logger.error("Failed to add a row for sheet {}.", entry.getKey());
+           }
+
+       }
+   }
+
+    public static void appendResult2excel(List<Map<String, DistanceVec>> styleDistanceList, String resultFilePath) {
         // 创建一个工作簿
         try (Workbook workbook = new XSSFWorkbook();
-             FileOutputStream fileOut = new FileOutputStream(resultFileName + ".xlsx")) {
+             FileOutputStream fileOut = new FileOutputStream(resultFilePath, true)) {
 
             // 遍历每个Table并将其写入不同的工作表
-            for (Table table : result) {
-                try {
-                    // 获取表名（作为工作表名称）
-                    String sheetName = table.name();
-
-                    // 创建工作表
-                    Sheet sheet = workbook.createSheet(sheetName);
-
-                    // 添加表头（列名）
-
-                    org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
-                    for (int i = 0; i < table.columnCount(); i++) {
-                        headerRow.createCell(i).setCellValue(table.column(i).name());
-                    }
-
-                    // 填充数据
-
-                    for (int i = 0; i < table.rowCount(); i++) {
-                        org.apache.poi.ss.usermodel.Row row = sheet.createRow(i + 1);
-                        for (int j = 0; j < table.columnCount(); j++) {
-                            Object cellValue = table.get(i, j);
-                            row.createCell(j).setCellValue(cellValue.toString());
-                        }
-                    }
-                } catch (Exception e) {
-                    logger.error("Failed to write table {}.", table.name());
-                }
-
+            for (Map<String, DistanceVec> styleDistance : styleDistanceList) {
+                appendResult2excel(styleDistance, workbook);
             }
-
             // 将工作簿写入文件
             workbook.write(fileOut);
-            logger.info("Successfully write result to {}", resultFileName);
+            logger.info("Successfully write result to {}", resultFilePath);
         } catch (IOException e) {
-            logger.error("Failed to write result to {}", resultFileName, e);
+            logger.error("Failed to write result to {}", resultFilePath, e);
         }
     }
 
-    private static class PairDistance {
+    private static class DistanceVec {
         Map<String, Double> distanceMap = new HashMap<>();
 
-        public PairDistance(Map<String, Double> distanceMap) {
+        public DistanceVec(Map<String, Double> distanceMap) {
             this.distanceMap = distanceMap;
         }
 
-        public void uniformLength(Set<String> attrNames) {
-            for (String attrName : attrNames) {
-                if (!distanceMap.containsKey(attrName)) {
-                    distanceMap.put(attrName, -1.0);
-                }
-            }
+        public List<String> getNames() {
+            return distanceMap.keySet().stream().toList();
         }
 
+        public List<Double> getValues() {
+            return distanceMap.values().stream().toList();
+        }
+
+        public Double getValue(String name) {
+            return distanceMap.get(name);
+        }
     }
 
 }
