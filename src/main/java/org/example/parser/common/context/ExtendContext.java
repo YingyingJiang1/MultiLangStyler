@@ -34,15 +34,16 @@ public class ExtendContext extends ParserRuleContext {
      * This method isn't suitable here.
      */
     public void updateHierarchy(MyParser parser) {
-        ExtendContext parent = (ExtendContext) getParent();
-        if (parent == null) {
-            return;
-        }
-        boolean addHierarchy = parser.isChangeHierarchy(this, parent);
-        if (addHierarchy) {
-            hierarchy = parent.hierarchy + 1;
-        } else {
-            hierarchy = parent.hierarchy;
+        ExtendContext targetAncestor = findFirstParentIf(p -> parser.getCompoundStmts().contains(p.getRuleIndex()) || parser.getRuleBody() == p.getRuleIndex() || parser.getRuleBlock() == p.getRuleIndex());
+        if (targetAncestor != null) {
+            boolean isIndenpendentBlock = parser.isInitializer(this) || getRuleIndex() == parser.getRuleBlock() && findFirstParentIf(parser::isStatement) != targetAncestor;
+            if (!isIndenpendentBlock) {
+                if (getParent() instanceof ExtendContext parentCtx) {
+                    hierarchy = parentCtx.hierarchy;
+                }
+            } else {
+                hierarchy = targetAncestor.hierarchy + 1;
+            }
         }
     }
 

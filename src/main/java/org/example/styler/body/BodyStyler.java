@@ -23,13 +23,13 @@ public abstract class BodyStyler extends Styler {
 
     /**
      *
-     * @param stmt Specific statement which the block belongs to.
+     * @param stmt
      * @param body body(a specific statement) of stmt.
      * @return
      */
     protected BodyContext extractStyleContext(ExtendContext stmt, ParseTree body, MyParser parser) {
         BodyTypeEnum blockType = getBodyType(parser.getSpecificStmtType(stmt), parser);
-        BodyNumType bodyNum = body instanceof TerminalNode ? BodyNumType.EMPTY : getBodyNumType((ExtendContext) body, parser);
+        BodyNumType bodyNum = body instanceof TerminalNode ? BodyNumType.EMPTY : getBodyNumType(parser.getSpecificStmt((ExtendContext) body), parser);
         return new BodyContext(blockType,bodyNum);
     }
 
@@ -70,14 +70,18 @@ public abstract class BodyStyler extends Styler {
      * is concerned about.
      */
     private BodyNumType getBodyNumType(ExtendContext ctx, MyParser parser) {
-        List<ExtendContext> stmts = ctx.getAllContextsIf(parser::belongToStmt); // Exclude LBRACE and RBRACE.
-        int stmtNum = stmts.size();
-        if (stmtNum == 0) {
-            return BodyNumType.EMPTY;
-        } else if(stmtNum == 1 && parser.belongToSingleStmt(parser.getSpecificStmt(stmts.get(0)))) {
-            return BodyNumType.SINGLE;
+        if (parser.isBody(ctx)) {
+            return ctx.getAllContextsIf(child -> child != null).isEmpty() ? BodyNumType.EMPTY : BodyNumType.MULTI;
         } else {
-            return BodyNumType.MULTI;
+            List<ExtendContext> stmts = ctx.getAllContextsIf(parser::isStatement); // Exclude LBRACE and RBRACE.
+            int stmtNum = stmts.size();
+            if (stmtNum == 0) {
+                return BodyNumType.EMPTY;
+            } else if(stmtNum == 1 && parser.belongToSingleStmt(parser.getSpecificStmt(stmts.get(0)))) {
+                return BodyNumType.SINGLE;
+            } else {
+                return BodyNumType.MULTI;
+            }
         }
     }
 

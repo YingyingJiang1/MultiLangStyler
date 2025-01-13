@@ -11,12 +11,12 @@
       <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="8"/>
     </rule>
     <rule>
-      <style_context name_type="METHOD"/>
-      <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="19"/>
-    </rule>
-    <rule>
       <style_context name_type="LOCAL_VARIABLE"/>
       <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="14"/>
+    </rule>
+    <rule>
+      <style_context name_type="METHOD"/>
+      <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="19"/>
     </rule>
   </style>
   <style name="if_else_body_order"/>
@@ -37,8 +37,15 @@
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>EMPTY</body_type>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>

@@ -31,7 +31,7 @@ public class BraceFormatStyler extends BodyStyler {
         // Apply brace information.
         int lastIndex = blocks.size() - 1;
         for (int i = 0; i < blocks.size(); ++i) {
-            ExtendContext block = blocks.get(i);
+            ExtendContext block = parser.getSpecificStmt(blocks.get(i));
             BodyContext context = extractStyleContext(ctx, block, parser);
 
             BraceFormatProperty property = (BraceFormatProperty) style.getSimilarProperty(context);
@@ -89,7 +89,7 @@ public class BraceFormatStyler extends BodyStyler {
         boolean isNotMultiBlockStmt = ruleIndex != parser.getRuleIfElseStmt() && ruleIndex != parser.getRuleTryCatchStmt();
         // Extract brace information.
         for (int i = 0; i < blocks.size(); ++i) {
-            ExtendContext block = (ExtendContext) blocks.get(i);
+            ExtendContext block = parser.getSpecificStmt(blocks.get(i));
             // Skip the last block of multi-block statement.
             if (isNotMultiBlockStmt || block != ctx.getLastCtxChildIf(t -> true)) {
                 BodyContext context = extractStyleContext(ctx, block, parser);
@@ -147,7 +147,7 @@ public class BraceFormatStyler extends BodyStyler {
                 if (parser.isBlock(child) || parser.isBody(child)) {
                     blocks.add((ExtendContext) child);
                 } else if (parser.isCatchClause(child)) {
-                    blocks.add(((ExtendContext) child).getFirstInnerChildByType(parser.getRuleBlock()));
+                    blocks.add(((ExtendContext) child).getFirstCtxChildIf(parser::isBlock));
                 }
             }
         }
