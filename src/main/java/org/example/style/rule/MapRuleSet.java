@@ -82,10 +82,7 @@ public class MapRuleSet implements RuleSet{
             boolean existsConflict = properties.size() > 1;
             if (existsConflict) {
                 toBeRemoved.add(entry.getKey());
-                LoggerFactory.getLogger(MapRuleSet.class).debug("Conflict style exists: {}", entry.getKey());
-                if (entry.getKey() instanceof StructPreferenceContext context) {
-                    LoggerFactory.getLogger(MapRuleSet.class).debug("id: {}, category: {}", context.getStructID(), context.getStructCategory());
-                }
+                LoggerFactory.getLogger(MapRuleSet.class).debug("Conflict style exists: {}. Class of style property: {}", entry.getKey(), entry.getValue().getClass());
             } else {
                 entry.setValue(properties);
             }

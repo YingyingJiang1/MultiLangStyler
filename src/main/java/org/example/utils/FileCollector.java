@@ -1,5 +1,8 @@
 package org.example.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.function.Predicate;
  * @create       2024/4/2 15:08
  */
 public class FileCollector {
+  public static Logger logger = LoggerFactory.getLogger(FileCollector.class);
   public static final int MAX_FILE_COUNT = 1000;
 
   public static FileCollection getJavaFileCollection(List<String> paths) {
@@ -46,6 +50,9 @@ public class FileCollector {
   private static void getFileRecursivelyIf(String path, List<FileCollection.FileSet> fileSets, Predicate<File> cond) {
     File file = new File(path);
     List<String> fileNames = new ArrayList<>();
+    if (!file.exists()) {
+      logger.warn("File {} doesn't exist.", path);
+    }
     if (file.isFile()) {
       fileNames.add(file.getName());
       fileSets.add(new FileCollection.FileSet(file.getParent(), fileNames));
@@ -53,7 +60,6 @@ public class FileCollector {
     }
 
     if (file.listFiles() == null) {
-      System.out.println(path);
       return;
     }
     for(File subFile : file.listFiles()) {

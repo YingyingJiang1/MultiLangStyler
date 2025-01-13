@@ -10,6 +10,7 @@ import org.example.utils.FileCollection;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +40,7 @@ public class CommonTest {
         conf.extractionCollection.add(targetPath);
         conf.applicationCollection = new FileCollection();
         conf.applicationCollection.add(sourcePath);
+        conf.setResOutFile(sourcePath.getParent() + File.separator + "result.java");
         conf.setStyleOutPath(targetPath.getParent().toString() + "\\style.xml");
         Controller controller = new Controller(conf);
         controller.execute();

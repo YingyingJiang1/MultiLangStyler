@@ -122,7 +122,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef> <!-- 打包JAR及其依赖 -->
                             </descriptorRefs>
-<!--                            <appendAssemblyId>false</appendAssemblyId>-->
+                            <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <manifestEntries>
                                     <Main-Class>org.example.Main</Main-Class> <!-- 设置主类 -->
