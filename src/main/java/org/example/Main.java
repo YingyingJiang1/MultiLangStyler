@@ -10,27 +10,11 @@ import java.util.Scanner;
 public class Main {
 
   public static void main(String[] args) {
-    while (true) {
-      try{
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.hasNext()) {
-          String inputArg = scanner.nextLine();
-          LoggerFactory.getLogger(Main.class).info("args: {}", Arrays.toString(inputArg.split(" ")));
-          if (inputArg.equals("exit")) {
-            break;
-          }
-          Configuration config = CLIArgumentParser.parseArgs(inputArg.split(" "));
-          if (config != null) {
-            Controller controller = new Controller(config);
-            controller.execute();
+    Configuration config = CLIArgumentParser.parseArgs(args);
+    if (config != null) {
+        Controller controller = new Controller(config);
+        controller.execute();
 //          SpringApplication.run(Application.class, args);
-          }
-        }
-
-      } catch (Exception e) {
-        LoggerFactory.getLogger(Main.class).error("Error: ", e);
-      }
-
     }
   }
 
