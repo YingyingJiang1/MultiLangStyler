@@ -110,7 +110,7 @@
     </appender>
 
     <!-- 根记录器 -->
-    <root level="debug">
+    <root level="info">
         <!-- 使用 STDOUT、ROLLING 输出记录的日志-->
         <appender-ref ref="STDOUT_INFO"/>
         <appender-ref ref="STDOUT_WARN"/>

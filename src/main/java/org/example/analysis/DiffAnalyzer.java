@@ -247,11 +247,9 @@ public class DiffAnalyzer {
                    sheet = workbook.createSheet(sheetName);
                    Row headRow = sheet.createRow(0);
                    int index = 0;
-                   headRow.createCell(index++).setCellValue("problemId");
+                   headRow.createCell(index++).setCellValue("problem_id");
                    headRow.createCell(index++).setCellValue("author1");
-                   headRow.createCell(index++).setCellValue("file1");
                    headRow.createCell(index++).setCellValue("author2");
-                   headRow.createCell(index++).setCellValue("file2");
                    for (int i = index; i < headers.size(); i++) {
                        headRow.createCell(i).setCellValue(headers.get(i));
                    }
@@ -262,9 +260,7 @@ public class DiffAnalyzer {
                int index = 0;
                row.createCell(index++).setCellValue(pairDistance.problemId);
                row.createCell(index++).setCellValue(pairDistance.author1);
-               row.createCell(index++).setCellValue(pairDistance.file1);
                row.createCell(index++).setCellValue(pairDistance.author2);
-               row.createCell(index++).setCellValue(pairDistance.file2);
                for (String header : headers) {
                    double value = entry.getValue() == null ? -1.0 : entry.getValue().getValue(header);
                    row.createCell(index++).setCellValue(value);
