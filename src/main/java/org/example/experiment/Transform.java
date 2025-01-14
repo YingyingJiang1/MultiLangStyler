@@ -67,6 +67,8 @@ public class Transform {
             String resultPath = Paths.get(outputDirectory, expUnit.src.problem_id, resultFileName).toString();
             String[] args = {"-src", srcFile.toString(), "-target", targetFile.toString(), "-f", resultPath};
             try {
+                logger.info("thread {} is working... problem_id:{}, src:{}, target:{}",
+                        Thread.currentThread().getId(), expUnit.src.problem_id,expUnit.src.file_name, expUnit.target.file_name);
                 Main.main(args);  // 调用主方法进行处理
                 File resultFile = new File(resultFileName);
                 if (resultFile.exists()) {
@@ -78,7 +80,8 @@ public class Transform {
                     ++count;
                 }
             } catch (Exception e) {
-                logger.error("Error processing unit: " + srcFile.toString() + " and " + targetFile.toString(), e);
+                logger.error("Error processing unit: problem_id:{}, src:{}, target:{}",
+                        expUnit.src.problem_id,expUnit.src.file_name, expUnit.target.file_name, e);
             }
 
         }
