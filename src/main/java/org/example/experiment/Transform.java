@@ -45,6 +45,7 @@ public class Transform {
         int expUnitCount = 0;
         for (Future<Integer> future : futures) {
             expUnitCount = future.get();  // 通过future.get()获取线程的返回值（此处为null）
+            FileIO.write(inputFile, expUnits);
         }
         logger.info("{}/{} experiment units have been transformed successfully.", expUnitCount, expUnits.size());
 
@@ -67,13 +68,19 @@ public class Transform {
             String[] args = {"-src", srcFile.toString(), "-target", targetFile.toString(), "-f", resultPath};
             try {
                 Main.main(args);  // 调用主方法进行处理
+                File resultFile = new File(resultFileName);
+                if (resultFile.exists()) {
+                    expUnit.result.problem_id = expUnit.src.problem_id;
+                    expUnit.result.author_name = resultFileName.replace(".java", "");
+                    expUnit.result.file_name = resultFileName;
+                    expUnit.result.author_type = "transformer";
+                    expUnit.result.correct = false;
+                    ++count;
+                }
             } catch (Exception e) {
                 logger.error("Error processing unit: " + srcFile.toString() + " and " + targetFile.toString(), e);
             }
-            File resultFile = new File(resultFileName);
-            if (resultFile.exists()) {
-                ++count;
-            }
+
         }
         logger.info("Worker processed {} units successfully.", count);
         return count;
