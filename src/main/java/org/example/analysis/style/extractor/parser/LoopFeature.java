@@ -2,25 +2,31 @@ package org.example.analysis.style.extractor.parser;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.analysis.StyleType;
-import org.example.analysis.style.ParserFeatureExtractor;
+import org.example.analysis.feature.FeatureVector;
+import org.example.analysis.style.ComputableStyle;
+import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.style.Style;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoopFeature implements ParserFeatureExtractor {
+public class LoopFeature extends ComputableStyleExtractor {
     @Override
-    public void toFeatureVector(MyParser parser, Map<String, StyleVector> st2svMap) {
-        StyleVector sv = new StyleVector();
+    public void toComputableStyle(MyParser parser, Map<String, ComputableStyle> styleMap) {
+        FeatureVector fv = new FeatureVector();
         Map<String, Integer> loopFrequency = new HashMap<String, Integer>();
         traverse((ExtendContext) parser.getRoot(), parser, loopFrequency);
         for (Map.Entry<String, Integer> entry : loopFrequency.entrySet()) {
-            sv.addAttrValue(entry.getKey(), new DoubleFeatureValue(entry.getValue()));
+            fv.addDimension(entry.getKey(), new DoubleFeatureValue(entry.getValue()));
         }
-        st2svMap.put(StyleType.Loops.styleType, sv);
+
+        ComputableStyle cStyle = new ComputableStyle();
+        cStyle.addRule(null, fv);
+        styleMap.put(StyleType.Loops.styleType, cStyle);
     }
 
     private void traverse(ExtendContext root, MyParser parser,  Map<String, Integer> loopFrequency) {

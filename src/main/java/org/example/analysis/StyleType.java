@@ -141,6 +141,7 @@ public class StyleType {
 
     public static class VarUpdating {
         public static String styleType = "Variable updating";
+        public static String updateInStmtAttr = "Update variable in statement";
     }
 
 
@@ -152,6 +153,7 @@ public class StyleType {
 
     public static class Mutlibranch {
         public static String styleType = "Mutlibranch";
+        public static String branchTypeAttr = "Branch type";
     }
 
     public static class OrderOfIfElseBodies {

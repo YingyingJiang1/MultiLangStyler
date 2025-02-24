@@ -22,12 +22,22 @@ public class ComputableStyle {
             return new ArrayList<>(Collections.nCopies(getDimension(), -1.0));
         }
         List<Double> averageVector = new ArrayList<>(Collections.nCopies(getDimension(), -0.0));
+        List<Integer> validValueCounts = new ArrayList<>(Collections.nCopies(getDimension(), 0));
        for (List<Double> distanceVec : vectorList) {
            for (int i = 0; i < averageVector.size(); i++) {
                averageVector.set(i, averageVector.get(i) + distanceVec.get(i));
+               if (distanceVec.get(i) >= 0) {
+                   validValueCounts.set(i, validValueCounts.get(i) + 1);
+               }
            }
        }
-       averageVector.replaceAll(aDouble -> aDouble / vectorList.size());
+        for (int i = 0; i < averageVector.size(); i++) {
+            if (validValueCounts.get(i) > 0) {
+                averageVector.set(i, averageVector.get(i) / validValueCounts.get(i));
+            } else {
+                averageVector.set(i, -1.0);
+            }
+        }
 
         return averageVector;
     }

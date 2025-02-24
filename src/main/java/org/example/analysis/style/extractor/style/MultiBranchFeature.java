@@ -20,15 +20,14 @@ import java.util.Map;
 public class MultiBranchFeature extends ComputableStyleExtractor {
     @Override
     protected void updateStyleMap(ComputableStyle cstyle, Map<String, ComputableStyle> styleMap) {
-        styleMap.put(StyleType.MostComplexExp.styleType, cstyle);
+        styleMap.put(StyleType.Mutlibranch.styleType, cstyle);
     }
 
     @Override
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
-        if (styleProperty instanceof ExpressionProperty property) {
+        if (styleProperty instanceof MultiBranchProperty property) {
             FeatureVector fv = new FeatureVector();
-            fv.addDimension(StyleType.MostComplexExp.maxLengthAttr, new DoubleFeatureValue(property.maxExpressionLength));
-            fv.addDimension(StyleType.MostComplexExp.maxSubExpNum, new DoubleFeatureValue(property.maxSubExpNum));
+            fv.addDimension(Mutlibranch.branchTypeAttr, new StringFeatureValue(property.branchType.name()));
         }
         return null;
     }
@@ -36,22 +35,8 @@ public class MultiBranchFeature extends ComputableStyleExtractor {
     @Override
     public FeatureVector toDefaultFeatureVector() {
         FeatureVector fv = new FeatureVector();
-        fv.addDimension(StyleType.MostComplexExp.maxLengthAttr, null);
-        fv.addDimension(StyleType.MostComplexExp.maxSubExpNum, null);
+        fv.addDimension(Mutlibranch.branchTypeAttr, null);
         return fv;
     }
 
-
-    @Override
-    public void toComputableStyle(Style style, Map<String, ComputableStyle> styleMap) {
-        StyleVector sv = new StyleVector();
-        for (StyleRule rule :  style.getRules()) {
-            if (rule.getStyleContext() instanceof MultiBranchContext context
-            && rule.getStyleProperty() instanceof MultiBranchProperty property) {
-                sv.addAttrValue(Integer.toString(context.branches), new StringFeatureValue(property.branchType.name()));
-            }
-        }
-
-        styleMap.put(Mutlibranch.styleType, sv);
-    }
 }

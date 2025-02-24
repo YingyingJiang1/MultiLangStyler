@@ -1,16 +1,18 @@
 package org.example.analysis.style.extractor.parser;
 
 import org.example.analysis.StyleType.LineLength;
-import org.example.analysis.style.ParserFeatureExtractor;
+import org.example.analysis.feature.FeatureVector;
+import org.example.analysis.style.ComputableStyle;
+import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.parser.common.MyParser;
 
 import java.util.Map;
 
-public class LineLengthFeature implements ParserFeatureExtractor {
+public class LineLengthFeature extends ComputableStyleExtractor {
     @Override
-    public void toFeatureVector(MyParser parser, Map<String, StyleVector> st2svMap) {
+    public void toComputableStyle(MyParser parser, Map<String, ComputableStyle> styleMap) {
         String[] lines = parser.getTokenStream().getText().split("\n");
         // Initialize variables to calculate max, average, and variance
         int maxLength = Integer.MIN_VALUE;
@@ -30,10 +32,13 @@ public class LineLengthFeature implements ParserFeatureExtractor {
         }
         variance /= lineCount;
 
-        StyleVector sv = new StyleVector();
-        sv.addAttrValue(LineLength.avgLineLengthAttr, new DoubleFeatureValue(averageLength));
-        sv.addAttrValue(LineLength.maxLineLengthAttr, new DoubleFeatureValue(maxLength));
-        sv.addAttrValue(LineLength.varianceAttr, new DoubleFeatureValue(variance));
-        st2svMap.put(LineLength.styleType, sv);
+        FeatureVector fv = new FeatureVector();
+        fv.addDimension(LineLength.avgLineLengthAttr, new DoubleFeatureValue(averageLength));
+        fv.addDimension(LineLength.maxLineLengthAttr, new DoubleFeatureValue(maxLength));
+        fv.addDimension(LineLength.varianceAttr, new DoubleFeatureValue(variance));
+
+        ComputableStyle cStyle = new ComputableStyle();
+        cStyle.addRule(null, fv);
+        styleMap.put(LineLength.styleType, cStyle);
     }
 }

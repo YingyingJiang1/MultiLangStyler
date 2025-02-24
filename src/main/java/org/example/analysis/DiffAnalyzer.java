@@ -10,7 +10,6 @@ import org.example.analysis.style.extractor.parser.LineLengthFeature;
 import org.example.analysis.style.extractor.parser.LoopFeature;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
-import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.style.FeatureExtractorFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.io.InputPair;
