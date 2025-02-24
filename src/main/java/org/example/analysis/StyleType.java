@@ -98,6 +98,7 @@ public class StyleType {
 
     public static class CommentSyntax {
         public static String styleType = "Comment syntax";
+        public static String commentSyntaxAttr = "Comment syntax";
     }
 
     public static class CommentDensity {
@@ -107,6 +108,7 @@ public class StyleType {
 
     public static class LiteralUsage {
         public static String styleType = "Literal usage";
+        public static String decCons = "Declare variable for constant";
     }
 
     public static class NamingFormat {
@@ -128,6 +130,7 @@ public class StyleType {
 
     public static class NumberOfVarInOneDecStmt {
         public static String styleType = "Number of a declaration";
+        public static String varsPerDec = "The number of variables per declaration";
     }
 
     public static class MostComplexExp {

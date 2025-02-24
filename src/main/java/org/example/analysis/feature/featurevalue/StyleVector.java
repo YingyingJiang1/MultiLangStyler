@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StyleVector {
-    Map<String, AttrValue> attrValueMap = new HashMap<String, AttrValue>(0);
+    Map<String, FeatureValue> attrValueMap = new HashMap<String, FeatureValue>(0);
 
-    public void addAttrValue(String attrName, AttrValue attrValue) {
-        attrValueMap.put(attrName, attrValue);
+    public void addAttrValue(String attrName, FeatureValue featureValue) {
+        attrValueMap.put(attrName, featureValue);
     }
 
-    public Map<String, AttrValue> getAttrValueMap() {
+    public Map<String, FeatureValue> getAttrValueMap() {
         return attrValueMap;
     }
 

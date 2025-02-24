@@ -4,14 +4,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.example.analysis.feature.ParserFeatureExtractor;
-import org.example.analysis.feature.impl.parser.BlankLineFeature;
-import org.example.analysis.feature.impl.parser.LineLengthFeature;
-import org.example.analysis.feature.impl.parser.LoopFeature;
+import org.example.analysis.style.ParserFeatureExtractor;
+import org.example.analysis.style.extractor.parser.BlankLineFeature;
+import org.example.analysis.style.extractor.parser.LineLengthFeature;
+import org.example.analysis.style.extractor.parser.LoopFeature;
 import org.example.analysis.io.input.InputGenerator;
 import org.example.controller.Controller;
-import org.example.analysis.feature.StyleFeatureExtractor;
-import org.example.analysis.feature.FeatureExtractorFactory;
+import org.example.analysis.style.ComputableStyleExtractor;
+import org.example.analysis.style.FeatureExtractorFactory;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.io.InputPair;
 import org.example.parser.common.MyParser;
@@ -220,9 +220,9 @@ public class DiffAnalyzer {
         ProgramStyle programStyle = new Controller().extractStyle(files);
 
         for (Style style: programStyle.getStyles()) {
-            StyleFeatureExtractor featureExtractor = FeatureExtractorFactory.createExtractor(style.getStyleName());
+            ComputableStyleExtractor featureExtractor = FeatureExtractorFactory.createExtractor(style.getStyleName());
             if (featureExtractor != null) {
-                featureExtractor.toFeatureVector(style, style2vecMap);
+                featureExtractor.toComputableStyle(style, style2vecMap);
             }
         }
     }
