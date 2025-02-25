@@ -43,9 +43,10 @@ public class Transform {
         }
 
         int expUnitCount = 0;
+        String outputFile = inputFile.replace(".jsonl", "-transformer.jsonl");
         for (Future<Integer> future : futures) {
             expUnitCount = future.get();  // 通过future.get()获取线程的返回值（此处为null）
-            FileIO.write(inputFile, expUnits);
+            FileIO.write(outputFile, expUnits);
         }
         logger.info("{}/{} experiment units have been transformed successfully.", expUnitCount, expUnits.size());
 
@@ -70,11 +71,12 @@ public class Transform {
                 logger.info("thread {} is working... problem_id:{}, src:{}, target:{}",
                         Thread.currentThread().getId(), expUnit.src.problem_id,expUnit.src.file_name, expUnit.target.file_name);
                 Main.main(args);  // 调用主方法进行处理
-                File resultFile = new File(resultFileName);
+                File resultFile = new File(resultPath);
                 if (resultFile.exists()) {
+                    expUnit.result = new ExpUnit.Solution();
                     expUnit.result.problem_id = expUnit.src.problem_id;
                     expUnit.result.author_name = resultFileName.replace(".java", "");
-                    expUnit.result.file_name = resultFileName;
+                    expUnit.result.file_name = resultPath;
                     expUnit.result.author_type = "transformer";
                     expUnit.result.correct = false;
                     ++count;
