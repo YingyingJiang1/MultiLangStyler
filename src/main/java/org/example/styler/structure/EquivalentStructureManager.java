@@ -22,7 +22,7 @@ import java.util.*;
  */
 public class EquivalentStructureManager {
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
-  private static List<EquivalentStructure> equivalences = new ArrayList<>();
+//  private static List<EquivalentStructure> equivalences = new ArrayList<>();
   JsonNode configJson = null;
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
 
@@ -34,6 +34,7 @@ public class EquivalentStructureManager {
   }
 
   public List<EquivalentStructure> loadEquivalences(Class<? extends MyParser> parserClass, String confFile) {
+    List<EquivalentStructure> equivalences = new ArrayList<>();
     try {
       loadConfFile(confFile);
       MyParser parser = MyParserFactory.createParser(parserClass);

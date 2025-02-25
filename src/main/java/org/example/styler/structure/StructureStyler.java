@@ -73,12 +73,12 @@ public class StructureStyler extends Styler {
                     }
                     newTree = targetStructure.convert(from, to, ctx, parser);
                     // If converting operation is performed successfully then record the conversion and call recursively.
-                    if (newTree instanceof ExtendContext newCtx) {
-                        convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
-                        convertionPerformed.get(targetStructure).add(to);
-                        applyStyle(newCtx, parser);
-                        break;
-                    }
+//                    if (newTree instanceof ExtendContext newCtx) {
+//                        convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
+//                        convertionPerformed.get(targetStructure).add(to);
+//                        applyStyle(newCtx, parser);
+//                        break;
+//                    }
                 }
             }
         }
