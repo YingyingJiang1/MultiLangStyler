@@ -19,13 +19,11 @@ public class FeatureVector {
     public List<Double> calculateDistance(FeatureVector other) {
         List<Double> distance = new ArrayList<>();
         for (String key : vector.keySet()) {
-            if (!other.vector.containsKey(key)) {
-                System.err.println("Inconsistent dimension error.");
-                System.err.println("vector1:" + vector.keySet());
-                System.err.println("vector2:" + other.vector.keySet());
-                continue;
+            if (vector.get(key) == null || other.vector.get(key) == null) {
+                distance.add(-1.0);
+            } else {
+                distance.add(vector.get(key).calculateDistance(other.vector.get(key)));
             }
-            distance.add(vector.get(key).calculateDistance(other.vector.get(key)));
         }
         return distance;
     }

@@ -124,8 +124,10 @@ public class LineWrappingStyler extends Styler {
         style.addRule(codeContext, new LineWrappingProperty(
                 codeStats.getVariance(), (int) codeStats.getMax(), maxLenBefore, null, succeedLoc));
         // Comments are always line-wrapped.
-        style.addRule(commentContext, new LineWrappingProperty(
-                commentStats.getVariance(), (int) commentStats.getMax(), -1, null, succeedLoc));
+        if (commentStats != null) {
+            style.addRule(commentContext, new LineWrappingProperty(
+                    commentStats.getVariance(), (int) commentStats.getMax(), -1, null, succeedLoc));
+        }
     }
 
 

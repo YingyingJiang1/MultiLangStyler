@@ -1,6 +1,7 @@
 package org.example.analysis;
 
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.example.Main;
 import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.style.ComputableStyleExtractor;
@@ -9,12 +10,15 @@ import org.example.analysis.style.extractor.parser.BlankLineFeature;
 import org.example.analysis.style.extractor.parser.LineLengthFeature;
 import org.example.analysis.style.extractor.parser.LoopFeature;
 import org.example.controller.Controller;
+import org.example.experiment.ExpUnit;
+import org.example.experiment.FileIO;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.style.ProgramStyle;
 import org.example.style.Style;
 import org.example.utils.FileCollection;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STRestartNumber;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.poi.ss.usermodel.*;
@@ -24,8 +28,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class DistanceCalculator {
+    public static Logger logger = LoggerFactory.getLogger(DistanceCalculator.class);
+    public static String statisticInfoPath = "distance_running.txt";
 
     private static final List<ComputableStyleExtractor> FEATURE_EXTRACTORS = List.of(
             new BlankLineFeature(),
@@ -34,30 +41,44 @@ public class DistanceCalculator {
     );
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        if (args.length < 4) {
+            System.err.println("Wrong number of arguments, 4 are required.Arguments:<input_file>, <code_directory>, <output_path>, <the number of threads>");
+        }
+
         String inputJsonFile = args[0];
         String codesDir = args[1];
         String outputPath = args[2];
+        int numberOfThreads = Integer.parseInt(args[3]);
 
         List<ExperimentUnit> data = DataLoader.loadData(inputJsonFile);
+        // 数据分片，多线程计算转换前后程序对的风格距离
+        int chunkSize = (int) Math.ceil((double) data.size() / numberOfThreads);
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+        List<Future<Result>> futures = new ArrayList<>();
+        for (int i = 0; i < numberOfThreads; i++) {
+            int start = i * chunkSize;
+            int end = Math.min(start + chunkSize, data.size());
+            List<ExperimentUnit> chunk = data.subList(start, end);
+
+            // 提交任务给线程池
+            Future<Result> future = executorService.submit(() -> worker(chunk, codesDir));
+            futures.add(future);
+        }
+
         Result result = new Result();
-        for (ExperimentUnit unit : data) {
-            String srcFile = Paths.get(codesDir, unit.result.fileName).toString();
-            String targetFile = Paths.get(codesDir, unit.target.fileName).toString();
-            String transformedFile = "result_tmp.java";
-            try(FileOutputStream fous = new FileOutputStream(transformedFile, false);) {
-                fous.write(unit.result.fileName.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            Map<String, List<Double>> beforeDistanceMap = calculateStyleDistance(srcFile, targetFile);
-            Map<String, List<Double>> afterDistanceMap = calculateStyleDistance(transformedFile, targetFile);
-            result.addBeforeMap(beforeDistanceMap);
-            result.addAfterMap(afterDistanceMap);
+        int expUnitCount = 0;
+        for (Future<Result> future : futures) {
+            result.addAll(future.get());
         }
         result.save(outputPath);
+        result.saveStatisticInfo(Paths.get(Paths.get(outputPath).getParent().toString(), statisticInfoPath).toString());
+
+        // 关闭线程池并等待所有任务完成
+        executorService.shutdown();
+        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+        // 关闭线程池
+        executorService.shutdown();
     }
 
     private static boolean checkMap(Map<String, List<Double>> beforeDistanceMap, Map<String, List<Double>> afterDistanceMap) {
@@ -85,9 +106,33 @@ public class DistanceCalculator {
 
     }
 
-    public static Map<String, List<Double>> calculateStyleDistance(String file1, String file2) {
-        Path file1Path = Paths.get(file1);
-        Path file2Path = Paths.get(file2);
+    private static Result worker(List<ExperimentUnit> data, String codesDir) {
+        Result result = new Result();
+        for (ExperimentUnit unit : data) {
+            Path srcFile = Paths.get(codesDir, unit.src.problemId, unit.src.fileName);
+            Path targetFile = Paths.get(codesDir, unit.target.problemId,  unit.target.fileName);
+            Path transformedFile = Paths.get("./result_tmp.java");
+            try(FileOutputStream fous = new FileOutputStream(transformedFile.toFile(), false);) {
+                fous.write(unit.result.fileName.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                Map<String, List<Double>> beforeDistanceMap = calculateStyleDistance(srcFile, targetFile);
+                Map<String, List<Double>> afterDistanceMap = calculateStyleDistance(transformedFile, targetFile);
+                result.addBeforeMap(beforeDistanceMap);
+                result.addAfterMap(afterDistanceMap);
+            } catch (Exception e) {;
+                logger.error("Failed pairs info: pid:{}, src:{}, target:{}", unit.src.problemId, unit.src.fileName, unit.target.fileName, e);
+            }
+
+        }
+
+        return result;
+    }
+
+    public static Map<String, List<Double>> calculateStyleDistance(Path file1Path, Path file2Path) {
 
         Map<String, ComputableStyle> styleMap1 = getStyleMap(file1Path);
         Map<String, ComputableStyle> styleMap2 = getStyleMap(file2Path);
@@ -97,9 +142,16 @@ public class DistanceCalculator {
         for (String styleName : styleMap1.keySet()) {
             if (!styleMap2.containsKey(styleName)) {
                 System.err.println("The lengths of two style map are not matched.");
-                System.err.println("Styles of map1: " + styleMap1.keySet());
-                System.err.println("Styles of map2: " + styleMap2.keySet());
+                Set<String> diff1 = new HashSet<>(styleMap1.keySet());
+                diff1.removeAll(styleMap2.keySet());
+                System.err.println("map1 - map2: " + diff1);
+                Set<String> diff2 = new HashSet<>(styleMap2.keySet());
+                diff2.removeAll(styleMap1.keySet());
+                System.err.println("map2 - map1: " + diff2);
                 continue;
+            }
+            if (styleMap1.get(styleName).isEmpty() || styleMap2.get(styleName).isEmpty()) {
+                System.out.println(styleName);
             }
             List<Double> distanceVec = styleMap1.get(styleName).calculateDistance(styleMap2.get(styleName));
             distanceMap.put(styleName, distanceVec);
@@ -199,6 +251,45 @@ public class DistanceCalculator {
                 workbook.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        public void saveStatisticInfo(String outputPath) {
+            StringBuilder info = new StringBuilder();
+            int max = 0, min = Integer.MAX_VALUE;
+            for (String styleName : afterResults.keySet()) {
+                if (afterResults.get(styleName).size() > max) {
+                    max = afterResults.get(styleName).size();
+                }
+                if (afterResults.get(styleName).size() < min) {
+                    min = afterResults.get(styleName).size();
+                }
+                info.append(styleName).append(": ").append(afterResults.get(styleName).size()).append("\n");
+            }
+
+            StringBuilder generalInfo = new StringBuilder();
+            generalInfo.append("max: ").append(max).append("\n");
+            generalInfo.append("min: ").append(min).append("\n");
+            try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
+                fileOut.write(generalInfo.toString().getBytes());
+                fileOut.write(info.toString().getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void addAll(Result result) {
+            for (String styleName : result.beforeResults.keySet()) {
+                if (!beforeResults.containsKey(styleName)) {
+                    beforeResults.put(styleName, new ArrayList<>());
+                }
+                beforeResults.get(styleName).addAll(result.beforeResults.get(styleName));
+            }
+            for (String styleName : result.afterResults.keySet()) {
+                if (!afterResults.containsKey(styleName)) {
+                    afterResults.put(styleName, new ArrayList<>());
+                }
+                afterResults.get(styleName).addAll(result.afterResults.get(styleName));
             }
         }
 

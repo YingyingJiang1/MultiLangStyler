@@ -3,7 +3,6 @@ package org.example.analysis.style.extractor.style;
 import org.example.analysis.StyleType;
 import org.example.analysis.feature.FeatureVector;
 import org.example.analysis.style.ComputableStyle;
-import org.example.analysis.DiffAnalyzer;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.*;
 import org.example.parser.common.factory.MyParserFactory;
@@ -21,33 +20,9 @@ import java.util.Map;
 
 public class StructPreferenceFeature extends ComputableStyleExtractor {
     @Override
-    protected void updateStyleMap(ComputableStyle cstyle, Map<String, ComputableStyle> styleMap) {
-        styleMap.put(StyleType.Space.styleType, cstyle);
-    }
-
-    @Override
-    public FeatureVector toFeatureVector(StyleProperty styleProperty) {
-        if (styleProperty instanceof StructPreferenceProperty property) {
-            FeatureVector fv = new FeatureVector();
-            fv.addDimension(StyleType.Space.spaceAroundAttr, new VectorFeatureValue(List.of(property.space1, property.space2)));
-            fv.addDimension(StyleType.Space.spaceBetweenAttr, new BooleanFeatureValue(property.space2));
-        }
-        return null;
-    }
-
-    @Override
-    public FeatureVector toDefaultFeatureVector() {
-        FeatureVector fv = new FeatureVector();
-        fv.addDimension(StyleType.Space.spaceAroundAttr, null);
-        fv.addDimension(StyleType.Space.spaceBetweenAttr, null);
-        return fv;
-    }
-
-
-    @Override
     public void toComputableStyle(Style style, Map<String, ComputableStyle> styleMap) {
         List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance()
-                .loadEquivalences(MyParserFactory.createParser(DiffAnalyzer.language).getClass(), "/equivalencesConf.json");
+                .loadEquivalences(MyParserFactory.createParser("java").getClass(), "/equivalencesConf.json");
 
         for (StyleRule rule : style.getRules()) {
             if (rule.getStyleContext() instanceof  StructPreferenceContext context &&
@@ -62,5 +37,20 @@ public class StructPreferenceFeature extends ComputableStyleExtractor {
                 styleMap.put(styleType, cStyle);
             }
         }
+
+        for (String styleName : StyleType.getStructPreferenceTypes()) {
+            if (!styleMap.containsKey(styleName)) {
+                ComputableStyle cStyle = new ComputableStyle();
+                cStyle.addRule(null, toDefaultFeatureVector());
+                styleMap.put(styleName, cStyle);
+            }
+        }
+    }
+
+    @Override
+    public FeatureVector toDefaultFeatureVector() {
+        FeatureVector fv = new FeatureVector();
+        fv.addDimension("The index of written", null);
+        return fv;
     }
 }

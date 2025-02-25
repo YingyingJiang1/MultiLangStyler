@@ -5,48 +5,56 @@ import java.util.List;
 
 public class StyleType {
     private static List<String> styleTypes = null;
-    public static List<String> getAllStyleTypes() {
-         if (styleTypes != null) {
-             return styleTypes;
-         }
-         styleTypes = new ArrayList<>();
-         styleTypes.add(Indention.styleType);
-         styleTypes.add(Space.styleType);
-         styleTypes.add(OneStatementInOneLine.styleType);
-         styleTypes.add(BlankLine.styleType);
-         styleTypes.add(LineLength.styleType);
-         styleTypes.add(BraceFormat.styleType);
-         styleTypes.add(LayoutOfControlStmtWithoutBraces.styleType);
-         styleTypes.add(CommentSyntax.styleType);
-         styleTypes.add(CommentDensity.styleType);
-         styleTypes.add(LiteralUsage.styleType);
-         styleTypes.add(NamingFormat.styleType);
-         styleTypes.add(ModifiersOrder.styleType);
-         styleTypes.add(OptionalBrace.styleType);
-         styleTypes.add(NumberOfVarInOneDecStmt.styleType);
-         styleTypes.add(MostComplexExp.styleType);
-         styleTypes.add(VarUpdating.styleType);
-         styleTypes.add(LocOfVarDeclaration.styleType);
-         styleTypes.add(Mutlibranch.styleType);
-         styleTypes.add(OrderOfIfElseBodies.styleType);
-         styleTypes.add(OrderOfFunctionPara.styleType);
-         styleTypes.add(FunctionComplexity.styleType);
-         styleTypes.add(Arrangement.styleType);
+    private static List<String> literalStyleTypes = new ArrayList<>();
 
-         styleTypes.add("Increment or decrement preferences");
-         styleTypes.add("Assignment statement preferences");
-         styleTypes.add("Continuous logic and preferences");
-         styleTypes.add("Continuous logic or preferences");
-         styleTypes.add("Continuous assignments or calls preferences");
-         styleTypes.add("Check then return preferences");
-         styleTypes.add("Check then assign preferences");
-         styleTypes.add("Operator preferences");
-         styleTypes.add("Literal position in bool expression");
-         styleTypes.add("Return statements");
-         styleTypes.add("Array declaration style");
-         styleTypes.add("Continue preferences");
-         styleTypes.add("Redundant code");
+    static {
+        styleTypes = new ArrayList<>();
+        styleTypes.add(Indention.styleType);
+        styleTypes.add(Space.styleType);
+        styleTypes.add(OneStatementInOneLine.styleType);
+        styleTypes.add(BlankLine.styleType);
+        styleTypes.add(LineLength.styleType);
+        styleTypes.add(BraceFormat.styleType);
+        styleTypes.add(LayoutOfControlStmtWithoutBraces.styleType);
+        styleTypes.add(CommentSyntax.styleType);
+        styleTypes.add(CommentDensity.styleType);
+        styleTypes.add(LiteralUsage.styleType);
+        styleTypes.add(NamingFormat.styleType);
+        styleTypes.add(ModifiersOrder.styleType);
+        styleTypes.add(OptionalBrace.styleType);
+        styleTypes.add(NumberOfVarInOneDecStmt.styleType);
+        styleTypes.add(MostComplexExp.styleType);
+        styleTypes.add(VarUpdating.styleType);
+        styleTypes.add(LocOfVarDeclaration.styleType);
+        styleTypes.add(Mutlibranch.styleType);
+        styleTypes.add(OrderOfIfElseBodies.styleType);
+        styleTypes.add(OrderOfFunctionPara.styleType);
+        styleTypes.add(FunctionComplexity.styleType);
+        styleTypes.add(Arrangement.styleType);
+
+        literalStyleTypes.add("Increment or decrement preferences");
+        literalStyleTypes.add("Assignment statement preferences");
+        literalStyleTypes.add("Continuous logic and preferences");
+        literalStyleTypes.add("Continuous logic or preferences");
+        literalStyleTypes.add("Continuous assignments or calls preferences");
+        literalStyleTypes.add("Check then return preferences");
+        literalStyleTypes.add("Check then assign preferences");
+        literalStyleTypes.add("Operator preferences");
+        literalStyleTypes.add("Literal position in bool expression");
+        literalStyleTypes.add("Return statements");
+        literalStyleTypes.add("Array declaration style");
+        literalStyleTypes.add("Continue preferences");
+        literalStyleTypes.add("Redundant code");
+
+        styleTypes.addAll(literalStyleTypes);
+    }
+    public static List<String> getAllStyleTypes() {
+
         return styleTypes;
+    }
+
+    public static List<String> getStructPreferenceTypes() {
+        return literalStyleTypes;
     }
 
 
