@@ -33,7 +33,11 @@
   "checkers" : [ {
     "class" : "EqualChecker",
     "argsList" : [ [ 0, "$E", "$E1" ] ]
-  } ],
+  } ,
+    {
+      "class": "NotIntegerChecker",
+      "argsList": [[1, "$E2"]]
+    }],
   "handlers" : [ {
     "class" : "ReplicationHandler",
     "argsList" : [ [ 0, "$E", "$E1" ] ]
@@ -241,19 +245,11 @@
   "id" : 25,
   "category" : "Array declaration style",
   "codes" : [ "$M $T [] $I ;", "$M $T $I [] ;" ]
-}, {
-  "id" : 26,
-  "category" : "Array declaration style",
-  "codes" : [ "$M $T [][] $I ;", "$M $T $I [][] ;" ]
-}, {
+},  {
   "id" : 27,
   "category" : "Array declaration style",
   "codes" : [ "$M $T [] $I = $ARRAY_INITIALIZER ;", "$M $T $I [] = $ARRAY_INITIALIZER ;" ]
-}, {
-  "id" : 28,
-  "category" : "Array declaration style",
-  "codes" : [ "$M $T [][] $I = $ARRAY_INITIALIZER ;", "$M $T $I [][] = $ARRAY_INITIALIZER ;" ]
-},  {
+},   {
   "id" : 30,
   "category" : "Continue preferences",
   "codes" : [ "$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { continue ; } else { $S+ }","if ( $E ) { $S+ }" ],

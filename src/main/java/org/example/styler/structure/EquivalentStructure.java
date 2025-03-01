@@ -203,7 +203,10 @@ public class EquivalentStructure {
 					++vi;
 				}
 			}
-			if(isContextMatched(forest.getvNodes(), parser) && check(index, parser))  {
+
+			boolean isLastNodeRepeatable = vi == forest.size() - 1 && vTreeMap.get(forest.getTree(vi)) != null && vTreeMap.get(forest.getTree(vi)).moveStep() == 0;
+			boolean isASTMatched = vi == forest.size() || isLastNodeRepeatable;
+			if(isASTMatched && isContextMatched(forest.getvNodes(), parser) && check(index, parser))  {
 				return index;
 			}
 		}
