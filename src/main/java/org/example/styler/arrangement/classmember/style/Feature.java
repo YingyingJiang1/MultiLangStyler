@@ -69,7 +69,7 @@ public class Feature implements DomIO {
     public void parseElement(Element parent, MyParser parser) {
         Element featureEle = parent.element("feature");
         if (featureEle.attribute("statistic") != null) {
-            String[] arr = featureEle.attributeValue("statistic").split(",=");
+            String[] arr = featureEle.attributeValue("statistic").split("[,=]");
             Feature feature = new Feature();
             for (int i = 0; i < arr.length; i += 2) {
                 feature.modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));

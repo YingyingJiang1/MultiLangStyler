@@ -30,7 +30,9 @@ public class CommonStyle implements DomIO,Style {
     }
 
     public void parseElement(Element parent, MyParser parser){
-        Element styleEle = parent.element(styleName);
+        Element styleEle = parent.elements("style").stream()
+            .filter(ele -> ele.attributeValue("name").equals(styleName))
+            .findFirst().orElseThrow(() -> new RuntimeException("style name not found"));
         List<Element> ruleEles = styleEle.elements();
         for(Element ruleEle : ruleEles) {
             StyleRule rule = createRule("rule");
@@ -130,7 +132,7 @@ public class CommonStyle implements DomIO,Style {
 //    }
 
     protected StyleRule createRule(String propertyName) {
-        return null;
+        return new StyleRule();
     }
 
 
