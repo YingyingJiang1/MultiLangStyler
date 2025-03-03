@@ -5,7 +5,7 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Styler;
-import org.example.styler.naming.SymbolTableManager;
+import org.example.semantic.SymbolTableManager;
 import org.example.styler.naming.SymbolType;
 import org.example.styler.practice.style.UnusedCodeContext;
 import org.example.styler.practice.style.UnusedCodeProperty;

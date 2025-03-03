@@ -11,7 +11,7 @@ import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.naming.SymbolTableManager;
+import org.example.semantic.SymbolTableManager;
 import org.example.styler.naming.SymbolType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
