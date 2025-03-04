@@ -46,7 +46,7 @@ public class Controller {
             ProgramStyle programStyle = null;
             // extract style from existing style file or source codes.
             if (conf.styleFile != null) {
-                parser = MyParserFactory.createParser("java"); // hard coded temporarily
+                parser = MyParserFactory.createParser(GlobalInfo.getLanguage());
                 programStyle = StyleFileIO.read(conf.styleFile, parser);
                 init(programStyle);
             } else {

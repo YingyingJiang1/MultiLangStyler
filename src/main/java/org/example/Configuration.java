@@ -4,6 +4,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.example.global.GlobalInfo;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,6 +37,7 @@ public class Configuration {
   private String resOutDir;
   private String styleOutPath;
 
+  @Deprecated
   public void loadConf() throws IOException, DocumentException {
     InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
     SAXReader reader = new SAXReader();
@@ -80,6 +82,16 @@ public class Configuration {
 
   public void setSrc(String src) {
     this.src = src;
+    String language = switch (src.substring(src.lastIndexOf(".") + 1)) {
+      case "java" -> "java";
+      case "py" -> "python";
+      case "cpp" -> "cpp";
+      default -> null;
+    };
+    if (language == null) {
+      throw new IllegalArgumentException("Failed to identify the language of " + src);
+    }
+    GlobalInfo.setLanguage(language);
     applicationCollection = collectFile(src);
   }
 
