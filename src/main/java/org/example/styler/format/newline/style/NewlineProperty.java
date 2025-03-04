@@ -27,6 +27,9 @@ public class NewlineProperty extends StyleProperty {
      */
     public int newlines;
 
+    public NewlineProperty() {
+    }
+
     public NewlineProperty(int newlines) {
         this.newlines = newlines;
     }

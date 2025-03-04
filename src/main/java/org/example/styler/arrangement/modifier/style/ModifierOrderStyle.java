@@ -55,6 +55,6 @@ public class ModifierOrderStyle extends CommonStyle {
     @Override
     protected StyleRule createRule(String propertyName) {
         ModifierOrderProperty property = new ModifierOrderProperty();
-        return new StyleRule(null, property);
+        return new StyleRule(property);
     }
 }

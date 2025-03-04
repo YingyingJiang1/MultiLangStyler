@@ -15,12 +15,13 @@ import org.example.semantic.SymbolTableManager;
 import org.example.styler.naming.SymbolType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
+import org.example.styler.naming.format.style.NamingFormatStyle;
 
 import java.util.List;
 
 public class NamingFormatStyler extends Styler {
     public NamingFormatStyler() {
-        style.setStyleName("naming_format");
+        style = new NamingFormatStyle();
     }
 
     @Override

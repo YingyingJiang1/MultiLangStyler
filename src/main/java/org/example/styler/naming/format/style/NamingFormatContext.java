@@ -10,6 +10,9 @@ import java.util.Objects;
 public class NamingFormatContext extends StyleContext {
     public SymbolType symbolType;
 
+    public NamingFormatContext() {
+    }
+
     public NamingFormatContext(SymbolType symbolType) {
         this.symbolType = symbolType;
     }

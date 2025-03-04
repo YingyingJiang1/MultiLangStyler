@@ -7,6 +7,7 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.LogicalOrder;
 import org.example.styler.arrangement.param.style.ParameterOrderProperty;
+import org.example.styler.arrangement.param.style.ParameterOrderStyle;
 import org.example.styler.declaration.location.Location;
 
 import java.util.*;
@@ -16,7 +17,7 @@ public class ParameterOrderStyler extends Styler {
     private Map<Boolean, Integer> sameTypeSeparateFre = new HashMap<>();
 
     public ParameterOrderStyler() {
-        style.setStyleName("parameter_order");
+        style = new ParameterOrderStyle();
     }
 
     @Override

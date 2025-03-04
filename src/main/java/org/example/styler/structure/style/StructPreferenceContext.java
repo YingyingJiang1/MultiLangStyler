@@ -10,6 +10,9 @@ public class StructPreferenceContext extends StyleContext {
     int structID;
     String structCategory;
 
+    public StructPreferenceContext() {
+    }
+
     public StructPreferenceContext(String structCategory, int structID) {
         this.structCategory = structCategory;
         this.structID = structID;

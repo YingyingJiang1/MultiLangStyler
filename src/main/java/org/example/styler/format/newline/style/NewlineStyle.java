@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class NewlineStyle extends CommonStyle {
+
+    public NewlineStyle() {
+        super();
+        styleName = "newline";
+    }
+
     @Override
     public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
         if (styleContext instanceof NewlineContext context) {
@@ -23,5 +29,12 @@ public class NewlineStyle extends CommonStyle {
             }
         }
         super.addRule(styleContext, styleProperty);
+    }
+
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        NewlineContext context = new NewlineContext();
+        NewlineProperty property = new NewlineProperty();
+        return new StyleRule(context, property);
     }
 }

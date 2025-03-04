@@ -33,30 +33,30 @@ public class StylerContainer {
 
     public StylerContainer() {
         stylers.add(new ArrangementStyler());
-        stylers.add(new LiteralUsageStyler());
+        stylers.add(new LiteralUsageStyler()); // empty yet during extraction
         stylers.add(new ModifierOrderStyler());
         stylers.add(new DeclarationNumberStyler());
         stylers.add(new DeclarationLocationStyler());
-        stylers.add(new IfElseBodyOrderStyler());
-        stylers.add(new ExpressionStyler());
+        stylers.add(new IfElseBodyOrderStyler()); // untested
+        stylers.add(new ExpressionStyler()); // empty yet during extraction
 //        stylers.add(new UpdateVarStyler());
 //        stylers.add(new FunctionComplexityStyler());
         stylers.add(new ParameterOrderStyler());
         stylers.add(new StructureStyler());
-        stylers.add(new OptionalBraceStyler());
+        stylers.add(new OptionalBraceStyler()); // empty yet during extraction
         stylers.add(new BraceFormatStyler());
-        stylers.add(new MultiBranchStyler());
-        stylers.add(new LineWrappingStyler());
+        stylers.add(new MultiBranchStyler()); // empty yet during extraction
+        stylers.add(new LineWrappingStyler()); // empty yet during extraction
         stylers.add(new LineStmtStyler());
         stylers.add(new NewlineStyler());
-        stylers.add(new CommentSyntaxStyler());
-        stylers.add(new CommentDensityStyler());
+        stylers.add(new CommentSyntaxStyler()); // empty yet during extraction
+        stylers.add(new CommentDensityStyler()); // empty yet during extraction
         stylers.add(new SpaceStyler());
-        stylers.add(new BodyLayoutStyler());
-        stylers.add(new IndentionStyler());// `IndentionStyler` must be the last styler.
+        stylers.add(new BodyLayoutStyler()); // empty yet during extraction
+        stylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
 
         stylers.add(new NamingFormatStyler());
-        stylers.add(new UnusedCodeStyler());
+        stylers.add(new UnusedCodeStyler()); // empty yet during extraction
 
     }
 

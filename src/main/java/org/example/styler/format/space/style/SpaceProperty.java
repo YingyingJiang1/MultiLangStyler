@@ -7,6 +7,9 @@ import org.example.style.rule.StyleProperty;
 public class SpaceProperty extends StyleProperty {
     public boolean space1, space2;
 
+    public SpaceProperty() {
+    }
+
     public SpaceProperty(boolean space1, boolean space2) {
         this.space1 = space1;
         this.space2 = space2;

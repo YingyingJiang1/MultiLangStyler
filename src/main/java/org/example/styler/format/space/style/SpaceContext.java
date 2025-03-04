@@ -4,6 +4,7 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class SpaceContext extends StyleContext {
@@ -11,6 +12,9 @@ public class SpaceContext extends StyleContext {
     // When `tokenName2` is empty, we focus on the space around the `tokenName1`.
     // When `tokenName2` is not empty, we focus on the space between the `tokenName1` and `tokenName2`.
     public String tokenName1, tokenName2;
+
+    public SpaceContext() {
+    }
 
     public SpaceContext(String tokenName1, String tokenName2) {
         this.tokenName1 = tokenName1;
@@ -36,7 +40,7 @@ public class SpaceContext extends StyleContext {
     public void addElement(Element parent, MyParser parser) {
         StringBuilder sb = new StringBuilder();
         sb.append(tokenName1);
-        if (!tokenName2.isEmpty()) {
+        if (tokenName2 != null && !tokenName2.isEmpty()) {
             sb.append(", ").append(tokenName2);
         }
         parent.addAttribute("token", sb.toString());
@@ -44,7 +48,9 @@ public class SpaceContext extends StyleContext {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        String[] tokens = parent.attributeValue("token").split(",");
+        String[] tokens = Arrays.stream(parent.attributeValue("token").split(","))
+                .map(String::trim)
+                .toArray(String[]::new);
         if (tokens.length > 0) {
             tokenName1 = tokens[0];
         }

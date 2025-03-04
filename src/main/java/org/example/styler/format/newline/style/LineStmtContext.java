@@ -12,6 +12,9 @@ public class LineStmtContext extends StyleContext {
     // case 2: When no multiple single statements are in one line, this field is set to 0.
     public int maxTextLength = 0;
 
+    public LineStmtContext() {
+    }
+
     public LineStmtContext(int maxTextLength) {
         this.maxTextLength = maxTextLength;
     }

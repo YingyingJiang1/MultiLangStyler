@@ -9,6 +9,9 @@ public class DeclarationLocationProperty extends StyleProperty {
 
     public Location location;
 
+    public DeclarationLocationProperty() {
+    }
+
     public DeclarationLocationProperty(Location location) {
         this.location = location;
     }
@@ -20,7 +23,7 @@ public class DeclarationLocationProperty extends StyleProperty {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        location = Location.valueOf(parent.getText());
+        location = Location.valueOf(parent.element("location").getText());
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
+import org.example.styler.structure.style.StructureStyle;
 
 import java.util.*;
 
@@ -25,8 +26,8 @@ public class StructureStyler extends Styler {
 
 
     public StructureStyler() {
-        style.setStyleName("structure_preference");
-//        executeWhenExit = false;
+        style = new StructureStyle();
+        // executeWhenExit is true
     }
 
     @Override

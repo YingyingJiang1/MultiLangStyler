@@ -13,6 +13,7 @@ import org.example.styler.body.BodyContext;
 import org.example.styler.body.BodyNumType;
 import org.example.styler.body.BodyStyler;
 import org.example.styler.body.braceformat.style.BraceFormatProperty;
+import org.example.styler.body.braceformat.style.BraceFormatStyle;
 import org.example.styler.body.BodyTypeEnum;
 
 import java.util.*;
@@ -21,7 +22,7 @@ public class BraceFormatStyler extends BodyStyler {
     private static Set<Integer> relevantRules = null;
 
     public BraceFormatStyler() {
-        style.setStyleName("brace_format");
+        style = new BraceFormatStyle();
     }
 
     @Override

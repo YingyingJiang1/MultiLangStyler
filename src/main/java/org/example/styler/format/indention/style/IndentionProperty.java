@@ -10,6 +10,9 @@ public class IndentionProperty extends StyleProperty {
     public int indentionUnit;
     public char indentionType = ' ';
 
+    public IndentionProperty() {
+    }
+
     public IndentionProperty(int indentionUnit, char indentionType) {
         this.indentionUnit = indentionUnit;
         this.indentionType = indentionType;

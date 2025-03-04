@@ -9,6 +9,9 @@ import java.util.Objects;
 public class IfElseBodyOrderProperty extends StyleProperty {
     public boolean shortBodyComesFirst;
 
+    public IfElseBodyOrderProperty() {
+    }
+
     public IfElseBodyOrderProperty(boolean shortBodyComesFirst) {
         this.shortBodyComesFirst = shortBodyComesFirst;
     }

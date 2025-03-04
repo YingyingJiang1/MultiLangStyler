@@ -24,7 +24,6 @@ public class SpaceStyler extends Styler {
 
     public SpaceStyler() {
         style = new SpaceStyle();
-        style.setStyleName("space");
     }
 
 

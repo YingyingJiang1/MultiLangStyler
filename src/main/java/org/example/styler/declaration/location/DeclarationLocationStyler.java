@@ -9,12 +9,13 @@ import org.example.semantic.intf.Resolver;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.location.style.DeclarationLocationProperty;
+import org.example.styler.declaration.location.style.DeclarationLocationStyle;
 
 import java.util.List;
 
 public class DeclarationLocationStyler extends Styler {
     public DeclarationLocationStyler() {
-        style.setStyleName("declaration_location");
+        style = new DeclarationLocationStyle();
     }
 
     @Override
