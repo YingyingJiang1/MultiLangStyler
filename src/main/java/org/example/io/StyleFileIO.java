@@ -1,5 +1,10 @@
 package org.example.io;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -7,20 +12,13 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.example.Configuration;
 import org.example.StylerContainer;
 import org.example.parser.common.MyParser;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.style.ProgramStyle;
 import org.example.style.Style;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Styler;
 import org.slf4j.Logger;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
 
 /*
  * @description:
@@ -32,9 +30,8 @@ public class StyleFileIO {
 
     public static ProgramStyle read(String file, MyParser parser) throws DocumentException {
         ProgramStyle programStyle = new ProgramStyle();
-        for (Styler styler : new StylerContainer().getStylers()) {
-            programStyle.add(styler.getStyle());
-        }
+        final List<Styler> stylers = new StylerContainer().getStylers();
+        stylers.forEach(styler -> programStyle.add(styler.getStyle()));
         try {
             SAXReader reader = new SAXReader();
             Document document = reader.read(new File(file));
