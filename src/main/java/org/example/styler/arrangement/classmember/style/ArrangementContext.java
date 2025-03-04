@@ -49,7 +49,7 @@ public class ArrangementContext extends StyleContext {
     public void parseElement(Element parent, MyParser parser) {
         typeType = parent.attributeValue("type");
         if (parent.attributeValue("statistic") != null) {
-            String[] statisticStrs = parent.attributeValue("statistic").replace(" ", "").split(",=");
+            String[] statisticStrs = parent.attributeValue("statistic").replace(" ", "").split("[,=]");
             for (int i = 0; i < statisticStrs.length; i += 2) {
                 statistic.put(statisticStrs[i], Integer.parseInt(statisticStrs[i + 1]));
             }

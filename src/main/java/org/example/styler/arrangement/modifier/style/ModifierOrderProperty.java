@@ -11,6 +11,9 @@ import java.util.Objects;
 public class ModifierOrderProperty extends StyleProperty {
     public List<String> order = new ArrayList<String>(0);
 
+    public ModifierOrderProperty() {
+    }
+
     public ModifierOrderProperty(List<String> modifiers) {
         order = modifiers;
     }

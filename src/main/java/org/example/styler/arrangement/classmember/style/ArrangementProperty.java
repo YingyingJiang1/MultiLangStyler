@@ -50,7 +50,7 @@ public class ArrangementProperty extends StyleProperty {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        for (Element areaEle : parent.element("style_property").elements()) {
+        for (Element areaEle : parent.elements()) {
             String name = areaEle.attributeValue("name") + "_area";
             ContentArea area = createArea(name);
             if (area == null) {
