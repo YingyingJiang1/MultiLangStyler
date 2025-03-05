@@ -7,13 +7,14 @@ import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
+import org.example.styler.format.indention.style.IndentionStyle;
 
 import java.util.List;
 
 public class IndentionStyler extends Styler {
 
     public IndentionStyler() {
-        style.setStyleName("indention");
+        style = new IndentionStyle();
     }
 
     @Override

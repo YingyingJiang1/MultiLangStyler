@@ -9,6 +9,7 @@ import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.style.LineStmtContext;
+import org.example.styler.format.newline.style.LineStmtStyle;
 import org.example.styler.format.newline.style.NewlineProperty;
 
 import java.util.Set;
@@ -17,7 +18,7 @@ public class LineStmtStyler extends Styler {
     private static Set<Integer> relevantRules = null;
 
     public LineStmtStyler() {
-        style.setStyleName("line_statement");
+        style = new LineStmtStyle();
     }
 
     @Override

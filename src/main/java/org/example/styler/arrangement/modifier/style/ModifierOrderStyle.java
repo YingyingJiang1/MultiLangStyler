@@ -3,10 +3,16 @@ package org.example.styler.arrangement.modifier.style;
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.example.style.rule.StyleRule;
 
 import java.util.List;
 
 public class ModifierOrderStyle extends CommonStyle {
+
+    public ModifierOrderStyle() {
+        super();
+        styleName = "modifier_order";
+    }
 
     /**
      *
@@ -44,5 +50,11 @@ public class ModifierOrderStyle extends CommonStyle {
             j++;
         }
         return i == n;
+    }
+
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        ModifierOrderProperty property = new ModifierOrderProperty();
+        return new StyleRule(property);
     }
 }

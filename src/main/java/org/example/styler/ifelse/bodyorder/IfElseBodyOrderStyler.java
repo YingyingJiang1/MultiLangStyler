@@ -7,10 +7,11 @@ import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderProperty;
+import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderStyle;
 
 public class IfElseBodyOrderStyler extends Styler {
     public IfElseBodyOrderStyler() {
-        style.setStyleName("if_else_body_order");
+        style = new IfElseBodyOrderStyle();
     }
 
     @Override

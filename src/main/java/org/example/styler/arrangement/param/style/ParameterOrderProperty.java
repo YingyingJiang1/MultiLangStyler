@@ -11,6 +11,9 @@ public class ParameterOrderProperty extends StyleProperty {
     public LogicalOrder order;
     public Boolean isSameTypeParamSeparated;
 
+    public ParameterOrderProperty() {
+    }
+
     public ParameterOrderProperty(LogicalOrder order, Boolean isSameTypeParamSeparated) {
         this.order = order;
         this.isSameTypeParamSeparated = isSameTypeParamSeparated;

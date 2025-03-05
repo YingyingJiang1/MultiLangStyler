@@ -5,11 +5,15 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ModifierOrderProperty extends StyleProperty {
     public List<String> order = new ArrayList<String>(0);
+
+    public ModifierOrderProperty() {
+    }
 
     public ModifierOrderProperty(List<String> modifiers) {
         order = modifiers;
@@ -28,7 +32,9 @@ public class ModifierOrderProperty extends StyleProperty {
     public void parseElement(Element parent, MyParser parser) {
         String[] modifiers = parent.attributeValue("order").split(",");
         if (modifiers.length > 0) {
-            order = List.of(modifiers);
+            order = Arrays.stream(modifiers)
+                .map(String::trim)
+                .toList();
         }
     }
 

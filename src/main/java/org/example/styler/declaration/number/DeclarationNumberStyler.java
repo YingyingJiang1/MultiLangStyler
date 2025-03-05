@@ -20,7 +20,6 @@ import java.util.List;
 public class DeclarationNumberStyler extends Styler {
     public DeclarationNumberStyler() {
         style = new DeclarationNumberStyle();
-        style.setStyleName("declaration_number");
     }
 
     @Override

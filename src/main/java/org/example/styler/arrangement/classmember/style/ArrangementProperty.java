@@ -51,7 +51,13 @@ public class ArrangementProperty extends StyleProperty {
     @Override
     public void parseElement(Element parent, MyParser parser) {
         for (Element areaEle : parent.elements()) {
-            ContentArea area = createArea(areaEle.getName());
+            String name = areaEle.attributeValue("name") + "_area";
+            ContentArea area = createArea(name);
+            if (area == null) {
+                throw new RuntimeException("Unknown area name: " + name);
+            }
+            area.feature = new Feature();
+            area.order = new Order();
             area.parseElement(areaEle, parser);
             areas.add(area);
         }

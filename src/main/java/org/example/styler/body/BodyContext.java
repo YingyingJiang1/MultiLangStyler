@@ -46,9 +46,8 @@ public class BodyContext extends StyleContext {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        BodyContext context = new BodyContext();
-        context.bodyType = BodyTypeEnum.valueOf(parent.element("block_type").getText().toUpperCase());
-        context.bodyNumType = BodyNumType.valueOf(parent.element("body_type").getText().toUpperCase());
+        bodyType = BodyTypeEnum.valueOf(parent.element("block_type").getText().toUpperCase());
+        bodyNumType = BodyNumType.valueOf(parent.element("body_type").getText().toUpperCase());
     }
 
     @Override

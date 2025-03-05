@@ -7,6 +7,9 @@ import org.example.style.rule.StyleProperty;
 public class StructPreferenceProperty extends StyleProperty {
     public int preferenceIndex;
 
+    public StructPreferenceProperty() {
+    }
+
     public StructPreferenceProperty(int preferenceIndex) {
         this.preferenceIndex = preferenceIndex;
     }

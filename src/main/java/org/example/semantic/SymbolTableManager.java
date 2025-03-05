@@ -1,4 +1,4 @@
-package org.example.styler.naming;
+package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.global.GlobalInfo;

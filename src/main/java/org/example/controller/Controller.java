@@ -8,6 +8,7 @@ import org.example.global.GlobalInfo;
 import org.example.io.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.java.MyJavaParser;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyle;
 import org.example.style.Style;
@@ -45,6 +46,7 @@ public class Controller {
             ProgramStyle programStyle = null;
             // extract style from existing style file or source codes.
             if (conf.styleFile != null) {
+                parser = MyParserFactory.createParser(GlobalInfo.getLanguage());
                 programStyle = StyleFileIO.read(conf.styleFile, parser);
                 init(programStyle);
             } else {

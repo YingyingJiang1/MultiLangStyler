@@ -14,6 +14,9 @@ public class NamingFormatProperty extends StyleProperty {
     // When th length of name exceeds the length of `maxLength`, try to abbreviate the name.
     public int maxLength = Integer.MAX_VALUE;
 
+    public NamingFormatProperty() {
+    }
+
     public NamingFormatProperty(boolean startsWithUnderScore, CaseFormat caseFormat, int maxLength) {
         this.startsWithUnderScore = startsWithUnderScore;
         this.caseFormat = caseFormat;

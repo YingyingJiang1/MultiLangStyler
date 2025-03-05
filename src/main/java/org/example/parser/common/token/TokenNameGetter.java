@@ -50,7 +50,8 @@ public class TokenNameGetter {
     }
 
     public String getName(String text) {
-        return map.get(text);
+        String name = map.get(text);
+        return name == null ? text : name;
     }
 
 }

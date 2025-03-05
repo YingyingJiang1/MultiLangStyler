@@ -9,6 +9,9 @@ import java.util.Objects;
 public class DeclarationNumberProperty extends StyleProperty {
     public int maxVariableCount;
 
+    public DeclarationNumberProperty() {
+    }
+
     public DeclarationNumberProperty(int maxVariableCount) {
         this.maxVariableCount = maxVariableCount;
     }

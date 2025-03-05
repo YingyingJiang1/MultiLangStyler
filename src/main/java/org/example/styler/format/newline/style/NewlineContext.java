@@ -16,6 +16,9 @@ public class NewlineContext extends StyleContext {
     // Other cases, this field is set to 0.
     public int minTextLength;
 
+    public NewlineContext() {
+    }
+
     public NewlineContext(String typeName1, String typeName2) {
         this.typeName1 = typeName1;
         this.typeName2 = typeName2;

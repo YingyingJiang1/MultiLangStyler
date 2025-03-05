@@ -32,8 +32,6 @@ public class NewlineStyler extends Styler {
 
     public NewlineStyler() {
         style = new NewlineStyle();
-        style.setStyleName("newline");
-
     }
 
     @Override
