@@ -55,11 +55,13 @@ public class StyleRule implements DomIO {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        if (styleContext != null) {
-            styleContext.parseElement(parent.element("style_context"), parser);
+        Element contextEle = parent.element("style_context");
+        if (contextEle != null && styleContext != null) {
+            styleContext.parseElement(contextEle, parser);
         }
-        if (styleProperty != null) {
-            styleProperty.parseElement(parent.element("style_property"), parser);
+        Element propertyEle = parent.element("style_property");
+        if (propertyEle != null && styleProperty != null) {
+            styleProperty.parseElement(propertyEle, parser);
         }
         
     }
