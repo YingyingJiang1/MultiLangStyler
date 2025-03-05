@@ -30,13 +30,13 @@ public class FeatureExtractorFactory {
         put("if_else_body_order", new IFElseOBodyOrderFeatureCreator());
         put("most_complex_expression", new MostComplexExpFeatureCreator());
         put("update_variable", new UpdateVariableFeatureCreator());
-        put("unused_variable", new UnusedVarFeatureCreator());
+        put("unused_code", new UnusedCodeFeatureCreator());
     }};
 
-    private static class UnusedVarFeatureCreator extends ExtractorCreator {
+    private static class UnusedCodeFeatureCreator extends ExtractorCreator {
         @Override
         public ComputableStyleExtractor create() {
-            return new UnusedVarFeature();
+            return new UnusedCodeFeature();
         }
     }
 

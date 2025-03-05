@@ -1,22 +1,16 @@
 package org.example.analysis.style.extractor.style;
 
 import org.example.analysis.feature.FeatureVector;
-import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.StyleType;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.BooleanFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.practice.style.UnusedCodeProperty;
 
-import java.util.List;
 import java.util.Map;
 
-public class UnusedVarFeature extends ComputableStyleExtractor {
+public class UnusedCodeFeature extends ComputableStyleExtractor {
     @Override
     protected void updateStyleMap(ComputableStyle cstyle, Map<String, ComputableStyle> styleMap) {
         styleMap.put(StyleType.UnusedVar.styleType, cstyle);
@@ -26,7 +20,7 @@ public class UnusedVarFeature extends ComputableStyleExtractor {
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
         if (styleProperty instanceof UnusedCodeProperty property) {
             FeatureVector fv = new FeatureVector();
-            fv.addDimension(StyleType.UnusedVar.unusedVarAttr, new BooleanFeatureValue(property.hasUnusedVar));
+            fv.addDimension(StyleType.UnusedVar.unusedVarAttr, new BooleanFeatureValue(property.hasUnusedCode));
         }
         return null;
     }

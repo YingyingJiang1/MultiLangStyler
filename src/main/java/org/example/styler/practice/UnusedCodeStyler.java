@@ -18,7 +18,7 @@ import java.util.List;
 public class UnusedCodeStyler extends Styler {
 
     public UnusedCodeStyler() {
-        style.setStyleName("unused_variable");
+        style.setStyleName("unused_code");
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UnusedCodeStyler extends Styler {
                 style.addRule(new UnusedCodeContext(symbol.getSymbolType()), new UnusedCodeProperty(true));
             }
         } else {
-            style.addRule(null, new UnusedCodeProperty(hasUnusedSymbols));
+            style.addRule(new UnusedCodeContext(SymbolType.ALL_SYMBOLS), new UnusedCodeProperty(hasUnusedSymbols));
         }
     }
 
