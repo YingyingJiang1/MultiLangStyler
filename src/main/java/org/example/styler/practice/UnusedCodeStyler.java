@@ -9,6 +9,7 @@ import org.example.semantic.SymbolTableManager;
 import org.example.styler.naming.SymbolType;
 import org.example.styler.practice.style.UnusedCodeContext;
 import org.example.styler.practice.style.UnusedCodeProperty;
+import org.example.styler.practice.style.UnusedCodeStyle;
 import org.example.utils.searcher.intf.ArgumentsSearcher;
 import org.example.utils.searcher.intf.FunctionDecSearcher;
 
@@ -20,7 +21,7 @@ import java.util.Set;
 public class UnusedCodeStyler extends Styler {
 
     public UnusedCodeStyler() {
-        style.setStyleName("unused_code");
+        style = new UnusedCodeStyle();
     }
 
     @Override
@@ -55,13 +56,6 @@ public class UnusedCodeStyler extends Styler {
         return ctx;
     }
 
-
-    @Override
-    public void doFinalize() {
-        if (style.getProperty(null) == null) {
-            style.addRule(null, new UnusedCodeProperty(false));
-        }
-    }
 
     private List<Symbol> getUnusedSymbols(MyParser parser) {
         List<Symbol> result = new ArrayList<>();

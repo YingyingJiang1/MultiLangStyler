@@ -7,6 +7,9 @@ import org.example.style.rule.StyleProperty;
 public class UnusedCodeProperty extends StyleProperty {
     public boolean hasUnusedCode;
 
+    public UnusedCodeProperty() {
+    }
+
     public UnusedCodeProperty(boolean hasUnusedCode) {
         this.hasUnusedCode = hasUnusedCode;
     }

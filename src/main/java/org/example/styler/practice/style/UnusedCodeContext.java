@@ -8,6 +8,9 @@ import org.example.styler.naming.SymbolType;
 public class UnusedCodeContext extends StyleContext {
     SymbolType codeLevel;
 
+    public UnusedCodeContext() {
+    }
+
     public UnusedCodeContext(SymbolType codeLevel) {
         this.codeLevel = codeLevel;
     }
