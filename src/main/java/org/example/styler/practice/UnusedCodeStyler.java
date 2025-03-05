@@ -13,7 +13,9 @@ import org.example.utils.searcher.intf.ArgumentsSearcher;
 import org.example.utils.searcher.intf.FunctionDecSearcher;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UnusedCodeStyler extends Styler {
 
@@ -30,7 +32,13 @@ public class UnusedCodeStyler extends Styler {
                 style.addRule(new UnusedCodeContext(symbol.getSymbolType()), new UnusedCodeProperty(true));
             }
         } else {
-            style.addRule(new UnusedCodeContext(SymbolType.ALL_SYMBOLS), new UnusedCodeProperty(hasUnusedSymbols));
+            // Set UnusedCodeProperty for all symbol types in the target-style program.
+            Set<SymbolType> symbolTypes = new HashSet<>();
+            List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
+            if (symbols != null) {
+                symbols.forEach(symbol -> symbolTypes.add(symbol.getSymbolType()));
+                symbolTypes.forEach(symbolType -> style.addRule(new UnusedCodeContext(symbolType), new UnusedCodeProperty(false)));
+            }
         }
     }
 

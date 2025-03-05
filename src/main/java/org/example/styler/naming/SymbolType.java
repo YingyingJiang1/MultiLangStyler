@@ -9,5 +9,4 @@ public enum SymbolType {
     PARAMETER,
     TYPE_PARAMETER,
     LOCAL_VARIABLE,
-    ALL_SYMBOLS
 }
