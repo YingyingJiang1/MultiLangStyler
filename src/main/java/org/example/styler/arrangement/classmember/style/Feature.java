@@ -70,9 +70,8 @@ public class Feature implements DomIO {
         Element featureEle = parent.element("feature");
         if (featureEle.attribute("statistic") != null) {
             String[] arr = featureEle.attributeValue("statistic").split("[,=]");
-            Feature feature = new Feature();
             for (int i = 0; i < arr.length; i += 2) {
-                feature.modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));
+                modifierStatistics.put(parser.getType(arr[i]), Integer.valueOf(arr[i + 1]));
             }
         }
     }

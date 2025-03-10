@@ -30,16 +30,16 @@ public class ArrangementProperty extends StyleProperty {
         ContentArea area = null;
         switch (areaName) {
             case "typeDeclarationList_area":
-                area = new TypeDecArea(JavaParser.RULE_typeDeclaration);
+                area = new TypeDecArea(JavaParser.RULE_typeDeclarationList);
                 break;
             case "fieldDeclarationList_area":
-                area = new FieldDecArea(JavaParser.RULE_fieldDeclaration);
+                area = new FieldDecArea(JavaParser.RULE_fieldDeclarationList);
                 break;
             case "constructorDeclarationList_area":
-                area = new ConstructorDecArea(JavaParser.RULE_constDeclaration);
+                area = new ConstructorDecArea(JavaParser.RULE_constDeclarationList);
                 break;
             case "methodDeclarationList_area":
-                area = new MethodDecArea(JavaParser.RULE_methodDeclaration);
+                area = new MethodDecArea(JavaParser.RULE_methodDeclarationList);
                 break;
             case "initializer_area":
                 area = new InitializerArea(JavaParser.RULE_initializer);
