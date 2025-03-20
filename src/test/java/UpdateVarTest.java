@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class UpdateVarTest extends CommonTest{
+public class UpdateVarTest extends IntegrationTest {
     @Test
     void test() {
         String code = "a = arr[x++];";

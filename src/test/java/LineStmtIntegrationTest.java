@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LineStmtCommonTest extends CommonTest {
+public class LineStmtIntegrationTest extends IntegrationTest {
     public static final String dir = "src/test/sources/linestmt";
 
     @Test

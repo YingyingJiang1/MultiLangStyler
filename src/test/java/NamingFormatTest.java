@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 
-public class NamingFormatTest extends CommonTest{
+public class NamingFormatTest extends IntegrationTest {
     String dir = "src/test/sources/namingformat";
 
     @Test

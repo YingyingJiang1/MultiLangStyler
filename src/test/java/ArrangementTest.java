@@ -6,7 +6,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 
-public class ArrangementTest extends CommonTest {
+public class ArrangementTest extends IntegrationTest {
     @Test
     public void executeTest() {
 //        test1();

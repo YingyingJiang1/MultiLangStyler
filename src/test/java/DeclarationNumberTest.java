@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 
-public class DeclarationNumberTest extends CommonTest{
+public class DeclarationNumberTest extends IntegrationTest {
     String dir = "src/test/sources/declarationNumber";
     @Test
     void testPair1() {

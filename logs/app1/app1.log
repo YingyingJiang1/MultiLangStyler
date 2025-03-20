@@ -1,30 +1,3 @@
-2025-03-01 19:16:06,217 ERROR --- [main] org.example.CLIArgumentParser.parseArgs/47 : Error parsing command line arguments: Missing required option: target
-org.apache.commons.cli.MissingOptionException: Missing required option: target
-	at org.apache.commons.cli.DefaultParser.checkRequiredOptions(DefaultParser.java:281)
-	at org.apache.commons.cli.DefaultParser.parse(DefaultParser.java:723)
-	at org.apache.commons.cli.DefaultParser.parse(DefaultParser.java:686)
-	at org.apache.commons.cli.DefaultParser.parse(DefaultParser.java:667)
-	at org.example.CLIArgumentParser.parseArgs(CLIArgumentParser.java:18)
-	at org.example.Main.main(Main.java:13)
-2025-03-01 19:17:25,517 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:33:17,748 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:35:31,975 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:36:11,397 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:36:31,150 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:37:10,847 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:37:34,576 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:37:50,083 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:40:00,402 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:42:15,691 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 19:53:51,215 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 20:02:59,313 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 20:08:33,810 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 20:10:16,858 INFO  --- [main] org.example.io.StyleFileIO.write/68 : style result saved in:ref.xml
-2025-03-01 20:16:24,537 ERROR --- [main] org.example.CLIArgumentParser.parseArgs/47 : Error parsing command line arguments: Missing required option: target
-org.apache.commons.cli.MissingOptionException: Missing required option: target
-	at org.apache.commons.cli.DefaultParser.checkRequiredOptions(DefaultParser.java:281)
-	at org.apache.commons.cli.DefaultParser.parse(DefaultParser.java:723)
-	at org.apache.commons.cli.DefaultParser.parse(DefaultParser.java:686)
-	at org.apache.commons.cli.DefaultParser.parse(DefaultParser.java:667)
-	at org.example.CLIArgumentParser.parseArgs(CLIArgumentParser.java:18)
-	at org.example.Main.main(Main.java:13)
+2025-03-17 20:07:45,988 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\strength\claude35sonnet\001\style.xml
+2025-03-17 20:08:45,216 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\strength\claude35sonnet\001\style.xml
+2025-03-17 20:10:01,573 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml

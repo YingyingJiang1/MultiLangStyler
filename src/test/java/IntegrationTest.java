@@ -12,25 +12,69 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CommonTest {
-    String srcsDir = "src/test/sources";
+public class IntegrationTest {
+    public static final String codesDir = "src/test/sources";
 
     @Test
-    void test() throws IOException {
+    public void test() throws IOException {
 //        EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
 //        manager.loadConfFile();
 //        manager.writeJsonData("D:\\jyy\\科研\\style\\transformer\\src\\main\\resources\\equivalencesConf.json");
-        Path src = Paths.get(srcsDir, "pair1", "0826-most-profit-assigning-work-source.java");
-        Path target = Paths.get(srcsDir, "pair1", "0826-most-profit-assigning-work-target.java");
+        String dir = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\experiment\\result\\forsee_analysis\\weakness\\claude35sonnet\\001";
+        Path src = Paths.get(dir, "src.java");
+        Path target = Paths.get(dir, "target.java");
         transform(src, target);
 
     }
+
+    public static void batchTest(int pairNumber, String subDir) {
+        for (int i = 1; i <= pairNumber; i++) {
+            String strNumber = String.format("%03d", i);
+            Path src = Paths.get(codesDir, subDir, strNumber, "src.java");
+            Path target = Paths.get(codesDir, subDir, strNumber, "target.java");
+            if (!src.toFile().exists()) {
+                System.out.println(src.toString() + " not exists...skip!");
+                continue;
+            }
+            transform(src, target);
+
+            // Get ground truth and transform result
+            File dir = new File(Paths.get(codesDir, subDir, String.format("%03d", i)).toString());
+            File[] files = dir.listFiles();
+            File groundTruthFile = null, resultFile = null;
+            if (files != null) {
+                for (File file : files) {
+                    if (file.getName().equals("ground_truth.java")) {
+                        groundTruthFile = file;
+                    } else if (file.getName().equals("result.java")) {
+                        resultFile = file;
+                    }
+                }
+            }
+
+            // Compare the ground truth and transform result.
+            if (groundTruthFile != null && resultFile != null) {
+                System.out.printf("Test %s/%s...%n", subDir, strNumber);
+                try {
+                    String groundTruth = Files.readString(groundTruthFile.toPath());
+                    String result = Files.readString(resultFile.toPath());
+                    assertEquals(groundTruth, result);
+                } catch (IOException e) {
+                    System.err.print("Test failed: failed to read file!");
+                }
+            } else {
+                System.out.println("ground_truth.java or result.java not exists...skip comparation!");
+            }
+        }
+    }
+
 
 
 
@@ -40,7 +84,7 @@ public class CommonTest {
         conf.extractionCollection.add(targetPath);
         conf.applicationCollection = new FileCollection();
         conf.applicationCollection.add(sourcePath);
-        conf.setResOutFile(sourcePath.getParent() + File.separator + "result.java");
+        conf.setResOutFile(sourcePath.getParent() + File.separator + "result-new.java");
         conf.setStyleOutPath(targetPath.getParent().toString() + "\\style.xml");
         Controller controller = new Controller(conf);
         controller.execute();
@@ -65,7 +109,7 @@ public class CommonTest {
             styler.doFinalize();
             return styler.getStyle();
         } catch (IOException e) {
-            LoggerFactory.getLogger(CommonTest.class).error(e.getMessage(), e);
+            LoggerFactory.getLogger(IntegrationTest.class).error(e.getMessage(), e);
         }
         return null;
     }
@@ -84,7 +128,7 @@ public class CommonTest {
             parser.walkTree(Stage.APPLY, List.of(styler));
             return styler.applyStyle(t1, parser);
         } catch (IOException e) {
-            LoggerFactory.getLogger(CommonTest.class).error(e.getMessage(), e);
+            LoggerFactory.getLogger(IntegrationTest.class).error(e.getMessage(), e);
         }
         return null;
     }

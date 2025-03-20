@@ -1,9 +1,8 @@
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class IfElseBodyOrderTest extends CommonTest{
+public class IfElseBodyOrderTest extends IntegrationTest {
     String dir = "src/test/sources/ifelse";
 
     @Test

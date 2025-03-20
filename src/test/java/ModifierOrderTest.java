@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 
-public class ModifierOrderTest extends CommonTest{
+public class ModifierOrderTest extends IntegrationTest {
 
     String dir = "src/test/sources/modifierorder";
     @Test

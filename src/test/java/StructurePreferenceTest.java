@@ -1,23 +1,15 @@
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.java.MyJavaParser;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.style.Style;
-import org.example.styler.Styler;
-import org.example.styler.structure.EquivalentStructureManager;
 import org.example.styler.structure.StructureStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StructurePreferenceTest extends CommonTest {
+public class StructurePreferenceTest extends IntegrationTest {
     String language = "java";
     String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
     @Test

@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class LiteralUsageTest extends CommonTest{
+public class LiteralUsageTest extends IntegrationTest {
     String dir =  "src/test/sources/literalusage";
     @Test
     void testPair1() {
