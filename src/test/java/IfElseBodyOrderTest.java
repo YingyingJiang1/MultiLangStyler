@@ -6,7 +6,7 @@ public class IfElseBodyOrderTest extends IntegrationTest {
     String dir = "src/test/sources/ifelse";
 
     @Test
-    void test() {
+    public void test() {
         transform(Paths.get(dir, "pair1", "src.java"), Paths.get(dir, "pair1", "target.java"));
     }
 }

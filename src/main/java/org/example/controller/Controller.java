@@ -8,9 +8,8 @@ import org.example.global.GlobalInfo;
 import org.example.io.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.java.MyJavaParser;
 import org.example.style.ProgramStyle;
-import org.example.style.SelfStyle;
+import org.example.style.SelfStyleManager;
 import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
@@ -33,6 +32,7 @@ public class Controller {
     private StylerContainer container = null;
     protected Configuration conf;
     Path curPath = null;
+    protected ProgramStyle targetProgramStyle, selfProgramStyle;
 
     public Controller(Configuration conf) {
         this.conf = conf;
@@ -43,34 +43,32 @@ public class Controller {
 
     public ProgramStyle execute() {
         try {
-            ProgramStyle programStyle = null;
-            // extract style from existing style file or source codes.
+            // extract target style from existing style file or source codes.
             if (conf.styleFile != null) {
                 parser = MyParserFactory.createParser(GlobalInfo.getLanguage());
-                programStyle = StyleFileIO.read(conf.styleFile, parser);
-                init(programStyle);
+                targetProgramStyle = StyleFileIO.read(conf.styleFile, parser);
             } else {
-                programStyle = extractStyle(conf.extractionCollection);
+                targetProgramStyle = extractStyle(conf.extractionCollection);
             }
 
             if (conf.getStyleOutPath() != null) {
-                StyleFileIO.write(programStyle, conf.getStyleOutPath(), parser);
+                StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
+            }
+
+            // Extract style of src itself, this must precede the style application, because it will change curPath and parser.
+            selfProgramStyle = extractStyle(conf.applicationCollection);
+            SelfStyleManager.addStyle(conf.applicationCollection, selfProgramStyle);
+            if (conf.isSaveSelfStyle) {
+                StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
             }
 
             String code = applyStyle(conf.applicationCollection);
             saveApplyResult(code);
-//            Path selfStylePath = Paths.get(Paths.get(conf.getStyleOutPath()).getParent().toString(), "self-style.xml");
-//            StyleFileIO.write(SelfStyle.getProgramStyle(), selfStylePath.toString(), parser);
-            return programStyle;
+            return targetProgramStyle;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return null;
-    }
-
-    public void applyStyle(FileCollection files, ProgramStyle programStyle) {
-        init(programStyle);
-        applyStyle(files);
     }
 
     private String applyStyle(FileCollection files) {
@@ -87,8 +85,6 @@ public class Controller {
                     logger.info("Failed to apply style rules to file '{}' because of compilation error.", curPath.toString());
                     continue;
                 }
-
-                SelfStyle.extractStyle(curPath);
 
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
@@ -131,7 +127,7 @@ public class Controller {
 
 
     private void applyInitialize() {
-
+        fillStylers(targetProgramStyle);
     }
 
     private void applyFinalize() {
@@ -139,10 +135,8 @@ public class Controller {
 
 
     private void extractInitialize() {
-        init(null);
-        for (Styler styler : container.getStylers()) {
-            styler.reset();
-        }
+        // Make the style attribution of all stylers in empty state.
+        container = new StylerContainer();
     }
 
     private void extractFinalize() {
@@ -169,6 +163,21 @@ public class Controller {
             builder.append(token.getText());
         }
         return builder.toString();
+    }
+
+    private void fillStylers(ProgramStyle programStyle) {
+        if (programStyle != null) {
+            if (container == null) {
+                container = new StylerContainer();
+            }
+
+            for (Styler styler : container.getStylers()) {
+                Style style = programStyle.getStyle(styler.getStyle().getStyleName());
+                if (style != null) {
+                    styler.setStyle(style);
+                }
+            }
+        }
     }
 
 

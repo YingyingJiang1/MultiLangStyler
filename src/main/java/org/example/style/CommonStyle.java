@@ -5,6 +5,7 @@ import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.*;
 import org.example.style.rule.filter.MaxFrequencyFilter;
+import org.example.utils.FileCollection;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ import java.util.List;
  * @create     : 2024/1/7 17:55
  */
 public class CommonStyle implements DomIO,Style {
+    // @fileCollection tells where the style is extracted.
+    public FileCollection fileCollection = null;
     public String styleName = "";
 //    protected List<StyleRule> rules = new ArrayList<>();
     protected RuleSet ruleSet = new MapRuleSet();
@@ -48,7 +51,7 @@ public class CommonStyle implements DomIO,Style {
     public StyleProperty getProperty(StyleContext targetContext) {
         StyleProperty property =  ruleSet.getProperty(targetContext);
         if (property == null) {
-            Style selfStyle = SelfStyle.getStyle(styleName);
+            Style selfStyle = SelfStyleManager.getStyle(fileCollection, styleName);
             if (selfStyle != this && selfStyle != null) {
                 property = selfStyle.getProperty(targetContext);
             }
@@ -64,7 +67,7 @@ public class CommonStyle implements DomIO,Style {
     public StyleProperty getSimilarProperty(StyleContext targetContext) {
         StyleProperty property =  ruleSet.getSimilarProperty(targetContext);
         if (property == null) {
-            Style selfStyle = SelfStyle.getStyle(styleName);
+            Style selfStyle = SelfStyleManager.getStyle(fileCollection, styleName);
             if (selfStyle != this && selfStyle != null) {
                 property = selfStyle.getSimilarProperty(targetContext);
             }

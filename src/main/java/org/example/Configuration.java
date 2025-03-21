@@ -31,6 +31,7 @@ public class Configuration {
   private String src;
   private String target;
   public boolean overrideSource = false;
+  public boolean isSaveSelfStyle = true;
   public FileCollection extractionCollection = new FileCollection();
   public FileCollection applicationCollection = new FileCollection();
   private String resOutFile;

@@ -84,7 +84,7 @@ public class IntegrationTest {
         conf.extractionCollection.add(targetPath);
         conf.applicationCollection = new FileCollection();
         conf.applicationCollection.add(sourcePath);
-        conf.setResOutFile(sourcePath.getParent() + File.separator + "result-new.java");
+        conf.setResOutFile(sourcePath.getParent() + File.separator + "result.java");
         conf.setStyleOutPath(targetPath.getParent().toString() + "\\style.xml");
         Controller controller = new Controller(conf);
         controller.execute();

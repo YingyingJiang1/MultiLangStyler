@@ -13,7 +13,7 @@ public class StructurePreferenceTest extends IntegrationTest {
     String language = "java";
     String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
     @Test
-    void test() throws IOException {
+    public void test() throws IOException {
 //        EquivalentStructureManager manager = EquivalentStructureManager.getInstance();
 //        manager.loadEquivalences(MyJavaParser.class);
 //        manager.writeJsonData("confUpdate.json");

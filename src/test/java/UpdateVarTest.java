@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UpdateVarTest extends IntegrationTest {
     @Test
-    void test() {
+    public void test() {
         String code = "a = arr[x++];";
         Style style = extractFromString(code, new UpdateVarStyler(), "java");
         UpdateVarProperty property = (UpdateVarProperty)style.getProperty(new UpdateVarContext(ExpType.RVALUE_EXP));

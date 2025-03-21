@@ -13,7 +13,7 @@ public class LineStmtIntegrationTest extends IntegrationTest {
     public static final String dir = "src/test/sources/linestmt";
 
     @Test
-    void test() {
+    public void test() {
         LineStmtStyler styler = new LineStmtStyler();
         extractFromSrcFile(Paths.get(dir, "multiStmtInLine.java"), styler, "java");
 

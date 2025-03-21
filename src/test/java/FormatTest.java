@@ -1,4 +1,3 @@
-import org.gradle.api.file.FileCollection;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
