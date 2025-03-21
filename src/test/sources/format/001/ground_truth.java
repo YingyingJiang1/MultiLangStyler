@@ -11,7 +11,6 @@ public class PowerStrips {
 
         // Print result
         System.out.println(result);
-
         scanner.close();
     }
 

@@ -32,19 +32,25 @@ public class SpaceStyler extends Styler {
 
         Token leftToken = index - 1 < 0 ? null : tokens.get(index - 1);
         Token rightToken = index + 1 >= tokens.size() ? null :tokens.get(index + 1);
+
+        // Skip all token pairs those have a vws.
+        if ((leftToken != null && leftToken.getType() == parser.getVws()) || (rightToken != null && rightToken.getType() == parser.getVws())) {
+            return;
+        }
+
         boolean leftSpace = leftToken != null && parser.getHws() == leftToken.getType();
         boolean rightSpace = rightToken != null && parser.getHws() == rightToken.getType();
 
         SpaceContext context = extractContext(tokens, index, Stage.EXTRACT, parser);
-        SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
-
-        String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
         if (context != null) {
+            SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
+            String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
             if (!context.tokenName2.isEmpty()) {
                 property.space1 = false;
             }
             style.addRule(context, property);
         }
+
     }
 
     @Override

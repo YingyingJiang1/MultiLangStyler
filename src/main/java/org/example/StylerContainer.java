@@ -64,15 +64,6 @@ public class StylerContainer {
         return stylers;
     }
 
-    public List<Styler> getAstStylers() {
-        return null;
-    }
-
-    public List<Styler> getTStreamStylers() {
-        return null;
-    }
-
-
     public Styler remove(int index) {
         return stylers.remove(index);
     }

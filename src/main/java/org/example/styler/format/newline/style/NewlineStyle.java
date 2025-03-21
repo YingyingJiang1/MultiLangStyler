@@ -5,8 +5,7 @@ import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class NewlineStyle extends CommonStyle {
 
@@ -37,4 +36,5 @@ public class NewlineStyle extends CommonStyle {
         NewlineProperty property = new NewlineProperty();
         return new StyleRule(context, property);
     }
+
 }

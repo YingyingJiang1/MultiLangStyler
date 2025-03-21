@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class CommonStyle implements DomIO,Style {
     // @fileCollection tells where the style is extracted.
-    public FileCollection fileCollection = null;
+    public FileCollection srcFileCollection = null, targetFileCollection = null;
     public String styleName = "";
 //    protected List<StyleRule> rules = new ArrayList<>();
     protected RuleSet ruleSet = new MapRuleSet();
@@ -51,7 +51,7 @@ public class CommonStyle implements DomIO,Style {
     public StyleProperty getProperty(StyleContext targetContext) {
         StyleProperty property =  ruleSet.getProperty(targetContext);
         if (property == null) {
-            Style selfStyle = SelfStyleManager.getStyle(fileCollection, styleName);
+            Style selfStyle = SelfStyleManager.getStyle(srcFileCollection, styleName);
             if (selfStyle != this && selfStyle != null) {
                 property = selfStyle.getProperty(targetContext);
             }
@@ -67,7 +67,7 @@ public class CommonStyle implements DomIO,Style {
     public StyleProperty getSimilarProperty(StyleContext targetContext) {
         StyleProperty property =  ruleSet.getSimilarProperty(targetContext);
         if (property == null) {
-            Style selfStyle = SelfStyleManager.getStyle(fileCollection, styleName);
+            Style selfStyle = SelfStyleManager.getStyle(srcFileCollection, styleName);
             if (selfStyle != this && selfStyle != null) {
                 property = selfStyle.getSimilarProperty(targetContext);
             }

@@ -16,15 +16,15 @@
   <style name="brace_format">
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
+        <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
     <rule>
       <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>MULTI</body_type>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -39,6 +39,10 @@
   <style name="declaration_number"/>
   <style name="space">
     <rule>
+      <style_context token="IDENTIFIER, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context token="IDENTIFIER, ("/>
       <style_property space1="false" space2="false"/>
     </rule>
@@ -47,51 +51,11 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="(, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="BIN_OP"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, ("/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="DOT"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="], IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="}, }"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="(, KEYWORD"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token=";, }"/>
+      <style_context token="(, )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -99,16 +63,16 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
+      <style_context token="KEYWORD, IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context token="IDENTIFIER, UNARY_OP"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="{, KEYWORD"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token=";, KEYWORD"/>
-      <style_property space1="false" space2="false"/>
+      <style_context token="BIN_OP"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="UNARY_OP, )"/>
@@ -135,16 +99,32 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
+      <style_context token="IDENTIFIER, {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
       <style_context token="KEYWORD, KEYWORD"/>
       <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD, ("/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="DOT"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token=";, IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="{, IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
+      <style_context token="], IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
     </rule>
   </style>
   <style name="parameter_order">
@@ -177,7 +157,15 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="SINGLE_STMT" type2="COMPOUND_STMT" minCodeBockLines="65"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="true"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="false"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minCodeBockLines="65"/>
       <style_property newlines="2"/>
     </rule>
     <rule>

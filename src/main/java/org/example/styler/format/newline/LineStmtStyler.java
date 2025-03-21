@@ -52,9 +52,9 @@ public class LineStmtStyler extends Styler {
 
                 StyleProperty property = style.getSimilarProperty(new LineStmtContext(curLength));
                 if (property instanceof NewlineProperty newlineProperty) {
-                    if (newlineProperty.newlines == 1) {
+                    if (newlineProperty.newlines == 1 && curCtx.stop instanceof ExtendToken extStopToken && !extStopToken.hasTrailingComment) {
                         Token vws = parser.getTokenFactory().create(parser.getVws(), System.lineSeparator());
-                        ((ExtendToken)curCtx.stop).addTokenAfter(vws, parser);
+                        extStopToken.addTokenAfter(vws, parser);
                         curLength = indentionLength;
                     }
                 }

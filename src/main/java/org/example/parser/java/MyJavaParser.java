@@ -187,6 +187,11 @@ public class MyJavaParser implements MyParser {
         walker.walk(listener, root);
     }
 
+    @Override
+    public String getLanguage() {
+        return "java";
+    }
+
 
     @Override
     public boolean isChangeHierarchy(ParseTree t, ParseTree parent) {
@@ -406,8 +411,8 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean belongToBinOp(String name) {
-        return binOps.contains(name);
+    public boolean belongToBinOp(String text) {
+        return binOps.contains(text);
     }
 
     @Override
@@ -900,6 +905,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleFieldDeclaration() {
+        return JavaParser.RULE_fieldDeclaration;
+    }
+
+    @Override
     public int getRuleImportDeclaration() {
         return JavaParser.RULE_importDeclaration;
     }
@@ -953,6 +963,21 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleReturnStmt() {
         return JavaParser.RULE_returnStmt;
+    }
+
+    @Override
+    public int getRuleExpressionStmt() {
+        return JavaParser.RULE_expressionStmt;
+    }
+
+    @Override
+    public int getRuleLocalVarDeclarationStmt() {
+        return JavaParser.RULE_localVariableDeclarationStmt;
+    }
+
+    @Override
+    public int getRuleFieldDeclarationStmt() {
+        return JavaParser.RULE_fieldDeclaration;
     }
 
     @Override

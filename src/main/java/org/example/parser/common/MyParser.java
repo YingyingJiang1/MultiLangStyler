@@ -54,6 +54,8 @@ public interface MyParser {
     TokenStream getTokenStream();
     void walkTree(Stage stage, List<Styler> stylers);
 
+    String getLanguage();
+
     boolean isChangeHierarchy(ParseTree t, ParseTree parent);
     boolean belongToStmt(ParseTree t);
     boolean belongToExpandChildren(ParseTree t);
@@ -69,7 +71,7 @@ public interface MyParser {
 
 
 
-    boolean belongToBinOp(String name);
+    boolean belongToBinOp(String text);
     boolean belongToUnOp(String name);
     boolean belongToSeparator(String name);
     boolean belongToOperator(String name);
@@ -112,9 +114,6 @@ public interface MyParser {
     boolean isVariableInitializer(ParseTree t);
 
 
-
-
-
     int getRuleBlock();
     int getRuleExpression();
     int getRuleIdentifier();
@@ -152,6 +151,7 @@ public interface MyParser {
     int getRuleSwitchStmt();
     int getRuleTypeParameters();
     int getRuleLocalVarDeclaration();
+    int getRuleFieldDeclaration();
 
     int getRuleImportDeclaration();
     int getRulePackageDeclaration();
@@ -165,7 +165,9 @@ public interface MyParser {
 
     int getRuleArguments();
     int getRuleReturnStmt();
-
+    int getRuleExpressionStmt();
+    int getRuleLocalVarDeclarationStmt();
+    int getRuleFieldDeclarationStmt();
 
 
 

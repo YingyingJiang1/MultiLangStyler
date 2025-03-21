@@ -8,6 +8,7 @@ import org.example.global.GlobalInfo;
 import org.example.io.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.style.CommonStyle;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyleManager;
 import org.example.style.Style;
@@ -72,7 +73,7 @@ public class Controller {
     }
 
     private String applyStyle(FileCollection files) {
-        applyInitialize();
+        applyInitialize(files, targetProgramStyle);
         String code = null;
         for (int i = 0; i < files.size(); i++) {
             try {
@@ -99,7 +100,7 @@ public class Controller {
     }
 
     public ProgramStyle extractStyle(FileCollection files) {
-        extractInitialize();
+        extractInitialize(files);
 
         for (int i = 0; i < files.size(); i++) {
             try {
@@ -126,17 +127,40 @@ public class Controller {
     }
 
 
-    private void applyInitialize() {
-        fillStylers(targetProgramStyle);
+    private void applyInitialize(FileCollection files, ProgramStyle programStyle) {
+        // Fill style object of stylers.
+        if (programStyle != null) {
+            if (container == null) {
+                container = new StylerContainer();
+            }
+
+            for (Styler styler : container.getStylers()) {
+                Style style = programStyle.getStyle(styler.getStyle().getStyleName());
+                if (style != null) {
+                    styler.setStyle(style);
+                }
+            }
+        }
+
+        for (Styler styler : container.getStylers()) {
+            if (styler.getStyle() instanceof CommonStyle commonStyle) {
+                commonStyle.srcFileCollection = files;
+            }
+        }
     }
 
     private void applyFinalize() {
     }
 
 
-    private void extractInitialize() {
+    private void extractInitialize(FileCollection files) {
         // Make the style attribution of all stylers in empty state.
         container = new StylerContainer();
+        for (Styler styler : container.getStylers()) {
+            if (styler.getStyle() instanceof CommonStyle commonStyle) {
+                commonStyle.targetFileCollection = files;
+            }
+        }
     }
 
     private void extractFinalize() {
@@ -166,18 +190,7 @@ public class Controller {
     }
 
     private void fillStylers(ProgramStyle programStyle) {
-        if (programStyle != null) {
-            if (container == null) {
-                container = new StylerContainer();
-            }
 
-            for (Styler styler : container.getStylers()) {
-                Style style = programStyle.getStyle(styler.getStyle().getStyleName());
-                if (style != null) {
-                    styler.setStyle(style);
-                }
-            }
-        }
     }
 
 

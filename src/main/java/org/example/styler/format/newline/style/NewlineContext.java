@@ -2,6 +2,7 @@ package org.example.styler.format.newline.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.RuleGroup;
 import org.example.parser.common.context.RuleGrouper;
 import org.example.style.rule.StyleContext;
 
@@ -15,6 +16,7 @@ public class NewlineContext extends StyleContext {
     // This field is useful in the following case: more than one newline(blank lines) between two statement-level code blocks
     // Other cases, this field is set to 0.
     public int minTextLength;
+    public boolean hasSameDecType = false;
 
     public NewlineContext() {
     }
@@ -24,10 +26,11 @@ public class NewlineContext extends StyleContext {
         this.typeName2 = typeName2;
     }
 
-    public NewlineContext(String typeName1, String typeName2, int minTextLength) {
+    public NewlineContext(String typeName1, String typeName2, int minTextLength, boolean hasSameDecType) {
         this.typeName1 = typeName1;
         this.typeName2 = typeName2;
         this.minTextLength = minTextLength;
+        this.hasSameDecType = hasSameDecType;
     }
 
     @Override
@@ -35,6 +38,11 @@ public class NewlineContext extends StyleContext {
        parent.addAttribute("type1", typeName1);
        parent.addAttribute("type2", typeName2);
        parent.addAttribute("minCodeBockLines", Integer.toString(minTextLength));
+
+       boolean is2declaraionStmt = typeName1.equals(typeName2) && typeName1.equals(RuleGroup.DECLARATION_STMT.name());
+        if (is2declaraionStmt) {
+            parent.addAttribute("hasSameDecType", Boolean.toString(hasSameDecType));
+        }
     }
 
     @Override
@@ -43,6 +51,10 @@ public class NewlineContext extends StyleContext {
         typeName2 = parent.attributeValue("type2");
         if (parent.attribute("minCodeBockLines") != null) {
             minTextLength = Integer.parseInt(parent.attributeValue("minCodeBockLines"));
+        }
+
+        if (parent.attribute("hasSameDecType") != null) {
+            hasSameDecType = Boolean.parseBoolean(parent.attributeValue("hasSameDecType"));
         }
     }
 
@@ -54,6 +66,9 @@ public class NewlineContext extends StyleContext {
         if (targetContext instanceof NewlineContext context) {
             if (Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)) {
                 distance -= DEC_WHEN_EQUAL;
+                if (hasSameDecType == context.hasSameDecType) {
+                    distance -= DEC_WHEN_EQUAL;
+                }
             }
             textLengthMeet = context.minTextLength >= minTextLength;
         }
@@ -68,7 +83,8 @@ public class NewlineContext extends StyleContext {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NewlineContext context) {
-            return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2) && minTextLength == context.minTextLength;
+            return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)
+                    && minTextLength == context.minTextLength && hasSameDecType == context.hasSameDecType;
         }
         return false;
     }
