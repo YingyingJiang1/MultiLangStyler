@@ -40,7 +40,7 @@ public class BraceFormatStyler extends BodyStyler {
                 // Specially process the last block of multi-block statement.
                 if (context.bodyType == BodyTypeEnum.MULTI_BLOCK_STMT_BODY && i == lastIndex) {
                     context.bodyType = BodyTypeEnum.NORMAL_BODY;
-                    BraceFormatProperty property1 = (BraceFormatProperty) style.getSimilarProperty(context);
+                    BraceFormatProperty property1 = (BraceFormatProperty) style.getProperty(context);
                     if (property1 != null) {
                         beforeLB = property1.beforeLB;
                         afterLB = property1.afterLB;

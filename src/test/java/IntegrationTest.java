@@ -61,11 +61,12 @@ public class IntegrationTest {
 
             // Compare the ground truth and transform result.
             if (groundTruthFile != null && resultFile != null) {
-                System.out.printf("Test %s/%s...%n", subDir, strNumber);
+                System.out.printf("Test %s/%s...", subDir, strNumber);
                 try {
                     String groundTruth = Files.readString(groundTruthFile.toPath());
                     String result = Files.readString(resultFile.toPath());
                     assertEquals(groundTruth, result);
+                    System.out.println("OK!");
                 } catch (IOException e) {
                     System.err.print("Test failed: failed to read file!");
                 }
