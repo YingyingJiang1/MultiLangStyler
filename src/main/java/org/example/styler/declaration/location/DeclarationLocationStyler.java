@@ -145,7 +145,7 @@ public class DeclarationLocationStyler extends Styler {
 
         int insertionPoint = j + 1;
         if (index > insertionPoint) {
-            block.removeChildIf(child -> child == decStmt);
+            block.children.remove(index);
             block.insertChild(insertionPoint, decStmt);
         }
     }

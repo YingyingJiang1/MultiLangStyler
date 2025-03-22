@@ -1904,3 +1904,7 @@ java.lang.IndexOutOfBoundsException: Index -1 out of bounds for length 6
 	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
 2025-03-22 19:28:40,442 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\001\style.xml
 2025-03-22 19:28:40,478 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\001\style-self.xml
+2025-03-22 19:34:40,583 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-03-22 19:34:40,620 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
+2025-03-22 19:37:00,349 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-03-22 19:37:00,380 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
