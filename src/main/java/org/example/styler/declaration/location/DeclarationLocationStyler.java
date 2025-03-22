@@ -5,49 +5,50 @@ import org.apache.xmlbeans.SchemaIdentityConstraint;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.Resolver;
+import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.location.style.DeclarationLocationProperty;
 import org.example.styler.declaration.location.style.DeclarationLocationStyle;
+import org.example.styler.naming.SymbolType;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class DeclarationLocationStyler extends Styler {
+    public static double CLOSE_TO_FIRST_USE_THRESHOLD = 3.0;
+
     public DeclarationLocationStyler() {
         style = new DeclarationLocationStyle();
     }
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        int i = 0;
-        int blockStartCount = 0;
-        int nearUseCount = 0;
-        for (; i < ctx.getChildCount(); i++) {
-            if (ctx.getChild(i) instanceof ExtendContext stmt) {
-                if (!parser.belongToVarDeclarationStmt(parser.getSpecificStmtType(stmt))) {
-                    break;
+        List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
+        List<Integer> lineDistances = new ArrayList<>();
+        if (symbols != null) {
+            // Get line distances of all local variables.
+            for (Symbol symbol : symbols) {
+                if (symbol.getSymbolType() != SymbolType.LOCAL_VARIABLE) {
+                    continue;
+                }
+                Optional<ExtendContext> closedRef = symbol.getReferences().stream().min(Comparator.comparing(ref -> ref.getStart().getLine()));
+                if (closedRef.isPresent()) {
+                    int lineDis = closedRef.get().getStart().getLine() - symbol.getDecIdentifierNode().getStart().getLine();
+                    lineDistances.add(lineDis);
                 }
             }
-        }
 
-        blockStartCount = i;
-
-        if (i + 1 < ctx.getChildCount()) {
-            nearUseCount = (int) ctx.children.subList(i + 1, ctx.getChildCount()).stream()
-                    .filter(child -> child instanceof ExtendContext stmt && parser.belongToVarDeclarationStmt(parser.getSpecificStmtType(stmt)))
-                    .count();
-
-        }
-
-        Location location = null;
-        if (blockStartCount > nearUseCount) {
-            location = Location.BLOCK_START;
-        } else if (blockStartCount < nearUseCount) {
-            location = Location.NEAR_USE;
-        }
-        if (location != null) {
-            style.addRule(null, new DeclarationLocationProperty(location));
+            // Generate the location property.
+            if (!lineDistances.isEmpty()) {
+                double avgLineDis = lineDistances.stream().mapToDouble(Integer::doubleValue).average().orElse(0.0);
+                Location location = avgLineDis <= CLOSE_TO_FIRST_USE_THRESHOLD ? Location.NEAR_USE : Location.BLOCK_START;
+                style.addRule(null, new DeclarationLocationProperty(avgLineDis, location));
+            }
         }
     }
 
