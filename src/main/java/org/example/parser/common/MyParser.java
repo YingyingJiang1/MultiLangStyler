@@ -61,6 +61,7 @@ public interface MyParser {
     boolean belongToExpandChildren(ParseTree t);
     boolean belongToMemberList(ParseTree t);
     boolean belongToSingleStmt(ParseTree t);
+    boolean belongToCompoundStmt(ParseTree t);
     boolean belongToBraceOptionalStmt(int rule);
     boolean belongToFileHeadDec(int rule);
     boolean belongToVarDeclarationStmt(int ruleIndex);
@@ -106,6 +107,7 @@ public interface MyParser {
     boolean isReturnStmt(ParseTree t);
     boolean isContinueStmt(ParseTree lastTree);
     boolean isLocalVarDeclaration(ParseTree t);
+    boolean isLocalVarDeclarationStmt(ParseTree t);
     boolean isLambdaExpression(ParseTree t);
     boolean isCompilationUnit(ParseTree t);
     boolean isTypeParameter(ParseTree t);

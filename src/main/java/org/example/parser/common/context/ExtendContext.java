@@ -111,6 +111,17 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
+    public ExtendContext getFirstParentIf(Predicate<ExtendContext> cond) {
+        ParseTree parent = getParent();
+        while (parent != null) {
+            if (parent instanceof ExtendContext parentCtx && cond.test(parentCtx)) {
+                return parentCtx;
+            }
+            parent = parent.getParent();
+        }
+        return parent == null ? null : (ExtendContext) parent;
+    }
+
     public ExtendContext findFirstParentIf(Predicate<ExtendContext> cond) {
         ParseTree parent = getParent();
         while (parent != null) {
@@ -514,7 +525,7 @@ public class ExtendContext extends ParserRuleContext {
 
 
     public void insertChild(int i, ParseTree child) {
-        children.set(i, child);
+        children.add(i, child);
         if (child instanceof ExtendContext childCtx) {
             childCtx.parent = this;
         }

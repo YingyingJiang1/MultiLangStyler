@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class DeclarationLocationStyler extends Styler {
     public static double CLOSE_TO_FIRST_USE_THRESHOLD = 3.0;
@@ -36,9 +37,8 @@ public class DeclarationLocationStyler extends Styler {
                 if (symbol.getSymbolType() != SymbolType.LOCAL_VARIABLE) {
                     continue;
                 }
-                Optional<ExtendContext> closedRef = symbol.getReferences().stream().min(Comparator.comparing(ref -> ref.getStart().getLine()));
-                if (closedRef.isPresent()) {
-                    int lineDis = closedRef.get().getStart().getLine() - symbol.getDecIdentifierNode().getStart().getLine();
+                int lineDis = calculateLineDis2firstUse(symbol);
+                if (lineDis >= 0) {
                     lineDistances.add(lineDis);
                 }
             }
@@ -54,26 +54,52 @@ public class DeclarationLocationStyler extends Styler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        if (style.getProperty(null) == null) {
-            return ctx;
-        }
+        if (style.getProperty(null) instanceof DeclarationLocationProperty property) {
+            List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
+            if (symbols != null) {
+                for (Symbol symbol : symbols) {
+                    if (symbol.getSymbolType() != SymbolType.LOCAL_VARIABLE) {
+                        continue;
+                    }
 
-        DeclarationLocationProperty property = (DeclarationLocationProperty) style.getProperty(null);
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            if (ctx.getChild(i) instanceof ExtendContext stmt && parser.belongToVarDeclarationStmt(parser.getSpecificStmtType(stmt))) {
-                if (property.location.equals(Location.BLOCK_START)) {
-                    moveToBlockStart(ctx, i, parser);
-                } else if (property.location.equals(Location.NEAR_USE)) {
-                    moveToFirstUse(ctx, stmt, parser);
+                    ExtendContext decStmt = symbol.getDecIdentifierNode();
+                    while (!parser.isLocalVarDeclarationStmt(decStmt)) {
+                        decStmt = (ExtendContext) decStmt.getParent();
+                    }
+                    ExtendContext block = (ExtendContext) decStmt.getParent();
+                    Predicate<ExtendContext> isScopeCtx = (ExtendContext cur) -> cur != null && (
+                            parser.getSpecificStmtType(cur) == parser.getRuleBlock() || parser.belongToCompoundStmt(cur));
+                    while (!isScopeCtx.test(block)) {
+                        block = (ExtendContext) block.getParent();
+                    }
+
+                    // Apply rules after a second check.
+                    if (parser.isLocalVarDeclarationStmt(decStmt) && isScopeCtx.test(block)) {
+                        if (property.location == Location.NEAR_USE) {
+                            moveToFirstUse(block, decStmt, parser);
+                        } else if (property.location == Location.BLOCK_START) {
+                            moveToBlockStart(block, decStmt, parser);
+                        }
+                    }
                 }
             }
         }
+
         return ctx;
     }
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return ctx.getRuleIndex() == parser.getRuleBlock();
+        return ctx.getRuleIndex() == parser.getRuleCompilationUnit();
+    }
+
+    private int calculateLineDis2firstUse(Symbol symbol) {
+        Optional<ExtendContext> closedRef = symbol.getReferences().stream().min(Comparator.comparing(ref -> ref.getStart().getLine()));
+        if (closedRef.isPresent()) {
+            int lineDis = closedRef.get().getStart().getLine() - symbol.getDecIdentifierNode().getStart().getLine();
+            return lineDis;
+        }
+        return -1;
     }
 
     /**
@@ -97,81 +123,101 @@ public class DeclarationLocationStyler extends Styler {
         return -1;
     }
 
+
     /**
-     * Move declaration statements forward until the first declaration statement is encountered or the start of the block is reached.
-     * @param block
-     * @param index index of declaration statement
-     * @param parser
+     *
+     * @param block The block that contains the declaration statement.
+     * @param decStmt The declaration statement.
+     * @param parser The parser.
      */
-    private void moveToBlockStart(ExtendContext block, int index, MyParser parser) {
-        ExtendContext stmt = (ExtendContext) block.getChild(index);
+    private void moveToBlockStart(ExtendContext block, ExtendContext decStmt, MyParser parser) {
+        int index = block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx &&  parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(decStmt));
         int j = index - 1;
         for (; j >= 0; j--) {
             if (block.getChild(j) instanceof ExtendContext stmt1) {
-                if (parser.belongToVarDeclarationStmt(parser.getSpecificStmtType(stmt1))) {
+                if (parser.getSpecificStmtType(stmt1) == parser.getRuleLocalVarDeclarationStmt()) {
                     break;
                 }
             } else {
-                break; // reach {
+                break; // reach brace.
             }
         }
 
         int insertionPoint = j + 1;
-        if (index != insertionPoint) {
-            block.removeChildIf(child -> child == stmt);
-            block.insertChild(insertionPoint, stmt);
+        if (index > insertionPoint) {
+            block.removeChildIf(child -> child == decStmt);
+            block.insertChild(insertionPoint, decStmt);
         }
     }
 
+
     /**
-     * Move the declaration statement closest to the first use.
-     * @param block
-     * @param stmt declaration statement
-     * @param parser
+     *
+     * @param block The block that contains the declaration statement.
+     * @param decStmt The declaration statement.
+     * @param parser The parser.
      */
-    private void moveToFirstUse(ExtendContext block, ExtendContext stmt, MyParser parser) {
-        ExtendContext decStmt = parser.getSpecificStmt(stmt);
+    private void moveToFirstUse(ExtendContext block, ExtendContext decStmt, MyParser parser) {
         List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
-        List<ExtendContext> declaratorList = decStmt.getAllContextsByTypeRec(parser.getRuleVariableDeclarator());
         Resolver resolver = GlobalInfo.getResolver();
+
+        // Get index of first statement that uses these declared variables in the given block structure.
         for (ExtendContext identifierNode : decIdentifiers) {
-            // Get index of first statement that uses these declared variables.
             List<ExtendContext> references = resolver.resolve(identifierNode, parser).getReferences();
             int minUsingIndex =  Integer.MAX_VALUE;
             for (ExtendContext ref : references) {
-                int index = indexOfContainerStmt(block.children, ref);
+                ExtendContext usageStmt = ref.getFirstParentIf(parser::isStatement);
+                int index = usageStmt == null ? -1 : block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(usageStmt));
                 if (index >= 0 && index < minUsingIndex) {
                     minUsingIndex = index;
                 }
             }
 
             // Get the index of last statement that declares the variables used in the initializers of the declaration statement.
-            int maxIndex = -1;
+            int maxDependentIndex = -1;
             ExtendContext initializer = parser.getDecStmtSearcher().searchInitializer(decStmt, identifierNode, parser);
             if (initializer != null) {
                 List<ExtendContext> initializerReferences = initializer.getAllContextsByTypeRec(parser.getRuleIdentifier());
                 for (ExtendContext ref : initializerReferences) {
-                    ExtendContext decIdentifierNode = resolver.resolve(ref, parser).getDecIdentifierNode();
+                    Symbol symbol = resolver.resolve(ref, parser);
+                    if (symbol == null) {
+                        continue;
+                    }
+                    ExtendContext decIdentifierNode = symbol.getDecIdentifierNode();
                     int index = indexOfContainerStmt(block.children, decIdentifierNode);
-                    if (index >= 0 && index > maxIndex) {
-                        maxIndex = index;
+                    if (index >= 0 && index > maxDependentIndex) {
+                        maxDependentIndex = index;
                     }
                 }
             }
 
-            // Move the declaration statement to the appropriate position:
-            // after the last statement that declares the variables used in the declaration statement and
-            // before the first statement that uses the variables that declared in the declaration statement.
+            // Move the declaration statement to the position whose index satisfies: max({index < minUsingIndex and index > maxDependentIndex})
             if (minUsingIndex == Integer.MAX_VALUE) {
                 continue;
             }
-            block.removeChildIf(child -> child == stmt);
-            int insertionPoint = minUsingIndex;
-            if (maxIndex >= 0 && insertionPoint < maxIndex) {
-                insertionPoint = maxIndex + 1;
+
+            int insertionPoint = getNearUseInsertionPoint(minUsingIndex, maxDependentIndex);
+            int curIndex = block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(decStmt));
+            if (insertionPoint >= 0 && insertionPoint != curIndex) {
+                ExtendContext targetStmt = (ExtendContext) block.children.remove(curIndex);
+                if (curIndex < insertionPoint) {
+                    insertionPoint--;
+                }
+                block.insertChild(insertionPoint, targetStmt);
             }
-            block.removeChildIf(child -> child == stmt);
-            block.insertChild(insertionPoint, stmt);
         }
+    }
+
+
+    private int getNearUseInsertionPoint(int minUsingIndex, int maxDependentIndex) {
+        int lowerBound = Math.min(minUsingIndex, maxDependentIndex);
+        int upperBound = Math.max(minUsingIndex, maxDependentIndex);
+
+        for (int index = upperBound - 1; index > lowerBound; index--) {
+            if (index > maxDependentIndex && index < minUsingIndex) {
+                return index;
+            }
+        }
+        return -1;
     }
 }

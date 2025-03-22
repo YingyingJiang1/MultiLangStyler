@@ -50,6 +50,13 @@
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
@@ -61,17 +68,11 @@
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
-    <rule>
-      <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
   </style>
   <style name="declaration_location">
     <rule>
       <style_property>
+        <avgLineDis2firstUse>3.5</avgLineDis2firstUse>
         <location>BLOCK_START</location>
       </style_property>
     </rule>

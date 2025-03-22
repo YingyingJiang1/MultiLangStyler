@@ -27,4 +27,12 @@ public class SymbolTableManager {
 
         return st.getAllSymbols();
     }
+
+    public static SymbolTable getSymbolTable(ParseTree root) {
+        return stCache.get(root);
+    }
+
+    public static void addSymbolTable(ParseTree root, SymbolTable st) {
+        stCache.put(root, st);
+    }
 }

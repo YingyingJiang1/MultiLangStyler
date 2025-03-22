@@ -49,7 +49,8 @@
   <style name="declaration_location">
     <rule>
       <style_property>
-        <location>BLOCK_START</location>
+        <avgLineDis2firstUse>1.8333333333333333</avgLineDis2firstUse>
+        <location>NEAR_USE</location>
       </style_property>
     </rule>
   </style>

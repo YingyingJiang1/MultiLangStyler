@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.java.antlr.JavaParser;
 import org.example.semantic.intf.Resolver;
 import org.example.semantic.intf.symbol.ClassSym;
 import org.example.semantic.intf.symbol.FunctionSym;
@@ -24,16 +25,33 @@ import java.util.Map;
 
 public class ResolverImpl implements Resolver {
     public static Logger logger = LoggerFactory.getLogger(ResolverImpl.class);
-    private Map<ParseTree, SymbolTable> symbolTableMap = new HashMap<>();
 
 
+    /**
+     * note: the references of the returned symbol may not be resolved.
+     * @param identifierNode
+     * @param parser
+     * @return symbol
+     */
     @Override
     public Symbol resolve(ExtendContext identifierNode, MyParser parser) {
         ParseTree root = parser.getRoot();
-        if (symbolTableMap.get(root) == null) {
-            symbolTableMap.put(root, new SymbolTable());
+        Symbol ret = null;
+
+        // Use symbol table cache to resolve the identifier node in the declaration statement.
+        if (SymbolTableManager.getSymbolTable(root) != null) {
+           ret = SymbolTableManager.getSymbolTable(root).getSymbol(identifierNode, parser);
+            if (ret != null) {
+                return ret;
+            }
         }
-        SymbolTable st = symbolTableMap.get(root);
+
+        // Resolve identifier nodes those appear in any location.
+        SymbolTable st = SymbolTableManager.getSymbolTable(root);
+        if (st == null) {
+            st = new SymbolTable();
+            SymbolTableManager.addSymbolTable(root, st);
+        }
         return doResolve(st, identifierNode, parser);
     }
 
@@ -50,7 +68,7 @@ public class ResolverImpl implements Resolver {
 
     @Override
     public SymbolTable getSymbolTable(ParseTree root) {
-        return symbolTableMap.get(root);
+        return SymbolTableManager.getSymbolTable(root);
     }
 
     @Override

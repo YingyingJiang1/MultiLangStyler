@@ -1,7 +1,10 @@
 package org.example.semantic.intf.symbol;
 
+import org.example.global.GlobalInfo;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
+import org.example.semantic.intf.ReferenceResolver;
+import org.example.semantic.intf.Resolver;
 import org.example.styler.naming.SymbolType;
 
 import java.util.ArrayList;

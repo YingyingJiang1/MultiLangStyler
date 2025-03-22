@@ -15,6 +15,11 @@ public class PowerStrips {
     }
 
     public static int calculateMinPowerStrips(int A, int B) {
+        // If B is 1 or less, we don't need any power strips
+        if (B <= 1) {
+            return 0;
+        }
+
         // Start with 1 socket
         int currentSockets = 1;
         int powerStrips = 0;
