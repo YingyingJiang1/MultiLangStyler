@@ -6,7 +6,6 @@ public class Main {
         // Read input
         int N = scanner.nextInt();
         String S = scanner.next();
-
         // Get the first half of the string
         String firstHalf = S.substring(0, N / 2);
         // Get the second half of the string
@@ -18,7 +17,6 @@ public class Main {
             System.out.println("No");
             return;
         }
-
         // Compare the two halves
         if (firstHalf.equals(secondHalf)) {System.out.println("Yes");} else {System.out.println("No");}
         scanner.close();

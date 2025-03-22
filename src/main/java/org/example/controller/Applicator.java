@@ -3,7 +3,6 @@ package org.example.controller;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.StylerContainer;
 import org.example.myException.ApplyException;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -18,7 +17,8 @@ public class Applicator {
     public static List<Token> applyRules(MyParser parser, StylerContainer container, Preprocessor preprocessor) throws ApplyException {
         try {
             preprocessor.preprocess(parser, Stage.APPLY);
-            parser.walkTree(Stage.APPLY, container.getStylers());
+            parser.walkTree(Stage.APPLY, container.getFirstRoundStylers());
+            parser.walkTree(Stage.APPLY, container.getSecondRoundStylers());
 
             List<Token> tokens = new LinkedList<>();
             generateTokens(parser.getRoot(), tokens, parser);

@@ -5,7 +5,7 @@ import java.util.List;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.dom4j.DocumentException;
-import org.example.StylerContainer;
+import org.example.controller.StylerContainer;
 import org.example.controller.Applicator;
 import org.example.controller.Preprocessor;
 import org.example.global.GlobalInfo;

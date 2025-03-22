@@ -1,6 +1,9 @@
 package org.example.styler.declaration.location;
 
+import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.xmlbeans.SchemaIdentityConstraint;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
@@ -147,6 +150,7 @@ public class DeclarationLocationStyler extends Styler {
         if (index > insertionPoint) {
             block.children.remove(index);
             block.insertChild(insertionPoint, decStmt);
+            updateCurrentLine(block, index, insertionPoint);
         }
     }
 
@@ -204,6 +208,7 @@ public class DeclarationLocationStyler extends Styler {
                     insertionPoint--;
                 }
                 block.insertChild(insertionPoint, targetStmt);
+                updateCurrentLine(block, curIndex, insertionPoint);
             }
         }
     }
@@ -219,5 +224,28 @@ public class DeclarationLocationStyler extends Styler {
             }
         }
         return -1;
+    }
+
+    private void updateCurrentLine(ExtendContext block, int oldIndex, int newIndex) {
+        ExtendContext stmt = (ExtendContext) block.getChild(newIndex);
+        int sign = newIndex > oldIndex ? 1 : -1;
+
+        // Update line number of all tokens in the statement.
+        ParseTree next = block.getChild(Math.min(oldIndex + 1, newIndex - 1)), last = block.getChild(Math.max(oldIndex + 1, newIndex - 1));
+        int nextLine = next instanceof TerminalNode ter ? ter.getSymbol().getLine() : ((ExtendContext) next).getStart().getLine();
+        int lastLine = last instanceof TerminalNode ter ? ter.getSymbol().getLine() : ((ExtendContext) last).getStop().getLine();
+        int targetStmtLineChange = lastLine - nextLine + 1;
+        for (Token token : stmt.getAllTokensRec()) {
+            ((CommonToken) token).setLine(token.getLine() + sign * targetStmtLineChange);
+        }
+
+        // Update line number of all tokens between @oldIndex and @newIndex.
+        int lines = stmt.getStop().getLine() - stmt.getStart().getLine() + 1;
+        for (int i = oldIndex + sign; i != newIndex + sign; i += sign) {
+            ExtendContext curStmt = (ExtendContext) block.getChild(i);
+            for (Token token : curStmt.getAllTokensRec()) {
+                ((CommonToken) token).setLine(token.getLine() - sign * lines);
+            }
+        }
     }
 }

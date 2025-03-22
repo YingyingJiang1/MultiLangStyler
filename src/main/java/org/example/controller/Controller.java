@@ -3,7 +3,6 @@ package org.example.controller;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Configuration;
-import org.example.StylerContainer;
 import org.example.global.GlobalInfo;
 import org.example.io.StyleFileIO;
 import org.example.parser.common.*;
