@@ -38,6 +38,13 @@
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
+    </rule>
   </style>
   <style name="declaration_location">
     <rule>

@@ -1,4 +1,4 @@
-package org.example.styler.body;
+package org.example.styler.format.body;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -8,7 +8,7 @@ import org.example.styler.Styler;
 
 import java.util.*;
 
-import static org.example.styler.body.BodyTypeEnum.*;
+import static org.example.styler.format.body.BodyTypeEnum.*;
 
 public abstract class BodyStyler extends Styler {
     private static Map<BodyTypeEnum, Set<Integer>> map = null;

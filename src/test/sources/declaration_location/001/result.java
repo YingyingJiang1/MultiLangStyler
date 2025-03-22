@@ -18,7 +18,11 @@ public class Main {
             return;
         }
         // Compare the two halves
-        if (firstHalf.equals(secondHalf)) {System.out.println("Yes");} else {System.out.println("No");}
+        if (firstHalf.equals(secondHalf)) {
+            System.out.println("Yes");
+        } else {
+            System.out.println("No");
+        }
         scanner.close();
     }
 }

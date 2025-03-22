@@ -4,15 +4,10 @@ import org.example.analysis.feature.FeatureVector;
 import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.StyleType.BraceFormat;
 import org.example.analysis.feature.featurevalue.FeatureValue;
-import org.example.analysis.feature.featurevalue.MapFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.VectorFeatureValue;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.body.BodyContext;
-import org.example.styler.body.braceformat.style.BraceFormatProperty;
+import org.example.styler.format.body.braceformat.style.BraceFormatProperty;
 
 import java.util.List;
 import java.util.Map;

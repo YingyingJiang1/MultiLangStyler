@@ -1,4 +1,4 @@
-package org.example.styler.body.layout;
+package org.example.styler.format.body.layout;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -7,9 +7,9 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleContext;
-import org.example.styler.body.BodyContext;
-import org.example.styler.body.BodyStyler;
-import org.example.styler.body.layout.style.BodyLayoutProperty;
+import org.example.styler.format.body.BodyContext;
+import org.example.styler.format.body.BodyStyler;
+import org.example.styler.format.body.layout.style.BodyLayoutProperty;
 
 import java.util.HashSet;
 import java.util.List;

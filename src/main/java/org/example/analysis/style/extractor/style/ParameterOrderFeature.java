@@ -7,12 +7,8 @@ import org.example.analysis.StyleType.OrderOfFunctionPara;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.BooleanFeatureValue;
 import org.example.analysis.feature.featurevalue.StringFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
 import org.example.styler.arrangement.param.style.ParameterOrderProperty;
-import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
 
 import java.util.Map;
 

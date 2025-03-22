@@ -2,18 +2,12 @@ package org.example.analysis.style.extractor.style;
 
 import org.example.analysis.StyleType;
 import org.example.analysis.feature.FeatureVector;
-import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
-import org.example.analysis.feature.featurevalue.StringFeatureValue;
 import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.StyleType.OptionalBrace;
 import org.example.analysis.feature.featurevalue.BooleanFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
 import org.example.analysis.style.ComputableStyleExtractor;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
-import org.example.styler.naming.format.style.NamingFormatProperty;
+import org.example.styler.format.body.optionalbrace.style.OptionalBraceProperty;
 
 import java.util.Map;
 

@@ -1928,3 +1928,11 @@ java.lang.IndexOutOfBoundsException: Index -1 out of bounds for length 6
 2025-03-22 19:59:27,306 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
 2025-03-22 20:09:19,922 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
 2025-03-22 20:09:19,952 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
+2025-03-22 20:18:10,926 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-03-22 20:18:10,956 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
+2025-03-22 20:20:26,846 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-03-22 20:20:31,026 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
+2025-03-22 20:21:11,274 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-03-22 20:21:18,060 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
+2025-03-22 20:23:47,295 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-03-22 20:23:47,328 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\declaration_location\001\style-self.xml

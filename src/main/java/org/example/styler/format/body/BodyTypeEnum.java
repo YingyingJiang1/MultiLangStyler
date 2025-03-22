@@ -1,4 +1,4 @@
-package org.example.styler.body;
+package org.example.styler.format.body;
 
 public enum BodyTypeEnum {
     DEC_BODY, // Body of type declaration or method declaration.

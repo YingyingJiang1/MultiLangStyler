@@ -1,4 +1,4 @@
-package org.example.styler.body.braceformat.style;
+package org.example.styler.format.body.braceformat.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

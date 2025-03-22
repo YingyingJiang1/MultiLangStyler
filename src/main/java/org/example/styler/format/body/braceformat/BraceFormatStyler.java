@@ -1,4 +1,4 @@
-package org.example.styler.body.braceformat;
+package org.example.styler.format.body.braceformat;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -6,15 +6,13 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
-import org.example.style.Style;
 
-import org.example.style.rule.StyleProperty;
-import org.example.styler.body.BodyContext;
-import org.example.styler.body.BodyNumType;
-import org.example.styler.body.BodyStyler;
-import org.example.styler.body.braceformat.style.BraceFormatProperty;
-import org.example.styler.body.braceformat.style.BraceFormatStyle;
-import org.example.styler.body.BodyTypeEnum;
+import org.example.styler.format.body.BodyContext;
+import org.example.styler.format.body.BodyNumType;
+import org.example.styler.format.body.BodyStyler;
+import org.example.styler.format.body.braceformat.style.BraceFormatProperty;
+import org.example.styler.format.body.braceformat.style.BraceFormatStyle;
+import org.example.styler.format.body.BodyTypeEnum;
 
 import java.util.*;
 
@@ -86,17 +84,20 @@ public class BraceFormatStyler extends BodyStyler {
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         List<ExtendContext> blocks = getAllBlocks(ctx, parser);
-        int ruleIndex = ctx.getRuleIndex();
-        boolean isNotMultiBlockStmt = ruleIndex != parser.getRuleIfElseStmt() && ruleIndex != parser.getRuleTryCatchStmt();
+        int ruleIndex = parser.getSpecificStmtType(ctx);
+        boolean isMultiBlockStmt = ruleIndex == parser.getRuleIfElseStmt() || ruleIndex == parser.getRuleTryCatchStmt();
         // Extract brace information.
         for (int i = 0; i < blocks.size(); ++i) {
             ExtendContext block = parser.getSpecificStmt(blocks.get(i));
             // Skip the last block of multi-block statement.
-            if (isNotMultiBlockStmt || block != ctx.getLastCtxChildIf(t -> true)) {
-                BodyContext context = extractStyleContext(ctx, block, parser);
-                BraceFormatProperty styleProperty = extractProperty(block);
-                style.addRule(context, styleProperty);
+            int blockIndex = ctx.indexOfFirstChild(child -> child instanceof ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(block));
+            if (isMultiBlockStmt && blockIndex == ctx.getChildCount() - 1) {
+                continue;
             }
+
+            BodyContext context = extractStyleContext(ctx, block, parser);
+            BraceFormatProperty styleProperty = extractProperty(block);
+            style.addRule(context, styleProperty);
         }
     }
 

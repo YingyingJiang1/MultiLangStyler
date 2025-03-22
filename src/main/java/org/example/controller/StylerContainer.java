@@ -1,8 +1,8 @@
 package org.example.controller;
 
 import org.example.styler.Styler;
-import org.example.styler.body.braceformat.BraceFormatStyler;
-import org.example.styler.body.layout.BodyLayoutStyler;
+import org.example.styler.format.body.braceformat.BraceFormatStyler;
+import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.LineStmtStyler;

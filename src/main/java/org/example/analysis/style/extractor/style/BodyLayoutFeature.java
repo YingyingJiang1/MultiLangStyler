@@ -5,11 +5,8 @@ import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.StyleType.LayoutOfControlStmtWithoutBraces;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.BooleanFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.body.layout.style.BodyLayoutProperty;
+import org.example.styler.format.body.layout.style.BodyLayoutProperty;
 
 import java.util.Map;
 

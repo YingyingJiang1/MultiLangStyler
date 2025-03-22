@@ -1,20 +1,13 @@
 package org.example.analysis.style.extractor.style;
 
 import org.example.analysis.feature.FeatureVector;
-import org.example.analysis.feature.featurevalue.FeatureValue;
-import org.example.analysis.feature.featurevalue.VectorFeatureValue;
 import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.StyleType;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.body.braceformat.style.BraceFormatProperty;
 import org.example.styler.comment.density.style.CommentDensityProperty;
 
-import java.util.List;
 import java.util.Map;
 
 public class CommentDensityFeature extends ComputableStyleExtractor {

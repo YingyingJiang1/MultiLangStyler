@@ -1,4 +1,4 @@
-package org.example.styler.body.layout.style;
+package org.example.styler.format.body.layout.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;

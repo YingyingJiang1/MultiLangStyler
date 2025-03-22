@@ -1,4 +1,4 @@
-package org.example.styler.body.optionalbrace;
+package org.example.styler.format.body.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -7,10 +7,10 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.styler.body.BodyContext;
-import org.example.styler.body.BodyNumType;
-import org.example.styler.body.BodyStyler;
-import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
+import org.example.styler.format.body.BodyContext;
+import org.example.styler.format.body.BodyNumType;
+import org.example.styler.format.body.BodyStyler;
+import org.example.styler.format.body.optionalbrace.style.OptionalBraceProperty;
 
 import java.util.*;
 import java.util.ArrayList;
