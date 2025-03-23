@@ -4,16 +4,16 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         // Read input
-        int N = scanner.nextInt();
-        String S = scanner.next();
+        int n = scanner.nextInt();
+        String s = scanner.next();
         // Get the first half of the string
-        String firstHalf = S.substring(0, N / 2);
+        String firstHalf = s.substring(0, n / 2);
         // Get the second half of the string
-        String secondHalf = S.substring(N / 2);
+        String secondHalf = s.substring(n / 2);
 
         // Check if the string length is even
         // If it's odd, it can't be a concatenation of two identical strings
-        if (N % 2 != 0) {
+        if (n % 2 != 0) {
             System.out.println("No");
             return;
         }

@@ -71,7 +71,7 @@ public class NewlineContext extends StyleContext {
                     distance -= DEC_WHEN_EQUAL;
                 }
             }
-            textLengthMeet = context.minTextLength + 0.1 * minTextLength >= minTextLength; // Soften the requirement of text length.
+            textLengthMeet = context.minTextLength + 0.2 * minTextLength >= minTextLength; // Soften the requirement of text length.
         }
         return textLengthMeet && distance < INIT_DISTANCE ? distance : INVALID_DISTANCE;
     }

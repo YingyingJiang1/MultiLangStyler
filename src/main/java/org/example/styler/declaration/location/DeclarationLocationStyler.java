@@ -171,7 +171,7 @@ public class DeclarationLocationStyler extends Styler {
             int minUsingIndex =  Integer.MAX_VALUE;
             for (ExtendContext ref : references) {
                 ExtendContext usageStmt = ref.getFirstParentIf(parser::isStatement);
-                int index = usageStmt == null ? -1 : block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(usageStmt));
+                int index = usageStmt == null ? -1 : indexOf(block, usageStmt, parser);
                 if (index >= 0 && index < minUsingIndex) {
                     minUsingIndex = index;
                 }
@@ -223,6 +223,29 @@ public class DeclarationLocationStyler extends Styler {
                 return index;
             }
         }
+        return -1;
+    }
+
+    /**
+     *
+     * @param block
+     * @param usageStmt
+     * @return The index of the statement in the block that contains the usage statement.
+     */
+    private int indexOf(ExtendContext block, ExtendContext usageStmt, MyParser parser) {
+        int index = block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(usageStmt));
+        if (index >= 0) {
+            return index;
+        }
+
+        for (int i = 0; i < block.getChildCount(); i++) {
+            if (block.getChild(i) instanceof ExtendContext stmt) {
+                if (stmt.getAllContextsByTypeRec(usageStmt.getRuleIndex()).contains(usageStmt)) {
+                    return i;
+                }
+            }
+        }
+
         return -1;
     }
 

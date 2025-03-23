@@ -3,10 +3,10 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 
 public class NamingFormatTest extends IntegrationTest {
-    String dir = "src/test/sources/namingformat";
+    private static final String dirName = "naming";
 
     @Test
-    void testPair1() {
-        transform(Paths.get(dir, "pair1", "src.java"), Paths.get(dir, "pair1", "target.java"));
+    public void test() {
+        batchTest(1, dirName, null);
     }
 }

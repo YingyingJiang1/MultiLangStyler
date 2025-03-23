@@ -34,9 +34,12 @@ public class IntegrationTest {
 
     }
 
-    public static void batchTest(int pairNumber, String subDir) {
+    public static void batchTest(int pairNumber, String subDir, String debug_pair) {
         for (int i = 1; i <= pairNumber; i++) {
             String strNumber = String.format("%03d", i);
+            if (debug_pair != null && !strNumber.equals(debug_pair)) {
+                continue;
+            }
             Path src = Paths.get(codesDir, subDir, strNumber, "src.java");
             Path target = Paths.get(codesDir, subDir, strNumber, "target.java");
             if (!src.toFile().exists()) {

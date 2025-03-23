@@ -2,16 +2,15 @@ package org.example.styler.naming.format;
 
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
-import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.semantic.ResolverFactory;
-import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.ModelAdapter;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;
+import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.SymbolType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
@@ -29,30 +28,27 @@ public class NamingFormatStyler extends Styler {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             String name = symbol.getName();
-            SymbolType symbolType = symbol.getSymbolType();
+            MyCaseFormat caseFormat = getCaseFormat(name);
 
-            CaseFormat caseFormat = getCaseFormat(name);
-            if (caseFormat != null) {
-                NamingFormatContext context = new NamingFormatContext(symbolType);
-                // Update max length;
-                int curLength = name.length();
-                List<StyleProperty> properties = style.getProperties(context);
-                if (properties != null) {
-                    for (StyleProperty property : properties) {
-                        if (property instanceof NamingFormatProperty namingProperty) {
-                            if (namingProperty.maxLength >= curLength) {
-                                curLength = namingProperty.maxLength;
-                                break;
-                            } else {
-                                namingProperty.maxLength = curLength;
-                            }
+            NamingFormatContext context = extractStyleContext(symbol, parser);
+            // Update max length;
+            int curLength = name.length();
+            List<StyleProperty> properties = style.getProperties(context);
+            if (properties != null) {
+                for (StyleProperty property : properties) {
+                    if (property instanceof NamingFormatProperty namingProperty) {
+                        if (namingProperty.maxLength >= curLength) {
+                            curLength = namingProperty.maxLength;
+                            break;
+                        } else {
+                            namingProperty.maxLength = curLength;
                         }
                     }
                 }
-
-                style.addRule(context,
-                        new NamingFormatProperty(name.charAt(0) == '_', caseFormat, curLength));
             }
+
+            NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, curLength);
+            style.addRule(context, property);
         }
     }
 
@@ -60,15 +56,15 @@ public class NamingFormatStyler extends Styler {
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
-            SymbolType symbolType = symbol.getSymbolType();
-            NamingFormatContext context = new NamingFormatContext(symbolType);
+            NamingFormatContext context = extractStyleContext(symbol, parser);
 
             NamingFormatProperty property = (NamingFormatProperty) style.getProperty(context);
-            if (property != null) {
+            if (property != null ) {
                 String name = symbol.getName();
+                MyCaseFormat curFormat = getCaseFormat(name);
                 String newName = abbreviateName(name, property.maxLength);
-                CaseFormat curFormat = getCaseFormat(name);
-                if (curFormat != null) {
+
+                if (curFormat != null && curFormat.isConvertible(property.caseFormat)) {
                     newName = curFormat.to(property.caseFormat, name);
                 }
 
@@ -83,6 +79,32 @@ public class NamingFormatStyler extends Styler {
         }
         return ctx;
     }
+
+    private NamingFormatContext extractStyleContext(Symbol symbol, MyParser parser) {
+        SymbolType symbolType = symbol.getSymbolType();
+        NamingFormatContext context = new NamingFormatContext(symbolType);
+
+        // Add attributes for variables
+        if (symbol.getSymbolType() == SymbolType.LOCAL_VARIABLE || symbol.getSymbolType() == SymbolType.FIELD) {
+            if (symbol.hasModifier(parser.getConstKeyword())) {
+                context.addAttr(SymbolAttr.EXPLICIT_CONST);
+            } else {
+                ModelAdapter modelAdapter = ModelAdapter.getInstance();
+                if (modelAdapter != null) {
+                    ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(parser::isBlock);
+                    String prompt = String.format("Does variable %s use user input? Answer only \"yes\" or \"no." +
+                            "// Code：\n" + "%s", symbol.getName(), stmt.getText());
+                    String res = modelAdapter.callModel(prompt);
+                    if (res != null && res.contains("yes")) {
+                        context.addAttr(SymbolAttr.IMPLICIT_CONST);
+                    }
+                }
+            }
+        }
+
+        return context;
+    }
+
 
     private String abbreviateName(String name, int maxLength) {
         if (name.length() <= maxLength) {
@@ -106,12 +128,17 @@ public class NamingFormatStyler extends Styler {
         return name;
     }
 
-    private CaseFormat getCaseFormat(String name) {
+    private MyCaseFormat getCaseFormat(String name) {
         int underScoreIndex = name.indexOf("_");
+        if (StringUtils.isAllUpperCase(name)) {
+            return MyCaseFormat.ALL_UPPER_CASE;
+        } else if (StringUtils.isAllLowerCase(name)) {
+            return MyCaseFormat.ALL_LOWER_CASE;
+        }
         if (underScoreIndex > 0) { // contains a underscore and it is not the first character
-            return StringUtils.isAllUpperCase(name) ? CaseFormat.UPPER_UNDERSCORE :CaseFormat.LOWER_UNDERSCORE;
+            return StringUtils.isAllUpperCase(name) ? MyCaseFormat.UPPER_UNDERSCORE :MyCaseFormat.LOWER_UNDERSCORE;
         } else if (underScoreIndex < 0 && StringUtils.isMixedCase(name)) {
-            return Character.isUpperCase(name.charAt(0)) ? CaseFormat.UPPER_CAMEL : CaseFormat.LOWER_CAMEL;
+            return Character.isUpperCase(name.charAt(0)) ? MyCaseFormat.UPPER_CAMEL : MyCaseFormat.LOWER_CAMEL;
         }
         return null;
     }

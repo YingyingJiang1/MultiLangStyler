@@ -7,6 +7,6 @@ public class FormatTest extends  IntegrationTest{
     private static String subDirName = "format";
     @Test
     public void test() {
-        batchTest(1, subDirName);
+        batchTest(1, subDirName, null);
     }
 }

@@ -1,23 +1,23 @@
 package org.example.styler.naming.format.style;
 
 import com.google.common.base.CaseFormat;
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.naming.MyCaseFormat;
 
 import java.util.Objects;
 
 public class NamingFormatProperty extends StyleProperty {
     public boolean startsWithUnderScore;
-    public CaseFormat caseFormat;
+    public MyCaseFormat caseFormat;
     // When th length of name exceeds the length of `maxLength`, try to abbreviate the name.
     public int maxLength = Integer.MAX_VALUE;
 
     public NamingFormatProperty() {
     }
 
-    public NamingFormatProperty(boolean startsWithUnderScore, CaseFormat caseFormat, int maxLength) {
+    public NamingFormatProperty(boolean startsWithUnderScore, MyCaseFormat caseFormat, int maxLength) {
         this.startsWithUnderScore = startsWithUnderScore;
         this.caseFormat = caseFormat;
         this.maxLength = maxLength;
@@ -25,16 +25,21 @@ public class NamingFormatProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("case_format", caseFormat.name());
+        if (caseFormat != null) {
+            parent.addAttribute("case_format", caseFormat.name());
+        }
         parent.addAttribute("start_with_underscore", String.valueOf(startsWithUnderScore));
         if (maxLength != Integer.MAX_VALUE) {
             parent.addAttribute("max_length", String.valueOf(maxLength));
         }
+
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        caseFormat = CaseFormat.valueOf(parent.attributeValue("case_format"));
+        String caseFormatName = parent.attributeValue("case_format");
+        caseFormat = MyCaseFormat.valueOf(caseFormatName);
+
         if (parent.attributeValue("max_length") != null) {
             maxLength = Integer.parseInt(parent.attributeValue("max_length"));
         } else {

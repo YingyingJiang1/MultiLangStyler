@@ -24,7 +24,7 @@ public class Applicator {
             generateTokens(parser.getRoot(), tokens, parser);
 //            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
 
-            applyOnTS(tokens, parser, container);
+            applyOnTS(tokens, parser, container.getTsStylers());
             return tokens;
         } catch (Exception e) {
             throw new ApplyException(e.getMessage(), e);
@@ -35,7 +35,7 @@ public class Applicator {
     /**
      * @apiNote :Apply style on token stream.
      */
-    private static void applyOnTS(List<Token> tokens, MyParser parser, StylerContainer container) {
+    private static void applyOnTS(List<Token> tokens, MyParser parser, List<Styler> stylers) {
         int column = 0;
 
         // Handle the first token.
@@ -57,7 +57,7 @@ public class Applicator {
                 continue;
             }
 
-            for (Styler styler : container.getStylers()) {
+            for (Styler styler : stylers) {
                 if (styler.isRelevant(tokens, i, Stage.APPLY, parser)) {
                     styler.applyStyle(tokens, i, parser);
                 }
