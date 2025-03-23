@@ -9,27 +9,35 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="true"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="false"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC" minCodeBockLines="0"/>
+      <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="importDeclarationList" type2="TYPE_DEC" minCodeBockLines="0"/>
+      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minTextLength="49"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="37" hasSameDecType="true"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="importDeclarationList" type2="TYPE_DEC"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="EXPRESSION_STMT" minCodeBockLines="0"/>
+      <style_context type1="DECLARATION_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minCodeBockLines="0"/>
+      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
       <style_property newlines="0"/>
     </rule>
   </style>
@@ -95,6 +103,15 @@
     <rule>
       <style_context id="15" category="Check then return preferences"/>
       <style_property preferenceIndex="1"/>
+    </rule>
+  </style>
+  <style name="body_layout">
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property compactStyle="true"/>
     </rule>
   </style>
   <style name="lineWrapping">
@@ -203,15 +220,6 @@
     <rule>
       <style_context token="], IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-  </style>
-  <style name="body_layout">
-    <rule>
-      <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property compactStyle="true"/>
     </rule>
   </style>
 </program_style>

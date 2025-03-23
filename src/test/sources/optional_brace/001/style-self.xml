@@ -9,23 +9,31 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="false"/>
+      <style_context type1="LOOP_STMT" type2="CONDITIONAL_STMT" minTextLength="167"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="CONDITIONAL_STMT" type2="EXPRESSION_STMT" minCodeBockLines="0"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="45" hasSameDecType="false"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minCodeBockLines="118"/>
+      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="118"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="importDeclarationList" type2="TYPE_DEC" minCodeBockLines="0"/>
+      <style_context type1="LOOP_STMT" type2="CONDITIONAL_STMT" minTextLength="0"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="CONDITIONAL_STMT" type2="EXPRESSION_STMT" minTextLength="87"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="importDeclarationList" type2="TYPE_DEC"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="EXPRESSION_STMT" type2="SINGLE_STMT" minCodeBockLines="0"/>
+      <style_context type1="EXPRESSION_STMT" type2="SINGLE_STMT" minTextLength="0"/>
       <style_property newlines="0"/>
     </rule>
   </style>
@@ -109,6 +117,7 @@
       <style_property preferenceIndex="2"/>
     </rule>
   </style>
+  <style name="body_layout"/>
   <style name="lineWrapping">
     <rule>
       <style_context/>
@@ -229,5 +238,4 @@
       <style_property space1="false" space2="true"/>
     </rule>
   </style>
-  <style name="body_layout"/>
 </program_style>

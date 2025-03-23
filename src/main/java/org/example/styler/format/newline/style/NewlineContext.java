@@ -37,10 +37,11 @@ public class NewlineContext extends StyleContext {
     public void addElement(Element parent, MyParser parser) {
        parent.addAttribute("type1", typeName1);
        parent.addAttribute("type2", typeName2);
-       parent.addAttribute("minCodeBockLines", Integer.toString(minTextLength));
 
-       boolean is2declaraionStmt = typeName1.equals(typeName2) && typeName1.equals(RuleGroup.DECLARATION_STMT.name());
-        if (is2declaraionStmt) {
+        if (isMinTestLengthUseful()) {
+            parent.addAttribute("minTextLength", Integer.toString(minTextLength));
+        }
+        if (isHasSameDecTypeUseful()) {
             parent.addAttribute("hasSameDecType", Boolean.toString(hasSameDecType));
         }
     }
@@ -49,10 +50,10 @@ public class NewlineContext extends StyleContext {
     public void parseElement(Element parent, MyParser parser) {
         typeName1 = parent.attributeValue("type1");
         typeName2 = parent.attributeValue("type2");
-        if (parent.attribute("minCodeBockLines") != null) {
-            minTextLength = Integer.parseInt(parent.attributeValue("minCodeBockLines"));
-        }
 
+        if (parent.attribute("minTextLength") != null) {
+            minTextLength = Integer.parseInt(parent.attributeValue("minTextLength"));
+        }
         if (parent.attribute("hasSameDecType") != null) {
             hasSameDecType = Boolean.parseBoolean(parent.attributeValue("hasSameDecType"));
         }
@@ -66,11 +67,11 @@ public class NewlineContext extends StyleContext {
         if (targetContext instanceof NewlineContext context) {
             if (Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)) {
                 distance -= DEC_WHEN_EQUAL;
-                if (hasSameDecType == context.hasSameDecType) {
+                if (hasSameDecType && hasSameDecType == context.hasSameDecType) {
                     distance -= DEC_WHEN_EQUAL;
                 }
             }
-            textLengthMeet = context.minTextLength >= minTextLength;
+            textLengthMeet = context.minTextLength + 0.1 * minTextLength >= minTextLength; // Soften the requirement of text length.
         }
         return textLengthMeet && distance < INIT_DISTANCE ? distance : INVALID_DISTANCE;
     }
@@ -87,5 +88,14 @@ public class NewlineContext extends StyleContext {
                     && minTextLength == context.minTextLength && hasSameDecType == context.hasSameDecType;
         }
         return false;
+    }
+
+    private boolean isMinTestLengthUseful() {
+        return (RuleGroup.isSingleStmt(typeName1) || RuleGroup.isCompoundStmt(typeName1)) &&
+                (RuleGroup.isSingleStmt(typeName2)) || RuleGroup.isCompoundStmt(typeName2);
+    }
+
+    private boolean isHasSameDecTypeUseful() {
+        return typeName1.equals(RuleGroup.DECLARATION_STMT.name()) && typeName2.equals(typeName1);
     }
 }

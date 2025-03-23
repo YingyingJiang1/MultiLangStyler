@@ -117,14 +117,18 @@ public class NewlineStyler extends Styler {
         return ctx;
     }
 
+    /**
+     * Set `minTextLength` for statement-level code blocks.
+     */
     private void setMinTextLength(AdjacentCodeBlock adjacentCode, NewlineContext context, NewlineProperty property, MyParser parser) {
         // When there are more than one newline between two statement-level code blocks, text length of these two blocks are taken into consideration.
         Set<String> stmtNames = new HashSet<>();
         for (RuleGroup ruleGroup : RuleGroup.values()) {
             stmtNames.add(ruleGroup.name());
         }
-        boolean isStmtLevel = stmtNames.contains(context.typeName1) && stmtNames.contains(context.typeName2);
-        if (isStmtLevel && property.newlines > 1) {
+        boolean isStmtLevel = (RuleGroup.isSingleStmt(context.typeName1) || RuleGroup.isCompoundStmt(context.typeName1)) &&
+                (RuleGroup.isSingleStmt(context.typeName2) || RuleGroup.isCompoundStmt(context.typeName2));
+        if (isStmtLevel && property.newlines > 0) {
             context.minTextLength = adjacentCode.calculateTextLength(property.newlines, parser, Stage.EXTRACT);
         }
     }

@@ -20,9 +20,11 @@ public class Main {
                 break;
             }
         }
+
         // Print result
         if (possible)System.out.println("Yes");
         else System.out.println("No");
+
         scanner.close();
     }
 }

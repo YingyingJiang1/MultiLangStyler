@@ -37,4 +37,9 @@ public enum RuleGroup {
         return typeName.equals(SINGLE_STMT.name()) || typeName.equals(DECLARATION_STMT.name()) || typeName.equals(EXPRESSION_STMT.name());
     }
 
+    public static boolean isCompoundStmt(String typeName) {
+        return typeName.equals(COMPOUND_STMT.name()) || typeName.equals(CONDITIONAL_STMT.name()) ||
+                typeName.equals(LOOP_STMT.name()) || typeName.equals(EXCEPTION_HANDLE_STMT.name()) || typeName.equals(CONCURRENCY_CONTROL_STMT.name());
+    }
+
 }

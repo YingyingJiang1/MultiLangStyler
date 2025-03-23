@@ -43,12 +43,12 @@ public class StylerContainer {
         // firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
 
         // Format styles
+        secondRoundStylers.add(new BodyLayoutStyler());
         secondRoundStylers.add(new BraceFormatStyler());
         secondRoundStylers.add(new LineWrappingStyler());
         secondRoundStylers.add(new LineStmtStyler());
         secondRoundStylers.add(new NewlineStyler());
         secondRoundStylers.add(new SpaceStyler());
-        secondRoundStylers.add(new BodyLayoutStyler());
         secondRoundStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
 
     }

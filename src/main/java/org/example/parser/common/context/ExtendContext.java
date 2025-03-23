@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
+import org.example.styler.format.body.layout.BodyLayoutStyler;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -267,13 +268,11 @@ public class ExtendContext extends ParserRuleContext {
                 targetIndex = i;
                 children.set(i, newChild);
                 newChild.setParent(this);
+                break;
             }
         }
-        if (targetIndex == 0) {
-            updateStartToken();
-        } else if (targetIndex == getChildCount() - 1) {
-            updateStopToken();
-        }
+        updateStartToken();
+        updateStopToken();
     }
 
     public void replaceChildren(int from, int to, List<? extends ParseTree> newTrees) {
@@ -486,12 +485,18 @@ public class ExtendContext extends ParserRuleContext {
      * Otherwise, the start token may be hws or vws.
      */
     public void updateStartToken() {
-        if (!children.isEmpty()) {
-            ParseTree startTree = children.get(0);
-            if (startTree instanceof ExtendContext) {
-                start = ((ExtendContext) startTree).start;
-            } else {
-                start = ((TerminalNode) startTree).getSymbol();
+        updateStartTokenRec(this);
+    }
+
+    private void updateStartTokenRec(ParseTree cur) {
+        if (cur instanceof ExtendContext curCtx && !curCtx.children.isEmpty()) {
+            ParseTree startTree = curCtx.children.get(0);
+            if (startTree instanceof ExtendContext startCtx && curCtx.start != startCtx.start) {
+                curCtx.start = startCtx.start;
+                updateStartTokenRec(cur.getParent());
+            } else if (startTree instanceof TerminalNode startTer && curCtx.start != startTer.getSymbol()) {
+                curCtx.start = startTer.getSymbol();
+                updateStartTokenRec(cur.getParent());
             }
         }
     }
@@ -501,12 +506,18 @@ public class ExtendContext extends ParserRuleContext {
      * Otherwise, the stop token may be hws or vws.
      */
     public void updateStopToken() {
-        if (!children.isEmpty()) {
-            ParseTree stopTree = children.get(children.size() - 1);
-            if (stopTree instanceof ExtendContext) {
-                stop = ((ExtendContext) stopTree).stop;
-            } else {
-                stop = ((TerminalNode) stopTree).getSymbol();
+        updateStopTokenRec(this);
+    }
+
+    private void updateStopTokenRec(ParseTree cur) {
+        if (cur instanceof ExtendContext curCtx && !curCtx.children.isEmpty()) {
+            ParseTree stopTree = curCtx.children.get(curCtx.children.size() - 1);
+            if (stopTree instanceof ExtendContext stopCtx && curCtx.stop != stopCtx.stop) {
+                curCtx.stop = stopCtx.stop;
+                updateStopTokenRec(cur.getParent());
+            } else if (stopTree instanceof TerminalNode stopTer && curCtx.stop != stopTer.getSymbol()) {
+                curCtx.stop = stopTer.getSymbol();
+                updateStopTokenRec(cur.getParent());
             }
         }
     }

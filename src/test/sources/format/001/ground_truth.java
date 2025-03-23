@@ -11,6 +11,7 @@ public class PowerStrips {
 
         // Print result
         System.out.println(result);
+
         scanner.close();
     }
 
@@ -27,6 +28,7 @@ public class PowerStrips {
         // Keep adding power strips until we have B or more empty sockets
         while (currentSockets < B) {
             powerStrips++;
+
             // When we plug in a power strip, we lose 1 socket (where we plug it in)
             // but gain A sockets
             currentSockets = currentSockets - 1 + A;

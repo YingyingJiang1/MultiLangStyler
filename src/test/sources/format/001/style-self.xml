@@ -9,35 +9,47 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="true"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minCodeBockLines="0" hasSameDecType="false"/>
+      <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC" minCodeBockLines="0"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="62" hasSameDecType="true"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="CONDITIONAL_STMT" type2="DECLARATION_STMT" minCodeBockLines="0"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="60" hasSameDecType="false"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="LOOP_STMT" type2="SINGLE_STMT" minCodeBockLines="0"/>
+      <style_context type1="LOOP_STMT" type2="SINGLE_STMT" minTextLength="91"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minCodeBockLines="90"/>
+      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="90"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="importDeclarationList" type2="TYPE_DEC" minCodeBockLines="0"/>
+      <style_context type1="CONDITIONAL_STMT" type2="DECLARATION_STMT" minTextLength="38"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minTextLength="43"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="importDeclarationList" type2="TYPE_DEC"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="EXPRESSION_STMT" minCodeBockLines="0"/>
+      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="EXPRESSION_STMT" minTextLength="66"/>
       <style_property newlines="1"/>
     </rule>
   </style>
@@ -46,7 +58,30 @@
       <style_property indentionUnit="4" indentionType=" "/>
     </rule>
   </style>
+  <style name="optional_brace">
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property use_brace="true"/>
+    </rule>
+  </style>
   <style name="brace_format">
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
@@ -56,15 +91,8 @@
     </rule>
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
         <block_type>DEC_BODY</block_type>
-        <body_type>MULTI</body_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
@@ -75,6 +103,40 @@
         <avgLineDis2firstUse>3.5</avgLineDis2firstUse>
         <location>BLOCK_START</location>
       </style_property>
+    </rule>
+  </style>
+  <style name="structure_preference">
+    <rule>
+      <style_context id="1" category="Increment or decrement preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="18" category="Operator preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="19" category="Operator preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="23" category="Return statements"/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+    <rule>
+      <style_context id="7" category="Continuous assignments or calls preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="24" category="Return statements"/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+    <rule>
+      <style_context id="9" category="Loops"/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+    <rule>
+      <style_context id="32" category="Redundant code"/>
+      <style_property preferenceIndex="0"/>
     </rule>
   </style>
   <style name="lineWrapping">
