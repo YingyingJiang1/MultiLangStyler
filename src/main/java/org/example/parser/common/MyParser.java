@@ -219,6 +219,7 @@ public interface MyParser {
     Set<Integer> getMemberLists();
     Set<Integer> getMemberDecs();
     Set<Integer> getArrayInitializerRules();
+    Set<Integer> getBraceOptionalStmtRules();
 
     int getRuleIndex(String ruleName);
 

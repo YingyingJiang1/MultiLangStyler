@@ -4,11 +4,13 @@ import org.example.styler.Styler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
+import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.LineStmtStyler;
 import org.example.styler.format.linewrapping.LineWrappingStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.example.styler.structure.StructureStyler;
 
 
 import java.util.ArrayList;
@@ -30,8 +32,8 @@ public class StylerContainer {
 //        firstRoundStylers.add(new UpdateVarStyler());
 //        firstRoundStylers.add(new FunctionComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
-//        firstRoundStylers.add(new StructureStyler());
-        // firstRoundStylers.add(new OptionalBraceStyler()); // empty yet during extraction
+        firstRoundStylers.add(new StructureStyler());
+         firstRoundStylers.add(new OptionalBraceStyler());
         // firstRoundStylers.add(new MultiBranchStyler()); // empty yet during extraction
 
         // firstRoundStylers.add(new CommentSyntaxStyler()); // empty yet during extraction

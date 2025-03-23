@@ -66,13 +66,13 @@ public class DeclarationLocationStyler extends Styler {
                     }
 
                     ExtendContext decStmt = symbol.getDecIdentifierNode();
-                    while (!parser.isLocalVarDeclarationStmt(decStmt)) {
+                    while (decStmt.getParent() != null && !parser.isLocalVarDeclarationStmt(decStmt)) {
                         decStmt = (ExtendContext) decStmt.getParent();
                     }
-                    ExtendContext block = (ExtendContext) decStmt.getParent();
+                    ExtendContext block = decStmt;
                     Predicate<ExtendContext> isScopeCtx = (ExtendContext cur) -> cur != null && (
                             parser.getSpecificStmtType(cur) == parser.getRuleBlock() || parser.belongToCompoundStmt(cur));
-                    while (!isScopeCtx.test(block)) {
+                    while (block.getParent() != null && !isScopeCtx.test(block)) {
                         block = (ExtendContext) block.getParent();
                     }
 

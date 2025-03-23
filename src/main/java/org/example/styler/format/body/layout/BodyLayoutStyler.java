@@ -35,16 +35,16 @@ public class BodyLayoutStyler extends BodyStyler {
         for (int i = 0; i < ctx.getChildCount(); ++i) {
             ParseTree child = ctx.getChild(i);
             if (child instanceof ExtendContext childCtx && childCtx.getRuleIndex() == parser.getRuleStmt()) {
-                ParseTree specificStmt = parser.getSpecificStmt(childCtx);
+                ExtendContext specificStmt = parser.getSpecificStmt(childCtx);
                 if (!parser.isBlock(specificStmt)) {
-                    ParseTree body = specificStmt;
+                    ExtendContext body = specificStmt;
                     BodyContext context = extractStyleContext(ctx, body, parser);
                     BodyLayoutProperty property = new BodyLayoutProperty();
                     ParseTree preChild = ctx.getChild(i - 1);
                     int preChildLine = preChild instanceof TerminalNode ? ((TerminalNode) preChild).getSymbol().getLine() :
                             ((ExtendContext) preChild).stop.getLine();
                     int succeedChildLine = body instanceof TerminalNode  ? ((TerminalNode) body).getSymbol().getLine() :
-                            ((ExtendContext) body).start.getLine();
+                            body.start.getLine();
                     property.compactStyle = preChildLine == succeedChildLine;
                     style.addRule(context, property);
                 }
@@ -57,9 +57,9 @@ public class BodyLayoutStyler extends BodyStyler {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             ParseTree child = ctx.getChild(i);
             if (child instanceof ExtendContext childCtx && childCtx.getRuleIndex() == parser.getRuleStmt()) {
-                ParseTree specificStmt = parser.getSpecificStmt(childCtx);
+                ExtendContext specificStmt = parser.getSpecificStmt(childCtx);
                 if (!parser.isBlock(specificStmt)) {
-                    ParseTree body = specificStmt;
+                    ExtendContext body = specificStmt;
                     StyleContext context = extractStyleContext(ctx, body, parser);
                     BodyLayoutProperty property = (BodyLayoutProperty) style.getProperty(context);
                     if (property == null) {
@@ -67,21 +67,21 @@ public class BodyLayoutStyler extends BodyStyler {
                     }
 
                     ExtendToken stop = body instanceof TerminalNode ? (ExtendToken) ((TerminalNode) body).getSymbol() :
-                            (ExtendToken) ((ExtendContext) body).stop;
+                            (ExtendToken) body.stop;
                     if(!property.compactStyle) {
                         ExtendToken extStart = body instanceof TerminalNode ? (ExtendToken) ((TerminalNode) body).getSymbol() :
-                                (ExtendToken) ((ExtendContext) body).start;
+                                (ExtendToken) body.start;
                         extStart.addToken(extStart.indexInContextTokens(), parser.getTokenFactory().create(parser.getVws(), System.lineSeparator()));
                     } else {
                         ExtendToken start = body instanceof TerminalNode ? (ExtendToken) ((TerminalNode) body).getSymbol() :
-                                (ExtendToken) ((ExtendContext) body).start;
+                                (ExtendToken) body.start;
                         // Move leading comment of the statement to the end of the statement.
                         int firstLeadingCommentIndex = start.indexOfFirstTokenBeforeIf(parser::belongToComment);
                         boolean hasLeadingComment = firstLeadingCommentIndex >= 0;
                         if(hasLeadingComment) {
                             int lastLeadingCommentIndex = start.indexOfLastTokenBeforeIf(parser::belongToComment);
                             stop = body instanceof TerminalNode ? (ExtendToken) ((TerminalNode) body).getSymbol() :
-                                    (ExtendToken) ((ExtendContext) body).stop;
+                                    (ExtendToken) body.stop;
                             stop.hasTrailingComment = true;
                             List<Token> comments = start.getContextTokens().subList(firstLeadingCommentIndex, lastLeadingCommentIndex + 1);
                             for (Token comment : comments) {

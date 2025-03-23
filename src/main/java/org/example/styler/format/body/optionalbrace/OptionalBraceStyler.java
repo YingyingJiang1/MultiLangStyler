@@ -24,54 +24,52 @@ public class OptionalBraceStyler extends BodyStyler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            ParseTree child = ctx.getChild(i);
-            if (child instanceof ExtendContext childCtx && childCtx.getRuleIndex() == parser.getRuleStmt()) {
-                ParseTree specificStmt = parser.getSpecificStmt(childCtx);
-                if (specificStmt instanceof TerminalNode) {
-                    style.addRule(extractStyleContext(ctx, child, parser), new OptionalBraceProperty(false));
-                } else {
-                    ExtendContext body = (ExtendContext) specificStmt;
-                    List<ParseTree> innerStmts = body.children.stream().filter(parser::belongToStmt).toList();
-                    // Only consider the body has one statement.
-                    if (innerStmts.size() == 1) {
-                        boolean useBrace = parser.isBlock(body);
-                        style.addRule(extractStyleContext(ctx, body, parser), new OptionalBraceProperty(useBrace));
-                    }
-                }
+        ExtendContext specificStmt = parser.getSpecificStmt(ctx);
+        List<ParseTree> bodies = specificStmt.children.stream().filter(parser::belongToStmt).toList();
+        for (ParseTree body : bodies) {
+            // Empty statement only has a semi token, which is a terminal node.
+            ExtendContext specificBody = parser.getSpecificStmt((ExtendContext) body);
+            // Only consider the body has one statement.
+            BodyContext bodyContext = extractStyleContext(ctx, specificBody, parser);
+            if (bodyContext.bodyNumType != BodyNumType.MULTI) {
+                boolean useBrace = parser.isBlock(specificBody);
+                style.addRule(bodyContext, new OptionalBraceProperty(useBrace));
             }
         }
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            ParseTree child = ctx.getChild(i);
-            if (parser.belongToStmt(child)) {
-                ParseTree specificStmt = parser.getSpecificStmt((ExtendContext) child);
-                BodyContext context = extractStyleContext(ctx, specificStmt, parser);
-                OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(context);
-                if (property == null) {
-                    return ctx;
-                }
-                if (property.useBrace && !parser.isBlock(specificStmt)) {
-                    // Add {}
-                    TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
-                    ExtendContext block = factory.createBlock(ctx);
-                    TerminalNode lb = factory.createTerminal(parser.getTokenFactory().create(parser.getLBrace(), "{"));
-                    TerminalNode rb = factory.createTerminal(parser.getTokenFactory().create(parser.getRBrace(), "}"));
-                    List<ParseTree> children = new ArrayList<>();
-                    children.add(lb);
-                    children.add(child);
-                    children.add(rb);
-                    block.addChildren(children);
-                    ctx.replaceChild(child, block);
-                } else if (!property.useBrace && child instanceof ExtendContext body && body.getRuleIndex() == JavaParser.RULE_block &&
-                        (context.bodyNumType == BodyNumType.EMPTY || context.bodyNumType == BodyNumType.SINGLE)) {
-                    // Removing {} happens when the bodyNumType is EMPTY or SINGLE. Otherwise, it may cause an error.
-                    if (body.getParent() instanceof ExtendContext parent) {
-                       parent.replaceChild(body, body.getFirstCtxChildIf(t -> true));
-                    }
+        ExtendContext specificStmt = parser.getSpecificStmt(ctx);
+        List<ParseTree> bodies = specificStmt.children.stream().filter(parser::belongToStmt).toList();
+
+        for (ParseTree body : bodies) {
+            // Empty statement only has a semi token, which is a terminal node.
+            ExtendContext specificBody = parser.getSpecificStmt((ExtendContext) body);
+            // Only consider the body has one statement.
+            BodyContext bodyContext = extractStyleContext(ctx, specificBody, parser);
+            OptionalBraceProperty property = (OptionalBraceProperty) style.getProperty(bodyContext);
+
+            if (property == null) {
+                continue;
+            }
+            if (property.useBrace && !parser.isBlock(specificBody)) {
+                // Add {}
+                TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
+                ExtendContext block = factory.createBlock((ExtendContext) body.getParent());
+                TerminalNode lb = factory.createTerminal(parser.getTokenFactory().create(parser.getLBrace(), "{"));
+                TerminalNode rb = factory.createTerminal(parser.getTokenFactory().create(parser.getRBrace(), "}"));
+                List<ParseTree> children = new ArrayList<>();
+                children.add(lb);
+                children.add(body);
+                children.add(rb);
+                block.addChildren(children);
+                ctx.replaceChild(body, block);
+            } else if (!property.useBrace) {
+                // Removing {} happens when the bodyNumType is EMPTY or SINGLE. Otherwise, it may cause an error.
+                boolean isBraceRemovable = parser.isBlock(specificBody) && (bodyContext.bodyNumType == BodyNumType.EMPTY || bodyContext.bodyNumType == BodyNumType.SINGLE);
+                if (isBraceRemovable) {
+                    ctx.replaceChild(body, specificBody.getFirstCtxChildIf(t -> true));
                 }
             }
         }
@@ -82,10 +80,7 @@ public class OptionalBraceStyler extends BodyStyler {
     @Override
     protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
-            relevantRules = new HashSet<Integer>(List.of(
-                    parser.getRuleIfStmt(), parser.getRuleIfElseStmt(),
-                    parser.getRuleForStmt(), parser.getRuleWhileStmt()
-            ));
+            relevantRules = new HashSet<>(parser.getBraceOptionalStmtRules());
         }
         return relevantRules;
     }

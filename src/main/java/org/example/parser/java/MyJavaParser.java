@@ -999,6 +999,12 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public Set<Integer> getBraceOptionalStmtRules() {
+        return braceOptionalBlocks;
+    }
+
+
+    @Override
     public int getVws() {
         return JavaParser.VWS;
     }
