@@ -83,17 +83,21 @@ public class Configuration {
 
   public void setSrc(String src) {
     this.src = src;
-    String language = switch (src.substring(src.lastIndexOf(".") + 1)) {
-      case "java" -> "java";
-      case "py" -> "python";
-      case "cpp" -> "cpp";
-      default -> null;
-    };
-    if (language == null) {
-      throw new IllegalArgumentException("Failed to identify the language of " + src);
-    }
-    GlobalInfo.setLanguage(language);
     applicationCollection = collectFile(src);
+    if (!applicationCollection.isEmpty()) {
+      String suffix = applicationCollection.getFilePath(0).substring(applicationCollection.getFilePath(0).lastIndexOf(".") + 1);
+      String language = switch (suffix) {
+        case "java" -> "java";
+        case "py" -> "python";
+        case "cpp" -> "cpp";
+        default -> null;
+      };
+      if (language == null) {
+        throw new IllegalArgumentException("Failed to identify the language of " + src);
+      }
+      GlobalInfo.setLanguage(language);
+    }
+
   }
 
   public void setTarget(String target) {

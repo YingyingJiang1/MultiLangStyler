@@ -10,12 +10,10 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.comment.density.style.CommentDensityProperty;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class CommentDensityStyler extends Styler {
-    private boolean executed = false;
+    private boolean executed = false; // Used to make sure the extraction and application is executed only once.
     public CommentDensityStyler() {
         style.setStyleName("comment_density");
     }
@@ -26,8 +24,8 @@ public class CommentDensityStyler extends Styler {
             return;
         }
         executed = true;
-        List<Token> commentTokens = getAllCommentTokens(tokens, parser);
         int totalLines = getTotalLines(parser);
+        List<Token> commentTokens = getAllCommentTokens(tokens, parser).keySet().stream().toList();
         double commentLines = commentTokens.stream()
                 .reduce(0, (acc, t) -> acc + t.getText().split("\n").length, Integer::sum);
         if (totalLines > 0) {
@@ -41,21 +39,32 @@ public class CommentDensityStyler extends Styler {
             return;
         }
         executed = true;
-        List<Token> commentTokens = getAllCommentTokens(tokens, parser);
+        Map<Token, Integer> commentMap = getAllCommentTokens(tokens, parser);
+        List<Token> commentTokens = new ArrayList<>(commentMap.keySet());
         int totalLines = getTotalLines(parser);
         double commentLines = commentTokens.stream()
                 .reduce(0, (acc, t) -> acc + t.getText().split("\n").length, Integer::sum);
         if (totalLines > 0) {
             double lineDensity = commentLines / totalLines;
             StyleProperty property = style.getProperty(null);
+
             // Shorten line density by removing arbitrary comment tokens
             if (property instanceof CommentDensityProperty densityProperty && lineDensity > densityProperty.lineDensity) {
                 int linesToRemoved = (int) (totalLines * (lineDensity - densityProperty.lineDensity));
-                tokens.sort(Comparator.comparing(t -> t.getText().split("\n").length));
+                commentTokens.sort(Comparator.comparing(t -> t.getText().split("\n").length));
                 for (int i = 0; i < commentTokens.size() && linesToRemoved > 0; i++) {
                     if (commentTokens.get(i) instanceof ExtendToken extToken) {
-                        extToken.setType(-1); // remove the token
-                        linesToRemoved--;
+                        int preIndex = commentMap.get(extToken) - 1;
+                        while (preIndex >= 0 && (tokens.get(preIndex).getType() == parser.getHws() || tokens.get(preIndex).getType() == parser.getVws())) {
+                            --preIndex;
+                        }
+
+                        if (preIndex >= 0 && tokens.get(preIndex).getLine() == extToken.getLine()) {
+                            extToken.setText("\n"); // remove trailing comment
+                        } else {
+                            extToken.setText("");
+                        }
+                        linesToRemoved -= extToken.getText().split("\n").length;
                     }
                 }
             }
@@ -65,21 +74,24 @@ public class CommentDensityStyler extends Styler {
 
 
     @Override
-    public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
-        return parser.belongToComment(tokens.get(i).getType());
+    public void doFinalize() {
+        executed = false;
     }
 
-    private List<Token> getAllCommentTokens(List<Token> tokens, MyParser parser) {
-        List<Token> commentTokens = new ArrayList<>();
-        for (Token token : tokens) {
+    private Map<Token, Integer> getAllCommentTokens(List<Token> tokens, MyParser parser) {
+        Map<Token, Integer> commentTokens = new HashMap<>();
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
             if (parser.belongToComment(token.getType())) {
-                commentTokens.add(token);
+                commentTokens.put(token, i);
             }
         }
+
         return commentTokens;
     }
 
     private int getTotalLines(MyParser parser) {
         return parser.getTokenStream().getText().split("\n").length;
     }
+
 }

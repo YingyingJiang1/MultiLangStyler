@@ -503,7 +503,7 @@ public class EquivalentStructure {
 				handlers.add(handler);
 			}
 		}
-		return null;
+		return handlers;
 	}
 
 	private static Map<Integer, List<Integer>> parseBannedTransferMap(JsonNode bannedTransfersNode, ObjectMapper objectMapper, MyParser parser) {

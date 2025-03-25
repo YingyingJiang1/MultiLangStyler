@@ -22,6 +22,11 @@ public class StructurePreferenceTest extends IntegrationTest {
         transform(Paths.get(dir, "L016\\claude35sonnet.java"), Paths.get(dir, "L016\\claude35sonnet.java"));
     }
 
+    @Test
+    public void testExpressionStmt() {
+        batchTest(1, "expression_stmt", null);
+    }
+
 
     void resultOfTest(Style style, int targetId, int targetIndex) {
         StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(new StructPreferenceContext("", targetId));

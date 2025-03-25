@@ -47,7 +47,7 @@ public class FineGrainedRuleGrouper extends RuleGrouper {
 
     private static void init(String language) {
         if (!language.equals(curLanguage)) {
-            curLanguage = GlobalInfo.getLanguage();
+            curLanguage = language;
             MyParser parser = MyParserFactory.createParser(curLanguage);
             declarationStmts = new HashSet<>(Arrays.asList(
                    parser.getRuleLocalVarDeclarationStmt(), parser.getRuleFieldDeclarationStmt()

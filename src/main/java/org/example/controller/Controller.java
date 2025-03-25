@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -50,28 +51,27 @@ public class Controller {
             } else {
                 targetProgramStyle = extractStyle(conf.extractionCollection);
             }
-
-            if (conf.getStyleOutPath() != null) {
-                StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
-            }
-
             // Extract style of src itself, this must precede the style application, because it will change curPath and parser.
             selfProgramStyle = extractStyle(conf.applicationCollection);
             SelfStyleManager.addStyle(conf.applicationCollection, selfProgramStyle);
-            if (conf.isSaveSelfStyle) {
-                StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
-            }
 
-            String code = applyStyle(conf.applicationCollection);
-            saveApplyResult(code);
+            applyStyle(conf.applicationCollection);
+
+            if (conf.getStyleOutPath() != null) {
+                StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
+                if (conf.isSaveSelfStyle) {
+                    StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
+                }
+            }
             return targetProgramStyle;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+
         return null;
     }
 
-    private String applyStyle(FileCollection files) {
+    private void applyStyle(FileCollection files) {
         applyInitialize(files, targetProgramStyle);
         String code = null;
         for (int i = 0; i < files.size(); i++) {
@@ -89,13 +89,13 @@ public class Controller {
                 Preprocessor preprocessor = new Preprocessor();
                 List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
                 code = toString(tokens, preprocessor);
+                saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
                 logger.error("Exception details:", e);
             }
         }
         applyFinalize();
-        return code;
     }
 
     public ProgramStyle extractStyle(FileCollection files) {

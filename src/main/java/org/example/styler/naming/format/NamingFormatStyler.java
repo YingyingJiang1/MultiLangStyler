@@ -91,7 +91,7 @@ public class NamingFormatStyler extends Styler {
             } else {
                 ModelAdapter modelAdapter = ModelAdapter.getInstance();
                 if (modelAdapter != null) {
-                    ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(parser::isBlock);
+                    ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(node -> parser.isBlock(node) || parser.isBody(node));
                     String prompt = String.format("Does variable %s use user input? Answer only \"yes\" or \"no." +
                             "// Code：\n" + "%s", symbol.getName(), stmt.getText());
                     String res = modelAdapter.callModel(prompt);

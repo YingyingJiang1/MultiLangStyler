@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>transformer</artifactId>
+    <artifactId>egsi</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -125,7 +125,7 @@
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <manifestEntries>
-                                    <Main-Class>org.example.experiment.Transform</Main-Class> <!-- 设置主类 -->
+                                    <Main-Class>org.example.experiment.TransformAuthorPair</Main-Class> <!-- 设置主类 -->
                                 </manifestEntries>
                             </archive>
                         </configuration>

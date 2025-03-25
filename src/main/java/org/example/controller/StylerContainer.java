@@ -2,6 +2,7 @@ package org.example.controller;
 
 import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
+import org.example.styler.comment.density.CommentDensityStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
@@ -42,7 +43,7 @@ public class StylerContainer {
         // firstRoundStylers.add(new MultiBranchStyler()); // empty yet during extraction
 
         // firstRoundStylers.add(new CommentSyntaxStyler()); // empty yet during extraction
-        // firstRoundStylers.add(new CommentDensityStyler()); // empty yet during extraction
+
 
         firstRoundStylers.add(new NamingFormatStyler());
         // firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
@@ -57,7 +58,7 @@ public class StylerContainer {
 
         tsStylers.add(new SpaceStyler());
         tsStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
-
+        tsStylers.add(new CommentDensityStyler());
 
     }
 

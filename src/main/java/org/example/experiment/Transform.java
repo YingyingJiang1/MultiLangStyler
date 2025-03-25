@@ -43,7 +43,7 @@ public class Transform {
         }
 
         int expUnitCount = 0;
-        String outputFile = inputFile.replace(".jsonl", "-transformer.jsonl");
+        String outputFile = inputFile.replace(".jsonl", "_egsi.jsonl");
         for (Future<Integer> future : futures) {
             expUnitCount = future.get();  // 通过future.get()获取线程的返回值（此处为null）
             FileIO.write(outputFile, expUnits);
@@ -61,11 +61,14 @@ public class Transform {
     private static int worker(List<ExpUnit> data, String codeDirectory, String outputDirectory) {
         int count = 0;
         for  (ExpUnit expUnit : data) {
-            Path srcFile = Paths.get(codeDirectory, expUnit.src.problem_id, expUnit.src.file_name);
-            Path targetFile = Paths.get(codeDirectory, expUnit.target.problem_id, expUnit.target.file_name);
-            String resultFileName = srcFile.getFileName().toString().replace(".java", "-") +
-                    targetFile.getFileName().toString();
-            String resultPath = Paths.get(outputDirectory, expUnit.src.problem_id, resultFileName).toString();
+            Path srcFile = Paths.get(codeDirectory, expUnit.src.author_name, expUnit.src.problem_id + ".java");
+            Path targetFile = Paths.get(codeDirectory, expUnit.target.author_name, expUnit.target.problem_id + ".java");
+            String resultFileName = expUnit.src.author_name + "_" + expUnit.src.problem_id + "_" + expUnit.target.problem_id + ".java";
+            String resultDir = Paths.get(outputDirectory, expUnit.target.author_name).toString();
+            if (!new File(resultDir).exists()) {
+                new File(resultDir).mkdirs();
+            }
+            String resultPath = Paths.get(resultDir, resultFileName).toString();
             String[] args = {"-src", srcFile.toString(), "-target", targetFile.toString(), "-f", resultPath};
             try {
                 logger.info("thread {} is working... problem_id:{}, src:{}, target:{}",
@@ -77,7 +80,7 @@ public class Transform {
                     expUnit.result.problem_id = expUnit.src.problem_id;
                     expUnit.result.author_name = resultFileName.replace(".java", "");
                     expUnit.result.file_name = resultPath;
-                    expUnit.result.author_type = "transformer";
+                    expUnit.result.author_type = "egsi";
                     expUnit.result.correct = false;
                     ++count;
                 }
