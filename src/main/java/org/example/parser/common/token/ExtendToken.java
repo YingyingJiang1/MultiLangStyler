@@ -182,20 +182,4 @@ public class ExtendToken extends CommonToken {
         contextTokens = null;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), hierarchy, indention, contextTokens, hasTrailingComment);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ExtendToken other) {
-            return super.equals(obj)
-                    && hierarchy == other.hierarchy
-                    && indention == other.indention
-                    && Objects.equals(contextTokens, other.contextTokens)
-                    && hasTrailingComment == other.hasTrailingComment;
-        }
-        return false;
-    }
 }
