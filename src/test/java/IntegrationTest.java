@@ -1,3 +1,4 @@
+import org.assertj.core.api.SoftAssertions;
 import org.example.Configuration;
 import org.example.controller.Controller;
 import org.example.parser.common.MyParser;
@@ -35,6 +36,7 @@ public class IntegrationTest {
     }
 
     public static void batchTest(int pairNumber, String subDir, String debug_pair) {
+        SoftAssertions  softly = new SoftAssertions();
         for (int i = 1; i <= pairNumber; i++) {
             String strNumber = String.format("%03d", i);
             if (debug_pair != null && !strNumber.equals(debug_pair)) {
@@ -64,19 +66,20 @@ public class IntegrationTest {
 
             // Compare the ground truth and transform result.
             if (groundTruthFile != null && resultFile != null) {
-                System.out.printf("Test %s/%s...", subDir, strNumber);
                 try {
                     String groundTruth = Files.readString(groundTruthFile.toPath());
                     String result = Files.readString(resultFile.toPath());
-                    assertEquals(groundTruth, result);
-                    System.out.println("OK!");
-                } catch (IOException e) {
+                    softly.assertThat(result).as(strNumber).isEqualTo(groundTruth);
+                } catch (Exception e) {
                     System.err.print("Test failed: failed to read file!");
                 }
             } else {
                 System.out.println("ground_truth.java or result.java not exists...skip comparation!");
             }
         }
+
+        System.out.printf("Test %s...", subDir);
+        softly.assertAll();
     }
 
 

@@ -52,6 +52,7 @@ public class CommentDensityStyler extends Styler {
             if (property instanceof CommentDensityProperty densityProperty && lineDensity > densityProperty.lineDensity) {
                 int linesToRemoved = (int) (totalLines * (lineDensity - densityProperty.lineDensity));
                 commentTokens.sort(Comparator.comparing(t -> t.getText().split("\n").length));
+                List<Token> removedTokens = new ArrayList<>();
                 for (int i = 0; i < commentTokens.size() && linesToRemoved > 0; i++) {
                     if (commentTokens.get(i) instanceof ExtendToken extToken) {
                         int preIndex = commentMap.get(extToken) - 1;
@@ -59,14 +60,17 @@ public class CommentDensityStyler extends Styler {
                             --preIndex;
                         }
 
-                        if (preIndex >= 0 && tokens.get(preIndex).getLine() == extToken.getLine()) {
-                            extToken.setText("\n"); // remove trailing comment
-                        } else {
-                            extToken.setText("");
-                        }
                         linesToRemoved -= extToken.getText().split("\n").length;
+                        if (preIndex >= 0 && tokens.get(preIndex).getLine() == extToken.getLine()) {
+                            extToken.setText("\n"); // Change the trailing comment into vws
+                            extToken.setType(parser.getVws());
+                        } else {
+                            removedTokens.add(extToken);
+                        }
+
                     }
                 }
+                tokens.removeAll(removedTokens);
             }
         }
 

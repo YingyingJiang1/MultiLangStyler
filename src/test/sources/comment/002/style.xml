@@ -3,20 +3,16 @@
 <program_style>
   <style name="naming_format">
     <rule>
+      <style_context name_type="TYPE"/>
+      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="23"/>
+    </rule>
+    <rule>
       <style_context name_type="PARAMETER"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
-      <style_context name_type="LOCAL_VARIABLE"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="7"/>
-    </rule>
-    <rule>
       <style_context name_type="METHOD"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
-    </rule>
-    <rule>
-      <style_context name_type="TYPE"/>
-      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
     </rule>
   </style>
   <style name="indention">
@@ -27,20 +23,13 @@
   <style name="optional_brace">
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property use_brace="true"/>
     </rule>
   </style>
   <style name="brace_format">
-    <rule>
-      <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
     <rule>
       <style_context>
         <block_type>DEC_BODY</block_type>
@@ -55,11 +44,18 @@
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
     </rule>
+    <rule>
+      <style_context>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
+    </rule>
   </style>
   <style name="declaration_location">
     <rule>
       <style_property>
-        <avgLineDis2firstUse>1.8333333333333333</avgLineDis2firstUse>
+        <avgLineDis2firstUse>3.0</avgLineDis2firstUse>
         <location>NEAR_USE</location>
       </style_property>
     </rule>
@@ -84,11 +80,11 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER, )"/>
+      <style_context token="), )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="(, KEYWORD"/>
+      <style_context token="IDENTIFIER, )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -96,11 +92,11 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="[, ]"/>
+      <style_context token="(, LITERAL"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL, ;"/>
+      <style_context token="[, ]"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -108,16 +104,16 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER, UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
+      <style_context token="KEYWORD, {"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="BIN_OP"/>
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context token="UNARY_OP, )"/>
-      <style_property space1="false" space2="false"/>
+      <style_context token="}, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="(, IDENTIFIER"/>
@@ -160,11 +156,15 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
+      <style_context token="COMMENT, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context token="DOT"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token=";, IDENTIFIER"/>
+      <style_context token="COMMENT, IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
@@ -191,7 +191,7 @@
   </style>
   <style name="comment_density">
     <rule>
-      <style_property density="0.0"/>
+      <style_property density="0.10526315789473684"/>
     </rule>
   </style>
   <style name="line_statement">
@@ -202,19 +202,15 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true"/>
-      <style_property newlines="0"/>
+      <style_context type1="CONDITIONAL_STMT" type2="EXPRESSION_STMT" minTextLength="129"/>
+      <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="65"/>
+      <style_context type1="DECLARATION_STMT" type2="CONDITIONAL_STMT" minTextLength="136"/>
       <style_property newlines="2"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="38" hasSameDecType="true"/>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="60" hasSameDecType="false"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
@@ -223,10 +219,6 @@
     </rule>
   </style>
   <style name="structure_preference">
-    <rule>
-      <style_context id="19" category="Operator preferences"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
     <rule>
       <style_context id="7" category="Continuous assignments or calls preferences"/>
       <style_property preferenceIndex="0"/>

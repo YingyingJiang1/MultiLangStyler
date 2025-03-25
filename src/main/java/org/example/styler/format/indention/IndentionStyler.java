@@ -62,7 +62,7 @@ public class IndentionStyler extends Styler {
         if (stage == Stage.EXTRACT) {
             return tokens.get(i).getType() == parser.getHws() && tokens.get(i).getCharPositionInLine() == 0;
         } else if(stage == Stage.APPLY) {
-            return i - 1 >= 0 && tokens.get(i - 1).getText().endsWith("\n") && parser.getVws() != tokens.get(i).getType();
+            return  i - 1 >= 0 && tokens.get(i - 1).getText().endsWith("\n") && parser.getVws() != tokens.get(i).getType();
         } else {
             return false;
         }
