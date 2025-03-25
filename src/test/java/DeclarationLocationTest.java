@@ -11,7 +11,11 @@ public class DeclarationLocationTest extends IntegrationTest {
      */
     @Test
     public void test() {
-        batchTest(2, subDirName, "002");
+        batchTest(3, subDirName, "003");
     }
+
+    /**
+     * 003: Test when there is a function call in the initializer, forbid to move.
+     */
 
 }

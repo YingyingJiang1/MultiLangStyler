@@ -384,6 +384,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public boolean isFunctionCall(ParseTree t) {
+        return t instanceof JavaParser.MethodCallContext;
+    }
+
+    @Override
     public int getRuleExpression() {
         return JavaParser.RULE_expression;
     }

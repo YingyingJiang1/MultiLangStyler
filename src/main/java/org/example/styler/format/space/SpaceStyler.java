@@ -94,20 +94,11 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
-    protected Set<String> getRelevantTokens(MyParser parser) {
-        if (relevantTokens == null) {
-            relevantTokens = new HashSet<>();
-            relevantTokens.addAll(parser.getSeparators());
-            relevantTokens.addAll(parser.getOperators());
-        }
-        return relevantTokens;
-    }
-
-    @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         int type = tokens.get(i).getType();
-        String text = tokens.get(i).getText();
-        return type == parser.getIdentifier() || parser.getSeparators().contains(text) || parser.getOperators().contains(text) || parser.belongToKeyword(tokens.get(i));
+        return type != parser.getHws() && type != parser.getVws();
+//        String text = tokens.get(i).getText();
+//        return type == parser.getIdentifier() || parser.getSeparators().contains(text) || parser.getOperators().contains(text) || parser.belongToKeyword(tokens.get(i));
     }
 
     private Token findFirstNonWSonLeft(List<Token> tokens, int start, MyParser parser) {

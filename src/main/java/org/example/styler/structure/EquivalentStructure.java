@@ -153,6 +153,10 @@ public class EquivalentStructure {
 		return placeholderContainer.getVNodeByPlaceholderName(placeholderName);
 	}
 
+	public List<VirtualNode> getAllVNodes() {
+		return new ArrayList<>(vTreeMap.values());
+	}
+
 	public int match(ParseTree t, MyParser parser) {
 		// Virtual tree that has a greater priority is matched first.
 		Map<Forest, Integer> vtMap = new TreeMap<>();

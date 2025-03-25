@@ -21,13 +21,13 @@ public class IndentionProperty extends StyleProperty {
     @Override
     public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("indentionUnit", String.valueOf(indentionUnit));
-        parent.addAttribute("indentionType", String.valueOf(indentionType));
+        parent.addAttribute("indentionType", indentionType == ' ' ? " " : "\\t");
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
         indentionUnit = Integer.parseInt(parent.attributeValue("indentionUnit"));
-        indentionType = parent.attributeValue("indentionType").charAt(0);
+        indentionType = parent.attributeValue("indentionType").equals(" ") ? ' ' : '\t';
     }
 
     @Override

@@ -332,14 +332,13 @@ public class ExtendContext extends ParserRuleContext {
         return getAllContextsIf(ctx -> ctx.getRuleIndex() == ruleIndex);
     }
 
-    public List<ExtendContext> getAllContextsByTypeRec(int ruleIndex) {
+    public List<ExtendContext> getAllTokensRecIf(Predicate<ExtendContext> cond) {
         List<ExtendContext> ctxs = new ArrayList<>();
         for (int i = 0; i < this.children.size(); ++i) {
             ParseTree treeNode = this.children.get(i);
-            if (treeNode instanceof ExtendContext) {
-                ExtendContext innerNode = (ExtendContext) treeNode;
-                ctxs.addAll(innerNode.getAllContextsByTypeRec(ruleIndex));
-                if (innerNode.getRuleIndex() == ruleIndex) {
+            if (treeNode instanceof ExtendContext innerNode) {
+                ctxs.addAll(innerNode.getAllTokensRecIf(cond));
+                if (cond.test(innerNode)) {
                     ctxs.add(innerNode);
                 }
             }

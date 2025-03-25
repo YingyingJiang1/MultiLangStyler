@@ -27,8 +27,8 @@ public abstract class Checker {
    */
   public boolean check(EquivalentStructure structure, int index, MyParser parser) {
     for (String[] args : argsList) {
-      if (args.length < 2) {
-        logger.error("Arguments of LoopEndChecker error: length < 2");
+      if (args.length < 1) {
+        logger.error("Arguments of Checker error: length < 1");
         continue;
       }
       int configuredIndex = Integer.parseInt(args[0]);

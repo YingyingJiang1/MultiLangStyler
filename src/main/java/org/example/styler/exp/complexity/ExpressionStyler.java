@@ -92,7 +92,7 @@ public class ExpressionStyler extends Styler {
 
     private ExpressionProperty extractStyleProperty(ExtendContext expression, MyParser parser) {
         int length = expression.getText().length();
-        int subExpNum = expression.getAllContextsByTypeRec(parser.getRuleExpression()).size();
+        int subExpNum = expression.getAllTokensRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleExpression()).size();
         return new ExpressionProperty(length, subExpNum);
     }
 

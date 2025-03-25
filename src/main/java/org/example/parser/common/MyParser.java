@@ -114,6 +114,7 @@ public interface MyParser {
     boolean isLiteral(ParseTree node);
     boolean isVariableDeclaratorId(ParseTree t);
     boolean isVariableInitializer(ParseTree t);
+    boolean isFunctionCall(ParseTree t);
 
 
     int getRuleBlock();

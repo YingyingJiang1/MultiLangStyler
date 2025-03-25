@@ -201,7 +201,8 @@
   "id" : 18,
   "category" : "Operator preferences",
   "codes" : [ "$E < $E1", "$E1 > $E" ],
-  "checkers" : [ ],
+  "checkers" : [
+  ],
   "handlers" : [ ]
 }, {
   "id" : 19,
