@@ -15,7 +15,7 @@ public class DeclarationLocationProperty extends StyleProperty {
 
     public DeclarationLocationProperty(double avgLineDis2firstUse, Location location) {
         this.location = location;
-        this.avgLineDis2firstUse = avgLineDis2firstUse;
+        this.avgLineDis2firstUse = Math.round(avgLineDis2firstUse * 100) / 100.0;
     }
 
     @Override

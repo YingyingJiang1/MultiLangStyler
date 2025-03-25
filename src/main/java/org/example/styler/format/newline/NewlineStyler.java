@@ -249,8 +249,9 @@ public class NewlineStyler extends Styler {
         if (contextTokens != null) {
             int i = codeBlock2.token.indexInContextTokens();
             for (int j = 0; j < i; j++) {
-                if (parser.belongToComment(contextTokens.get(j).getType())) {
-                    newlines -= contextTokens.get(i).getText().split("\n").length;
+                Token  token = contextTokens.get(j);
+                if (parser.belongToComment(token.getType())) {
+                    newlines -= token.getText().split("\n").length;
                 }
             }
         }

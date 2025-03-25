@@ -13,17 +13,8 @@ public class ArrangementTest extends IntegrationTest {
     }
 
     @Test
-    public void test1() {
-        Configuration conf = new Configuration();
-        String dir = "src/test/sources/arrangement1";
-        conf.extractionCollection.clear();
-        conf.extractionCollection.add(Paths.get(dir + File.separator + "2022trhacknon-AccessibilityEventCompat-target.java"));
-        conf.applicationCollection.clear();
-        conf.applicationCollection.add(Paths.get(dir + File.separator + "2022hungnguyennaz-TranslationRegistry-source.java"));
-        conf.setStyleOutPath(dir + File.separator + "sample-style.xml");
-        Controller controller = new Controller(conf);
-        ProgramStyle programStyle = controller.execute();
-
+    public void test() {
+        batchTest(1, "arrangement", null);
     }
 
 }

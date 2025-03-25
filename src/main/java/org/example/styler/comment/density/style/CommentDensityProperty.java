@@ -8,7 +8,7 @@ public class CommentDensityProperty extends StyleProperty {
     public double lineDensity;
 
     public CommentDensityProperty(double lineDensity) {
-        this.lineDensity = lineDensity;
+        this.lineDensity = Math.round(lineDensity * 100) / 100.0;
     }
 
     @Override

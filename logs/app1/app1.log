@@ -85,3 +85,9 @@
 2025-03-25 16:03:08,405 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
 2025-03-25 16:11:22,383 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\002\style.xml
 2025-03-25 16:11:22,395 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\002\style-self.xml
+2025-03-25 16:17:39,594 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\arrangement\001\style.xml
+2025-03-25 16:17:39,601 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\arrangement\001\style-self.xml
+2025-03-25 16:24:42,588 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\arrangement\001\style.xml
+2025-03-25 16:24:42,594 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\arrangement\001\style-self.xml
+2025-03-25 16:28:08,909 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\arrangement\001\style.xml
+2025-03-25 16:28:08,917 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\arrangement\001\style-self.xml
