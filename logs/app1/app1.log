@@ -305,3 +305,17 @@ java.lang.ClassCastException: class org.antlr.v4.runtime.tree.TerminalNodeImpl c
 2025-03-26 19:41:58,205 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\001\style-self.xml
 2025-03-26 19:41:58,410 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\002\style.xml
 2025-03-26 19:41:58,413 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\002\style-self.xml
+2025-03-26 19:45:15,618 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 19:45:15,629 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
+2025-03-26 19:51:16,694 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 19:51:16,701 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
+2025-03-26 19:52:35,030 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 19:52:35,039 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
+2025-03-26 19:59:12,606 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 19:59:12,617 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
+2025-03-26 19:59:24,479 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 19:59:24,488 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
+2025-03-26 20:04:47,477 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 20:04:47,485 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml
+2025-03-26 20:05:05,838 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style.xml
+2025-03-26 20:05:05,846 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\format\003\style-self.xml

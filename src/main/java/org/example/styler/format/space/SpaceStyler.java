@@ -54,15 +54,29 @@ public class SpaceStyler extends Styler {
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         Token cur = tokens.get(index);
+        String curText = cur.getText();
+        boolean noNeedCheck = !curText.equals("<") && !curText.equals(">");
+
+
         SpaceContext context = extractContext(tokens, index, Stage.APPLY, parser);
         SpaceProperty property = (SpaceProperty) style.getProperty(context);
         if (property != null) {
             if (cur instanceof ExtendToken extendToken) {
                 if (property.space2) {
-                    extendToken.addTokenAfter(parser.getTokenFactory().create(parser.getHws(), " "), parser);
+                    // Only add a space after the last '<'/'>' of shift operators.
+                    boolean isShiftEnd = (curText.equals("<") || curText.equals(">")) &&
+                            tokens.get(index - 1).getText().equals(curText) && !tokens.get(index + 1).getText().equals(curText);
+                    if (noNeedCheck || isShiftEnd) {
+                        extendToken.addTokenAfter(parser.getTokenFactory().create(parser.getHws(), " "), parser);
+                    }
                 }
                 if (context.tokenName2.isEmpty() && property.space1) {
-                    extendToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), " "), parser);
+                    // Only add space before the first '<'/'>' of shift operators.
+                    boolean isShiftBegin = (curText.equals("<") || curText.equals(">")) &&
+                            tokens.get(index + 1).getText().equals(curText) && !tokens.get(index - 1).getText().equals(curText);
+                    if (noNeedCheck ||isShiftBegin ){
+                        extendToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), " "), parser);
+                    }
                 }
             }
         }

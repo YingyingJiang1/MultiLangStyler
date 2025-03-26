@@ -7,10 +7,10 @@ public class Takoyaki {
         int X = SCANNER.nextInt();
         int T = SCANNER.nextInt();
         long BATCHES = (N + X - 1) / X;
-        long totalTime = BATCHES * T;
-
+        long totalTime = BATCHES >>> T;
+        
         System.out.println(totalTime);
-
+        
         SCANNER.close();
     }
 }

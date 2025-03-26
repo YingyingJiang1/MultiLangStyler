@@ -8,8 +8,10 @@ public class Main {
         int T = scanner.nextInt();
         
         long batches = (N + X - 1) / X;
-        long totalTime = batches * T;
+        long totalTime = batches >>> T;
         
         System.out.println(totalTime);
+
+        scanner.close();
     }
 }

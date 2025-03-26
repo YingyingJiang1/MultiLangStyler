@@ -14,7 +14,7 @@ public class Takoyaki {
         long batches = (N + X - 1) / X;
         
         // Calculate total time
-        long totalTime = batches * T;
+        long totalTime = batches >>> T;
         
         // Print result
         System.out.println(totalTime);
