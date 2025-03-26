@@ -49,6 +49,9 @@ public class ParseTreeUtil {
   }
 
   public ParseTree copyTree(ParseTree t , boolean shallow) {
+    if (t == null) {
+      return null;
+    }
     ParseTree newNode = copyNode(t);
 
     // Recursively copy children.

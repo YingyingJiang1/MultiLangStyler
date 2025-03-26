@@ -45,7 +45,7 @@ public class CondReverserHandler extends Handler{
 
   @Override
   protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
-    for (int i = 2; i < args.size(); i++) {
+    for (int i = 0; i < args.size(); i++) {
       String holderName = args.get(i);
       List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
       for (int j = 0; j < matchedTrees.size(); j++) {

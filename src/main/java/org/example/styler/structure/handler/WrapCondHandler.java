@@ -22,13 +22,12 @@ public class WrapCondHandler extends Handler{
 
 	@Override
 	protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
-		for (int i = 2; i < args.size(); i++) {
-			String holderName = args.get(i);
+		for (String holderName : args) {
 			List<ParseTree> matchedTrees = structure.getVNode(holderName).matchedTrees;
 			for (int j = 0; j < matchedTrees.size(); j++) {
 				ParseTree t = matchedTrees.get(j);
 				if (t instanceof JavaParser.ExpressionContext ctx) {
-					if(containsLogicalOp(ctx)) {
+					if (containsLogicalOp(ctx)) {
 						matchedTrees.set(j, ParseTreeUtil.getInstance().encapsulateExpWithParen(ctx, parser));
 					}
 				}

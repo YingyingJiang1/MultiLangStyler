@@ -28,8 +28,8 @@ public abstract class Handler {
         continue;
       }
       int index1 = Integer.parseInt(args[0]), index2 = Integer.parseInt(args[1]);
-      if(index1 == from && index2 == to || index1 == to && index2 == from) {
-        doHandle(structure, Arrays.stream(args).toList().subList(1, args.length),  parser);
+      if(index1 == from && index2 == to) {
+        doHandle(structure, Arrays.stream(args).toList().subList(2, args.length),  parser);
       }
     }
   }
@@ -44,6 +44,7 @@ public abstract class Handler {
       case "Exp2ExpStmtHandler" -> new Exp2ExpStmtHandler(argsList);
       case "AssignCallExpHandler" -> new AssignCallExpHandler(argsList);
       case "ReplaceHandler" -> new ReplaceHandler(argsList);
+      case "AppendTreeHandler" -> new AppendTreeHandler(argsList);
       default -> null;
     };
     if (handler == null) {

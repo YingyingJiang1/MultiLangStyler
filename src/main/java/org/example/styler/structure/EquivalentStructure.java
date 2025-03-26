@@ -253,16 +253,16 @@ public class EquivalentStructure {
 		Forest forest = forests.get(to);
 		int fromSize = forests.get(from).size();
 		int toSize = forest.size();
-		List<ParseTree> newTrees = new ArrayList<>(1);
+		List<ParseTree> newTrees = new ArrayList<>();
 		for(ParseTree t : forest.getTrees()) {
-			// System.out.println(t.toStringTree(new JavaParser(null)));
-			newTrees.add(createTree(t, forest));
+			newTrees.add(createTree(t));
 		}
 
 		// Update old trees to new trees.
 		if (oldTree.getParent() != null) {
 			ExtendContext parent = (ExtendContext) oldTree.getParent();
 			int startIndex = parent.children.indexOf(oldTree);
+			parent.children.removeAll(parent.children.subList(startIndex, fromSize));
 			parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
 		}
 		cleanState();
@@ -270,31 +270,32 @@ public class EquivalentStructure {
 	}
 
 	/**
+	 * @implNote For virtual node, use the real tree it matched. For real node, do deep copy.
 	 * @apiNote Before calling this method, ensure there's a virtual tree matching with a real tree.
-	 * @param t t doesn't have an associated virtual node and t is a ExtendContext instance.
 	 * @return
 	 */
-	private ParseTree createTree(ParseTree t, Forest forest) {
-		ExtendContext ctx = (ExtendContext) t;
+	private ParseTree createTree(ParseTree t) {
+		// Create root
+		ParseTree root = ParseTreeUtil.getInstance().copyNode(t);
 
 		// Create children
-		List<ParseTree> children = new ArrayList<>();
-		for (ParseTree child : ctx.children) {
-			VirtualNode vNode = vTreeMap.get(child);
-			if (vNode != null) {
-				children.addAll(vNode.matchedTrees);
-			} else if(child instanceof TerminalNode) {
-				children.add(ParseTreeUtil.getInstance().copyTree(child, false));
-			} else {
-				children.add(createTree(child, forest));
+		if (t instanceof ExtendContext ctx) {
+			List<ParseTree> children = new ArrayList<>();
+			for (ParseTree child : ctx.children) {
+				VirtualNode vNode = vTreeMap.get(child);
+				if (vNode != null) {
+					children.addAll(vNode.matchedTrees);
+				} else if(child instanceof TerminalNode) {
+					children.add(ParseTreeUtil.getInstance().copyTree(child, false));
+				} else {
+					children.add(createTree(child));
+				}
 			}
-		}
 
-		// Create parent
-		ParseTree root = ParseTreeUtil.getInstance().copyNode(t);
-		if (root instanceof ExtendContext rootCtx) {
-			rootCtx.children.clear();
-			rootCtx.addChildren(children);
+			if (root instanceof ExtendContext rootCtx) {
+				rootCtx.children.clear();
+				rootCtx.addChildren(children);
+			}
 		}
 
 		return root;

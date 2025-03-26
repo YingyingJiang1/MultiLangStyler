@@ -28,7 +28,7 @@ public class StylerContainer {
     List<Styler> tsStylers = new ArrayList<>();
 
     public StylerContainer() {
-        firstRoundStylers.add(new ArrangementStyler());
+//        firstRoundStylers.add(new ArrangementStyler());
         // firstRoundStylers.add(new LiteralUsageStyler()); // empty yet during extraction
 //        firstRoundStylers.add(new ModifierOrderStyler());
 //        firstRoundStylers.add(new DeclarationNumberStyler());
