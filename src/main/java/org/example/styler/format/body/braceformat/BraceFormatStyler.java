@@ -57,10 +57,10 @@ public class BraceFormatStyler extends BodyStyler {
                 }
 
                 // Process continuous }}
-                Token nextToken = block.getNextToken();
-                if (nextToken != null && nextToken.getType() == parser.getRBrace()) {
-                    afterRB = false;
-                }
+//                Token nextToken = block.getNextToken();
+//                if (nextToken != null && nextToken.getType() == parser.getRBrace()) {
+//                    afterRB = false;
+//                }
 
                 // Add vws around braces.
                 if (beforeLB) {
@@ -171,7 +171,7 @@ public class BraceFormatStyler extends BodyStyler {
             afterLB = afterLBToken.getLine() != lbToken.getLine();
         }
         if (beforeRBToken != null) {
-            beforeRB = beforeRBToken.getLine() != rbToken.getLine();
+            beforeRB = beforeRBToken.getLine() - rbToken.getLine() > 1; // "token\n\n}": the first \n is after `token`, the second \n if before `}`
         } if (afterRBToken != null) {
             afterRB = afterRBToken.getLine() != rbToken.getLine();
         }

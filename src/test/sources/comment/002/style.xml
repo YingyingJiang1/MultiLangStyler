@@ -35,21 +35,21 @@
         <block_type>DEC_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
     </rule>
     <rule>
       <style_context>
         <block_type>MULTI_BLOCK_STMT_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="false"/>
+      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="false"/>
     </rule>
     <rule>
       <style_context>
         <block_type>DEC_BODY</block_type>
         <body_type>MULTI</body_type>
       </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
     </rule>
   </style>
   <style name="declaration_location">

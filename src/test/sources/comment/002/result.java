@@ -12,14 +12,12 @@ public class Main {
             // Check if input is 0 (terminal symbol)
             if (x == 0) {
                 break;
-            
             }
             
             // Print the output in required format
             System.out.println("Case " + caseNumber + ": " + x);
             
             caseNumber++; // Increment case number for next iteration
-        
         }
         
         scanner.close();

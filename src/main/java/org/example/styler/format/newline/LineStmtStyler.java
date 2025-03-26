@@ -2,6 +2,7 @@ package org.example.styler.format.newline;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -45,8 +46,8 @@ public class LineStmtStyler extends Styler {
         int curLength =  indentionLength;
         for (int i = 0; i < ctx.getChildCount() - 1; i++) {
             ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
-            if (parser.belongToSingleStmt(cur) && parser.belongToSingleStmt(next)) {
-                ExtendContext curCtx = (ExtendContext) cur, nextCtx = (ExtendContext) next;
+            if (parser.belongToSingleStmt(cur) && (parser.belongToSingleStmt(next) || next instanceof TerminalNode)) {
+                ExtendContext curCtx = (ExtendContext) cur;
                 int stmtLength = curCtx.stop.getCharPositionInLine() + curCtx.stop.getText().length() - curCtx.start.getCharPositionInLine();
                 curLength += stmtLength;
 
