@@ -36,7 +36,8 @@ public abstract class Styler {
 
     public Style getStyle() { return style; }
 
-    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
+    public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
+        return null;
     }
 
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
@@ -75,13 +76,12 @@ public abstract class Styler {
 //        }
 //    }
 
-    public void doFinalize() {
+    public void extractFinalize() {
         style.fillStyle();
         style.filterRules();
     }
 
-    public void reset() {
-        style.reset();
+    public void applicationFinalize() {
     }
 
     protected Set<Integer> getRelevantRules(MyParser parser) {return null;}

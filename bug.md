@@ -1,2 +1,7 @@
-1. NumericUsageStyler可能创建常量声明，需要更新符号表！
-2. 确保在apply的过程中，每一个context节点的start,stop的getLine是有效的！！！
+存储了comment的index， 最后结束时进行apply
+但是，在运行过程中， 由于会不断添加token，所以comment的index会发生变化！！
+
+NewlineStyler的205行、LineStmtStyler的50行、BodyLayoutStyler的74行可能触发NPE
+SpaceStyler会给在左移/右移的中间加空格，似乎即便把所有space都改成false也一样
+NamingFormatStyler会把toString转成2String出错；start_with_underscore=true时可能改了类名但没改参数/泛型中的类名导致不一致；内置exception的类名也可能被改导致出错
+StructureStyler的rule 23设成第0种变体时临时变量名是个空串；rule 32可能出现EquivalentStructure::convert中startIndex=-1的情况，此时取subList会越界crash

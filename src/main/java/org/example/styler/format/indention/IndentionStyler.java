@@ -44,7 +44,7 @@ public class IndentionStyler extends Styler {
     }
 
     @Override
-    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
+    public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
         IndentionProperty property = (IndentionProperty) style.getProperty(null);
         if (property != null) {
@@ -55,6 +55,7 @@ public class IndentionStyler extends Styler {
                 curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
             }
         }
+        return null;
     }
 
     @Override
@@ -62,10 +63,26 @@ public class IndentionStyler extends Styler {
         if (stage == Stage.EXTRACT) {
             return tokens.get(i).getType() == parser.getHws() && tokens.get(i).getCharPositionInLine() == 0;
         } else if(stage == Stage.APPLY) {
-            return  i - 1 >= 0 && tokens.get(i - 1).getText().endsWith("\n") && parser.getVws() != tokens.get(i).getType();
+            return isLineLeadingToken(tokens, i, parser);
         } else {
             return false;
         }
 
+    }
+
+    private boolean isLineLeadingToken(List<Token> tokens, int i, MyParser parser) {
+        int j = i - 1;
+        for (; j >= 0; j--) {
+            int type = tokens.get(j).getType();
+            if (tokens.get(j).getText().endsWith("\n")) {
+                return true;
+            }
+            // Deleted token
+            if (type == -1) {
+                continue;
+            }
+            return false;
+        }
+        return j < 0;
     }
 }

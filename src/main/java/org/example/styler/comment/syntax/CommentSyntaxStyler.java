@@ -3,11 +3,9 @@ package org.example.styler.comment.syntax;
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
-import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.comment.CommentType;
-import org.example.styler.comment.density.style.CommentDensityProperty;
 import org.example.styler.comment.syntax.style.CommentSyntaxContext;
 import org.example.styler.comment.syntax.style.CommentSyntaxProperty;
 
@@ -25,7 +23,7 @@ public class CommentSyntaxStyler extends Styler {
     }
 
     @Override
-    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
+    public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         CommentSyntaxContext styleContext = extractStyleContext(tokens, index);
         CommentSyntaxProperty styleProperty = extractStyleProperty(tokens, index, parser);
         if (style.getProperty(styleContext) instanceof CommentSyntaxProperty targetProperty && !styleProperty.equals(targetProperty)) {
@@ -35,6 +33,7 @@ public class CommentSyntaxStyler extends Styler {
                 line2blockComment(tokens, index, parser);
             }
         }
+        return null;
     }
 
     @Override

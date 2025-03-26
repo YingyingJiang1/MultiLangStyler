@@ -1,6 +1,5 @@
 package org.example.styler.arrangement.param;
 
-import org.apache.poi.sl.draw.geom.GuideIf;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Stage;
@@ -8,7 +7,6 @@ import org.example.styler.Styler;
 import org.example.styler.arrangement.LogicalOrder;
 import org.example.styler.arrangement.param.style.ParameterOrderProperty;
 import org.example.styler.arrangement.param.style.ParameterOrderStyle;
-import org.example.styler.declaration.location.Location;
 
 import java.util.*;
 
@@ -88,7 +86,7 @@ public class ParameterOrderStyler extends Styler {
     }
 
     @Override
-    public void doFinalize() {
+    public void extractFinalize() {
         LogicalOrder order = null;
         Optional<Map.Entry<LogicalOrder, Integer>> maxEntry = orderFre.entrySet()
                 .stream().max(Comparator.comparing(Map.Entry::getValue));

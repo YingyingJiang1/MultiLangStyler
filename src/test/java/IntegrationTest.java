@@ -39,7 +39,7 @@ public class IntegrationTest {
         SoftAssertions  softly = new SoftAssertions();
         for (int i = 1; i <= pairNumber; i++) {
             String strNumber = String.format("%03d", i);
-            if (debug_pair != null && !strNumber.equals(debug_pair)) {
+            if (!debug_pair.isEmpty() && !strNumber.equals(debug_pair)) {
                 continue;
             }
             Path src = Paths.get(codesDir, subDir, strNumber, "src.java");
@@ -102,7 +102,7 @@ public class IntegrationTest {
         ExtendContext t = (ExtendContext) parser.parseFromString(code);
         parser.walkTree(Stage.EXTRACT, List.of(styler));
         styler.extractStyle(t, parser);
-        styler.doFinalize();
+        styler.extractFinalize();
         return styler.getStyle();
     }
 
@@ -113,7 +113,7 @@ public class IntegrationTest {
             ExtendContext t = (ExtendContext) parser.parse(srcPath);
             parser.walkTree(Stage.EXTRACT, List.of(styler));
             styler.extractStyle(t, parser);
-            styler.doFinalize();
+            styler.extractFinalize();
             return styler.getStyle();
         } catch (IOException e) {
             LoggerFactory.getLogger(IntegrationTest.class).error(e.getMessage(), e);

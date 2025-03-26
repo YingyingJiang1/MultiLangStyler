@@ -1,8 +1,6 @@
 package org.example.styler.exp.updatevar;
 
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -57,7 +55,7 @@ public class UpdateVarStyler extends Styler {
     }
 
     @Override
-    public void doFinalize() {
+    public void extractFinalize() {
         UpdateVarContext context = new UpdateVarContext(ExpType.CONDITIONAL_EXP);
         if (style.getProperty(context) == null) {
             style.addRule(context, new UpdateVarProperty(false));
@@ -66,7 +64,7 @@ public class UpdateVarStyler extends Styler {
         if (style.getProperty(context) == null) {
             style.addRule(context, new UpdateVarProperty(false));
         }
-        super.doFinalize();
+        super.extractFinalize();
     }
 
     @Override

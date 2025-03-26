@@ -7,6 +7,7 @@ import org.example.myException.ApplyException;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 
@@ -25,6 +26,9 @@ public class Applicator {
 //            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
 
             applyOnTS(tokens, parser, container.getTsStylers());
+            for (Styler styler : container.getStylers()) {
+                styler.applicationFinalize();
+            }
             return tokens;
         } catch (Exception e) {
             throw new ApplyException(e.getMessage(), e);
@@ -57,6 +61,9 @@ public class Applicator {
                 continue;
             }
 
+            // All token stylers should not change the length of `tokens`.
+            // Add new tokens into the field `contextTokens` of current token.
+            // Set type and text of a token to remove it.
             for (Styler styler : stylers) {
                 if (styler.isRelevant(tokens, i, Stage.APPLY, parser)) {
                     styler.applyStyle(tokens, i, parser);
@@ -70,16 +77,16 @@ public class Applicator {
                 i += contextTokens.size() - 1;
             }
 
-            for (Token token : contextTokens) {
-                ((ExtendToken) token).setCharPositionInLine(column);
-                if (token.getText().endsWith("\n")) {
-                    column = 0;
-                } else {
-                    column += token.getText().length();
-                }
-            }
+//            // Set char position in line.
+//            for (Token token : contextTokens) {
+//                ((ExtendToken) token).setCharPositionInLine(column);
+//                if (token.getText().endsWith("\n")) {
+//                    column = 0;
+//                } else {
+//                    column += token.getText().length();
+//                }
+//            }
         }
-//        tokens.remove(0);
 
     }
 

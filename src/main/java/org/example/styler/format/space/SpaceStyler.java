@@ -5,14 +5,12 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenGroup;
 import org.example.parser.common.token.TokenGrouper;
-import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.format.space.style.SpaceStyle;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,7 +52,7 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
-    public void applyStyle(List<Token> tokens, int index, MyParser parser) {
+    public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         Token cur = tokens.get(index);
         SpaceContext context = extractContext(tokens, index, Stage.APPLY, parser);
         SpaceProperty property = (SpaceProperty) style.getProperty(context);
@@ -68,6 +66,7 @@ public class SpaceStyler extends Styler {
                 }
             }
         }
+        return null;
     }
     
     private SpaceContext extractContext(List<Token> tokens, int index, Stage stage, MyParser parser) {
@@ -96,7 +95,7 @@ public class SpaceStyler extends Styler {
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         int type = tokens.get(i).getType();
-        return type != parser.getHws() && type != parser.getVws();
+        return type != parser.getHws() && type != parser.getVws() && !parser.belongToComment(type);
 //        String text = tokens.get(i).getText();
 //        return type == parser.getIdentifier() || parser.getSeparators().contains(text) || parser.getOperators().contains(text) || parser.belongToKeyword(tokens.get(i));
     }

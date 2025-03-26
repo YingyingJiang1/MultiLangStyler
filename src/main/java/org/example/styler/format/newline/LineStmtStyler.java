@@ -22,10 +22,10 @@ public class LineStmtStyler extends Styler {
     }
 
     @Override
-    public void doFinalize() {
+    public void extractFinalize() {
         // Add a rule representing there is a newline between two single statements.
         style.addRule(LineStmtContext.DEFAULT, new NewlineProperty(1));
-        super.doFinalize();
+        super.extractFinalize();
     }
 
     /**

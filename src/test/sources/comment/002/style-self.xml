@@ -3,20 +3,20 @@
 <program_style>
   <style name="naming_format">
     <rule>
-      <style_context name_type="TYPE"/>
-      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
-    </rule>
-    <rule>
-      <style_context name_type="PARAMETER"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
-    </rule>
-    <rule>
       <style_context name_type="METHOD"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
+      <style_context name_type="TYPE"/>
+      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
+    </rule>
+    <rule>
       <style_context name_type="LOCAL_VARIABLE"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="10"/>
+    </rule>
+    <rule>
+      <style_context name_type="PARAMETER"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
   </style>
   <style name="indention">
@@ -37,6 +37,20 @@
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
         <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
@@ -44,20 +58,6 @@
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
         <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="true" afterRB="true"/>
@@ -83,6 +83,10 @@
   </style>
   <style name="space">
     <rule>
+      <style_context token="IDENTIFIER, KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context token="IDENTIFIER, ("/>
       <style_property space1="false" space2="false"/>
     </rule>
@@ -103,6 +107,10 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
+      <style_context token="[, ]"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
       <style_context token="LITERAL, ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
@@ -115,56 +123,12 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="BIN_OP"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="COMMENT, COMMENT"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, ("/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token=";, COMMENT"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="COMMENT, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="DOT"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="], IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="COMMENT, }"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="[, ]"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="IDENTIFIER, UNARY_OP"/>
       <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="BIN_OP"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context token="(, IDENTIFIER"/>
@@ -191,11 +155,31 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
+      <style_context token="IDENTIFIER, {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER, ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
       <style_context token="KEYWORD, KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="COMMENT, IDENTIFIER"/>
+      <style_context token="KEYWORD, ("/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token=";, COMMENT"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="DOT"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context token="], IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
   </style>

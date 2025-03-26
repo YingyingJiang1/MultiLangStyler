@@ -112,7 +112,7 @@ public class LineWrappingStyler extends Styler {
     }
 
     @Override
-    public void doFinalize() {
+    public void extractFinalize() {
         StyleContext codeContext = new LineWrappingContext(LineWrappingContext.Attr.CODE);
         StyleContext commentContext = new LineWrappingContext(LineWrappingContext.Attr.COMMENT);
         List<Map.Entry<LineWrappingProperty.SucceedLoc, Integer>> sorted =

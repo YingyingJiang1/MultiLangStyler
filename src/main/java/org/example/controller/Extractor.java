@@ -36,7 +36,7 @@ public class Extractor {
         List<Token> tokens = tokenStream.getTokens();
 
         // Avoid exceptions caused by boundaries.
-        int len = tokens.get(tokens.size() - 1).getType() == parser.getHws() ? tokens.size() - 2 : tokens.size() - 1;
+        int len = tokens.size() - 1;
         for (int i = 0; i < len; ++i) {
             Token token = tokens.get(i);
             for (Styler styler : container.getStylers()) {
