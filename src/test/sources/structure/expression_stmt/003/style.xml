@@ -4,24 +4,24 @@
   <style name="naming_format">
     <rule>
       <style_context name_type="LOCAL_VARIABLE"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="3"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="1"/>
     </rule>
     <rule>
       <style_context name_type="TYPE"/>
       <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
-      <style_context name_type="PARAMETER"/>
+      <style_context name_type="METHOD"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
-      <style_context name_type="FIELD"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="2"/>
+      <style_context name_type="PARAMETER"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
   </style>
   <style name="indention">
     <rule>
-      <style_property indentionUnit="4" indentionType=" "/>
+      <style_property indentionUnit="1" indentionType="\t"/>
     </rule>
   </style>
   <style name="optional_brace">
@@ -66,7 +66,7 @@
   <style name="declaration_location">
     <rule>
       <style_property>
-        <avgLineDis2firstUse>0.75</avgLineDis2firstUse>
+        <avgLineDis2firstUse>0.0</avgLineDis2firstUse>
         <location>NEAR_USE</location>
       </style_property>
     </rule>
@@ -87,19 +87,7 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="), KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
       <style_context token="IDENTIFIER, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="(, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="(, LITERAL"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -111,8 +99,8 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token=",, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_context token="KEYWORD, ;"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="BIN_OP"/>
@@ -120,7 +108,7 @@
     </rule>
     <rule>
       <style_context token="IDENTIFIER, {"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, ;"/>
@@ -128,7 +116,7 @@
     </rule>
     <rule>
       <style_context token="KEYWORD, ("/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="DOT"/>
@@ -139,20 +127,12 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="], ["/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="], IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context token="IDENTIFIER, KEYWORD"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="), )"/>
-      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="(, KEYWORD"/>
@@ -167,15 +147,7 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD, ["/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="IDENTIFIER, UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="], )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -203,10 +175,6 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="), ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="KEYWORD, KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
@@ -215,32 +183,14 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL, ,"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token=";, IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="], ;"/>
-      <style_property space1="false" space2="false"/>
     </rule>
   </style>
   <style name="arrangement">
     <rule>
-      <style_context type="class" statistic="methodDeclarationList=1, fieldDeclarationList=1"/>
+      <style_context type="class" statistic="methodDeclarationList=1"/>
       <style_property>
-        <member_list name="fieldDeclarationList">
-          <feature statistic="PUBLIC=1,STATIC=1"/>
-          <order allowedOrderDeviation="0.3">
-            <logical_order>MODIFIER_LEXI_ORDER</logical_order>
-            <modifier_order>
-              <column1>PUBLIC</column1>
-              <column2>STATIC</column2>
-            </modifier_order>
-          </order>
-        </member_list>
         <member_list name="methodDeclarationList">
           <feature statistic="PUBLIC=1,STATIC=1"/>
           <order allowedOrderDeviation="0.3">
@@ -267,61 +217,49 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false"/>
+      <style_context type1="CONDITIONAL_STMT" type2="CONDITIONAL_STMT" minTextLength="0"/>
       <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="MEMBER_LIST" type2="MEMBER_LIST"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="LOOP_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="LOOP_STMT" type2="LOOP_STMT" minTextLength="239"/>
-      <style_property newlines="1"/>
     </rule>
     <rule>
       <style_context type1="importDeclarationList" type2="TYPE_DEC"/>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context type1="LOOP_STMT" type2="LOOP_STMT" minTextLength="128"/>
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="91"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
+      <style_context type1="EXPRESSION_STMT" type2="SINGLE_STMT" minTextLength="0"/>
       <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="93"/>
-      <style_property newlines="2"/>
     </rule>
   </style>
   <style name="structure_preference">
+    <rule>
+      <style_context id="1" category="Increment or decrement preferences"/>
+      <style_property preferenceIndex="3"/>
+    </rule>
     <rule>
       <style_context id="18" category="Operator preferences"/>
       <style_property preferenceIndex="0"/>
     </rule>
     <rule>
+      <style_context id="19" category="Operator preferences"/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+    <rule>
       <style_context id="3" category="Assignment statement preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="22" category="Literal position in bool expression"/>
       <style_property preferenceIndex="1"/>
     </rule>
     <rule>
       <style_context id="7" category="Continuous assignments or calls preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="30" category="Continue preferences"/>
+      <style_property preferenceIndex="2"/>
+    </rule>
+    <rule>
+      <style_context id="32" category="Redundant code"/>
       <style_property preferenceIndex="0"/>
     </rule>
   </style>

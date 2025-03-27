@@ -276,7 +276,7 @@ public class ExtendContext extends ParserRuleContext {
     }
 
     public void replaceChildren(int from, int to, List<? extends ParseTree> newTrees) {
-        children.removeAll(children.subList(from, to + 1));
+        children.removeAll(children.subList(from, to));
         children.addAll(from, newTrees);
         for (ParseTree newTree : newTrees) {
             newTree.setParent(this);

@@ -250,11 +250,10 @@ public class EquivalentStructure {
 			}
 		}
 
-		Forest forest = forests.get(to);
-		int fromSize = forests.get(from).size();
-		int toSize = forest.size();
+		Forest Toforest = forests.get(to);
+		int fromSize = forests.get(from).getRealForestSize(); // size of matched real trees(real trees are subtrees of input codes).
 		List<ParseTree> newTrees = new ArrayList<>();
-		for(ParseTree t : forest.getTrees()) {
+		for(ParseTree t : Toforest.getTrees()) {
 			newTrees.add(createTree(t));
 		}
 
@@ -262,7 +261,6 @@ public class EquivalentStructure {
 		if (oldTree.getParent() != null) {
 			ExtendContext parent = (ExtendContext) oldTree.getParent();
 			int startIndex = parent.children.indexOf(oldTree);
-			parent.children.removeAll(parent.children.subList(startIndex, fromSize));
 			parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
 		}
 		cleanState();

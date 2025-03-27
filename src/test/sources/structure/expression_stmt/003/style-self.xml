@@ -4,19 +4,19 @@
   <style name="naming_format">
     <rule>
       <style_context name_type="LOCAL_VARIABLE"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="3"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="1"/>
     </rule>
     <rule>
       <style_context name_type="TYPE"/>
       <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
-      <style_context name_type="PARAMETER"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
-    </rule>
-    <rule>
       <style_context name_type="FIELD"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="2"/>
+    </rule>
+    <rule>
+      <style_context name_type="PARAMETER"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
   </style>
   <style name="indention">
@@ -66,7 +66,7 @@
   <style name="declaration_location">
     <rule>
       <style_property>
-        <avgLineDis2firstUse>0.75</avgLineDis2firstUse>
+        <avgLineDis2firstUse>0.0</avgLineDis2firstUse>
         <location>NEAR_USE</location>
       </style_property>
     </rule>
@@ -95,23 +95,11 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="(, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="(, LITERAL"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="LITERAL, ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="KEYWORD, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token=",, IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
@@ -151,10 +139,6 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="), )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="(, KEYWORD"/>
       <style_property space1="false" space2="false"/>
     </rule>
@@ -163,19 +147,7 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL, ]"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, ["/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="IDENTIFIER, UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="], )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -189,10 +161,6 @@
     <rule>
       <style_context token="IDENTIFIER, IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="LITERAL, )"/>
-      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context token="), {"/>
@@ -212,10 +180,6 @@
     </rule>
     <rule>
       <style_context token="IDENTIFIER, ]"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="LITERAL, ,"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -267,14 +231,6 @@
   </style>
   <style name="newline">
     <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
       <style_context type1="MEMBER_LIST" type2="MEMBER_LIST"/>
       <style_property newlines="1"/>
     </rule>
@@ -283,31 +239,7 @@
       <style_property newlines="1"/>
     </rule>
     <rule>
-      <style_context type1="LOOP_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="LOOP_STMT" type2="LOOP_STMT" minTextLength="239"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
       <style_context type1="importDeclarationList" type2="TYPE_DEC"/>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context type1="LOOP_STMT" type2="LOOP_STMT" minTextLength="128"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="91"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="EXPRESSION_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="LOOP_STMT" minTextLength="93"/>
       <style_property newlines="2"/>
     </rule>
   </style>

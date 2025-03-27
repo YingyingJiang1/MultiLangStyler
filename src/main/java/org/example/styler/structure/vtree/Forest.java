@@ -67,4 +67,26 @@ public class Forest implements Comparable {
     public List<VirtualNode> getvNodes() {
         return vNodes;
     }
+
+    public int getRealForestSize() {
+        int size = 0;
+        for (ParseTree t : trees) {
+            VirtualNode vNode = getVirtual(t);
+            if (vNode != null) {
+                size += vNode.matchedTrees.size();
+            } else {
+                size++;
+            }
+        }
+        return size;
+    }
+
+    private VirtualNode getVirtual(ParseTree t) {
+        for (VirtualNode vNode : vNodes) {
+            if (vNode.tree == t) {
+                return vNode;
+            }
+        }
+        return null;
+    }
 }

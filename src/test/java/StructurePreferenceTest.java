@@ -16,12 +16,12 @@ public class StructurePreferenceTest extends IntegrationTest {
 
     @Test
     public void testExpressionStmt() {
-        batchTest(1, "structure/expression_stmt", "");
+        batchTest(3, "structure/expression_stmt", "");
     }
 
     @Test
     public void testConditionalStmt() {
-        batchTest(2, "structure/conditional_branch", "002");
+        batchTest(3, "structure/conditional_branch", "");
     }
 
 
