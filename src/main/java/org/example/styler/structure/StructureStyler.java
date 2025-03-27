@@ -9,6 +9,8 @@ import org.example.styler.Styler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.example.styler.structure.style.StructureStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -22,8 +24,7 @@ public class StructureStyler extends Styler {
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
     private int recursiveDepth = 0;
 
-    private static Set<Integer> relevantRules = null;
-
+    public static Logger logger = LoggerFactory.getLogger(StructureStyler.class);
 
     public StructureStyler() {
         style = new StructureStyle();
@@ -72,7 +73,11 @@ public class StructureStyler extends Styler {
                             convertionPerformed.get(targetStructure).contains(to)) {
                         break;
                     }
-                    newTree = targetStructure.convert(from, to, ctx, parser);
+                    try {
+                        newTree = targetStructure.convert(from, to, ctx, parser);
+                    } catch (Exception e) {
+                        logger.error("Note: Fail to convert from {} to {} when structure id = {}.", from, to, targetStructure.getId(), e);
+                    }
                     // If converting operation is performed successfully then record the conversion and call recursively.
 //                    if (newTree instanceof ExtendContext newCtx) {
 //                        convertionPerformed.computeIfAbsent(targetStructure, v -> new HashSet<>());
