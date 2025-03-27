@@ -4,6 +4,7 @@ import org.example.parser.common.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.example.style.rule.StyleRule;
 
 /*
  * @description
@@ -25,5 +26,12 @@ public class LineWrappingStyle extends CommonStyle {
                 ruleSet.addRule(context, LineWrappingProperty.COMMENT_PROPERTY);
             }
         }
+    }
+
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        LineWrappingContext context = new LineWrappingContext();
+        LineWrappingProperty property = new LineWrappingProperty();
+        return new StyleRule(context, property);
     }
 }

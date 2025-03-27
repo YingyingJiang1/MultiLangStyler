@@ -57,7 +57,15 @@ public class LineWrappingProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-
+        parent.addAttribute("variance", Double.toString(variance));
+        parent.addAttribute("maxLen", Integer.toString(maxLen));
+        parent.addAttribute("maxLenBefore", Integer.toString(maxLenBefore));
+        parent.addAttribute("succeedLoc", Integer.toString(succeedLoc.relativeIndention));
+        for (BreakLoc breakLoc : breakLocs) {
+            Element breakLocElement = parent.addElement("breakLoc");
+            breakLocElement.addAttribute("reg", breakLoc.reg.pattern());
+            breakLocElement.addAttribute("after", Boolean.toString(breakLoc.after));
+        }
     }
 
     /**
@@ -82,6 +90,14 @@ public class LineWrappingProperty extends StyleProperty {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+        variance = Double.parseDouble(parent.attributeValue("variance"));
+        maxLen = Integer.parseInt(parent.attributeValue("maxLen"));
+        maxLenBefore = Integer.parseInt(parent.attributeValue("maxLenBefore"));
+        succeedLoc.relativeIndention = Integer.parseInt(parent.attributeValue("succeedLoc"));
+        for (Element breakLocElement : parent.elements("breakLoc")) {
+            BreakLoc breakLoc = new BreakLoc(breakLocElement.attributeValue("reg"), Boolean.parseBoolean(breakLocElement.attributeValue("after")));
+            breakLocs.add(breakLoc);
+        }
     }
 
     public Boolean getLocation(Token token) {

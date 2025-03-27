@@ -10,6 +10,9 @@ public class LineWrappingContext extends StyleContext {
 
     public Attr attr;
 
+    public LineWrappingContext() {
+    }
+
     public LineWrappingContext(Attr attr) {
         this.attr = attr;
     }
@@ -27,11 +30,12 @@ public class LineWrappingContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-
+        parent.addAttribute("attr", attr.toString());
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
+        attr = Attr.valueOf(parent.attributeValue("attr"));
     }
 
     @Override
