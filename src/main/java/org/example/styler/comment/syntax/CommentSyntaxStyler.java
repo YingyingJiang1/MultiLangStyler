@@ -8,13 +8,14 @@ import org.example.styler.Styler;
 import org.example.styler.comment.CommentType;
 import org.example.styler.comment.syntax.style.CommentSyntaxContext;
 import org.example.styler.comment.syntax.style.CommentSyntaxProperty;
+import org.example.styler.comment.syntax.style.CommentSyntaxStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentSyntaxStyler extends Styler {
     public CommentSyntaxStyler() {
-        style.setStyleName("comment_syntax");
+        style = new CommentSyntaxStyle();
     }
 
     @Override

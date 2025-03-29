@@ -8,6 +8,9 @@ import org.example.styler.exp.ExpType;
 public class ExpressionContext extends StyleContext {
     public ExpType expType;
 
+    public ExpressionContext() {
+    }
+
     public ExpressionContext(ExpType expType) {
         this.expType = expType;
     }

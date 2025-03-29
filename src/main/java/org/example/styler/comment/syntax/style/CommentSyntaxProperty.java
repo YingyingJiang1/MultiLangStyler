@@ -7,6 +7,9 @@ import org.example.style.rule.StyleProperty;
 public class CommentSyntaxProperty extends StyleProperty {
     public String syntax;
 
+    public CommentSyntaxProperty() {
+    }
+
     public CommentSyntaxProperty(String syntax) {
         this.syntax = syntax;
     }

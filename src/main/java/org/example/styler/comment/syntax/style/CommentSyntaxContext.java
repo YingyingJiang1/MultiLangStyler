@@ -10,6 +10,9 @@ import java.util.Objects;
 public class CommentSyntaxContext extends StyleContext {
     public CommentType commentType;
 
+    public CommentSyntaxContext() {
+    }
+
     public CommentSyntaxContext(CommentType commentType) {
         this.commentType = commentType;
     }

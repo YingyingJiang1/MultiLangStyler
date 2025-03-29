@@ -1,29 +1,20 @@
 package org.example.styler.ifelse.multibranch;
 
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.style.CommonStyle;
-import org.example.style.Style;
-import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.ifelse.multibranch.style.DefaultBranchProperty;
 import org.example.styler.ifelse.multibranch.style.MultiBranchContext;
 import org.example.styler.ifelse.multibranch.style.MultiBranchProperty;
-
-import javax.swing.text.html.Option;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import org.example.styler.ifelse.multibranch.style.MultiBranchStyle;
 
 public class MultiBranchStyler extends Styler {
 
     public MultiBranchStyler() {
-        style.setStyleName("multi_branch");
+        style = new MultiBranchStyle();
     }
 
     @Override

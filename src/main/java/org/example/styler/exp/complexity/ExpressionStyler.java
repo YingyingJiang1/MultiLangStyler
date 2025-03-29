@@ -1,13 +1,17 @@
 package org.example.styler.exp.complexity;
 
-import com.google.common.base.CaseFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.factory.ParseTreeUtil;
-import org.example.semantic.intf.type.PrimitiveType;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.semantic.intf.type.Type;
 import org.example.style.rule.StyleProperty;
@@ -16,18 +20,19 @@ import org.example.styler.Styler;
 import org.example.styler.exp.ExpType;
 import org.example.styler.exp.complexity.style.ExpressionContext;
 import org.example.styler.exp.complexity.style.ExpressionProperty;
+import org.example.styler.exp.complexity.style.ExpressionStyle;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import com.google.common.base.CaseFormat;
 
 public class ExpressionStyler extends Styler {
     private static final Logger log = LoggerFactory.getLogger(ExpressionStyler.class);
 
     public ExpressionStyler() {
-        style.setStyleName("most_complex_expression");
+        style = new ExpressionStyle();
     }
 
     @Override
