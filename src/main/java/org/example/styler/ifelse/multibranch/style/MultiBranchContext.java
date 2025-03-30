@@ -9,6 +9,9 @@ import java.util.Objects;
 public class MultiBranchContext extends StyleContext {
     public int branches;
 
+    public MultiBranchContext() {
+    }
+
     public MultiBranchContext(int branches) {
         this.branches = branches;
     }

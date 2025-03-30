@@ -10,6 +10,9 @@ public class ExpressionProperty extends StyleProperty {
     public int maxExpressionLength;
     public int maxSubExpNum;
 
+    public ExpressionProperty() {
+    }
+
     public ExpressionProperty(int length, int maxPredicateNum) {
         this.maxExpressionLength = length;
         this.maxSubExpNum = maxPredicateNum;

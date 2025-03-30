@@ -9,6 +9,9 @@ import java.util.Objects;
 public class LiteralUsageProperty extends StyleProperty {
     public boolean declareCons;
 
+    public LiteralUsageProperty() {
+    }
+
     public LiteralUsageProperty(boolean declareCons) {
         this.declareCons = declareCons;
     }

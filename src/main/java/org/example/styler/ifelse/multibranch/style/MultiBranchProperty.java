@@ -8,6 +8,9 @@ import org.example.styler.ifelse.multibranch.BranchType;
 public class MultiBranchProperty extends StyleProperty {
     public BranchType branchType;
 
+    public MultiBranchProperty() {
+    }
+
     public MultiBranchProperty(BranchType branchType) {
         this.branchType = branchType;
     }

@@ -10,6 +10,9 @@ import java.util.Objects;
 public class LiteralUsageContext extends StyleContext {
     public LiteralEnum literalType;
 
+    public LiteralUsageContext() {
+    }
+
     public LiteralUsageContext(LiteralEnum literalType) {
         this.literalType = literalType;
     }

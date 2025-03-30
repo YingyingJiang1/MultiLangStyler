@@ -1,23 +1,27 @@
 package org.example.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
 import org.example.styler.comment.density.CommentDensityStyler;
+import org.example.styler.comment.syntax.CommentSyntaxStyler;
+import org.example.styler.declaration.location.DeclarationLocationStyler;
+import org.example.styler.exp.complexity.ExpressionStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
-import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
-import org.example.styler.format.newline.LineStmtStyler;
 import org.example.styler.format.linewrapping.LineWrappingStyler;
+import org.example.styler.format.newline.LineStmtStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
+import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
+import org.example.styler.ifelse.multibranch.MultiBranchStyler;
+import org.example.styler.literal.usage.LiteralUsageStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
 import org.example.styler.structure.StructureStyler;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StylerContainer {
 
@@ -29,20 +33,20 @@ public class StylerContainer {
 
     public StylerContainer() {
         firstRoundStylers.add(new ArrangementStyler());
-        // firstRoundStylers.add(new LiteralUsageStyler()); // empty yet during extraction
+        firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
 //        firstRoundStylers.add(new DeclarationNumberStyler());
         firstRoundStylers.add(new DeclarationLocationStyler());
-//        firstRoundStylers.add(new IfElseBodyOrderStyler()); // untested
-        // firstRoundStylers.add(new ExpressionStyler()); // empty yet during extraction
+       firstRoundStylers.add(new IfElseBodyOrderStyler());
+        firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
 //        firstRoundStylers.add(new FunctionComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
         firstRoundStylers.add(new StructureStyler());
          firstRoundStylers.add(new OptionalBraceStyler());
-        // firstRoundStylers.add(new MultiBranchStyler()); // empty yet during extraction
+        firstRoundStylers.add(new MultiBranchStyler());
 
-        // firstRoundStylers.add(new CommentSyntaxStyler()); // empty yet during extraction
+        firstRoundStylers.add(new CommentSyntaxStyler());
 
 
         firstRoundStylers.add(new NamingFormatStyler());

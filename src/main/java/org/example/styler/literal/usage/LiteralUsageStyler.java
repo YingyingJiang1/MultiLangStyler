@@ -1,5 +1,10 @@
 package org.example.styler.literal.usage;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.global.GlobalInfo;
@@ -15,10 +20,9 @@ import org.example.styler.Styler;
 import org.example.styler.literal.LiteralEnum;
 import org.example.styler.literal.usage.style.LiteralUsageContext;
 import org.example.styler.literal.usage.style.LiteralUsageProperty;
+import org.example.styler.literal.usage.style.LiteralUsageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 public class LiteralUsageStyler extends Styler {
     Logger logger = LoggerFactory.getLogger(LiteralUsageStyler.class);
@@ -28,7 +32,7 @@ public class LiteralUsageStyler extends Styler {
     private Map<String, Token> declaredConstants = new HashMap<>(0);
 
     public LiteralUsageStyler() {
-        style.setStyleName("literal_usage");
+        style = new LiteralUsageStyle();
     }
 
     @Override
