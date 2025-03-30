@@ -4,12 +4,12 @@ import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.xmlbeans.SchemaIdentityConstraint;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.Resolver;
+import org.example.semantic.intf.symbol.FunctionSym;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -126,6 +126,68 @@ public class DeclarationLocationStyler extends Styler {
         return -1;
     }
 
+    /**
+     * @return Declaration statements initialized with a method or constructor are not allowed to move.
+     * This is a safe but overly restrictive condition.
+     */
+    private boolean isMovable(ExtendContext decStmt, MyParser parser) {
+        boolean hasMethodCall = decStmt.getAllContextsIf(parser::isFunctionCall).size() > 0;
+        return hasMethodCall;
+    }
+
+    private int getForwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
+        List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
+
+        int insetionPoint = 1; // Insert after {
+        for (ExtendContext decIdentifier : decIdentifiers) {
+            ExtendContext initializer = parser.getDecStmtSearcher().searchInitializer(decStmt, decIdentifier, parser);
+            List<ExtendContext> usedNodes = initializer.getAllContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
+            Resolver resolver = GlobalInfo.getResolver();
+            for (ExtendContext node : usedNodes) {
+                Symbol symbol = resolver.resolve(node, parser);
+                if (symbol == null) {
+                    continue;
+                }
+
+                Optional<ExtendContext> closetRefNode = symbol.getReferences().stream().filter(t -> t.isDescendantOf(block))
+                        .max(Comparator.comparing(e -> e.getStart().getLine()));
+                if (closetRefNode.isPresent()) {
+                    int index = indexOfContainerStmt(block.children, closetRefNode.get());
+                    if (index >= 0 && index + 1 > insetionPoint) {
+                        insetionPoint = index + 1;
+                    }
+                }
+
+            }
+        }
+
+        return insetionPoint;
+    }
+
+
+    private int getBackwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
+        List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
+        Resolver resolver = GlobalInfo.getResolver();
+
+        int insertionPoint = block.getChildCount() - 1; // before }
+        for (ExtendContext decIdentifier : decIdentifiers) {
+            Symbol symbol = resolver.resolve(decIdentifier, parser);
+            if (symbol == null) {
+                continue;
+            }
+            Optional<ExtendContext> closetRefNode = symbol.getReferences().stream().filter(t -> t.isDescendantOf(block))
+                    .min(Comparator.comparing(e -> e.getStart().getLine()));
+            if (closetRefNode.isPresent()) {
+                int index = indexOfContainerStmt(block.children, closetRefNode.get());
+                if (index >= 0 && index < insertionPoint) {
+                    insertionPoint = index;
+                }
+            }
+        }
+        return insertionPoint;
+    }
+
+
 
     /**
      *
@@ -134,23 +196,17 @@ public class DeclarationLocationStyler extends Styler {
      * @param parser The parser.
      */
     private void moveToBlockStart(ExtendContext block, ExtendContext decStmt, MyParser parser) {
-        int index = block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx &&  parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(decStmt));
-        int j = index - 1;
-        for (; j >= 0; j--) {
-            if (block.getChild(j) instanceof ExtendContext stmt1) {
-                if (parser.getSpecificStmtType(stmt1) == parser.getRuleLocalVarDeclarationStmt()) {
-                    break;
-                }
-            } else {
-                break; // reach brace.
-            }
+        if (!isMovable(decStmt, parser)) {
+            return;
         }
 
-        int insertionPoint = j + 1;
-        if (index > insertionPoint) {
-            block.children.remove(index);
+        int currentIndex = block.indexOfFirstChild(t -> t instanceof ExtendContext ctxNode && parser.getSpecificStmt(ctxNode) == parser.getSpecificStmt(decStmt));
+        int insertionPoint = getForwardInsertionPoint(decStmt, block, parser);
+
+        if (insertionPoint < currentIndex) {
+            block.children.remove(currentIndex);
             block.insertChild(insertionPoint, decStmt);
-            updateCurrentLine(block, index, insertionPoint);
+            updateCurrentLine(block, currentIndex, insertionPoint);
         }
     }
 
@@ -162,75 +218,20 @@ public class DeclarationLocationStyler extends Styler {
      * @param parser The parser.
      */
     private void moveToFirstUse(ExtendContext block, ExtendContext decStmt, MyParser parser) {
-        List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
-        Resolver resolver = GlobalInfo.getResolver();
-
-        int maxDependentIndex = -1;
-        int minUsingIndex =  Integer.MAX_VALUE;
-
-        for (ExtendContext identifierNode : decIdentifiers) {
-            // Get the index of last statement that declares the variables used in the initializers of the declaration statement.
-            ExtendContext initializer = parser.getDecStmtSearcher().searchInitializer(decStmt, identifierNode, parser);
-            if (initializer != null) {
-                List<ExtendContext> initializerNodes = initializer.getAllTokensRecIf(t -> parser.isIdentifier(t) || parser.isFunctionCall(t));
-                for (ExtendContext node : initializerNodes) {
-                    // If the initializers have a function call, then the declaration can't be moved! (This condition is safe but overly restrictive.)
-                    if (parser.isFunctionCall(node)) {
-                        return;
-                    }
-
-                    Symbol symbol = resolver.resolve(node, parser);
-                    if (symbol == null) {
-                        continue;
-                    }
-                    ExtendContext decIdentifierNode = symbol.getDecIdentifierNode();
-                    int index = indexOfContainerStmt(block.children, decIdentifierNode);
-                    if (index >= 0 && index > maxDependentIndex) {
-                        maxDependentIndex = index;
-                    }
-                }
-            }
-
-            // Get index of first statement that uses these declared variables in the given block structure.
-            List<ExtendContext> references = resolver.resolve(identifierNode, parser).getReferences();
-
-            for (ExtendContext ref : references) {
-                ExtendContext usageStmt = ref.getFirstParentIf(parser::isStatement);
-                int index = usageStmt == null ? -1 : indexOf(block, usageStmt, parser);
-                if (index >= 0 && index < minUsingIndex) {
-                    minUsingIndex = index;
-                }
-            }
-        }
-
-        // Move the declaration statement to the position whose index satisfies: max({index < minUsingIndex and index > maxDependentIndex})
-        if (minUsingIndex == Integer.MAX_VALUE) {
+        if (!isMovable(decStmt, parser)) {
             return;
         }
-        int insertionPoint = getNearUseInsertionPoint(minUsingIndex, maxDependentIndex);
-        int curIndex = block.indexOfFirstChild(child -> child instanceof ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(decStmt));
-        if (insertionPoint >= 0 && insertionPoint != curIndex) {
-            ExtendContext targetStmt = (ExtendContext) block.children.remove(curIndex);
-            if (curIndex < insertionPoint) {
-                insertionPoint--;
-            }
-            block.insertChild(insertionPoint, targetStmt);
-            updateCurrentLine(block, curIndex, insertionPoint);
+
+        int insertionPoint = getBackwardInsertionPoint(decStmt, block, parser); // Before } or before first usage.
+        int currentIndex = block.indexOfFirstChild(t -> t instanceof ExtendContext ctxNode && parser.getSpecificStmt(ctxNode) == parser.getSpecificStmt(decStmt));
+
+        if (insertionPoint > currentIndex) {
+            block.insertChild(insertionPoint, block.getChild(currentIndex));
+            block.children.remove(currentIndex);
+            updateCurrentLine(block, currentIndex, insertionPoint - 1);
         }
     }
 
-
-    private int getNearUseInsertionPoint(int minUsingIndex, int maxDependentIndex) {
-        int lowerBound = Math.min(minUsingIndex, maxDependentIndex);
-        int upperBound = Math.max(minUsingIndex, maxDependentIndex);
-
-        for (int index = upperBound - 1; index > lowerBound; index--) {
-            if (index > maxDependentIndex && index < minUsingIndex) {
-                return index;
-            }
-        }
-        return -1;
-    }
 
     /**
      *
@@ -246,7 +247,7 @@ public class DeclarationLocationStyler extends Styler {
 
         for (int i = 0; i < block.getChildCount(); i++) {
             if (block.getChild(i) instanceof ExtendContext stmt) {
-                if (stmt.getAllTokensRecIf(ctx -> ctx.getRuleIndex() == usageStmt.getRuleIndex()).contains(usageStmt)) {
+                if (stmt.getAllCtxsRecIf(ctx -> ctx.getRuleIndex() == usageStmt.getRuleIndex()).contains(usageStmt)) {
                     return i;
                 }
             }
@@ -270,7 +271,7 @@ public class DeclarationLocationStyler extends Styler {
 
         // Update line number of all tokens between @oldIndex and @newIndex.
         int lines = stmt.getStop().getLine() - stmt.getStart().getLine() + 1;
-        for (int i = oldIndex + sign; i != newIndex + sign; i += sign) {
+        for (int i = oldIndex; i != newIndex; i += sign) {
             ExtendContext curStmt = (ExtendContext) block.getChild(i);
             for (Token token : curStmt.getAllTokensRec()) {
                 ((CommonToken) token).setLine(token.getLine() - sign * lines);

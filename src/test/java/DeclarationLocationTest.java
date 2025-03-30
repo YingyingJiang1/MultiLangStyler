@@ -11,7 +11,7 @@ public class DeclarationLocationTest extends IntegrationTest {
      */
     @Test
     public void test() {
-        batchTest(3, subDirName, "003");
+        batchTest(3, subDirName, "");
     }
 
     /**

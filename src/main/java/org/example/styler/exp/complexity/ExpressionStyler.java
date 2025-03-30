@@ -7,7 +7,6 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.factory.ParseTreeUtil;
-import org.example.semantic.intf.type.PrimitiveType;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.semantic.intf.type.Type;
 import org.example.style.rule.StyleProperty;
@@ -92,7 +91,7 @@ public class ExpressionStyler extends Styler {
 
     private ExpressionProperty extractStyleProperty(ExtendContext expression, MyParser parser) {
         int length = expression.getText().length();
-        int subExpNum = expression.getAllTokensRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleExpression()).size();
+        int subExpNum = expression.getAllCtxsRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleExpression()).size();
         return new ExpressionProperty(length, subExpNum);
     }
 

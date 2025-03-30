@@ -260,7 +260,7 @@
   } ],
   "handlers" : [ {
     "class" : "CondReverserHandler",
-    "argsList" : [ [ 0, 1, "$E" ] ]
+    "argsList" : [ [ 0, 2, "$E" ], [1, 2, "$E"], [2, 0, "$E"], [2, 1, "$E"]]
   } ]
 }, {
   "id" : 31,

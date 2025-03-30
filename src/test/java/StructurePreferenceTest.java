@@ -24,5 +24,10 @@ public class StructurePreferenceTest extends IntegrationTest {
         batchTest(3, "structure/conditional_branch", "");
     }
 
+    @Test
+    public void testContinueBranchStmt() {
+        batchTest(1, "structure/continue_branch", "");
+    }
+
 
 }

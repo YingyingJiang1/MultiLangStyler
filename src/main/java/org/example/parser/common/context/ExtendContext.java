@@ -8,7 +8,6 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
-import org.example.styler.format.body.layout.BodyLayoutStyler;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -332,12 +331,12 @@ public class ExtendContext extends ParserRuleContext {
         return getAllContextsIf(ctx -> ctx.getRuleIndex() == ruleIndex);
     }
 
-    public List<ExtendContext> getAllTokensRecIf(Predicate<ExtendContext> cond) {
+    public List<ExtendContext> getAllCtxsRecIf(Predicate<ExtendContext> cond) {
         List<ExtendContext> ctxs = new ArrayList<>();
         for (int i = 0; i < this.children.size(); ++i) {
             ParseTree treeNode = this.children.get(i);
             if (treeNode instanceof ExtendContext innerNode) {
-                ctxs.addAll(innerNode.getAllTokensRecIf(cond));
+                ctxs.addAll(innerNode.getAllCtxsRecIf(cond));
                 if (cond.test(innerNode)) {
                     ctxs.add(innerNode);
                 }
@@ -357,6 +356,7 @@ public class ExtendContext extends ParserRuleContext {
         }
         return ret;
     }
+
 
     public List<ExtendContext> getAllContextsIf(Predicate<ExtendContext> cond) {
         List<ExtendContext> ctxs = new ArrayList<>();
@@ -541,5 +541,16 @@ public class ExtendContext extends ParserRuleContext {
         }
         updateStartToken();
         updateStopToken();
+    }
+
+    public boolean isDescendantOf(ExtendContext  ancestor) {
+        ParseTree cur = this;
+        while (cur != null) {
+            if (cur == ancestor) {
+                return true;
+            }
+            cur = cur.getParent();
+        }
+        return false;
     }
 }
