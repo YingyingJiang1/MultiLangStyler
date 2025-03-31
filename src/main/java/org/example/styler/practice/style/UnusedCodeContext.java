@@ -3,15 +3,15 @@ package org.example.styler.practice.style;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 
 public class UnusedCodeContext extends StyleContext {
-    SymbolType codeLevel;
+    NameType codeLevel;
 
     public UnusedCodeContext() {
     }
 
-    public UnusedCodeContext(SymbolType codeLevel) {
+    public UnusedCodeContext(NameType codeLevel) {
         this.codeLevel = codeLevel;
     }
 
@@ -22,7 +22,7 @@ public class UnusedCodeContext extends StyleContext {
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        codeLevel = SymbolType.valueOf(parent.attributeValue("codeLevel"));
+        codeLevel = NameType.valueOf(parent.attributeValue("codeLevel"));
     }
 
     @Override

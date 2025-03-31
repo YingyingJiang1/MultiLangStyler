@@ -388,6 +388,16 @@ public class MyJavaParser implements MyParser {
         return t instanceof JavaParser.MethodCallContext;
     }
 
+    @Override
+    public boolean isLambdaLVTIParameter(ParseTree t) {
+        return t instanceof JavaParser.LambdaLVTIParameterContext;
+    }
+
+    @Override
+    public boolean isLambdaParameters(ParseTree t) {
+        return t instanceof JavaParser.LambdaParametersContext;
+    }
+
 
     @Override
     public int getRuleExpression() {

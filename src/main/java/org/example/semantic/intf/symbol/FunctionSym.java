@@ -1,9 +1,8 @@
 package org.example.semantic.intf.symbol;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.type.Type;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 
 import java.util.List;
 
@@ -12,8 +11,8 @@ public class FunctionSym extends Symbol{
     List<Symbol> typeParameters;
 
 
-    public FunctionSym(Type retType, List<Symbol> typeParameters, ExtendContext astNode, ExtendContext modifierListNode, SymbolType symbolType) {
-        super(astNode, modifierListNode, symbolType);
+    public FunctionSym(Type retType, List<Symbol> typeParameters, ExtendContext astNode, ExtendContext modifierListNode, NameType nameType) {
+        super(astNode, modifierListNode, nameType);
         this.retType = retType;
         this.typeParameters = typeParameters;
     }

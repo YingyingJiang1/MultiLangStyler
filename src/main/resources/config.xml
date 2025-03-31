@@ -1,13 +1,4 @@
 <configuration>
-    <extraction_info>
-        <!-- Paths of target style programs, seperated by ';'.
-        When <source> element is empty or useDefault is "true",the default path is the root of the current project.-->
-        <source excludes=""></source>
-        <style_path></style_path>
-        <style_file></style_file>
-    </extraction_info>
-    <application_info override="false">
-        <source excludes="">C:\Users\dell\OneDrive\桌面\L138</source>
-<!--        <result_saved_dir></result_saved_dir>-->
-    </application_info>
+    <llm url="http://210.28.134.91:8000/model">
+    </llm>
 </configuration>

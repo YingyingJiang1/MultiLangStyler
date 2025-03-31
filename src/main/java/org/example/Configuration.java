@@ -7,6 +7,8 @@ import org.dom4j.io.SAXReader;
 import org.example.global.GlobalInfo;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
@@ -23,7 +25,8 @@ import java.util.*;
 @ConfigurationProperties(prefix = "config")
 public class Configuration {
 
-  Element root = null;
+	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
+	Element root = null;
 
   public String styleFile;
 //  public String styleFileSavedPath;
@@ -38,27 +41,23 @@ public class Configuration {
   private String resOutDir;
   private String styleOutPath;
 
-  @Deprecated
-  public void loadConf() throws IOException, DocumentException {
-    InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
-    SAXReader reader = new SAXReader();
-    Document document = reader.read(inputStream);
-    root = document.getRootElement();
+  private String modelURL;
 
-    Element extractionInfo = root.element("extraction_info");
-    extractionCollection = collectFile(extractionInfo.element("source").getText());
-    styleFile = extractionInfo.elementText("style_file").replace("${root}", System.getProperty("user.dir"));
-//    styleFileSavedPath = extractionInfo.elementText("style_path").replace("${root}", System.getProperty("user.dir"));
+  public void loadConf() {
+    try {
+      InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
+      SAXReader reader = new SAXReader();
+      Document document = reader.read(inputStream);
+      root = document.getRootElement();
 
-    Element applicationInfo = root.element("application_info");
-//    overrideSource = applicationInfo.elementText("override").equals("true");
-    Element source = applicationInfo.element("source");
-    applicationCollection = collectFile(source.getText());
+      Element llmNode = root.element("llm");
+      if (llmNode != null) {
+        modelURL = llmNode.attributeValue("url");
+      }
+    } catch (DocumentException e) {
+      log.error("Failed to load configuration", e);
+    }
 
-
-//    if (applicationInfo.element("result_saved_dir") != null) {
-//      applyResultSaveDir = applicationInfo.element("result_saved_dir").getText();
-//    }
   }
 
   public String getStyleFile() {
@@ -79,6 +78,10 @@ public class Configuration {
 
   public String getResOutDir() {
     return resOutDir;
+  }
+
+  public String getModelURL() {
+    return modelURL;
   }
 
   public void setSrc(String src) {

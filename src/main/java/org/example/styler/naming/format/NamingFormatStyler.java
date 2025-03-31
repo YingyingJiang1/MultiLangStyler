@@ -1,17 +1,16 @@
 package org.example.styler.naming.format;
 
-import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.rule.StyleProperty;
-import org.example.styler.ModelAdapter;
+import org.example.styler.ModelClient;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;
 import org.example.styler.naming.MyCaseFormat;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.naming.format.style.NamingFormatStyle;
@@ -45,10 +44,10 @@ public class NamingFormatStyler extends Styler {
                         }
                     }
                 }
+            } else {
+                NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, curLength);
+                style.addRule(context, property);
             }
-
-            NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, curLength);
-            style.addRule(context, property);
         }
     }
 
@@ -56,6 +55,10 @@ public class NamingFormatStyler extends Styler {
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
+            if (!isMutable(symbol)) {
+                continue;
+            }
+
             NamingFormatContext context = extractStyleContext(symbol, parser);
 
             NamingFormatProperty property = (NamingFormatProperty) style.getProperty(context);
@@ -81,20 +84,20 @@ public class NamingFormatStyler extends Styler {
     }
 
     private NamingFormatContext extractStyleContext(Symbol symbol, MyParser parser) {
-        SymbolType symbolType = symbol.getSymbolType();
-        NamingFormatContext context = new NamingFormatContext(symbolType);
+        NameType nameType = symbol.getSymbolType();
+        NamingFormatContext context = new NamingFormatContext(nameType);
 
         // Add attributes for variables
-        if (symbol.getSymbolType() == SymbolType.LOCAL_VARIABLE || symbol.getSymbolType() == SymbolType.FIELD) {
+        if (symbol.getSymbolType() == NameType.LOCAL_VARIABLE || symbol.getSymbolType() == NameType.FIELD) {
             if (symbol.hasModifier(parser.getConstKeyword())) {
                 context.addAttr(SymbolAttr.EXPLICIT_CONST);
             } else {
-                ModelAdapter modelAdapter = ModelAdapter.getInstance();
-                if (modelAdapter != null) {
+                ModelClient modelClient = ModelClient.getInstance();
+                if (modelClient != null) {
                     ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(node -> parser.isBlock(node) || parser.isBody(node));
                     String prompt = String.format("Does variable %s use user input? Answer only \"yes\" or \"no." +
-                            "// Code：\n" + "%s", symbol.getName(), stmt.getText());
-                    String res = modelAdapter.callModel(prompt);
+                            "// Code：\\n" + "\"%s\"", symbol.getName(), stmt.getFormattedText());
+                    String res = modelClient.sendRequest(prompt);
                     if (res != null && res.contains("yes")) {
                         context.addAttr(SymbolAttr.IMPLICIT_CONST);
                     }
@@ -141,6 +144,13 @@ public class NamingFormatStyler extends Styler {
             return Character.isUpperCase(name.charAt(0)) ? MyCaseFormat.UPPER_CAMEL : MyCaseFormat.LOWER_CAMEL;
         }
         return null;
+    }
+
+    private boolean isMutable(Symbol symbol) {
+        if (symbol.isPrivate()) {
+            return true;
+        }
+        return symbol.getSymbolType() == NameType.LOCAL_VARIABLE || symbol.getSymbolType() == NameType.PARAMETER;
     }
 
 

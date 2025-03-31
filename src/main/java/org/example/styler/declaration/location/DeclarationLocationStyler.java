@@ -9,13 +9,12 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.Resolver;
-import org.example.semantic.intf.symbol.FunctionSym;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.location.style.DeclarationLocationProperty;
 import org.example.styler.declaration.location.style.DeclarationLocationStyle;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,7 +36,7 @@ public class DeclarationLocationStyler extends Styler {
         if (symbols != null) {
             // Get line distances of all local variables.
             for (Symbol symbol : symbols) {
-                if (symbol.getSymbolType() != SymbolType.LOCAL_VARIABLE) {
+                if (symbol.getSymbolType() != NameType.LOCAL_VARIABLE) {
                     continue;
                 }
                 int lineDis = calculateLineDis2firstUse(symbol);
@@ -61,7 +60,7 @@ public class DeclarationLocationStyler extends Styler {
             List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
             if (symbols != null) {
                 for (Symbol symbol : symbols) {
-                    if (symbol.getSymbolType() != SymbolType.LOCAL_VARIABLE) {
+                    if (symbol.getSymbolType() != NameType.LOCAL_VARIABLE) {
                         continue;
                     }
 

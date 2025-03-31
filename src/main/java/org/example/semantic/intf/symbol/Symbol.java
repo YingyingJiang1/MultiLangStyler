@@ -1,11 +1,8 @@
 package org.example.semantic.intf.symbol;
 
-import org.example.global.GlobalInfo;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
-import org.example.semantic.intf.ReferenceResolver;
-import org.example.semantic.intf.Resolver;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +11,12 @@ public abstract class Symbol {
     protected ExtendContext identifierNode; // identifier node in declaration statement.
     protected List<ExtendContext> references = new ArrayList<>(0);
     protected ExtendContext modifierListNode;
-    protected SymbolType symbolType;
+    protected NameType nameType;
 
-    public Symbol(ExtendContext identifierNode, ExtendContext modifierListNode, SymbolType symbolType) {
+    public Symbol(ExtendContext identifierNode, ExtendContext modifierListNode, NameType nameType) {
         this.identifierNode = identifierNode;
         this.modifierListNode = modifierListNode;
-        this.symbolType = symbolType;
+        this.nameType = nameType;
     }
 
     public Symbol() {}
@@ -37,8 +34,8 @@ public abstract class Symbol {
         }
     }
 
-    public SymbolType getSymbolType() {
-        return symbolType;
+    public NameType getSymbolType() {
+        return nameType;
     }
 
     public ExtendContext getDecIdentifierNode() {
@@ -59,5 +56,9 @@ public abstract class Symbol {
 
     public List<ExtendContext> getReferences() {
         return references;
+    }
+
+    public boolean isPrivate() {
+        return hasModifier("private");
     }
 }

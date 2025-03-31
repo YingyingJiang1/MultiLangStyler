@@ -133,6 +133,12 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
+    public String getFormattedText() {
+        StringBuilder builder = new StringBuilder();
+        getAllTokensRec().forEach(t -> builder.append(t.getText()).append(" "));
+        return builder.toString();
+    }
+
     /*
      * Put the children of the context instance on one line,
      * then calculate and return the column length(excluding all horizontal whitespace length).

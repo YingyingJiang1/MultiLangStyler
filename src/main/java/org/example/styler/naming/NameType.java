@@ -1,6 +1,6 @@
 package org.example.styler.naming;
 
-public enum SymbolType {
+public enum NameType {
     FIELD,
     METHOD,
     CONSTRUCTOR,

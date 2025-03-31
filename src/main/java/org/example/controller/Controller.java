@@ -36,6 +36,8 @@ public class Controller {
 
     public Controller(Configuration conf) {
         this.conf = conf;
+        this.conf.loadConf();
+        GlobalInfo.setConf(this.conf);
     }
 
     public Controller() {}
@@ -54,14 +56,15 @@ public class Controller {
             selfProgramStyle = extractStyle(conf.applicationCollection);
             SelfStyleManager.addStyle(conf.applicationCollection, selfProgramStyle);
 
-            applyStyle(conf.applicationCollection);
-
             if (conf.getStyleOutPath() != null) {
                 StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
                 if (conf.isSaveSelfStyle) {
                     StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
                 }
             }
+
+            applyStyle(conf.applicationCollection);
+
             return targetProgramStyle;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

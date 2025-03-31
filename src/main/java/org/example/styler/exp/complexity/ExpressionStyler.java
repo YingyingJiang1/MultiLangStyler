@@ -12,6 +12,7 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.factory.ParseTreeUtil;
+import org.example.parser.common.token.ExtendToken;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.semantic.intf.type.Type;
 import org.example.style.rule.StyleProperty;
@@ -21,12 +22,11 @@ import org.example.styler.exp.ExpType;
 import org.example.styler.exp.complexity.style.ExpressionContext;
 import org.example.styler.exp.complexity.style.ExpressionProperty;
 import org.example.styler.exp.complexity.style.ExpressionStyle;
+import org.example.styler.naming.MyCaseFormat;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.CaseFormat;
 
 public class ExpressionStyler extends Styler {
     private static final Logger log = LoggerFactory.getLogger(ExpressionStyler.class);
@@ -80,16 +80,18 @@ public class ExpressionStyler extends Styler {
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return ctx.getRuleIndex() == parser.getRuleExpStmt() || ctx.getRuleIndex() == parser.getRuleParExpression();
+        // For efficiency, do not select the expression node for checking.
+        return ctx.getRuleIndex() == parser.getRuleExpStmt() || ctx.getRuleIndex() == parser.getRuleParExpression() || parser.isVariableInitializer(ctx);
     }
 
     private ExpressionContext extractStyleContext(ExtendContext expression, MyParser parser) {
         ExpType expType = null;
-        if (expression.getRuleIndex() == parser.getRuleExpStmt()) {
+        int parentRule = expression.getParent().getRuleIndex();
+        if (parentRule == parser.getRuleExpStmt() || parser.isVariableInitializer(expression.getParent())) {
             expType = expression.getAllTerminalsIf(ter -> ter.getText().equals("?") || ter.getText().equals(":")).size() == 2
                     ? ExpType.TERNARY_EXP
                     : ExpType.TOP_EXP;
-        } else if (expression.getRuleIndex() == parser.getRuleParExpression()) {
+        } else if (parentRule == parser.getRuleParExpression()) {
             expType = ExpType.CONDITIONAL_EXP;
         }
         return expType == null ? null : new ExpressionContext(expType);
@@ -108,19 +110,15 @@ public class ExpressionStyler extends Styler {
 
     private void splitExpression(ExtendContext expression, ExpressionProperty curProperty, ExpressionProperty targetProperty, MyParser parser) {
         Map<String, List<ExtendContext>> expressionMap = new HashMap<>();
-        extractSameExpression(expression, expressionMap, parser);
+        extractCommonExpression(expression, expressionMap, parser);
 
-        int count = 1;
-        CaseFormat caseFormat = CaseFormat.LOWER_CAMEL;
+        MyCaseFormat caseFormat = MyCaseFormat.LOWER_CAMEL;
         List<Map.Entry<String, List<ExtendContext>>> sortedEntries = new ArrayList<>(expressionMap.entrySet().stream().toList());
         sortedEntries.sort(Comparator.comparing((Map.Entry<String, List<ExtendContext>> e) -> e.getValue().size())
                         .thenComparing((Map.Entry<String, List<ExtendContext>> e) -> e.getKey().length() * e.getValue().size()));
         for (Map.Entry<String, List<ExtendContext>> entry : sortedEntries) {
             // Preparation for create declaration statement.
             String name = NameGenerator.generateName("", caseFormat);
-            while (mayConflict(name, parser)) {
-                name = NameGenerator.generateName(String.valueOf(count++), caseFormat);
-            }
             Type type = GlobalInfo.getResolver().resolveExpression(entry.getValue().get(0), parser);
 
             // do split
@@ -132,6 +130,20 @@ public class ExpressionStyler extends Styler {
             ExtendContext identifier = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser).get(0);
             replaceChildren(entry.getValue(), List.of(identifier), parser);
 
+            String newName = NameGenerator.generateName(identifier, parser, caseFormat);
+            if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
+                extendToken.setText(newName);
+            }
+
+            // Avoid naming conflicts
+            name = identifier.getText();
+            for (int i = 1; mayConflict(name, parser); i++) {
+                name = name + Integer.toString(i);
+            }
+            if (!name.equals(identifier.getText()) && identifier.getStart() instanceof ExtendToken extendToken) {
+                extendToken.setText(name);
+            }
+
             curProperty.maxExpressionLength -= (entry.getKey().length() - name.length()) * entry.getValue().size();
             if (curProperty.maxExpressionLength <= targetProperty.maxExpressionLength) {
                 break;
@@ -139,11 +151,11 @@ public class ExpressionStyler extends Styler {
         }
     }
 
-    private void extractSameExpression(ExtendContext expression, Map<String, List<ExtendContext>> expressionMap, MyParser parser) {
+    private void extractCommonExpression(ExtendContext expression, Map<String, List<ExtendContext>> expressionMap, MyParser parser) {
         expressionMap.computeIfAbsent(expression.getText(), k -> new ArrayList<>()).add(expression);
         for (ParseTree child : expression.children) {
             if (child instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression() && ctx.getChildCount() > 1) {
-                extractSameExpression(expression,  expressionMap, parser);
+                extractCommonExpression(ctx,  expressionMap, parser);
             }
         }
     }

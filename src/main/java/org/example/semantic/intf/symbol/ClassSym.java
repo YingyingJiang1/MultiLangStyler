@@ -1,8 +1,7 @@
 package org.example.semantic.intf.symbol;
 
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.context.ExtendContext;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,8 @@ public class ClassSym extends Symbol{
     Symbol outerClass;
 
     public ClassSym(List<ExtendContext> parents, String path, List<Symbol> typeParameters, Symbol outerClass,
-                    ExtendContext astNode, ExtendContext modifierListNode, SymbolType symbolType) {
-        super(astNode, modifierListNode, symbolType);
+                    ExtendContext astNode, ExtendContext modifierListNode, NameType nameType) {
+        super(astNode, modifierListNode, nameType);
         this.parents = parents;
         this.path = path;
         this.typeParameters = typeParameters;

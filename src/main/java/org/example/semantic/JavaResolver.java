@@ -1,10 +1,8 @@
 package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.java.antlr.JavaParser;
 import org.example.semantic.intf.Resolver;
 import org.example.semantic.intf.symbol.ClassSym;
 import org.example.semantic.intf.symbol.FunctionSym;
@@ -13,18 +11,16 @@ import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.PrimitiveType;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.semantic.intf.type.Type;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pascal.taie.language.type.TypeSystem;
 
-import javax.swing.plaf.synth.SynthCheckBoxUI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class ResolverImpl implements Resolver {
-    public static Logger logger = LoggerFactory.getLogger(ResolverImpl.class);
+public class JavaResolver implements Resolver {
+    public static Logger logger = LoggerFactory.getLogger(JavaResolver.class);
 
 
     /**
@@ -92,36 +88,57 @@ public class ResolverImpl implements Resolver {
 
     private Symbol doResolve(SymbolTable st, ExtendContext identifierNode, MyParser parser) {
         Symbol symbol = null;
-        if (parser.isIdentifier(identifierNode)) {
-            ExtendContext parent = (ExtendContext) identifierNode.getParent();
-            while (parent != null) {
-                int ruleIndex = parent.getRuleIndex();
-                if (parser.isFieldDeclaration(parent) || parser.isLocalVarDeclaration(parent)) {
-                    symbol = resolveVarDeclaration(parent, identifierNode, parser);
-                    break;
-                } else if (parser.belongToFunctionDec(ruleIndex)) {
-                    symbol = resolveFunctionDeclaration(parent, identifierNode, parser);
-                    break;
-                } else if (parser.isTypeDeclaration(parent)) {
-                    symbol = resolveTypeDeclaration(st, parent, identifierNode, parser);
-                    break;
-                } else if (parser.belongToParameter(parent)) {
-                    symbol = resolveParameter(parent, identifierNode, parser);
-                    break;
-                } else if (parser.isTypeParameter(parent)) {
-                    symbol = resolveTypeParameter(parent, identifierNode, parser);
-                    break;
-                } else if (ruleIndex == parser.getRuleExpression()) {
-                    resolveReference(st, identifierNode, parser);
-                    break;
-                }
-                parent = (ExtendContext) parent.getParent();
-            }
-            if (symbol != null) {
-                st.addSymbol(symbol, parser);
-            }
+        if (!parser.isIdentifier(identifierNode) || identifierNode.getParent() == null) {
+            return null;
+        }
+
+        ExtendContext parent = (ExtendContext) identifierNode.getParent();
+        if (isFunctionIdentifier(identifierNode, parser)) {
+            symbol = resolveFunctionDeclaration(parent, identifierNode, parser);
+        } else if (isTypeDecIdentifier(identifierNode, parser)){
+            symbol = resolveTypeDeclaration(st, parent, identifierNode, parser);
+        }else if(isVarDecIdentifier(identifierNode, parser)) {
+            symbol = resolveVarDeclaration(identifierNode, parser);
+        } else if(isParaIdentifier(identifierNode, parser)) {
+            symbol = resolveParameter(parent, identifierNode, parser);
+        } else if (isReference(identifierNode, parser)) {
+            resolveReference(st, identifierNode, parser);
+        } else if (parser.isTypeParameter(parent)) {
+            symbol = resolveTypeParameter(parent, identifierNode, parser);
+        } else {
+            System.err.printf("Unconsidered case: identifier=%s, parent node=%s", identifierNode.getText(), parent.getClass());
+        }
+
+        if (symbol != null) {
+            st.addSymbol(symbol, parser);
         }
         return symbol;
+    }
+
+    private boolean isReference(ExtendContext identifierNode, MyParser parser) {
+        boolean isTypeType = identifierNode.getFirstParentIf(parser::isTypeType) != null;
+        return isTypeType || parser.getRuleExpression() == identifierNode.getParent().getRuleIndex();
+    }
+
+    private boolean isFunctionIdentifier(ExtendContext identifierNode, MyParser parser) {
+        return parser.belongToFunctionHead(identifierNode.getParent().getRuleIndex());
+    }
+
+    private boolean isTypeDecIdentifier(ExtendContext identifierNode, MyParser parser) {
+        return identifierNode.getParent() != null && identifierNode.getParent().getParent() != null &&
+                parser.isTypeDeclaration(identifierNode.getParent().getParent());
+    }
+
+    private boolean isVarDecIdentifier(ExtendContext identifierNode, MyParser parser) {
+        boolean isDynamicType = identifierNode.getParent() != null && parser.isIdentifier(identifierNode.getParent());
+        return isDynamicType || parser.isVariableDeclaratorId(identifierNode.getParent())
+                && identifierNode.findFirstParentIf(node -> parser.isLocalVarDeclaration(node) || parser.isFieldDeclaration(node)) != null;
+    }
+
+    private boolean isParaIdentifier(ExtendContext identifierNode, MyParser parser) {
+        ExtendContext parent = (ExtendContext) identifierNode.getParent();
+        boolean isLambdaPara = parser.isLambdaLVTIParameter(parent) || parser.isLambdaParameters(parent);
+        return isLambdaPara || parser.isVariableDeclaratorId(parent);
     }
 
     private Type resolveType(ExtendContext typeNode, MyParser parser) {
@@ -137,11 +154,11 @@ public class ResolverImpl implements Resolver {
 
 
     private Symbol resolveParameter(ExtendContext decNode, ExtendContext identifier, MyParser parser) {
-        SymbolType symbolType = SymbolType.PARAMETER;
+        NameType nameType = NameType.PARAMETER;
         ExtendContext modifierList = decNode.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleModifierList());
         ExtendContext typeNode = decNode.getFirstCtxChildIf(parser::isTypeType);
         Type type = resolveType(typeNode, parser);
-        VarSym symbol = new VarSym(type, identifier, modifierList, symbolType);
+        VarSym symbol = new VarSym(type, identifier, modifierList, nameType);
         return symbol;
     }
 
@@ -159,15 +176,14 @@ public class ResolverImpl implements Resolver {
         return typeParameters;
     }
 
-    private Symbol resolveTypeDeclaration(SymbolTable st, ExtendContext decNode, ExtendContext identifier, MyParser parser) {
-        SymbolType symbolType = SymbolType.TYPE;
-        ExtendContext modifierList = decNode.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleModifierList());
-        ExtendContext headContext = getHeadContext(decNode);
-        List<Symbol> typeParameters = resolveTypeParameters(headContext, parser);
+    private Symbol resolveTypeDeclaration(SymbolTable st, ExtendContext headContextNode, ExtendContext identifier, MyParser parser) {
+        NameType nameType = NameType.TYPE;
+        ExtendContext modifierList = headContextNode.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleModifierList());
+        List<Symbol> typeParameters = resolveTypeParameters(headContextNode, parser);
 
         // resolve parents
         List<ExtendContext> typeNodeofParents = new ArrayList<>();
-        for (ParseTree child : headContext.children) {
+        for (ParseTree child : headContextNode.children) {
             if (child instanceof ExtendContext ctx ) {
                 if (ctx.getRuleIndex() == parser.getRuleTypeType()) {
                     typeNodeofParents.add(ctx);
@@ -179,7 +195,7 @@ public class ResolverImpl implements Resolver {
 
         // resolve outer class.
         Symbol outerClass = null;
-        ParseTree parent = decNode.getParent();
+        ParseTree parent = headContextNode.getParent();
         while (!parser.isTypeDeclaration(parent)) {
             if (parent == null) {
                 break;
@@ -187,12 +203,12 @@ public class ResolverImpl implements Resolver {
             parent =  parent.getParent();
         }
         if (parser.isTypeDeclarationList(parent)) {
-            ExtendContext identifierNode = getHeadContext(parent).getFirstCtxChildIf(parser::isIdentifier);
+            ExtendContext identifierNode = headContextNode.getFirstCtxChildIf(parser::isIdentifier);
             outerClass = st.getSymbol(identifierNode, parser);
         }
 
-        String path = findPathOfClass(decNode, parser);
-        Symbol symbol = new ClassSym(typeNodeofParents, path, typeParameters, outerClass, identifier, modifierList, symbolType);
+        String path = findPathOfClass(headContextNode, parser);
+        Symbol symbol = new ClassSym(typeNodeofParents, path, typeParameters, outerClass, identifier, modifierList, nameType);
         return symbol;
     }
 
@@ -210,24 +226,24 @@ public class ResolverImpl implements Resolver {
         return null;
     }
 
-    private Symbol resolveFunctionDeclaration(ExtendContext decNode, ExtendContext identifier, MyParser parser) {
-        ExtendContext modifierList = decNode.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleModifierList());
-        ExtendContext headContext = getHeadContext(decNode);
-        ExtendContext typeNode = headContext.getFirstCtxChildIf(parser::isTypeType);
-        SymbolType symbolType = typeNode == null ? SymbolType.CONSTRUCTOR : SymbolType.METHOD;
+    private Symbol resolveFunctionDeclaration(ExtendContext headContextNode, ExtendContext identifier, MyParser parser) {
+        ExtendContext modifierList = headContextNode.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleModifierList());
+        ExtendContext typeNode = headContextNode.getFirstCtxChildIf(parser::isTypeType);
+        NameType nameType = typeNode == null ? NameType.CONSTRUCTOR : NameType.METHOD;
         Type retType = resolveType(typeNode, parser);
-        List<Symbol> typeParameters = resolveTypeParameters(headContext, parser);
+        List<Symbol> typeParameters = resolveTypeParameters(headContextNode, parser);
 
-        Symbol symbol = new FunctionSym(retType,typeParameters, identifier, modifierList, symbolType);
+        Symbol symbol = new FunctionSym(retType,typeParameters, identifier, modifierList, nameType);
         return symbol;
     }
 
-    private Symbol resolveVarDeclaration(ExtendContext decNode, ExtendContext identifier, MyParser parser) {
-        SymbolType symbolType = parser.isFieldDeclaration(decNode) ? SymbolType.FIELD : SymbolType.LOCAL_VARIABLE;
+    private Symbol resolveVarDeclaration(ExtendContext identifier, MyParser parser) {
+        ExtendContext decNode = identifier.findFirstParentIf(node -> parser.isLocalVarDeclaration(node) || parser.isFieldDeclaration(node));
+        NameType nameType = parser.isFieldDeclaration(decNode) ? NameType.FIELD : NameType.LOCAL_VARIABLE;
         ExtendContext modifierList = decNode.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleModifierList());
         ExtendContext typeNode = decNode.getFirstCtxChildIf(parser::isTypeType);
         Type type = resolveType(typeNode, parser);
-        Symbol symbol = new VarSym(type, identifier, modifierList, symbolType);
+        Symbol symbol = new VarSym(type, identifier, modifierList, nameType);
         return symbol;
     }
 
@@ -245,14 +261,14 @@ public class ResolverImpl implements Resolver {
         if (typeParameterNode == null) {
             return null;
         }
-        return new VarSym(null, identifier, null, SymbolType.TYPE_PARAMETER);
+        return new VarSym(null, identifier, null, NameType.TYPE_PARAMETER);
     }
 
-    private ExtendContext getHeadContext(ParseTree decNode) {
-        if (decNode instanceof ExtendContext ctx) {
-            return (ExtendContext) decNode.getChild(1);
-        }
-        return null;
-    }
+//    private ExtendContext getHeadContext(ParseTree decNode) {
+//        if (decNode instanceof ExtendContext ctx) {
+//            return (ExtendContext) decNode.getChild(1);
+//        }
+//        return null;
+//    }
 
 }

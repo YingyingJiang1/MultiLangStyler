@@ -6,7 +6,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 import org.example.styler.practice.style.UnusedCodeContext;
 import org.example.styler.practice.style.UnusedCodeProperty;
 import org.example.styler.practice.style.UnusedCodeStyle;
@@ -34,11 +34,11 @@ public class UnusedCodeStyler extends Styler {
             }
         } else {
             // Set UnusedCodeProperty for all symbol types in the target-style program.
-            Set<SymbolType> symbolTypes = new HashSet<>();
+            Set<NameType> nameTypes = new HashSet<>();
             List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
             if (symbols != null) {
-                symbols.forEach(symbol -> symbolTypes.add(symbol.getSymbolType()));
-                symbolTypes.forEach(symbolType -> style.addRule(new UnusedCodeContext(symbolType), new UnusedCodeProperty(false)));
+                symbols.forEach(symbol -> nameTypes.add(symbol.getSymbolType()));
+                nameTypes.forEach(symbolType -> style.addRule(new UnusedCodeContext(symbolType), new UnusedCodeProperty(false)));
             }
         }
     }
@@ -91,7 +91,7 @@ public class UnusedCodeStyler extends Styler {
             boolean isRemovable = true;
             List<ExtendContext> argsToBeRemoved = new ArrayList<>();
             // Find arguments for the parameter to be removed.
-            if (symbol.getSymbolType() == SymbolType.PARAMETER) {
+            if (symbol.getSymbolType() == NameType.PARAMETER) {
                 ExtendContext functionDec = symbol.getDecIdentifierNode()
                         .findFirstParentIf(p1 -> p1.getRuleIndex() == parser.getRuleMethodDeclaration() || p1.getRuleIndex() == parser.getRuleConstructorDeclaration());
                 FunctionDecSearcher searcher = parser.getFunctionDecSearcher();

@@ -193,7 +193,7 @@ constructorDeclaration
     : modifierList constructorHead constructorBody = block
     ;
 
-constructorHeadf
+constructorHead
     : typeParameters? identifier formalParameters (THROWS qualifiedNameList)? // constructor head
     | identifier // compact constructor head
     ;

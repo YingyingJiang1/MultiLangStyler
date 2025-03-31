@@ -3,7 +3,7 @@ package org.example.styler.naming.format.style;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
-import org.example.styler.naming.SymbolType;
+import org.example.styler.naming.NameType;
 import org.example.styler.naming.format.SymbolAttr;
 
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class NamingFormatContext extends StyleContext {
-    public SymbolType symbolType;
+    public NameType nameType;
     public List<SymbolAttr> attrs = null;
 
     public NamingFormatContext() {
     }
 
-    public NamingFormatContext(SymbolType symbolType) {
-        this.symbolType = symbolType;
+    public NamingFormatContext(NameType nameType) {
+        this.nameType = nameType;
     }
 
     public void addAttr(SymbolAttr attr) {
@@ -30,23 +30,32 @@ public class NamingFormatContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("name_type", symbolType.name());
+        parent.addAttribute("name_type", nameType.name());
+        if (attrs != null) {
+            for (SymbolAttr attr : attrs) {
+                parent.addAttribute(attr.name(), attr.name());
+            }
+        }
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        symbolType = SymbolType.valueOf(parent.attributeValue("name_type"));
+        nameType = NameType.valueOf(parent.attributeValue("name_type"));
+        for (Object attr : parent.attributes()) {
+            Element element = (Element) attr;
+            attrs.add(SymbolAttr.valueOf(element.getName()));
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(symbolType, attrs);
+        return Objects.hash(nameType, attrs);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NamingFormatContext other) {
-            return symbolType == other.symbolType && Objects.equals(attrs, other.attrs);
+            return nameType == other.nameType && Objects.equals(attrs, other.attrs);
         }
         return false;
     }

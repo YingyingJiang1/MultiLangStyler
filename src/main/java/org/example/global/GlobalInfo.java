@@ -1,5 +1,6 @@
 package org.example.global;
 
+import org.example.Configuration;
 import org.example.global.specialclass.JavaSpecialClass;
 import org.example.global.specialclass.SpecialClass;
 import org.example.semantic.ReferenceResolverFactory;
@@ -17,6 +18,7 @@ public class GlobalInfo {
     private static SpecialClass specialClass;
     private static Resolver resolver;
     private static ReferenceResolver referenceResolver;
+    private static Configuration conf = null;
 
 
     public static void setLanguage(String language) {
@@ -46,6 +48,15 @@ public class GlobalInfo {
     public static Resolver getResolver() {
         return resolver;
     }
+
+    public static void setConf(Configuration conf) {
+        GlobalInfo.conf = conf;
+    }
+
+    public static Configuration getConf() {
+        return conf;
+    }
+
 
     public static ReferenceResolver getReferenceResolver() {
         return referenceResolver;

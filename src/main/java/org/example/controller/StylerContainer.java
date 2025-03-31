@@ -36,7 +36,7 @@ public class StylerContainer {
         firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
 //        firstRoundStylers.add(new DeclarationNumberStyler());
-        firstRoundStylers.add(new DeclarationLocationStyler());
+//        firstRoundStylers.add(new DeclarationLocationStyler()); // Add static analysis module
        firstRoundStylers.add(new IfElseBodyOrderStyler());
         firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
