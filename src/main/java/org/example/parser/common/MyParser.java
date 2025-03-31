@@ -1,5 +1,6 @@
 package org.example.parser.common;
 
+import com.microsoft.schemas.office.office.STInsetMode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenFactory;
@@ -22,6 +23,12 @@ import java.util.List;
 import java.util.Set;
 
 public interface MyParser {
+    Set<String> assignOps = new HashSet<>(Arrays.asList(
+            "=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", ">>=", ">>>="
+    ));
+    Set<String> compareOps = new HashSet<>(Arrays.asList(
+            "==", "!=", "<", ">", "<=", ">="
+    ));
     Set<String> binOps = new HashSet<>(Arrays.asList(
             "+", "-", "*", "/",  "%", "&", "|", "^", "=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=",
             "<<=", ">>=", ">>>=", "<", ">", "<=", ">=", "==", "!=", ":", "::", ".", "->",
@@ -71,7 +78,8 @@ public interface MyParser {
 
 
 
-
+    boolean belongToAssignOp(String text);
+    boolean belongToCompareOp(String text);
     boolean belongToBinOp(String text);
     boolean belongToUnOp(String name);
     boolean belongToSeparator(String name);
@@ -117,6 +125,9 @@ public interface MyParser {
     boolean isFunctionCall(ParseTree t);
     boolean isLambdaLVTIParameter(ParseTree t);
     boolean isLambdaParameters(ParseTree t);
+    boolean isExpression(ParseTree t);
+    boolean isPrimitiveType(ParseTree t);
+    boolean isReferenceType(ParseTree t);
 
 
     int getRuleBlock();
@@ -173,6 +184,12 @@ public interface MyParser {
     int getRuleExpressionStmt();
     int getRuleLocalVarDeclarationStmt();
     int getRuleFieldDeclarationStmt();
+    int getRuleIntegerLiteral();
+    int getRuleFloatLiteral();
+    int getRuleCharLiteral();
+    int getRuleStringLiteral();
+    int getRuleBoolLiteral();
+    int getRuleTextBlockLiteral();
 
 
 

@@ -4,10 +4,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.semantic.intf.symbol.Symbol;
 
 public abstract class Type {
-    ParseTree astNode;
+    protected ParseTree astNode;
+    protected String typeName;
 
-    public Type(ParseTree astNode) {
+    public Type(ParseTree astNode, String typeName) {
         this.astNode = astNode;
+        this.typeName = typeName;
     }
 
     public Symbol resolve() {
@@ -15,6 +17,6 @@ public abstract class Type {
     }
 
     public String getName() {
-        return astNode.getText();
+        return typeName;
     }
 }

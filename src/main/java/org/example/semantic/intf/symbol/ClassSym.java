@@ -21,16 +21,21 @@ public class ClassSym extends Symbol{
         this.outerClass = outerClass;
     }
 
+    public ClassSym(String text) {
+        super(null, null, NameType.TYPE);
+        this.text = text;
+    }
+
     public String getQualifiedName() {
         StringBuilder qualifiedName = new StringBuilder();
         qualifiedName.append(path);
 
         Symbol outerClassSym = this.outerClass;
         while (outerClassSym != null) {
-            qualifiedName.append(".").append(outerClassSym.getName());
+            qualifiedName.append(".").append(outerClassSym.getText());
             outerClassSym = ((ClassSym) outerClassSym).outerClass;
         }
-        qualifiedName.append(".").append(getName());
+        qualifiedName.append(".").append(getText());
         return qualifiedName.toString();
     }
 }

@@ -9,6 +9,7 @@ public class VarSym extends Symbol {
 
     public VarSym(Type type, ExtendContext astNode, ExtendContext modifierListNode, NameType nameType) {
         super(astNode, modifierListNode, nameType);
+        this.type = type;
     }
 
     public Type getType() {

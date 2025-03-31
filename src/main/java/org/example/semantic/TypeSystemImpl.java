@@ -1,0 +1,120 @@
+package org.example.semantic;
+
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.global.GlobalInfo;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
+import org.example.semantic.intf.TypeSystem;
+import org.example.semantic.intf.symbol.ClassSym;
+import org.example.semantic.intf.symbol.FunctionSym;
+import org.example.semantic.intf.symbol.Symbol;
+import org.example.semantic.intf.symbol.VarSym;
+import org.example.semantic.intf.type.PrimitiveType;
+import org.example.semantic.intf.type.ReferenceType;
+import org.example.semantic.intf.type.Type;
+
+import java.util.*;
+
+public class TypeSystemImpl implements TypeSystem {
+	private static Map<Integer, String> literalTypeMap =  null;
+
+
+	@Override
+	public Type getType(ExtendContext node, MyParser parser) {
+		if (parser.isIdentifier(node)) {
+			return getIdentifierType(node, parser);
+		} else if (parser.isExpression(node)) {
+			return getExpressionType(node, parser);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 *
+	 * @return The wider type of t1 and t2. If t1 and t2 are not primitive type, return null.
+	 */
+	@Override
+	public Type calculateType(Type t1, Type t2, String operator, MyParser parser) {
+		if (parser.belongToAssignOp(operator)|| operator.equals("<<") || operator.equals(">>") || operator.equals(">>>")) {
+			return t1;
+		}
+		if (t1 instanceof PrimitiveType p1 && t2 instanceof PrimitiveType p2) {
+			if (parser.belongToCompareOp(operator)) {
+				return new PrimitiveType(null, "boolean");
+			}
+			return p1.isWider(p2) ? t1 : t2;
+		}
+		return null;
+	}
+
+	private Type getIdentifierType(ExtendContext identifier, MyParser parser) {
+		Symbol sym = GlobalInfo.getResolver().resolve(identifier, parser);
+		if (sym instanceof VarSym varSym) {
+			return varSym.getType();
+		} else if (sym instanceof FunctionSym functionSym) {
+			return functionSym.getRetType();
+		}
+		return null;
+	}
+
+	private Type getExpressionType(ExtendContext expression, MyParser parser) {
+		Queue<Type> types = new ArrayDeque<>();
+		String operator = "";
+
+		for (ParseTree child : expression.children) {
+			if (parser.isIdentifier(child)) {
+				types.add(getIdentifierType((ExtendContext) child, parser));
+			} else if(parser.isExpression(child)) {
+				types.add(getExpressionType((ExtendContext) child, parser));
+			} else if (parser.belongToOperator(child.getText())) {
+				operator += child.getText();
+			} else if (parser.isLiteral(child)) {
+				types.add(getLiteralType((ExtendContext) child, parser));
+			}
+		}
+
+		Type type = null;
+		while (!types.isEmpty()) {
+			if (type == null) {
+				type = types.poll();
+			} else {
+				type = calculateType(type, types.poll(), operator, parser);
+				if (type == null) {
+					return null;
+				}
+			}
+		}
+
+		return type;
+	}
+
+
+	private Type getLiteralType(ExtendContext literal, MyParser parser) {
+		if (literalTypeMap == null) {
+			literalTypeMap = new HashMap<>();
+			literalTypeMap.put(parser.getRuleIntegerLiteral(), "int");
+			literalTypeMap.put(parser.getRuleFloatLiteral(), "double");
+			literalTypeMap.put(parser.getRuleCharLiteral(), "char");
+			literalTypeMap.put(parser.getRuleStringLiteral(), "String");
+			literalTypeMap.put(parser.getRuleBoolLiteral(), "boolean");
+			literalTypeMap.put(parser.getRuleTextBlockLiteral(), "String");
+		}
+
+		String typeName = literalTypeMap.get(literal.getRuleIndex());
+		if (typeName != null) {
+			if (typeName.equals("String")) {
+				return new ReferenceType(null, new ClassSym(typeName));
+			}
+			if (typeName.equals("int") && (literal.getText().toUpperCase().endsWith("L"))) {
+				typeName = "long";
+			}
+			if (typeName.equals("double") && (literal.getText().toUpperCase().endsWith("F"))) {
+				typeName = "float";
+			}
+			return new PrimitiveType(null, typeName);
+		}
+		return null;
+	}
+
+}

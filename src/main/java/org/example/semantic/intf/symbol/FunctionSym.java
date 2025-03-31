@@ -19,4 +19,12 @@ public class FunctionSym extends Symbol{
 
     public FunctionSym() {
     }
+
+    public Type getRetType() {
+        return retType;
+    }
+
+    public List<Symbol> getTypeParameters() {
+        return typeParameters;
+    }
 }

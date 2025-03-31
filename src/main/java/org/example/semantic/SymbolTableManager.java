@@ -3,8 +3,7 @@ package org.example.semantic;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
-import org.example.semantic.ResolverFactory;
-import org.example.semantic.SymbolTable;
+import org.example.semantic.factory.ResolverFactory;
 import org.example.semantic.intf.symbol.Symbol;
 
 import java.util.HashMap;

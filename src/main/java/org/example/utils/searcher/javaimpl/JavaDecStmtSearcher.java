@@ -20,9 +20,9 @@ public class JavaDecStmtSearcher implements DecStmtSearcher {
 
     public List<ExtendContext> searchIdentifiers(ExtendContext decStmt, MyParser parser) {
         List<ExtendContext> result = new ArrayList<>();
-        List<ExtendContext> declaratorList = decStmt.getAllContextsIf(ctx -> ctx.getRuleIndex() == parser.getRuleVariableDeclarator());
+        List<ExtendContext> declaratorList = decStmt.getAllCtxsRecIf(parser::isVariableDeclaratorId);
         for (ExtendContext declarator : declaratorList) {
-            ExtendContext identifierNode = declarator.getFirstCtxChildIf(parser::isVariableDeclaratorId).getFirstInnerChildByType(parser.getRuleIdentifier());
+            ExtendContext identifierNode = declarator.getFirstCtxChildIf(parser::isIdentifier);
             result.add(identifierNode);
         }
         return result;

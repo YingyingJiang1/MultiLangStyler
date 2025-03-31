@@ -15,5 +15,4 @@ public interface Resolver {
     Symbol resolve(ExtendContext identifierNode, MyParser parser);
     SymbolTable resolveAll(ParseTree root, MyParser parser);
     SymbolTable getSymbolTable(ParseTree root);
-    Type resolveExpression(ExtendContext expression, MyParser parser);
 }

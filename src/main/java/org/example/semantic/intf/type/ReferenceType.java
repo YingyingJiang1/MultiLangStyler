@@ -9,14 +9,14 @@ public class ReferenceType extends Type{
 
 
     public ReferenceType(ParseTree astNode, Symbol symbol) {
-        super(astNode);
+        super(astNode, symbol.getText());
         this.symbol = symbol;
     }
 
     @Override
     public String getName() {
         if (symbol instanceof ClassSym classSym) {
-            return classSym.getName();
+            return classSym.getText();
         }
         return null;
     }

@@ -18,7 +18,7 @@ public class NameGenerator {
 
     public static String generateName(ExtendContext identifier, MyParser parser, MyCaseFormat caseFormat) {
         ModelClient client = ModelClient.getInstance();
-        if (client == null) {
+        if (client != null) {
             // Create prompt
             ExtendContext minStmt = identifier.findFirstParentIf(parser::belongToStmt);
             if (minStmt == null) {
@@ -36,6 +36,7 @@ public class NameGenerator {
                         "\n" +
                         codeContext.getFormattedText());
             }
+            return client.sendRequest(promptBuilder.toString());
         }
         return null;
     }

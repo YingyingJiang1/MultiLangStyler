@@ -1,12 +1,9 @@
 package org.example.styler.exp.complexity;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -111,15 +108,22 @@ public class ExpressionStyler extends Styler {
     private void splitExpression(ExtendContext expression, ExpressionProperty curProperty, ExpressionProperty targetProperty, MyParser parser) {
         Map<String, List<ExtendContext>> expressionMap = new HashMap<>();
         extractCommonExpression(expression, expressionMap, parser);
+        PriorityQueue<MutablePair<String, List<ExtendContext>>> pq = new PriorityQueue<>(Comparator.comparing((MutablePair<String, List<ExtendContext>> p) -> -p.getRight().size()));
+        for (Map.Entry<String, List<ExtendContext>> entry : expressionMap.entrySet()) {
+            pq.add(new MutablePair<>(entry.getKey(), entry.getValue()));
+        }
 
         MyCaseFormat caseFormat = MyCaseFormat.LOWER_CAMEL;
-        List<Map.Entry<String, List<ExtendContext>>> sortedEntries = new ArrayList<>(expressionMap.entrySet().stream().toList());
-        sortedEntries.sort(Comparator.comparing((Map.Entry<String, List<ExtendContext>> e) -> e.getValue().size())
-                        .thenComparing((Map.Entry<String, List<ExtendContext>> e) -> e.getKey().length() * e.getValue().size()));
+
+
+
         for (Map.Entry<String, List<ExtendContext>> entry : sortedEntries) {
             // Preparation for create declaration statement.
             String name = NameGenerator.generateName("", caseFormat);
-            Type type = GlobalInfo.getResolver().resolveExpression(entry.getValue().get(0), parser);
+            Type type = GlobalInfo.getTypeSystem().getType(entry.getValue().get(0), parser);
+            if (type == null) {
+                continue;
+            }
 
             // do split
             ExtendContext decStmt = addVarDeclaration(type, name, entry.getValue().get(0), parser);

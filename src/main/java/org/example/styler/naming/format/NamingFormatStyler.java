@@ -26,7 +26,7 @@ public class NamingFormatStyler extends Styler {
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
-            String name = symbol.getName();
+            String name = symbol.getText();
             MyCaseFormat caseFormat = getCaseFormat(name);
 
             NamingFormatContext context = extractStyleContext(symbol, parser);
@@ -63,7 +63,7 @@ public class NamingFormatStyler extends Styler {
 
             NamingFormatProperty property = (NamingFormatProperty) style.getProperty(context);
             if (property != null ) {
-                String name = symbol.getName();
+                String name = symbol.getText();
                 MyCaseFormat curFormat = getCaseFormat(name);
                 String newName = abbreviateName(name, property.maxLength);
 
@@ -96,7 +96,7 @@ public class NamingFormatStyler extends Styler {
                 if (modelClient != null) {
                     ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(node -> parser.isBlock(node) || parser.isBody(node));
                     String prompt = String.format("Does variable %s use user input? Answer only \"yes\" or \"no." +
-                            "// Code：\\n" + "\"%s\"", symbol.getName(), stmt.getFormattedText());
+                            "// Code：\\n" + "\"%s\"", symbol.getText(), stmt.getFormattedText());
                     String res = modelClient.sendRequest(prompt);
                     if (res != null && res.contains("yes")) {
                         context.addAttr(SymbolAttr.IMPLICIT_CONST);

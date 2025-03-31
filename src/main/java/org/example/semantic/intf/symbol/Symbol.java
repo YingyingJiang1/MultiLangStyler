@@ -12,16 +12,18 @@ public abstract class Symbol {
     protected List<ExtendContext> references = new ArrayList<>(0);
     protected ExtendContext modifierListNode;
     protected NameType nameType;
+    protected String text;
 
     public Symbol(ExtendContext identifierNode, ExtendContext modifierListNode, NameType nameType) {
         this.identifierNode = identifierNode;
         this.modifierListNode = modifierListNode;
         this.nameType = nameType;
+        this.text = identifierNode.getText();
     }
 
     public Symbol() {}
 
-    public String getName() {
+    public String getText() {
         return identifierNode.getText();
     }
 

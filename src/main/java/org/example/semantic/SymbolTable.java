@@ -38,7 +38,7 @@ public class SymbolTable {
             List<Symbol> symbols = symbolMap.get(curScope);
             if (symbols != null) {
                 for (Symbol symbol : symbols ) {
-                    if (symbol.getName().equals(name)) {
+                    if (symbol.getText().equals(name)) {
                         return symbol;
                     }
                 }
@@ -51,7 +51,7 @@ public class SymbolTable {
     public boolean hasSymbol(String text) {
         for (List<Symbol> symbols : symbolMap.values()) {
             for (Symbol symbol : symbols) {
-                if (symbol.getName().equals(text)) {
+                if (symbol.getText().equals(text)) {
                     return true;
                 }
             }

@@ -398,6 +398,21 @@ public class MyJavaParser implements MyParser {
         return t instanceof JavaParser.LambdaParametersContext;
     }
 
+    @Override
+    public boolean isExpression(ParseTree t) {
+        return t instanceof JavaParser.ExpressionContext;
+    }
+
+    @Override
+    public boolean isPrimitiveType(ParseTree t) {
+        return t instanceof JavaParser.PrimitiveTypeContext;
+    }
+
+    @Override
+    public boolean isReferenceType(ParseTree t) {
+        return t instanceof JavaParser.ClassOrInterfaceTypeContext;
+    }
+
 
     @Override
     public int getRuleExpression() {
@@ -432,6 +447,16 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToParameter(ParseTree t) {
         return t instanceof JavaParser.FormalParameterContext || t instanceof JavaParser.LambdaLVTIParameterContext;
+    }
+
+    @Override
+    public boolean belongToAssignOp(String text) {
+        return assignOps.contains(text);
+    }
+
+    @Override
+    public boolean belongToCompareOp(String text) {
+        return compareOps.contains(text);
     }
 
     @Override
@@ -1007,6 +1032,36 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getRuleFieldDeclarationStmt() {
         return JavaParser.RULE_fieldDeclaration;
+    }
+
+    @Override
+    public int getRuleIntegerLiteral() {
+        return JavaParser.RULE_integerLiteral;
+    }
+
+    @Override
+    public int getRuleFloatLiteral() {
+        return JavaParser.RULE_floatLiteral;
+    }
+
+    @Override
+    public int getRuleCharLiteral() {
+        return JavaParser.CHAR_LITERAL;
+    }
+
+    @Override
+    public int getRuleStringLiteral() {
+        return JavaParser.STRING_LITERAL;
+    }
+
+    @Override
+    public int getRuleBoolLiteral() {
+        return JavaParser.BOOL_LITERAL;
+    }
+
+    @Override
+    public int getRuleTextBlockLiteral() {
+        return JavaParser.TEXT_BLOCK;
     }
 
     @Override

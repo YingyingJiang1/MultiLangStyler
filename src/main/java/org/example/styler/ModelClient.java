@@ -36,6 +36,9 @@ public class ModelClient {
     private ModelClient() {}
 
     public String sendRequest(String prompt) {
+        if (modelURL == null) {
+            return null;
+        }
         try {
             // 打开连接
             HttpURLConnection con = (HttpURLConnection) modelURL.openConnection();
@@ -72,7 +75,7 @@ public class ModelClient {
                 return response.toString();
             }
         } catch (Exception e) {
-            log.error("e: ", e);
+            log.error("Failed to communicate with llm.");
         }
         return null;
     }

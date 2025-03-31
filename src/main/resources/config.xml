@@ -1,4 +1,4 @@
 <configuration>
-    <llm url="http://210.28.134.91:8000/model">
-    </llm>
+<!--    <llm url="http://210.28.134.91:8000/model">-->
+<!--    </llm>-->
 </configuration>
