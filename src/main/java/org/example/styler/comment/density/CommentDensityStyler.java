@@ -1,6 +1,7 @@
 package org.example.styler.comment.density;
 
 import org.antlr.v4.runtime.Token;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -42,9 +43,10 @@ public class CommentDensityStyler extends Styler {
             if (property instanceof CommentDensityProperty densityProperty && lineDensity > densityProperty.lineDensity) {
                 int linesToRemoved = (int) (totalLines * (lineDensity - densityProperty.lineDensity));
                 removeComment(commentMap, tokens, linesToRemoved, parser);
+
+                RunStatistic.hit(this.getClass());
             }
         }
-
         return null;
     }
 

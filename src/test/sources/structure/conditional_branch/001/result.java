@@ -2,17 +2,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner SCANNER = new Scanner(System.in);
-        String S = SCANNER.nextLine();
-        String T = SCANNER.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        String s = scanner.nextLine();
+        String t = scanner.nextLine();
         // Check if rotation is possible
-        boolean isRotationPossible = checkRotation(S, T);
+        boolean isRotationPossible = checkRotation(s, t);
         
         System.out.println(isRotationPossible ? "Yes" : "No");
-        SCANNER.close();
+        scanner.close();
     }
     
-    public static boolean chkRotation(String s, String t) {
+    public static boolean checkRotation(String s, String t) {
         // Concatenate S with itself
         // This will contain all possible rotations of S
         String doubledS = s + s;// If lengths are different, rotation is impossible

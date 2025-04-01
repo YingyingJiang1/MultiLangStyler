@@ -7,18 +7,23 @@
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="3"/>
     </rule>
     <rule>
+      <style_context name_type="FIELD" IMPLICIT_CONST="IMPLICIT_CONST"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="2"/>
+    </rule>
+    <rule>
       <style_context name_type="TYPE"/>
       <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
+    </rule>
+    <rule>
+      <style_context name_type="METHOD"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
       <style_context name_type="PARAMETER"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
-    <rule>
-      <style_context name_type="FIELD"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="2"/>
-    </rule>
   </style>
+  <style name="if_else_body_order"/>
   <style name="indention">
     <rule>
       <style_property indentionUnit="4" indentionType=" "/>
@@ -33,6 +38,7 @@
       <style_property use_brace="true"/>
     </rule>
   </style>
+  <style name="multi_branch"/>
   <style name="brace_format">
     <rule>
       <style_context>
@@ -63,6 +69,7 @@
       <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
     </rule>
   </style>
+  <style name="declaration_layout"/>
   <style name="declaration_location">
     <rule>
       <style_property>
@@ -71,14 +78,33 @@
       </style_property>
     </rule>
   </style>
+  <style name="most_complex_expression">
+    <rule>
+      <style_context expType="TOP_EXP"/>
+      <style_property maxExpressionLength="36" maxSubExpNum="10"/>
+    </rule>
+  </style>
   <style name="lineWrapping">
     <rule>
-      <style_context/>
-      <style_property/>
+      <style_context attr="COMMENT"/>
+      <style_property variance="0.0" maxLen="0" maxLenBefore="0" succeedLoc="0">
+        <breakLoc reg=" +|[,.]" after="true"/>
+      </style_property>
     </rule>
     <rule>
-      <style_context/>
-      <style_property/>
+      <style_context attr="CODE"/>
+      <style_property variance="0.0" maxLen="0" maxLenBefore="0" succeedLoc="0">
+        <breakLoc reg="," after="true"/>
+        <breakLoc reg="[?:]" after="true"/>
+        <breakLoc reg="[.]" after="false"/>
+        <breakLoc reg="[&amp;]{2}" after="true"/>
+        <breakLoc reg="[|]{2}" after="true"/>
+        <breakLoc reg="[-+*/%&amp;|^]" after="true"/>
+        <breakLoc reg="[=]{2,3}" after="true"/>
+        <breakLoc reg="[-+*/%&amp;|^]=|&lt;&lt;=|&gt;&gt;=|&gt;&gt;&gt;=" after="true"/>
+        <breakLoc reg="&lt;|&lt;=|&gt;|&gt;=|==|!=" after="true"/>
+        <breakLoc reg="[(]" after="true"/>
+      </style_property>
     </rule>
   </style>
   <style name="space">
@@ -227,6 +253,7 @@
       <style_property space1="false" space2="false"/>
     </rule>
   </style>
+  <style name="comment_syntax"/>
   <style name="arrangement">
     <rule>
       <style_context type="class" statistic="methodDeclarationList=1, fieldDeclarationList=1"/>
@@ -325,5 +352,6 @@
       <style_property preferenceIndex="0"/>
     </rule>
   </style>
+  <style name="literal_usage"/>
   <style name="body_layout"/>
 </program_style>

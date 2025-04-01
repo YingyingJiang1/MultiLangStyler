@@ -1,6 +1,7 @@
 package org.example.styler.practice;
 
 import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
+import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -54,6 +55,8 @@ public class UnusedCodeStyler extends Styler {
                 continue;
             }
             removeUnusedCode(symbol, parser);
+
+            RunStatistic.hit(this.getClass());
         }
         return ctx;
     }

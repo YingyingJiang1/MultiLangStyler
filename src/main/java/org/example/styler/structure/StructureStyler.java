@@ -1,6 +1,7 @@
 package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.style.rule.StyleContext;
@@ -75,6 +76,7 @@ public class StructureStyler extends Styler {
                     }
                     try {
                         newTree = targetStructure.convert(from, to, ctx, parser);
+                        RunStatistic.addStructureRule(matchedStructure.structure.id);
                     } catch (Exception e) {
                         logger.error("Note: Fail to convert from {} to {} when structure id = {}.", from, to, targetStructure.getId(), e);
                     }

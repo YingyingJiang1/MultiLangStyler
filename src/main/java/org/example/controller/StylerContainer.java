@@ -7,7 +7,8 @@ import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
 import org.example.styler.comment.density.CommentDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
-import org.example.styler.declaration.number.DeclarationLayoutStyler;
+import org.example.styler.declaration.layout.DeclarationLayoutStyler;
+import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.exp.complexity.ExpressionStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
@@ -21,6 +22,7 @@ import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.ifelse.multibranch.MultiBranchStyler;
 import org.example.styler.literal.usage.LiteralUsageStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
+import org.example.styler.practice.UnusedCodeStyler;
 import org.example.styler.structure.StructureStyler;
 
 public class StylerContainer {
@@ -36,7 +38,7 @@ public class StylerContainer {
         firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
         firstRoundStylers.add(new DeclarationLayoutStyler());
-//        firstRoundStylers.add(new DeclarationLocationStyler()); // Add static analysis module
+        firstRoundStylers.add(new DeclarationLocationStyler()); // Add static analysis module
        firstRoundStylers.add(new IfElseBodyOrderStyler());
         firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
@@ -50,7 +52,7 @@ public class StylerContainer {
 
 
         firstRoundStylers.add(new NamingFormatStyler());
-        // firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
+//         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
 
         // Format styles
         secondRoundStylers.add(new BodyLayoutStyler());

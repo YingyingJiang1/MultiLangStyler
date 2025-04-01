@@ -13,6 +13,13 @@ public class StructurePreferenceTest extends IntegrationTest {
     String language = "java";
     String dir = "D:\\jyy\\科研\\style\\style-transformation\\dataset\\data\\codes";
 
+    @Test
+    public void testAll() {
+        testExpressionStmt();
+        testConditionalStmt();
+        testConditionalStmt();
+    }
+
 
     @Test
     public void testExpressionStmt() {
@@ -26,7 +33,7 @@ public class StructurePreferenceTest extends IntegrationTest {
 
     @Test
     public void testContinueBranchStmt() {
-        batchTest(1, "structure/continue_branch", "");
+        batchTest(3, "structure/continue_branch", "");
     }
 
 

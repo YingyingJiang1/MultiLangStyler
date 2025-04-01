@@ -3,16 +3,16 @@
 <program_style>
   <style name="naming_format">
     <rule>
-      <style_context name_type="TYPE"/>
-      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="6"/>
-    </rule>
-    <rule>
       <style_context name_type="METHOD"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
       <style_context name_type="LOCAL_VARIABLE"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="7"/>
+    </rule>
+    <rule>
+      <style_context name_type="TYPE"/>
+      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="6"/>
     </rule>
   </style>
   <style name="if_else_body_order"/>
@@ -45,6 +45,14 @@
       <style_property variable_count="5" max_length="45"/>
     </rule>
   </style>
+  <style name="declaration_location">
+    <rule>
+      <style_property>
+        <avgLineDis2firstUse>1.25</avgLineDis2firstUse>
+        <location>NEAR_USE</location>
+      </style_property>
+    </rule>
+  </style>
   <style name="most_complex_expression">
     <rule>
       <style_context expType="TOP_EXP"/>
@@ -52,12 +60,6 @@
     </rule>
   </style>
   <style name="lineWrapping">
-    <rule>
-      <style_context attr="COMMENT"/>
-      <style_property variance="0.0" maxLen="0" maxLenBefore="0" succeedLoc="0">
-        <breakLoc reg=" +|[,.]" after="true"/>
-      </style_property>
-    </rule>
     <rule>
       <style_context attr="CODE"/>
       <style_property variance="0.0" maxLen="0" maxLenBefore="0" succeedLoc="0">
@@ -71,6 +73,12 @@
         <breakLoc reg="[-+*/%&amp;|^]=|&lt;&lt;=|&gt;&gt;=|&gt;&gt;&gt;=" after="true"/>
         <breakLoc reg="&lt;|&lt;=|&gt;|&gt;=|==|!=" after="true"/>
         <breakLoc reg="[(]" after="true"/>
+      </style_property>
+    </rule>
+    <rule>
+      <style_context attr="COMMENT"/>
+      <style_property variance="0.0" maxLen="0" maxLenBefore="0" succeedLoc="0">
+        <breakLoc reg=" +|[,.]" after="true"/>
       </style_property>
     </rule>
   </style>

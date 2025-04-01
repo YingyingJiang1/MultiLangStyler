@@ -6,7 +6,7 @@ import org.example.analysis.StyleType;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.style.rule.StyleProperty;
-import org.example.styler.declaration.number.style.DeclarationLayoutProperty;
+import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
 
 import java.util.Map;
 

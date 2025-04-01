@@ -9,16 +9,13 @@ public class ReferenceType extends Type{
 
 
     public ReferenceType(ParseTree astNode, Symbol symbol) {
-        super(astNode, symbol.getText());
-        this.symbol = symbol;
-    }
-
-    @Override
-    public String getName() {
-        if (symbol instanceof ClassSym classSym) {
-            return classSym.getText();
+        super(astNode, null);
+        if (astNode != null) {
+            this.typeName = astNode.getText();
+        } else if (symbol != null) {
+            this.typeName = symbol.getText();
         }
-        return null;
+        this.symbol = symbol;
     }
 
     public String getQualifiedName() {
@@ -26,6 +23,14 @@ public class ReferenceType extends Type{
             return classSym.getQualifiedName();
         }
         return null;
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(Symbol symbol) {
+        this.symbol = symbol;
     }
 }
 

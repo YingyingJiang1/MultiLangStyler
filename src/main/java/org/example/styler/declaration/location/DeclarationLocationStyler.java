@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -210,6 +211,8 @@ public class DeclarationLocationStyler extends Styler {
             block.children.remove(currentIndex);
             block.insertChild(insertionPoint, decStmt);
             updateCurrentLine(block, currentIndex, insertionPoint);
+
+            RunStatistic.hit(this.getClass());
         }
     }
 
@@ -232,6 +235,8 @@ public class DeclarationLocationStyler extends Styler {
             block.insertChild(insertionPoint, block.getChild(currentIndex));
             block.children.remove(currentIndex);
             updateCurrentLine(block, currentIndex, insertionPoint - 1);
+
+            RunStatistic.hit(this.getClass());
         }
     }
 

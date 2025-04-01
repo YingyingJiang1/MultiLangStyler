@@ -2,32 +2,30 @@ import java.util.Scanner;
 
 public class MostDivisibleByTwo {
     public static void main(String[] args) {
+        int RESULT = 1;
+        
+        int maxDivisions = 0;
+        
         Scanner scanner = new Scanner(System.in);
         
         int N = scanner.nextInt();
         
-        scanner.close();
-        
-        int maxDivisions = 0;
-        
-        int result = 1;
-
-        for (int i = 1; i <= N; i++) {
-            int current = i;
+        scanner.close();for (int I = 1; I <= N; I++) {
+            int DIVISIONS = 0;
             
-            int divisions = 0;
+            int CURRENT = I;
 
-            while (current % 2 == 0) {
-                current /= 2;
-                divisions++;
+            while (CURRENT % 2 == 0) {
+                CURRENT /= 2;
+                DIVISIONS++;
             }
             
-            if (divisions>maxDivisions) {
-                maxDivisions = divisions;
-                result = i;
+            if (DIVISIONS>maxDivisions) {
+                maxDivisions = DIVISIONS;
+                RESULT = I;
             }
         }
         
-        System.out.println(result);
+        System.out.println(RESULT);
     }
 }

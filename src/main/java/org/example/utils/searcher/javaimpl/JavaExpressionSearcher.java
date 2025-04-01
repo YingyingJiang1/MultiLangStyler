@@ -10,6 +10,6 @@ public class JavaExpressionSearcher implements ExpressionSearcher {
 	@Override
 	public ExtendContext searchFunctionCall(ExtendContext exp, MyParser parser) {
 		ExtendContext target = exp.getContextRecIf(t -> t instanceof JavaParser.MethodCallContext || t instanceof JavaParser.ClassCreatorRestContext);
-		return target.findFirstParentIf(t -> t instanceof JavaParser.ExpressionContext);
+		return target == null ? null : target.findFirstParentIf(t -> t instanceof JavaParser.ExpressionContext);
 	}
 }

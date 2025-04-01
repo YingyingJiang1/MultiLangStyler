@@ -43,6 +43,14 @@
         </encoder>
     </appender>
 
+    <appender name="RUN_STATISTIC_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/run_statistic.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
     <appender name="STDOUT_INFO" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>info</level>
@@ -117,4 +125,7 @@
         <appender-ref ref="STDOUT_ERROR"/>
         <appender-ref ref="ROLLING"/>
     </root>
+    <logger name="org.example.RunStatistic" level="info" additivity="false">
+        <appender-ref ref="RUN_STATISTIC_FILE"/>
+    </logger>
 </configuration>

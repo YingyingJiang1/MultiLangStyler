@@ -59,9 +59,10 @@ public class TypeSystemImpl implements TypeSystem {
 	}
 
 	private Type getExpressionType(ExtendContext expression, MyParser parser) {
-		Queue<Type> types = new ArrayDeque<>();
+		List<Type> types = new ArrayList<>();
 		String operator = "";
 
+		Type type = null;
 		for (ParseTree child : expression.children) {
 			if (parser.isIdentifier(child)) {
 				types.add(getIdentifierType((ExtendContext) child, parser));
@@ -74,12 +75,17 @@ public class TypeSystemImpl implements TypeSystem {
 			}
 		}
 
-		Type type = null;
+		if (types.contains(null)) {
+			return null;
+		}
+
+		type = null;
+		Queue<Type> queue = new ArrayDeque<>(types);
 		while (!types.isEmpty()) {
 			if (type == null) {
-				type = types.poll();
+				type = queue.poll();
 			} else {
-				type = calculateType(type, types.poll(), operator, parser);
+				type = calculateType(type, queue.poll(), operator, parser);
 				if (type == null) {
 					return null;
 				}

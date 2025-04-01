@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class CLIArgumentParser {
     public static Logger logger = LoggerFactory.getLogger(CLIArgumentParser.class);

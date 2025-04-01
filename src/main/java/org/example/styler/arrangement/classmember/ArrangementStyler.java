@@ -2,6 +2,7 @@ package org.example.styler.arrangement.classmember;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.style.Style;
 import org.example.styler.Stage;
@@ -117,6 +118,8 @@ public class ArrangementStyler extends Styler {
 			// Update the order of all declaration lists in the newly created list.
 			bodyCtx.replaceChildren(from, to + 1, newListCtxs);
 		}
+
+		RunStatistic.hit(this.getClass());
 		return ctx;
 	}
 

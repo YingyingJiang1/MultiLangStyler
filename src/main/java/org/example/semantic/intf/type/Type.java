@@ -19,4 +19,8 @@ public abstract class Type {
     public String getName() {
         return typeName;
     }
+
+    public ParseTree getAstNode() {
+        return astNode;
+    }
 }

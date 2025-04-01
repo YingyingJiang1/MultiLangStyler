@@ -1,6 +1,7 @@
 package org.example.styler.naming.format;
 
 import org.apache.commons.lang3.StringUtils;
+import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -81,6 +82,8 @@ public class NamingFormatStyler extends Styler {
 
                 if (!newName.equals(name)) {
                     symbol.modifyName(newName);
+
+                    RunStatistic.hit(this.getClass());
                 }
             }
         }

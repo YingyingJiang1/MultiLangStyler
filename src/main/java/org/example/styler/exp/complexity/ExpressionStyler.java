@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -65,6 +66,10 @@ public class ExpressionStyler extends Styler {
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         ExtendContext expression = ctx.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleExpression());
+        if (expression == null) {
+            return ctx;
+        }
+
         ExpressionContext styleContext = extractStyleContext(expression, parser);
         ExpressionProperty styleProperty = extractStyleProperty(expression, parser);
         StyleProperty property = style.getProperty(styleContext);
@@ -188,6 +193,8 @@ public class ExpressionStyler extends Styler {
         Symbol newSym = new VarSym(type, identifier, null, NameType.LOCAL_VARIABLE);
         copies.forEach(newSym::addReference);
         SymbolTableManager.getSymbolTable(parser.getRoot()).addSymbol(newSym, parser);
+
+        RunStatistic.hit(this.getClass());
 
         return identifier.getText();
     }

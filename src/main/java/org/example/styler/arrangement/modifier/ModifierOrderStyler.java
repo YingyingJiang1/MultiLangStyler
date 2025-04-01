@@ -2,6 +2,7 @@ package org.example.styler.arrangement.modifier;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Stage;
@@ -55,6 +56,7 @@ public class ModifierOrderStyler extends Styler {
         }
         ctx.updateStartToken();
         ctx.updateStopToken();
+        RunStatistic.hit(this.getClass());
         return ctx;
     }
 

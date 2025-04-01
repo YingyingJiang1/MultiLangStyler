@@ -17,6 +17,7 @@ import org.example.styler.naming.NameType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,15 @@ public class JavaResolver implements Resolver {
         if (root instanceof ExtendContext ctx) {
             SymbolTable st = new SymbolTable();
             doResolveRec(st, ctx, parser);
+
+            // Resolve reference type for variables.
+            for (Symbol symbol : st.getAllSymbols()) {
+                if (symbol instanceof VarSym varSym && varSym.getType() != null) {
+                    if (varSym.getType() instanceof ReferenceType referenceType && referenceType.getSymbol() == null) {
+                        referenceType.setSymbol(st.getSymbol((ExtendContext) referenceType.getAstNode(), parser));
+                    }
+                }
+            }
             return st;
         }
         return null;
@@ -94,8 +104,6 @@ public class JavaResolver implements Resolver {
             resolveReference(st, identifierNode, parser);
         } else if (parser.isTypeParameter(parent)) {
             symbol = resolveTypeParameter(parent, identifierNode, parser);
-        } else {
-            System.err.printf("Unconsidered case: identifier=%s, parent node=%s", identifierNode.getText(), parent.getClass());
         }
 
         if (symbol != null) {

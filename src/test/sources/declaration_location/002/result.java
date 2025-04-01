@@ -8,6 +8,7 @@ public class MinimumStamina {
         for (int i = 0; i<n; i++) {
             x[i] = scanner.nextInt();
         }
+        
         int minX = x[0];
         int maxX = x[0];
         for (int i = 1; i<n; i++) {

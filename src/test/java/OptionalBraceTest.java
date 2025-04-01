@@ -8,6 +8,6 @@ public class OptionalBraceTest extends IntegrationTest{
 
     @Test
     public void test() {
-        batchTest(1, subDirName, null);
+        batchTest(1, subDirName, "");
     }
 }

@@ -51,7 +51,6 @@ public class Configuration {
     ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
     llmConfig = context.getBean(Configuration.LLMConfig.class);
     languageConfig = context.getBean(Configuration.LanguageConfig.class);
-    System.out.println("");
   }
 
 

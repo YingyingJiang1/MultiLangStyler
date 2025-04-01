@@ -7,14 +7,14 @@ public class Main{
 	public static Scanner sc = new Scanner(System.in);public static void main(String[] args) throws Exception{
 		int r = sc.nextInt();
 		int c = sc.nextInt();
-		int [][] ary = new int [r + 1][c + 1];
 
 		for(int i = 0; i<r; i++) {
 			for(int j = 0; j<c; j++) {
 				ary[i][j] = sc.nextInt();
 			}
 		}
-		
+		int [][] ary = new int [r + 1][c + 1];
+
 		for(int i = 0; i<r; i++) {
 			for(int j = 0; j<c; j++) {
 				ary[i][c] = ary[i][c] + ary[i][j];

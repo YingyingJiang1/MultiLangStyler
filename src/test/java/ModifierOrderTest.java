@@ -7,7 +7,7 @@ public class ModifierOrderTest extends IntegrationTest {
     String dir = "src/test/sources/modifierorder";
     @Test
     public void testPair1() {
-        transform(Paths.get(dir, "pair1", "src.java"),
+        transformSingleFile(Paths.get(dir, "pair1", "src.java"),
                 Paths.get(dir, "pair1", "target.java")
         );
     }

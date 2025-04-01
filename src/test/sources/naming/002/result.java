@@ -3,22 +3,22 @@ import java.util.Scanner;
 public class TicketSolver {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String INPUT = scanner.nextLine();
         scanner.close();
         
-        int a = input.charAt(0) - '0';
-        int b = input.charAt(1) - '0';
-        int c = input.charAt(2) - '0';
-        int d = input.charAt(3) - '0';
-        char[] operators = {'+', '-'};
+        int A = INPUT.charAt(0) - '0';
+        int B = INPUT.charAt(1) - '0';
+        int C = INPUT.charAt(2) - '0';
+        int D = INPUT.charAt(3) - '0';
+        char[] OPERATORS = {'+', '-'};
 
-        for (char op1 : operators) {
-            for (char op2 : operators) {
-                for (char op3 : operators) {
-                    int result = calculate(a, op1, b, op2, c, op3, d);
+        for (char op1 : OPERATORS) {
+            for (char op2 : OPERATORS) {
+                for (char op3 : OPERATORS) {
+                    int RESULT = calculate(A, op1, B, op2, C, op3, D);
 
-                    if (result == 7) {
-                        System.out.printf("%d%c%d%c%d%c%d=7%n", a, op1, b, op2, c, op3, d);
+                    if (RESULT == 7) {
+                        System.out.printf("%d%c%d%c%d%c%d=7%n", A, op1, B, op2, C, op3, D);
                         return;
                     }
                 }
@@ -27,10 +27,10 @@ public class TicketSolver {
     }
     
     private static int calculate(int a, char op1, int b, char op2, int c, char op3, int d) {
-        int result = applyOperator(a, op1, b);
-        result = applyOperator(result, op2, c);
-        result = applyOperator(result, op3, d);
-        return result;
+        int RESULT = applyOperator(a, op1, b);
+        RESULT = applyOperator(RESULT, op2, c);
+        RESULT = applyOperator(RESULT, op3, d);
+        return RESULT;
     }
     
     private static int applyOperator(int left, char operator, int right) {
