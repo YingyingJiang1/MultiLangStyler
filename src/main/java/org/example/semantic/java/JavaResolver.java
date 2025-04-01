@@ -180,7 +180,7 @@ public class JavaResolver implements Resolver {
                 if (ctx.getRuleIndex() == parser.getRuleTypeType()) {
                     typeNodeofParents.add(ctx);
                 } else if (ctx.getRuleIndex() == parser.getRuleTypeList()) {
-                    typeNodeofParents.addAll(ctx.getAllContextsIf(child1 -> child1.getRuleIndex() == parser.getRuleTypeType()));
+                    typeNodeofParents.addAll(ctx.getAllChildContextsIf(child1 -> child1.getRuleIndex() == parser.getRuleTypeType()));
                 }
             }
         }

@@ -66,6 +66,7 @@ public class GlobalInfo {
     }
 
 
+
     public static ReferenceResolver getReferenceResolver() {
         return referenceResolver;
     }

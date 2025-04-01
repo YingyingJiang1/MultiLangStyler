@@ -47,4 +47,9 @@ public class ExpressionProperty extends StyleProperty {
         return false;
     }
 
+    public boolean isMoreComplex(ExpressionProperty property) {
+        double weightLength = 0.4, weightSubExpNum = 0.6;
+        return (maxExpressionLength * weightLength + maxSubExpNum * weightSubExpNum) > (property.maxExpressionLength * weightLength + property.maxSubExpNum * weightSubExpNum);
+    }
+
 }

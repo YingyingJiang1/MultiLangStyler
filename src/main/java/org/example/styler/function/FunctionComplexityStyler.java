@@ -82,7 +82,7 @@ public class FunctionComplexityStyler extends Styler {
                 if (child instanceof ExtendContext ctx && parser.belongToStmt(child)) {
                     ExtendContext specificStmt1 = parser.getSpecificStmt(ctx);
                     if (specificStmt1.getRuleIndex() == parser.getRuleBlock()) {
-                        innerStmts.addAll(specificStmt1.getAllContextsIf(parser::belongToStmt));
+                        innerStmts.addAll(specificStmt1.getAllChildContextsIf(parser::belongToStmt));
                     } else {
                         innerStmts.add(ctx);
                     }

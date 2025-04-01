@@ -130,7 +130,7 @@ public class DeclarationLocationStyler extends Styler {
      * This is a safe but overly restrictive condition.
      */
     private boolean isMovable(ExtendContext decStmt, MyParser parser) {
-        boolean hasMethodCall = decStmt.getAllContextsIf(parser::isFunctionCall).size() > 0;
+        boolean hasMethodCall = decStmt.getAllChildContextsIf(parser::isFunctionCall).size() > 0;
         return hasMethodCall;
     }
 
@@ -140,7 +140,7 @@ public class DeclarationLocationStyler extends Styler {
         int insetionPoint = 1; // Insert after {
         for (ExtendContext decIdentifier : decIdentifiers) {
             ExtendContext initializer = parser.getDecStmtSearcher().searchInitializer(decStmt, decIdentifier, parser);
-            List<ExtendContext> usedNodes = initializer.getAllContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
+            List<ExtendContext> usedNodes = initializer.getAllChildContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
             Resolver resolver = GlobalInfo.getResolver();
             for (ExtendContext node : usedNodes) {
                 Symbol symbol = resolver.resolve(node, parser);

@@ -334,7 +334,7 @@ public class ExtendContext extends ParserRuleContext {
 
 
     public List<ExtendContext> getAllContextsByType(int ruleIndex) {
-        return getAllContextsIf(ctx -> ctx.getRuleIndex() == ruleIndex);
+        return getAllChildContextsIf(ctx -> ctx.getRuleIndex() == ruleIndex);
     }
 
     public List<ExtendContext> getAllCtxsRecIf(Predicate<ExtendContext> cond) {
@@ -364,7 +364,7 @@ public class ExtendContext extends ParserRuleContext {
     }
 
 
-    public List<ExtendContext> getAllContextsIf(Predicate<ExtendContext> cond) {
+    public List<ExtendContext> getAllChildContextsIf(Predicate<ExtendContext> cond) {
         List<ExtendContext> ctxs = new ArrayList<>();
         for (int i = 0; i < this.children.size(); ++i) {
             ParseTree treeNode = this.children.get(i);

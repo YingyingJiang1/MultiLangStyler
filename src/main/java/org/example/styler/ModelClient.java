@@ -18,7 +18,7 @@ public class ModelClient {
     private static ModelClient instance = new ModelClient();
 
     public static ModelClient getInstance() {
-        String url = GlobalInfo.getConf().getModelURL();
+        String url = GlobalInfo.getConf().getLlmConfig().getModelURL();
         if (url == null) {
             System.err.println("Model URL is not set.");
             return instance;
@@ -56,7 +56,7 @@ public class ModelClient {
 //                }
 //                validJsonText.append(c);
 //            }
-            String jsonBody = String.format("{\"question\": \"%s\"}", prompt.replace("\"", "\\\""));
+            String jsonBody = String.format("{\"question\": \"%s\"}", prompt.replace("\"", "\\\"").replace("\n", "\\n"));
             // 发送POST请求
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonBody.getBytes("utf-8");

@@ -1,7 +1,5 @@
 package org.example.styler.format.body;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Styler;
@@ -74,9 +72,9 @@ public abstract class BodyStyler extends Styler {
             return BodyNumType.SINGLE;
         } else {
             if (parser.isBody(body)) {
-                return body.getAllContextsIf(Objects::nonNull).isEmpty() ? BodyNumType.EMPTY : BodyNumType.MULTI;
+                return body.getAllChildContextsIf(Objects::nonNull).isEmpty() ? BodyNumType.EMPTY : BodyNumType.MULTI;
             } else {
-                List<ExtendContext> stmts = body.getAllContextsIf(parser::isStatement); // Exclude LBRACE and RBRACE.
+                List<ExtendContext> stmts = body.getAllChildContextsIf(parser::isStatement); // Exclude LBRACE and RBRACE.
                 int stmtNum = stmts.size();
                 if (stmtNum == 0) {
                     return BodyNumType.EMPTY;

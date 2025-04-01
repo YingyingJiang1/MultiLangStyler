@@ -6,12 +6,12 @@ import org.example.style.rule.StyleContext;
 
 import java.util.Objects;
 
-public class DeclarationNumberContext extends StyleContext {
+public class DeclarationLayoutContext extends StyleContext {
     // If one statement among all the declaration statements checked at a time has a comment,
     // then this field value is set to true.
     public boolean hasComment;
 
-    public DeclarationNumberContext(boolean hasComment) {
+    public DeclarationLayoutContext(boolean hasComment) {
         this.hasComment = hasComment;
     }
 
@@ -32,7 +32,7 @@ public class DeclarationNumberContext extends StyleContext {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DeclarationNumberContext other) {
+        if (obj instanceof DeclarationLayoutContext other) {
             return other.hasComment == hasComment;
         }
         return false;

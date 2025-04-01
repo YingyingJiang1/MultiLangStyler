@@ -1,6 +1,7 @@
 package org.example.styler.exp.complexity;
 
 import java.util.*;
+import java.util.function.Function;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -10,6 +11,9 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.factory.ParseTreeUtil;
 import org.example.parser.common.token.ExtendToken;
+import org.example.semantic.SymbolTableManager;
+import org.example.semantic.intf.symbol.Symbol;
+import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.semantic.intf.type.Type;
 import org.example.style.rule.StyleProperty;
@@ -20,6 +24,7 @@ import org.example.styler.exp.complexity.style.ExpressionContext;
 import org.example.styler.exp.complexity.style.ExpressionProperty;
 import org.example.styler.exp.complexity.style.ExpressionStyle;
 import org.example.styler.naming.MyCaseFormat;
+import org.example.styler.naming.NameType;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
 import org.slf4j.Logger;
@@ -63,8 +68,7 @@ public class ExpressionStyler extends Styler {
         ExpressionProperty styleProperty = extractStyleProperty(expression, parser);
         StyleProperty property = style.getProperty(styleContext);
         if (property instanceof ExpressionProperty targetProperty) {
-            boolean moreComplex = styleProperty.maxExpressionLength > targetProperty.maxExpressionLength
-                    || styleProperty.maxSubExpNum > targetProperty.maxSubExpNum;
+            boolean moreComplex = styleProperty.isMoreComplex(targetProperty);
             if (moreComplex) {
                 splitExpression(expression, styleProperty, targetProperty, parser);
             } else {
@@ -106,53 +110,84 @@ public class ExpressionStyler extends Styler {
     }
 
     private void splitExpression(ExtendContext expression, ExpressionProperty curProperty, ExpressionProperty targetProperty, MyParser parser) {
+        //
         Map<String, List<ExtendContext>> expressionMap = new HashMap<>();
         extractCommonExpression(expression, expressionMap, parser);
-        PriorityQueue<MutablePair<String, List<ExtendContext>>> pq = new PriorityQueue<>(Comparator.comparing((MutablePair<String, List<ExtendContext>> p) -> -p.getRight().size()));
+        PriorityQueue<MutablePair<String, List<ExtendContext>>> pq = new PriorityQueue<>(Comparator.comparing(
+                (MutablePair<String, List<ExtendContext>> p) -> {
+                    int lengthDiff = Math.abs(extractStyleProperty(p.getValue().get(0), parser).maxExpressionLength - targetProperty.maxExpressionLength);
+                    return -(p.getRight().size() * 1000 - lengthDiff);
+                }));
         for (Map.Entry<String, List<ExtendContext>> entry : expressionMap.entrySet()) {
             pq.add(new MutablePair<>(entry.getKey(), entry.getValue()));
         }
 
-        MyCaseFormat caseFormat = MyCaseFormat.LOWER_CAMEL;
 
-
-
-        for (Map.Entry<String, List<ExtendContext>> entry : sortedEntries) {
+        MutablePair<String, List<ExtendContext>> selectedSubExp = pq.poll();
+        while(selectedSubExp != null && curProperty.isMoreComplex(targetProperty)) {
             // Preparation for create declaration statement.
-            String name = NameGenerator.generateName("", caseFormat);
-            Type type = GlobalInfo.getTypeSystem().getType(entry.getValue().get(0), parser);
-            if (type == null) {
-                continue;
-            }
+            int originalSubNum = extractStyleProperty(selectedSubExp.getValue().get(0), parser).maxSubExpNum;
+            int originalExpLength = selectedSubExp.getKey().length();
+            String name = doSplitExpression(selectedSubExp, parser);
 
-            // do split
-            ExtendContext decStmt = addVarDeclaration(type, name, entry.getValue().get(0), parser);
-            if (decStmt == null) {
-                log.info("Fail to split expression because of adding variable declaration failed.");
-                return;
-            }
-            ExtendContext identifier = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser).get(0);
-            replaceChildren(entry.getValue(), List.of(identifier), parser);
+            curProperty.maxExpressionLength -= (originalExpLength - name.length()) * selectedSubExp.getValue().size();
+            curProperty.maxSubExpNum -= selectedSubExp.getValue().size() * originalSubNum;
 
-            String newName = NameGenerator.generateName(identifier, parser, caseFormat);
-            if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
-                extendToken.setText(newName);
+            // Update the priority queue
+            for (MutablePair<String, List<ExtendContext>> pair : pq) {
+                String newExpressionText = pair.getValue().get(0).getText();
+                if (!newExpressionText.equals(pair.getKey())) {
+                    pair.setLeft(newExpressionText);
+                }
             }
-
-            // Avoid naming conflicts
-            name = identifier.getText();
-            for (int i = 1; mayConflict(name, parser); i++) {
-                name = name + Integer.toString(i);
-            }
-            if (!name.equals(identifier.getText()) && identifier.getStart() instanceof ExtendToken extendToken) {
-                extendToken.setText(name);
-            }
-
-            curProperty.maxExpressionLength -= (entry.getKey().length() - name.length()) * entry.getValue().size();
-            if (curProperty.maxExpressionLength <= targetProperty.maxExpressionLength) {
-                break;
-            }
+            selectedSubExp = pq.poll();
         }
+    }
+
+    private String doSplitExpression(MutablePair<String, List<ExtendContext>> selectedSubExp, MyParser parser) {
+        // Create a variable declaration statement for the expressions.
+        MyCaseFormat caseFormat = MyCaseFormat.LOWER_CAMEL;
+        String name = NameGenerator.generateName("",caseFormat );
+        Type type = GlobalInfo.getTypeSystem().getType(selectedSubExp.getValue().get(0), parser);
+        if (type == null) {
+            return "";
+        }
+        ExtendContext decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
+        if (decStmt == null) {
+            log.info("Fail to split expression because of adding variable declaration failed.");
+            return "";
+        }
+
+        // Set a meaningful name for the newly created variable
+        ExtendContext identifier = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser).get(0);
+        String newName = NameGenerator.generateMeaningfulName(identifier, parser, GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit());
+        if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
+            extendToken.setText(newName);
+        }
+
+        // Add number suffix to the variable name until naming conflicts removed.
+        name = identifier.getText();
+        for (int i = 1; mayConflict(name, parser); i++) {
+            name = name + Integer.toString(i);
+        }
+        if (!name.equals(identifier.getText()) && identifier.getStart() instanceof ExtendToken extendToken) {
+            extendToken.setText(name);
+        }
+
+        List<ExtendContext> expressions = selectedSubExp.getRight();
+        List<ExtendContext> copies = new ArrayList<>();
+        for (int i = 0; i < expressions.size(); i++) {
+            ExtendContext copyIdentifier = (ExtendContext) ParseTreeUtil.getInstance().copyTree(identifier, false);
+            copies.add(copyIdentifier);
+            expressions.get(i).replaceChildren(0, expressions.get(i).getChildCount(), List.of(copyIdentifier));
+        }
+
+
+        Symbol newSym = new VarSym(type, identifier, null, NameType.LOCAL_VARIABLE);
+        copies.forEach(newSym::addReference);
+        SymbolTableManager.getSymbolTable(parser.getRoot()).addSymbol(newSym, parser);
+
+        return identifier.getText();
     }
 
     private void extractCommonExpression(ExtendContext expression, Map<String, List<ExtendContext>> expressionMap, MyParser parser) {

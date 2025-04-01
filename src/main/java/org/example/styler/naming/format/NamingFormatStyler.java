@@ -1,10 +1,14 @@
 package org.example.styler.naming.format;
 
 import org.apache.commons.lang3.StringUtils;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
+import org.example.semantic.intf.symbol.VarSym;
+import org.example.semantic.intf.type.ReferenceType;
 import org.example.style.rule.StyleProperty;
+import org.example.style.rule.StyleRule;
 import org.example.styler.ModelClient;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -65,7 +69,7 @@ public class NamingFormatStyler extends Styler {
             if (property != null ) {
                 String name = symbol.getText();
                 MyCaseFormat curFormat = getCaseFormat(name);
-                String newName = abbreviateName(name, property.maxLength);
+                String newName = AbbreviationLibrary.getInstance().getAbbreviation(name, property.maxLength);
 
                 if (curFormat != null && curFormat.isConvertible(property.caseFormat)) {
                     newName = curFormat.to(property.caseFormat, name);
@@ -92,16 +96,23 @@ public class NamingFormatStyler extends Styler {
             if (symbol.hasModifier(parser.getConstKeyword())) {
                 context.addAttr(SymbolAttr.EXPLICIT_CONST);
             } else {
-                ModelClient modelClient = ModelClient.getInstance();
-                if (modelClient != null) {
-                    ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(node -> parser.isBlock(node) || parser.isBody(node));
-                    String prompt = String.format("Does variable %s use user input? Answer only \"yes\" or \"no." +
-                            "// Code：\\n" + "\"%s\"", symbol.getText(), stmt.getFormattedText());
-                    String res = modelClient.sendRequest(prompt);
-                    if (res != null && res.contains("yes")) {
+                if (symbol instanceof VarSym varSym && varSym.getType() != null) {
+                    // A rough check for Java input.
+                    if (varSym.getType() instanceof ReferenceType refType &&
+                            (refType.getName().equals("Scanner") || refType.getName().equals("Console"))) {
                         context.addAttr(SymbolAttr.IMPLICIT_CONST);
                     }
                 }
+//                ModelClient modelClient = ModelClient.getInstance();
+//                if (modelClient != null) {
+//                    ExtendContext stmt = symbol.getDecIdentifierNode().getFirstParentIf(node -> parser.isBlock(node) || parser.isBody(node));
+//                    String prompt = String.format("Does variable %s use user input? Answer only \"yes\" or \"no." +
+//                            "// Code：\\n" + "\"%s\"", symbol.getText(), stmt.getFormattedText());
+//                    String res = modelClient.sendRequest(prompt);
+//                    if (res != null && res.contains("yes")) {
+//                        context.addAttr(SymbolAttr.IMPLICIT_CONST);
+//                    }
+//                }
             }
         }
 
@@ -109,39 +120,18 @@ public class NamingFormatStyler extends Styler {
     }
 
 
-    private String abbreviateName(String name, int maxLength) {
-        if (name.length() <= maxLength) {
-            return name;
-        }
-
-        String[] words = name.split("(?<=\\D)(?=\\p{Upper})|_");
-        AbbreviationLibrary  abbreviationLibrary = AbbreviationLibrary.getInstance();
-        int curLen = name.length();
-        int i = 0;
-        while (curLen > maxLength && i < words.length) {
-            String word = words[i];
-            String abbreviation = abbreviationLibrary.lookUpAbbreviation(words[0]);
-            if (abbreviation != null) {
-                name = name.replace(words[0], abbreviation);
-                curLen -= words[0].length() - abbreviation.length();
-            }
-            i++;
-        }
-
-        return name;
-    }
-
     private MyCaseFormat getCaseFormat(String name) {
-        int underScoreIndex = name.indexOf("_");
-        if (StringUtils.isAllUpperCase(name)) {
+        String noNumName = name.replaceAll("[0-9]", "");
+        int underScoreIndex = noNumName.indexOf("_");
+        if (StringUtils.isAllUpperCase(noNumName)) {
             return MyCaseFormat.ALL_UPPER_CASE;
-        } else if (StringUtils.isAllLowerCase(name)) {
+        } else if (StringUtils.isAllLowerCase(noNumName)) {
             return MyCaseFormat.ALL_LOWER_CASE;
         }
         if (underScoreIndex > 0) { // contains a underscore and it is not the first character
-            return StringUtils.isAllUpperCase(name) ? MyCaseFormat.UPPER_UNDERSCORE :MyCaseFormat.LOWER_UNDERSCORE;
-        } else if (underScoreIndex < 0 && StringUtils.isMixedCase(name)) {
-            return Character.isUpperCase(name.charAt(0)) ? MyCaseFormat.UPPER_CAMEL : MyCaseFormat.LOWER_CAMEL;
+            return StringUtils.isAllUpperCase(noNumName) ? MyCaseFormat.UPPER_UNDERSCORE :MyCaseFormat.LOWER_UNDERSCORE;
+        } else if (underScoreIndex < 0 && StringUtils.isMixedCase(noNumName)) {
+            return Character.isUpperCase(noNumName.charAt(0)) ? MyCaseFormat.UPPER_CAMEL : MyCaseFormat.LOWER_CAMEL;
         }
         return null;
     }
@@ -157,5 +147,20 @@ public class NamingFormatStyler extends Styler {
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         return parser.isCompilationUnit(ctx);
+    }
+
+    @Override
+    public void extractFinalize() {
+        super.extractFinalize();
+        if (GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit() < 0) {
+            int lengthLimit = 0;
+            for (StyleRule rule : style.getRules())  {
+                if (rule.getStyleProperty() instanceof NamingFormatProperty property && property.maxLength > lengthLimit) {
+                    lengthLimit = property.maxLength;
+                }
+            }
+            GlobalInfo.getConf().getLlmConfig().setIdentifierLengthLimit(lengthLimit);
+        }
+
     }
 }

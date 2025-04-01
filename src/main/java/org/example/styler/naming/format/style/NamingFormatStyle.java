@@ -16,4 +16,6 @@ public class NamingFormatStyle extends CommonStyle {
         NamingFormatProperty property = new NamingFormatProperty();
         return new StyleRule(context, property);
     }
+
+
 }

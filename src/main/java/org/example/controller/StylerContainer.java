@@ -7,7 +7,7 @@ import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
 import org.example.styler.comment.density.CommentDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
-import org.example.styler.declaration.location.DeclarationLocationStyler;
+import org.example.styler.declaration.number.DeclarationLayoutStyler;
 import org.example.styler.exp.complexity.ExpressionStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
@@ -35,7 +35,7 @@ public class StylerContainer {
         firstRoundStylers.add(new ArrangementStyler());
         firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
-//        firstRoundStylers.add(new DeclarationNumberStyler());
+        firstRoundStylers.add(new DeclarationLayoutStyler());
 //        firstRoundStylers.add(new DeclarationLocationStyler()); // Add static analysis module
        firstRoundStylers.add(new IfElseBodyOrderStyler());
         firstRoundStylers.add(new ExpressionStyler());

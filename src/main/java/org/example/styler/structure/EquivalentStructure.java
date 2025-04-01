@@ -329,7 +329,7 @@ public class EquivalentStructure {
 			// A second try to match the root when real tree has a body without {}.
 			if(!matchResult) {
 				boolean isBraceOptionalCase = vtCtx.getRuleIndex() == parser.getRuleBlock()
-						&& vtCtx.getAllContextsIf(parser::belongToStmt).size() == 1;
+						&& vtCtx.getAllChildContextsIf(parser::belongToStmt).size() == 1;
 				// When brace is optional, remove the {} of virtual tree and try to match again.
 				if (isBraceOptionalCase) {
 					ExtendContext stmtCtx = (ExtendContext) vtCtx.getChild(1);

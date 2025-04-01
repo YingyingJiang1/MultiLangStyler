@@ -1,18 +1,12 @@
 package org.example.analysis.style.extractor.style;
 
 import org.example.analysis.feature.FeatureVector;
-import org.example.analysis.feature.featurevalue.StringFeatureValue;
 import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.StyleType;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
-import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.style.Style;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.declaration.location.style.DeclarationLocationProperty;
-import org.example.styler.declaration.number.style.DeclarationNumberContext;
-import org.example.styler.declaration.number.style.DeclarationNumberProperty;
+import org.example.styler.declaration.number.style.DeclarationLayoutProperty;
 
 import java.util.Map;
 
@@ -24,7 +18,7 @@ public class DeclarationNumberFeature extends ComputableStyleExtractor {
 
     @Override
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
-        if (styleProperty instanceof DeclarationNumberProperty property) {
+        if (styleProperty instanceof DeclarationLayoutProperty property) {
             FeatureVector fv = new FeatureVector();
             fv.addDimension(StyleType.NumberOfVarInOneDecStmt.varsPerDec, new DoubleFeatureValue(property.maxVariableCount));
         }

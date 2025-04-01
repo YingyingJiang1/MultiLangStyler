@@ -19,4 +19,12 @@ public class CodeContextExtractor {
 		}
 		return extractMethodContext(node, parser);
 	}
+
+	public static String extractCodeContext(ExtendContext node, MyParser parser) {
+		ExtendContext context = node.findFirstParentIf(t -> parser.belongToCompoundStmt(t) || parser.belongToFunctionDec(t.getRuleIndex()));
+		if (context != null) {
+			return context.getFormattedText();
+		}
+		return "";
+	}
 }

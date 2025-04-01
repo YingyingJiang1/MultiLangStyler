@@ -55,4 +55,26 @@ public class AbbreviationLibrary {
         return abbreviationMap.get(word);
     }
 
+    public String getAbbreviation(String name, int maxLength) {
+        if (name.length() <= maxLength) {
+            return name;
+        }
+
+        String[] words = name.split("(?<=\\D)(?=\\p{Upper})|_");
+        AbbreviationLibrary  abbreviationLibrary = AbbreviationLibrary.getInstance();
+        int curLen = name.length();
+        int i = 0;
+        while (curLen > maxLength && i < words.length) {
+            String word = words[i];
+            String abbreviation = abbreviationLibrary.lookUpAbbreviation(words[0]);
+            if (abbreviation != null) {
+                name = name.replace(words[0], abbreviation);
+                curLen -= words[0].length() - abbreviation.length();
+            }
+            i++;
+        }
+
+        return name;
+    }
+
 }

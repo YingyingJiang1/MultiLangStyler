@@ -3,6 +3,9 @@ package org.example;
 import org.example.controller.Controller;
 import org.example.global.GlobalInfo;
 import org.example.styler.ModelClient;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,10 +23,6 @@ public class Main {
             GlobalInfo.setConf(config);
             Controller controller = new Controller(config);
             controller.execute();
-//          SpringApplication.run(Application.class, args);
         }
     }
-
-
-
 }

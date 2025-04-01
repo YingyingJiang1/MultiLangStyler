@@ -6,24 +6,27 @@ import org.example.style.rule.StyleProperty;
 
 import java.util.Objects;
 
-public class DeclarationNumberProperty extends StyleProperty {
+public class DeclarationLayoutProperty extends StyleProperty {
     public int maxVariableCount;
+    public int maxLength;
 
-    public DeclarationNumberProperty() {
+    public DeclarationLayoutProperty() {
     }
 
-    public DeclarationNumberProperty(int maxVariableCount) {
+    public DeclarationLayoutProperty(int maxVariableCount) {
         this.maxVariableCount = maxVariableCount;
     }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("variable_count", Integer.toString(maxVariableCount));
+        parent.addAttribute("max_length", Integer.toString(maxLength));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
         maxVariableCount = Integer.parseInt(parent.attributeValue("variable_count"));
+        maxLength = Integer.parseInt(parent.attributeValue("max_length"));
     }
 
     @Override
@@ -33,7 +36,7 @@ public class DeclarationNumberProperty extends StyleProperty {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DeclarationNumberProperty other) {
+        if (obj instanceof DeclarationLayoutProperty other) {
             return other.maxVariableCount == maxVariableCount;
         }
         return false;
@@ -41,7 +44,7 @@ public class DeclarationNumberProperty extends StyleProperty {
 
     @Override
     public int compareTo(StyleProperty o) {
-        if (o instanceof DeclarationNumberProperty other) {
+        if (o instanceof DeclarationLayoutProperty other) {
             return Integer.compare(maxVariableCount, other.maxVariableCount);
         }
         return -1;

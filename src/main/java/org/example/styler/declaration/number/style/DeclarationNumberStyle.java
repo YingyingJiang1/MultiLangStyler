@@ -11,7 +11,7 @@ public class DeclarationNumberStyle extends CommonStyle {
 
     public DeclarationNumberStyle() {
         super();
-        styleName = "declaration_number";
+        styleName = "declaration_layout";
     }
 
     @Override
@@ -21,7 +21,7 @@ public class DeclarationNumberStyle extends CommonStyle {
 
     @Override
     protected StyleRule createRule(String propertyName) {
-        DeclarationNumberProperty property = new DeclarationNumberProperty();
+        DeclarationLayoutProperty property = new DeclarationLayoutProperty();
         return new StyleRule(property);
     }
 }
