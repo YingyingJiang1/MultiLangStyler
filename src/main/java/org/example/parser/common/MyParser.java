@@ -247,10 +247,4 @@ public interface MyParser {
     ListenerState getListenerState();
 
     String getConstKeyword();
-
-    DecStmtSearcher getDecStmtSearcher();
-    CompilationUnitSearcher getCUSearcher();
-    FunctionDecSearcher getFunctionDecSearcher();
-    ArgumentsSearcher getArgumentsSearcher();
-
 }

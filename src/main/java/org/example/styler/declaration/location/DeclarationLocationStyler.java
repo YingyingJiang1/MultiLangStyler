@@ -15,6 +15,8 @@ import org.example.styler.Styler;
 import org.example.styler.declaration.location.style.DeclarationLocationProperty;
 import org.example.styler.declaration.location.style.DeclarationLocationStyle;
 import org.example.styler.naming.NameType;
+import org.example.utils.searcher.intf.DecStmtSearcher;
+import org.example.utils.searcher.intf.ExpressionSearcher;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -130,16 +132,17 @@ public class DeclarationLocationStyler extends Styler {
      * This is a safe but overly restrictive condition.
      */
     private boolean isMovable(ExtendContext decStmt, MyParser parser) {
-        boolean hasMethodCall = decStmt.getAllChildContextsIf(parser::isFunctionCall).size() > 0;
-        return hasMethodCall;
+        ExpressionSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createExpressionSearcher();
+        return searcher.searchFunctionCall(decStmt, parser) == null;
     }
 
     private int getForwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
-        List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
+        DecStmtSearcher  decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
+        List<ExtendContext> decIdentifiers = decStmtSearcher.searchIdentifiers(decStmt, parser);
 
         int insetionPoint = 1; // Insert after {
         for (ExtendContext decIdentifier : decIdentifiers) {
-            ExtendContext initializer = parser.getDecStmtSearcher().searchInitializer(decStmt, decIdentifier, parser);
+            ExtendContext initializer = decStmtSearcher.searchInitializer(decStmt, decIdentifier, parser);
             List<ExtendContext> usedNodes = initializer.getAllChildContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
             Resolver resolver = GlobalInfo.getResolver();
             for (ExtendContext node : usedNodes) {
@@ -165,7 +168,8 @@ public class DeclarationLocationStyler extends Styler {
 
 
     private int getBackwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
-        List<ExtendContext> decIdentifiers = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser);
+        DecStmtSearcher  decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
+        List<ExtendContext> decIdentifiers = decStmtSearcher.searchIdentifiers(decStmt, parser);
         Resolver resolver = GlobalInfo.getResolver();
 
         int insertionPoint = block.getChildCount() - 1; // before }

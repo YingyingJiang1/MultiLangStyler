@@ -3,10 +3,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<bean id="llmConfig" class="org.example.Configuration.LLMConfig">
-    <property name="url" value="http://210.28.134.91:8000/model" />
-    <property name="identifierLengthLimit" value="-1" />
-<!--    if `identifierLengthLimit` is not set or less 0, then this value will be the max length of all identifiers in the target style.-->
-</bean>
+    <bean id="llmConfig" class="org.example.Configuration.LLMConfig">
+        <property name="url" value="http://210.28.134.91:8000/model" />
+        <property name="identifierLengthLimit" value="-1" />
+    <!--    if `identifierLengthLimit` is not set or less 0, then this value will be the max length of all identifiers in the target style.-->
+    </bean>
+
+    <bean id="nodeSearcherFactory" class="org.example.utils.searcher.NodeSearcherFactory" />
+    <bean id="parserFactory" class="org.example.parser.common.factory.MyParserFactory" />
+    <bean id="languageConfig" class="org.example.Configuration.LanguageConfig">
+        <property name="language" value="java" />
+        <property name="nodeSearcherFactory" ref="nodeSearcherFactory" />
+        <property name="parserFactory" ref="parserFactory" />
+    </bean>
 
 </beans>

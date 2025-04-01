@@ -10,13 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaDecStmtSearcher implements DecStmtSearcher {
-    private static JavaDecStmtSearcher instance = new JavaDecStmtSearcher();
+    public JavaDecStmtSearcher() {}
 
-    private JavaDecStmtSearcher() {}
-
-    public static JavaDecStmtSearcher getInstance() {
-        return instance;
-    }
 
     public List<ExtendContext> searchIdentifiers(ExtendContext decStmt, MyParser parser) {
         List<ExtendContext> result = new ArrayList<>();

@@ -9,13 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaCUSearcher implements CompilationUnitSearcher {
-    private static JavaCUSearcher instance = new JavaCUSearcher();
 
-    private JavaCUSearcher() {}
+    public JavaCUSearcher() {}
 
-    public static JavaCUSearcher getInstance() {
-        return instance;
-    }
 
     @Override
     public List<ExtendContext> searchImports(ExtendContext compilationUnit, MyParser parser) {

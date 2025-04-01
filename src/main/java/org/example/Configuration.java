@@ -1,21 +1,16 @@
 package org.example;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.example.global.GlobalInfo;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
+import org.example.utils.searcher.NodeSearcherFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.*;
@@ -26,9 +21,7 @@ import java.util.*;
  * @author       Yingying Jiang
  * @create       2024/3/13 16:11
  */
-@EnableConfigurationProperties(Configuration.class)
-@ConfigurationProperties(prefix = "config")
-@Component
+@org.springframework.context.annotation.Configuration
 public class Configuration {
 
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
@@ -47,33 +40,34 @@ public class Configuration {
   private String resOutDir;
   private String styleOutPath;
 
-  private String modelURL;
 
   @Autowired
   private LLMConfig llmConfig;
 
+  @Autowired
+  private LanguageConfig languageConfig;
+
   public Configuration() {
     ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
     llmConfig = context.getBean(Configuration.LLMConfig.class);
+    languageConfig = context.getBean(Configuration.LanguageConfig.class);
+    System.out.println("");
   }
 
 
-  public void loadConf() {
-    try {
-      InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
-      SAXReader reader = new SAXReader();
-      Document document = reader.read(inputStream);
-      root = document.getRootElement();
-
-      Element llmNode = root.element("llm");
-      if (llmNode != null) {
-        modelURL = llmNode.attributeValue("url");
-      }
-    } catch (DocumentException e) {
-      log.error("Failed to load configuration", e);
-    }
-
-  }
+//  public void loadConf() {
+//    try {
+//      InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
+//      SAXReader reader = new SAXReader();
+//      Document document = reader.read(inputStream);
+//      root = document.getRootElement();
+//
+//
+//    } catch (DocumentException e) {
+//      log.error("Failed to load configuration", e);
+//    }
+//
+//  }
 
   public String getStyleFile() {
     return styleFile;
@@ -97,6 +91,10 @@ public class Configuration {
 
   public LLMConfig getLlmConfig() {
     return llmConfig;
+  }
+
+  public LanguageConfig getLanguageConfig() {
+    return languageConfig;
   }
 
 
@@ -167,7 +165,6 @@ public class Configuration {
     return styleOutPath;
   }
 
-  @ImportResource("classpath:config.xml")
   public static class LLMConfig{
     public String url;
     public int identifierLengthLimit;
@@ -186,6 +183,39 @@ public class Configuration {
 
     public void setIdentifierLengthLimit(int identifierLengthLimit) {
       this.identifierLengthLimit = identifierLengthLimit;
+    }
+
+  }
+
+
+
+  public static class LanguageConfig{
+    private String language;
+    private NodeSearcherFactory nodeSearcherFactory;
+    private MyParserFactory parserFactory;
+
+    public String getLanguage() {
+      return language;
+    }
+
+    public void setLanguage(String language) {
+      this.language = language;
+    }
+
+    public NodeSearcherFactory getNodeSearcherFactory() {
+      return nodeSearcherFactory;
+    }
+
+    public void setNodeSearcherFactory(NodeSearcherFactory nodeSearcherFactory) {
+      this.nodeSearcherFactory = nodeSearcherFactory;
+    }
+
+    public MyParserFactory getParserFactory() {
+      return parserFactory;
+    }
+
+    public void setParserFactory(MyParserFactory parserFactory) {
+      this.parserFactory = parserFactory;
     }
 
   }

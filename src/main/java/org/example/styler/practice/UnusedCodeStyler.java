@@ -1,5 +1,6 @@
 package org.example.styler.practice;
 
+import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -12,6 +13,7 @@ import org.example.styler.practice.style.UnusedCodeProperty;
 import org.example.styler.practice.style.UnusedCodeStyle;
 import org.example.utils.searcher.intf.ArgumentsSearcher;
 import org.example.utils.searcher.intf.FunctionDecSearcher;
+import org.slf4j.event.EventRecordingLogger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -94,16 +96,16 @@ public class UnusedCodeStyler extends Styler {
             if (symbol.getSymbolType() == NameType.PARAMETER) {
                 ExtendContext functionDec = symbol.getDecIdentifierNode()
                         .findFirstParentIf(p1 -> p1.getRuleIndex() == parser.getRuleMethodDeclaration() || p1.getRuleIndex() == parser.getRuleConstructorDeclaration());
-                FunctionDecSearcher searcher = parser.getFunctionDecSearcher();
+                FunctionDecSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createFunctionDecSearcher();
                 int parameterIndex = searcher.indexOfParameter(functionDec, unusedNode, parser);
 
                 ExtendContext identifierNode = searcher.searchFunctionName(functionDec, parser);
                 List<ExtendContext> refs = GlobalInfo.getResolver().resolve(identifierNode, parser).getReferences();
-                ArgumentsSearcher argsSearcher = parser.getArgumentsSearcher();
+                ArgumentsSearcher argsSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createArgumentsSearcher();
                 for (ExtendContext ref : refs) {
                     ExtendContext callSite = ref.findFirstParentIf(p -> p.getRuleIndex() == parser.getRuleExpression());
                     ExtendContext args = callSite.getContextRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleArguments());
-                    ExtendContext arg = argsSearcher.getArgument(args, parameterIndex, parser);
+                    ExtendContext arg = argsSearcher.searchArgument(args, parameterIndex, parser);
                     if (arg != null) {
                         argsToBeRemoved.add(arg);
                     } else {

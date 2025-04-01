@@ -40,11 +40,6 @@ public class MyJavaParser implements MyParser {
     Path curFile = null;
     ParseTree root = null;
     ExtendJavaParserListener listener;
-    DecStmtSearcher decStmtSearcher = JavaDecStmtSearcher.getInstance();
-    CompilationUnitSearcher cuSearcher = JavaCUSearcher.getInstance();
-    FunctionDecSearcher functionDecSearcher = JavaFunctionDecSearcher.getInstance();
-    ArgumentsSearcher argumentsSearcher = ArgumentsSearcherImpl.getInstance();
-
 
     private static Set<Integer> changeHierarchyRule = new HashSet<>(Arrays.asList(
             JavaParser.RULE_block, JavaParser.RULE_body, JavaParser.RULE_arrayInitializer,
@@ -906,26 +901,6 @@ public class MyJavaParser implements MyParser {
     @Override
     public String getConstKeyword() {
         return "final";
-    }
-
-    @Override
-    public DecStmtSearcher getDecStmtSearcher() {
-        return decStmtSearcher;
-    }
-
-    @Override
-    public CompilationUnitSearcher getCUSearcher() {
-        return cuSearcher;
-    }
-
-    @Override
-    public FunctionDecSearcher getFunctionDecSearcher() {
-        return functionDecSearcher;
-    }
-
-    @Override
-    public ArgumentsSearcher getArgumentsSearcher() {
-        return argumentsSearcher;
     }
 
     @Override

@@ -5,14 +5,10 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.utils.searcher.intf.FunctionDecSearcher;
 
 public class JavaFunctionDecSearcher implements FunctionDecSearcher {
-    private final static JavaFunctionDecSearcher instance = new JavaFunctionDecSearcher();
 
-    private JavaFunctionDecSearcher() {
+    public JavaFunctionDecSearcher() {
     }
 
-    public static JavaFunctionDecSearcher getInstance() {
-        return instance;
-    }
 
     @Override
     public ExtendContext searchFunctionName(ExtendContext functionDec, MyParser parser) {

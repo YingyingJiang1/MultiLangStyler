@@ -27,6 +27,7 @@ import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.NameType;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
+import org.example.utils.searcher.intf.DecStmtSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -159,7 +160,8 @@ public class ExpressionStyler extends Styler {
         }
 
         // Set a meaningful name for the newly created variable
-        ExtendContext identifier = parser.getDecStmtSearcher().searchIdentifiers(decStmt, parser).get(0);
+        DecStmtSearcher decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
+        ExtendContext identifier = decStmtSearcher.searchIdentifiers(decStmt, parser).get(0);
         String newName = NameGenerator.generateMeaningfulName(identifier, parser, GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit());
         if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
             extendToken.setText(newName);
@@ -210,7 +212,7 @@ public class ExpressionStyler extends Styler {
 
         if (type instanceof ReferenceType referenceType) {
             // Import if necessary.
-            CompilationUnitSearcher cuSearcher = parser.getCUSearcher();
+            CompilationUnitSearcher cuSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createCompilationUnitSearcher();
             ExtendContext cu = (ExtendContext) parser.getRoot();
             List<ExtendContext> imports = cuSearcher.searchImports(cu, parser);
             boolean isImported = false;

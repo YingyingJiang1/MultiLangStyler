@@ -36,7 +36,6 @@ public class Controller {
 
     public Controller(Configuration conf) {
         this.conf = conf;
-        this.conf.loadConf();
         GlobalInfo.setConf(this.conf);
     }
 
