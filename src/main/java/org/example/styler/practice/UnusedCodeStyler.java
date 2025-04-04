@@ -1,6 +1,5 @@
 package org.example.styler.practice;
 
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
 import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
@@ -13,8 +12,7 @@ import org.example.styler.practice.style.UnusedCodeContext;
 import org.example.styler.practice.style.UnusedCodeProperty;
 import org.example.styler.practice.style.UnusedCodeStyle;
 import org.example.utils.searcher.intf.ArgumentsSearcher;
-import org.example.utils.searcher.intf.FunctionDecSearcher;
-import org.slf4j.event.EventRecordingLogger;
+import org.example.utils.searcher.intf.FunctionHeadSearcher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -99,7 +97,7 @@ public class UnusedCodeStyler extends Styler {
             if (symbol.getSymbolType() == NameType.PARAMETER) {
                 ExtendContext functionDec = symbol.getDecIdentifierNode()
                         .findFirstParentIf(p1 -> p1.getRuleIndex() == parser.getRuleMethodDeclaration() || p1.getRuleIndex() == parser.getRuleConstructorDeclaration());
-                FunctionDecSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createFunctionDecSearcher();
+                FunctionHeadSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createFunctionDecSearcher();
                 int parameterIndex = searcher.indexOfParameter(functionDec, unusedNode, parser);
 
                 ExtendContext identifierNode = searcher.searchFunctionName(functionDec, parser);

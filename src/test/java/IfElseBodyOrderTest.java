@@ -7,6 +7,6 @@ public class IfElseBodyOrderTest extends IntegrationTest {
 
     @Test
     public  void test() {
-        transformSingleFile(Paths.get(dir, "pair1", "src.java"), Paths.get(dir, "pair1", "target.java"));
+        transformSingleFile(Paths.get(dir, "pair1", "Test.java"), Paths.get(dir, "pair1", "target.java"));
     }
 }

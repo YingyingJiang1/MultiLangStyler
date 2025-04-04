@@ -29,8 +29,8 @@ public class MostComplexExpFeature extends ComputableStyleExtractor {
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
         if (styleProperty instanceof ExpressionProperty property) {
             FeatureVector fv = new FeatureVector();
-            fv.addDimension(MostComplexExp.maxLengthAttr, new DoubleFeatureValue(property.maxExpressionLength));
-            fv.addDimension(MostComplexExp.maxSubExpNum, new DoubleFeatureValue(property.maxSubExpNum));
+            fv.addDimension(MostComplexExp.maxLengthAttr, new DoubleFeatureValue(property.maxComplexity.textLength));
+            fv.addDimension(MostComplexExp.maxSubExpNum, new DoubleFeatureValue(property.maxComplexity.depth));
         }
         return null;
     }

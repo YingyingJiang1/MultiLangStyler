@@ -3,39 +3,44 @@ package org.example.styler.function.style;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.function.FunctionComplexityStyler;
 
 import java.util.Objects;
 
 public class FunctionComplexityProperty extends StyleProperty {
-    public int maxLines;
-    public int maxNestingDepth;
+    public FunctionComplexity maxComplexity;
 
-    public FunctionComplexityProperty(int maxLines, int maxNestingDepth) {
-        this.maxLines = maxLines;
-        this.maxNestingDepth = maxNestingDepth;
+    public FunctionComplexityProperty() {
+        maxComplexity = new FunctionComplexity();
     }
+
+    public FunctionComplexityProperty(FunctionComplexity maxComplexity) {
+        this.maxComplexity = maxComplexity;
+    }
+
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("maxLines", String.valueOf(maxLines));
-        parent.addAttribute("maxNestingDepth", String.valueOf(maxNestingDepth));
+        Element maxEle = parent.addElement("maxComplexity");
+        maxComplexity.addElement(maxEle);
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        maxLines = Integer.parseInt(parent.attributeValue("maxLines"));
-        maxNestingDepth = Integer.parseInt(parent.attributeValue("maxNestingDepth"));
+        Element maxEle = parent.element("maxComplexity");
+        maxComplexity = new FunctionComplexity();
+        maxComplexity.parseElement(maxEle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxLines, maxNestingDepth);
+        return Objects.hash(maxComplexity);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof FunctionComplexityProperty other) {
-            return maxLines == other.maxLines && maxNestingDepth == other.maxNestingDepth;
+            return maxComplexity == other.maxComplexity;
         }
         return false;
     }

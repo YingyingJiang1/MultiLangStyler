@@ -1,11 +1,13 @@
 package org.example.styler.function;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.apache.commons.math3.linear.ArrayRealVector;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.function.style.FunctionComplexity;
 import org.example.styler.function.style.FunctionComplexityProperty;
 
 import java.util.ArrayList;
@@ -16,36 +18,32 @@ public class FunctionComplexityStyler extends Styler {
         style.setStyleName("function_complexity");
     }
 
+    private List<FunctionComplexity> complexityList = new ArrayList<>();
+
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-       FunctionComplexityProperty property = extractStyleProperty(ctx, parser);
-        List<StyleProperty> properties = style.getProperties(null);
-        if (properties != null) {
-            FunctionComplexityProperty targetProperty = (FunctionComplexityProperty) properties.get(0);
-            if (property.maxLines > targetProperty.maxLines) {
-                targetProperty.maxLines = property.maxLines ;
-            }
-            if (property.maxNestingDepth > targetProperty.maxNestingDepth) {
-                targetProperty.maxNestingDepth = property.maxNestingDepth;
-            }
-        } else {
-            style.addRule(null, property);
-        }
+       FunctionComplexity complexity = calFunctionComplexity(ctx, parser);
+        complexityList.add(complexity);
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        FunctionComplexityProperty property = extractStyleProperty(ctx, parser);
         if (style.getProperty(null) instanceof FunctionComplexityProperty targetProperty) {
-            boolean isMoreComplex = property.maxNestingDepth > targetProperty.maxNestingDepth
-                    || property.maxLines > targetProperty.maxLines;
-            if (isMoreComplex) {
-                encapsulateCode(ctx, property, targetProperty, parser);
+            FunctionComplexity complexity = calFunctionComplexity(ctx, parser);
+            if (complexity.isMoreComplex(targetProperty.maxComplexity)) {
+                encapsulateCode(ctx, complexity, targetProperty, parser);
             }
         }
         return ctx;
     }
 
+    @Override
+    public void extractFinalize() {
+        double maxLines = complexityList.stream().mapToDouble(e -> e.lines).max().orElse(0.0);
+        double maxNestingDepth = complexityList.stream().mapToDouble(e -> e.nestingDepth).max().orElse(0.0);
+        FunctionComplexity maxComplexity = new FunctionComplexity(maxLines, maxNestingDepth);
+        style.addRule(null, new FunctionComplexityProperty(maxComplexity));
+    }
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
@@ -103,14 +101,14 @@ public class FunctionComplexityStyler extends Styler {
         return 0;
     }
 
-    private FunctionComplexityProperty extractStyleProperty(ExtendContext ctx, MyParser parser) {
+    private FunctionComplexity calFunctionComplexity(ExtendContext ctx, MyParser parser) {
         int lines = ctx.stop.getLine() - ctx.start.getLine() + 1;
         ExtendContext body = (ExtendContext) ctx.getChild(ctx.getChildCount() - 1);
         int maxNestedDepth = calculateMaxStmtNestingDepth(body, parser);
-        return new FunctionComplexityProperty(lines, maxNestedDepth);
+        return new FunctionComplexity(lines, maxNestedDepth);
     }
 
-    private void encapsulateCode(ExtendContext ctx, FunctionComplexityProperty property, FunctionComplexityProperty targetProperty, MyParser parser) {
+    private void encapsulateCode(ExtendContext ctx, FunctionComplexity curComplexity, FunctionComplexityProperty targetProperty, MyParser parser) {
         // to do: 标记代码段
 
         // do encapsulation

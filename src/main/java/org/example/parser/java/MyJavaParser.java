@@ -12,14 +12,6 @@ import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.utils.searcher.impl.ArgumentsSearcherImpl;
-import org.example.utils.searcher.intf.ArgumentsSearcher;
-import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.DecStmtSearcher;
-import org.example.utils.searcher.intf.FunctionDecSearcher;
-import org.example.utils.searcher.javaimpl.JavaCUSearcher;
-import org.example.utils.searcher.javaimpl.JavaDecStmtSearcher;
-import org.example.utils.searcher.javaimpl.JavaFunctionDecSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -901,6 +893,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public String getConstKeyword() {
         return "final";
+    }
+
+    @Override
+    public String getSourceFile() {
+        return parser.getSourceName();
     }
 
     @Override

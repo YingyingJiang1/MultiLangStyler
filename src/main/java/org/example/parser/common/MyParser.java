@@ -1,6 +1,5 @@
 package org.example.parser.common;
 
-import com.microsoft.schemas.office.office.STInsetMode;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenFactory;
@@ -10,10 +9,6 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.AmbigousToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.utils.searcher.intf.ArgumentsSearcher;
-import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.DecStmtSearcher;
-import org.example.utils.searcher.intf.FunctionDecSearcher;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -247,4 +242,5 @@ public interface MyParser {
     ListenerState getListenerState();
 
     String getConstKeyword();
+    String getSourceFile();
 }

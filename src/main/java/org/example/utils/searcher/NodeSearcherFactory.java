@@ -3,10 +3,7 @@ package org.example.utils.searcher;
 import org.example.global.GlobalInfo;
 import org.example.utils.searcher.impl.ArgumentsSearcherImpl;
 import org.example.utils.searcher.intf.*;
-import org.example.utils.searcher.javaimpl.JavaCUSearcher;
-import org.example.utils.searcher.javaimpl.JavaDecStmtSearcher;
-import org.example.utils.searcher.javaimpl.JavaExpressionSearcher;
-import org.example.utils.searcher.javaimpl.JavaFunctionDecSearcher;
+import org.example.utils.searcher.javaimpl.*;
 
 public class NodeSearcherFactory {
 	public ArgumentsSearcher createArgumentsSearcher() {
@@ -39,11 +36,11 @@ public class NodeSearcherFactory {
 		}
 	}
 
-	public FunctionDecSearcher createFunctionDecSearcher() {
+	public FunctionHeadSearcher createFunctionDecSearcher() {
 		String language = GlobalInfo.getConf().getLanguageConfig().getLanguage();
 		switch (language) {
 			case "java":
-				return new JavaFunctionDecSearcher();
+				return new JavaFunctionHeadSearcher();
 			default:
 				throw new IllegalArgumentException("Unsupported language: " + language);
 		}
@@ -54,6 +51,16 @@ public class NodeSearcherFactory {
 		switch (language) {
 			case "java":
 				return new JavaExpressionSearcher();
+			default:
+				throw new IllegalArgumentException("Unsupported language: " + language);
+		}
+	}
+
+	public TypeDecSearcher createTypeDecSearcher() {
+		String language = GlobalInfo.getConf().getLanguageConfig().getLanguage();
+		switch (language) {
+			case "java":
+				return new JavaTypeDecSearcher();
 			default:
 				throw new IllegalArgumentException("Unsupported language: " + language);
 		}

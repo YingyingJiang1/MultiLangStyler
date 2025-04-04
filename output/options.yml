@@ -2,11 +2,11 @@ optionsFile: null
 printHelp: false
 classPath: []
 appClassPath:
-- org.example.semantic.SymbolTableManager.java
-mainClass: null
+- src/test/sources/sa/null.java
+mainClass: .null
 inputClasses: []
-javaVersion: 6
-prependJVM: false
+javaVersion: 17
+prependJVM: true
 allowPhantom: false
 worldBuilderClass: pascal.taie.frontend.soot.SootWorldBuilder
 outputDir: output
@@ -15,7 +15,8 @@ worldCacheMode: false
 scope: APP
 nativeModel: true
 planFile: null
-analyses: {}
+analyses:
+  def-use: compute-uses=true
 onlyGenPlan: false
 keepResult:
 - $KEEP-ALL

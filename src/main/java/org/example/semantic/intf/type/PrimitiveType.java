@@ -1,7 +1,6 @@
 package org.example.semantic.intf.type;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.analysis.io.input.InputGenerator;
 
 import java.util.List;
 import java.util.Set;

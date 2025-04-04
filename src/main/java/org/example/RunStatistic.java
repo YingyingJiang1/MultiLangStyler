@@ -10,10 +10,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RunStatistic {
-	private static Map<Integer, Integer> structureStylerStatis = new HashMap<>();
-	private static Map<Class<? extends Styler>, Integer> decLayoutStylerStatis = new HashMap<>();
+	private static Map<Integer, Integer> structureStylerStatis = new ConcurrentHashMap<>();
+	private static Map<Class<? extends Styler>, Integer> decLayoutStylerStatis = new ConcurrentHashMap<>();
 	public static Logger logger = LoggerFactory.getLogger(RunStatistic.class);
 
 	public static void addStructureRule(int rule) {

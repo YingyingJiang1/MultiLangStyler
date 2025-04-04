@@ -20,8 +20,8 @@ public class FunctionComplexityFeature extends ComputableStyleExtractor {
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
         if (styleProperty instanceof FunctionComplexityProperty property) {
             FeatureVector fv = new FeatureVector();
-            fv.addDimension(FunctionComplexity.maxNestingDepth, new DoubleFeatureValue(property.maxNestingDepth));
-            fv.addDimension(FunctionComplexity.maxLines, new DoubleFeatureValue(property.maxLines));
+            fv.addDimension(FunctionComplexity.maxNestingDepth, new DoubleFeatureValue(property.maxComplexity.lines));
+            fv.addDimension(FunctionComplexity.maxLines, new DoubleFeatureValue(property.maxComplexity.nestingDepth));
         }
         return null;
     }

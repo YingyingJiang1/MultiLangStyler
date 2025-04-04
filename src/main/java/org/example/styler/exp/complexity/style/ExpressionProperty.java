@@ -7,49 +7,50 @@ import org.example.style.rule.StyleProperty;
 import java.util.Objects;
 
 public class ExpressionProperty extends StyleProperty {
-    public int maxExpressionLength;
-    public int maxSubExpNum;
+    public ExpressionComplexity maxComplexity;
+    public ExpressionComplexity avgComplexity;
 
     public ExpressionProperty() {
     }
 
-    public ExpressionProperty(int length, int maxPredicateNum) {
-        this.maxExpressionLength = length;
-        this.maxSubExpNum = maxPredicateNum;
+    public ExpressionProperty(ExpressionComplexity maxComplexity, ExpressionComplexity avgComplexity) {
+        this.maxComplexity = maxComplexity;
+        this.avgComplexity = avgComplexity;
     }
+
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("maxExpressionLength", Integer.toString(maxExpressionLength));
-        parent.addAttribute("maxSubExpNum", Integer.toString(maxSubExpNum));
+        Element maxEle = parent.addElement("maxComplexity");
+        maxComplexity.addElement(maxEle);
+        Element avgEle = parent.addElement("avgComplexity");
+        avgComplexity.addElement(avgEle);
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        maxExpressionLength = Integer.parseInt(parent.attributeValue("maxExpressionLength"));
-        maxSubExpNum = Integer.parseInt(parent.attributeValue("maxSubExpNum"));
+        maxComplexity = new ExpressionComplexity();
+        avgComplexity = new ExpressionComplexity();
+        maxComplexity.parseElement(parent.element("maxComplexity"));
+        avgComplexity.parseElement(parent.element("avgComplexity"));
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                maxExpressionLength,
-                maxSubExpNum
+                maxComplexity,
+                avgComplexity
         );
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ExpressionProperty property) {
-            return maxExpressionLength == property.maxExpressionLength
-                    && maxSubExpNum == property.maxSubExpNum;
+            return avgComplexity == property.avgComplexity
+                    && maxComplexity == property.maxComplexity;
         }
         return false;
     }
 
-    public boolean isMoreComplex(ExpressionProperty property) {
-        double weightLength = 0.4, weightSubExpNum = 0.6;
-        return (maxExpressionLength * weightLength + maxSubExpNum * weightSubExpNum) > (property.maxExpressionLength * weightLength + property.maxSubExpNum * weightSubExpNum);
-    }
 
 }
