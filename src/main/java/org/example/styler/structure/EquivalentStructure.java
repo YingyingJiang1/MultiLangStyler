@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.tree.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.factory.ParseTreeUtil;
+import org.example.utils.ParseTreeUtil;
 import org.example.myException.CompilationException;
 import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;

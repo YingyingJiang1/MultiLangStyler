@@ -3,24 +3,24 @@
 <program_style>
   <style name="naming_format">
     <rule>
-      <style_context name_type="PARAMETER"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
+      <style_context name_type="TYPE"/>
+      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
+    </rule>
+    <rule>
+      <style_context name_type="METHOD"/>
+      <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="15"/>
     </rule>
     <rule>
       <style_context name_type="LOCAL_VARIABLE" IMPLICIT_CONST="IMPLICIT_CONST"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="7"/>
     </rule>
     <rule>
-      <style_context name_type="METHOD"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="15"/>
+      <style_context name_type="PARAMETER"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
       <style_context name_type="LOCAL_VARIABLE"/>
-      <style_property case_format="ALL_UPPER_CASE" start_with_underscore="false" max_length="12"/>
-    </rule>
-    <rule>
-      <style_context name_type="TYPE"/>
-      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="12"/>
     </rule>
   </style>
   <style name="if_else_body_order"/>
@@ -58,8 +58,18 @@
   </style>
   <style name="most_complex_expression">
     <rule>
+      <style_context expType="INITIALIZER_EXP"/>
+      <style_property>
+        <maxComplexity textLength="24.0" depth="9.0"/>
+        <avgComplexity textLength="21.0" depth="7.6"/>
+      </style_property>
+    </rule>
+    <rule>
       <style_context expType="TOP_EXP"/>
-      <style_property maxExpressionLength="43" maxSubExpNum="6"/>
+      <style_property>
+        <maxComplexity textLength="43.0" depth="8.0"/>
+        <avgComplexity textLength="29.0" depth="6.0"/>
+      </style_property>
     </rule>
   </style>
   <style name="lineWrapping">

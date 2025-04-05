@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.ParseTreeUtil;
+import org.example.utils.ParseTreeUtil;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 

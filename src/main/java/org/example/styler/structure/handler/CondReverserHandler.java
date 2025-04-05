@@ -1,12 +1,8 @@
 package org.example.styler.structure.handler;
 
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.*;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.ParseTreeUtil;
-import org.example.parser.common.token.ExtendToken;
+import org.example.utils.ParseTreeUtil;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 

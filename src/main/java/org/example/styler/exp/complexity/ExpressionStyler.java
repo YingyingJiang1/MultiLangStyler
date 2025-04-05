@@ -1,16 +1,18 @@
 package org.example.styler.exp.complexity;
 
-import java.nio.DoubleBuffer;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.factory.ParseTreeUtil;
+import org.example.utils.ParseTreeUtil;
 import org.example.parser.common.token.ExtendToken;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.symbol.Symbol;
@@ -28,7 +30,6 @@ import org.example.styler.exp.complexity.style.ExpressionStyle;
 import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.NameType;
 import org.example.utils.NameGenerator;
-import org.example.utils.TreeUtil;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
 import org.example.utils.searcher.intf.DecStmtSearcher;
 import org.slf4j.Logger;
@@ -49,8 +50,8 @@ public class ExpressionStyler extends Styler {
             return;
         }
 
-        ExpressionContext styleContext = extractStyleContext(expression, parser);
-        ExpressionComplexity expComplexity = calExpComplexity(expression, parser);
+        ExpressionContext styleContext = extractStyleContext(ctx, parser);
+        ExpressionComplexity expComplexity = calExpComplexity(expression);
         complexityMap.computeIfAbsent(styleContext, k -> new ArrayList<>()).add(expComplexity);
     }
 
@@ -61,8 +62,8 @@ public class ExpressionStyler extends Styler {
             return ctx;
         }
 
-        ExpressionContext styleContext = extractStyleContext(expression, parser);
-        ExpressionComplexity complexity = calExpComplexity(expression, parser);
+        ExpressionContext styleContext = extractStyleContext(ctx, parser);
+        ExpressionComplexity complexity = calExpComplexity(expression);
         StyleProperty property = style.getProperty(styleContext);
         if (property instanceof ExpressionProperty targetProperty) {
             if (complexity.isMoreComplex(targetProperty.maxComplexity)) {
@@ -94,38 +95,102 @@ public class ExpressionStyler extends Styler {
         });
     }
 
-    private ExpressionContext extractStyleContext(ExtendContext expression, MyParser parser) {
+    private ExpressionContext extractStyleContext(ExtendContext node, MyParser parser) {
         ExpType expType = null;
-        int parentRule = expression.getParent().getRuleIndex();
-        if (parentRule == parser.getRuleExpStmt() || parser.isVariableInitializer(expression.getParent())) {
-            expType = expression.getAllTerminalsIf(ter -> ter.getText().equals("?") || ter.getText().equals(":")).size() == 2
+        if(parser.isVariableInitializer(node)) {
+            expType = ExpType.INITIALIZER_EXP;
+        } else if (parser.getRuleExpressionStmt() == node.getRuleIndex()) {
+            expType = node.getFirstCtxChildIf(parser::isExpression)
+                    .getAllTerminalsIf(ter -> ter.getText().equals("?") || ter.getText().equals(":")).size() == 2
                     ? ExpType.TERNARY_EXP
                     : ExpType.TOP_EXP;
-        } else if (parentRule == parser.getRuleParExpression()) {
+        } else if (parser.getRuleParExpression() == node.getRuleIndex()) {
             expType = ExpType.CONDITIONAL_EXP;
         }
         return expType == null ? null : new ExpressionContext(expType);
     }
 
-    private ExpressionComplexity calExpComplexity(ExtendContext expression, MyParser parser) {
+    private ExpressionComplexity calExpComplexity(ExtendContext expression) {
         int length = expression.getText().length();
-        int expDepth = TreeUtil.getTreeDepth(expression);
+        int expDepth = ParseTreeUtil.getInstance().getTreeDepth(expression);
         return new ExpressionComplexity(length, expDepth);
     }
 
 
     private void mergeExpression(ExtendContext expression, final ExpressionComplexity curComplexity, ExpressionProperty targetProperty, MyParser parser) {
-        
+        ExtendContext statement = expression.getFirstParentIf(parser::isStatement);
+        if (statement == null) {
+            return;
+        }
+
+        ExtendContext block = statement.getFirstParentIf(parser::isBlock);
+        if (block == null) {
+            return;
+        }
+
+        // Store all successive "lv = rv" precede current expression in map.
+        int index = block.indexOfFirstChild(child -> child == statement);
+        Function<ExtendContext, Integer> getExpressionNode = exp -> {
+            if (exp == null) {
+                return -1;
+            }
+            int assignIndex = exp.indexOfIf(child -> child instanceof TerminalNode ter && ter.getText().equals("="));
+            return assignIndex >= 0 ? assignIndex : -1;
+        };
+        Map<String, ExtendContext> lVrVMap = new HashMap<>();
+        for (int i = index - 1; i >= 0; i--) {
+            if (block.getChild(i) instanceof ExtendContext ctx && parser.getRuleExpressionStmt() == parser.getSpecificStmtType(ctx)) {
+                ExtendContext expNode = parser.getSpecificStmt(ctx).getFirstCtxChildIf(parser::isExpression);
+                int assignIndex = expNode.indexOfFirstChild(child -> child instanceof TerminalNode ter && ter.getText().equals("="));
+                if (assignIndex >= 0){
+                    String lValue = expNode.getChild(assignIndex - 1).getText();
+                    if (!lVrVMap.containsKey(lValue)) {
+                        lVrVMap.put(lValue, (ExtendContext) expNode.getChild(assignIndex + 1));
+                    }
+
+                }
+            }
+        }
+
+        // replace the subexpressions in current expression with the last assignment of the subexpressions until the complexity is greater avg and less max.
+        Map<String, List<ExtendContext>> subExpressionMap = new HashMap<>();
+        extractSubExpression(expression, subExpressionMap, parser);
+        Set<String> selectedSubExp = new HashSet<>(subExpressionMap.keySet());
+        selectedSubExp.retainAll(lVrVMap.keySet());
+        for (String expStr : selectedSubExp) {
+            // Replace the subexpression with the last assignment expression.
+            List<ExtendContext> oldSubExpressions = subExpressionMap.get(expStr);
+            for (ExtendContext exp : oldSubExpressions) {
+                ((ExtendContext) exp.getParent()).replaceChild(exp, ParseTreeUtil.getInstance().copyTree(lVrVMap.get(expStr), false));
+            }
+
+            // When the new expression is more complex than the max complexity, cancle the replacement.
+            ExpressionComplexity newComplexity = calExpComplexity(expression);
+            if (newComplexity.isMoreComplex(targetProperty.maxComplexity)) {
+                for (ExtendContext exp : oldSubExpressions) {
+                    ((ExtendContext) exp.getParent()).replaceChild(lVrVMap.get(expStr), exp);
+                }
+                break;
+            }
+
+            if (calExpComplexity(expression).isMoreComplex(targetProperty.avgComplexity)) {
+                break;
+            }
+        }
     }
 
     private void splitExpression(ExtendContext expression, final ExpressionComplexity curComplexity, ExpressionProperty targetProperty, MyParser parser) {
-        // Create priority queue to select subexpressions.
+        // Create subexpressions to be split.
         Map<String, List<ExtendContext>> expressionMap = new HashMap<>();
-        extractCommonExpression(expression, expressionMap, parser);
-        // The expression with the most repetitions has the highest priority, and when the repetition is the same, the expression closest to the average complexity is prior.
+        extractSubExpression(expression, expressionMap, parser);
+        expressionMap.remove(expression.getText()); // remove ·expression· itself.
+
+
+        // The expression with the most repetitions has the highest priority, and when the repetition is the same, the expression greater than and closest to the average complexity is prior.
         PriorityQueue<MutablePair<String, List<ExtendContext>>> pq = new PriorityQueue<>(Comparator.comparing(
                 (MutablePair<String, List<ExtendContext>> p) -> {
-                    double distance = Math.abs(curComplexity.diff(targetProperty.maxComplexity));
+                    ExpressionComplexity pComplexity = calExpComplexity(p.getValue().get(0));
+                    double distance = Math.abs(pComplexity.diff(targetProperty.avgComplexity));
                     return -(p.getRight().size() * 10000 - distance);
                 }));
         for (Map.Entry<String, List<ExtendContext>> entry : expressionMap.entrySet()) {
@@ -133,9 +198,16 @@ public class ExpressionStyler extends Styler {
         }
 
 
-        ExpressionComplexity newComplexity = calExpComplexity(expression, parser);
-        MutablePair<String, List<ExtendContext>> selectedSubExp = pq.poll();
-        while(selectedSubExp != null && newComplexity.isMoreComplex(targetProperty.maxComplexity)) {
+        ExpressionComplexity newComplexity = calExpComplexity(expression);
+        while(newComplexity.isMoreComplex(targetProperty.maxComplexity)) {
+            // Remove candidates that are less complex than avg complexity.
+            pq.removeIf(e -> e.getValue().size() == 1 && calExpComplexity(e.getValue().get(0)).isNoMoreComplex(targetProperty.avgComplexity));
+
+            MutablePair<String, List<ExtendContext>> selectedSubExp = pq.poll();
+            if (selectedSubExp == null) {
+                break;
+            }
+
             // Preparation for create declaration statement.
             String name = doSplitExpression(selectedSubExp, parser);
 
@@ -146,9 +218,8 @@ public class ExpressionStyler extends Styler {
                     pair.setLeft(newExpressionText);
                 }
             }
-            selectedSubExp = pq.poll();
 
-            newComplexity = calExpComplexity(expression, parser);
+            newComplexity = calExpComplexity(expression);
         }
     }
 
@@ -156,7 +227,7 @@ public class ExpressionStyler extends Styler {
         // Create a variable declaration statement for the expressions.
         MyCaseFormat caseFormat = MyCaseFormat.LOWER_CAMEL;
         String name = NameGenerator.generateName("",caseFormat );
-        Type type = GlobalInfo.getTypeSystem().getType(selectedSubExp.getValue().get(0), parser);
+        Type type = GlobalInfo.getTypeResolver().getType(selectedSubExp.getValue().get(0), parser);
         if (type == null) {
             return "";
         }
@@ -177,7 +248,7 @@ public class ExpressionStyler extends Styler {
         // Add number suffix to the variable name until naming conflicts removed.
         name = identifier.getText();
         for (int i = 1; mayConflict(name, parser); i++) {
-            name = name + Integer.toString(i);
+            name = identifier.getText() + Integer.toString(i);
         }
         if (!name.equals(identifier.getText()) && identifier.getStart() instanceof ExtendToken extendToken) {
             extendToken.setText(name);
@@ -201,11 +272,11 @@ public class ExpressionStyler extends Styler {
         return identifier.getText();
     }
 
-    private void extractCommonExpression(ExtendContext expression, Map<String, List<ExtendContext>> expressionMap, MyParser parser) {
+    private void extractSubExpression(ExtendContext expression, Map<String, List<ExtendContext>> expressionMap, MyParser parser) {
         expressionMap.computeIfAbsent(expression.getText(), k -> new ArrayList<>()).add(expression);
         for (ParseTree child : expression.children) {
             if (child instanceof ExtendContext ctx && ctx.getRuleIndex() == parser.getRuleExpression() && ctx.getChildCount() > 1) {
-                extractCommonExpression(ctx,  expressionMap, parser);
+                extractSubExpression(ctx,  expressionMap, parser);
             }
         }
     }
@@ -259,15 +330,4 @@ public class ExpressionStyler extends Styler {
         return parser.getSpecificStmt((ExtendContext) stmt);
     }
 
-    private void replaceChildren(List<ExtendContext> expressions, List<ParseTree> newChildren, MyParser parser) {
-        if (expressions.isEmpty()) {
-            return;
-        }
-        expressions.get(0).replaceChildren(0, expressions.get(0).getChildCount(), newChildren);
-        for (int i = 1; i < expressions.size(); i++) {
-            List<ParseTree> copies = new ArrayList<>();
-            newChildren.forEach(child -> copies.add(ParseTreeUtil.getInstance().copyTree(child, false)));
-            expressions.get(i).replaceChildren(0, expressions.get(i).getChildCount(), copies);
-        }
-    }
 }

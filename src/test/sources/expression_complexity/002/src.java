@@ -5,5 +5,9 @@ class Src {
 		int number3 = 3;
 		int number4 = 4;
 		int sum = number1 * number2 + number3 * (number1 * number2) + number4;
+
+		int[] arr;
+		arr[1] = number1 + number2;
+		number3 = arr[1];
 	}
 }

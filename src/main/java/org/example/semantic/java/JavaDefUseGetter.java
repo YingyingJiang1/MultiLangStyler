@@ -39,6 +39,7 @@ public class JavaDefUseGetter implements DefUseGetter {
 		DefUse defUse = containerMethod.getIR().getResult("def-use");
 		World.get().getResult(ResultProcessor.ID);
 
+		return null;
 
 	}
 
@@ -150,5 +151,7 @@ public class JavaDefUseGetter implements DefUseGetter {
 		JMethod containerMethod = world.getClassHierarchy().getMethod(taieMethodSignature);
 		return containerMethod;
 	}
+
+
 
 }

@@ -423,6 +423,17 @@ public class ExtendContext extends ParserRuleContext {
         return -1;
     }
 
+    // Return the index of the first child satisfying the @cond.
+    public int indexOfLastChild(Predicate<ParseTree> cond) {
+       for (int i = this.children.size() - 1; i >= 0; --i) {
+            ParseTree treeNode = this.children.get(i);
+            if (cond.test(treeNode)) {
+                return i;
+            }
+       }
+       return -1;
+    }
+
 
     // find terminal child
     public int findFirstTerChildByType(int tokenType) {

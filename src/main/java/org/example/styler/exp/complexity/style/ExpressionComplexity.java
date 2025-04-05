@@ -5,7 +5,7 @@ import org.dom4j.Element;
 import java.util.Objects;
 
 public class ExpressionComplexity {
-	public double textLength;
+	public double textLength; // This field is not used when comparing expression complexity.
 	public double depth;
 
 	public ExpressionComplexity() {
@@ -17,20 +17,24 @@ public class ExpressionComplexity {
 	}
 
 	public boolean isMoreComplex(ExpressionComplexity complexity) {
-		return textLength > complexity.textLength || depth > complexity.depth;
+		return this.diff(complexity) > 0;
+	}
+
+	public boolean isNoMoreComplex(ExpressionComplexity complexity) {
+		return this.diff(complexity) <= 0;
 	}
 
 	public double diff(ExpressionComplexity complexity) {
-		return textLength - complexity.textLength + depth - complexity.depth;
+		return depth - complexity.depth;
 	}
 
 	public void addElement(Element parent) {
-		parent.addAttribute("textLength", Double.toString(textLength));
+//		parent.addAttribute("textLength", Double.toString(textLength));
 		parent.addAttribute("depth", Double.toString(depth));
 	}
 
 	public void parseElement(Element parent) {
-		textLength = Integer.parseInt(parent.attributeValue("textLength"));
+//		textLength = Integer.parseInt(parent.attributeValue("textLength"));
 		depth = Integer.parseInt(parent.attributeValue("depth"));
 	}
 

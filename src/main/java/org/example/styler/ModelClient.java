@@ -75,7 +75,7 @@ public class ModelClient {
                 return response.toString();
             }
         } catch (Exception e) {
-            log.error("Failed to communicate with llm.");
+            log.warn("Failed to communicate with llm.");
         }
         return null;
     }

@@ -1,4 +1,4 @@
-package org.example.parser.common.factory;
+package org.example.utils;
 
 
 import org.antlr.v4.runtime.Token;
@@ -192,6 +192,25 @@ public class ParseTreeUtil {
         }
       }
     }
+  }
+
+  public int getTreeDepth(ParseTree root) {
+    if (root == null) {
+      return 0;
+    }
+    if (root.getChildCount() == 0) {
+      return 1;
+    }
+
+    int maxDepth = 0;
+    if (root instanceof ExtendContext ctx) {
+      for (ParseTree child : ctx.children) {
+        int childDepth = getTreeDepth(child);
+        maxDepth = Math.max(maxDepth, childDepth + 1);
+      }
+      return maxDepth;
+    }
+    return maxDepth;
   }
 
 //  private void modifyLink(ExtendContext parent, ParseTree newChild, ParseTree oldChild) {

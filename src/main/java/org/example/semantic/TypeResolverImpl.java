@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.semantic.intf.TypeSystem;
+import org.example.semantic.intf.TypeResolver;
 import org.example.semantic.intf.symbol.ClassSym;
 import org.example.semantic.intf.symbol.FunctionSym;
 import org.example.semantic.intf.symbol.Symbol;
@@ -15,7 +15,7 @@ import org.example.semantic.intf.type.Type;
 
 import java.util.*;
 
-public class TypeSystemImpl implements TypeSystem {
+public class TypeResolverImpl implements TypeResolver {
 	private static Map<Integer, String> literalTypeMap =  null;
 
 
@@ -81,7 +81,7 @@ public class TypeSystemImpl implements TypeSystem {
 
 		type = null;
 		Queue<Type> queue = new ArrayDeque<>(types);
-		while (!types.isEmpty()) {
+		while (!queue.isEmpty()) {
 			if (type == null) {
 				type = queue.poll();
 			} else {

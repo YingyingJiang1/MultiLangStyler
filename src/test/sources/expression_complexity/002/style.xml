@@ -7,12 +7,12 @@
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
     </rule>
     <rule>
-      <style_context name_type="LOCAL_VARIABLE"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="7"/>
+      <style_context name_type="TYPE"/>
+      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="6"/>
     </rule>
     <rule>
-      <style_context name_type="TYPE"/>
-      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="3"/>
+      <style_context name_type="LOCAL_VARIABLE"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="7"/>
     </rule>
   </style>
   <style name="if_else_body_order"/>
@@ -22,15 +22,24 @@
     </rule>
   </style>
   <style name="optional_brace"/>
+  <style name="expression_complexity">
+    <rule>
+      <style_context expType="TOP_EXP"/>
+      <style_property>
+        <maxComplexity depth="7.0"/>
+        <avgComplexity depth="7.0"/>
+      </style_property>
+    </rule>
+    <rule>
+      <style_context expType="INITIALIZER_EXP"/>
+      <style_property>
+        <maxComplexity depth="4.0"/>
+        <avgComplexity depth="4.0"/>
+      </style_property>
+    </rule>
+  </style>
   <style name="multi_branch"/>
   <style name="brace_format">
-    <rule>
-      <style_context>
-        <block_type>DEC_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
-    </rule>
     <rule>
       <style_context>
         <block_type>DEC_BODY</block_type>
@@ -38,20 +47,26 @@
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
     </rule>
+    <rule>
+      <style_context>
+        <block_type>DEC_BODY</block_type>
+        <body_type>SINGLE</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
+    </rule>
   </style>
-  <style name="declaration_layout"/>
+  <style name="declaration_layout">
+    <rule>
+      <style_context has_comment="false"/>
+      <style_property variable_count="5" max_length="45"/>
+    </rule>
+  </style>
   <style name="declaration_location">
     <rule>
       <style_property>
-        <avgLineDis2firstUse>2.5</avgLineDis2firstUse>
+        <avgLineDis2firstUse>1.6</avgLineDis2firstUse>
         <location>NEAR_USE</location>
       </style_property>
-    </rule>
-  </style>
-  <style name="most_complex_expression">
-    <rule>
-      <style_context expType="TOP_EXP"/>
-      <style_property maxExpressionLength="49" maxSubExpNum="11"/>
     </rule>
   </style>
   <style name="lineWrapping">
@@ -83,15 +98,7 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="(, IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context token="IDENTIFIER, ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -119,11 +126,15 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="LITERAL, ;"/>
+      <style_context token="KEYWORD, IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="LITERAL, ,"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD, IDENTIFIER"/>
+      <style_context token=",, IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
@@ -159,6 +170,10 @@
   <style name="newline">
     <rule>
       <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="EXPRESSION_STMT" minTextLength="0"/>
       <style_property newlines="0"/>
     </rule>
   </style>

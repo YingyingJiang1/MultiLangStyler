@@ -8,7 +8,7 @@ import org.example.semantic.factory.ResolverFactory;
 import org.example.semantic.factory.TypeSystemFactory;
 import org.example.semantic.intf.ReferenceResolver;
 import org.example.semantic.intf.Resolver;
-import org.example.semantic.intf.TypeSystem;
+import org.example.semantic.intf.TypeResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class GlobalInfo {
     private static SpecialClass specialClass;
     private static Resolver resolver;
     private static ReferenceResolver referenceResolver;
-    private static TypeSystem typeSystem;
+    private static TypeResolver typeResolver;
     private static Configuration conf = null;
 
 
@@ -31,7 +31,7 @@ public class GlobalInfo {
             specialClass = new JavaSpecialClass();
             resolver = ResolverFactory.createResolver(language);
             referenceResolver = ReferenceResolverFactory.createReferenceResolver(language);
-            typeSystem = TypeSystemFactory.createTypeSystem(language);
+            typeResolver = TypeSystemFactory.createTypeSystem(language);
         } else {
             logger.error("Unsupported language: " + language);
         }
@@ -53,8 +53,8 @@ public class GlobalInfo {
         return resolver;
     }
 
-    public static TypeSystem getTypeSystem() {
-        return typeSystem;
+    public static TypeResolver getTypeResolver() {
+        return typeResolver;
     }
 
     public static void setConf(Configuration conf) {

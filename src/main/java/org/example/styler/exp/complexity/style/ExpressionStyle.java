@@ -6,7 +6,7 @@ import org.example.style.rule.StyleRule;
 public class ExpressionStyle extends CommonStyle {
     public ExpressionStyle() {
         super();
-        styleName = "most_complex_expression";
+        styleName = "expression_complexity";
     }
 
     @Override

@@ -141,7 +141,17 @@ public class DeclarationLocationStyler extends Styler {
         DecStmtSearcher  decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
         List<ExtendContext> decIdentifiers = decStmtSearcher.searchIdentifiers(decStmt, parser);
 
-        int insetionPoint = 1; // Insert after {
+        // Init insertion point with the next index of last variable declaration statement in the block start.
+        int insetionPoint = 1;
+        while (insetionPoint < block.getChildCount()) {
+            boolean isDecStmt = block.getChild(insetionPoint) instanceof ExtendContext ctx && parser.isLocalVarDeclarationStmt(parser.getSpecificStmt(ctx));
+            if (!isDecStmt) {
+                break;
+            }
+            insetionPoint++;
+        }
+
+
         for (ExtendContext decIdentifier : decIdentifiers) {
             ExtendContext initializer = decStmtSearcher.searchInitializer(decStmt, decIdentifier, parser);
             List<ExtendContext> usedNodes = initializer.getAllChildContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
@@ -173,7 +183,7 @@ public class DeclarationLocationStyler extends Styler {
         List<ExtendContext> decIdentifiers = decStmtSearcher.searchIdentifiers(decStmt, parser);
         Resolver resolver = GlobalInfo.getResolver();
 
-        int insertionPoint = block.getChildCount() - 1; // before }
+        int insertionPoint = block.indexOfIf(t -> t instanceof ExtendContext ctx && parser.getSpecificStmt(ctx) == decStmt); // before }
         for (ExtendContext decIdentifier : decIdentifiers) {
             Symbol symbol = resolver.resolve(decIdentifier, parser);
             if (symbol == null) {
