@@ -17,7 +17,6 @@ import org.example.styler.naming.NameType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +117,7 @@ public class JavaResolver implements Resolver {
     }
 
     private boolean isFunctionIdentifier(ExtendContext identifierNode, MyParser parser) {
-        return parser.belongToFunctionHead(identifierNode.getParent().getRuleIndex());
+        return parser.belongToMethodHead(identifierNode.getParent().getRuleIndex());
     }
 
     private boolean isTypeDecIdentifier(ExtendContext identifierNode, MyParser parser) {

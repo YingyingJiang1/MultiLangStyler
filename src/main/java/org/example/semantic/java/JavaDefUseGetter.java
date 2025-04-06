@@ -5,7 +5,7 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.DefUseGetter;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.FunctionHeadSearcher;
+import org.example.utils.searcher.intf.MethodSearcher;
 import org.example.utils.searcher.intf.TypeDecSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +13,7 @@ import pascal.taie.Main;
 import pascal.taie.World;
 import pascal.taie.analysis.defuse.DefUse;
 import pascal.taie.analysis.misc.ResultProcessor;
-import pascal.taie.language.classes.ClassHierarchy;
-import pascal.taie.language.classes.JClass;
 import pascal.taie.language.classes.JMethod;
-import pascal.taie.language.classes.Subsignature;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -78,14 +75,14 @@ public class JavaDefUseGetter implements DefUseGetter {
 	}
 
 	private String getContainerMethodSignature(ExtendContext identifier, MyParser parser) {
-		ExtendContext functionHead = identifier.getFirstParentIf(node -> parser.belongToFunctionHead(node.getRuleIndex()));
+		ExtendContext functionHead = identifier.getFirstParentIf(node -> parser.belongToMethodHead(node.getRuleIndex()));
 		if (functionHead == null) {
 			return null;
 		}
 
-		FunctionHeadSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createFunctionDecSearcher();
+		MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
 		ExtendContext retType = searcher.searchRetType(functionHead, parser);
-		ExtendContext functionName = searcher.searchFunctionName(functionHead, parser);
+		ExtendContext functionName = searcher.searchMethodName(functionHead, parser);
 		List<ExtendContext> paraTypes = searcher.searchParaTypes(functionHead, parser);
 
 		String retTypeStr = retType == null ? "" : retType.getText();

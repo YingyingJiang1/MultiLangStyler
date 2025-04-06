@@ -67,7 +67,7 @@ public interface MyParser {
     boolean belongToBraceOptionalStmt(int rule);
     boolean belongToFileHeadDec(int rule);
     boolean belongToVarDeclarationStmt(int ruleIndex);
-    boolean belongToFunctionHead(int ruleIndex);
+    boolean belongToMethodHead(int ruleIndex);
     boolean belongToLoop(int ruleIndex);
     boolean belongToParameter(ParseTree t);
 

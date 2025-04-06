@@ -422,7 +422,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean belongToFunctionHead(int ruleIndex) {
+    public boolean belongToMethodHead(int ruleIndex) {
         return ruleIndex == JavaParser.RULE_methodHead || ruleIndex == JavaParser.RULE_constructorHead;
     }
 

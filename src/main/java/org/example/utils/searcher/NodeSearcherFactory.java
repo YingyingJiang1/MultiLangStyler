@@ -36,11 +36,11 @@ public class NodeSearcherFactory {
 		}
 	}
 
-	public FunctionHeadSearcher createFunctionDecSearcher() {
+	public MethodSearcher createMethodDecSearcher() {
 		String language = GlobalInfo.getConf().getLanguageConfig().getLanguage();
 		switch (language) {
 			case "java":
-				return new JavaFunctionHeadSearcher();
+				return new JavaMethodSearcher();
 			default:
 				throw new IllegalArgumentException("Unsupported language: " + language);
 		}

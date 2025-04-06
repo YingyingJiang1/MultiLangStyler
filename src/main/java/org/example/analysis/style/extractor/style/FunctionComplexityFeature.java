@@ -6,7 +6,7 @@ import org.example.analysis.StyleType.FunctionComplexity;
 import org.example.analysis.style.ComputableStyleExtractor;
 import org.example.analysis.feature.featurevalue.DoubleFeatureValue;
 import org.example.style.rule.StyleProperty;
-import org.example.styler.function.style.FunctionComplexityProperty;
+import org.example.styler.method.complexity.style.MethodComplexityProperty;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class FunctionComplexityFeature extends ComputableStyleExtractor {
 
     @Override
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
-        if (styleProperty instanceof FunctionComplexityProperty property) {
+        if (styleProperty instanceof MethodComplexityProperty property) {
             FeatureVector fv = new FeatureVector();
             fv.addDimension(FunctionComplexity.maxNestingDepth, new DoubleFeatureValue(property.maxComplexity.lines));
             fv.addDimension(FunctionComplexity.maxLines, new DoubleFeatureValue(property.maxComplexity.nestingDepth));

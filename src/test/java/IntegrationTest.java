@@ -34,6 +34,7 @@ public class IntegrationTest {
     }
 
     public static void batchTest(int pairNumber, String subDir, String debug_pair) {
+        System.out.printf("------------------------Test %s starts...------------------------\n", subDir);
         SoftAssertions  softly = new SoftAssertions();
         for (int i = 1; i <= pairNumber; i++) {
             String strNumber = String.format("%03d", i);
@@ -67,17 +68,19 @@ public class IntegrationTest {
                 try {
                     String groundTruth = Files.readString(groundTruthFile.toPath());
                     String result = Files.readString(resultFile.toPath());
+                    System.out.printf("Test %s...", strNumber);
+                    assertEquals(groundTruth, result);
+                    System.out.println("OK!\n");
                     softly.assertThat(result).as(strNumber).isEqualTo(groundTruth);
                 } catch (Exception e) {
-                    System.err.print("Test failed: failed to read file!");
+                    System.out.println("Failed!\n");
                 }
             } else {
                 System.out.println("ground_truth.java or result.java not exists...skip comparation!");
             }
         }
+        System.out.printf("------------------------Test %s finishes...------------------------\n", subDir);
 
-        System.out.printf("Test %s...", subDir);
-        softly.assertAll();
     }
 
 

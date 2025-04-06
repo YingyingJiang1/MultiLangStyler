@@ -12,7 +12,7 @@ import org.example.styler.practice.style.UnusedCodeContext;
 import org.example.styler.practice.style.UnusedCodeProperty;
 import org.example.styler.practice.style.UnusedCodeStyle;
 import org.example.utils.searcher.intf.ArgumentsSearcher;
-import org.example.utils.searcher.intf.FunctionHeadSearcher;
+import org.example.utils.searcher.intf.MethodSearcher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -95,12 +95,13 @@ public class UnusedCodeStyler extends Styler {
             List<ExtendContext> argsToBeRemoved = new ArrayList<>();
             // Find arguments for the parameter to be removed.
             if (symbol.getSymbolType() == NameType.PARAMETER) {
-                ExtendContext functionDec = symbol.getDecIdentifierNode()
+                ExtendContext methodDec = symbol.getDecIdentifierNode()
                         .findFirstParentIf(p1 -> p1.getRuleIndex() == parser.getRuleMethodDeclaration() || p1.getRuleIndex() == parser.getRuleConstructorDeclaration());
-                FunctionHeadSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createFunctionDecSearcher();
-                int parameterIndex = searcher.indexOfParameter(functionDec, unusedNode, parser);
+                MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
+                ExtendContext methodHead = searcher.searchMethodHead(methodDec, parser);
+                int parameterIndex = searcher.indexOfParameter(methodHead, unusedNode, parser);
 
-                ExtendContext identifierNode = searcher.searchFunctionName(functionDec, parser);
+                ExtendContext identifierNode = searcher.searchMethodName(methodHead, parser);
                 List<ExtendContext> refs = GlobalInfo.getResolver().resolve(identifierNode, parser).getReferences();
                 ArgumentsSearcher argsSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createArgumentsSearcher();
                 for (ExtendContext ref : refs) {
