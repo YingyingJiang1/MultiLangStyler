@@ -4,7 +4,11 @@
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="llmConfig" class="org.example.Configuration.LLMConfig">
-        <property name="url" value="http://210.28.134.91:8000/model" />
+        <property name="serverType" value="openrouter" /> <!-- self/openrouter -->
+        <property name="apikey" value="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" />
+<!--        <property name="url" value="http://210.28.134.91:8000/model" />-->
+        <property name="url" value="https://openrouter.ai/api/v1" />
+        <property name="model" value="deepseek/deepseek-v3-base:free" />
         <property name="identifierLengthLimit" value="-1" />
     <!--    if `identifierLengthLimit` is not set or less 0, then this value will be the max length of all identifiers in the target style.-->
     </bean>

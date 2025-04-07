@@ -10,7 +10,6 @@ import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
-import org.example.styler.ModelClient;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;

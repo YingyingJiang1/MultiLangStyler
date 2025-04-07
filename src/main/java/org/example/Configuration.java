@@ -165,7 +165,10 @@ public class Configuration {
   }
 
   public static class LLMConfig{
+    public String serverType;
+    public String apikey;
     public String url;
+    public String model;
     public int identifierLengthLimit;
 
     public String getModelURL() {
@@ -182,6 +185,30 @@ public class Configuration {
 
     public void setIdentifierLengthLimit(int identifierLengthLimit) {
       this.identifierLengthLimit = identifierLengthLimit;
+    }
+
+    public String getApikey() {
+      return apikey;
+    }
+
+    public void setApikey(String apikey) {
+      this.apikey = apikey;
+    }
+
+    public String getServerType() {
+      return serverType;
+    }
+
+    public void setServerType(String serverType) {
+      this.serverType = serverType;
+    }
+
+    public String getModel() {
+      return model;
+    }
+
+    public void setModel(String model) {
+      this.model = model;
     }
 
   }

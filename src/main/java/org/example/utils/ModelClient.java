@@ -1,5 +1,10 @@
-package org.example.styler;
+package org.example.utils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.global.GlobalInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 
 public class ModelClient {
@@ -36,7 +40,53 @@ public class ModelClient {
     private ModelClient() {}
 
     public String sendRequest(String prompt) {
-        if (modelURL == null) {
+        String serverType = GlobalInfo.getConf().getLlmConfig().getServerType();
+        String jsonBody =  switch (serverType) {
+            case "self" -> createSelfJsonBody(prompt);
+            case "openrouter" -> createOpenrouterJsonBody(prompt);
+            default -> null;
+        };
+
+        String response = communicate(jsonBody);
+        return response;
+    }
+
+
+    private String toValidJsonStr(String str) {
+        return str.replace("\"", "\\\"").replace("\n", "\\n");
+    }
+
+    private String createSelfJsonBody(String promptStr) {
+        return String.format("{\"question\": \"%s\"}", toValidJsonStr(promptStr));
+    }
+
+    private String createOpenrouterJsonBody(String promptStr) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode requestBody = objectMapper.createObjectNode();
+        requestBody.put("model", GlobalInfo.getConf().getLlmConfig().getModel());
+
+        ArrayNode messages = objectMapper.createArrayNode();
+        ObjectNode message = objectMapper.createObjectNode();
+        message.put("role", "user");
+        message.put("content", toValidJsonStr(promptStr));
+        messages.add(message);
+
+        requestBody.set("messages", messages);
+
+        // 将请求体转为 JSON 字符串
+        try {
+            String jsonBody = objectMapper.writeValueAsString(requestBody);
+            System.out.println("Request Body: " + jsonBody);
+            return jsonBody;
+            // 发送请求代码...
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String communicate(String jsonBody) {
+        if (modelURL == null || jsonBody == null) {
             return null;
         }
         try {
@@ -47,16 +97,6 @@ public class ModelClient {
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
 
-            // 构造请求的JSON体
-//            StringBuilder validJsonText = new StringBuilder();
-//            for (int i = 0; i < prompt.length(); i++) {
-//                char c = prompt.charAt(i);
-//                if (c == '"' || c == '{' || c == '}') {
-//                    validJsonText.append("\\\\");
-//                }
-//                validJsonText.append(c);
-//            }
-            String jsonBody = String.format("{\"question\": \"%s\"}", prompt.replace("\"", "\\\"").replace("\n", "\\n"));
             // 发送POST请求
             try (OutputStream os = con.getOutputStream()) {
                 byte[] input = jsonBody.getBytes("utf-8");
@@ -71,7 +111,7 @@ public class ModelClient {
                     response.append(inputLine);
                 }
                 // 打印服务器返回的响应
-//                System.out.println("Response: " + response.toString());
+                System.out.println("Response: " + response.toString());
                 return response.toString();
             }
         } catch (Exception e) {
@@ -79,5 +119,6 @@ public class ModelClient {
         }
         return null;
     }
+
 
 }
