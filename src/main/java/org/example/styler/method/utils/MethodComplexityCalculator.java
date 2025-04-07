@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public class MethodComplexityCalculator {
 
-	public static MethodComplexityCalculator instance = new MethodComplexityCalculator();
+	private static MethodComplexityCalculator instance = new MethodComplexityCalculator();
 
 	private MethodComplexityCalculator() {}
 
@@ -24,17 +24,21 @@ public class MethodComplexityCalculator {
 
 	public MethodComplexity calculateComplexity(ExtendContext methodDeclaration, MyParser parser) {
 		MethodComplexity complexity = new MethodComplexity();
+		MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
+		ExtendContext methodBody = searcher.searchMethodBody(methodDeclaration, parser);
+		complexity.lineNumber = methodDeclaration.getStart().getLine();
+		complexity.methodName = searcher.searchMethodName(searcher.searchMethodHead(methodDeclaration, parser), parser).getText();
 
-		complexity.lines = methodDeclaration.getStop().getLine() - methodDeclaration.getStart().getLine() + 1;
+		complexity.lines = methodBody.getStop().getLine() - methodBody.getStart().getLine() + 1;
 
 		Predicate<ExtendContext> isBranch = node -> {
 			int ruleIndex = node.getRuleIndex();
-			return ruleIndex == parser.getRuleIfStmt() || ruleIndex == parser.getRuleSwitchStmt();
+			return ruleIndex == parser.getRuleIfStmt() || ruleIndex == parser.getRuleIfElseStmt() || ruleIndex == parser.getRuleSwitchStmt();
 		};
-		complexity.branchCount = methodDeclaration.getAllCtxsRecIf(node -> node.getRuleIndex() == parser.getRuleIfStmt()).size();
+		complexity.branchCount = methodDeclaration.getAllCtxsRecIf(isBranch::test).size();
 
-		MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
-		ExtendContext methodBody = searcher.searchMethodBody(methodDeclaration, parser);
+
+
 		Predicate<ExtendContext> isLoop = node -> {
 			int ruleIndex = node.getRuleIndex();
 			return parser.belongToLoop(ruleIndex);
@@ -44,7 +48,7 @@ public class MethodComplexityCalculator {
 		complexity.paraCount = searcher.searchParaTypes(searcher.searchMethodHead(methodDeclaration, parser), parser).size();
 		
 		complexity.cognitiveComplexity = CognitiveComplexityCalculator.getInstance().calCognitiveComplexity(methodDeclaration, parser);
-		complexity.cyclomaticComplexity = calCyclomaticComplexity(methodDeclaration, parser);
+		complexity.cyclomaticComplexity = CyclomaticComplexityCalculator.createCalculator().calculateMethod(methodDeclaration, parser);
 
 		return complexity;
 	}
@@ -63,10 +67,6 @@ public class MethodComplexityCalculator {
 		return maxDepth;
 	}
 
-
-	protected int calCyclomaticComplexity(ExtendContext methodDeclaration, MyParser parser) {
-		return 0;
-	}
 
 
 	// 遍历语法树
@@ -95,7 +95,7 @@ public class MethodComplexityCalculator {
 
 			for (int i = 0; i < innerStmts.size(); i++) {
 				if (parser.belongToStmt(innerStmts.get(i))) {
-					int curInc = cond == null || cond.test(innerStmts.get(i)) ? 1 : 0;
+					int curInc = cond == null || cond.test(parser.getSpecificStmt(innerStmts.get(i))) ? 1 : 0;
 					int depth = curInc + doCalculate(innerStmts.get(i), parser, cond);
 					if (depth > maxDepthOfSubStmt) {
 						maxDepthOfSubStmt = depth;

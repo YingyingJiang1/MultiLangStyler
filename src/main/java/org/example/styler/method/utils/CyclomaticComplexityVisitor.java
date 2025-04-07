@@ -53,34 +53,46 @@ public class CyclomaticComplexityVisitor extends JavaParserBaseVisitor<Integer> 
 
 		int methodDecisionPoints = methodEntry.decisionPoints;
 
-		System.out.printf(" - [%-20s method] - CC: %d\n", ctx.Identifier().getText(), methodDecisionPoints);
+//		System.out.printf(" - [%-20s method] - CC: %d\n", ctx.Identifier().getText(), methodDecisionPoints);
 
-		Entry classEntry = entryStack.peek();
-		classEntry.methodCount++;
-		classEntry.bumpDecisionPoints( methodDecisionPoints );
+//		Entry classEntry = entryStack.peek();
+//		classEntry.methodCount++;
+//		classEntry.bumpDecisionPoints( methodDecisionPoints );
+//
+//		if ( methodDecisionPoints > classEntry.highestDecisionPoints ) {
+//			classEntry.highestDecisionPoints = methodDecisionPoints;
+//		}
 
-		if ( methodDecisionPoints > classEntry.highestDecisionPoints ) {
-			classEntry.highestDecisionPoints = methodDecisionPoints;
-		}
-
-		return res;
+		return methodDecisionPoints;
 	}
 
 	@Override
-	public Integer visitClassDeclaration(JavaParser.TypeDeclarationContext ctx) {
-		entryStack.push( new Entry( ctx) );
-		Integer res = super.visitClassDeclaration(ctx);
+	public Integer visitTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
+		boolean isClassDeclaration = ctx.getChild(1) instanceof JavaParser.ClassHeadContext;
+		if (isClassDeclaration) {
+			entryStack.push( new Entry( ctx) );
+			Integer res = super.visitTypeDeclaration(ctx);
 
-		Entry classEntry = entryStack.peek();
+			Entry classEntry = entryStack.peek();
 
-		System.out.printf("overall methods count: %d\n", classEntry.methodCount);
-		
-		double avgCC = classEntry.methodCount != 0 ? classEntry.decisionPoints * 1f / classEntry.methodCount : 0;
-		
-		System.out.printf("[%-20s class] - avg CC: %.2f\n", ctx.Identifier().getText(), avgCC);
+//			System.out.printf("overall methods count: %d\n", classEntry.methodCount);
 
-		return res;
+			double avgCC = classEntry.methodCount != 0 ? classEntry.decisionPoints * 1f / classEntry.methodCount : 0;
+
+//			System.out.printf("[%-20s class] - avg CC: %.2f\n", ctx.Identifier().getText(), avgCC);
+
+			return res;
+		} else {
+			boolean isEnumDeclaration = ctx.getChild(1) instanceof JavaParser.EnumHeadContext;
+			entryStack.push( new Entry( ctx ) );
+			Integer res = super.visitTypeDeclaration(ctx);
+			Entry classEntry = entryStack.pop();
+
+			return res;
+		}
 	}
+
+
 
 	@Override
 	public Integer visitConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
@@ -100,14 +112,6 @@ public class CyclomaticComplexityVisitor extends JavaParserBaseVisitor<Integer> 
 		return res;
 	}
 
-	@Override
-	public Integer visitEnumDeclaration(EnumDeclarationContext ctx) {
-		entryStack.push( new Entry( ctx ) );
-		Integer res = super.visitEnumDeclaration(ctx);
-		Entry classEntry = entryStack.pop();
-
-		return res;
-	}
 }
 
 

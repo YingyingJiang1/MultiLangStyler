@@ -2,8 +2,10 @@ package org.example.styler.method.utils;
 
 import cognitivecalculator.analizers.FileManager;
 import cognitivecalculator.resultdatastr.MethodResult;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.utils.searcher.intf.MethodSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +13,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class CognitiveComplexityCalculator {
 	public static Logger logger = LoggerFactory.getLogger(CognitiveComplexityCalculator.class);
@@ -42,7 +43,8 @@ public class CognitiveComplexityCalculator {
 		}
 
 
-		MethodResult methodResult = fileResult.getMethodResult(methodDeclaration);
+		MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
+		MethodResult methodResult = fileResult.getMethodResult(searcher.searchMethodBody(methodDeclaration, parser));
 		return methodResult.getFinalCognitiveComplexity();
 	}
 
@@ -75,8 +77,8 @@ public class CognitiveComplexityCalculator {
 			}
 		}
 
-		public MethodResult getMethodResult(ExtendContext methodDec) {
-			return methodResultMap.get(methodDec.getStart().getLine());
+		public MethodResult getMethodResult(ExtendContext methodBody) {
+			return methodResultMap.get(methodBody.getStart().getLine());
 		}
 	}
 }

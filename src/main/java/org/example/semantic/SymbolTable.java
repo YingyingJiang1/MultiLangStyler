@@ -68,7 +68,7 @@ public class SymbolTable {
         while (parent != null) {
             if (parent instanceof ExtendContext ctx){
                 int ruleIndex = ctx.getRuleIndex();
-                if (parser.getCompoundStmts().contains(ruleIndex) || parser.belongToFunctionDec(ruleIndex) ||
+                if (parser.getCompoundStmts().contains(ruleIndex) || parser.belongToMethodDec(ruleIndex) ||
                         parser.isLambdaExpression(parent) || parser.isTypeDeclaration(parent)) {
                     return parent;
                 }

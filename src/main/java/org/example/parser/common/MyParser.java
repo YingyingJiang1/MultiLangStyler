@@ -148,7 +148,7 @@ public interface MyParser {
     int getRuleCompilationUnit();
     int getRuleImportDeclarationList();
     int getRuleAnnotationList();
-    boolean belongToFunctionDec(int ruleIndex);
+    boolean belongToMethodDec(int ruleIndex);
     int getRuleStmt();
     int getRuleExpStmt();
     int getRuleExpressionList();

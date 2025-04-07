@@ -6,6 +6,7 @@ package org.example.styler.method.utils;
 
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.java.antlr.JavaParser;
 
 import java.util.Stack;
 
@@ -19,7 +20,12 @@ public class CyclomaticComplexityCalculator {
 	}
 
 	public int calculateMethod(ExtendContext methodDeclaration, MyParser parser) {
-		return 0;
+		if (methodDeclaration instanceof JavaParser.MethodDeclarationContext methodDec) {
+			return new CyclomaticComplexityVisitor().visitMethodDeclaration(methodDec);
+		} else if (methodDeclaration instanceof JavaParser.ConstructorDeclarationContext constructorDec) {
+			return new CyclomaticComplexityVisitor().visitConstructorDeclaration(constructorDec);
+		}
+		return -1;
 	}
 
 
@@ -44,7 +50,7 @@ public class CyclomaticComplexityCalculator {
 
 		public int getComplexityAverage() {
 			return (double) methodCount == 0 ? 1
-					: (int) Math.rint( (double) decisionPoints / (double) methodCount );
+					: (int) Math.rint((double) decisionPoints / (double) methodCount);
 		}
-
+	}
 }

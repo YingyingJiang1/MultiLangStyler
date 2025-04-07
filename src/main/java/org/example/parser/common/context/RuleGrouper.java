@@ -1,12 +1,6 @@
 package org.example.parser.common.context;
 
-import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
-import org.example.parser.java.antlr.JavaParser;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class RuleGrouper {
 	protected static RuleGrouper instance = new RuleGrouper();
@@ -22,7 +16,7 @@ public class RuleGrouper {
 			return RuleGroup.SINGLE_STMT;
 		} else if (parser.getCompoundStmts().contains(ruleIndex)) {
 			return RuleGroup.COMPOUND_STMT;
-		} else if (parser.belongToFunctionDec(ruleIndex)) {
+		} else if (parser.belongToMethodDec(ruleIndex)) {
 			return RuleGroup.FUNCTION_DEC;
 		} else if(parser.getRuleTypeDeclaration() == ruleIndex) {
 			return RuleGroup.TYPE_DEC;
