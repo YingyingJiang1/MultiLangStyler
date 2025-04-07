@@ -21,7 +21,7 @@ public class CommentDensityFeature extends ComputableStyleExtractor {
     public FeatureVector toFeatureVector(StyleProperty styleProperty) {
         if (styleProperty instanceof CommentDensityProperty property) {
             FeatureVector fv = new FeatureVector();
-            fv.addDimension(StyleType.CommentDensity.LineDensityAttr, new DoubleFeatureValue(property.lineDensity));
+            fv.addDimension(StyleType.CommentDensity.LineDensityAttr, new DoubleFeatureValue(property.commentDensity));
         }
         return null;
     }

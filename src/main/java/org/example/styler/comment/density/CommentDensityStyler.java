@@ -3,7 +3,6 @@ package org.example.styler.comment.density;
 import org.antlr.v4.runtime.Token;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
@@ -40,8 +39,8 @@ public class CommentDensityStyler extends Styler {
             StyleProperty property = style.getProperty(null);
 
             // Shorten line density by removing arbitrary comment tokens
-            if (property instanceof CommentDensityProperty densityProperty && lineDensity > densityProperty.lineDensity) {
-                int linesToRemoved = (int) (totalLines * (lineDensity - densityProperty.lineDensity));
+            if (property instanceof CommentDensityProperty densityProperty && lineDensity > densityProperty.commentDensity) {
+                int linesToRemoved = (int) (totalLines * (lineDensity - densityProperty.commentDensity));
                 removeComment(commentMap, tokens, linesToRemoved, parser);
 
                 RunStatistic.hit(this.getClass());

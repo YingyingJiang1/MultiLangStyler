@@ -135,7 +135,18 @@ public class ExtendContext extends ParserRuleContext {
 
     public String getFormattedText() {
         StringBuilder builder = new StringBuilder();
-        getAllTokensRec().forEach(t -> builder.append(t.getText()).append(" "));
+        List<Token> tokens = getAllTokensRec();
+        if (tokens.isEmpty()) {
+            return "";
+        }
+        int curLine = tokens.get(0).getLine();
+        for (Token token : tokens) {
+            if (token.getLine() != curLine) {
+                builder.append("\n");
+                curLine = token.getLine();
+            }
+            builder.append(token.getText()).append(" ");
+        }
         return builder.toString();
     }
 

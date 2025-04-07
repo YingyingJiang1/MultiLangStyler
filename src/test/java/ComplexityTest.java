@@ -11,4 +11,9 @@ public class ComplexityTest extends IntegrationTest{
 	public void testExpressionComplexity() {
 		batchTest(2, "expression_complexity", "002");
 	}
+
+	@Test
+	public void testMethodComplexity() {
+		batchTest(2, "method_complexity", "");
+	}
 }

@@ -29,7 +29,7 @@ public class MethodComplexityStyler extends Styler {
         if (style.getProperty(null) instanceof MethodComplexityProperty targetProperty) {
             MethodComplexity complexity = MethodComplexityCalculator.getInstance().calculateComplexity(ctx, parser);
             if (complexity.isMoreComplex(targetProperty.maxComplexity)) {
-                encapsulateCode(ctx, complexity, targetProperty, parser);
+                MethodExtractor.getInstance().extractMethod(ctx, parser, targetProperty);
             }
         }
         return ctx;
@@ -37,13 +37,25 @@ public class MethodComplexityStyler extends Styler {
 
     @Override
     public void extractFinalize() {
-        double maxLines = complexityList.stream().mapToDouble(e -> e.lines).max().orElse(0.0);
-        double maxNestingDepth = complexityList.stream().mapToDouble(e -> e.nestingDepth).max().orElse(0.0);
-        MethodComplexity maxComplexity = new MethodComplexity(maxLines, maxNestingDepth);
+        List<Double> linesList = complexityList.stream().map(e -> e.lines).toList();
+        List<Double> nestingDepthList = complexityList.stream().map(e -> e.nestingDepth).toList();
+        List<Double> cognitiveComplexityList = complexityList.stream().map(e -> e.cognitiveComplexity).toList();
 
-        double avgLines = complexityList.stream().mapToDouble(e -> e.lines).average().orElse(0.0);
-        double avgNestingDepth = complexityList.stream().mapToDouble(e -> e.nestingDepth).average().orElse(0.0);
-        MethodComplexity avgComplexity = new MethodComplexity(avgLines, avgNestingDepth);
+        MethodComplexity maxComplexity = new MethodComplexity();
+        double maxLines = linesList.stream().mapToDouble(e -> e).max().orElse(0.0);
+        double maxNestingDepth = nestingDepthList.stream().mapToDouble(e -> e).max().orElse(0.0);
+        double maxCognitiveComplexity = cognitiveComplexityList.stream().mapToDouble(e -> e).max().orElse(0.0);
+        maxComplexity.lines = maxLines;
+        maxComplexity.nestingDepth = maxNestingDepth;
+        maxComplexity.cognitiveComplexity = maxCognitiveComplexity;
+
+        double avgLines = linesList.stream().mapToDouble(e -> e).average().orElse(0.0);
+        double avgNestingDepth = nestingDepthList.stream().mapToDouble(e -> e).average().orElse(0.0);
+        double avgCognitiveComplexity = cognitiveComplexityList.stream().mapToDouble(e -> e).average().orElse(0.0);
+        MethodComplexity avgComplexity = new MethodComplexity();
+        avgComplexity.lines = avgLines;
+        avgComplexity.nestingDepth = avgNestingDepth;
+        avgComplexity.cognitiveComplexity = avgCognitiveComplexity;
 
         style.addRule(null, new MethodComplexityProperty(maxComplexity, avgComplexity));
     }
@@ -53,12 +65,5 @@ public class MethodComplexityStyler extends Styler {
         return ctx.getRuleIndex() == parser.getRuleMethodDeclaration();
     }
 
-
-
-    private void encapsulateCode(ExtendContext ctx, MethodComplexity curComplexity, MethodComplexityProperty targetProperty, MyParser parser) {
-        // to do: 标记代码段
-
-        // do encapsulation
-    }
 
 }

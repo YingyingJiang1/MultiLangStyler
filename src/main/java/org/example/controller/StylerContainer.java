@@ -21,6 +21,7 @@ import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.ifelse.multibranch.MultiBranchStyler;
 import org.example.styler.literal.usage.LiteralUsageStyler;
+import org.example.styler.method.complexity.MethodComplexityStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
 import org.example.styler.practice.UnusedCodeStyler;
 import org.example.styler.structure.StructureStyler;
@@ -42,7 +43,7 @@ public class StylerContainer {
        firstRoundStylers.add(new IfElseBodyOrderStyler());
         firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
-//        firstRoundStylers.add(new FunctionComplexityStyler());
+        firstRoundStylers.add(new MethodComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
         firstRoundStylers.add(new StructureStyler());
          firstRoundStylers.add(new OptionalBraceStyler());

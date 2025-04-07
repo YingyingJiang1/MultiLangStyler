@@ -20,10 +20,6 @@ public class MethodComplexity implements Serializable {
 	public MethodComplexity() {
 	}
 
-	public MethodComplexity(double lines, double maxNestedDepth) {
-		this.lines = lines;
-		this.nestingDepth = maxNestedDepth;
-	}
 
 
 	public boolean isMoreComplex(MethodComplexity other) {
@@ -38,6 +34,7 @@ public class MethodComplexity implements Serializable {
 	public void addElement(Element parent) {
 		parent.addAttribute("lines", String.valueOf(lines));
 		parent.addAttribute("nestingDepth", String.valueOf(nestingDepth));
+		parent.addAttribute("cognitiveComplexity", String.valueOf(cognitiveComplexity));
 	}
 
 	public void parseElement(Element parent) {
@@ -47,23 +44,23 @@ public class MethodComplexity implements Serializable {
 
 	public String toReadableString() {
 		return String.format(
-				"%s@%s--------------------------------------------------\n" +
-				"lines: %.2f\nnestingDepth: %.2f\nnestingLoop: %.2f\nbranchCount: %.2f\nparaCount: %.2f\n" +
-				"cyclomaticComplexity: %.2f\ncognitiveComplexity: %.2f\n",
-				methodName, lineNumber, lines, nestingDepth, nestingLoop, branchCount, paraCount,
-				cyclomaticComplexity, cognitiveComplexity);
+//				"%s@%s--------------------------------------------------\n" +
+				"lines: %.2f\nnestingDepth: %.2f\ncognitiveComplexity: %.2f\n",
+//				methodName, lineNumber,
+				lines, nestingDepth, cognitiveComplexity);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof MethodComplexity other) {
-			return lines == other.lines && nestingDepth == other.nestingDepth;
+			return Objects.equals(methodName, other.methodName) && lineNumber == other.lineNumber
+					&& lines == other.lines && nestingDepth == other.nestingDepth && cognitiveComplexity == other.cognitiveComplexity;
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(lines, nestingDepth);
+		return Objects.hash(methodName, lineNumber, lines, nestingDepth, cognitiveComplexity);
 	}
 }

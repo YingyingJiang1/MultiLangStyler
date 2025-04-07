@@ -42,7 +42,6 @@ public class CognitiveComplexityCalculator {
 			return -1;
 		}
 
-
 		MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
 		MethodResult methodResult = fileResult.getMethodResult(searcher.searchMethodBody(methodDeclaration, parser));
 		return methodResult.getFinalCognitiveComplexity();

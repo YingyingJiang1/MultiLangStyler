@@ -5,20 +5,20 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class CommentDensityProperty extends StyleProperty {
-    public double lineDensity;
+    public double commentDensity; // avg({comment length/commented code length})
 
-    public CommentDensityProperty(double lineDensity) {
-        this.lineDensity = Math.round(lineDensity * 100) / 100.0;
+    public CommentDensityProperty(double commentDensity) {
+        this.commentDensity = Math.round(commentDensity * 100) / 100.0;
     }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("density", String.valueOf(lineDensity));
+        parent.addAttribute("density", String.valueOf(commentDensity));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        lineDensity = Double.parseDouble(parent.attributeValue("density"));
+        commentDensity = Double.parseDouble(parent.attributeValue("density"));
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.example.Configuration;
 import org.example.global.GlobalInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,17 +62,14 @@ public class ModelClient {
     }
 
     private String createOpenrouterJsonBody(String promptStr) {
+
+        Configuration.LLMConfig llmConfig = GlobalInfo.getConf().getLlmConfig();
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode requestBody = objectMapper.createObjectNode();
-        requestBody.put("model", GlobalInfo.getConf().getLlmConfig().getModel());
-
-        ArrayNode messages = objectMapper.createArrayNode();
-        ObjectNode message = objectMapper.createObjectNode();
-        message.put("role", "user");
-        message.put("content", toValidJsonStr(promptStr));
-        messages.add(message);
-
-        requestBody.set("messages", messages);
+        requestBody.put("model", llmConfig.getModel());
+        requestBody.put("prompt", toValidJsonStr(promptStr));
+        requestBody.put("temperature", llmConfig.getTemperature());
+        requestBody.put("max_new_tokens", llmConfig.getMaxNewTokens());
 
         // 将请求体转为 JSON 字符串
         try {
@@ -94,6 +92,10 @@ public class ModelClient {
             HttpURLConnection con = (HttpURLConnection) modelURL.openConnection();
 
             con.setRequestMethod("POST");
+            String apikey = GlobalInfo.getConf().getLlmConfig().getApikey();
+            if (apikey != null) {
+                con.setRequestProperty("Authorization", String.format("Bearer %s", apikey));
+            }
             con.setRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
 
@@ -111,7 +113,7 @@ public class ModelClient {
                     response.append(inputLine);
                 }
                 // 打印服务器返回的响应
-                System.out.println("Response: " + response.toString());
+                System.out.println("Response: " + response);
                 return response.toString();
             }
         } catch (Exception e) {

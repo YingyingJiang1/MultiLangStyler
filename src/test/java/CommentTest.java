@@ -7,6 +7,6 @@ public class CommentTest extends IntegrationTest{
 
     @Test
     public void test() {
-        batchTest(2, dirName, "");
+        batchTest(3, dirName, "003");
     }
 }

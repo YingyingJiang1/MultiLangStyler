@@ -170,6 +170,8 @@ public class Configuration {
     public String url;
     public String model;
     public int identifierLengthLimit;
+    public double temperature = 0.6;
+    public double maxNewTokens = 1024;
 
     public String getModelURL() {
       return url;
@@ -179,8 +181,8 @@ public class Configuration {
       return identifierLengthLimit;
     }
 
-    public void setUrl(String url) {
-      this.url = url;
+    public void setServerURL(String serverURL) {
+      this.url = serverURL;
     }
 
     public void setIdentifierLengthLimit(int identifierLengthLimit) {
@@ -209,6 +211,22 @@ public class Configuration {
 
     public void setModel(String model) {
       this.model = model;
+    }
+
+    public double getTemperature() {
+      return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+      this.temperature = temperature;
+    }
+
+    public double getMaxNewTokens() {
+      return maxNewTokens;
+    }
+
+    public void setMaxNewTokens(double maxNewTokens) {
+      this.maxNewTokens = maxNewTokens;
     }
 
   }
