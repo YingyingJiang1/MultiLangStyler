@@ -1,7 +1,7 @@
 package org.example.styler.arrangement.classmember.style;
 
 import org.dom4j.Element;
-import org.example.io.DomIO;
+import org.example.style.DomIO;
 import org.example.parser.common.MyParser;
 
 import java.util.*;

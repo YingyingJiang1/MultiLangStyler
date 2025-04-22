@@ -1,7 +1,6 @@
 package org.example.style;
 
 import org.dom4j.Element;
-import org.example.io.DomIO;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.*;
 import org.example.style.rule.filter.MaxFrequencyFilter;
@@ -21,7 +20,7 @@ public class CommonStyle implements DomIO,Style {
     public FileCollection srcFileCollection = null, targetFileCollection = null;
     public String styleName = "";
 //    protected List<StyleRule> rules = new ArrayList<>();
-    protected RuleSet ruleSet = new MapRuleSet();
+    protected RuleSet ruleSet = new StatisticRuleSet();
 
     public void addElement(Element parent, MyParser parser){
         Element styleEle = parent.addElement("style");
@@ -112,6 +111,10 @@ public class CommonStyle implements DomIO,Style {
     @Override
     public List<StyleContext> filterRules() {
         return ruleSet.filterRules(MaxFrequencyFilter.getInstance());
+    }
+
+    public RuleSet getRuleSet() {
+        return ruleSet;
     }
 
 

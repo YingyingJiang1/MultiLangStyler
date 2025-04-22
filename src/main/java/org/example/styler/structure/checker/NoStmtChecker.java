@@ -14,6 +14,13 @@ public class NoStmtChecker extends Checker{
         super(argsList);
     }
 
+    /**
+     *
+     * @param structure
+     * @param args [stmt types..., placeholders...]
+     * @param parser
+     * @return
+     */
     @Override
     protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
         Set<Integer> stmtTypes = new HashSet<Integer>();

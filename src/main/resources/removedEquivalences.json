@@ -1,0 +1,121 @@
+[{
+  "id" : 1,
+  "category" : "Variable updating",
+  "codes" : [ "$^ $E ++ ; $S(expStmt)", "$^ ++ $E ; $S(expStmt)", "$^ $E += 1 ; $S(expStmt)", "$^ $E = $E1 + 1 ; $S(expStmt)"],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 3, "$E", "$E1" ] ]
+  } ,{
+    "class" : "ContainChecker",
+    "argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
+  } ],
+  "handlers" : [
+    {
+      "class" : "",
+      "argsList" : [["$E", 1, "$E", "++ $E"]]
+    }]
+},{
+"id" : 2,
+"category" : "Variable updating",
+"codes" : [ "$^ $E -- ; $S(expStmt)", "$^ -- $E ; $S(expStmt)", "$^ $E -= 1 ; $S(expStmt)", "$^ $E = $E1 - 1 ; $S(expStmt)"],
+"checkers" : [ {
+"class" : "EqualChecker",
+"argsList" : [ [ 3, "$E", "$E1" ] ]
+} ,{
+"class" : "ContainChecker",
+"argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
+} ],
+"handlers" : [ {
+  "class" : "",
+  "argsList" : [["$E", 1, "$E", "-- $E"]]
+}]
+},
+{
+"id" : 3,
+"category" : "Variable updating",
+"codes" : [ "$^ $S(expStmt) $E ++ ;", "$^ $S(expStmt) ++ $E ;", "$^ $S(expStmt) $E += 1 ;", "$^ $S(expStmt) $E = $E1 + 1 ;"],
+"checkers" : [ {
+"class" : "EqualChecker",
+"argsList" : [ [ 3, "$E", "$E1" ] ]
+} ,{
+"class" : "ContainChecker",
+"argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
+} ],
+"handlers" : [ {
+  "class" : "",
+  "argsList" : [["$E", -1, "$E", "$E ++"]]
+}]
+}, {
+"id" : 4,
+"category" : "Variable updating",
+"codes" : [ "$^ $S(expStmt) $E -- ;", "$^ $S(expStmt) -- $E ;", "$^ $S(expStmt) $E -= 1 ;", "$^ $S(expStmt) $E = $E1 - 1 ;"],
+"checkers" : [ {
+"class" : "EqualChecker",
+"argsList" : [ [ 3, "$E", "$E1" ] ]
+} ,{
+"class" : "ContainChecker",
+"argsList" : [ [0, "$S(expStmt)", "$E" ],  [1, "$S(expStmt)", "$E" ],  [2, "$S(expStmt)", "$E" ],  [3, "$S(expStmt)", "$E" ]]
+} ],
+"handlers" : [ {
+  "class" : "",
+  "argsList" : [["$E", -1, "$E", "$E --"]]
+}]
+}
+  , {
+  "id" : 6,
+  "name" : "CA",
+  "category" : "Continuous assignments or calls preferences",
+  "codes" : [ "$E = $E1 = $E2 ;", "$E = $E2 ; $E1 = $E3 ;", "$E1 = $E2 ; $E = $E3 ;" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 1, "$E2", "$E3" ], [ 2, "$E1", "$E3" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 1, "$E2", "$E3" ], [ 2, "$E1", "$E3" ] ]
+  }, {
+    "class" : "AssignCallExpHandler",
+    "argsList" : [ [ 0, 1, "$E3" ] ]
+  } ],
+  "future work" : "处理两个以上的分离赋值，识别不在连续位置的分离表达式"
+}, {
+  "id" : 7,
+  "name" : "CC",
+  "category" : "Continuous assignments or calls preferences",
+  "codes" : [ "$E . $METHOD_CALL . $METHOD_CALL1 ;", "$E . $METHOD_CALL ; $E1 . $METHOD_CALL1 ;" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 1, "$E", "$E1" ] ]
+  }, {
+    "handler_description" : "要求所有$METHOD_CALL都是同种函数调用，并且返回值是$E的引用"
+  } ],
+  "handlers" : [ {
+    "class" : "ReplicationHandler",
+    "argsList" : [ [ 1, "$E", "$E1" ] ]
+  }, {
+    "class" : "AssignCallExpHandler",
+    "argsList" : [ [ 0, 1, "$E1" ] ]
+  } ],
+  "future_work" : "识别不在连续位置的分离调用"
+}, {
+  "id" : 20,
+  "name" : "return_tmp_var",
+  "category" : "Return statements",
+  "codes" : [ "$^ $M $T $I = $E ; return $E1 ;", "return $E ;" ],
+  "checkers" : [ {
+    "class" : "EqualChecker",
+    "argsList" : [ [ 0, "$I", "$E1" ] ]
+  }, {
+    "class" : "NotIdentifierExpChecker",
+    "argsList" : [ [ 1, "$E" ] ]
+  } ],
+  "handlers" : [ {
+    "handler_description" : "为$M $T $I对应的终端节点设置文本值"
+  } ]
+}, {
+  "id" : 21,
+  "name" : "return_with_paren",
+  "category" : "Return statements",
+  "codes" : [ "return ( $E ) ;", "return $E ;" ]
+}
+]

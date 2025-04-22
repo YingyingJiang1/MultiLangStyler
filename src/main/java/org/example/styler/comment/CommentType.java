@@ -5,6 +5,5 @@ public enum CommentType {
     MULTI_LINE,
     ON_TYPE,
     ON_METHOD,
-    ON_BLOCK,
-    ON_SINGLE_STMT
+    ON_STMT
 }

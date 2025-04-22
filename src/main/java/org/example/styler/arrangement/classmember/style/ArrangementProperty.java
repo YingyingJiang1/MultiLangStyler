@@ -4,7 +4,7 @@ import com.google.common.base.CaseFormat;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
-import org.example.io.DomIO;
+import org.example.style.DomIO;
 import org.example.style.rule.StyleProperty;
 
 import java.util.ArrayList;

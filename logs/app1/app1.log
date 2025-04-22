@@ -1,78 +1,41 @@
-2025-04-07 14:26:33,252 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 14:26:33,269 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 14:31:13,590 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 14:31:13,599 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 14:33:27,804 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 14:33:27,823 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 14:33:30,495 WARN  --- [main] org.example.utils.ModelClient.communicate/118 : Failed to communicate with llm.
-2025-04-07 14:34:17,126 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 14:34:17,132 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 14:39:28,885 WARN  --- [main] org.example.utils.ModelClient.communicate/118 : Failed to communicate with llm.
-2025-04-07 14:39:40,935 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 14:39:40,940 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 14:54:56,198 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 14:54:56,208 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:09:07,015 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:09:07,025 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:11:12,900 WARN  --- [main] org.example.utils.ModelClient.communicate/120 : Failed to communicate with llm.
-2025-04-07 15:11:17,869 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:11:17,876 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:11:17,932 WARN  --- [main] org.example.utils.ModelClient.communicate/120 : Failed to communicate with llm.
-2025-04-07 15:12:09,064 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:12:09,075 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:12:09,144 WARN  --- [main] org.example.utils.ModelClient.communicate/120 : Failed to communicate with llm.
-2025-04-07 15:12:22,986 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:12:22,997 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:12:23,053 WARN  --- [main] org.example.utils.ModelClient.communicate/120 : Failed to communicate with llm.
-2025-04-07 15:13:33,848 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:13:33,860 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:14:47,672 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:14:47,684 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:18:35,333 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:18:35,341 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:21:45,974 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:21:45,985 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:28:59,500 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:28:59,509 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:30:39,571 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:30:39,579 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:33:20,195 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:33:20,205 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:42:57,790 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:42:57,802 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:43:43,069 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:43:43,080 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:46:11,250 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:46:11,258 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:47:38,420 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:47:38,435 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:50:26,321 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:50:26,330 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:52:07,245 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:52:07,251 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:53:57,470 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:53:57,479 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:55:19,019 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:55:19,028 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:57:42,405 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:57:42,416 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 15:59:33,175 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 15:59:33,185 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:00:53,465 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:00:53,477 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:01:17,772 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:01:17,780 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:05:09,208 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:05:09,220 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:07:13,337 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:07:13,348 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:08:05,906 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:08:05,918 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:10:58,208 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:10:58,216 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 16:19:19,717 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style.xml
-2025-04-07 16:19:19,730 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
-2025-04-07 17:37:20,138 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\003\style.xml
-2025-04-07 17:37:20,153 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\003\style-self.xml
-2025-04-07 18:56:00,073 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\003\style.xml
-2025-04-07 18:56:00,081 INFO  --- [main] org.example.io.StyleFileIO.write/70 : style result saved in:src\test\sources\comment\003\style-self.xml
+2025-04-22 10:29:31,064 ERROR --- [main] org.example.styler.structure.handler.Handler.createHandler/51 : Handler not found: RedundantCodeHandler
+2025-04-22 10:31:07,924 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 10:31:07,927 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 10:31:07,944 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 10:31:07,945 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 10:31:07,946 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 10:31:07,946 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 10:31:10,773 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 10:31:10,775 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 10:37:51,768 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 10:37:51,781 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 10:39:17,497 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 10:39:17,500 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 10:39:17,507 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 10:39:17,508 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 10:39:17,509 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 10:39:17,510 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 10:39:20,280 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 10:39:20,283 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 10:40:49,140 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 10:40:49,145 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 10:51:51,489 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 10:51:51,494 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 11:52:21,207 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 11:52:21,208 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\javaparser\javaparser-symbol-solver-core\src\main\java\com\github\javaparser\symbolsolver\resolution\typeinference\BoundSet.java' because of compilation error.
+2025-04-22 11:52:21,628 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 11:52:21,632 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 11:58:10,405 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 11:58:10,410 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 11:58:57,430 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 11:58:57,434 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 11:58:57,440 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 11:58:57,441 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 11:58:57,442 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 11:58:57,443 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 11:59:00,348 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 11:59:00,351 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 12:01:03,280 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 12:01:03,284 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 14:04:35,450 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 14:04:35,455 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml

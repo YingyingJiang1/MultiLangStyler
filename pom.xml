@@ -131,6 +131,11 @@
 <!--            <artifactId>refactoring-miner</artifactId>-->
 <!--            <version>3.0.10</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>cognitivecalculator</groupId>
+            <artifactId>cognitivecalculator</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
 

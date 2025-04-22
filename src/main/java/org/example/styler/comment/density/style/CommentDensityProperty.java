@@ -4,8 +4,8 @@ import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
-public class CommentDensityProperty extends StyleProperty {
-    public double commentDensity; // avg({comment length/commented code length})
+public class CommentDensityProperty extends StyleProperty implements Comparable<StyleProperty> {
+    public double commentDensity;
 
     public CommentDensityProperty(double commentDensity) {
         this.commentDensity = Math.round(commentDensity * 100) / 100.0;
@@ -19,6 +19,15 @@ public class CommentDensityProperty extends StyleProperty {
     @Override
     public void parseElement(Element parent, MyParser parser) {
         commentDensity = Double.parseDouble(parent.attributeValue("density"));
+    }
+
+
+    @Override
+    public int compareTo(StyleProperty o) {
+        if (o instanceof CommentDensityProperty property) {
+            return Double.compare(commentDensity, property.commentDensity);
+        }
+        return 0;
     }
 
     @Override

@@ -74,9 +74,11 @@ public class Configuration {
 
 
   private FileCollection collectFile(String path) {
+    if (path == null) {
+      return new FileCollection();
+    }
     List<String> sourcePaths = Arrays.stream(path.split(";")).toList();
     FileCollection collection = FileCollector.getJavaFileCollection(sourcePaths);
-    collection.difference(FileCollector.getJavaFileCollection(List.of()));
     return collection;
   }
 

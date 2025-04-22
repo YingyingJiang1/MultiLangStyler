@@ -12,6 +12,7 @@ public class NewlineContext extends StyleContext {
     public static RuleGrouper grouper;
     // Syntax rule types adjacent to the newline character.
     public String typeName1, typeName2;
+    public boolean hasComment;
     // The minimum sum of code blocks preceding and following the newline.
     // This field is useful in the following case: more than one newline(blank lines) between two statement-level code blocks
     // Other cases, this field is set to 0.
@@ -44,6 +45,8 @@ public class NewlineContext extends StyleContext {
         if (isHasSameDecTypeUseful()) {
             parent.addAttribute("hasSameDecType", Boolean.toString(hasSameDecType));
         }
+
+        parent.addAttribute("hasComment", Boolean.toString(hasComment));
     }
 
     @Override
@@ -57,6 +60,8 @@ public class NewlineContext extends StyleContext {
         if (parent.attribute("hasSameDecType") != null) {
             hasSameDecType = Boolean.parseBoolean(parent.attributeValue("hasSameDecType"));
         }
+
+        hasComment = Boolean.parseBoolean(parent.attributeValue("hasComment"));
     }
 
 
@@ -78,14 +83,15 @@ public class NewlineContext extends StyleContext {
 
     @Override
     public int hashCode() {
-        return Objects.hash(typeName1, typeName2, minTextLength);
+        return Objects.hash(typeName1, typeName2, minTextLength,hasSameDecType, hasComment);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NewlineContext context) {
             return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)
-                    && minTextLength == context.minTextLength && hasSameDecType == context.hasSameDecType;
+                    && minTextLength == context.minTextLength && hasSameDecType == context.hasSameDecType
+                    && hasComment == context.hasComment;
         }
         return false;
     }

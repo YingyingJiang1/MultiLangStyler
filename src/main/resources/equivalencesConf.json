@@ -33,20 +33,18 @@
   "checkers" : [ {
     "class" : "EqualChecker",
     "argsList" : [ [ 0, "$E", "$E1" ] ]
-  } ,
-    {
-      "class": "NotIntegerChecker",
-      "argsList": [[1, "$E2"]]
-    }],
+  }, {
+    "class" : "NotIntegerChecker",
+    "argsList" : [ [ 0, 1, "$E2" ], [ 1, 1, "$E2" ] ]
+  } ],
   "handlers" : [ {
     "class" : "ReplicationHandler",
     "argsList" : [ [ 0, "$E", "$E1" ] ]
   }, {
     "class" : "OpOpAssignConvertHandler",
-    "argsList" : [ [ 0, 1, "$HOMO_BOP", "$HOMO_BOP_ASSIGN" ] ,[ 1, 0,"$HOMO_BOP_ASSIGN", "$HOMO_BOP"] ]
+    "argsList" : [ [ 0, 1, "$HOMO_BOP", "$HOMO_BOP_ASSIGN" ], [ 1, 0, "$HOMO_BOP_ASSIGN", "$HOMO_BOP" ] ]
   } ],
-  "comment" : "exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT).",
-  "potential bug" : "Overlapping with inc and dec when $E2 is 1."
+  "comment" : "exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT)."
 }, {
   "id" : 4,
   "name" : "nesting if",
@@ -71,52 +69,16 @@
   } ]
 }, {
   "id" : 6,
-  "name" : "CA",
-  "category" : "Continuous assignments or calls preferences",
-  "codes" : [ "$E = $E1 = $E2 ;", "$E = $E2 ; $E1 = $E3 ;", "$E1 = $E2 ; $E = $E3 ;" ],
-  "checkers" : [ {
-    "class" : "EqualChecker",
-    "argsList" : [ [ 1, "$E2", "$E3" ], [ 2, "$E1", "$E3" ] ]
-  } ],
-  "handlers" : [ {
-    "class" : "ReplicationHandler",
-    "argsList" : [ [ 1, "$E2", "$E3" ], [ 2, "$E1", "$E3" ] ]
-  }, {
-    "class" : "AssignCallExpHandler",
-    "argsList" : [ [ 0, 1, "$E3" ] ]
-  } ],
-  "future work" : "处理两个以上的分离赋值，识别不在连续位置的分离表达式"
-}, {
-  "id" : 7,
-  "name" : "CC",
-  "category" : "Continuous assignments or calls preferences",
-  "codes" : [ "$E . $METHOD_CALL . $METHOD_CALL1 ;", "$E . $METHOD_CALL ; $E1 . $METHOD_CALL1 ;" ],
-  "checkers" : [ {
-    "class" : "EqualChecker",
-    "argsList" : [ [ 1, "$E", "$E1" ] ]
-  }, {
-    "handler_description" : "要求所有$METHOD_CALL都是同种函数调用，并且返回值是$E的引用"
-  } ],
-  "handlers" : [ {
-    "class" : "ReplicationHandler",
-    "argsList" : [ [ 1, "$E", "$E1" ] ]
-  }, {
-    "class" : "AssignCallExpHandler",
-    "argsList" : [ [ 0, 1, "$E1" ] ]
-  } ],
-  "future_work" : "识别不在连续位置的分离调用"
-}, {
-  "id" : 8,
   "name" : "loop_empty",
   "category" : "Loops",
   "codes" : [ "for ( ; ; ) $S", "while ( true ) $S" ]
 }, {
-  "id" : 9,
+  "id" : 7,
   "name" : "loop1",
   "category" : "Loops",
   "codes" : [ "for ( ; $E ; ) $S", "while ( $E ) $S" ]
 }, {
-  "id" : 10,
+  "id" : 8,
   "name" : "loop2",
   "category" : "Loops",
   "codes" : [ "for ( $E_LIST ; $E1 ; ) $S", "$S(expStmt)+ while ( $E1 ) $S" ],
@@ -128,7 +90,7 @@
     "argsList" : [ [ 1, 0, "$S(expStmt)", "$E_LIST" ] ]
   } ]
 }, {
-  "id" : 11,
+  "id" : 9,
   "name" : "loop3",
   "category" : "Loops",
   "codes" : [ "for ( $VAR_DEC ; $E ; ) $S", "$VAR_DEC ; while ( $E ) $S" ],
@@ -138,7 +100,7 @@
     "case_handled" : "1到0转换时，将for的$VAR_DEC处替换为空，"
   } ]
 }, {
-  "id" : 12,
+  "id" : 10,
   "name" : "loop4",
   "category" : "Loops",
   "codes" : [ "for ( ; $E1 ; $EXP_LIST ) { $S }", "while ( $E1 ) { $S $S(expStmt)+ }" ],
@@ -146,7 +108,7 @@
     "checker_description" : "检查1号写法中的$S(expStmt)+，他们必须对更新了表达式的值"
   } ]
 }, {
-  "id" : 13,
+  "id" : 11,
   "name" : "loop5",
   "category" : "Loops",
   "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S }", "$S(expStmt)+ while ( $E1 ) { $S $S1(expStmt)+ }" ],
@@ -154,7 +116,7 @@
     "checker_description" : "检查1号写法中的$S(expStmt)+,$S1(expStmt)+，他们必须对更新了表达式的值"
   } ]
 }, {
-  "id" : 14,
+  "id" : 12,
   "name" : "loop4",
   "category" : "Loops",
   "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S }", "$VAR_DEC ; while ( $E1 ) { $S $S(expStmt)+ }" ],
@@ -167,12 +129,12 @@
     "case_handled" : "1到0转换时，将for的$VAR_DEC处替换为空，"
   } ]
 }, {
-  "id" : 15,
+  "id" : 13,
   "name" : "check_then_return",
   "category" : "Check then return preferences",
   "codes" : [ "return $E ? $E1 : $E2 ;", "if ( $E ) { return $E1 ; } else { return $E2 ; }" ]
 }, {
-  "id" : 16,
+  "id" : 14,
   "name" : "dec_then_check_assign",
   "category" : "Check then assign preferences",
   "codes" : [ "$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }", "$M $T $I = $E ? $E1 : $E2 ;", "$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;", "$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }" ],
@@ -185,7 +147,7 @@
     "argsList" : [ [ 0, "$I", "$E3" ], [ 2, "$I", "$E3" ], [ 3, "$I", "$E3", "$E4" ] ]
   } ]
 }, {
-  "id" : 17,
+  "id" : 15,
   "name" : "check_then_assign",
   "category" : "Check then assign preferences",
   "codes" : [ "$E = $E1 ? $E2 : $E3 ;", "if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }" ],
@@ -198,96 +160,99 @@
     "argsList" : [ [ 1, "$E", "$E4" ] ]
   } ]
 }, {
-  "id" : 18,
+  "id" : 16,
   "category" : "Operator preferences",
   "codes" : [ "$E < $E1", "$E1 > $E" ],
-  "checkers" : [
-  ],
+  "checkers" : [ ],
   "handlers" : [ ]
 }, {
-  "id" : 19,
+  "id" : 17,
   "category" : "Operator preferences",
   "codes" : [ "$E <= $E1", "$E1 >= $E" ],
   "checkers" : [ ],
   "handlers" : [ ]
 }, {
-  "id" : 20,
+  "id" : 18,
   "category" : "Operator preferences",
   "codes" : [ "$E == false", "! $E" ],
   "checkers" : [ ],
   "handlers" : [ ]
 }, {
-  "id" : 22,
+  "id" : 19,
   "category" : "Literal position in bool expression",
   "codes" : [ "$LITERAL == $E", "$E == $LITERAL" ],
   "checkers" : [ ],
   "handlers" : [ ]
 }, {
-  "id" : 23,
-  "name" : "return_tmp_var",
-  "category" : "Return statements",
-  "codes" : [ "$^ $M $T $I = $E ; return $E1 ;", "return $E ;" ],
-  "checkers" : [ {
-    "class" : "EqualChecker",
-    "argsList" : [ [ 0, "$I", "$E1" ] ]
-  }, {
-    "class" : "NotIdentifierExpChecker",
-    "argsList" : [ [ 1, "$E" ] ]
-  } ],
-  "handlers" : [ {
-    "handler_description" : "为$M $T $I对应的终端节点设置文本值"
-  } ]
-}, {
-  "id" : 24,
-  "name" : "return_with_paren",
-  "category" : "Return statements",
-  "codes" : [ "return ( $E ) ;", "return $E ;" ]
-}, {
-  "id" : 25,
+  "id" : 20,
   "category" : "Array declaration style",
   "codes" : [ "$M $T [] $I ;", "$M $T $I [] ;" ]
-},  {
-  "id" : 27,
+}, {
+  "id" : 21,
   "category" : "Array declaration style",
   "codes" : [ "$M $T [] $I = $ARRAY_INITIALIZER ;", "$M $T $I [] = $ARRAY_INITIALIZER ;" ]
-},   {
-  "id" : 30,
+}, {
+  "id" : 22,
   "category" : "Continue preferences",
-  "codes" : [ "$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { continue ; } else { $S+ }","if ( $E ) { $S+ }" ],
+  "codes" : [ "$^ if ( $E ) { continue ; }  $S+", "if ( $E ) { continue ; } else { $S+ }", "if ( $E ) { $S+ }" ],
   "checkers" : [ {
     "class" : "ContinuePreferenceChecker",
-    "argsList" : [ [ 0, "$S+" ] ,[ 1, "$E" ],[ 2, "$E" ]]
+    "argsList" : [ [ 0, "$S+" ], [ 1, "$E" ], [ 2, "$E" ] ]
   } ],
   "handlers" : [ {
     "class" : "CondReverserHandler",
-    "argsList" : [ [ 0, 2, "$E" ], [1, 2, "$E"], [2, 0, "$E"], [2, 1, "$E"]]
+    "argsList" : [ [ 0, 2, "$E" ], [ 1, 2, "$E" ], [ 2, 0, "$E" ], [ 2, 1, "$E" ] ]
   } ]
 }, {
-  "id" : 31,
+  "id" : 23,
   "category" : "Continue preferences",
-  "codes" : [ "$^ if ( $E ) { $S+ continue ; }  $S1+", "if ( $E ) { $S+ continue ; } else { $S1+ }","if ( $E ) { $S+ } else { $S1+ }" ],
+  "codes" : [ "$^ if ( $E ) { $S+ continue ; }  $S1+", "if ( $E ) { $S+ continue ; } else { $S1+ }", "if ( $E ) { $S+ } else { $S1+ }" ],
   "checkers" : [ {
     "class" : "ContinuePreferenceChecker",
-    "argsList" : [ [ 0, "$S1+" ] ,[ 1, "$E" ],[ 2, "$E" ]]
-  },{
+    "argsList" : [ [ 0, "$S1+" ], [ 1, "$E" ], [ 2, "$E" ] ]
+  }, {
     "class" : "NoStmtChecker",
-    "argsList" : [ [2, "continueStmt", "$S+"]]
-  }  ]
+    "argsList" : [ [ 2, "continueStmt", "$S+" ] ]
+  } ]
 }, {
-  "id" : 32,
+  "id" : 24,
   "category" : "Redundant code",
-  "codes" : [ "$^ if ( $E ) { $S+ }  $S1+", "if ( $E ) { $S+ } else { $S1+  }" ],
+  "codes" : [ "$^ if ( $E ) { $S+ }  $S1+", "if ( $E ) { $S+ } else { $S1+ }" ],
   "checkers" : [ {
     "class" : "NoStmtChecker",
-    "argsList" : [ [ 0, "continueStmt", "breakStmt", "returnStmt", "$S+" ] ]
+    "argsList" : [ [ 0, "continueStmt", "breakStmt", "returnStmt", "$S+" ], [ 1, "continueStmt", "breakStmt", "returnStmt", "$S+" ]]
   }, {
-    "class": "EndsWithChecker",
-    "argsList": [[1, "$S+", "$S1+"]]
+    "class" : "EndsWithChecker",
+    "argsList" : [ [ 1, "$S+", "$S1+" ] ]
+  }, {
+    "class" : "StmtComplexityChecker",
+    "argsList" : [ [ 0, "$S1+", 3, "SINGLE_STMT" ], [ 1, "$S1+", 3, "SINGLE_STMT" ] ]
   } ],
   "handlers" : [ {
     "class" : "AppendTreeHandler",
-    "argsList" : [ [0, 1, "$S+", "$S1+" ] ]
+    "argsList" : [ [ 0, 1, "$S+", "$S1+" ] ]
   } ],
-  "comments": "Consider to add complexity checker to check the complexity of '$S1+'"
-}
-]
+  "comments" : "Consider to add complexity checker to check the complexity of '$S1+'"
+} , {
+  "id" : 25,
+  "category" : "Redundant code",
+  "codes" : [ "$^ if ( $E ) { $S+ } else { $S1+ } $S2+", "if ( $E ) { $S+ } else { $S1+ }" ],
+  "checkers" : [ {
+    "class" : "NoStmtChecker",
+    "argsList" : [ [ 0, "continueStmt", "breakStmt", "returnStmt", "$S+", "$S1+" ], [ 1, "continueStmt", "breakStmt", "returnStmt", "$S+", "$S1+" ]]
+  }, {
+    "class" : "HasSameEndingStmtChecker",
+    "argsList" : [ [ 1, "$S+", "$S1+" ] ]
+  }, {
+    "class" : "StmtComplexityChecker",
+    "argsList" : [ [ 0, "$S2+", 3, "SINGLE_STMT" ], [ 1, "$S2+", 3, "SINGLE_STMT" ] ]
+  } ],
+  "handlers" : [ {
+    "class" : "AppendTreeHandler",
+    "argsList" : [ [ 0, 1, "$S+", "$S2+" ],[ 0, 1, "$S1+", "$S2+" ] ]
+  },{
+    "class": "RedundantCodeHandler",
+    "argsList" : [[1, 0, "$S+", "$S1+", "$S2+"]]
+  }],
+  "comments" : "Consider to add complexity checker to check the complexity of '$S1+'"
+}]

@@ -6,6 +6,7 @@ import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.vtree.VirtualNode;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -20,26 +21,30 @@ public class NotIntegerChecker extends Checker{
 	}
 
 	/**
-	 * argsList:[digit1, digit2,..., holderName1, holderName2,...]
+	 *
+	 * @param structure
+	 * @param args [index of writing, digit1, digit2,..., holderName1, holderName2,...]
+	 * @param parser
+	 * @return
 	 */
 	@Override
-	public boolean check(EquivalentStructure structure, int index, MyParser parser) {
+	protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
 		Set<String> integers = new HashSet<>();
-		for(String[] args : argsList) {
-			int integerEnd = 0;
-			for (; integerEnd < args.length; ++integerEnd) {
-				if(args[integerEnd].matches("\\d+")) {
-					integers.add(args[integerEnd]);
-				}
+		int integerEnd = 0;
+		for (; integerEnd < args.size(); ++integerEnd) {
+			if(args.get(integerEnd).matches("\\d+")) {
+				integers.add(args.get(integerEnd));
+			} else {
+				break;
 			}
+		}
 
-			for(int i = integerEnd; i < args.length; ++i) {
-				VirtualNode vNode = structure.getVNode(args[i]);
-				if (vNode != null && !vNode.matchedTrees.isEmpty()) {
-					for(ParseTree t : vNode.matchedTrees) {
-						if(integers.contains(t.getText())) {
-							return false;
-						}
+		for(int i = integerEnd; i < args.size(); ++i) {
+			VirtualNode vNode = structure.getVNode(args.get(i));
+			if (vNode != null && !vNode.matchedTrees.isEmpty()) {
+				for(ParseTree t : vNode.matchedTrees) {
+					if(integers.contains(t.getText())) {
+						return false;
 					}
 				}
 			}

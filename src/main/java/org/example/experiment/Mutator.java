@@ -10,7 +10,7 @@ import org.example.controller.Applicator;
 import org.example.controller.Extractor;
 import org.example.controller.Preprocessor;
 import org.example.global.GlobalInfo;
-import org.example.io.StyleFileIO;
+import org.example.style.StyleFileIO;
 import org.example.myException.ApplyException;
 import org.example.myException.ExtractException;
 import org.example.parser.common.MyParser;

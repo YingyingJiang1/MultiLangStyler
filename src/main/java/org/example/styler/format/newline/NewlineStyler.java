@@ -222,7 +222,14 @@ public class NewlineStyler extends Styler {
                 hasSameDataType = dataType1.equals(dataType2);
             }
         }
-        return new NewlineContext(typeName1, typeName2, 0, hasSameDataType);
+
+        boolean hasComment = false;
+        if (codeBlock2.treeNode instanceof ExtendContext ctx && ctx.getStart() instanceof ExtendToken token) {
+            hasComment = token.getContextTokens().stream().anyMatch(t -> parser.belongToComment(t.getType()));
+        }
+        NewlineContext context = new NewlineContext(typeName1, typeName2, 0, hasSameDataType);
+        context.hasComment = hasComment;
+        return context;
     }
 
 

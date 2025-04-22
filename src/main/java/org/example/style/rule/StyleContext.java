@@ -1,6 +1,6 @@
 package org.example.style.rule;
 
-import org.example.io.DomIO;
+import org.example.style.DomIO;
 
 public abstract class StyleContext implements DomIO {
     public int INIT_DISTANCE = Integer.MAX_VALUE;

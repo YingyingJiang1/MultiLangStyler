@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
-import org.example.styler.comment.density.CommentDensityStyler;
+import org.example.styler.comment.density.CommentedStmtDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
@@ -23,7 +23,6 @@ import org.example.styler.ifelse.multibranch.MultiBranchStyler;
 import org.example.styler.literal.usage.LiteralUsageStyler;
 import org.example.styler.method.complexity.MethodComplexityStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
-import org.example.styler.practice.UnusedCodeStyler;
 import org.example.styler.structure.StructureStyler;
 
 public class StylerContainer {
@@ -35,37 +34,38 @@ public class StylerContainer {
     List<Styler> tsStylers = new ArrayList<>();
 
     public StylerContainer() {
-        firstRoundStylers.add(new ArrangementStyler());
+//        firstRoundStylers.add(new ArrangementStyler());
         firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
         firstRoundStylers.add(new DeclarationLayoutStyler());
-        firstRoundStylers.add(new DeclarationLocationStyler()); // Add static analysis module
-       firstRoundStylers.add(new IfElseBodyOrderStyler());
-        firstRoundStylers.add(new ExpressionStyler());
+        firstRoundStylers.add(new DeclarationLocationStyler());
+//       firstRoundStylers.add(new IfElseBodyOrderStyler());
+//        firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
-        firstRoundStylers.add(new MethodComplexityStyler());
+//        firstRoundStylers.add(new MethodComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
         firstRoundStylers.add(new StructureStyler());
          firstRoundStylers.add(new OptionalBraceStyler());
-        firstRoundStylers.add(new MultiBranchStyler());
+//        firstRoundStylers.add(new MultiBranchStyler());
 
-        firstRoundStylers.add(new CommentSyntaxStyler());
+//        firstRoundStylers.add(new CommentSyntaxStyler());
 
 
         firstRoundStylers.add(new NamingFormatStyler());
+//        firstRoundStylers.add(new CommentedStmtDensityStyler());
 //         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
 
         // Format styles
-        secondRoundStylers.add(new BodyLayoutStyler());
-        secondRoundStylers.add(new BraceFormatStyler());
-        secondRoundStylers.add(new LineWrappingStyler());
-        secondRoundStylers.add(new LineStmtStyler());
-        secondRoundStylers.add(new NewlineStyler());
+//        secondRoundStylers.add(new BodyLayoutStyler());
+//        secondRoundStylers.add(new BraceFormatStyler());
+//        secondRoundStylers.add(new LineWrappingStyler());
+//        secondRoundStylers.add(new LineStmtStyler());
+//        secondRoundStylers.add(new NewlineStyler());
 
 
-        tsStylers.add(new SpaceStyler());
+//        tsStylers.add(new SpaceStyler());
         tsStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
-        tsStylers.add(new CommentDensityStyler());
+//        tsStylers.add(new CommentLineDensityStyler());
 
     }
 

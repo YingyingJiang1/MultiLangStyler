@@ -7,7 +7,7 @@ public class CodeContextExtractor {
 	public static String extractMethodContext(ExtendContext node, MyParser parser) {
 		ExtendContext functionDec = node.findFirstParentIf(t -> parser.belongToMethodDec(t.getRuleIndex()));
 		if (functionDec != null) {
-			return functionDec.getFormattedText();
+			return functionDec.getFormattedText(parser);
 		}
 		return "";
 	}
@@ -15,7 +15,7 @@ public class CodeContextExtractor {
 	public static String extractBlockContext(ExtendContext node, MyParser parser) {
 		ExtendContext block = node.findFirstParentIf(parser::belongToCompoundStmt);
 		if (block != null) {
-			return block.getFormattedText();
+			return block.getFormattedText(parser);
 		}
 		return extractMethodContext(node, parser);
 	}
@@ -23,7 +23,7 @@ public class CodeContextExtractor {
 	public static String extractCodeContext(ExtendContext node, MyParser parser) {
 		ExtendContext context = node.findFirstParentIf(t -> parser.belongToCompoundStmt(t) || parser.belongToMethodDec(t.getRuleIndex()));
 		if (context != null) {
-			return context.getFormattedText();
+			return context.getFormattedText(parser);
 		}
 		return "";
 	}

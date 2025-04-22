@@ -89,7 +89,7 @@ public class NameGenerator {
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append("You are a programming expert specializing in variable name recommendations based on code context. " +
                 String.format("Your task is to determine the most suitable variable name for \"%s\" in the statement \"%s\". The length of name you provide should be less than %s characters.",
-                        identifier.getText(), minStmt.getFormattedText(), nameLengthLimit)
+                        identifier.getText(), minStmt.getFormattedText(parser), nameLengthLimit)
                 + "\n");
         if (codeContext != null) {
             promptBuilder.append(

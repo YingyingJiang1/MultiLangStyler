@@ -15,6 +15,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ModelClient {
 
@@ -40,6 +43,16 @@ public class ModelClient {
 
     private ModelClient() {}
 
+    public List<String> sendRequestWithTemplate(String taskDescription, String constraints, String output_type) {
+        String prompt = String.format(
+                "Task Description:\n%s" +
+                "Output in this template:\n" + "\n```%s<your output here>```\n" +
+                "Constraints:\n%s",
+        taskDescription, constraints, output_type);
+        List<String> candidates = extractAnswer(sendRequest(prompt),  output_type);
+        return candidates;
+    }
+
     public String sendRequest(String prompt) {
         String serverType = GlobalInfo.getConf().getLlmConfig().getServerType();
         String jsonBody =  switch (serverType) {
@@ -54,7 +67,42 @@ public class ModelClient {
 
 
     private String toValidJsonStr(String str) {
-        return str.replace("\"", "\\\"").replace("\n", "\\n");
+        if (str == null) {
+            return "null";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (char c : str.toCharArray()) {
+            switch (c) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                default:
+                    if (c < 0x20 || c > 0x7E) {
+                        sb.append(String.format("\\u%04x", (int) c));
+                    } else {
+                        sb.append(c);
+                    }
+            }
+        }
+        return sb.toString();
     }
 
     private String createSelfJsonBody(String promptStr) {
@@ -114,7 +162,12 @@ public class ModelClient {
                 }
                 // 打印服务器返回的响应
                 System.out.println("Response: " + response);
-                return response.toString();
+                ObjectMapper objectMapper = new ObjectMapper();
+                Response responseObj = objectMapper.readValue(response.toString().getBytes(), Response.class);
+
+                // 输出提取的 response 字段
+                System.out.println("Response: " + responseObj.getResponse());
+                return responseObj.response;
             }
         } catch (Exception e) {
             log.warn("Failed to communicate with llm.");
@@ -122,5 +175,35 @@ public class ModelClient {
         return null;
     }
 
+    public List<String> extractAnswer(String response, String output_type) {
+        if (response == null) {
+            return null;
+        }
+
+        String reg = String.format("```%s(.*?)```", output_type);
+        if (!response.contains(String.format("```%s", output_type))) {
+            reg = "```(.*?)```";
+        }
+        Matcher matcher = Pattern.compile(reg, Pattern.DOTALL).matcher(response);
+        List<String> allMatches = matcher.results().map(mr -> mr.group(1)).toList();
+        return allMatches;
+    }
+
+    static class Response {
+        private String response;
+
+        public String getResponse() {
+            return response;
+        }
+
+        public void setResponse(String response) {
+            this.response = response;
+        }
+
+        @Override
+        public String toString() {
+            return response;
+        }
+    }
 
 }

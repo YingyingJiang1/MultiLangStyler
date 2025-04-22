@@ -55,23 +55,29 @@ public class EquivalentStructureManager {
     return equivalences;
   }
 
-  public void writeJsonData(String file) throws IOException {
+
+  public void loadConfFile(String confFile) throws IOException {
+    InputStream is = getClass().getResourceAsStream(confFile);
+    ObjectMapper objectMapper = new ObjectMapper();
+    configJson =  objectMapper.readTree(is);
+  }
+
+  public void updateConfFile(String confFile) throws IOException {
+    InputStream is = getClass().getResourceAsStream("/equivalencesConf.json");
+    ObjectMapper objectMapper = new ObjectMapper();
+    configJson =  objectMapper.readTree(is);
+
     if (configJson != null) {
-      ObjectMapper objectMapper = new ObjectMapper();
+      objectMapper = new ObjectMapper();
       int id = 1;
       for (JsonNode node : configJson) {
         if (node.get("id") != null) {
           ((ObjectNode) node).put("id", id++);
         }
       }
-      objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(file), configJson);
-    }
-  }
 
-  public void loadConfFile(String confFile) throws IOException {
-    InputStream is = getClass().getResourceAsStream(confFile);
-    ObjectMapper objectMapper = new ObjectMapper();
-    configJson =  objectMapper.readTree(is);
+      objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(confFile), configJson);
+    }
   }
 
 

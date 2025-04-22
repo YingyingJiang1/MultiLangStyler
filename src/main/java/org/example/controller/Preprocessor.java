@@ -75,7 +75,7 @@ public class Preprocessor {
    * @param tokenStream
    * @param tokenIndex
    */
-  private void processComment(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
+  public void processComment(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
     ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
     if (token.getChannel() != JavaLexer.DEFAULT_TOKEN_CHANNEL) {
       return;

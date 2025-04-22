@@ -7,6 +7,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.styler.method.complexity.style.MethodComplexityProperty;
 import org.example.utils.ModelClient;
+import org.example.utils.NodeUtil;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
@@ -15,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MethodExtractor {
-
-    private MutablePair<String, List<String>> codelines;
 
     private static MethodExtractor instance = new MethodExtractor();
 
@@ -47,7 +46,7 @@ public class MethodExtractor {
 //        "The goal is to ensure that the complexity of each resulting method is as close as possible to the target complexity C, " +
 //        "while adhering to the principles of high cohesion and low coupling."
         );
-        promptBuilder.append(String.format("\n### Method `m`:\n%s", readCodeLines(methodDec, parser)));
+        promptBuilder.append(String.format("\n### Method `m`:\n%s", NodeUtil.getOriginText(methodDec, parser)));
 //        promptBuilder.append(String.format("\n### Target Complexity `C`:\n%s", targetProperty.avgComplexity.toReadableString()));
 
         promptBuilder.append("\nOutput:\n");
@@ -63,26 +62,6 @@ public class MethodExtractor {
 
     protected List<Candidate> validateAndRankCandidates(ExtendContext methodDec, List<Candidate> candidates, MyParser parser) {
        return candidates;
-    }
-
-    protected String readCodeLines(ExtendContext methodDec, MyParser parser) {
-        try {
-            String filePath = parser.getSourceFile();
-            if (codelines == null || !codelines.getLeft().equals(filePath)) {
-                codelines = new MutablePair<>(filePath, Files.readAllLines(Paths.get(parser.getSourceFile())));
-            }
-        } catch (Exception e) {
-            LoggerFactory.getLogger(MethodExtractor.class).error("Fail to read code lines.", e);
-            codelines = null;
-        }
-
-        if (codelines == null) {
-            return null;
-        }
-
-        int startLine = methodDec.getStart().getLine();
-        int endLine = methodDec.getStop().getLine();
-        return String.join("\n", codelines.getRight().subList(startLine - 1, endLine + 1));
     }
 
 

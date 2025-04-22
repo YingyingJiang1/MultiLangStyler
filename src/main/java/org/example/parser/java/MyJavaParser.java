@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.controller.Preprocessor;
 import org.example.parser.common.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.ExtendTokenFactory;
@@ -129,10 +130,14 @@ public class MyJavaParser implements MyParser {
                 root = parser.methodDeclaration();
                 if (parseFailTester.test(root)) {
                     parser.reset();
-                    root = parser.statement();
+                    root = parser.constructorDeclaration();
                     if (parseFailTester.test(root)) {
                         parser.reset();
-                        root = parser.expression();
+                        root = parser.statement();
+                        if (parseFailTester.test(root)) {
+                            parser.reset();
+                            root = parser.expression();
+                        }
                     }
                 }
             }
@@ -142,6 +147,9 @@ public class MyJavaParser implements MyParser {
                     "this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.");
             return null;
         }
+
+
+        new Preprocessor().preprocess(this, null); // Add comments to the parse tree.
         return root;
     }
 
@@ -898,6 +906,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public String getSourceFile() {
         return parser.getSourceName();
+    }
+
+    @Override
+    public String getInputCode() {
+        return parser.getInputStream().getText();
     }
 
     @Override

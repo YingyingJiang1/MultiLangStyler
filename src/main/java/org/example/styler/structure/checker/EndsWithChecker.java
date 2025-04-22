@@ -1,11 +1,13 @@
 package org.example.styler.structure.checker;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.List;
 
 public class EndsWithChecker extends Checker{
+
 	public EndsWithChecker(String[][] argsList) {
 		super(argsList);
 	}
@@ -34,3 +36,5 @@ public class EndsWithChecker extends Checker{
 		return code.toString().endsWith(endingCodes.toString());
 	}
 }
+
+

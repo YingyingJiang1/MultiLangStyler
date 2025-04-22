@@ -310,7 +310,7 @@ public class EquivalentStructure {
 	}
 
 	/**
-	 * @apiNote Both vt and t are common tree nodes, in other words, they are not associated with a virtual node.
+	 * todo: replace this implementation with state machine.
 	 * @param vt
 	 * @param t
 	 * @return
@@ -364,10 +364,25 @@ public class EquivalentStructure {
 					++i;
 				} else {
 					if (virtualNode != null && virtualNode.moveStep() == 0) {
-						matched = true;
-						++vi;
+						// case: current virtual node can be matched repeatedly.
+						vi++; // Use next child of vt as the matching node.
+						matched = isMatched(vt.getChild(vi), tChild, forest, parser);
+						if (matched) {
+							vi++;
+							i++;
+						}
+
+						if (!matched && virtualNode.isRollback()) {
+							ParseTree matchedTree = virtualNode.removeLastMatchedTree();
+							if (matchedTree != null) {
+								matched = isMatched(vt.getChild(vi), matchedTree, forest, parser);
+								if (matched) {
+									vi++;
+								}
+							}
+						}
 					} else {
-						// Rollback status when left sibling of vtChild can be matched repeatedly.
+						// case: left sibling of vtChild can be matched repeatedly.
 						if (vi - 1 >= 0) {
 							ParseTree preVtChild = vt.getChild(vi - 1);
 							VirtualNode preVNode = vTreeMap.get(preVtChild);
@@ -384,12 +399,12 @@ public class EquivalentStructure {
 							}
 						}
 					}
-
 				}
 
 				if (!matched) {
 					return false;
 				}
+
 			}
 			return vi == vt.getChildCount() && i == t.getChildCount();
 		}

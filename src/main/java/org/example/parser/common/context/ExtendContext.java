@@ -5,11 +5,13 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
+import org.example.controller.Applicator;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 /*
@@ -133,20 +135,23 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
-    public String getFormattedText() {
+    public String getFormattedText(MyParser parser) {
         StringBuilder builder = new StringBuilder();
         List<Token> tokens = getAllTokensRec();
-        if (tokens.isEmpty()) {
-            return "";
-        }
-        int curLine = tokens.get(0).getLine();
-        for (Token token : tokens) {
-            if (token.getLine() != curLine) {
-                builder.append("\n");
-                curLine = token.getLine();
+        BiPredicate<Token, Token> isSpaceNecessary = new BiPredicate<Token, Token>() {
+            @Override
+            public boolean test(Token token, Token token2) {
+                return (parser.getIdentifier() == token.getType() || parser.belongToKeyword(token)) &&
+                        (parser.getIdentifier() == token2.getType() || parser.belongToKeyword(token2));
             }
-            builder.append(token.getText()).append(" ");
+        };
+        for (int i = 0; i < tokens.size() - 1; i++) {
+            builder.append(tokens.get(i).getText());
+            if (isSpaceNecessary.test(tokens.get(i), tokens.get(i + 1))) {
+                builder.append(" ");
+            }
         }
+        builder.append(tokens.get(tokens.size() - 1).getText());
         return builder.toString();
     }
 

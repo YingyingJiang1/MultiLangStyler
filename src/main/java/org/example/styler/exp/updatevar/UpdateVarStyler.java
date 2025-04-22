@@ -21,7 +21,7 @@ public class UpdateVarStyler extends Styler {
 
     public UpdateVarStyler() {
         style.setStyleName("update_variable");
-        structures = EquivalentStructureManager.getInstance().loadEquivalences(MyParserFactory.createParser(GlobalInfo.getLanguage()).getClass(), "/varUpdatingConf.json");
+        structures = EquivalentStructureManager.getInstance().loadEquivalences(MyParserFactory.createParser(GlobalInfo.getLanguage()).getClass(), "/removedEquivalences.json");
     }
 
 

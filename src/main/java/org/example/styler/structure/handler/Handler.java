@@ -45,6 +45,7 @@ public abstract class Handler {
       case "AssignCallExpHandler" -> new AssignCallExpHandler(argsList);
       case "ReplaceHandler" -> new ReplaceHandler(argsList);
       case "AppendTreeHandler" -> new AppendTreeHandler(argsList);
+      case "RedundantCodeHandler" -> new RedundantCodeHandler(argsList);
       default -> null;
     };
     if (handler == null) {

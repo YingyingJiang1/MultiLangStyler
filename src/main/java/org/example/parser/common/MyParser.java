@@ -1,9 +1,6 @@
 package org.example.parser.common;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.TokenFactory;
-import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.AmbigousToken;
@@ -243,4 +240,5 @@ public interface MyParser {
 
     String getConstKeyword();
     String getSourceFile();
+    String getInputCode();
 }

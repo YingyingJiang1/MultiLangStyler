@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Configuration;
 import org.example.global.GlobalInfo;
-import org.example.io.StyleFileIO;
+import org.example.style.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.style.CommonStyle;
@@ -57,6 +57,7 @@ public class Controller {
 
             if (conf.getStyleOutPath() != null) {
                 StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
+                StyleFileIO.writeStatistic(targetProgramStyle, conf.getStyleOutPath().replace(".xml", "-statistic.xml"));
                 if (conf.isSaveSelfStyle) {
                     StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
                 }

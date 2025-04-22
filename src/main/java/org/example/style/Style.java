@@ -1,5 +1,6 @@
 package org.example.style;
 
+import org.example.style.rule.RuleSet;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
@@ -19,5 +20,6 @@ public interface Style {
     List<StyleContext> filterRules();
     StyleProperty remove(StyleContext styleContext);
     void reset();
+    RuleSet getRuleSet();
 
 }

@@ -2,11 +2,21 @@ package org.example;
 
 import org.example.controller.Controller;
 import org.example.global.GlobalInfo;
+import org.example.styler.structure.EquivalentStructureManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Main {
 
     public static void main(String[] args) {
+//        try {
+//            EquivalentStructureManager.getInstance().updateConfFile("equivalencesConf.json");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         Configuration config = CLIArgumentParser.parseArgs(args);
         if (config != null) {
             GlobalInfo.setConf(config);

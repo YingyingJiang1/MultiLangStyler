@@ -62,24 +62,27 @@ public class CLIArgumentParser {
         }
 
         // 检查 -src 和 -target 是否符合规则
-        File srcFile = new File(src);
-        String resOutFile = config.getResOutFile();
-        String resOutDir = config.getResOutDir();
+        if (src != null) {
+            File srcFile = new File(src);
+            String resOutFile = config.getResOutFile();
+            String resOutDir = config.getResOutDir();
 
-        if (srcFile.isFile() && resOutDir != null) {
-            logger.error("Error: If -src is a file, use -f to specify the output file.");
-            return false;
-        } else if (srcFile.isDirectory() && resOutFile != null) {
-            logger.error("Error: If -src is a directory, use -d to specify the output directory.");
-            return false;
+            if (srcFile.isFile() && resOutDir != null) {
+                logger.error("Error: If -src is a file, use -f to specify the output file.");
+                return false;
+            } else if (srcFile.isDirectory() && resOutFile != null) {
+                logger.error("Error: If -src is a directory, use -d to specify the output directory.");
+                return false;
+            }
         }
+
         return true;
     }
 
     private static void printHelp(Options options) {
         // 创建帮助生成器
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("-src <arg> -target <arg> [-f/-d <arg>] [-so <arg>]\n or \n -target <arg> -so <arg>\n", options);
+        formatter.printHelp("\n-src <arg> -target <arg> [-f/-d <arg>] [-so <arg>]\n-target <arg> -so <arg>\n\n", options);
     }
 
     private static Options getOptions() {
