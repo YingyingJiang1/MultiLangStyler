@@ -39,3 +39,208 @@
 2025-04-22 12:01:03,284 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
 2025-04-22 14:04:35,450 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
 2025-04-22 14:04:35,455 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 14:13:05,013 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 14:13:05,018 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 14:20:57,006 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 14:20:57,018 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 14:22:27,078 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 14:22:27,089 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 14:23:23,077 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\transformer\src\test\sources\arrangement\001\target doesn't exist.
+2025-04-22 14:23:23,102 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 14:23:23,104 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 14:23:48,177 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 14:23:48,188 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:08:47,046 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:08:47,059 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:12:05,022 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:12:05,033 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:15:23,026 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:15:23,037 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:15:54,486 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:15:54,495 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:32:21,801 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:32:21,811 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:36:20,862 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:36:20,874 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:46:41,842 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:46:41,852 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:47:17,280 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:47:17,294 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:47:48,413 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:47:48,416 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:58:00,804 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:58:00,816 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 15:59:26,554 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 15:59:26,563 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:00:51,539 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:00:51,544 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:03:04,692 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:03:04,697 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:08:37,439 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:08:37,451 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:09:13,085 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:09:13,087 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 16:09:13,095 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:09:13,095 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 16:09:13,097 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:09:13,098 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 16:09:15,167 ERROR --- [main] org.example.parser.java.ExtendJavaParserListener.doTask/54 : DeclarationLayoutStyler exception at stage EXTRACT.
+java.lang.NullPointerException: Cannot invoke "org.example.parser.common.context.ExtendContext.getChildCount()" because "declaratorsNode" is null
+	at org.example.styler.declaration.layout.DeclarationLayoutStyler.extractStyle(DeclarationLayoutStyler.java:40)
+	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:52)
+	at org.example.parser.java.ExtendJavaParserListener.exitLocalVariableDeclarationStmt(ExtendJavaParserListener.java:873)
+	at org.example.parser.java.antlr.JavaParser$LocalVariableDeclarationStmtContext.exitRule(JavaParser.java:6074)
+	at org.antlr.v4.runtime.tree.ParseTreeWalker.exitRule(ParseTreeWalker.java:62)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:25)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
+	at org.example.controller.Extractor.extractOnAST(Extractor.java:27)
+	at org.example.controller.Extractor.extractRules(Extractor.java:19)
+	at org.example.controller.Controller.extractStyle(Controller.java:119)
+	at org.example.controller.Controller.execute(Controller.java:52)
+	at org.example.Main.main(Main.java:24)
+2025-04-22 16:09:15,169 ERROR --- [main] org.example.parser.java.ExtendJavaParserListener.doTask/54 : DeclarationLayoutStyler exception at stage EXTRACT.
+java.lang.NullPointerException: Cannot invoke "org.example.parser.common.context.ExtendContext.getChildCount()" because "declaratorsNode" is null
+	at org.example.styler.declaration.layout.DeclarationLayoutStyler.extractStyle(DeclarationLayoutStyler.java:40)
+	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:52)
+	at org.example.parser.java.ExtendJavaParserListener.exitLocalVariableDeclarationStmt(ExtendJavaParserListener.java:873)
+	at org.example.parser.java.antlr.JavaParser$LocalVariableDeclarationStmtContext.exitRule(JavaParser.java:6074)
+	at org.antlr.v4.runtime.tree.ParseTreeWalker.exitRule(ParseTreeWalker.java:62)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:25)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
+	at org.example.controller.Extractor.extractOnAST(Extractor.java:27)
+	at org.example.controller.Extractor.extractRules(Extractor.java:19)
+	at org.example.controller.Controller.extractStyle(Controller.java:119)
+	at org.example.controller.Controller.execute(Controller.java:52)
+	at org.example.Main.main(Main.java:24)
+2025-04-22 16:09:16,497 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:09:16,501 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:10:31,401 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:10:31,412 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:11:03,731 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:11:03,733 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 16:11:03,740 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:11:03,741 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 16:11:03,742 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:11:03,743 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 16:11:05,518 ERROR --- [main] org.example.parser.java.ExtendJavaParserListener.doTask/54 : DeclarationLayoutStyler exception at stage EXTRACT.
+java.lang.NullPointerException: Cannot invoke "org.example.parser.common.context.ExtendContext.getChildCount()" because "declaratorsNode" is null
+	at org.example.styler.declaration.layout.DeclarationLayoutStyler.extractStyle(DeclarationLayoutStyler.java:40)
+	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:52)
+	at org.example.parser.java.ExtendJavaParserListener.exitLocalVariableDeclarationStmt(ExtendJavaParserListener.java:873)
+	at org.example.parser.java.antlr.JavaParser$LocalVariableDeclarationStmtContext.exitRule(JavaParser.java:6074)
+	at org.antlr.v4.runtime.tree.ParseTreeWalker.exitRule(ParseTreeWalker.java:62)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:25)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
+	at org.example.controller.Extractor.extractOnAST(Extractor.java:27)
+	at org.example.controller.Extractor.extractRules(Extractor.java:19)
+	at org.example.controller.Controller.extractStyle(Controller.java:119)
+	at org.example.controller.Controller.execute(Controller.java:52)
+	at org.example.Main.main(Main.java:24)
+2025-04-22 16:11:05,520 ERROR --- [main] org.example.parser.java.ExtendJavaParserListener.doTask/54 : DeclarationLayoutStyler exception at stage EXTRACT.
+java.lang.NullPointerException: Cannot invoke "org.example.parser.common.context.ExtendContext.getChildCount()" because "declaratorsNode" is null
+	at org.example.styler.declaration.layout.DeclarationLayoutStyler.extractStyle(DeclarationLayoutStyler.java:40)
+	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:52)
+	at org.example.parser.java.ExtendJavaParserListener.exitLocalVariableDeclarationStmt(ExtendJavaParserListener.java:873)
+	at org.example.parser.java.antlr.JavaParser$LocalVariableDeclarationStmtContext.exitRule(JavaParser.java:6074)
+	at org.antlr.v4.runtime.tree.ParseTreeWalker.exitRule(ParseTreeWalker.java:62)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:25)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
+	at org.example.controller.Extractor.extractOnAST(Extractor.java:27)
+	at org.example.controller.Extractor.extractRules(Extractor.java:19)
+	at org.example.controller.Controller.extractStyle(Controller.java:119)
+	at org.example.controller.Controller.execute(Controller.java:52)
+	at org.example.Main.main(Main.java:24)
+2025-04-22 16:11:06,799 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:11:06,802 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:12:07,433 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:12:07,434 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 16:12:07,436 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:12:07,436 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 16:12:07,437 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:12:07,437 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 16:14:37,138 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:14:37,140 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 16:14:37,148 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:14:37,149 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 16:14:37,151 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:14:37,152 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 16:14:40,230 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:14:40,234 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:38:55,168 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:38:55,171 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 16:38:55,178 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:38:55,178 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 16:38:55,180 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:38:55,181 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 16:38:58,248 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:38:58,251 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:40:19,592 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:40:19,598 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:43:57,948 ERROR --- [main] org.example.CLIArgumentParser.validateParameters/60 : Wrong usage.
+ Correct argument usage:
+ -src <arg> -target <arg> 
+ or 
+ -target <arg> -so <arg>
+2025-04-22 16:44:27,156 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:44:27,159 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\javaparser\javaparser-symbol-solver-core\src\main\java\com\github\javaparser\symbolsolver\resolution\typeinference\BoundSet.java' because of compilation error.
+2025-04-22 16:44:27,854 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:44:27,865 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:47:06,680 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:47:06,680 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\javaparser\javaparser-symbol-solver-core\src\main\java\com\github\javaparser\symbolsolver\resolution\typeinference\BoundSet.java' because of compilation error.
+2025-04-22 16:47:07,041 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:47:07,043 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:50:13,914 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:50:13,919 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml
+2025-04-22 16:51:08,561 ERROR --- [main] org.example.CLIArgumentParser.validateParameters/60 : Wrong usage.
+ Correct argument usage:
+ -src <arg> -target <arg> 
+ or 
+ -target <arg> -so <arg>
+2025-04-22 16:51:31,663 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:51:31,666 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionFilter.java' because of compilation error.
+2025-04-22 16:51:31,672 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:51:31,673 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintBasedSessionManager.java' because of compilation error.
+2025-04-22 16:51:31,674 ERROR --- [main] org.example.parser.java.MyJavaParser.tryParse/146 : Failed to parse code, this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.
+2025-04-22 16:51:31,674 INFO  --- [main] org.example.controller.Controller.extractStyle/114 : Failed to extract style rules from file 'C:\Users\dell\jyy\科研\code-style-transformation\projects-data\projects\Stirling-PDF\src\main\java\stirling\software\SPDF\config\fingerprint\FingerprintGenerator.java' because of compilation error.
+2025-04-22 16:51:34,776 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style.xml
+2025-04-22 16:51:34,779 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\projects-data\style-self.xml

@@ -4,7 +4,9 @@ import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.AmbigousToken;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.common.AntlrHelper;
@@ -28,6 +30,8 @@ public class Preprocessor {
       processComment(parser, tokenStream, i);
       processAmbiguousToken(parser, tokenStream, i);
     }
+
+    traverseTree(parser.getRoot(), parser);
   }
 
   public void restoreState(List<Token> tokens, MyParser parser) {
@@ -43,7 +47,8 @@ public class Preprocessor {
     }
   }
 
-  private void setHierarchy(CommonTokenStream tokenStream, int curIndex) {
+  private void setHierarchy(TokenStream tokenStream, int curIndex) {
+
     ExtendToken token = (ExtendToken) tokenStream.get(curIndex);
     int tokenType = token.getType();
     // Update brace depth.
@@ -57,6 +62,18 @@ public class Preprocessor {
       token.setHierarchy(curNestingDepth);
     }
   }
+
+  private void traverseTree(ParseTree node, MyParser parser) {
+    if (node instanceof ExtendContext ctx) {
+      ctx.updateHierarchy(parser);
+      for (int i = 0; i < node.getChildCount(); i++) {
+        traverseTree(node.getChild(i), parser);
+      }
+    }
+  }
+
+
+
 //
 //  private void processBrace(CommonTokenStream tokenStream, int curIndex) {
 //    if(!AntlrHelper.isBrace(tokenStream.get(curIndex))) {
@@ -207,4 +224,6 @@ public class Preprocessor {
     matchedTokens.clear();
     return matchedTokens;
   }
+
+
 }

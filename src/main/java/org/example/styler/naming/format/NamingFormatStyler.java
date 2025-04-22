@@ -8,6 +8,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
+import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
@@ -19,9 +20,13 @@ import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.naming.format.style.NamingFormatStyle;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NamingFormatStyler extends Styler {
+    Map<StyleContext, Integer> maxLengthMap = new HashMap<>();
+
     public NamingFormatStyler() {
         style = new NamingFormatStyle();
     }
@@ -34,24 +39,21 @@ public class NamingFormatStyler extends Styler {
             MyCaseFormat caseFormat = getCaseFormat(name);
 
             NamingFormatContext context = extractStyleContext(symbol, parser);
-            // Update max length;
             int curLength = name.length();
-            List<StyleProperty> properties = style.getProperties(context);
-            if (properties != null) {
-                for (StyleProperty property : properties) {
-                    if (property instanceof NamingFormatProperty namingProperty) {
-                        if (namingProperty.maxLength >= curLength) {
-                            curLength = namingProperty.maxLength;
-                            break;
-                        } else {
+            if (!maxLengthMap.containsKey(context) || maxLengthMap.get(context) < curLength) {
+                maxLengthMap.put(context, curLength);
+                // Update max length;
+                List<StyleProperty> properties = style.getProperties(context);
+                if (properties != null) {
+                    for (StyleProperty property : properties) {
+                        if (property instanceof NamingFormatProperty namingProperty) {
                             namingProperty.maxLength = curLength;
                         }
                     }
                 }
-            } else {
-                NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, curLength);
-                style.addRule(context, property);
             }
+            NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, maxLengthMap.get(context));
+            style.addRule(context, property);
         }
     }
 

@@ -301,7 +301,7 @@ public class MyJavaParser implements MyParser {
 
     @Override
     public boolean isBlock(ParseTree t) {
-        if (t instanceof ExtendContext ctx && getSpecificStmt(ctx) instanceof JavaParser.BlockContext) {
+        if (t instanceof JavaParser.BlockContext) {
             return true;
         }
         return false;

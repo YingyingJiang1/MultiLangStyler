@@ -35,17 +35,35 @@ public class ExtendContext extends ParserRuleContext {
     /**
      * This method isn't suitable here.
      */
+//    public void updateHierarchy(MyParser parser) {
+//        ExtendContext targetAncestor = findFirstParentIf(p -> {
+//            int specificType = parser.getSpecificStmtType(p);
+//            return parser.getCompoundStmts().contains(specificType) || parser.getRuleBody() == specificType || parser.getRuleBlock() == specificType;
+//                });
+//        if (targetAncestor != null) {
+//            boolean isDependentBlock = parser.getSpecificStmtType(this) == parser.getRuleBlock() &&
+//                    findFirstParentIf(p -> parser.getCompoundStmts().contains(p.getRuleIndex())) == targetAncestor;
+//            if (isDependentBlock) {
+//                if (getParent() instanceof ExtendContext parentCtx) {
+//                    hierarchy = parentCtx.hierarchy;
+//                }
+//            } else {
+//                hierarchy = targetAncestor.hierarchy + 1;
+//            }
+//        }
+//    }
+
     public void updateHierarchy(MyParser parser) {
-        ExtendContext targetAncestor = findFirstParentIf(p -> parser.getCompoundStmts().contains(p.getRuleIndex()) || parser.getRuleBody() == p.getRuleIndex() || parser.getRuleBlock() == p.getRuleIndex());
-        if (targetAncestor != null) {
-            boolean isDependentBlock = parser.getSpecificStmtType(this) == parser.getRuleBlock() &&
-                    findFirstParentIf(p -> parser.getCompoundStmts().contains(p.getRuleIndex())) == targetAncestor;
-            if (isDependentBlock) {
-                if (getParent() instanceof ExtendContext parentCtx) {
-                    hierarchy = parentCtx.hierarchy;
+        for (int i = 0; i < children.size(); i++) {
+            if (children.get(i) instanceof ExtendContext childCtx) {
+                boolean isSubStmtOfCompoundStmt = parser.getCompoundStmts().contains(this.getRuleIndex())
+                        && parser.isStatement(childCtx)
+                        && !parser.isBlock(parser.getSpecificStmt(childCtx));
+                if (parser.isBody(this) || parser.isBlock(this) || isSubStmtOfCompoundStmt) {
+                    childCtx.hierarchy = this.hierarchy + 1;
+                } else {
+                    childCtx.hierarchy = this.hierarchy;
                 }
-            } else {
-                hierarchy = targetAncestor.hierarchy + 1;
             }
         }
     }

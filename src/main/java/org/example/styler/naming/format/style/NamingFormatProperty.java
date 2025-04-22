@@ -54,15 +54,15 @@ public class NamingFormatProperty extends StyleProperty {
 
     @Override
     public int hashCode() {
-        return Objects.hash(startsWithUnderScore, caseFormat, maxLength);
+        return Objects.hash(startsWithUnderScore, caseFormat);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof NamingFormatProperty other) {
             return startsWithUnderScore == other.startsWithUnderScore
-                    && caseFormat == other.caseFormat
-                    && maxLength == other.maxLength;
+                    && caseFormat == other.caseFormat;
+//                    && maxLength == other.maxLength;
         }
         return false;
     }

@@ -3,6 +3,7 @@ package org.example.styler.format.indention;
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -18,30 +19,59 @@ public class IndentionStyler extends Styler {
     }
 
     @Override
-    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
-        ExtendToken token = (ExtendToken) tokens.get(index);
-        if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
-            // Extract indention.
-            String text = token.getText();
-            int curLineIndention = text.length();
-            char indentionType = '\0';
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
+        ctx.updateHierarchy(parser);
+        if (ctx.getStart().getTokenIndex() - 1 >= 0) {
+            Token leftToken = parser.getTokenStream().get(ctx.getStart().getTokenIndex() - 1);
+            if (leftToken.getType() == parser.getHws() && leftToken.getCharPositionInLine() == 0) {
+                String text = leftToken.getText();
+                int curLineIndention = text.length();
+                char indentionType = '\0';
 
-            if(text.matches(" +")){
-                indentionType = ' ';
-            } else if(text.matches("\t+")) {
-                indentionType = '\t';
-            }
-            int hierarchy = token.getHierarchy();
-            int indentionUnit = 0;
-            if(hierarchy > 0){
-                indentionUnit = curLineIndention / hierarchy;
-            }
+                if(text.matches(" +")){
+                    indentionType = ' ';
+                } else if(text.matches("\t+")) {
+                    indentionType = '\t';
+                }
+                int hierarchy = ctx.hierarchy;
+                int indentionUnit = 0;
+                if(hierarchy > 0){
+                    indentionUnit = curLineIndention / hierarchy;
+                }
 
-            if (indentionType != '\0' && indentionUnit != 0) {
-                style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
+                if (indentionType != '\0' && indentionUnit != 0) {
+                    style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
+                }
             }
         }
+
     }
+
+//    @Override
+//    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
+//        ExtendToken token = (ExtendToken) tokens.get(index);
+//        if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
+//            // Extract indention.
+//            String text = token.getText();
+//            int curLineIndention = text.length();
+//            char indentionType = '\0';
+//
+//            if(text.matches(" +")){
+//                indentionType = ' ';
+//            } else if(text.matches("\t+")) {
+//                indentionType = '\t';
+//            }
+//            int hierarchy = token.getHierarchy();
+//            int indentionUnit = 0;
+//            if(hierarchy > 0){
+//                indentionUnit = curLineIndention / hierarchy;
+//            }
+//
+//            if (indentionType != '\0' && indentionUnit != 0) {
+//                style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
+//            }
+//        }
+//    }
 
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
@@ -68,6 +98,11 @@ public class IndentionStyler extends Styler {
             return false;
         }
 
+    }
+
+    @Override
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+        return parser.isStatement(ctx) || parser.belongToMethodDec(ctx.getRuleIndex()) || parser.isTypeDeclaration(ctx) || parser.isFieldDeclaration(ctx);
     }
 
     private boolean isLineLeadingToken(List<Token> tokens, int i, MyParser parser) {

@@ -35,10 +35,10 @@ public class StylerContainer {
 
     public StylerContainer() {
 //        firstRoundStylers.add(new ArrangementStyler());
-        firstRoundStylers.add(new LiteralUsageStyler());
+//        firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
-        firstRoundStylers.add(new DeclarationLayoutStyler());
-        firstRoundStylers.add(new DeclarationLocationStyler());
+//        firstRoundStylers.add(new DeclarationLayoutStyler());
+//        firstRoundStylers.add(new DeclarationLocationStyler());
 //       firstRoundStylers.add(new IfElseBodyOrderStyler());
 //        firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
@@ -61,6 +61,9 @@ public class StylerContainer {
 //        secondRoundStylers.add(new LineWrappingStyler());
 //        secondRoundStylers.add(new LineStmtStyler());
 //        secondRoundStylers.add(new NewlineStyler());
+        Styler indentionStyler = new IndentionStyler();
+        indentionStyler.executeWhenExit = false;
+        secondRoundStylers.add(indentionStyler);
 
 
 //        tsStylers.add(new SpaceStyler());

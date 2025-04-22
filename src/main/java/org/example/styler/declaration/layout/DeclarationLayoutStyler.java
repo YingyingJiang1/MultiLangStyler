@@ -37,6 +37,9 @@ public class DeclarationLayoutStyler extends Styler {
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         ExtendContext declaratorsNode = ctx.getContextRecIf(parser::isVariableDeclarators);
+        if (declaratorsNode == null) {
+            return;
+        }
         int decCount = (declaratorsNode.getChildCount() + 1) / 2;
         DeclarationLayoutContext context = extractContext(ctx, parser);
 

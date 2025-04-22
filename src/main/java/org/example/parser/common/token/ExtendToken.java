@@ -20,10 +20,6 @@ import java.util.function.Predicate;
  */
 public class ExtendToken extends CommonToken {
 
-    // This field, together with the brace depth, determines the indentation of tokens.
-    // This field is useful in the case statement,
-    // as in most scenarios, the indentation depth is associated with the brace depth.
-    // However, in case statements, there might be no braces.
     protected int hierarchy = 0;
     public int indention = 0;
     // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
