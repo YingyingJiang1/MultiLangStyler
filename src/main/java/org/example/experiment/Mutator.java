@@ -1,6 +1,18 @@
 package org.example.experiment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -13,67 +25,72 @@ import org.example.global.GlobalInfo;
 import org.example.style.StyleFileIO;
 import org.example.myException.ApplyException;
 import org.example.myException.ExtractException;
+import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.java.SpotDetectorListener;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyleManager;
 import org.example.style.Style;
 import org.example.styler.Styler;
+import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.EquivalentStructureManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Mutator {
-    private final Logger logger = LoggerFactory.getLogger(Mutator.class);
-    private final StylerContainer container = new StylerContainer();
+    private static final Logger logger = LoggerFactory.getLogger(Mutator.class);
     private final MyParser parser;
 
     private Mutator(String language) {
+        GlobalInfo.setLanguage(language);
         this.parser = MyParserFactory.createParser(language);
     }
 
-    public static Mutator createMutator(String language, String path) {
-        var mutator = new Mutator(language);
+    /**
+     * Given a style file, applies the rules in the style file to the input snippet.
+     * @param language the language of the input code
+     * @param snippet the input code
+     * @param styleFile the path of the style file
+     * @return the transformed code
+     */
+    public static String apply(String language, String snippet, String styleFile) {
+        Mutator mutator = new Mutator(language);
         try {
-            ProgramStyle programStyle = StyleFileIO.read(path, mutator.parser);
-            for (Styler styler : mutator.container.getStylers()) {
-                Style style = programStyle.getStyle(styler.getStyle().getStyleName());
-                if (style != null) {
-                    styler.setStyle(style);
-                }
+            if (mutator.parser.parseFromString(snippet) == null) {
+                logger.info("Compilation error.");
+                return null;
             }
-            GlobalInfo.setLanguage(language);
-            return mutator;
-        } catch (DocumentException e) {
-            mutator.logger.error("Failed to read style from {}.", path);
-            return null;
-        }
-    }
-
-    public String apply(String snippet) {
-        ParseTree tree = parser.parseFromString(snippet);
-        if (tree == null) {
-            logger.info("Compilation error.");
-            return null;
-        }
-        try {
-            ProgramStyle selfStyle = extractSelf();
+            ProgramStyle selfStyle = mutator.extractSelf();
             SelfStyleManager.addStyle(null, selfStyle); // for falling back when style missing
             Preprocessor preprocessor = new Preprocessor();
-            List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
-            tokens.removeIf(token -> token.getType() == parser.getEOF());
-            preprocessor.restoreState(tokens, parser);
-            StringBuilder mutant = new StringBuilder();
-            for (Token token : tokens) {
-                mutant.append(token.getText());
-            }
-            return mutant.toString();
+            StylerContainer container = mutator.extractStyleFile(styleFile);
+            List<Token> tokens = Applicator.applyRules(mutator.parser, container, preprocessor);
+            tokens.removeIf(token -> token.getType() == mutator.parser.getEOF());
+            preprocessor.restoreState(tokens, mutator.parser);
+            return tokens.stream()
+                    .map(Token::getText)
+                    .reduce("", String::concat);
+        } catch (DocumentException e) {
+            logger.error("Failed to read style from {}.", styleFile);
         } catch (ExtractException e) {
             logger.error("Failed to extract rules from the input code.");
-            return null;
         } catch (ApplyException e) {
             logger.error("Failed to apply rules.");
-            return null;
         }
+        return null;
+    }
+
+    private StylerContainer extractStyleFile(String styleFile) throws DocumentException {
+        ProgramStyle programStyle = StyleFileIO.read(styleFile, parser);
+        StylerContainer container = new StylerContainer();
+        for (Styler styler : container.getStylers()) {
+            Style style = programStyle.getStyle(styler.getStyle().getStyleName());
+            if (style != null) {
+                styler.setStyle(style);
+            }
+        }
+        return container;
     }
 
     private ProgramStyle extractSelf() throws ExtractException {
@@ -88,16 +105,123 @@ public class Mutator {
         return selfStyle;
     }
 
+    /**
+     * Transforms the code to a series of mutants that stand for the
+     * semantic-equivalent space. Below are the details:
+     * 1. Examines the code snippet, acquiring all possible spots to transform.
+     * 2. For each spot, collects all possible mutants(, limited by a maximum number
+     * with random selection).
+     * 3. Brutely collects all combinations of mutants.
+     * 
+     * @param language the language of the input code
+     * @param snippet the input code as a point in the semantic space
+     * @return a list of mutants as an approximation of the semantic space
+     */
+    public static List<String> span(String language, String snippet) {
+        Mutator mutator = new Mutator(language);
+        Map<Integer, Integer> spots = new HashMap<>();
+        SpotDetectorListener listener = new SpotDetectorListener(spots, mutator.parser);
+        ParseTree tree = mutator.parser.parseFromString(snippet);
+        MyParseTreeWalker walker = new MyParseTreeWalker();
+        walker.walk(listener, tree);
+
+        var sequences = generateCombinations(mutator.parser, spots);
+        return sequences.stream()
+                .map(sequence -> {
+                    // TODO: apply rules based on the sequence
+                    return "";
+                }).toList();
+    }
+
+    public static int countSpots(String language, String snippet) {
+        Mutator mutator = new Mutator(language);
+        Map<Integer, Integer> spots = new HashMap<>();
+        SpotDetectorListener listener = new SpotDetectorListener(spots, mutator.parser);
+        ParseTree tree = mutator.parser.parseFromString(snippet);
+        MyParseTreeWalker walker = new MyParseTreeWalker();
+        walker.walk(listener, tree);
+        return spots.size();
+    }
+
+    /**
+     * Counts the number of variants of given code snippet transformed in pairwise fashion.
+     * @param language the language of the input code
+     * @param snippet the input code
+     * @return the number of variants
+     */
+    public static long countPairwiseCases(String language, String snippet) {
+        Mutator mutator = new Mutator(language);
+        Map<Integer, Integer> spots = new HashMap<>();
+        SpotDetectorListener listener = new SpotDetectorListener(spots, mutator.parser);
+        ParseTree tree = mutator.parser.parseFromString(snippet);
+        MyParseTreeWalker walker = new MyParseTreeWalker();
+        walker.walk(listener, tree);
+        var combinations = generateCombinations(mutator.parser, spots);
+        return combinations.size();
+    }
+
+    private static List<List<Integer>> generateCombinations(MyParser parser, Map<Integer, Integer> spots) {
+        Map<Integer, Integer> equivalentsCounts = getEquivalentsCounts(parser, "/equivalencesConf.json");
+        Path modelFile = null;
+        try {
+            // create a model file contains lines in the format of "<spot key>: 1, 2, 3, ..., <equivalent count>"
+            modelFile = Files.createTempFile("model", ".txt");
+            List<String> lines = new ArrayList<>();
+            for (var entry : spots.entrySet()) {
+                int tokenIndex = entry.getKey();
+                int structureId = entry.getValue();
+                int equivalentCount = equivalentsCounts.getOrDefault(structureId, 0);
+                lines.add(String.format("SpotAt%d: %s", tokenIndex, IntStream.range(1, equivalentCount + 1).mapToObj(String::valueOf).collect(Collectors.joining(", "))));
+            }
+            Files.write(modelFile, lines, StandardCharsets.UTF_8);
+
+            // execute `pict model_file`, count the number of pairwise cases and return
+            String[] command = {"pict", modelFile.toString()};
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            Process process = processBuilder.start();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                return reader.lines()
+                        .skip(1)
+                        .map(line -> line.split("\\s+"))
+                        .map(Arrays::asList)
+                        .map(list -> list.stream()
+                                .map(Integer::parseInt)
+                                .collect(Collectors.toList()))
+                        .collect(Collectors.toList());
+            }
+        } catch (IOException e) {
+            logger.error("An I/O error occurred: {}", e.getMessage());
+        } finally {
+            if (modelFile != null) {
+                try {
+                    Files.delete(modelFile);
+                } catch (IOException e) {
+                    logger.error("An I/O error occurred: {}", e.getMessage());
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * For each structure, gets the number of equivalents for each structure in the equivalent config file.
+     * @param parserClass the parser class
+     * @return a map from structure id to equivalent count
+     */
+    private static Map<Integer, Integer> getEquivalentsCounts(MyParser parser, String confFile) {
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), confFile);
+        return equivalences.stream()
+                .collect(Collectors.toMap(EquivalentStructure::getId, structure -> structure.getForests().size()));
+    }
+
     public static void main(String[] args) {
-        Mutator mutator = Mutator.createMutator("java", "/home/fantasia/playground/research/samples/ref.xml");
-        if (mutator == null) {
-            return;
+        if (args.length < 1) {
+            logger.error("Usage: java Mutator <input file>");
         }
         final List<String> snippets = List.of(
-                "import java.util.*;\nimport java.io.*;\npublic class EdE {\n\n\tpublic static void main(String[] args) throws Exception{\n\t\tlong num = 1000000007;\n\n\t\t// TODO Auto-generated method stub\n \t\tBufferedReader bf = new BufferedReader(new InputStreamReader(System.in));\n \t\tPrintWriter out = new PrintWriter(System.out);\n \t\tint n = Integer.parseInt(bf.readLine());\n \t\tlong[] dp = new long[n+1];\n \t\tint[] isPrime = new int[n+1];\n\t\tArrays.fill(isPrime, 1);\n\t\tint[] mu = new int[n+1];\n\t\tArrays.fill(mu,  1);\n\t\tfor(int i = 2;i<=n;i++){\n\t\t\tif (isPrime[i] == 1){\n\t\t\t\tfor(int j = i;j<=n;j+=i){\n\t\t\t\t\tif (j > i)\n\t\t\t\t\t\tisPrime[j] = 0;\n\t\t\t\t\tif (j%(i*i) == 0)\n\t\t\t\t\t\tmu[j] = 0;\n\t\t\t\t\tmu[j] = -mu[j];\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tlong sum = 0;\n\t\tfor(int i = 2;i<=n;i++){\n\t\t\tsum+=(((long)(0-mu[i])*((((long)(n/i))*power(n-n/i, num-2, num))%num))%num+num)%num;\n\t\t\tsum%=num;\n\t\t\t\n\t\t}\n\t\tsum+=1;\n\t\tsum%=num;\n \t\tout.println(sum);\n\t \t\t\n \t\tout.close();\n \t\t\n \t\t\n \t\t\n \t}\n\tpublic static long power(long x, long y, long mod){\n\t\tlong ans = 1;\n\t\twhile(y>0){\n\t\t\tif (y%2==1)\n\t\t\t\tans = (ans*x)%mod;\n\t\t\tx = (x*x)%mod;\n\t\t\ty/=2;\n\t\t}\n\t\treturn ans;\n\t}\n}\n \t\n \n//StringJoiner sj = new StringJoiner(\" \"); \n//sj.add(strings)\n//sj.toString() gives string of those stuff w spaces or whatever that sequence is\n\n \t\t\n \t\t\n \t\t\n \t\t\n\t\n\n",
-                "import java.util.*;\nimport java.io.*;\n\npublic class tr0 {\n\tstatic PrintWriter out;\n\tstatic StringBuilder sb;\n\tstatic final double EPS = 1e-9;\n\tstatic long mod = (int) 1e9 + 7;\n\tstatic int inf = (int) 1e9 + 2;\n\tstatic long[] fac;\n\tstatic int[] si;\n\tstatic ArrayList<Integer> primes;\n\tstatic TreeSet<Integer>[] ad;\n\tstatic ArrayList<pair>[] d;\n\tstatic edge[] ed;\n\tstatic boolean f;\n\tstatic int n,p;\n\tstatic int[]l,ch;\n\tstatic Boolean [][]memo;\n\tstatic Queue<Integer>[] can;\n\t\n\tpublic static void main(String[] args) throws Exception {\n\t\tScanner sc = new Scanner(System.in);\n\t\tout = new PrintWriter(System.out);\n\t    String s=sc.next();\n\t    boolean is=false;\n\t    int t=s.length();\n\t    for(int i=1;i<s.length();i++)\n\t    \tif(s.charAt(i)==\'1\')\n\t    \t\tis=true;\n\t    if(is) {\n\t    \tout.print(t/2+t%2);\n\t    }\n\t    else {\n\t    \tt--;\n\t    \tout.print(t/2+t%2);\n\t    }\n\t\tout.close();\n\t}\n   \t// 1-based DS, OOP\n\tstatic class SegmentTree {\n\t\tint N; // the number of elements in the array as a power of 2 (i.e. after padding)\n\t\tint[] array, sTree, lazy;\n\t\tboolean[] isLeaf;\n\n\t\tSegmentTree(int[] in) {\n\t\t\tarray = in;\n\t\t\tN = in.length - 1;\n\t\t\tsTree = new int[N << 1]; // no. of nodes = 2*N - 1, we add one to cross out index zero\n\t\t\tlazy = new int[N << 1];\n\t\t\tisLeaf = new boolean[N << 1];\n\t\t\tArrays.fill(lazy, -1);\n\t\t\tbuild(1, 1, N);\n\t\t}\n\n\t\tvoid build(int node, int b, int e) // O(n)\n\t\t{\n\t\t\tif (b == e) {\n\t\t\t\tsTree[node] = array[b];\n\t\t\t\tisLeaf[node] = true;\n\t\t\t} else {\n\t\t\t\tint mid = b + e >> 1;\n\t\t\t\tbuild(node << 1, b, mid);\n\t\t\t\tbuild(node << 1 | 1, mid + 1, e);\n\t\t\t\tsTree[node] = (sTree[node << 1] + sTree[node << 1 | 1]) % 2010;\n\t\t\t}\n\t\t}\n\n\t\tvoid update_point(int index, int val) // O(log n)\n\t\t{\n\t\t\tindex += N - 1;\n\t\t\tsTree[index] += val;\n\t\t\twhile (index > 1) {\n\t\t\t\tindex >>= 1;\n\t\t\t\tsTree[index] = sTree[index << 1] + sTree[index << 1 | 1];\n\t\t\t}\n\t\t}\n\n\t\tvoid update_range(int i, int j, int val) // O(log n)\n\t\t{\n\t\t\tupdate_range(1, 1, N, i, j, val);\n\t\t}\n\n\t\tvoid update_range(int node, int b, int e, int i, int j, int val) {\n\t\t\tif (i > e || j < b)\n\t\t\t\treturn;\n\t\t\tif (b >= i && e <= j) {\n\t\t\t\tif (b == e) {\n\t\t\t\t\tsTree[node] = (sTree[node] * sTree[node]) % 2010;\n\t\t\t\t} else {\n\t\t\t\t\tsTree[node] = ((sTree[node] * sTree[node]) % 2010\n\t\t\t\t\t\t\t- (sTree[node << 1] * sTree[node << 1 | 1] * 2) % 2010 + 2010) % 2010;\n\t\t\t\t\tlazy[node] = 1;\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\tint mid = b + e >> 1;\n\t\t\t\tpropagate(node, b, mid, e);\n\t\t\t\tupdate_range(node << 1, b, mid, i, j, val);\n\t\t\t\tupdate_range(node << 1 | 1, mid + 1, e, i, j, val);\n\t\t\t\tsTree[node] = (sTree[node << 1] + sTree[node << 1 | 1]) % 2010;\n\t\t\t}\n\t\t}\n\n\t\tvoid propagate(int node, int b, int mid, int e) {\n\t\t\tif (lazy[node] == 1) {\n\t\t\t\tlazy[node << 1] = lazy[node];\n\t\t\t\tlazy[node << 1 | 1] = lazy[node];\n\t\t\t\tif (isLeaf[node << 1])\n\t\t\t\t\tsTree[node << 1] = sTree[node << 1] * sTree[node << 1] % 2010;\n\t\t\t\telse\n\t\t\t\t\tsTree[node << 1] = ((sTree[node << 1] * sTree[node << 1]) % 2010\n\t\t\t\t\t\t\t- (sTree[(node << 1) << 1] * sTree[(node << 1) << 1 | 1] * 2) % 2010 + 2010) % 2010;\n\t\t\t\tif (isLeaf[node << 1 | 1])\n\t\t\t\t\tsTree[node << 1 | 1] = sTree[node << 1 | 1] * sTree[node << 1 | 1] % 2010;\n\t\t\t\telse\n\t\t\t\t\tsTree[node << 1 | 1] = ((sTree[node << 1 | 1] * sTree[node << 1 | 1]) % 2010\n\t\t\t\t\t\t\t- (sTree[(node << 1 | 1) << 1] * sTree[(node << 1 | 1) << 1 | 1] * 2) % 2010 + 2010) % 2010;\n\t\t\t\tlazy[node] = -1;\n\t\t\t}\n\t\t}\n\n\t\tint query(int i, int j) {\n\t\t\treturn query(1, 1, N, i, j);\n\t\t}\n\n\t\tint query(int node, int b, int e, int i, int j) // O(log n)\n\t\t{\n\t\t\tif (i > e || j < b)\n\t\t\t\treturn 0;\n\t\t\tif (b >= i && e <= j)\n\t\t\t\treturn sTree[node];\n\t\t\tint mid = b + e >> 1;\n\t\t\tpropagate(node, b, mid, e);\n\t\t\tint q1 = query(node << 1, b, mid, i, j);\n\t\t\tint q2 = query(node << 1 | 1, mid + 1, e, i, j);\n\t\t\treturn (q1 + q2) % 2010;\n\n\t\t}\n\n\t}\n\n\tstatic Queue<Integer> k, k1;\n\tstatic boolean hg = false;\n\n\tstatic class Edge implements Comparable<Edge> {\n\t\tint node, cost;\n\n\t\tEdge(int a, int b) {\n\t\t\tnode = a;\n\t\t\tcost = b;\n\t\t}\n\n\t\tpublic int compareTo(Edge e) {\n\t\t\treturn cost - e.cost;\n\t\t}\n\t}\n\n\tstatic void ifCan(int i) {\n\t\tif (i == 6) {\n\t\t\thg = true;\n\t\t\tfor (int j : k)\n\t\t\t\tk1.add(j);\n\t\t\treturn;\n\t\t} else if (k.contains(i))\n\t\t\tifCan(i + 1);\n\t\telse {\n\t\t\tif (!hg) {\n\t\t\t\tfor (int p : can[i]) {\n\t\t\t\t\tif (!k.contains(p)) {\n\t\t\t\t\t\tk.add(i);\n\t\t\t\t\t\tk.add(p);\n\t\t\t\t\t\tifCan(i + 1);\n\t\t\t\t\t\tk.remove(i);\n\t\t\t\t\t\tk.remove(p);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\tstatic class qu implements Comparable<qu> {\n\t\tint a;\n\t\tint b;\n\n\t\tqu(int a, int b) {\n\t\t\tthis.a = a;\n\t\t\tthis.b = b;\n\t\t}\n\n\t\tpublic String toString() {\n\t\t\treturn a + \" \" + b;\n\t\t}\n\n\t\t@Override\n\t\tpublic int compareTo(qu o) {\n\t\t\treturn b - o.b;\n\t\t}\n\t}\n\n\tstatic class pair {\n\t\tint to;\n\t\tint number;\n\n\t\tpair(int t, int n) {\n\t\t\tnumber = n;\n\t\t\tto = t;\n\t\t}\n\n\t\tpublic String toString() {\n\t\t\treturn to + \" \" + number;\n\t\t}\n\t}\n\n\tstatic boolean[] in;\n\n\t/*\n\t * static void mst() { Arrays.sort(ed); UnionFind uf=new UnionFind(n); for(int\n\t * i=0;i<m;i++) { edge w=ed[i]; if(!uf.union(w.from, w.to)) continue;\n\t * in[i]=true; } }\n\t */\n\tstatic class edge implements Comparable<edge> {\n\t\tint from;\n\t\tint to;\n\t\tint number;\n\n\t\tedge(int f, int t, int n) {\n\t\t\tfrom = f;\n\t\t\tto = t;\n\t\t\tnumber = n;\n\t\t}\n\n\t\tpublic String toString() {\n\t\t\treturn from + \" \" + to + \" \" + number;\n\t\t}\n\n\t\tpublic int compareTo(edge f) {\n\t\t\treturn number - f.number;\n\t\t}\n\t}\n\n\tstatic class seg implements Comparable<seg> {\n\t\tint a;\n\t\tint b;\n\n\t\tseg(int s, int e) {\n\t\t\ta = s;\n\t\t\tb = e;\n\t\t}\n\n\t\tpublic String toString() {\n\t\t\treturn a + \" \" + b;\n\t\t}\n\n\t\tpublic int compareTo(seg o) {\n\t\t\t// if(a==o.a)\n\t\t\treturn o.b - b;\n\t\t\t// return\n\t\t}\n\t}\n\n\tstatic long power(int i) {\n\t\t// if(i==0)\n\t\t// return 1;\n\t\tlong a = 1;\n\t\tfor (int k = 0; k < i; k++)\n\t\t\ta *= i;\n\t\treturn a;\n\t}\n\n\tstatic void seive() {\n\t\tsi = new int[1000001];\n\t\tprimes = new ArrayList<>();\n\t\tint N = 1000001;\n\t\tsi[1] = 1;\n\t\tfor (int i = 2; i < N; i++) {\n\t\t\tif (si[i] == 0) {\n\t\t\t\tsi[i] = i;\n\t\t\t\tprimes.add(i);\n\t\t\t}\n\t\t\tfor (int j = 0; j < primes.size() && primes.get(j) <= si[i] && (i * primes.get(j)) < N; j++)\n\t\t\t\tsi[primes.get(j) * i] = primes.get(j);\n\n\t\t}\n\t}\n\n\tstatic long inver(long x) {\n\t\tint a = (int) x;\n\t\tlong e = (mod - 2);\n\t\tlong res = 1;\n\t\twhile (e > 0) {\n\t\t\tif ((e & 1) == 1) {\n\t\t\t\t// System.out.println(res*a);\n\t\t\t\tres = (int) ((1l * res * a) % mod);\n\t\t\t}\n\t\t\ta = (int) ((1l * a * a) % mod);\n\t\t\te >>= 1;\n\t\t}\n\t\t// out.println(res+\" \"+x);\n\t\treturn res % mod;\n\t}\n\n\tstatic long fac(int n) {\n\t\tif (n == 0)\n\t\t\treturn fac[n] = 1;\n\t\tif (n == 1)\n\t\t\treturn fac[n] = 1;\n\t\tlong ans = 1;\n\t\tfor (int i = 1; i <= n; i++)\n\t\t\tfac[i] = ans = (i % mod * ans % mod) % mod;\n\t\treturn ans % mod;\n\t}\n\n\tstatic long gcd(long a, long b) {\n\n\t\tif (b == 0)\n\t\t\treturn a;\n\t\treturn gcd(b, a % b);\n\t}\n\n\tstatic class unionfind {\n\t\tint[] p;\n\t\tint[] size;\n\n\t\tunionfind(int n) {\n\t\t\tp = new int[n];\n\t\t\tsize = new int[n];\n\n\t\t\tfor (int i = 0; i < n; i++) {\n\t\t\t\tp[i] = i;\n\t\t\t}\n\t\t\tArrays.fill(size, 1);\n\t\t}\n\n\t\tint findSet(int v) {\n\t\t\tif (v == p[v])\n\t\t\t\treturn v;\n\t\t\treturn p[v] = findSet(p[v]);\n\t\t}\n\n\t\tboolean sameSet(int a, int b) {\n\t\t\ta = findSet(a);\n\t\t\tb = findSet(b);\n\t\t\tif (a == b)\n\t\t\t\treturn true;\n\t\t\treturn false;\n\t\t}\n\n\t\tint max() {\n\t\t\tint max = 0;\n\t\t\tfor (int i = 0; i < size.length; i++)\n\t\t\t\tif (size[i] > max)\n\t\t\t\t\tmax = size[i];\n\t\t\treturn max;\n\t\t}\n\n\t\tboolean combine(int a, int b) {\n\t\t\ta = findSet(a);\n\t\t\tb = findSet(b);\n\t\t\tif (a == b)\n\t\t\t\treturn true;\n\t\t\tif (size[a] > size[b]) {\n\t\t\t\tp[b] = a;\n\t\t\t\tsize[a] += size[b];\n\n\t\t\t} else {\n\t\t\t\tp[a] = b;\n\t\t\t\tsize[b] += size[a];\n\t\t\t}\n\t\t\treturn false;\n\t\t}\n\t}\n\n\tstatic class Scanner {\n\t\tStringTokenizer st;\n\t\tBufferedReader br;\n\n\t\tpublic Scanner(InputStream system) {\n\t\t\tbr = new BufferedReader(new InputStreamReader(system));\n\t\t}\n\n\t\tpublic Scanner(String file) throws Exception {\n\t\t\tbr = new BufferedReader(new FileReader(file));\n\t\t}\n\n\t\tpublic String next() throws IOException {\n\t\t\twhile (st == null || !st.hasMoreTokens())\n\t\t\t\tst = new StringTokenizer(br.readLine());\n\t\t\treturn st.nextToken();\n\t\t}\n\n\t\tpublic String nextLine() throws IOException {\n\t\t\treturn br.readLine();\n\t\t}\n\n\t\tpublic int nextInt() throws IOException {\n\t\t\treturn Integer.parseInt(next());\n\t\t}\n\n\t\tpublic double nextDouble() throws IOException {\n\t\t\treturn Double.parseDouble(next());\n\t\t}\n\n\t\tpublic char nextChar() throws IOException {\n\t\t\treturn next().charAt(0);\n\t\t}\n\n\t\tpublic Long nextLong() throws IOException {\n\t\t\treturn Long.parseLong(next());\n\t\t}\n\n\t\tpublic boolean ready() throws IOException {\n\t\t\treturn br.ready();\n\t\t}\n\n\t\tpublic void waitForInput() throws InterruptedException {\n\t\t\tThread.sleep(3000);\n\t\t}\n\t}\n}",
-                "public class Foo {\n    public static void main(String[] args) {\n        bar();\n    }\n\n    private static boolean bar() {\n        return true;\n    }\n}\n");
-        String mutant = mutator.apply(snippets.get(1));
-        System.out.println(mutant);
+                "public class Foo {\n    public static void main(String[] args) {\n        bar();\n    }\n\n    private static boolean bar() {\n        return true;\n    }\n}\n",
+                "import java.util.*;\nimport java.io.*;\npublic class EdE {\n\n\tpublic static void main(String[] args) throws Exception{\n\t\tlong num = 1000000007;\n\n\t\t// TODO Auto-generated method stub\n \t\tBufferedReader bf = new BufferedReader(new InputStreamReader(System.in));\n \t\tPrintWriter out = new PrintWriter(System.out);\n \t\tint n = Integer.parseInt(bf.readLine());\n \t\tlong[] dp = new long[n+1];\n \t\tint[] isPrime = new int[n+1];\n\t\tArrays.fill(isPrime, 1);\n\t\tint[] mu = new int[n+1];\n\t\tArrays.fill(mu,  1);\n\t\tfor(int i = 2;i<=n;i++){\n\t\t\tif (isPrime[i] == 1){\n\t\t\t\tfor(int j = i;j<=n;j+=i){\n\t\t\t\t\tif (j > i)\n\t\t\t\t\t\tisPrime[j] = 0;\n\t\t\t\t\tif (j%(i*i) == 0)\n\t\t\t\t\t\tmu[j] = 0;\n\t\t\t\t\tmu[j] = -mu[j];\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tlong sum = 0;\n\t\tfor(int i = 2;i<=n;i++){\n\t\t\tsum+=(((long)(0-mu[i])*((((long)(n/i))*power(n-n/i, num-2, num))%num))%num+num)%num;\n\t\t\tsum%=num;\n\t\t\t\n\t\t}\n\t\tsum+=1;\n\t\tsum%=num;\n \t\tout.println(sum);\n\t \t\t\n \t\tout.close();\n \t\t\n \t\t\n \t\t\n \t}\n\tpublic static long power(long x, long y, long mod){\n\t\tlong ans = 1;\n\t\twhile(y>0){\n\t\t\tif (y%2==1)\n\t\t\t\tans = (ans*x)%mod;\n\t\t\tx = (x*x)%mod;\n\t\t\ty/=2;\n\t\t}\n\t\treturn ans;\n\t}\n}\n \t\n \n//StringJoiner sj = new StringJoiner(\" \"); \n//sj.add(strings)\n//sj.toString() gives string of those stuff w spaces or whatever that sequence is\n\n \t\t\n \t\t\n \t\t\n \t\t\n\t\n\n");
+        var mutant = span("java", snippets.get(1));
+        logger.info(mutant.toString());
     }
 }

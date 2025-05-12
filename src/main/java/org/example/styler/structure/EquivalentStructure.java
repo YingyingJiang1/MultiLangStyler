@@ -149,6 +149,10 @@ public class EquivalentStructure {
 		return category;
 	}
 
+    public List<Forest> getForests() {
+        return forests;
+    }
+
 	public VirtualNode getVNode(String placeholderName) {
 		return placeholderContainer.getVNodeByPlaceholderName(placeholderName);
 	}

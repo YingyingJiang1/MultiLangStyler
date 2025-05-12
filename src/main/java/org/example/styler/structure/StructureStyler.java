@@ -123,6 +123,23 @@ public class StructureStyler extends Styler {
         }
     }
 
+    public int extractStructureId(ExtendContext ctx, MyParser parser) {
+        loadEquivalences(parser);
+        int ruleIndex = ctx.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
+            ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
+        }
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
+        if (equivalentStructures != null) {
+            for (EquivalentStructure structure : equivalentStructures) {
+                if (structure.match(ctx, parser) != -1) {
+                    return structure.getId();
+                }
+            }
+        }
+        return -1;
+    }
+
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         return ctx.getRuleIndex() == parser.getRuleStmt() || ctx.getRuleIndex() == parser.getRuleExpression();
