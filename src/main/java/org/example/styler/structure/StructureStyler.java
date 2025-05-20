@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.java.MyJavaParser;
 import org.example.parser.java.Spot;
 import org.example.style.rule.StyleContext;
@@ -164,6 +165,24 @@ public class StructureStyler extends Styler {
                     // break; // Can't break,because ctx may match multiple structures with different id.
                 }
             }
+        }
+    }
+
+    /**
+     * Sets structure preference rules based on the given sequence in order.
+     * @param language the language of the parser
+     * @param sequence the sequence of preference indices
+     */
+    public void setAs(String language, List<Integer> sequence) {
+        style = new StructureStyle();
+        MyParser parser = MyParserFactory.createParser(language);
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), "/equivalencesConf.json");
+        for (int i = 0; i < equivalences.size(); i++) {
+            EquivalentStructure structure = equivalences.get(i);
+            int index = sequence.get(i);
+            StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
+            StructPreferenceProperty property = new StructPreferenceProperty(index);
+            style.addRule(context, property);
         }
     }
 
