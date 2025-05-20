@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.java.MyJavaParser;
+import org.example.parser.java.Spot;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -21,11 +23,21 @@ import java.util.*;
  * @create       2024/4/2 23:51
  */
 public class StructureStyler extends Styler {
-    private Map<Integer, List<EquivalentStructure>> equivalencesMap = null;
+    private static final Map<Integer, List<EquivalentStructure>> equivalencesMap = new HashMap<>();
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
     private int recursiveDepth = 0;
 
     public static Logger logger = LoggerFactory.getLogger(StructureStyler.class);
+
+    static {
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class, "/equivalencesConf.json"); // TBD: extend for other languages
+        for (EquivalentStructure equivalence : equivalences) {
+            for (int rule : equivalence.rules) {
+                // create map for efficiency, avoid to traverse all configured structures.
+                equivalencesMap.computeIfAbsent(rule, v -> new ArrayList<>()).add(equivalence);
+            }
+        }
+    }
 
     public StructureStyler() {
         style = new StructureStyle();
@@ -34,7 +46,6 @@ public class StructureStyler extends Styler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        loadEquivalences(parser);
         int ruIndex = ctx.getRuleIndex();
         if (ctx.getRuleIndex() == parser.getRuleStmt()) {
             ruIndex = parser.getSpecificStmt(ctx).getRuleIndex();
@@ -99,7 +110,6 @@ public class StructureStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        loadEquivalences(parser);
         int ruleIndex = ctx.getRuleIndex();
         if (ctx.getRuleIndex() == parser.getRuleStmt()) {
             ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
@@ -123,8 +133,13 @@ public class StructureStyler extends Styler {
         }
     }
 
-    public int extractStructureId(ExtendContext ctx, MyParser parser) {
-        loadEquivalences(parser);
+    /**
+     * Matches the context with the equivalent structures and returns the structure id. This method is specifically used for the mutator experiment.
+     * @param ctx the context to be matched
+     * @param parser the parser
+     * @return the structure id if matched, otherwise -1
+     */
+    public static Spot extractSpot(ExtendContext ctx, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
         if (ctx.getRuleIndex() == parser.getRuleStmt()) {
             ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
@@ -132,30 +147,18 @@ public class StructureStyler extends Styler {
         List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
         if (equivalentStructures != null) {
             for (EquivalentStructure structure : equivalentStructures) {
-                if (structure.match(ctx, parser) != -1) {
-                    return structure.getId();
+                int treeId = structure.match(ctx, parser);
+                if (treeId != -1) {
+                    return new Spot(ruleIndex, structure.getId(), treeId);
                 }
             }
         }
-        return -1;
+        return null;
     }
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         return ctx.getRuleIndex() == parser.getRuleStmt() || ctx.getRuleIndex() == parser.getRuleExpression();
-    }
-
-    private void loadEquivalences(MyParser parser) {
-        if (equivalencesMap == null) {
-            List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), "/equivalencesConf.json");
-            equivalencesMap = new HashMap<>();
-            for (EquivalentStructure equivalence : equivalences) {
-                for (int rule : equivalence.rules) {
-                    // create map for efficiency, avoid to traverse all configured structures.
-                    equivalencesMap.computeIfAbsent(rule, v -> new ArrayList<>()).add(equivalence);
-                }
-            }
-        }
     }
 
     static class MatchedStructure implements Comparable<MatchedStructure> {
