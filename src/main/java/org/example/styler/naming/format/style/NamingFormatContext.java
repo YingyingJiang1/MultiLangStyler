@@ -1,5 +1,6 @@
 package org.example.styler.naming.format.style;
 
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleContext;
@@ -41,9 +42,10 @@ public class NamingFormatContext extends StyleContext {
     @Override
     public void parseElement(Element parent, MyParser parser) {
         nameType = NameType.valueOf(parent.attributeValue("name_type"));
-        for (Object attr : parent.attributes()) {
-            Element element = (Element) attr;
-            attrs.add(SymbolAttr.valueOf(element.getName()));
+        for (Attribute attr : parent.attributes()) {
+            if (!attr.getName().equals("name_type")) {
+                addAttr(SymbolAttr.valueOf(attr.getName()));
+            }
         }
     }
 

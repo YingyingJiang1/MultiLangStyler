@@ -31,6 +31,15 @@ public class BraceFormatStyler extends BodyStyler {
         int lastIndex = blocks.size() - 1;
         for (int i = 0; i < blocks.size(); ++i) {
             ExtendContext block = parser.getSpecificStmt(blocks.get(i));
+            if (block.getRuleIndex() == parser.getRuleForStmt()) {
+                for (int j = 0; j < block.getChildCount(); ++j) {
+                    ParseTree child = block.getChild(j);
+                    if (child instanceof ExtendContext context && context.getRuleIndex() == parser.getRuleBlock()) {
+                        block = context;
+                        break;
+                    }
+                }
+            }
             BodyContext context = extractStyleContext(ctx, block, parser);
 
             BraceFormatProperty property = (BraceFormatProperty) style.getSimilarProperty(context);
@@ -144,6 +153,14 @@ public class BraceFormatStyler extends BodyStyler {
         if (ruleIndex == parser.getRuleBody() ||
                 ruleIndex == parser.getRuleArrayInitializer() || ruleIndex == parser.getRuleElementValueArrayInitializer()) {
             blocks.add(ctx);
+        } else if (ruleIndex == parser.getRuleForStmt() ||
+                ruleIndex == parser.getRuleWhileStmt() ||
+                ruleIndex == parser.getRuleDoWhileStmt()) {
+            ExtendContext statement = ctx.getFirstCtxChildIf(parser::isStatement);
+            if (statement == null) {
+                throw new IllegalStateException("No statement found in the context.");
+            }
+            blocks.add(statement.getFirstCtxChildIf(parser::isBlock));
         } else {
             for (ParseTree child : ctx.children) {
                 if (parser.isBlock(child) || parser.isBody(child)) {
