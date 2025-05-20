@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.dom4j.DocumentException;
+import org.example.Configuration;
 import org.example.controller.Applicator;
 import org.example.controller.Extractor;
 import org.example.controller.Preprocessor;
@@ -47,6 +48,8 @@ public class Mutator {
     private final MyParser parser;
 
     private Mutator(String language) {
+        Configuration config = new Configuration();
+        GlobalInfo.setConf(config);
         GlobalInfo.setLanguage(language);
         this.parser = MyParserFactory.createParser(language);
     }
