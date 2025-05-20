@@ -37,8 +37,6 @@ public class EquivalentStructureManager {
     List<EquivalentStructure> equivalences = new ArrayList<>();
     try {
       loadConfFile(confFile);
-      MyParser parser = MyParserFactory.createParser(parserClass);
-      ObjectMapper objectMapper = new ObjectMapper();
       for(JsonNode node : configJson) {
         // Skip comment
         if (node.get("id") == null) {

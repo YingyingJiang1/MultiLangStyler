@@ -92,7 +92,7 @@ public class Applicator {
     }
 
 
-    private static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
+    public static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
         if (root instanceof TerminalNode) {
             int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
             ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());

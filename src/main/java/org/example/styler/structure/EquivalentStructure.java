@@ -161,7 +161,7 @@ public class EquivalentStructure {
 		return new ArrayList<>(vTreeMap.values());
 	}
 
-	public int match(ParseTree t, MyParser parser) {
+	public synchronized int match(ParseTree t, MyParser parser) {
 		// Virtual tree that has a greater priority is matched first.
 		Map<Forest, Integer> vtMap = new TreeMap<>();
 		for (int i = 0; i < forests.size(); i++) {

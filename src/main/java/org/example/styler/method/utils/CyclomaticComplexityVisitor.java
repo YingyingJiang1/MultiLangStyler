@@ -2,9 +2,7 @@ package org.example.styler.method.utils;
 
 import java.util.Stack;
 
-import com.github.javaparser.symbolsolver.javaparsermodel.contexts.EnumDeclarationContext;
 import org.antlr.v4.runtime.RuleContext;
-
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.java.antlr.JavaParserBaseVisitor;
 

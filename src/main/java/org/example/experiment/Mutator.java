@@ -17,22 +17,27 @@ import java.util.stream.IntStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.dom4j.DocumentException;
-import org.example.controller.StylerContainer;
 import org.example.controller.Applicator;
 import org.example.controller.Extractor;
 import org.example.controller.Preprocessor;
+import org.example.controller.StylerContainer;
 import org.example.global.GlobalInfo;
-import org.example.style.StyleFileIO;
 import org.example.myException.ApplyException;
 import org.example.myException.ExtractException;
 import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.common.token.ExtendToken;
+import org.example.parser.java.Spot;
+import org.example.parser.java.SpotApplierListener;
 import org.example.parser.java.SpotDetectorListener;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyleManager;
 import org.example.style.Style;
+import org.example.style.StyleFileIO;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.EquivalentStructureManager;
 import org.slf4j.Logger;
@@ -119,23 +124,70 @@ public class Mutator {
      */
     public static List<String> span(String language, String snippet) {
         Mutator mutator = new Mutator(language);
-        Map<Integer, Integer> spots = new HashMap<>();
-        SpotDetectorListener listener = new SpotDetectorListener(spots, mutator.parser);
+        Map<Integer, Spot> spots = new HashMap<>();
+        SpotDetectorListener detectListener = new SpotDetectorListener(spots, mutator.parser);
         ParseTree tree = mutator.parser.parseFromString(snippet);
         MyParseTreeWalker walker = new MyParseTreeWalker();
-        walker.walk(listener, tree);
+        walker.walk(detectListener, tree);
 
         var sequences = generateCombinations(mutator.parser, spots);
         return sequences.stream()
                 .map(sequence -> {
-                    // TODO: apply rules based on the sequence
-                    return "";
+                    ParseTree treeCopy = tree;
+                    Map<Integer, Integer> spotToTreeId = new HashMap<>();
+                    int count = 0;
+                    for (int tokenIndex : spots.keySet()) {
+                        spotToTreeId.put(tokenIndex, sequence.get(count++));
+                    }
+                    SpotApplierListener applyListener = new SpotApplierListener(spots, spotToTreeId, mutator.parser);
+                    try {
+                        ProgramStyle selfStyle = mutator.extractSelf();
+                        SelfStyleManager.addStyle(null, selfStyle); // for falling back when style missing
+                    } catch (ExtractException e) {
+                        logger.error("Failed to extract rules from the input code.");
+                    }
+                    Preprocessor preprocessor = new Preprocessor();
+                    preprocessor.preprocess(mutator.parser, Stage.APPLY);
+
+                    // apply structural transformation
+                    walker.walk(applyListener, treeCopy);
+                    List<Token> tokens = new ArrayList<>();
+                    Applicator.generateTokens(treeCopy, tokens, mutator.parser);
+
+                    // uniformly apply spaces
+                    SpaceStyler spaceStyler = new SpaceStyler();
+                    for (int i = 0; i < tokens.size(); ++i) {
+                        ExtendToken curToken = (ExtendToken) tokens.get(i);
+                        int curTokenType = curToken.getType();
+
+                        if (curTokenType == -1) {
+                            continue;
+                        }
+
+                        if (spaceStyler.isRelevant(tokens, i, Stage.APPLY, mutator.parser)) {
+                            spaceStyler.applyStyle(tokens, i, mutator.parser);
+                        }
+
+                        // Length of the `tokens` will change after this code.
+                        List<Token> contextTokens = curToken.getContextTokens();
+                        if (contextTokens.size() > 1) {
+                            tokens.remove(i);
+                            tokens.addAll(i, contextTokens);
+                            i += contextTokens.size() - 1;
+                        }
+                    }
+
+                    tokens.removeIf(token -> token.getType() == mutator.parser.getEOF());
+                    preprocessor.restoreState(tokens, mutator.parser);
+                    return tokens.stream()
+                            .map(Token::getText)
+                        .reduce("", String::concat);
                 }).toList();
     }
 
     public static int countSpots(String language, String snippet) {
         Mutator mutator = new Mutator(language);
-        Map<Integer, Integer> spots = new HashMap<>();
+        Map<Integer, Spot> spots = new HashMap<>();
         SpotDetectorListener listener = new SpotDetectorListener(spots, mutator.parser);
         ParseTree tree = mutator.parser.parseFromString(snippet);
         MyParseTreeWalker walker = new MyParseTreeWalker();
@@ -151,7 +203,7 @@ public class Mutator {
      */
     public static long countPairwiseCases(String language, String snippet) {
         Mutator mutator = new Mutator(language);
-        Map<Integer, Integer> spots = new HashMap<>();
+        Map<Integer, Spot> spots = new HashMap<>();
         SpotDetectorListener listener = new SpotDetectorListener(spots, mutator.parser);
         ParseTree tree = mutator.parser.parseFromString(snippet);
         MyParseTreeWalker walker = new MyParseTreeWalker();
@@ -160,7 +212,7 @@ public class Mutator {
         return combinations.size();
     }
 
-    private static List<List<Integer>> generateCombinations(MyParser parser, Map<Integer, Integer> spots) {
+    private static List<List<Integer>> generateCombinations(MyParser parser, Map<Integer, Spot> spots) {
         Map<Integer, Integer> equivalentsCounts = getEquivalentsCounts(parser, "/equivalencesConf.json");
         Path modelFile = null;
         try {
@@ -169,9 +221,9 @@ public class Mutator {
             List<String> lines = new ArrayList<>();
             for (var entry : spots.entrySet()) {
                 int tokenIndex = entry.getKey();
-                int structureId = entry.getValue();
-                int equivalentCount = equivalentsCounts.getOrDefault(structureId, 0);
-                lines.add(String.format("SpotAt%d: %s", tokenIndex, IntStream.range(1, equivalentCount + 1).mapToObj(String::valueOf).collect(Collectors.joining(", "))));
+                Spot spot = entry.getValue();
+                int equivalentCount = equivalentsCounts.getOrDefault(spot.structureIndex(), 0);
+                lines.add(String.format("SpotAt%d: %s", tokenIndex, IntStream.range(0, equivalentCount).mapToObj(String::valueOf).collect(Collectors.joining(", "))));
             }
             Files.write(modelFile, lines, StandardCharsets.UTF_8);
 
@@ -186,8 +238,8 @@ public class Mutator {
                         .map(Arrays::asList)
                         .map(list -> list.stream()
                                 .map(Integer::parseInt)
-                                .collect(Collectors.toList()))
-                        .collect(Collectors.toList());
+                                .toList())
+                        .toList();
             }
         } catch (IOException e) {
             logger.error("An I/O error occurred: {}", e.getMessage());

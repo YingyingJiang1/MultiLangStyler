@@ -108,6 +108,40 @@ public class StructureStyler extends Styler {
         return (ExtendContext) newTree;
     }
 
+    /**
+     * Apply the structure to the context. This method is specifically used for the mutator experiment.
+     * @param ctx the context to be matched
+     * @param parser the parser
+     * @param from the spot of the source structure
+     * @param to the index of the target structure
+     */
+    public static void applyStructure(ExtendContext ctx, MyParser parser, Spot from, int to) {
+        int ruleIndex = ctx.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
+            ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
+        }
+        if (ruleIndex != from.ruleIndex()) {
+            logger.info("Fiailed to apply structure due to mismatched rule index ({} vs {}).", ruleIndex, from.ruleIndex());
+            return;
+        }
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
+        for (EquivalentStructure structure : equivalentStructures) {
+            if (structure.getId() == from.structureIndex()) {
+                if (structure.match(ctx, parser) != from.treeIndex()) {
+                    logger.info("Failed to apply structure due to mismatched tree index ({} vs {}).", structure.match(ctx, parser), from.treeIndex());
+                    return;
+                }
+                ParseTree newTree = structure.convert(from.treeIndex(), to, ctx, parser);
+                if (newTree == null) {
+                    logger.info("Failed to convert from {} to {} when structure id = {}.", from.treeIndex(), to, from.structureIndex());
+                }
+                logger.info("Converted from {} to {} when structure id = {}.", from.treeIndex(), to, from.structureIndex());
+                return;
+            }
+        }
+        logger.info("Note: Fail to apply structure when structure id = {}.", from.treeIndex(), to, from.structureIndex());
+    }
+
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
