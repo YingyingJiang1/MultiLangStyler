@@ -214,6 +214,10 @@ public class Controller {
         }
         String resPath = conf.getCodeOutPath(curPath.toString());
         if (resPath != null) {
+            File dir = new File(resPath).getParentFile();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resPath)))) {
                 writer.write(code);
             }
