@@ -73,7 +73,7 @@ public class Controller {
         return null;
     }
 
-    private void applyStyle(FileCollection files) {
+    public String applyStyle(FileCollection files) {
         applyInitialize(files, targetProgramStyle);
         String code = null;
         for (int i = 0; i < files.size(); i++) {
@@ -98,6 +98,7 @@ public class Controller {
             }
         }
         applyFinalize();
+        return code;
     }
 
     public ProgramStyle extractStyle(FileCollection files) {
@@ -125,6 +126,10 @@ public class Controller {
 
         extractFinalize();
         return combineStyle();
+    }
+
+    public void setStylers(StylerContainer container) {
+        this.container = container;
     }
 
 
@@ -156,7 +161,9 @@ public class Controller {
 
     private void extractInitialize(FileCollection files) {
         // Make the style attribution of all stylers in empty state.
-        container = new StylerContainer();
+        if (container == null) {
+            container = new StylerContainer();
+        }
         for (Styler styler : container.getStylers()) {
             if (styler.getStyle() instanceof CommonStyle commonStyle) {
                 commonStyle.targetFileCollection = files;

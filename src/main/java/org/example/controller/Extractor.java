@@ -40,7 +40,7 @@ public class Extractor {
         for (int i = 0; i < len; ++i) {
             Token token = tokens.get(i);
             for (Styler styler : container.getStylers()) {
-                if (styler.isRelevant(tokens, i, Stage.EXTRACT, parser)) {
+                if (styler.isEnable(Stage.EXTRACT) && styler.isRelevant(tokens, i, Stage.EXTRACT, parser)) {
                     styler.extractStyle(tokens, i, parser);
                 }
             }

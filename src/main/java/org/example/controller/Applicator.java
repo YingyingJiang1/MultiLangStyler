@@ -65,7 +65,7 @@ public class Applicator {
             // Add new tokens into the field `contextTokens` of current token.
             // Set type and text of a token to remove it.
             for (Styler styler : stylers) {
-                if (styler.isRelevant(tokens, i, Stage.APPLY, parser)) {
+                if (styler.isEnable(Stage.APPLY) && styler.isRelevant(tokens, i, Stage.APPLY, parser)) {
                     styler.applyStyle(tokens, i, parser);
                 }
             }

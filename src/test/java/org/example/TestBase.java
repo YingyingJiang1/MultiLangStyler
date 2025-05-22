@@ -1,0 +1,79 @@
+package org.example;
+
+import org.example.controller.Controller;
+import org.example.controller.StylerContainer;
+import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.java.antlr.JavaParser;
+import org.example.style.ProgramStyle;
+import org.example.style.Style;
+import org.example.style.StyleFileIO;
+import org.example.styler.Styler;
+import org.example.utils.FileCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import pascal.taie.analysis.pta.core.heap.Obj;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TestBase {
+	Logger logger = LoggerFactory.getLogger(TestBase.class);
+	protected Style extract(String path) {
+		return null;
+	}
+
+
+	/**
+	 *
+	 * @param srcPath Path of file to be transformed.
+	 * @param targetPath Path of target style file.
+	 * @param classes Stylers to be tested.
+	 * @return
+	 */
+	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Object>> classes) {
+		Configuration conf = new Configuration();
+		Controller controller = new Controller(conf);
+
+		StylerContainer container = new StylerContainer();
+		for (Styler styler : container.getStylers()) {
+			if (!classes.contains(styler.getClass())) {
+				styler.disable();
+			}
+		}
+		controller.setStylers(container);
+
+		FileCollection srcCollection = new FileCollection();
+		srcCollection.add(srcPath);
+		ProgramStyle sytle = controller.extractStyle(srcCollection);
+		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
+
+
+		FileCollection targetCollection = new FileCollection();
+		targetCollection.add(targetPath);
+		String code = controller.applyStyle(targetCollection);
+
+		return code;
+	}
+
+	protected void testCodeEqual(String actual, Path gtPath) {
+		File gtFile = new File(gtPath.toString());
+		if (!gtFile.exists()) {
+			System.out.println("Warning: invalid test! Ground truth is not found!");
+		}
+		try {
+			String expected = Files.readString(gtPath);
+			assertEquals(expected, actual);
+		} catch (IOException e)  {
+			logger.error("File {} not found!", gtPath, e);
+		}
+	}
+
+}

@@ -3,13 +3,17 @@ package org.example.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.example.style.Style;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.classmember.ArrangementStyler;
+import org.example.styler.arrangement.modifier.ModifierOrderStyler;
+import org.example.styler.arrangement.param.ParameterOrderStyler;
 import org.example.styler.comment.density.CommentedStmtDensityStyler;
 import org.example.styler.comment.syntax.CommentSyntaxStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.exp.complexity.ExpressionStyler;
+import org.example.styler.exp.updatevar.UpdateVarStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
@@ -44,23 +48,23 @@ public class StylerContainer {
 //        firstRoundStylers.add(new UpdateVarStyler());
 //        firstRoundStylers.add(new MethodComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
-        firstRoundStylers.add(new StructureStyler());
-         firstRoundStylers.add(new OptionalBraceStyler());
+//        firstRoundStylers.add(new StructureStyler());
+//         firstRoundStylers.add(new OptionalBraceStyler());
 //        firstRoundStylers.add(new MultiBranchStyler());
 
 //        firstRoundStylers.add(new CommentSyntaxStyler());
 
 
-        firstRoundStylers.add(new NamingFormatStyler());
+//        firstRoundStylers.add(new NamingFormatStyler());
 //        firstRoundStylers.add(new CommentedStmtDensityStyler());
 //         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
 
         // Format styles
-//        secondRoundStylers.add(new BodyLayoutStyler());
-//        secondRoundStylers.add(new BraceFormatStyler());
-//        secondRoundStylers.add(new LineWrappingStyler());
-//        secondRoundStylers.add(new LineStmtStyler());
-//        secondRoundStylers.add(new NewlineStyler());
+        secondRoundStylers.add(new BodyLayoutStyler());
+        secondRoundStylers.add(new BraceFormatStyler());
+        secondRoundStylers.add(new LineWrappingStyler());
+        secondRoundStylers.add(new LineStmtStyler());
+        secondRoundStylers.add(new NewlineStyler());
         Styler indentionStyler = new IndentionStyler();
         indentionStyler.executeWhenExit = false;
         secondRoundStylers.add(indentionStyler);
@@ -90,6 +94,22 @@ public class StylerContainer {
 
     public List<Styler> getTsStylers() {
         return tsStylers;
+    }
+
+    /**
+     *
+     * @param target
+     * @return The styler that was disabled.
+     */
+    public Styler removeStyler(Class<? extends Styler> target) {
+        List<Styler> stylers = getStylers();
+        for (Styler styler : stylers) {
+            if (styler.getClass().equals(target)) {
+                styler.disable();
+                return styler;
+            }
+        }
+        return null;
     }
 
 }

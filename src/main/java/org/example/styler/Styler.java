@@ -58,23 +58,15 @@ public abstract class Styler {
         return true;
     }
 
-//    public void enable(int process) {
-//        if (process == EXTRACTION_PROCESS) {
-//            enableExtraction = true;
-//        }
-//        if (process == APPLICATION_PROCESS) {
-//            enableApplication = true;
-//        }
-//    }
-//
-//    public void disable(int process) {
-//        if (process == EXTRACTION_PROCESS) {
-//            enableExtraction = false;
-//        }
-//        if (process == APPLICATION_PROCESS) {
-//            enableApplication = false;
-//        }
-//    }
+    public void enable() {
+        enableExtraction = true;
+        enableApplication = true;
+    }
+
+    public void disable() {
+        enableExtraction = false;
+        enableApplication = false;
+    }
 
     public void extractFinalize() {
         style.fillStyle();
