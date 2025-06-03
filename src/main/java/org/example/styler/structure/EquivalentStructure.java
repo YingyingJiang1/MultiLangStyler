@@ -258,7 +258,7 @@ public class EquivalentStructure {
 		int fromSize = forests.get(from).getRealForestSize(); // size of matched real trees(real trees are subtrees of input codes).
 		List<ParseTree> newTrees = new ArrayList<>();
 		for(ParseTree t : Toforest.getTrees()) {
-			newTrees.add(createTree(t));
+			newTrees.addAll(createTree(t));
 		}
 
 		// Update old trees to new trees.
@@ -276,7 +276,14 @@ public class EquivalentStructure {
 	 * @apiNote Before calling this method, ensure there's a virtual tree matching with a real tree.
 	 * @return
 	 */
-	private ParseTree createTree(ParseTree t) {
+	private List<ParseTree> createTree(ParseTree t) {
+		// Check whether root of `t` is a virtual node.
+		VirtualNode vNode = vTreeMap.get(t);
+		if (vNode != null) {
+			return vNode.matchedTrees;
+		}
+
+
 		// Create root
 		ParseTree root = ParseTreeUtil.getInstance().copyNode(t);
 
@@ -284,13 +291,13 @@ public class EquivalentStructure {
 		if (t instanceof ExtendContext ctx) {
 			List<ParseTree> children = new ArrayList<>();
 			for (ParseTree child : ctx.children) {
-				VirtualNode vNode = vTreeMap.get(child);
+				vNode = vTreeMap.get(child);
 				if (vNode != null) {
 					children.addAll(vNode.matchedTrees);
 				} else if(child instanceof TerminalNode) {
 					children.add(ParseTreeUtil.getInstance().copyTree(child, false));
 				} else {
-					children.add(createTree(child));
+					children.addAll(createTree(child));
 				}
 			}
 
@@ -300,7 +307,7 @@ public class EquivalentStructure {
 			}
 		}
 
-		return root;
+		return List.of(root);
 	}
 
 	private void cleanState() {

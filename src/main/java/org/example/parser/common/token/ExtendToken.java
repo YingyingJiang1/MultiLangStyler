@@ -90,6 +90,11 @@ public class ExtendToken extends CommonToken {
         }
     }
 
+    /**
+     * Add `token` after current token.
+     * @param token Token to be added.
+     * @param parser
+     */
     public void addTokenAfter(Token token, MyParser parser) {
         if (contextTokens == null) {
             contextTokens = new ArrayList<>();

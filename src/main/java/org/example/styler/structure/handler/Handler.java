@@ -46,6 +46,7 @@ public abstract class Handler {
       case "ReplaceHandler" -> new ReplaceHandler(argsList);
       case "AppendTreeHandler" -> new AppendTreeHandler(argsList);
       case "RedundantCodeHandler" -> new RedundantCodeHandler(argsList);
+      case "BraceWrapHandler" -> new BraceWrapHandler(argsList);
       default -> null;
     };
     if (handler == null) {

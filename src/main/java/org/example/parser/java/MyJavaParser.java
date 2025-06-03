@@ -755,10 +755,6 @@ public class MyJavaParser implements MyParser {
         return JavaParser.RBRACK;
     }
 
-    @Override
-    public int getDefaultChannel() {
-        return JavaLexer.DEFAULT_TOKEN_CHANNEL;
-    }
 
     @Override
     public int getVar() {
@@ -911,6 +907,21 @@ public class MyJavaParser implements MyParser {
     @Override
     public String getInputCode() {
         return parser.getInputStream().getText();
+    }
+
+    @Override
+    public int getDefaultTokenChannel() {
+        return JavaLexer.DEFAULT_TOKEN_CHANNEL;
+    }
+
+    @Override
+    public int getCommentTokenChannel() {
+        return JavaLexer.COMMENT_CHANNEL;
+    }
+
+    @Override
+    public int getHiddenTokenChannel() {
+        return JavaLexer.HIDDEN;
     }
 
     @Override

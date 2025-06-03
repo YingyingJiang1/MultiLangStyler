@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.token.ExtendToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -211,6 +212,31 @@ public class ParseTreeUtil {
       return maxDepth;
     }
     return maxDepth;
+  }
+
+  public ExtendContext encapsulateStmtWithBrace(ExtendContext stmtCtx, MyParser parser) {
+    ExtendContext parent = (ExtendContext) stmtCtx.getParent();
+
+    ExtendContext newStmt = TreeNodeFactoryGetter.getFactory(parser).createStatement(parent);
+
+    ExtendContext blockNode = TreeNodeFactoryGetter.getFactory(parser).createBlock(newStmt);
+    Token lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
+    Token rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
+
+//    ((ExtendToken) lBrace).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+//    ((ExtendToken) rBrace).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+
+    List<ParseTree> children = new ArrayList<>();
+    children.add(new TerminalNodeImpl(lBrace));
+    children.add(stmtCtx);
+    children.add(new TerminalNodeImpl(rBrace));
+    blockNode.children.clear();
+    blockNode.addChildren(children);
+
+    newStmt.addChild(blockNode);
+    parent.replaceChild(stmtCtx, newStmt);
+
+    return newStmt;
   }
 
 //  private void modifyLink(ExtendContext parent, ParseTree newChild, ParseTree oldChild) {

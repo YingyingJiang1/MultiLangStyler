@@ -29,6 +29,7 @@ public class Preprocessor {
       setHierarchy(tokenStream, i);
       processComment(parser, tokenStream, i);
       processAmbiguousToken(parser, tokenStream, i);
+      processFormatTokens(parser, tokenStream, i);
     }
 
     traverseTree(parser.getRoot(), parser);
@@ -94,11 +95,11 @@ public class Preprocessor {
    */
   public void processComment(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
     ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
-    if (token.getChannel() != JavaLexer.DEFAULT_TOKEN_CHANNEL) {
+    if (token.getChannel() != parser.getDefaultTokenChannel()) {
       return;
     }
 
-    List<Token> comments = tokenStream.getHiddenTokensToLeft(tokenIndex, JavaLexer.COMMENT_CHANNEL);
+    List<Token> comments = tokenStream.getHiddenTokensToLeft(tokenIndex, parser.getCommentTokenChannel());
     if (comments != null) {
       // Get first token in default channel on the left of all comments.
       ExtendToken preToken = null;
@@ -123,6 +124,22 @@ public class Preprocessor {
         }
       }
     }
+  }
+
+  /**
+   * Add format tokens(space and newline) to `contextTokens` of a token.
+   * @param parser
+   * @param tokenStream
+   * @param tokenIndex
+   */
+  public void processFormatTokens(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
+    ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
+    List<Token> formatTokens = tokenStream.getHiddenTokensToRight(tokenIndex, parser.getHiddenTokenChannel());
+    if (formatTokens == null) {
+      return;
+    }
+
+    formatTokens.forEach(t -> token.addTokenAfter(t, parser));
   }
 
   /**
@@ -174,7 +191,7 @@ public class Preprocessor {
   private Token findFirstDefaultToken(TokenStream tokenStream, int curIndex, MyParser parser) {
     int i = curIndex - 1;
     for (; i >= 0; i--) {
-      if (tokenStream.get(i).getChannel() == parser.getDefaultChannel()) {
+      if (tokenStream.get(i).getChannel() == parser.getDefaultTokenChannel()) {
         break;
       }
     }

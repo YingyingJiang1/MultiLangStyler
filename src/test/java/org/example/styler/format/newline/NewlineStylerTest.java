@@ -29,6 +29,6 @@ class NewlineStylerTest extends TestBase {
 		Path f2 = Paths.get(dir, "f2.java");
 
 		String code1 = apply(f1, f2, stylerClasses);
-		testCodeEqual(code1, Paths.get(dir, "gt1.java"));
+		testCodeEqual(code1, Paths.get(dir, "gt1.txt"));
 	}
 }

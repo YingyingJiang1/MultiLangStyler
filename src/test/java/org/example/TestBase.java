@@ -2,7 +2,10 @@ package org.example;
 
 import org.example.controller.Controller;
 import org.example.controller.StylerContainer;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.style.ProgramStyle;
 import org.example.style.Style;
@@ -11,6 +14,7 @@ import org.example.styler.Styler;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import pascal.taie.analysis.pta.core.heap.Obj;
 
 import java.io.File;
@@ -74,6 +78,18 @@ public class TestBase {
 		} catch (IOException e)  {
 			logger.error("File {} not found!", gtPath, e);
 		}
+	}
+
+	protected String getFormattedText(ExtendContext ctx) {
+		StringBuilder result = new StringBuilder();
+		ctx.getAllTokensRec().forEach(
+				t -> {
+					if (t instanceof ExtendToken extendToken) {
+						extendToken.getContextTokens().forEach(t1 -> result.append(t1.getText()));
+					}
+				}
+		);
+		return result.toString();
 	}
 
 }

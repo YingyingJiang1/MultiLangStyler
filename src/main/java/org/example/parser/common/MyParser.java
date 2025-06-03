@@ -207,7 +207,6 @@ public interface MyParser {
     int getEOF();
     int getMul();
     int getRBrack();
-    int getDefaultChannel();
     int getVar();
 
     int getCharLiteralType();
@@ -241,4 +240,8 @@ public interface MyParser {
     String getConstKeyword();
     String getSourceFile();
     String getInputCode();
+
+    int getDefaultTokenChannel();
+    int getCommentTokenChannel();
+    int getHiddenTokenChannel();
 }

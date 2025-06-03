@@ -1,24 +1,31 @@
 package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.TestBase;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
+import org.example.styler.Styler;
+import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StructureStylerTest {
+class StructureStylerTest extends TestBase {
 
-	@Test
-	void applyStyle() {
-	}
+	private static final Logger log = LoggerFactory.getLogger(StructureStylerTest.class);
 
 	@Test
 	void extractStyle_assignment() {
@@ -80,6 +87,21 @@ class StructureStylerTest {
 
 	}
 
+	private String doApply(Path srcPath, StructureStyler styler) {
+		try {
+			MyParser parser = MyParserFactory.createParser("java");
+			ParseTree root = parser.parse(srcPath);
+			parser.walkTree(Stage.APPLY, List.of(styler));
+			if (root instanceof ExtendContext ctx) {
+				return getFormattedText(ctx);
+			}
+			return root.getText();
+		} catch (IOException e) {
+			log.error("e: ", e);
+		}
+		return "";
+	}
+
 
 	private StructureStyler doStyler(String code, String language, Stage stage) {
 		StructureStyler styler = new StructureStyler();
@@ -87,5 +109,20 @@ class StructureStylerTest {
 		ParseTree root = parser.parseFromString(code);
 		parser.walkTree(stage, List.of(styler));
 		return styler;
+	}
+
+	@Test
+	void testApplyStyle_continuePreference() {
+		String dir = "src/test/sources/structure/continue";
+		Path src = Paths.get(dir, "f1.java");
+		Path gt = Paths.get(dir, "gt1.txt");
+		StructureStyler styler = new StructureStyler();
+		styler.getStyle().addRule(
+				new StructPreferenceContext("Continue preferences", 22),
+				new StructPreferenceProperty(0));
+
+		String result = doApply(src, styler);
+//		System.out.println(result);
+		super.testCodeEqual(result, gt);
 	}
 }

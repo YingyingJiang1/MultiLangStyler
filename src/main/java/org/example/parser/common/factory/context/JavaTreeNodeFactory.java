@@ -21,6 +21,11 @@ public class JavaTreeNodeFactory implements TreeNodeFactory {
     }
 
     @Override
+    public ExtendContext createStatement(ExtendContext parent) {
+        return new JavaParser.StatementContext(parent, parent.invokingState);
+    }
+
+    @Override
     public ExtendContext createExpressionList(ExtendContext parent) {
         return new JavaParser.ExpressionListContext(parent, -1);
     }
