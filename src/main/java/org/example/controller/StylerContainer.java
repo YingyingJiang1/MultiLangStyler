@@ -41,21 +41,21 @@ public class StylerContainer {
 //        firstRoundStylers.add(new ArrangementStyler());
 //        firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new ModifierOrderStyler());
-//        firstRoundStylers.add(new DeclarationLayoutStyler());
-//        firstRoundStylers.add(new DeclarationLocationStyler());
-//       firstRoundStylers.add(new IfElseBodyOrderStyler());
+        firstRoundStylers.add(new DeclarationLayoutStyler());
+        firstRoundStylers.add(new DeclarationLocationStyler());
+       firstRoundStylers.add(new IfElseBodyOrderStyler());
 //        firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
 //        firstRoundStylers.add(new MethodComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
-//        firstRoundStylers.add(new StructureStyler());
-//         firstRoundStylers.add(new OptionalBraceStyler());
+        firstRoundStylers.add(new StructureStyler());
+         firstRoundStylers.add(new OptionalBraceStyler());
 //        firstRoundStylers.add(new MultiBranchStyler());
 
 //        firstRoundStylers.add(new CommentSyntaxStyler());
 
 
-//        firstRoundStylers.add(new NamingFormatStyler());
+        firstRoundStylers.add(new NamingFormatStyler());
 //        firstRoundStylers.add(new CommentedStmtDensityStyler());
 //         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
 

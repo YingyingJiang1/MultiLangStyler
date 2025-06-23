@@ -1,33 +1,34 @@
-import java.util.Scanner;
-import java.util.Arrays;
+importjava.util.Scanner;
+importjava.util.Arrays;
 
-public class FrogJump {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+publicclassFrogJump{
+    publicstaticvoidmain(String[]args){
+        Scannerscanner=newScanner(System.in);
         // Read inputs
-        int n = scanner.nextInt();
-        int k = scanner.nextInt();
-        int[] h = new int[n];
-        for (int i = 0; i<n; i++) {
-            h[i] = scanner.nextInt();
+                // Read inputs
+        intN=scanner.nextInt();
+        intK=scanner.nextInt();
+        int[]h=newint[N];
+        for(inti=0;i<N;i++){
+            h[i]=scanner.nextInt();
         }
-        
         // Initialize dp array
-        int[] dp = new int[n];
+                // Initialize dp array
+        int[]dp=newint[N];
+        Arrays.fill(dp,Integer.MAX_VALUE);
         
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        
-        dp[0] = 0; // Starting point
-        
+        dp[0]=0;// Starting point
+        // Starting point
         // Compute minimum cost for each stone
-        for (int i = 1; i<n; i++) {
-            for (int j = Math.max(0, i - k); j<i; j++) {
-                dp[i] = Math.min(dp[i], dp[j] + Math.abs(h[i] - h[j]));
+                // Compute minimum cost for each stone
+        for(inti=1;i<N;i++){
+            for(intj=Math.max(0,i-K);j<i;j++){
+                dp[i]=Math.min(dp[i],dp[j]+Math.abs(h[i]-h[j]));
             }
         }
-        
         // Output the minimum cost to reach the last stone
-        System.out.println(dp[n - 1]);
+                // Output the minimum cost to reach the last stone
+        System.out.println(dp[N-1]);
         
         scanner.close();
     }

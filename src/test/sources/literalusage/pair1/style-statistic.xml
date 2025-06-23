@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+  <style name="naming_format"/>
+  <style name="line_statement">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=2}"/>
+    </rule>
+  </style>
+  <style name="newline"/>
+  <style name="if_else_body_order"/>
+  <style name="indention"/>
+  <style name="optional_brace"/>
+  <style name="brace_format"/>
+  <style name="declaration_layout"/>
+  <style name="declaration_location"/>
+  <style name="structure_preference"/>
+  <style name="body_layout"/>
+  <style name="lineWrapping">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=2}"/>
+    </rule>
+  </style>
+</program_style>
