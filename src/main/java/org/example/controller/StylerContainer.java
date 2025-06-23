@@ -70,7 +70,7 @@ public class StylerContainer {
         secondRoundStylers.add(indentionStyler);
 
 
-//        tsStylers.add(new SpaceStyler());
+        tsStylers.add(new SpaceStyler());
         tsStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
 //        tsStylers.add(new CommentLineDensityStyler());
 

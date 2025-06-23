@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Configuration;
 import org.example.global.GlobalInfo;
+import org.example.parser.common.token.ExtendToken;
 import org.example.style.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;

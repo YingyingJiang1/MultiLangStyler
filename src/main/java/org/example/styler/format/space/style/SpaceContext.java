@@ -41,14 +41,14 @@ public class SpaceContext extends StyleContext {
         StringBuilder sb = new StringBuilder();
         sb.append(tokenName1);
         if (tokenName2 != null && !tokenName2.isEmpty()) {
-            sb.append(", ").append(tokenName2);
+            sb.append(" ").append(tokenName2);
         }
         parent.addAttribute("token", sb.toString());
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        String[] tokens = Arrays.stream(parent.attributeValue("token").split(","))
+        String[] tokens = Arrays.stream(parent.attributeValue("token").split(" "))
                 .map(String::trim)
                 .toArray(String[]::new);
         if (tokens.length > 0) {

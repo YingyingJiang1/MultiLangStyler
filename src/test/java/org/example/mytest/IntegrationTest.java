@@ -43,7 +43,7 @@ public class IntegrationTest {
             if (!debug_pair.isEmpty() && !strNumber.equals(debug_pair)) {
                 continue;
             }
-            Path src = Paths.get(codesDir, subDir, strNumber, "src.java");
+            Path src = Paths.get(codesDir, subDir, strNumber, "f1.java");
             Path target = Paths.get(codesDir, subDir, strNumber, "f3.java");
             if (!src.toFile().exists()) {
                 System.out.println(src.toString() + " not exists...skip!");
