@@ -165,9 +165,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
-                <configuration>
-                    <skipTests>true</skipTests> <!-- 禁用测试 -->
-                </configuration>
+<!--                <configuration>-->
+<!--                    <skipTests>true</skipTests> &lt;!&ndash; 禁用测试 &ndash;&gt;-->
+<!--                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

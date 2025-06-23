@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.controller.Preprocessor;
+import org.example.controller.TokenAugmentor;
 import org.example.parser.common.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.ExtendTokenFactory;
@@ -149,7 +149,7 @@ public class MyJavaParser implements MyParser {
         }
 
 
-        new Preprocessor().preprocess(this, null); // Add comments to the parse tree.
+        new TokenAugmentor().process(this, null);
         return root;
     }
 
@@ -757,6 +757,16 @@ public class MyJavaParser implements MyParser {
 
 
     @Override
+    public int getCommentChannel() {
+        return JavaLexer.COMMENT_CHANNEL;
+    }
+
+    @Override
+    public int getHiddenChannel() {
+        return JavaLexer.HIDDEN;
+    }
+
+    @Override
     public int getVar() {
         return JavaParser.VAR;
     }
@@ -910,19 +920,10 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public int getDefaultTokenChannel() {
+    public int getDefaultChannel() {
         return JavaLexer.DEFAULT_TOKEN_CHANNEL;
     }
 
-    @Override
-    public int getCommentTokenChannel() {
-        return JavaLexer.COMMENT_CHANNEL;
-    }
-
-    @Override
-    public int getHiddenTokenChannel() {
-        return JavaLexer.HIDDEN;
-    }
 
     @Override
     public int getRuleParExpression() {

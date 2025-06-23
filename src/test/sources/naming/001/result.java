@@ -1,25 +1,31 @@
-import java.util.Scanner;
+importjava.util.Scanner;
 
-public class ConcatenationSquareChecker {
-    public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
-        int a = scanner.nextInt();
-        int b = scanner.nextInt();
-        String concatenatedString = String.valueOf(a) + String.valueOf(b);
-        int concatenatedNumber = Integer.parseInt(concatenatedString);
+publicclassConcatenationSquareChecker{
+    publicstaticvoidmain(String[]args)throwsException{
+        Scannerscanner=newScanner(System.in);
+        // Read the input values for a and b
+                // Read the input values for a and b
+        inta=scanner.nextInt();
+        intb=scanner.nextInt();
+        // Concatenate a and b
+                // Concatenate a and b
+        StringconcatenatedString=String.valueOf(a)+String.valueOf(b);
+        // Convert the concatenated string to an integer
+                // Convert the concatenated string to an integer
+        intconcatenatedNumber=Integer.parseInt(concatenatedString);
 
-        if (isPerfectSquare(concatenatedNumber)) {
-            System.out.println("Yes");
-        } else {
-            System.out.println("No");
+        // Check if the concatenated number is a perfect square
+                // Check if the concatenated number is a perfect square
+        if(isPerfectSquare(concatenatedNumber)){System.out.println("Yes");
+        }else{System.out.println("No");
         }
-        
         scanner.close();
     }
     
-    @Override
-    private static boolean isPerfectSquare(int num) {
-        int sqrt = (int) Math.sqrt(num);
-        return sqrt * sqrt == num;
+    @Override// Helper method to check if a number is a perfect square
+    // Helper method to check if a number is a perfect square
+    privatestaticbooleanisPerfectSquare(intnumber){
+        intsqrt=(int)Math.sqrt(number);
+        returnsqrt*sqrt==number;
     }
 }

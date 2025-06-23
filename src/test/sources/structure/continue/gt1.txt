@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/test/sources/structure/continue/gt1.txt
 public static void main(string[] args) throws Exception {
 	Scanner sc = new Scanner(System.in);
 	out = new PrintWriter(System.out);
@@ -12,3 +13,18 @@ public static void main(string[] args) throws Exception {
 				out.close();
 			}
 		}}
+=======
+publicstaticvoidmain(string[]args)throwsException{
+	Scannersc=newScanner(System.in);
+	out=newPrintWriter(System.out);
+	Strings=sc.next();
+	booleanis=false;
+	intt=s.length();
+	for(inti=1;s.length()>i;i++)
+		if('1'!=s.charAt(i)){is=true;
+			if(is)out.print(t/2+t%2);
+			else{out.print(t/2+t%2);
+				out.close();
+			}}
+}
+>>>>>>> newline:src/test/sources/structure/continue_branch/001/result.java

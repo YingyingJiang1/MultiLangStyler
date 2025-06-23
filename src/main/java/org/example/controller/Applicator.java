@@ -7,7 +7,6 @@ import org.example.myException.ApplyException;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
-import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 
@@ -15,9 +14,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Applicator {
-    public static List<Token> applyRules(MyParser parser, StylerContainer container, Preprocessor preprocessor) throws ApplyException {
+    public static List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
         try {
-            preprocessor.preprocess(parser, Stage.APPLY);
+//            tokenAugmentor.process(parser, Stage.APPLY);
             parser.walkTree(Stage.APPLY, container.getFirstRoundStylers());
             parser.walkTree(Stage.APPLY, container.getSecondRoundStylers());
 

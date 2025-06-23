@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Configuration;
 import org.example.global.GlobalInfo;
+import org.example.parser.common.token.ExtendToken;
 import org.example.style.StyleFileIO;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;
@@ -88,9 +89,9 @@ public class Controller {
                     continue;
                 }
 
-                Preprocessor preprocessor = new Preprocessor();
-                List<Token> tokens = Applicator.applyRules(parser, container, preprocessor);
-                code = toString(tokens, preprocessor);
+                TokenAugmentor tokenAugmentor = new TokenAugmentor();
+                List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+                code = toString(tokens, tokenAugmentor);
                 saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
@@ -116,8 +117,8 @@ public class Controller {
                     continue;
                 }
 
-                Preprocessor preprocessor = new Preprocessor();
-                Extractor.extractRules(parser, container, preprocessor);
+                TokenAugmentor tokenAugmentor = new TokenAugmentor();
+                Extractor.extractRules(parser, container, tokenAugmentor);
 
             } catch (Exception e) {
                 logger.error("Failed to extract style rules from file: {}", files.getFilePath(i), e);
@@ -185,12 +186,12 @@ public class Controller {
         return programStyle;
     }
 
-    private String toString(List<Token> tokens, Preprocessor preprocessor) {
+    private String toString(List<Token> tokens, TokenAugmentor tokenAugmentor) {
         StringBuilder builder = new StringBuilder();
         if (tokens.get(tokens.size() - 1).getType() == parser.getEOF()) {
             tokens = tokens.subList(0, tokens.size() - 1);
         }
-        preprocessor.restoreState(tokens, parser);
+        tokenAugmentor.restoreState(tokens, parser);
         for (Token token : tokens) {
             builder.append(token.getText());
         }

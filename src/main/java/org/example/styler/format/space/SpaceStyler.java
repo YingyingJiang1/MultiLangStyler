@@ -12,6 +12,7 @@ import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.format.space.style.SpaceStyle;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -28,62 +29,46 @@ public class SpaceStyler extends Styler {
     @Override
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {
 
-        Token leftToken = index - 1 < 0 ? null : tokens.get(index - 1);
-        Token rightToken = index + 1 >= tokens.size() ? null :tokens.get(index + 1);
-
-        // Skip all token pairs those have a vws.
-        if ((leftToken != null && leftToken.getType() == parser.getVws()) || (rightToken != null && rightToken.getType() == parser.getVws())) {
+        SpaceContext context = extractContext(tokens, index, parser);
+        SpaceProperty property = extractProperty(context, tokens, index, parser);
+        if (context == null || property == null) {
             return;
         }
 
-        boolean leftSpace = leftToken != null && parser.getHws() == leftToken.getType();
-        boolean rightSpace = rightToken != null && parser.getHws() == rightToken.getType();
-
-        SpaceContext context = extractContext(tokens, index, Stage.EXTRACT, parser);
-        if (context != null) {
-            SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
-            String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
-            if (!context.tokenName2.isEmpty()) {
-                property.space1 = false;
-            }
-            style.addRule(context, property);
-        }
+        style.addRule(context, property);
 
     }
 
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
-        Token cur = tokens.get(index);
-        String curText = cur.getText();
-        boolean noNeedCheck = !curText.equals("<") && !curText.equals(">");
+
+        SpaceContext context = extractContext(tokens, index, parser);
+        SpaceProperty property = extractProperty(context,tokens,  index, parser);
+        SpaceProperty targetProperty = (SpaceProperty) style.getProperty(context);
 
 
-        SpaceContext context = extractContext(tokens, index, Stage.APPLY, parser);
-        SpaceProperty property = (SpaceProperty) style.getProperty(context);
-        if (property != null) {
-            if (cur instanceof ExtendToken extendToken) {
-                if (property.space2) {
-                    // Only add a space after the last '<'/'>' of shift operators.
-                    boolean isShiftEnd = (curText.equals("<") || curText.equals(">")) &&
-                            tokens.get(index - 1).getText().equals(curText) && !tokens.get(index + 1).getText().equals(curText);
-                    if (noNeedCheck || isShiftEnd) {
-                        extendToken.addTokenAfter(parser.getTokenFactory().create(parser.getHws(), " "), parser);
-                    }
+        if (property != null && targetProperty != null) {
+            if (property.space2 != targetProperty.space2) {
+                if (targetProperty.space2) {
+                    SpaceApplicator.addRightSpace(tokens, index, parser);
+                } else {
+                    SpaceApplicator.removeRightSpace(tokens, index, parser);
                 }
-                if (context.tokenName2.isEmpty() && property.space1) {
-                    // Only add space before the first '<'/'>' of shift operators.
-                    boolean isShiftBegin = (curText.equals("<") || curText.equals(">")) &&
-                            tokens.get(index + 1).getText().equals(curText) && !tokens.get(index - 1).getText().equals(curText);
-                    if (noNeedCheck ||isShiftBegin ){
-                        extendToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), " "), parser);
-                    }
+            }
+
+            if (context.tokenName2.isEmpty() && property.space1 != targetProperty.space1) {
+                if(targetProperty.space1) {
+                    SpaceApplicator.addLeftSpace(tokens, index, parser);
+                } else {
+                    SpaceApplicator.removeLeftSpace(tokens, index, parser);
                 }
             }
         }
         return null;
     }
+
     
-    private SpaceContext extractContext(List<Token> tokens, int index, Stage stage, MyParser parser) {
+    private SpaceContext extractContext(List<Token> tokens, int index, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         String name = generateTokenName(token, parser);
         String text = token.getText();
@@ -95,7 +80,7 @@ public class SpaceStyler extends Styler {
         if (index + 1 >= tokens.size()) {
             return null;
         }
-        Token rightToken = stage == Stage.EXTRACT ? findFirstNonWSonRight(tokens, index + 1, parser) : tokens.get(index + 1);
+        Token rightToken = findFirstNonWSonRight(tokens, index + 1, parser);
 
         String rightText = rightToken == null ? "" : rightToken.getText();
         String rightName = generateTokenName(rightToken, parser);
@@ -104,6 +89,30 @@ public class SpaceStyler extends Styler {
             return new SpaceContext(name, rightName);
         }
         return null;
+    }
+
+    private SpaceProperty extractProperty(SpaceContext context, List<Token> tokens, int index, MyParser parser) {
+        if (context == null) {
+            return null;
+        }
+
+        Token leftToken = index - 1 < 0 ? null : tokens.get(index - 1);
+        Token rightToken = index + 1 >= tokens.size() ? null :tokens.get(index + 1);
+
+        // Skip all token pairs those have a vws.
+        if ((leftToken != null && leftToken.getType() == parser.getVws()) || (rightToken != null && rightToken.getType() == parser.getVws())) {
+            return null;
+        }
+
+        boolean leftSpace = leftToken != null && parser.getHws() == leftToken.getType();
+        boolean rightSpace = rightToken != null && parser.getHws() == rightToken.getType();
+        SpaceProperty property = new SpaceProperty(leftSpace, rightSpace);
+        String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
+        if (!context.tokenName2.isEmpty()) {
+            property.space1 = false;
+        }
+
+        return property;
     }
 
     @Override

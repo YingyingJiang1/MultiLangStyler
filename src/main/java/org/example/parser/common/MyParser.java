@@ -241,7 +241,8 @@ public interface MyParser {
     String getSourceFile();
     String getInputCode();
 
-    int getDefaultTokenChannel();
-    int getCommentTokenChannel();
-    int getHiddenTokenChannel();
+
+    int getDefaultChannel();
+    int getCommentChannel();
+    int getHiddenChannel();
 }

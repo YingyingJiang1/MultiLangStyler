@@ -40,7 +40,7 @@ public class TestBase {
 	 * @param srcPath Path of file to be transformed.
 	 * @param targetPath Path of target style file.
 	 * @param classes Stylers to be tested.
-	 * @return
+	 * @return the transformed code
 	 */
 	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Object>> classes) {
 		Configuration conf = new Configuration();
@@ -56,13 +56,12 @@ public class TestBase {
 
 		FileCollection srcCollection = new FileCollection();
 		srcCollection.add(srcPath);
-		ProgramStyle sytle = controller.extractStyle(srcCollection);
-		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
-
-
 		FileCollection targetCollection = new FileCollection();
 		targetCollection.add(targetPath);
-		String code = controller.applyStyle(targetCollection);
+
+		ProgramStyle sytle = controller.extractStyle(targetCollection);
+		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
+		String code = controller.applyStyle(srcCollection);
 
 		return code;
 	}

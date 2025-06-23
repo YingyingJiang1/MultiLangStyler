@@ -1,13 +1,13 @@
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.regex.Pattern;
-import java.util.Collections;
-public class Main{
-	public static Scanner sc = new Scanner(System.in);public static void main(String[] args) throws Exception{
-		for(int i = 0; i<r; i++) {
-			for(int j = 0; j<c; j++) {
-				ary[i][c] = ary[i][c] + ary[i][j];
+importjava.util.HashMap;
+importjava.util.ArrayList;
+importjava.util.Scanner;
+importjava.util.regex.Pattern;
+importjava.util.Collections;
+publicclassMain{
+	publicstaticScannersc=newScanner(System.in);publicstaticvoidmain(String[]args)throwsException{
+		for(inti=0;i<r;i++){
+			for(intj=0;j<c;j++){
+				ary[i][c]+=ary[i][j];
 			}
 		}
 	}

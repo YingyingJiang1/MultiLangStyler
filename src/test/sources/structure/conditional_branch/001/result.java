@@ -1,25 +1,32 @@
-import java.util.Scanner;
+importjava.util.Scanner;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.nextLine();
-        String t = scanner.nextLine();
+publicclassMain{
+    publicstaticvoidmain(String[]args){
+        Scannerscanner=newScanner(System.in);
+        // Read input strings
+                // Read input strings
+        Strings=scanner.nextLine();
+        Stringt=scanner.nextLine();
         // Check if rotation is possible
-        boolean isRotationPossible = checkRotation(s, t);
+                // Check if rotation is possible
+        booleanisRotationPossible=checkRotation(s,t);
+        // Print result
+                // Print result
+        System.out.println(isRotationPossible?"Yes":"No");
         
-        System.out.println(isRotationPossible ? "Yes" : "No");
         scanner.close();
     }
     
-    public static boolean checkRotation(String s, String t) {
+    publicstaticbooleancheckRotation(Strings,Stringt){
         // Concatenate S with itself
         // This will contain all possible rotations of S
-        String doubledS = s + s;// If lengths are different, rotation is impossible
-        if (s.length() != t.length()) {
-            return false;
-        }
+                // Concatenate S with itself
+                // This will contain all possible rotations of S
+        StringdoubledS=s+s;// If lengths are different, rotation is impossible
+        // If lengths are different, rotation is impossible
+        if(s.length()!=t.length()){returnfalse;
+        }// If T is a substring of doubledS, then T is a rotation of S
         // If T is a substring of doubledS, then T is a rotation of S
-        return doubledS.contains(t);
+        returndoubledS.contains(t);
     }
 }

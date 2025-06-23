@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2025-06-03 14:23:44,317 ERROR --- [main] org.example.TestBase.testCodeEqual/75 : File src\test\sources\structure\continue\gt1.java not found!
 java.nio.file.NoSuchFileException: src\test\sources\structure\continue\gt1.java
 	at java.base/sun.nio.fs.WindowsException.translateToIOException(WindowsException.java:85)
@@ -11,6 +12,53 @@ java.nio.file.NoSuchFileException: src\test\sources\structure\continue\gt1.java
 	at java.base/java.nio.file.Files.readString(Files.java:3325)
 	at org.example.TestBase.testCodeEqual(TestBase.java:72)
 	at org.example.styler.structure.StructureStylerTest.testApplyStyle_continuePreference(StructureStylerTest.java:121)
+=======
+2025-05-22 16:55:42,487 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-05-22 16:56:46,821 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-05-22 16:58:47,779 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-05-22 17:03:50,193 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-05-22 17:05:07,823 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-06-23 10:22:12,125 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\comment\003\style.xml
+2025-06-23 10:22:12,142 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\comment\003\style-self.xml
+2025-06-23 10:22:12,224 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\Test.java doesn't exist.
+2025-06-23 10:22:12,267 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml
+2025-06-23 10:22:12,273 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style-self.xml
+2025-06-23 10:22:12,313 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\expression_complexity\002\style.xml
+2025-06-23 10:22:12,316 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\expression_complexity\002\style-self.xml
+2025-06-23 10:22:12,424 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\method_complexity\001\style.xml
+2025-06-23 10:22:12,428 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\method_complexity\001\style-self.xml
+2025-06-23 10:22:12,492 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\declaration_location\001\style.xml
+2025-06-23 10:22:12,497 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\declaration_location\001\style-self.xml
+2025-06-23 10:22:12,535 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\Test.java doesn't exist.
+2025-06-23 10:22:12,549 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml
+2025-06-23 10:22:12,554 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style-self.xml
+2025-06-23 10:22:12,575 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\declarationNumber\pair1\target.java doesn't exist.
+2025-06-23 10:22:12,576 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\declarationNumber\pair1\Test.java doesn't exist.
+2025-06-23 10:22:12,580 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\declarationNumber\pair1\style.xml
+2025-06-23 10:22:12,583 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\declarationNumber\pair1\style-self.xml
+2025-06-23 10:22:12,608 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\ifelse\pair1\Test.java doesn't exist.
+2025-06-23 10:22:12,610 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\ifelse\pair1\target.java doesn't exist.
+2025-06-23 10:22:12,614 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\ifelse\pair1\style.xml
+2025-06-23 10:22:12,618 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\ifelse\pair1\style-self.xml
+2025-06-23 10:22:12,640 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\Test.java doesn't exist.
+2025-06-23 10:22:12,655 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml
+2025-06-23 10:22:12,658 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style-self.xml
+2025-06-23 10:22:12,665 ERROR --- [main] org.example.mytest.IntegrationTest.extractFromSrcFile/129 : src\test\sources\linestmt\multiStmtInLine.java
+java.nio.file.NoSuchFileException: src\test\sources\linestmt\multiStmtInLine.java
+	at java.base/sun.nio.fs.WindowsException.translateToIOException(WindowsException.java:85)
+	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:103)
+	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:108)
+	at java.base/sun.nio.fs.WindowsFileAttributeViews$Basic.readAttributes(WindowsFileAttributeViews.java:53)
+	at java.base/sun.nio.fs.WindowsFileAttributeViews$Basic.readAttributes(WindowsFileAttributeViews.java:38)
+	at java.base/sun.nio.fs.WindowsFileSystemProvider.readAttributes(WindowsFileSystemProvider.java:199)
+	at java.base/java.nio.file.Files.readAttributes(Files.java:1851)
+	at java.base/java.nio.file.Files.size(Files.java:2468)
+	at org.antlr.v4.runtime.CharStreams.fromPath(CharStreams.java:86)
+	at org.antlr.v4.runtime.CharStreams.fromPath(CharStreams.java:76)
+	at org.example.parser.java.MyJavaParser.parse(MyJavaParser.java:159)
+	at org.example.mytest.IntegrationTest.extractFromSrcFile(IntegrationTest.java:123)
+	at org.example.mytest.LineStmtIntegrationTest.test(LineStmtIntegrationTest.java:20)
+>>>>>>> newline
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -74,6 +122,7 @@ java.nio.file.NoSuchFileException: src\test\sources\structure\continue\gt1.java
 	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
 	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
 	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+<<<<<<< HEAD
 	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:63)
 	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:57)
 	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
@@ -428,15 +477,258 @@ java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
 	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:63)
 	at org.example.parser.java.ExtendJavaParserListener.exitStatement(ExtendJavaParserListener.java:879)
 	at org.example.parser.java.antlr.JavaParser$StatementContext.exitRule(JavaParser.java:6384)
+=======
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+2025-06-23 10:22:12,692 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\Test.java doesn't exist.
+2025-06-23 10:22:12,711 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml
+2025-06-23 10:22:12,716 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style-self.xml
+2025-06-23 10:22:12,735 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\literalusage\pair1\Test.java doesn't exist.
+2025-06-23 10:22:12,736 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\literalusage\pair1\target.java doesn't exist.
+2025-06-23 10:22:12,740 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\literalusage\pair1\style.xml
+2025-06-23 10:22:12,742 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\literalusage\pair1\style-self.xml
+2025-06-23 10:22:12,760 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\Test.java doesn't exist.
+2025-06-23 10:22:12,776 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml
+2025-06-23 10:22:12,781 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style-self.xml
+2025-06-23 10:22:12,798 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\modifierorder\pair1\Test.java doesn't exist.
+2025-06-23 10:22:12,800 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File src\test\sources\modifierorder\pair1\target.java doesn't exist.
+2025-06-23 10:22:12,803 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\modifierorder\pair1\style.xml
+2025-06-23 10:22:12,806 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\modifierorder\pair1\style-self.xml
+2025-06-23 10:22:12,853 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\naming\001\style.xml
+2025-06-23 10:22:12,857 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\naming\001\style-self.xml
+2025-06-23 10:22:12,921 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\optional_brace\001\style.xml
+2025-06-23 10:22:12,924 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\optional_brace\001\style-self.xml
+2025-06-23 10:22:12,970 WARN  --- [main] org.example.utils.FileCollector.getFileRecursivelyIf/54 : File C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\Test.java doesn't exist.
+2025-06-23 10:22:12,982 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style.xml
+2025-06-23 10:22:12,986 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:C:\Users\dell\jyy\科研\code-style-transformation\experiment\result\forsee_analysis\weakness\claude35sonnet\001\style-self.xml
+2025-06-23 10:22:13,034 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\001\style.xml
+2025-06-23 10:22:13,037 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\001\style-self.xml
+2025-06-23 10:22:13,075 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\003\style.xml
+2025-06-23 10:22:13,079 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\003\style-self.xml
+2025-06-23 10:22:13,114 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\conditional_branch\001\style.xml
+2025-06-23 10:22:13,117 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\conditional_branch\001\style-self.xml
+2025-06-23 10:22:13,156 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\conditional_branch\001\style.xml
+2025-06-23 10:22:13,160 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\conditional_branch\001\style-self.xml
+2025-06-23 10:22:13,196 ERROR --- [main] org.example.parser.java.ExtendJavaParserListener.doTask/54 : BraceFormatStyler exception at stage EXTRACT.
+java.lang.NullPointerException: Cannot read field "start" because "block" is null
+	at org.example.styler.format.body.braceformat.BraceFormatStyler.extractProperty(BraceFormatStyler.java:168)
+	at org.example.styler.format.body.braceformat.BraceFormatStyler.extractStyle(BraceFormatStyler.java:99)
+	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:52)
+	at org.example.parser.java.ExtendJavaParserListener.exitForStmt(ExtendJavaParserListener.java:354)
+	at org.example.parser.java.antlr.JavaParser$ForStmtContext.exitRule(JavaParser.java:6750)
+>>>>>>> newline
 	at org.antlr.v4.runtime.tree.ParseTreeWalker.exitRule(ParseTreeWalker.java:62)
 	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:25)
 	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
 	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
 	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+<<<<<<< HEAD
 	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
 	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
 	at org.example.styler.structure.StructureStylerTest.doApply(StructureStylerTest.java:94)
 	at org.example.styler.structure.StructureStylerTest.testApplyStyle_continuePreference(StructureStylerTest.java:124)
+=======
+	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
+	at org.example.controller.Extractor.extractOnAST(Extractor.java:27)
+	at org.example.controller.Extractor.extractRules(Extractor.java:19)
+	at org.example.controller.Controller.extractStyle(Controller.java:120)
+	at org.example.controller.Controller.execute(Controller.java:52)
+	at org.example.Main.main(Main.java:24)
+	at org.example.mytest.IntegrationTest.transformSingleFile(IntegrationTest.java:98)
+	at org.example.mytest.IntegrationTest.batchTest(IntegrationTest.java:52)
+	at org.example.mytest.StructurePreferenceTest.testContinueBranchStmt(StructurePreferenceTest.java:31)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+2025-06-23 10:22:13,209 ERROR --- [main] org.example.parser.java.ExtendJavaParserListener.doTask/54 : BraceFormatStyler exception at stage EXTRACT.
+java.lang.NullPointerException: Cannot read field "start" because "block" is null
+	at org.example.styler.format.body.braceformat.BraceFormatStyler.extractProperty(BraceFormatStyler.java:168)
+	at org.example.styler.format.body.braceformat.BraceFormatStyler.extractStyle(BraceFormatStyler.java:99)
+	at org.example.parser.java.ExtendJavaParserListener.doTask(ExtendJavaParserListener.java:52)
+	at org.example.parser.java.ExtendJavaParserListener.exitForStmt(ExtendJavaParserListener.java:354)
+	at org.example.parser.java.antlr.JavaParser$ForStmtContext.exitRule(JavaParser.java:6750)
+	at org.antlr.v4.runtime.tree.ParseTreeWalker.exitRule(ParseTreeWalker.java:62)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:25)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.common.MyParseTreeWalker.walk(MyParseTreeWalker.java:22)
+	at org.example.parser.java.MyJavaParser.walkTree(MyJavaParser.java:182)
+	at org.example.controller.Extractor.extractOnAST(Extractor.java:27)
+	at org.example.controller.Extractor.extractRules(Extractor.java:19)
+	at org.example.controller.Controller.extractStyle(Controller.java:120)
+	at org.example.controller.Controller.execute(Controller.java:55)
+	at org.example.Main.main(Main.java:24)
+	at org.example.mytest.IntegrationTest.transformSingleFile(IntegrationTest.java:98)
+	at org.example.mytest.IntegrationTest.batchTest(IntegrationTest.java:52)
+	at org.example.mytest.StructurePreferenceTest.testContinueBranchStmt(StructurePreferenceTest.java:31)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+2025-06-23 10:22:13,213 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\continue_branch\001\style.xml
+2025-06-23 10:22:13,216 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\continue_branch\001\style-self.xml
+2025-06-23 10:22:13,273 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\001\style.xml
+2025-06-23 10:22:13,276 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\001\style-self.xml
+2025-06-23 10:22:13,311 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\003\style.xml
+2025-06-23 10:22:13,316 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\structure\expression_stmt\003\style-self.xml
+2025-06-23 10:22:13,331 ERROR --- [main] org.example.styler.structure.handler.Handler.createHandler/52 : Handler not found: 
+2025-06-23 10:22:13,336 ERROR --- [main] org.example.styler.structure.handler.Handler.createHandler/52 : Handler not found: 
+2025-06-23 10:22:13,339 ERROR --- [main] org.example.styler.structure.handler.Handler.createHandler/52 : Handler not found: 
+2025-06-23 10:22:13,343 ERROR --- [main] org.example.styler.structure.handler.Handler.createHandler/52 : Handler not found: 
+2025-06-23 10:22:13,392 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-06-23 17:49:20,131 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 17:52:20,190 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 17:55:37,146 ERROR --- [main] org.example.controller.Extractor.extractRules/21 : Cannot read field "tokenName2" because "context" is null
+java.lang.NullPointerException: Cannot read field "tokenName2" because "context" is null
+	at org.example.styler.format.space.SpaceStyler.extractProperty(SpaceStyler.java:111)
+	at org.example.styler.format.space.SpaceStyler.extractStyle(SpaceStyler.java:33)
+	at org.example.controller.Extractor.extractOnTS(Extractor.java:44)
+	at org.example.controller.Extractor.extractRules(Extractor.java:17)
+	at org.example.controller.Controller.extractStyle(Controller.java:120)
+	at org.example.TestBase.apply(TestBase.java:55)
+	at org.example.styler.format.space.SpaceStylerTest.applyStyle(SpaceStylerTest.java:30)
+>>>>>>> newline
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -507,3 +799,285 @@ java.lang.IndexOutOfBoundsException: Index 1 out of bounds for length 1
 	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
 	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
 	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+<<<<<<< HEAD
+=======
+2025-06-23 17:55:37,154 ERROR --- [main] org.example.controller.Controller.extractStyle/123 : Failed to extract style rules from file: src\test\sources\format\space\f1.java
+org.example.myException.ExtractException: Cannot read field "tokenName2" because "context" is null
+	at org.example.controller.Extractor.extractRules(Extractor.java:22)
+	at org.example.controller.Controller.extractStyle(Controller.java:120)
+	at org.example.TestBase.apply(TestBase.java:55)
+	at org.example.styler.format.space.SpaceStylerTest.applyStyle(SpaceStylerTest.java:30)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:63)
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:57)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+Caused by: java.lang.NullPointerException: Cannot read field "tokenName2" because "context" is null
+	at org.example.styler.format.space.SpaceStyler.extractProperty(SpaceStyler.java:111)
+	at org.example.styler.format.space.SpaceStyler.extractStyle(SpaceStyler.java:33)
+	at org.example.controller.Extractor.extractOnTS(Extractor.java:44)
+	at org.example.controller.Extractor.extractRules(Extractor.java:17)
+	... 73 common frames omitted
+2025-06-23 17:55:37,253 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 17:55:37,341 ERROR --- [main] org.example.controller.Controller.applyStyle/96 : Failed to apply style rules to file: src\test\sources\format\space\f2.java
+2025-06-23 17:55:37,341 ERROR --- [main] org.example.controller.Controller.applyStyle/97 : Exception details:
+org.example.myException.ApplyException: Cannot read field "tokenName2" because "context" is null
+	at org.example.controller.Applicator.applyRules(Applicator.java:33)
+	at org.example.controller.Controller.applyStyle(Controller.java:92)
+	at org.example.TestBase.apply(TestBase.java:61)
+	at org.example.styler.format.space.SpaceStylerTest.applyStyle(SpaceStylerTest.java:30)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:63)
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:57)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+Caused by: java.lang.NullPointerException: Cannot read field "tokenName2" because "context" is null
+	at org.example.styler.format.space.SpaceStyler.extractProperty(SpaceStyler.java:111)
+	at org.example.styler.format.space.SpaceStyler.applyStyle(SpaceStyler.java:46)
+	at org.example.controller.Applicator.applyOnTS(Applicator.java:68)
+	at org.example.controller.Applicator.applyRules(Applicator.java:27)
+	... 73 common frames omitted
+2025-06-23 17:56:34,911 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 17:57:40,656 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 17:59:09,380 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 17:59:48,491 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:04:08,801 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:05:10,972 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:07:14,889 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:07:50,907 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:10:22,296 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:11:10,689 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:25:30,503 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:25:30,540 ERROR --- [main] org.example.controller.Controller.applyStyle/97 : Failed to apply style rules to file: src\test\sources\format\space\f1.java
+2025-06-23 18:25:30,541 ERROR --- [main] org.example.controller.Controller.applyStyle/98 : Exception details:
+java.lang.IndexOutOfBoundsException: Index: -1, Size: 0
+	at java.base/java.util.LinkedList.checkElementIndex(LinkedList.java:559)
+	at java.base/java.util.LinkedList.get(LinkedList.java:480)
+	at org.example.controller.Controller.toString(Controller.java:191)
+	at org.example.controller.Controller.applyStyle(Controller.java:94)
+	at org.example.TestBase.apply(TestBase.java:60)
+	at org.example.styler.format.space.SpaceStylerTest.applyStyle(SpaceStylerTest.java:30)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:63)
+	at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:57)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)
+	at com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)
+	at com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)
+	at com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:232)
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:55)
+2025-06-23 18:26:50,341 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:27:38,567 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:34:08,279 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:38:47,717 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:41:50,683 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:42:46,530 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:43:38,949 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:46:17,126 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:46:41,106 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:47:08,118 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:53:14,487 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 18:54:29,567 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:08:12,866 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:10:23,465 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:11:07,512 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:12:32,821 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:18:26,526 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:20:34,239 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:20:34,345 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:21:13,026 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 19:21:13,117 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+>>>>>>> newline
+2025-06-23 20:14:52,919 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-06-23 20:14:53,026 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml

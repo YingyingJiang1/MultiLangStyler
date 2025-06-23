@@ -4,23 +4,83 @@
   <style name="naming_format">
     <rule>
       <style_context name_type="PARAMETER"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="6"/>
     </rule>
     <rule>
-      <style_context name_type="LOCAL_VARIABLE"/>
-      <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="10"/>
+      <style_context name_type="METHOD"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="15"/>
+    </rule>
+    <rule>
+      <style_context name_type="METHOD"/>
+      <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="15"/>
+    </rule>
+    <rule>
+      <style_context name_type="TYPE"/>
+      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="26"/>
     </rule>
     <rule>
       <style_context name_type="LOCAL_VARIABLE" IMPLICIT_CONST="IMPLICIT_CONST"/>
       <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="7"/>
     </rule>
     <rule>
-      <style_context name_type="TYPE"/>
-      <style_property case_format="UPPER_CAMEL" start_with_underscore="false" max_length="4"/>
+      <style_context name_type="LOCAL_VARIABLE"/>
+      <style_property case_format="LOWER_CAMEL" start_with_underscore="false" max_length="18"/>
     </rule>
     <rule>
-      <style_context name_type="METHOD"/>
-      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="4"/>
+      <style_context name_type="LOCAL_VARIABLE"/>
+      <style_property case_format="ALL_LOWER_CASE" start_with_underscore="false" max_length="18"/>
+    </rule>
+  </style>
+  <style name="line_statement">
+    <rule>
+      <style_context maxTextLength="0"/>
+      <style_property newlines="1"/>
+    </rule>
+  </style>
+  <style name="newline">
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="CONDITIONAL_STMT" minTextLength="156" hasComment="false"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="SINGLE_STMT" minTextLength="0" hasComment="false"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false" hasComment="false"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="importDeclarationList" type2="TYPE_DEC" hasComment="false"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false" hasComment="true"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="CONDITIONAL_STMT" minTextLength="157" hasComment="true"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC" hasComment="false"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="CONDITIONAL_STMT" type2="EXPRESSION_STMT" minTextLength="114" hasComment="false"/>
+      <style_property newlines="1"/>
+    </rule>
+    <rule>
+      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="true" hasComment="false"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="annotation" type2="KEYWORD" hasComment="false"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context type1="FUNCTION_DEC" type2="FUNCTION_DEC" hasComment="false"/>
+      <style_property newlines="1"/>
     </rule>
   </style>
   <style name="if_else_body_order"/>
@@ -38,26 +98,18 @@
       <style_property use_brace="true"/>
     </rule>
   </style>
-  <style name="multi_branch"/>
   <style name="brace_format">
     <rule>
       <style_context>
         <block_type>DEC_BODY</block_type>
-        <body_type>SINGLE</body_type>
+        <body_type>MULTI</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
     </rule>
     <rule>
       <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
-        <body_type>SINGLE</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="false"/>
-    </rule>
-    <rule>
-      <style_context>
         <block_type>DEC_BODY</block_type>
-        <body_type>MULTI</body_type>
+        <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
     </rule>
@@ -71,16 +123,13 @@
       </style_property>
     </rule>
   </style>
-  <style name="most_complex_expression">
+  <style name="structure_preference">
     <rule>
-      <style_context expType="TOP_EXP"/>
-      <style_property maxExpressionLength="41" maxSubExpNum="3"/>
-    </rule>
-    <rule>
-      <style_context expType="CONDITIONAL_EXP"/>
-      <style_property maxExpressionLength="37" maxSubExpNum="6"/>
+      <style_context id="25" category="Redundant code"/>
+      <style_property preferenceIndex="0"/>
     </rule>
   </style>
+  <style name="body_layout"/>
   <style name="lineWrapping">
     <rule>
       <style_context attr="CODE"/>
@@ -104,169 +153,4 @@
       </style_property>
     </rule>
   </style>
-  <style name="space">
-    <rule>
-      <style_context token="IDENTIFIER, ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="(, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="(, LITERAL"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, ,"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token=",, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="BIN_OP"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token=",, LITERAL"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, ("/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="DOT"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="], IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="), )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="[, ]"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="}, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="(, IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="LITERAL, )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="), ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="), {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER, ["/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD, KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="LITERAL, ,"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-  </style>
-  <style name="comment_syntax"/>
-  <style name="arrangement">
-    <rule>
-      <style_context type="class" statistic="methodDeclarationList=1"/>
-      <style_property>
-        <member_list name="methodDeclarationList">
-          <feature statistic="PUBLIC=1,STATIC=1"/>
-          <order allowedOrderDeviation="0.3">
-            <logical_order>MODIFIER_LEXI_ORDER</logical_order>
-            <modifier_order>
-              <column1>PUBLIC</column1>
-              <column2>STATIC</column2>
-            </modifier_order>
-          </order>
-        </member_list>
-      </style_property>
-    </rule>
-  </style>
-  <style name="comment_density">
-    <rule>
-      <style_property density="0.0"/>
-    </rule>
-  </style>
-  <style name="line_statement">
-    <rule>
-      <style_context maxTextLength="0"/>
-      <style_property newlines="1"/>
-    </rule>
-  </style>
-  <style name="newline">
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="DECLARATION_STMT" minTextLength="0" hasSameDecType="false"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context type1="DECLARATION_STMT" type2="CONDITIONAL_STMT" minTextLength="156"/>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context type1="FILE_HEAD_DEC" type2="FILE_HEAD_DEC"/>
-      <style_property newlines="1"/>
-    </rule>
-    <rule>
-      <style_context type1="importDeclarationList" type2="TYPE_DEC"/>
-      <style_property newlines="2"/>
-    </rule>
-  </style>
-  <style name="structure_preference">
-    <rule>
-      <style_context id="7" category="Continuous assignments or calls preferences"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
-  </style>
-  <style name="literal_usage"/>
-  <style name="body_layout"/>
 </program_style>

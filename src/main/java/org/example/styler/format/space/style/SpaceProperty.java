@@ -5,6 +5,11 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 
 public class SpaceProperty extends StyleProperty {
+    /**
+     * int a = 1;
+     * context:(int, a) -> property:(, " ")
+     * context:(=, ) -> property:(" ", " ")
+     */
     public boolean space1, space2;
 
     public SpaceProperty() {
