@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class Extractor {
-    public static void extractRules(MyParser parser, StylerContainer container, Preprocessor preprocessor) throws ExtractException {
+    public static void extractRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ExtractException {
         try {
-            preprocessor.preprocess(parser, Stage.EXTRACT);
+//            tokenAugmentor.process(parser, Stage.EXTRACT);
             extractOnTS(parser, container);
-            preprocessor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
+            tokenAugmentor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
             extractOnAST(parser, container);
         } catch (Exception e) {
             LoggerFactory.getLogger(Extractor.class).error(e.getMessage(), e);

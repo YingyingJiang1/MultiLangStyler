@@ -10,6 +10,6 @@ public class LiteralUsageTest extends IntegrationTest {
     @Test
     void testPair1() {
         Path dirPath = Paths.get(dir, "pair1");
-        transformSingleFile(Paths.get(dirPath.toString(), "Test.java"), Paths.get(dirPath.toString(), "target.java"));
+        transformSingleFile(Paths.get(dirPath.toString(), "Test.java"), Paths.get(dirPath.toString(), "f3.java"));
     }
 }

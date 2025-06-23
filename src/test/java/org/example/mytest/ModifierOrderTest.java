@@ -10,7 +10,7 @@ public class ModifierOrderTest extends IntegrationTest {
     @Test
     public void testPair1() {
         transformSingleFile(Paths.get(dir, "pair1", "Test.java"),
-                Paths.get(dir, "pair1", "target.java")
+                Paths.get(dir, "pair1", "f3.java")
         );
     }
 }

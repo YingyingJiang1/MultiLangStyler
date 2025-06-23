@@ -30,7 +30,7 @@ public class IntegrationTest {
 //        manager.writeJsonData("D:\\jyy\\科研\\style\\transformer\\src\\main\\resources\\equivalencesConf.json");
         String dir = "C:\\Users\\dell\\jyy\\科研\\code-style-transformation\\experiment\\result\\forsee_analysis\\weakness\\claude35sonnet\\001";
         Path src = Paths.get(dir, "Test.java");
-        Path target = Paths.get(dir, "target.java");
+        Path target = Paths.get(dir, "f3.java");
         transformSingleFile(src, target);
 
     }
@@ -44,7 +44,7 @@ public class IntegrationTest {
                 continue;
             }
             Path src = Paths.get(codesDir, subDir, strNumber, "src.java");
-            Path target = Paths.get(codesDir, subDir, strNumber, "target.java");
+            Path target = Paths.get(codesDir, subDir, strNumber, "f3.java");
             if (!src.toFile().exists()) {
                 System.out.println(src.toString() + " not exists...skip!");
                 continue;

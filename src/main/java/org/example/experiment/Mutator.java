@@ -20,7 +20,7 @@ import org.dom4j.DocumentException;
 import org.example.Configuration;
 import org.example.controller.Applicator;
 import org.example.controller.Extractor;
-import org.example.controller.Preprocessor;
+import org.example.controller.TokenAugmentor;
 import org.example.controller.StylerContainer;
 import org.example.global.GlobalInfo;
 import org.example.myException.ApplyException;
@@ -99,10 +99,10 @@ public class Mutator {
             }
             ProgramStyle selfStyle = mutator.extractSelf();
             SelfStyleManager.addStyle(null, selfStyle);
-            Preprocessor preprocessor = new Preprocessor();
-            List<Token> tokens = Applicator.applyRules(mutator.parser, container, preprocessor);
+            TokenAugmentor tokenAugmentor = new TokenAugmentor();
+            List<Token> tokens = Applicator.applyRules(mutator.parser, container, tokenAugmentor);
             tokens.removeIf(token -> token.getType() == mutator.parser.getEOF());
-            preprocessor.restoreState(tokens, mutator.parser);
+            tokenAugmentor.restoreState(tokens, mutator.parser);
             return tokens.stream()
                     .map(Token::getText)
                     .reduce("", String::concat);
@@ -127,9 +127,9 @@ public class Mutator {
     }
 
     private ProgramStyle extractSelf() throws ExtractException {
-        Preprocessor preprocessor = new Preprocessor();
+        TokenAugmentor tokenAugmentor = new TokenAugmentor();
         StylerContainer selfContainer = new StylerContainer();
-        Extractor.extractRules(parser, selfContainer, preprocessor);
+        Extractor.extractRules(parser, selfContainer, tokenAugmentor);
         ProgramStyle selfStyle = new ProgramStyle();
         for (Styler styler : selfContainer.getStylers()) {
             styler.extractFinalize();

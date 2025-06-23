@@ -74,6 +74,14 @@ public class ExtendToken extends CommonToken {
         contextTokens.add(index, token);
     }
 
+    public void addTokens(int index, List<Token> tokens) {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
+        }
+        contextTokens.addAll(index, tokens);
+    }
+
     public void addTokenBefore(Token token, MyParser parser) {
         if (contextTokens == null) {
             contextTokens = new ArrayList<>();
