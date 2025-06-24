@@ -11,8 +11,9 @@ import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linewrapping.LineWrappingStyler;
-import org.example.styler.format.newline.LineStmtStyler;
-import org.example.styler.format.newline.BlankLineStyler;
+import org.example.styler.format.LineStmtStyler;
+import org.example.styler.format.BlankLineStyler;
+import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
@@ -50,13 +51,15 @@ public class StylerContainer {
 
         // Format styles
         secondRoundStylers.add(new BodyLayoutStyler());
-        secondRoundStylers.add(new BraceFormatStyler());
-        secondRoundStylers.add(new LineWrappingStyler());
-        secondRoundStylers.add(new LineStmtStyler());
-        secondRoundStylers.add(new BlankLineStyler());
-        Styler indentionStyler = new IndentionStyler();
-        indentionStyler.executeWhenExit = false;
-        secondRoundStylers.add(indentionStyler);
+        secondRoundStylers.add(new NewlineStyler());
+//        secondRoundStylers.add(new BraceFormatStyler());
+//        secondRoundStylers.add(new LineWrappingStyler());
+//        secondRoundStylers.add(new LineStmtStyler());
+//        secondRoundStylers.add(new BlankLineStyler());
+
+//        Styler indentionStyler = new IndentionStyler();
+//        indentionStyler.executeWhenExit = false;
+//        secondRoundStylers.add(indentionStyler);
 
 
         tsStylers.add(new SpaceStyler());

@@ -2,106 +2,105 @@ package org.example.styler.format.newline.style;
 
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.context.RuleGroup;
-import org.example.parser.common.context.RuleGrouper;
 import org.example.style.rule.StyleContext;
 
 import java.util.*;
 
 public class NewlineContext extends StyleContext {
-    public static RuleGrouper grouper;
-    // Syntax rule types adjacent to the newline character.
-    public String typeName1, typeName2;
-    public boolean hasComment;
-    // The minimum sum of code blocks preceding and following the newline.
-    // This field is useful in the following case: more than one newline(blank lines) between two statement-level code blocks
-    // Other cases, this field is set to 0.
-    public int minTextLength;
-    public boolean hasSameDecType = false;
+	Map<String, Integer> verticalVector; // vertical vector
+	Map<String, Integer> horizontalVector; // horizontal vector
 
-    public NewlineContext() {
-    }
+	public NewlineContext() {
+		verticalVector = new java.util.HashMap<>();
+		horizontalVector = new java.util.HashMap<>();
+	}
 
-    public NewlineContext(String typeName1, String typeName2) {
-        this.typeName1 = typeName1;
-        this.typeName2 = typeName2;
-    }
+	public NewlineContext(Map<String, Integer> verticalVector, Map<String, Integer> horizontalVector) {
+		this.verticalVector = verticalVector;
+		this.horizontalVector = horizontalVector;
+	}
 
-    public NewlineContext(String typeName1, String typeName2, int minTextLength, boolean hasSameDecType) {
-        this.typeName1 = typeName1;
-        this.typeName2 = typeName2;
-        this.minTextLength = minTextLength;
-        this.hasSameDecType = hasSameDecType;
-    }
+	@Override
+	public void addElement(Element parent, MyParser parser) {
+		parent.addAttribute("verticalVector", verticalVector.toString());
+		parent.addAttribute("horizontalVector", horizontalVector.toString());
+	}
 
-    @Override
-    public void addElement(Element parent, MyParser parser) {
-       parent.addAttribute("type1", typeName1);
-       parent.addAttribute("type2", typeName2);
-
-        if (isMinTestLengthUseful()) {
-            parent.addAttribute("minTextLength", Integer.toString(minTextLength));
-        }
-        if (isHasSameDecTypeUseful()) {
-            parent.addAttribute("hasSameDecType", Boolean.toString(hasSameDecType));
-        }
-
-        parent.addAttribute("hasComment", Boolean.toString(hasComment));
-    }
-
-    @Override
-    public void parseElement(Element parent, MyParser parser) {
-        typeName1 = parent.attributeValue("type1");
-        typeName2 = parent.attributeValue("type2");
-
-        if (parent.attribute("minTextLength") != null) {
-            minTextLength = Integer.parseInt(parent.attributeValue("minTextLength"));
-        }
-        if (parent.attribute("hasSameDecType") != null) {
-            hasSameDecType = Boolean.parseBoolean(parent.attributeValue("hasSameDecType"));
-        }
-
-        hasComment = Boolean.parseBoolean(parent.attributeValue("hasComment"));
-    }
+	@Override
+	public void parseElement(Element parent, MyParser parser) {
+		if (parent.attribute("verticalVector") != null) {
+			String vectorStr = parent.attributeValue("verticalVector");
+			verticalVector = parseMap(vectorStr);
+		}
+		if (parent.attribute("horizontalVector") != null) {
+			String vectorStr = parent.attributeValue("horizontalVector");
+			horizontalVector = parseMap(vectorStr);
+		}
+	}
 
 
-    @Override
-    public double calculateDistance(StyleContext targetContext) {
-        double distance = INIT_DISTANCE;
-        boolean textLengthMeet = true;
-        if (targetContext instanceof NewlineContext context) {
-            if (Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)) {
-                distance -= DEC_WHEN_EQUAL;
-                if (hasSameDecType && hasSameDecType == context.hasSameDecType) {
-                    distance -= DEC_WHEN_EQUAL;
-                }
-            }
-            textLengthMeet = context.minTextLength + 0.2 * minTextLength >= minTextLength; // Soften the requirement of text length.
-        }
-        return textLengthMeet && distance < INIT_DISTANCE ? distance : INVALID_DISTANCE;
-    }
+	/**
+	 *
+	 * @param other
+	 * @param weights [vertical weight , horizontal weight]
+	 * @return
+	 */
+	public double similarityTo(NewlineContext other, List<Double> weights) {
+		double verticalWeight = weights.get(0);
+		double horizontalWeight = weights.get(1);
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(typeName1, typeName2, minTextLength,hasSameDecType, hasComment);
-    }
+		double vSim = this.cosineSimilarity(this.verticalVector, other.verticalVector);
+		double hSim = this.cosineSimilarity(this.horizontalVector, other.horizontalVector);
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof NewlineContext context) {
-            return Objects.equals(typeName1, context.typeName1) && Objects.equals(typeName2, context.typeName2)
-                    && minTextLength == context.minTextLength && hasSameDecType == context.hasSameDecType
-                    && hasComment == context.hasComment;
-        }
-        return false;
-    }
+		return verticalWeight * vSim + horizontalWeight * hSim;
+	}
 
-    private boolean isMinTestLengthUseful() {
-        return (RuleGroup.isSingleStmt(typeName1) || RuleGroup.isCompoundStmt(typeName1)) &&
-                (RuleGroup.isSingleStmt(typeName2)) || RuleGroup.isCompoundStmt(typeName2);
-    }
+	private double cosineSimilarity(Map<String, Integer> vec1, Map<String, Integer> vec2) {
+		Set<String> allKeys = new HashSet<>();
+		allKeys.addAll(vec1.keySet());
+		allKeys.addAll(vec2.keySet());
 
-    private boolean isHasSameDecTypeUseful() {
-        return typeName1.equals(RuleGroup.DECLARATION_STMT.name()) && typeName2.equals(typeName1);
-    }
+		double dot = 0.0;
+		double norm1 = 0.0;
+		double norm2 = 0.0;
+
+		for (String key : allKeys) {
+			int val1 = vec1.getOrDefault(key, 0);
+			int val2 = vec2.getOrDefault(key, 0);
+
+			dot += val1 * val2;
+			norm1 += val1 * val1;
+			norm2 += val2 * val2;
+		}
+
+		if (norm1 == 0 || norm2 == 0) {
+			return 0.0; // 若任一向量为零向量，返回不相似
+		}
+
+		return dot / (Math.sqrt(norm1) * Math.sqrt(norm2));
+	}
+
+	private Map<String, Integer> parseMap(String vectorStr) {
+		Map<String, Integer> vector = new HashMap<>();
+		vectorStr = vectorStr.substring(1, vectorStr.length() - 1);
+		String[] vectorStrs = vectorStr.split(",");
+		for (String v : vectorStrs) {
+			String[] entry = v.split("=");
+			vector.put(entry[0].trim(), Integer.parseInt(entry[1].trim()));
+		}
+		return vector;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		NewlineContext context = (NewlineContext) o;
+		return Objects.equals(verticalVector, context.verticalVector) && Objects.equals(horizontalVector, context.horizontalVector);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(verticalVector, horizontalVector);
+	}
 }

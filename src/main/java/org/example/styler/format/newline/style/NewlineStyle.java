@@ -1,40 +1,26 @@
 package org.example.styler.format.newline.style;
 
 import org.example.style.CommonStyle;
-import org.example.style.rule.StyleContext;
-import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
 
-import java.util.*;
+
+import java.util.List;
+import java.util.Map;
 
 public class NewlineStyle extends CommonStyle {
-
-    public NewlineStyle() {
-        super();
-        styleName = "newline";
-    }
-
-    @Override
-    public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-        if (styleContext instanceof NewlineContext context) {
-            // If `ruleset` already has a newline context whose fields except for `minCodeBlockLines` are same with `styleContext`, then updates 'minCodeBlockLines' of the newline context in `ruleset`.
-            List<StyleRule> rules = ruleSet.getRules().stream().filter(styleRule -> styleRule.styleContext instanceof NewlineContext context1 &&
-                    Objects.equals(context.typeName1, context1.typeName1) &&
-                    Objects.equals(context.typeName2, context1.typeName2)).toList();
-            for (StyleRule rule : rules) {
-                if (Objects.equals(rule.styleProperty, styleProperty) && context.minTextLength < ((NewlineContext) rule.styleContext).minTextLength) {
-                    ruleSet.updateKey(rule.styleContext, styleContext);
-                }
-            }
-        }
-        super.addRule(styleContext, styleProperty);
-    }
-
-    @Override
-    protected StyleRule createRule(String propertyName) {
-        NewlineContext context = new NewlineContext();
-        NewlineProperty property = new NewlineProperty();
-        return new StyleRule(context, property);
-    }
-
+	public NewlineProperty getProperty(NewlineContext context, double threshold, List<Double> weights) {
+		NewlineProperty targetProperty = null;
+		double curSimilarity = 0;
+		for (StyleRule rule : ruleSet.getRules()) {
+			if (rule.getStyleContext() instanceof NewlineContext context1 &&
+					rule.getStyleProperty() instanceof NewlineProperty property1) {
+				double similarity = context1.similarityTo(context, weights);
+				if (similarity >= curSimilarity) {
+					curSimilarity = similarity;
+					targetProperty = property1;
+				}
+			}
+		}
+		return  curSimilarity >= threshold ? targetProperty : null;
+	}
 }

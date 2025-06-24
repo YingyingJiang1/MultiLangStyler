@@ -32,6 +32,16 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
+    @Override
+    public Token getStop() {
+        return getChildCount() > 0 ? super.getStop() : null;
+    }
+
+    @Override
+    public Token getStart() {
+        return getChildCount() > 0 ?  super.getStart() : null;
+    }
+
     /**
      * This method isn't suitable here.
      */

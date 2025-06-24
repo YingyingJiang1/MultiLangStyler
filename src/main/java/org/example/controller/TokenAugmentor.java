@@ -126,6 +126,10 @@ public class TokenAugmentor {
 			token.addToken(insertionPoint++, ct);
 		}
 
+		if (isTrailingComment) {
+			token.hasTrailingComment = isTrailingComment;
+		}
+
 		// tokens after the non-trailing comment token and the comment token are the context tokens of the next default token.
 		ExtendToken targetToken = tokenIndex + contextTokens.size() >= tokenStream.size() ?
 				token : (ExtendToken) tokenStream.get(tokenIndex + contextTokens.size() + 1);
@@ -135,6 +139,44 @@ public class TokenAugmentor {
 		targetToken.addTokens(insertionPoint, contextTokens.subList(i, contextTokens.size()));
 
 	}
+
+//	public void addContextTokens(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
+//		ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
+//
+//		List<Token> contextTokens = tokenStream.getHiddenTokensToRight(tokenIndex);
+//		if (contextTokens == null) {
+//			return;
+//		}
+//
+//		// Find the first comment that is not trailing, tokens before the comment token are the context tokens of current default token,
+//		int i = 0;
+//		boolean isTrailingComment = true;
+//
+//		for (; i < contextTokens.size(); i++) {
+//			Token ct = contextTokens.get(i);
+//			if (!isTrailingComment || parser.belongToComment(ct.getType())) {
+//				break;
+//			}
+//			if (ct.getText().endsWith("\n")) {
+//				isTrailingComment = false;
+//			}
+//		}
+//
+//		int insertionPoint = token.indexInContextTokens() + 1;
+//		ExtendToken nextToken = tokenIndex + contextTokens.size() >= tokenStream.size() ?
+//				token : (ExtendToken) tokenStream.get(tokenIndex + contextTokens.size() + 1);
+//		int nextIP = 0;
+//		if (nextToken == token) {
+//			nextIP = token.getContextTokens().size();
+//		}
+//		if (isTrailingComment && i < contextTokens.size()) {
+//			token.addTokens(insertionPoint, contextTokens.subList(0, i + 1));
+//			nextToken.addTokens(nextIP, contextTokens.subList(i + 1, contextTokens.size()));
+//		} else {
+//			nextToken.addTokens(nextIP, contextTokens);
+//		}
+//	}
+
 
 
 	/**

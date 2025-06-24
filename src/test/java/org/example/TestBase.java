@@ -11,7 +11,9 @@ import org.example.style.ProgramStyle;
 import org.example.style.Style;
 import org.example.style.StyleFileIO;
 import org.example.styler.Styler;
+import org.example.styler.format.newline.NewlineStyler;
 import org.example.utils.FileCollection;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.support.SimpleTriggerContext;
@@ -34,6 +36,34 @@ public class TestBase {
 		return null;
 	}
 
+
+	/**
+	 * Framework of applystyle test
+	 */
+//	@Test
+//	void applyStyle() {
+//		String[] srcFiles = {
+//				"src/test/sources/format/newline/f1.java",
+//				"src/test/sources/format/newline/f3.java",
+//		};
+//
+//		String[] targetFiles = {
+//				"src/test/sources/format/newline/f2.java",
+//				"src/test/sources/format/newline/f1.java",
+//		};
+//
+//		for (int i = 0; i < srcFiles.length; i++) {
+//			Path gtPath = Paths.get("src/test/sources/format/newline", String.format("gt%s.java", i + 1));
+//			String actual = apply(Paths.get(srcFiles[i]), Paths.get(targetFiles[i]), List.of(NewlineStyler.class));
+//			try{
+//				Files.writeString(gtPath, actual);
+//			}	catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//			testCodeEqual(actual, gtPath);
+//		}
+//	}
 
 	/**
 	 *

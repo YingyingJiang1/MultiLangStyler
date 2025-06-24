@@ -1,21 +1,6 @@
 package org.example.analysis.style.extractor.style;
 
-import org.example.analysis.StyleType;
-import org.example.analysis.feature.FeatureVector;
-import org.example.analysis.feature.featurevalue.BooleanFeatureValue;
-import org.example.analysis.style.ComputableStyle;
 import org.example.analysis.style.ComputableStyleExtractor;
-import org.example.analysis.feature.featurevalue.StyleVector;
-import org.example.analysis.feature.featurevalue.VectorFeatureValue;
-import org.example.style.Style;
-import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
-import org.example.styler.format.linewrapping.style.LineWrappingContext;
-import org.example.styler.format.linewrapping.style.LineWrappingProperty;
-import org.example.styler.format.newline.style.NewlineProperty;
-
-import java.util.List;
-import java.util.Map;
 
 public class LineWrappingFeature extends ComputableStyleExtractor {
 

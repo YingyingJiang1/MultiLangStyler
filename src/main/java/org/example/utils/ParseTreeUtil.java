@@ -239,6 +239,39 @@ public class ParseTreeUtil {
     return newStmt;
   }
 
+  public static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
+    if (root instanceof TerminalNode) {
+      int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
+      ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());
+      List<Token> contextTokens = token.getContextTokens();
+      contextTokens.forEach(t -> {
+        if (t instanceof ExtendToken extToken) {
+          extToken.setHierarchy(hierarchy);
+        }
+      });
+
+      int idxInList = tokens.size() + token.indexInContextTokens();
+      token.resetContextTokens();
+      tokens.addAll(contextTokens);
+      for (int i = idxInList - 1; i >= 0; i--) {
+        if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
+          break;
+        }
+        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() != token.getHierarchy()) {
+          extendToken.setHierarchy(token.getHierarchy());
+        }
+      }
+
+
+    } else {
+      ExtendContext ctx = (ExtendContext) root;
+      ctx.updateHierarchy(parser);
+      for (ParseTree child : ctx.children) {
+        generateTokens(child, tokens, parser);
+      }
+    }
+  }
+
 //  private void modifyLink(ExtendContext parent, ParseTree newChild, ParseTree oldChild) {
 //    for (int i = 0; i < parent.getChildCount(); i++) {
 //      ParseTree child = parent.getChild(i);

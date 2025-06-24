@@ -9,6 +9,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.ParseTreeUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Applicator {
             parser.walkTree(Stage.APPLY, container.getSecondRoundStylers());
 
             List<Token> tokens = new LinkedList<>();
-            generateTokens(parser.getRoot(), tokens, parser);
+            ParseTreeUtil.generateTokens(parser.getRoot(), tokens, parser);
 //            tokens.add(parser.getTokenFactory().create(parser.getEOF(), "<EOF>"));
 
             applyOnTS(tokens, parser, container.getTsStylers());
@@ -90,26 +91,4 @@ public class Applicator {
 
     }
 
-
-    public static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
-        if (root instanceof TerminalNode) {
-            int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
-            ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());
-            // There are some tokens add around the `token` after style transformations.
-            List<Token> contextTokens = token.getContextTokens();
-            contextTokens.forEach(t -> {
-                if (t instanceof ExtendToken extToken) {
-                    extToken.setHierarchy(hierarchy);
-                }
-            });
-            token.resetContextTokens();
-            tokens.addAll(contextTokens);
-        } else {
-            ExtendContext ctx = (ExtendContext) root;
-            ctx.updateHierarchy(parser);
-            for (ParseTree child : ctx.children) {
-                generateTokens(child, tokens, parser);
-            }
-        }
-    }
 }

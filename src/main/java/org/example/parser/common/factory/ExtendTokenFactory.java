@@ -17,6 +17,8 @@ public class ExtendTokenFactory extends CommonTokenFactory {
     super(copyText);
   }
 
+  public static ExtendTokenFactory DEFAULT = new ExtendTokenFactory(false);
+
   public ExtendTokenFactory() {
     super();
   }

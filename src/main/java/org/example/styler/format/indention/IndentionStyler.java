@@ -18,82 +18,71 @@ public class IndentionStyler extends Styler {
         style = new IndentionStyle();
     }
 
-    @Override
-    public void extractStyle(ExtendContext ctx, MyParser parser) {
-        ctx.updateHierarchy(parser);
-        if (ctx.getStart().getTokenIndex() - 1 >= 0) {
-            Token leftToken = parser.getTokenStream().get(ctx.getStart().getTokenIndex() - 1);
-            if (leftToken.getType() == parser.getHws() && leftToken.getCharPositionInLine() == 0) {
-                String text = leftToken.getText();
-                int curLineIndention = text.length();
-                char indentionType = '\0';
-
-                if(text.matches(" +")){
-                    indentionType = ' ';
-                } else if(text.matches("\t+")) {
-                    indentionType = '\t';
-                }
-                int hierarchy = ctx.hierarchy;
-                int indentionUnit = 0;
-                if(hierarchy > 0){
-                    indentionUnit = curLineIndention / hierarchy;
-                }
-
-                if (indentionType != '\0' && indentionUnit != 0) {
-                    style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
-                }
-            }
-        }
-
-    }
-
 //    @Override
-//    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
-//        ExtendToken token = (ExtendToken) tokens.get(index);
-//        if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
-//            // Extract indention.
-//            String text = token.getText();
-//            int curLineIndention = text.length();
-//            char indentionType = '\0';
+//    public void extractStyle(ExtendContext ctx, MyParser parser) {
+//        ctx.updateHierarchy(parser);
+//        if (ctx.getStart().getTokenIndex() - 1 >= 0) {
+//            Token leftToken = parser.getTokenStream().get(ctx.getStart().getTokenIndex() - 1);
+//            if (leftToken.getType() == parser.getHws() && leftToken.getCharPositionInLine() == 0) {
+//                String text = leftToken.getText();
+//                int curLineIndention = text.length();
+//                char indentionType = '\0';
 //
-//            if(text.matches(" +")){
-//                indentionType = ' ';
-//            } else if(text.matches("\t+")) {
-//                indentionType = '\t';
-//            }
-//            int hierarchy = token.getHierarchy();
-//            int indentionUnit = 0;
-//            if(hierarchy > 0){
-//                indentionUnit = curLineIndention / hierarchy;
-//            }
+//                if(text.matches(" +")){
+//                    indentionType = ' ';
+//                } else if(text.matches("\t+")) {
+//                    indentionType = '\t';
+//                }
+//                int hierarchy = ctx.hierarchy;
+//                int indentionUnit = 0;
+//                if(hierarchy > 0){
+//                    indentionUnit = curLineIndention / hierarchy;
+//                }
 //
-//            if (indentionType != '\0' && indentionUnit != 0) {
-//                style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
+//                if (indentionType != '\0' && indentionUnit != 0) {
+//                    style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
+//                }
 //            }
 //        }
+//
 //    }
+
+    @Override
+    public void extractStyle(List<Token> tokens, int index, MyParser parser) {
+        ExtendToken token = (ExtendToken) tokens.get(index);
+        if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
+            IndentionProperty property = extractProperty(token);
+            if (property.indentionType != '\0' && property.indentionUnit != 0) {
+                style.addRule(null, property);
+            }
+        }
+    }
 
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
-        IndentionProperty property = (IndentionProperty) style.getProperty(null);
-        if (property != null) {
-            String indentionStr = StringUtils.repeat(property.indentionType,
-                    curToken.getHierarchy() * property.indentionUnit) +
-                    StringUtils.repeat(property.indentionType, curToken.indention);
-            if (!indentionStr.isEmpty()) {
+        IndentionProperty targetProperty = (IndentionProperty) style.getProperty(null);
+        if (targetProperty != null) {
+            String indentionStr = StringUtils.repeat(targetProperty.indentionType,
+                    curToken.getHierarchy() * targetProperty.indentionUnit) +
+                    StringUtils.repeat(targetProperty.indentionType, curToken.indention);
+
+            if (curToken.getType() == parser.getHws()) {
+                curToken.setText(indentionStr);
+            } else if (!indentionStr.isEmpty()) {
                 curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
             }
         }
         return null;
     }
 
+
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         if (stage == Stage.EXTRACT) {
             return tokens.get(i).getType() == parser.getHws() && tokens.get(i).getCharPositionInLine() == 0;
         } else if(stage == Stage.APPLY) {
-            return isLineLeadingToken(tokens, i, parser);
+            return tokens.get(i).getType() != parser.getVws() && isLineLeadingToken(tokens, i, parser);
         } else {
             return false;
         }
@@ -103,6 +92,30 @@ public class IndentionStyler extends Styler {
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         return parser.isStatement(ctx) || parser.belongToMethodDec(ctx.getRuleIndex()) || parser.isTypeDeclaration(ctx) || parser.isFieldDeclaration(ctx);
+    }
+
+    /**
+     * @param token hws token
+     * @return indention property
+     */
+    private IndentionProperty extractProperty(ExtendToken token) {
+        // Extract indention.
+        String text = token.getText();
+        int curLineIndention = text.length();
+        char indentionType = '\0';
+
+        if(text.matches(" +")){
+            indentionType = ' ';
+        } else if(text.matches("\t+")) {
+            indentionType = '\t';
+        }
+        int hierarchy = token.getHierarchy();
+        int indentionUnit = 0;
+        if(hierarchy > 0){
+            indentionUnit = curLineIndention / hierarchy;
+        }
+
+        return new IndentionProperty(indentionUnit, indentionType);
     }
 
     private boolean isLineLeadingToken(List<Token> tokens, int i, MyParser parser) {

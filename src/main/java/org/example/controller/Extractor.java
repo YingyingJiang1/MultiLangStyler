@@ -6,17 +6,19 @@ import org.example.myException.ExtractException;
 import org.example.parser.common.MyParser;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.ParseTreeUtil;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Extractor {
     public static void extractRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ExtractException {
         try {
 //            tokenAugmentor.process(parser, Stage.EXTRACT);
-            extractOnTS(parser, container);
             tokenAugmentor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
             extractOnAST(parser, container);
+            extractOnTS(parser, container);
         } catch (Exception e) {
             LoggerFactory.getLogger(Extractor.class).error(e.getMessage(), e);
             throw new ExtractException(e.getMessage(), e);
@@ -33,7 +35,8 @@ public class Extractor {
         if (tokenStream.getTokens().isEmpty()) {
             tokenStream.fill();
         }
-        List<Token> tokens = tokenStream.getTokens();
+        List<Token> tokens = new ArrayList<>();
+        ParseTreeUtil.generateTokens(parser.getRoot(), tokens, parser);
 
         // Avoid exceptions caused by boundaries.
         int len = tokens.size() - 1;
