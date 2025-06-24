@@ -27,11 +27,11 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context verticalVector="{ExpressionContext=4, TerminalNodeImpl=1}" horizontalVector="{CreatorContext=1, TerminalNodeImpl=1}"/>
+      <style_context verticalVector="{VariableDeclaratorContext=4, TerminalNodeImpl=1}" horizontalVector="{VariableDeclaratorIdContext=1, VariableInitializerContext=1, TerminalNodeImpl=1}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context verticalVector="{VariableDeclaratorContext=4, TerminalNodeImpl=1}" horizontalVector="{VariableDeclaratorIdContext=1, VariableInitializerContext=1, TerminalNodeImpl=1}"/>
+      <style_context verticalVector="{ExpressionContext=4, TerminalNodeImpl=1}" horizontalVector="{CreatorContext=1, TerminalNodeImpl=1}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
@@ -39,11 +39,15 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
+      <style_context verticalVector="{WhileStmtContext=4, ParExpressionContext=1}" horizontalVector="{TerminalNodeImpl=1, ParExpressionContext=1, StatementContext=1}"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
       <style_context verticalVector="{ExpressionContext=4, TerminalNodeImpl=1}" horizontalVector="{ExpressionContext=2, TerminalNodeImpl=1}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context verticalVector="{ReturnStmtContext=4, TerminalNodeImpl=1}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=2}"/>
+      <style_context verticalVector="{ExpressionContext=4, TerminalNodeImpl=1}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=2}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
@@ -71,16 +75,16 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context verticalVector="{ReturnStmtContext=4, ExpressionContext=1}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=2}"/>
-      <style_property newlines="0"/>
-    </rule>
-    <rule>
       <style_context verticalVector="{MethodDeclarationListContext=1, BodyContext=4}" horizontalVector="{MethodDeclarationListContext=1, TerminalNodeImpl=2}"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
     </rule>
     <rule>
       <style_context verticalVector="{BlockContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=2, StatementContext=2}"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context verticalVector="{TerminalNodeImpl=1, IfElseStmtContext=4}" horizontalVector="{TerminalNodeImpl=2, ParExpressionContext=1, StatementContext=1}"/>
+      <style_property newlines="0"/>
     </rule>
     <rule>
       <style_context verticalVector="{ExpressionListContext=1, ArgumentsContext=4}" horizontalVector="{ExpressionListContext=1, TerminalNodeImpl=2}"/>
@@ -88,15 +92,15 @@
     </rule>
     <rule>
       <style_context verticalVector="{BlockContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=2, StatementContext=1}"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context verticalVector="{BlockContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=1, StatementContext=3}"/>
+      <style_property newlines="2"/>
     </rule>
     <rule>
       <style_context verticalVector="{AnnotationListContext=1, TypeTypeContext=4}" horizontalVector="{ClassOrInterfaceTypeContext=1, AnnotationListContext=1}"/>
       <style_property newlines="0"/>
-    </rule>
-    <rule>
-      <style_context verticalVector="{BlockContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=1, StatementContext=3}"/>
-      <style_property newlines="1"/>
     </rule>
     <rule>
       <style_context verticalVector="{ClassOrInterfaceTypeContext=1, TypeTypeContext=4}" horizontalVector="{ClassOrInterfaceTypeContext=1, AnnotationListContext=2, TerminalNodeImpl=1}"/>
@@ -124,6 +128,10 @@
     </rule>
     <rule>
       <style_context verticalVector="{IfStmtContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=1, ParExpressionContext=1, StatementContext=1}"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context verticalVector="{ParExpressionContext=1, IfElseStmtContext=4}" horizontalVector="{TerminalNodeImpl=2, ParExpressionContext=1, StatementContext=1}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
@@ -155,20 +163,12 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context verticalVector="{MethodDeclarationListContext=4, MethodDeclarationContext=1}" horizontalVector="{MethodDeclarationContext=2}"/>
-      <style_property newlines="2"/>
-    </rule>
-    <rule>
       <style_context verticalVector="{TerminalNodeImpl=1, ArgumentsContext=4}" horizontalVector="{ExpressionListContext=1, TerminalNodeImpl=2}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
       <style_context verticalVector="{BlockContext=4, StatementContext=1}" horizontalVector="{StatementContext=4}"/>
       <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context verticalVector="{BlockContext=4, StatementContext=1}" horizontalVector="{StatementContext=4}"/>
-      <style_property newlines="1"/>
     </rule>
     <rule>
       <style_context verticalVector="{TerminalNodeImpl=1, ParExpressionContext=4}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=2}"/>
@@ -192,7 +192,7 @@
     </rule>
     <rule>
       <style_context verticalVector="{CompilationUnitContext=4, ImportDeclarationListContext=1}" horizontalVector="{ImportDeclarationListContext=1, TypeDeclarationContext=1}"/>
-      <style_property newlines="2"/>
+      <style_property newlines="4"/>
     </rule>
     <rule>
       <style_context verticalVector="{AnnotationListContext=1, TypeTypeContext=4}" horizontalVector="{PrimitiveTypeContext=1, AnnotationListContext=1}"/>
@@ -203,19 +203,31 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
+      <style_context verticalVector="{StatementContext=1, IfElseStmtContext=4}" horizontalVector="{TerminalNodeImpl=2, ParExpressionContext=1, StatementContext=1}"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
       <style_context verticalVector="{ExpressionContext=1, ParExpressionContext=4}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=2}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
       <style_context verticalVector="{BodyContext=4, TerminalNodeImpl=1}" horizontalVector="{MethodDeclarationListContext=1, TerminalNodeImpl=2}"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
+    </rule>
+    <rule>
+      <style_context verticalVector="{BreakStmtContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=2}"/>
+      <style_property newlines="0"/>
     </rule>
     <rule>
       <style_context verticalVector="{ClassHeadContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=1, IdentifierContext=1}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
-      <style_context verticalVector="{MethodCallContext=4, IdentifierContext=1}" horizontalVector="{ArgumentsContext=1, IdentifierContext=1}"/>
+      <style_context verticalVector="{WhileStmtContext=4, TerminalNodeImpl=1}" horizontalVector="{TerminalNodeImpl=1, ParExpressionContext=1, StatementContext=1}"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
+      <style_context verticalVector="{ExpressionContext=5}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=2}"/>
       <style_property newlines="0"/>
     </rule>
     <rule>
@@ -223,8 +235,12 @@
       <style_property newlines="0"/>
     </rule>
     <rule>
+      <style_context verticalVector="{MethodCallContext=4, IdentifierContext=1}" horizontalVector="{ArgumentsContext=1, IdentifierContext=1}"/>
+      <style_property newlines="0"/>
+    </rule>
+    <rule>
       <style_context verticalVector="{BlockContext=4, StatementContext=1}" horizontalVector="{TerminalNodeImpl=2, StatementContext=2}"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
     </rule>
     <rule>
       <style_context verticalVector="{ExpressionContext=5}" horizontalVector="{ExpressionContext=1, TerminalNodeImpl=1}"/>
@@ -233,10 +249,6 @@
     <rule>
       <style_context verticalVector="{BlockContext=4, StatementContext=1}" horizontalVector="{TerminalNodeImpl=1, StatementContext=3}"/>
       <style_property newlines="2"/>
-    </rule>
-    <rule>
-      <style_context verticalVector="{BlockContext=4, StatementContext=1}" horizontalVector="{TerminalNodeImpl=1, StatementContext=3}"/>
-      <style_property newlines="1"/>
     </rule>
     <rule>
       <style_context verticalVector="{ForControlContext=4, TerminalNodeImpl=1}" horizontalVector="{ExpressionContext=1, ForInitContext=1, TerminalNodeImpl=2}"/>
@@ -248,7 +260,7 @@
     </rule>
     <rule>
       <style_context verticalVector="{BlockContext=4, StatementContext=1}" horizontalVector="{TerminalNodeImpl=2, StatementContext=1}"/>
-      <style_property newlines="1"/>
+      <style_property newlines="2"/>
     </rule>
   </style>
   <style name="naming_format"/>

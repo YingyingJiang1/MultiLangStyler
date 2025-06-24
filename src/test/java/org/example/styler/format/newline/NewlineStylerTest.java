@@ -34,7 +34,7 @@ class NewlineStylerTest extends TestBase {
 //			}
 
 			testCodeEqual(actual, gtPath);
-			break;
+//			break;
 		}
 	}
 }
