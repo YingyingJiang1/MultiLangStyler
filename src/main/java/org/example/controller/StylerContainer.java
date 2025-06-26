@@ -51,11 +51,11 @@ public class StylerContainer {
 
         // Format styles
         secondRoundStylers.add(new BodyLayoutStyler());
-        secondRoundStylers.add(new NewlineStyler());
-//        secondRoundStylers.add(new BraceFormatStyler());
-//        secondRoundStylers.add(new LineWrappingStyler());
-//        secondRoundStylers.add(new LineStmtStyler());
-//        secondRoundStylers.add(new BlankLineStyler());
+//        secondRoundStylers.add(new NewlineStyler());
+        secondRoundStylers.add(new BraceFormatStyler());
+        secondRoundStylers.add(new LineWrappingStyler());
+        secondRoundStylers.add(new LineStmtStyler());
+        secondRoundStylers.add(new BlankLineStyler());
 
 //        Styler indentionStyler = new IndentionStyler();
 //        indentionStyler.executeWhenExit = false;
