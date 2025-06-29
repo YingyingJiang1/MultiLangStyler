@@ -63,21 +63,6 @@ public class ExtendContext extends ParserRuleContext {
 //        }
 //    }
 
-    public void updateHierarchy(MyParser parser) {
-        for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) instanceof ExtendContext childCtx) {
-                boolean isSubStmtOfCompoundStmt = parser.getCompoundStmts().contains(this.getRuleIndex())
-                        && parser.isStatement(childCtx)
-                        && !parser.isBlock(parser.getSpecificStmt(childCtx));
-                if (parser.isBody(this) || parser.isBlock(this) || isSubStmtOfCompoundStmt) {
-                    childCtx.hierarchy = this.hierarchy + 1;
-                } else {
-                    childCtx.hierarchy = this.hierarchy;
-                }
-            }
-        }
-    }
-
 
     public ExtendContext() {
         children = new ArrayList<>(0);

@@ -14,6 +14,9 @@ import java.util.List;
 
 public class IndentionStyler extends Styler {
 
+    private int indentedEmptyLines = 0;
+    private int totalEmptyLines = -1;
+
     public IndentionStyler() {
         style = new IndentionStyle();
     }
@@ -49,9 +52,12 @@ public class IndentionStyler extends Styler {
 
     @Override
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {
+        if (totalEmptyLines < 0) {
+            totalEmptyLines = countBlankLines(parser.getTokenStream().getText());
+        }
         ExtendToken token = (ExtendToken) tokens.get(index);
         if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
-            IndentionProperty property = extractProperty(token);
+            IndentionProperty property = extractProperty(tokens, index, parser);
             if (property.indentionType != '\0' && property.indentionUnit != 0) {
                 style.addRule(null, property);
             }
@@ -67,38 +73,64 @@ public class IndentionStyler extends Styler {
                     curToken.getHierarchy() * targetProperty.indentionUnit) +
                     StringUtils.repeat(targetProperty.indentionType, curToken.indention);
 
+
             if (curToken.getType() == parser.getHws()) {
-                curToken.setText(indentionStr);
+                Token nextToken = tokens.get(index + 1);
+                if (nextToken.getType() == parser.getVws() && !targetProperty.indentEmptyLine) {
+                    curToken.setText("");
+                } else {
+                    curToken.setText(indentionStr);
+                }
             } else if (!indentionStr.isEmpty()) {
-                curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
+                if (targetProperty.indentEmptyLine || parser.getVws() != curToken.getType()) {
+                    curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
+                }
             }
         }
         return null;
     }
 
+    @Override
+    public void extractFinalize() {
+        style.fillStyle();
+
+        if (style.getProperty(null) instanceof IndentionProperty property) {
+
+            if (indentedEmptyLines > 0) {
+                property.indentEmptyLine = totalEmptyLines > 0 && indentedEmptyLines > totalEmptyLines - indentedEmptyLines;
+            }
+        }
+
+        indentedEmptyLines = 0;
+        totalEmptyLines = -1;
+    }
 
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         if (stage == Stage.EXTRACT) {
             return tokens.get(i).getType() == parser.getHws() && tokens.get(i).getCharPositionInLine() == 0;
         } else if(stage == Stage.APPLY) {
-            return tokens.get(i).getType() != parser.getVws() && isLineLeadingToken(tokens, i, parser);
+            return isLineLeadingToken(tokens, i, parser);
         } else {
             return false;
         }
 
     }
 
-    @Override
-    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return parser.isStatement(ctx) || parser.belongToMethodDec(ctx.getRuleIndex()) || parser.isTypeDeclaration(ctx) || parser.isFieldDeclaration(ctx);
+    private int countBlankLines(String content) {
+        String[] lines = content.split("\\R"); // "\\R" 匹配任何平台的换行符 (\n, \r\n, \r)
+        int count = 0;
+        for (String line : lines) {
+            if (line.trim().isEmpty()) {
+                count++;
+            }
+        }
+        return count;
     }
 
-    /**
-     * @param token hws token
-     * @return indention property
-     */
-    private IndentionProperty extractProperty(ExtendToken token) {
+
+    private IndentionProperty extractProperty(List<Token> tokens, int index, MyParser parser) {
+        ExtendToken token = (ExtendToken) tokens.get(index);
         // Extract indention.
         String text = token.getText();
         int curLineIndention = text.length();
@@ -113,6 +145,13 @@ public class IndentionStyler extends Styler {
         int indentionUnit = 0;
         if(hierarchy > 0){
             indentionUnit = curLineIndention / hierarchy;
+
+            if (index + 1 < tokens.size()) {
+                ExtendToken nextToken = (ExtendToken) tokens.get(index + 1);
+                if (parser.getVws() == nextToken.getType() && indentionUnit > 0) {
+                    indentedEmptyLines += 1;
+                }
+            }
         }
 
         return new IndentionProperty(indentionUnit, indentionType);

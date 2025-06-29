@@ -19,7 +19,17 @@ public class NewlineApplicator {
 		ExtendToken token = getStopToken(node);
 		if (token != null) {
 			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat(System.lineSeparator(), num));
-			token.addToken(token.getContextTokens().size(), vws);
+
+			// vws should be inserted after trailing comment or before non-trailing comment.
+			int i = token.getTrailingCommentIndex(parser);
+			if (i < 0) {
+				for (i = 0; i < token.getContextTokens().size(); i++) {
+					if (parser.belongToComment(token.getContextTokens().get(i).getType())) {
+						break;
+					}
+				}
+			}
+			token.addToken(i, vws);
 		}
 	}
 

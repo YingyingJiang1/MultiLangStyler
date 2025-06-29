@@ -179,6 +179,27 @@ public class ExtendToken extends CommonToken {
         return contextTokens != null && contextTokens.stream().anyMatch(t -> cond.test(t.getType()));
     }
 
+    public int getTrailingCommentIndex(MyParser parser) {
+        if (contextTokens == null) {
+            return -1;
+        }
+
+        int i = 0;
+        boolean isTrailing = true;
+        for (; i < contextTokens.size(); i++) {
+            if (parser.belongToComment(contextTokens.get(i).getType())) {
+                if (isTrailing) {
+                    return i + 1;
+                }
+                break;
+            }
+            if (contextTokens.get(i).getText().contains("\n")) {
+                isTrailing = false;
+            }
+        }
+        return -1;
+    }
+
     public int getHierarchy() {
         return hierarchy;
     }

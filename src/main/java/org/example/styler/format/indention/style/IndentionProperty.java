@@ -9,6 +9,7 @@ import java.util.Objects;
 public class IndentionProperty extends StyleProperty {
     public int indentionUnit;
     public char indentionType = ' ';
+    public boolean indentEmptyLine = false;
 
     public IndentionProperty() {
     }
@@ -22,23 +23,25 @@ public class IndentionProperty extends StyleProperty {
     public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("indentionUnit", String.valueOf(indentionUnit));
         parent.addAttribute("indentionType", indentionType == ' ' ? " " : "\\t");
+        parent.addAttribute("indentEmptyLine", Boolean.toString(indentEmptyLine));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
         indentionUnit = Integer.parseInt(parent.attributeValue("indentionUnit"));
         indentionType = parent.attributeValue("indentionType").equals(" ") ? ' ' : '\t';
+        indentEmptyLine = Boolean.parseBoolean(parent.attributeValue("indentEmptyLine"));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(indentionUnit, indentionType);
+        return Objects.hash(indentionUnit, indentionType, indentEmptyLine);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof IndentionProperty property) {
-            return indentionUnit == property.indentionUnit && indentionType == property.indentionType;
+            return indentionUnit == property.indentionUnit && indentionType == property.indentionType && indentEmptyLine == property.indentEmptyLine;
         }
         return false;
     }

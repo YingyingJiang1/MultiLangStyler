@@ -12,6 +12,7 @@ import org.example.parser.common.token.AmbigousToken;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.styler.Stage;
+import org.example.utils.editor.NodeEditorFactory;
 
 import java.util.*;
 
@@ -71,7 +72,7 @@ public class TokenAugmentor {
 
 	private void traverseTree(ParseTree node, MyParser parser) {
 		if (node instanceof ExtendContext ctx) {
-			ctx.updateHierarchy(parser);
+			NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
 			for (int i = 0; i < node.getChildCount(); i++) {
 				traverseTree(node.getChild(i), parser);
 			}
@@ -113,30 +114,31 @@ public class TokenAugmentor {
 		int i = 0;
 		boolean isTrailingComment = true;
 		int insertionPoint = token.indexInContextTokens() + 1;
-		for (; i < contextTokens.size(); i++) {
-			Token ct = contextTokens.get(i);
-
-			if (ct.getText().endsWith("\n")) {
-				isTrailingComment = false;
-			}
-
-			if (parser.belongToComment(ct.getType()) && !isTrailingComment) {
-				break;
-			}
-			token.addToken(insertionPoint++, ct);
-		}
-
-		if (isTrailingComment) {
-			token.hasTrailingComment = isTrailingComment;
-		}
-
-		// tokens after the non-trailing comment token and the comment token are the context tokens of the next default token.
-		ExtendToken targetToken = tokenIndex + contextTokens.size() >= tokenStream.size() ?
-				token : (ExtendToken) tokenStream.get(tokenIndex + contextTokens.size() + 1);
-		if (targetToken != token) {
-			insertionPoint = targetToken.indexInContextTokens();
-		}
-		targetToken.addTokens(insertionPoint, contextTokens.subList(i, contextTokens.size()));
+		token.addTokens(insertionPoint, contextTokens);
+//		for (; i < contextTokens.size(); i++) {
+//			Token ct = contextTokens.get(i);
+//
+//			if (ct.getText().endsWith("\n")) {
+//				isTrailingComment = false;
+//			}
+//
+//			if (parser.belongToComment(ct.getType()) && !isTrailingComment) {
+//				break;
+//			}
+//			token.addToken(insertionPoint++, ct);
+//		}
+//
+//		if (isTrailingComment) {
+//			token.hasTrailingComment = isTrailingComment;
+//		}
+//
+//		// tokens after the non-trailing comment token and the comment token are the context tokens of the next default token.
+//		ExtendToken targetToken = tokenIndex + contextTokens.size() >= tokenStream.size() ?
+//				token : (ExtendToken) tokenStream.get(tokenIndex + contextTokens.size() + 1);
+//		if (targetToken != token) {
+//			insertionPoint = targetToken.indexInContextTokens();
+//		}
+//		targetToken.addTokens(insertionPoint, contextTokens.subList(i, contextTokens.size()));
 
 	}
 

@@ -9,6 +9,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.token.ExtendToken;
+import org.example.utils.editor.NodeEditorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -265,7 +266,7 @@ public class ParseTreeUtil {
 
     } else {
       ExtendContext ctx = (ExtendContext) root;
-      ctx.updateHierarchy(parser);
+      NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
       for (ParseTree child : ctx.children) {
         generateTokens(child, tokens, parser);
       }

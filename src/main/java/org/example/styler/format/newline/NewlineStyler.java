@@ -73,6 +73,9 @@ public class NewlineStyler extends Styler {
 			String nodeName = node.getClass().getSimpleName();
 			verticalVector.put(nodeName, verticalVector.getOrDefault(nodeName, 0) + 1);
 
+			String lengthKey = String.format("Length:%s", nodeName);
+			verticalVector.put(lengthKey, verticalVector.getOrDefault(lengthKey, 0) + node.getText().length());
+
 			node = curNode.getParent();
 			if (node == null) {
 				break;
@@ -88,6 +91,8 @@ public class NewlineStyler extends Styler {
 			}
 			String nodeName = ctx.getChild(index - i).getClass().getSimpleName();
 			horizontalVector.put(nodeName, horizontalVector.getOrDefault(nodeName, 0) + 1);
+			String lengthKey = String.format("Length:%s", nodeName);
+			horizontalVector.put(lengthKey, horizontalVector.getOrDefault(lengthKey, 0) + ctx.getChild(index - i).getText().length());
 			--count;
 		}
 		// Add nodes right of `curNode` as horizontal vector
@@ -97,6 +102,8 @@ public class NewlineStyler extends Styler {
 			}
 			String nodeName = ctx.getChild(index + i).getClass().getSimpleName();
 			horizontalVector.put(nodeName, horizontalVector.getOrDefault(nodeName, 0) + 1);
+			String lengthKey = String.format("Length:%s", nodeName);
+			horizontalVector.put(lengthKey, horizontalVector.getOrDefault(lengthKey, 0) + ctx.getChild(index + i).getText().length());
 			--count;
 		}
 
@@ -130,6 +137,10 @@ public class NewlineStyler extends Styler {
 				.subList(0, nextToken.indexInContextTokens())
 				.stream().mapToInt(t -> t.getType() == parser.getVws() ? (int) t.getText().chars().filter(c -> c == '\n').count() : 0)
 				.sum();
+
+		if (curToken != null && curToken.getTrailingCommentIndex(parser) >= 0) {
+			numAfterCurToken += 1;
+		}
 		return new NewlineProperty(numAfterCurToken + numBeforeNextToken);
 	}
 }
