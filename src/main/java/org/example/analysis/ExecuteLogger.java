@@ -78,8 +78,11 @@ public class ExecuteLogger {
 		public List<String> authorPairs;
 		public String fileId;
 		public List<String> coveredTargetStyleTypes = new ArrayList<>();
-		// 每种风格执行的操作次数
+		// 每种风格能进行的最大次数的修改
+		public Map<String, Integer> possibleOperationStat = new HashMap<>();
+		// 每种风格实际执行的操作次数
 		public Map<String, Integer> operationStat = new HashMap<>();
+		public double styleDistance = 0;
 
 		public AnalysisResult(String filepath, FileCollection targetCollection) {
 			fileId = Paths.get(filepath).getFileName().toString().replace(".java", "");
