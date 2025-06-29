@@ -6,6 +6,7 @@ import java.util.List;
 import org.example.styler.Styler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
+import org.example.styler.exp.complexity.ExpressionStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
@@ -34,7 +35,7 @@ public class StylerContainer {
         firstRoundStylers.add(new DeclarationLayoutStyler());
         firstRoundStylers.add(new DeclarationLocationStyler());
        firstRoundStylers.add(new IfElseBodyOrderStyler());
-//        firstRoundStylers.add(new ExpressionStyler());
+        firstRoundStylers.add(new ExpressionStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
 //        firstRoundStylers.add(new MethodComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
@@ -50,16 +51,12 @@ public class StylerContainer {
 //         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
 
         // Format styles
-        secondRoundStylers.add(new BodyLayoutStyler());
+//        secondRoundStylers.add(new BodyLayoutStyler());
         secondRoundStylers.add(new NewlineStyler());
 //        secondRoundStylers.add(new BraceFormatStyler());
 //        secondRoundStylers.add(new LineWrappingStyler());
 //        secondRoundStylers.add(new LineStmtStyler());
 //        secondRoundStylers.add(new BlankLineStyler());
-
-//        Styler indentionStyler = new IndentionStyler();
-//        indentionStyler.executeWhenExit = false;
-//        secondRoundStylers.add(indentionStyler);
 
 
         tsStylers.add(new SpaceStyler());
