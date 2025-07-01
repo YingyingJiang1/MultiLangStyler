@@ -1,104 +1,107 @@
 package org.example.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.example.styler.Styler;
+import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.exp.complexity.ExpressionStyler;
+import org.example.styler.format.BlankLineStyler;
+import org.example.styler.format.LineStmtStyler;
 import org.example.styler.format.body.braceformat.BraceFormatStyler;
 import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.linewrapping.LineWrappingStyler;
-import org.example.styler.format.LineStmtStyler;
-import org.example.styler.format.BlankLineStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.naming.format.NamingFormatStyler;
 import org.example.styler.structure.StructureStyler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StylerContainer {
 
-    // AST stylers
-    List<Styler> firstRoundStylers = new ArrayList<>();
-    List<Styler> secondRoundStylers = new ArrayList<>();
+	// AST stylers
+	List<Styler> firstRoundStylers = new ArrayList<>();
+	List<Styler> secondRoundStylers = new ArrayList<>();
 
-    List<Styler> tsStylers = new ArrayList<>();
+	List<Styler> tsStylers = new ArrayList<>();
 
-    public StylerContainer() {
-//        firstRoundStylers.add(new ArrangementStyler());
-//        firstRoundStylers.add(new LiteralUsageStyler());
-//        firstRoundStylers.add(new ModifierOrderStyler());
+	public StylerContainer() {
+		/**********************************************************  Structure Styles(Syntactic) **********************************************************/
+		firstRoundStylers.add(new StructureStyler());
+		firstRoundStylers.add(new IfElseBodyOrderStyler());
+		firstRoundStylers.add(new OptionalBraceStyler());
         firstRoundStylers.add(new DeclarationLayoutStyler());
         firstRoundStylers.add(new DeclarationLocationStyler());
-       firstRoundStylers.add(new IfElseBodyOrderStyler());
         firstRoundStylers.add(new ExpressionStyler());
+
+        /********************************************************** Naming Styles(Lexical) **********************************************************/
+        firstRoundStylers.add(new NamingFormatStyler());
+
+
+//        firstRoundStylers.add(new ArrangementStyler());
+//        firstRoundStylers.add(new LiteralUsageStyler());
 //        firstRoundStylers.add(new UpdateVarStyler());
 //        firstRoundStylers.add(new MethodComplexityStyler());
 //        firstRoundStylers.add(new ParameterOrderStyler());
-        firstRoundStylers.add(new StructureStyler());
-         firstRoundStylers.add(new OptionalBraceStyler());
 //        firstRoundStylers.add(new MultiBranchStyler());
-
 //        firstRoundStylers.add(new CommentSyntaxStyler());
-
-
-        firstRoundStylers.add(new NamingFormatStyler());
 //        firstRoundStylers.add(new CommentedStmtDensityStyler());
 //         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
+		//        tsStylers.add(new CommentLineDensityStyler());
 
-        // Format styles
-//        secondRoundStylers.add(new BodyLayoutStyler());
-        secondRoundStylers.add(new NewlineStyler());
-//        secondRoundStylers.add(new BraceFormatStyler());
-//        secondRoundStylers.add(new LineWrappingStyler());
-//        secondRoundStylers.add(new LineStmtStyler());
-//        secondRoundStylers.add(new BlankLineStyler());
+		/********************************************************** Lexical **********************************************************/
+		firstRoundStylers.add(new ModifierOrderStyler());
 
+		/**********************************************************  Format Styles(Lexical) **********************************************************/
+//        secondRoundStylers.add(new NewlineStyler());
+        secondRoundStylers.add(new BodyLayoutStyler());
+        secondRoundStylers.add(new BraceFormatStyler());
+        secondRoundStylers.add(new LineWrappingStyler());
+        secondRoundStylers.add(new LineStmtStyler());
+        secondRoundStylers.add(new BlankLineStyler());
 
         tsStylers.add(new SpaceStyler());
         tsStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
-//        tsStylers.add(new CommentLineDensityStyler());
 
-    }
+	}
 
-    public List<Styler> getStylers() {
-        List<Styler> allStylers = new ArrayList<>();
-        allStylers.addAll(firstRoundStylers);
-        allStylers.addAll(secondRoundStylers);
-        allStylers.addAll(tsStylers);
-        return allStylers;
-    }
+	public List<Styler> getStylers() {
+		List<Styler> allStylers = new ArrayList<>();
+		allStylers.addAll(firstRoundStylers);
+		allStylers.addAll(secondRoundStylers);
+		allStylers.addAll(tsStylers);
+		return allStylers;
+	}
 
-    public List<Styler> getFirstRoundStylers() {
-        return firstRoundStylers;
-    }
+	public List<Styler> getFirstRoundStylers() {
+		return firstRoundStylers;
+	}
 
-    public List<Styler> getSecondRoundStylers() {
-        return secondRoundStylers;
-    }
+	public List<Styler> getSecondRoundStylers() {
+		return secondRoundStylers;
+	}
 
-    public List<Styler> getTsStylers() {
-        return tsStylers;
-    }
+	public List<Styler> getTsStylers() {
+		return tsStylers;
+	}
 
-    /**
-     *
-     * @param target
-     * @return The styler that was disabled.
-     */
-    public Styler removeStyler(Class<? extends Styler> target) {
-        List<Styler> stylers = getStylers();
-        for (Styler styler : stylers) {
-            if (styler.getClass().equals(target)) {
-                styler.disable();
-                return styler;
-            }
-        }
-        return null;
-    }
+	/**
+	 * @param target
+	 * @return The styler that was disabled.
+	 */
+	public Styler removeStyler(Class<? extends Styler> target) {
+		List<Styler> stylers = getStylers();
+		for (Styler styler : stylers) {
+			if (styler.getClass().equals(target)) {
+				styler.disable();
+				return styler;
+			}
+		}
+		return null;
+	}
 
 }
