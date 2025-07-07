@@ -6,3 +6,9 @@
 2025-07-07 19:23:30,881 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
 2025-07-07 19:23:53,457 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
 2025-07-07 19:23:53,555 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-07-07 19:32:38,732 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-07-07 19:32:38,824 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-07-07 19:33:00,411 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-07-07 19:33:00,492 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\newline\style.xml
+2025-07-07 19:33:00,562 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml
+2025-07-07 19:33:00,603 INFO  --- [main] org.example.style.StyleFileIO.write/77 : style result saved in:src\test\sources\format\space\style.xml

@@ -77,18 +77,19 @@ public class IndentionStyler extends Styler {
             }
         }
 
-        Map<Integer, Integer> indentionUnitMap = new HashMap<>();
-        indentionLengthMap.entrySet().stream().filter(e -> e.getKey().hierarchy > 0)
-                        .forEach(e -> {
-                            int indentionUnit = e.getKey().indentionLength / e.getKey().hierarchy;
-                            indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + e.getValue());
-                        }
-                        );
-
 
         try {
-            int indentionUnit = indentionUnitMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
             int topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+
+            Map<Integer, Integer> indentionUnitMap = new HashMap<>();
+            indentionLengthMap.entrySet().stream().filter(e -> e.getKey().hierarchy > 0)
+                    .forEach(e -> {
+                                int indentionUnit = (e.getKey().indentionLength - topHierarchyIndention) / e.getKey().hierarchy;
+                                indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + e.getValue());
+                            }
+                    );
+            int indentionUnit = indentionUnitMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+
             char indentionType = typeMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
             boolean indentEmptyLines = totalEmptyLines > 0 && indentedEmptyLines > totalEmptyLines - indentedEmptyLines;
             style.addRule(null, new IndentionProperty(indentionUnit, indentionType, indentEmptyLines, topHierarchyIndention));
