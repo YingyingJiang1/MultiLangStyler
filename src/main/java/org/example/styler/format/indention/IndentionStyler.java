@@ -3,52 +3,25 @@ package org.example.styler.format.indention;
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
 
-import java.util.List;
+import java.util.*;
 
 public class IndentionStyler extends Styler {
 
     private int indentedEmptyLines = 0;
     private int totalEmptyLines = -1;
+    // key: indention info, value: frequency
+    private Map<IndentionInfo, Integer> indentionLengthMap = new HashMap<>();
 
     public IndentionStyler() {
         style = new IndentionStyle();
     }
 
-//    @Override
-//    public void extractStyle(ExtendContext ctx, MyParser parser) {
-//        ctx.updateHierarchy(parser);
-//        if (ctx.getStart().getTokenIndex() - 1 >= 0) {
-//            Token leftToken = parser.getTokenStream().get(ctx.getStart().getTokenIndex() - 1);
-//            if (leftToken.getType() == parser.getHws() && leftToken.getCharPositionInLine() == 0) {
-//                String text = leftToken.getText();
-//                int curLineIndention = text.length();
-//                char indentionType = '\0';
-//
-//                if(text.matches(" +")){
-//                    indentionType = ' ';
-//                } else if(text.matches("\t+")) {
-//                    indentionType = '\t';
-//                }
-//                int hierarchy = ctx.hierarchy;
-//                int indentionUnit = 0;
-//                if(hierarchy > 0){
-//                    indentionUnit = curLineIndention / hierarchy;
-//                }
-//
-//                if (indentionType != '\0' && indentionUnit != 0) {
-//                    style.addRule(null, new IndentionProperty(indentionUnit, indentionType));
-//                }
-//            }
-//        }
-//
-//    }
 
     @Override
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {
@@ -57,22 +30,21 @@ public class IndentionStyler extends Styler {
         }
         ExtendToken token = (ExtendToken) tokens.get(index);
         if (token.getType() == parser.getHws() && token.getCharPositionInLine() == 0) {
-            IndentionProperty property = extractProperty(tokens, index, parser);
-            if (property.indentionType != '\0' && property.indentionUnit != 0) {
-                style.addRule(null, property);
-            }
+
+            IndentionInfo info = extractIndentionInfo(tokens, index, parser);
+            indentionLengthMap.put(info, indentionLengthMap.getOrDefault(info, 0) + 1);
         }
     }
+
+
 
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
         IndentionProperty targetProperty = (IndentionProperty) style.getProperty(null);
         if (targetProperty != null) {
-            String indentionStr = StringUtils.repeat(targetProperty.indentionType,
-                    curToken.getHierarchy() * targetProperty.indentionUnit) +
-                    StringUtils.repeat(targetProperty.indentionType, curToken.indention);
-
+            int indentionLength = targetProperty.topHierarchyIndention + targetProperty.indentionUnit * curToken.getHierarchy();
+            String indentionStr = StringUtils.repeat(targetProperty.indentionType,indentionLength);
 
             if (curToken.getType() == parser.getHws()) {
                 Token nextToken = tokens.get(index + 1);
@@ -92,17 +64,43 @@ public class IndentionStyler extends Styler {
 
     @Override
     public void extractFinalize() {
-        style.fillStyle();
+        Map<Character, Integer> typeMap = new HashMap<>();
+        Map<Integer, Integer> topIndentionMap = new HashMap<>();
+        for (Map.Entry<IndentionInfo, Integer> entry : indentionLengthMap.entrySet()) {
+            IndentionInfo info = entry.getKey();
 
-        if (style.getProperty(null) instanceof IndentionProperty property) {
+            int frequency = entry.getValue();
+            typeMap.put(info.indentionType, typeMap.getOrDefault(info.indentionType, 0) + frequency);
 
-            if (indentedEmptyLines > 0) {
-                property.indentEmptyLine = totalEmptyLines > 0 && indentedEmptyLines > totalEmptyLines - indentedEmptyLines;
+            if (info.hierarchy == 0) {
+                topIndentionMap.put(info.indentionLength, topIndentionMap.getOrDefault(info.indentionLength, 0) + frequency);
             }
         }
 
+        Map<Integer, Integer> indentionUnitMap = new HashMap<>();
+        indentionLengthMap.entrySet().stream().filter(e -> e.getKey().hierarchy > 0)
+                        .forEach(e -> {
+                            int indentionUnit = e.getKey().indentionLength / e.getKey().hierarchy;
+                            indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + e.getValue());
+                        }
+                        );
+
+
+        try {
+            int indentionUnit = indentionUnitMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+            int topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+            char indentionType = typeMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+            boolean indentEmptyLines = totalEmptyLines > 0 && indentedEmptyLines > totalEmptyLines - indentedEmptyLines;
+            style.addRule(null, new IndentionProperty(indentionUnit, indentionType, indentEmptyLines, topHierarchyIndention));
+        } catch (NoSuchElementException ignored) {
+
+        }
+
+
+
         indentedEmptyLines = 0;
         totalEmptyLines = -1;
+        indentionLengthMap.clear();
     }
 
     @Override
@@ -129,18 +127,19 @@ public class IndentionStyler extends Styler {
     }
 
 
-    private IndentionProperty extractProperty(List<Token> tokens, int index, MyParser parser) {
+    private IndentionInfo extractIndentionInfo(List<Token> tokens, int index, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         // Extract indention.
         String text = token.getText();
         int curLineIndention = text.length();
-        char indentionType = '\0';
 
+        char indentionType = '\0';
         if(text.matches(" +")){
             indentionType = ' ';
         } else if(text.matches("\t+")) {
             indentionType = '\t';
         }
+
         int hierarchy = token.getHierarchy();
         int indentionUnit = 0;
         if(hierarchy > 0){
@@ -154,7 +153,7 @@ public class IndentionStyler extends Styler {
             }
         }
 
-        return new IndentionProperty(indentionUnit, indentionType);
+        return new IndentionInfo(curLineIndention, hierarchy, indentionType);
     }
 
     private boolean isLineLeadingToken(List<Token> tokens, int i, MyParser parser) {
@@ -171,5 +170,30 @@ public class IndentionStyler extends Styler {
             return false;
         }
         return j < 0;
+    }
+
+    private static class IndentionInfo {
+        int indentionLength;
+        int hierarchy;
+        char indentionType;
+
+        public IndentionInfo(int indentionLength, int hierarchy, char indentionType) {
+            this.indentionLength = indentionLength;
+            this.hierarchy = hierarchy;
+            this.indentionType = indentionType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            IndentionInfo that = (IndentionInfo) o;
+            return indentionLength == that.indentionLength && hierarchy == that.hierarchy && indentionType == that.indentionType;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(indentionLength, hierarchy, indentionType);
+        }
     }
 }
