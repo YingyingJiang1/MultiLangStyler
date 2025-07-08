@@ -15,16 +15,16 @@ class NewlineStylerTest extends TestBase {
 	@Test
 	void applyStyle() {
 		String[] srcFiles = {
-//				"src/test/sources/format/newline/f1.java",
-//				"src/test/sources/format/newline/f3.java",
-//				"src/test/sources/format/newline/f1.java",
+				"src/test/sources/format/newline/f1.java",
+				"src/test/sources/format/newline/f3.java",
+				"src/test/sources/format/newline/f1.java",
 				"src/test/sources/format/newline/f5.java",
 		};
 		
 		String[] targetFiles = {
-//				"src/test/sources/format/newline/f2.java",
-//				"src/test/sources/format/newline/f1.java",
-//				"src/test/sources/format/newline/f4.java",
+				"src/test/sources/format/newline/f2.java",
+				"src/test/sources/format/newline/f1.java",
+				"src/test/sources/format/newline/f4.java",
 				"src/test/sources/format/newline/f4.java",
 		};
 

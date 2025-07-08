@@ -30,9 +30,9 @@ public class NewlineApplicator {
 				}
 			}
 			token.addToken(i, vws);
-			if (vws instanceof ExtendToken extendToken) {
-				extendToken.indention = hwsStr;
-			}
+//			if (vws instanceof ExtendToken extendToken) {
+//				extendToken.indention = hwsStr;
+//			}
 		}
 	}
 

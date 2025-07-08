@@ -46,6 +46,7 @@ public class Applicator {
 //        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
         for (int i = 0; i < tokens.size(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
+            curToken.resetContextTokens();
             int curTokenType = curToken.getType();
 
             // Handle case: \n\n} -> \n}

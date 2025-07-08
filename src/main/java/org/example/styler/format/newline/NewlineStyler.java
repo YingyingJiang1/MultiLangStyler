@@ -3,14 +3,20 @@ package org.example.styler.format.newline;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.poi.poifs.property.Parent;
+import org.example.controller.Controller;
+import org.example.controller.Extractor;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.ProgramStyle;
 import org.example.style.SelfStyleManager;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
 import org.example.styler.format.newline.style.BlockLevelNewlineStyle;
@@ -23,8 +29,10 @@ import org.example.utils.editor.NodeEditor;
 import org.example.utils.editor.NodeEditorFactory;
 
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NewlineStyler extends Styler {
 	static int verticalPathLength = 0, horizontalPathLength = 5;
@@ -32,6 +40,9 @@ public class NewlineStyler extends Styler {
 
 	// newline styles for different granularity.
 	private List<NewlineStyle> newlineStyles;
+	private MutablePair<String, IndentionStyle> styleCache = null; // cache of original indention style.
+
+	private IndentionStyler indentionStyler = new IndentionStyler(); // styler for target style files.
 
 
 	public NewlineStyler() {
@@ -51,6 +62,8 @@ public class NewlineStyler extends Styler {
 			NewlineContext context = extractContext(ctx, i, parser);
 			style.addRule(context, property);
 		}
+
+		Extractor.extractOnTS(parser, List.of(indentionStyler));
 	}
 
 	@Override
@@ -58,24 +71,25 @@ public class NewlineStyler extends Styler {
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
+			ParseTree node = ctx.getChild(i);
 
 			// newline is found, add indention string virtually
-			if (property.newlines > 0) {
-				Token token = null;
-				if (ctx.getChild(i) instanceof ExtendContext extendContext) {
-					token = extendContext.getStop();
-				} else if (ctx.getChild(i) instanceof TerminalNode ter) {
-					token = ter.getSymbol();
-				}
-
-				if (token instanceof ExtendToken extendToken) {
-					extendToken.getContextTokens().forEach(t -> {
-						if (t.getType() == parser.getVws() && t instanceof ExtendToken vwsExt) {
-							vwsExt.indention = property.hwsStr;
-						}
-					});
-				}
-			}
+//			if (property.newlines > 0) {
+//				Token token = null;
+//				if (ctx.getChild(i) instanceof ExtendContext extendContext) {
+//					token = extendContext.getStop();
+//				} else if (ctx.getChild(i) instanceof TerminalNode ter) {
+//					token = ter.getSymbol();
+//				}
+//
+//				if (token instanceof ExtendToken extendToken) {
+//					extendToken.getContextTokens().forEach(t -> {
+//						if (t.getType() == parser.getVws() && t instanceof ExtendToken vwsExt) {
+//							vwsExt.indention = createExtraIndentionStr(node, property.hwsStr, parser);
+//						}
+//					});
+//				}
+//			}
 
 			for (NewlineStyle specificStyle : newlineStyles) {
 				NewlineProperty targetProperty = specificStyle.getProperty(context, similarityThreshold);
@@ -156,7 +170,7 @@ public class NewlineStyler extends Styler {
 		}
 	}
 
-	private NewlineProperty extractProperty(ExtendContext ctx, int index, MyParser parser, Stage stage) {
+	private NewlineProperty extractProperty(ExtendContext ctx, int index, MyParser parser) {
 		ParseTree curNode = ctx.getChild(index);
 		ExtendToken curToken = null;
 		if (curNode instanceof ExtendContext extCtx) {
@@ -196,6 +210,7 @@ public class NewlineStyler extends Styler {
 			newlineNum += 1;
 		}
 
+		// Generates indention string( hierarchy indention is excluded).
 		String hwsStr = "";
 		for (int i = 0; i < formatTokens.size() - 1; i++) {
 			// vws hws
@@ -203,21 +218,32 @@ public class NewlineStyler extends Styler {
 				hwsStr = formatTokens.get(i + 1).getText();
 			}
 		}
-//
-//		int hierarchy = 0;
-//		ParseTree parent = curNode.getParent();
-//		while (parent != null) {
-//			if (parent instanceof ExtendContext extCtx) {
-//				hierarchy = extCtx.hierarchy;
-//				break;
-//			}
-//			parent = parent.getParent();
-//		}
-
-
-
-		return new NewlineProperty(newlineNum, hwsStr);
+		int hierarchy = 0;
+		ParseTree parent = curNode.getParent();
+		while (parent != null) {
+			if (parent instanceof ExtendContext extCtx) {
+				hierarchy = extCtx.hierarchy;
+				break;
+			}
+			parent = parent.getParent();
+		}
+		return new NewlineProperty(newlineNum, hwsStr, hierarchy);
 	}
+
+	@Override
+	public void extractFinalize() {
+		indentionStyler.extractFinalize();
+		IndentionProperty indentionProperty = (IndentionProperty) indentionStyler.getStyle().getProperty(null);
+
+		style.getRules().forEach(rule -> {
+			if (rule.getStyleProperty() instanceof NewlineProperty property) {
+				property.hwsStr = property.hwsStr.replaceFirst(indentionProperty.getIndentionStr(property.hierarchy), "");
+				property.hierarchy = 0;
+			}
+		});
+		style.fillStyle();
+	}
+
 
 	private void addVerticalContext(List<String> verticalVector, List<Integer> verticalLengthVector,
 									ParseTree curNode, MyParser parser) {
@@ -274,6 +300,48 @@ public class NewlineStyler extends Styler {
 		} else {
 			return len - mod;        // 向下凑
 		}
+	}
+
+	private String createExtraIndentionStr(ParseTree node, String fullIndentionStr, MyParser parser) {
+		if (fullIndentionStr.isEmpty()) {
+			return "";
+		}
+
+		int hierarchy = 0;
+		ParseTree parent = node.getParent();
+		ExtendToken token = null;
+		if (node instanceof ExtendContext extCtx && extCtx.getStop() != null) {
+			token = (ExtendToken) extCtx.getStop();
+		} else if(node instanceof TerminalNode ter){
+			token = (ExtendToken) ter.getSymbol();
+		}
+
+		if (token == null) {
+			return "";
+		}
+
+
+		// Extract indention style
+		IndentionProperty property = null;
+		try {
+			if (styleCache == null || !styleCache.left.equals(parser.getSourceFile())) {
+				IndentionStyler styler = new IndentionStyler();
+				Extractor.extractOnTS(parser, List.of(styler));
+				styler.extractFinalize();
+
+				styleCache = new MutablePair<>(parser.getSourceFile(), (IndentionStyle) styler.getStyle());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		if (token != null) {
+			hierarchy = token.getHierarchy();
+		}
+		property = (IndentionProperty) styleCache.right.getProperty(null);
+
+		return fullIndentionStr.replaceFirst(property.getIndentionStr(hierarchy), "");
 	}
 
 }

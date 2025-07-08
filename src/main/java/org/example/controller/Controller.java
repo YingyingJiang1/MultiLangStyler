@@ -52,9 +52,10 @@ public class Controller {
             } else {
                 targetProgramStyle = extractStyle(conf.extractionCollection);
             }
+
             // Extract style of src itself, this must precede the style application, because it will change curPath and parser.
             selfProgramStyle = extractStyle(conf.applicationCollection);
-            SelfStyleManager.addStyle(conf.applicationCollection, selfProgramStyle);
+            SelfStyleManager.addStyle(conf.extractionCollection, selfProgramStyle);
 
             if (conf.getStyleOutPath() != null) {
                 StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);

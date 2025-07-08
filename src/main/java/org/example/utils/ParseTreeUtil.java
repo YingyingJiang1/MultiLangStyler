@@ -252,7 +252,7 @@ public class ParseTreeUtil {
       });
 
       int idxInList = tokens.size() + token.indexInContextTokens();
-      token.resetContextTokens();
+//      token.resetContextTokens();
       tokens.addAll(contextTokens);
       for (int i = idxInList - 1; i >= 0; i--) {
         if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
