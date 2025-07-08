@@ -33,10 +33,11 @@ public class BraceFormatStyler extends BodyStyler {
             ExtendContext block = parser.getSpecificStmt(blocks.get(i));
             BodyContext context = extractStyleContext(ctx, block, parser);
 
-            BraceFormatProperty property = (BraceFormatProperty) style.getSimilarProperty(context);
+            BraceFormatProperty targetProperty = (BraceFormatProperty) style.getSimilarProperty(context);
+            BraceFormatProperty property = extractProperty(block);
             // Insert VWS terminal node near LBRACE and RBRACE terminal nodes.
-            if (property != null) {
-                boolean beforeLB = property.beforeLB, afterLB = property.afterLB, beforeRB = property.beforeRB, afterRB = property.afterRB;
+            if (targetProperty != null) {
+                boolean beforeLB = targetProperty.beforeLB, afterLB = targetProperty.afterLB, beforeRB = targetProperty.beforeRB, afterRB = targetProperty.afterRB;
                 // Specially process the last block of multi-block statement.
                 if (context.bodyType == BodyTypeEnum.MULTI_BLOCK_STMT_BODY && i == lastIndex) {
                     context.bodyType = BodyTypeEnum.NORMAL_BODY;
@@ -63,16 +64,16 @@ public class BraceFormatStyler extends BodyStyler {
 //                }
 
                 // Add vws around braces.
-                if (beforeLB) {
+                if (beforeLB != property.beforeLB) {
                     addVwsBefore(block, parser.getLBrace(), parser);
                 }
-                if (afterLB) {
+                if (afterLB != property.afterLB) {
                     addVwsAfter(block, parser.getLBrace(), parser);
                 }
-                if (beforeRB) {
+                if (beforeRB != property.beforeRB) {
                     addVwsBefore(block, parser.getRBrace(), parser);
                 }
-                if (afterRB) {
+                if (afterRB != property.afterRB) {
                     addVwsAfter(block, parser.getRBrace(), parser);
                 }
             }
