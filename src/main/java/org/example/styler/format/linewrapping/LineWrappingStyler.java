@@ -201,10 +201,10 @@ public class LineWrappingStyler extends Styler {
             targetToken.setText(targetToken.getText() + System.lineSeparator());
             if (breakIndex + 1 < tokens.size()) {
                 ExtendToken nextToken = (ExtendToken) tokens.get(breakIndex + 1);
-                nextToken.setIndention(property.succeedLoc.relativeIndention);
+//                nextToken.setIndention(property.succeedLoc.relativeIndention);
             }
         } else if (breakAfter == Boolean.FALSE) {
-            targetToken.setIndention(property.succeedLoc.relativeIndention);
+//            targetToken.setIndention(property.succeedLoc.relativeIndention);
             if (breakIndex - 1 >= 0) {
                 ExtendToken preToken = (ExtendToken) tokens.get(breakIndex - 1);
                 preToken.setText(preToken.getText() + System.lineSeparator());

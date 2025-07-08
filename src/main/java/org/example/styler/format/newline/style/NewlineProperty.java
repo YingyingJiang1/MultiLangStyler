@@ -8,17 +8,22 @@ import java.util.Objects;
 
 public class NewlineProperty extends StyleProperty {
 	public int newlines;
+	public String hwsStr; // hws string after vws (hierarchy indention is excluded).
+	public int hierarchy; // Temp variable
 
 	public NewlineProperty() {
 	}
 
-	public NewlineProperty(int newlines) {
+	public NewlineProperty(int newlines, String hwsStr, int hierarchy) {
 		this.newlines = newlines;
+		this.hwsStr = hwsStr;
+		this.hierarchy = hierarchy;
 	}
 
 	@Override
 	public void addElement(Element parent, MyParser parser) {
 		parent.addAttribute("newlines", Integer.toString(newlines));
+		parent.addAttribute("hwsStr", hwsStr);
 	}
 
 	@Override
@@ -28,17 +33,19 @@ public class NewlineProperty extends StyleProperty {
 			newlines = Integer.parseInt(newlinesStr);
 		}
 
+		hwsStr = parent.attributeValue("hwsStr");
+
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(newlines);
+		return Objects.hash(newlines, hwsStr, hierarchy);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof NewlineProperty property) {
-			return newlines == property.newlines;
+			return newlines == property.newlines && Objects.equals(property.hwsStr, hwsStr) && hierarchy == property.hierarchy;
 		}
 		return false;
 	}

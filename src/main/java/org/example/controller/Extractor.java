@@ -17,20 +17,21 @@ public class Extractor {
         try {
 //            tokenAugmentor.process(parser, Stage.EXTRACT);
             tokenAugmentor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
-            extractOnAST(parser, container);
-            extractOnTS(parser, container);
+            List<Styler> stylers = container.getStylers();
+            extractOnAST(parser, stylers);
+            extractOnTS(parser, stylers);
         } catch (Exception e) {
             LoggerFactory.getLogger(Extractor.class).error(e.getMessage(), e);
             throw new ExtractException(e.getMessage(), e);
         }
     }
 
-    private static void extractOnAST(MyParser parser, StylerContainer container) {
-        parser.walkTree(Stage.EXTRACT, container.getStylers());
+    public static void extractOnAST(MyParser parser, List<Styler> stylers) {
+        parser.walkTree(Stage.EXTRACT, stylers);
     }
 
     // Extract style from token stream.
-    private static void extractOnTS(MyParser parser, StylerContainer container) {
+    public static void extractOnTS(MyParser parser, List<Styler> stylers) {
         CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
         if (tokenStream.getTokens().isEmpty()) {
             tokenStream.fill();
@@ -42,11 +43,13 @@ public class Extractor {
         int len = tokens.size() - 1;
         for (int i = 0; i < len; ++i) {
             Token token = tokens.get(i);
-            for (Styler styler : container.getStylers()) {
+            for (Styler styler : stylers) {
                 if (styler.isEnable(Stage.EXTRACT) && styler.isRelevant(tokens, i, Stage.EXTRACT, parser)) {
                     styler.extractStyle(tokens, i, parser);
                 }
             }
         }
     }
+
+
 }
