@@ -1,29 +1,34 @@
 package org.example.styler.format.newline;
 
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
-import org.example.style.rule.StyleProperty;
 import org.example.styler.Styler;
+import org.example.styler.format.newline.style.BlockLevelNewlineStyle;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NewlineStyler extends Styler {
-	static int verticalPathLength = 5, horizontalPathLength = 4;
+	static int verticalPathLength = 0, horizontalPathLength = 5;
 	static double similarityThreshold = 0.8;
+
+	// newline styles for different granularity.
+	private List<NewlineStyle> newlineStyles;
+
 
 	public NewlineStyler() {
 		style = new NewlineStyle();
+
+		newlineStyles = List.of(
+				new BlockLevelNewlineStyle((NewlineStyle) style)
+		);
 	}
 
 	@Override
@@ -41,8 +46,8 @@ public class NewlineStyler extends Styler {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
 
-			if (style instanceof NewlineStyle newlineStyle) {
-				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold, getWeights(ctx, parser));
+			for (NewlineStyle specificStyle : newlineStyles) {
+				NewlineProperty targetProperty = specificStyle.getProperty(context, similarityThreshold);
 				if (targetProperty == null) {
 					continue;
 				}
@@ -54,61 +59,69 @@ public class NewlineStyler extends Styler {
 					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
 				}
 			}
-
 		}
 		return ctx;
 	}
 
-	private List<Double> getWeights(ExtendContext ctx, MyParser parser) {
-		return List.of(0.5, 0.5);
-	}
 
 	private NewlineContext extractContext(ExtendContext ctx, int index, MyParser parser) {
 		ParseTree curNode = ctx.getChild(index);
-		Map<String, Integer> verticalVector = new HashMap<>();
-		Map<String, Integer> horizontalVector = new HashMap<>();
+		List<String> verticalVector = new ArrayList<>();
+		List<String> horizontalVector = new ArrayList<>();
+		List<Integer> verticalLengthVector = new ArrayList<>();
+		List<Integer> horizontalLengthVector = new ArrayList<>();
 
-		ParseTree node = curNode;
-		for (int i = 0; i < verticalPathLength; i++) {
-			String nodeName = node.getClass().getSimpleName();
-			verticalVector.put(nodeName, verticalVector.getOrDefault(nodeName, 0) + 1);
+		String spNodeName = getNodeName(curNode, parser);
+		int spLen = getApproxLen(curNode.getText());
 
-			String lengthKey = String.format("Length:%s", nodeName);
-			verticalVector.put(lengthKey, verticalVector.getOrDefault(lengthKey, 0) + node.getText().length());
-
-			node = curNode.getParent();
-			if (node == null) {
-				break;
-			}
+		if (verticalPathLength > 0) {
+			addVerticalContext(verticalVector, verticalLengthVector, curNode, parser);
+		}
+		if (horizontalPathLength > 0) {
+			addHorizontalContext(horizontalVector, horizontalLengthVector, ctx, index, parser);
 		}
 
-		// Add nodes left of `curNode` as horizontal vector
-		horizontalVector.put(curNode.getClass().getSimpleName(), 1);
-		int count = horizontalPathLength - 1;
-		for (int i = 1; count > 0; i++) {
-			if (index - i < 0) {
-				break;
-			}
-			String nodeName = ctx.getChild(index - i).getClass().getSimpleName();
-			horizontalVector.put(nodeName, horizontalVector.getOrDefault(nodeName, 0) + 1);
-			String lengthKey = String.format("Length:%s", nodeName);
-			horizontalVector.put(lengthKey, horizontalVector.getOrDefault(lengthKey, 0) + ctx.getChild(index - i).getText().length());
-			--count;
-		}
-		// Add nodes right of `curNode` as horizontal vector
-		for (int i = 1; count > 0; i++) {
-			if (index + i >= ctx.getChildCount()) {
-				break;
-			}
-			String nodeName = ctx.getChild(index + i).getClass().getSimpleName();
-			horizontalVector.put(nodeName, horizontalVector.getOrDefault(nodeName, 0) + 1);
-			String lengthKey = String.format("Length:%s", nodeName);
-			horizontalVector.put(lengthKey, horizontalVector.getOrDefault(lengthKey, 0) + ctx.getChild(index + i).getText().length());
-			--count;
-		}
+		int verticalSP = verticalVector.indexOf(spNodeName);
+		int horizontalSP = horizontalVector.indexOf(spNodeName);
 
+		return new NewlineContext(verticalVector, horizontalVector, verticalLengthVector, horizontalLengthVector,
+				verticalSP, horizontalSP);
+	}
 
-		return new NewlineContext(verticalVector, horizontalVector);
+	private void addHorizontalContext(List<String> horizontalVector, List<Integer> horizontalLengthVector,
+									  ExtendContext ctx, int index, MyParser parser) {
+		ParseTree curNode = ctx.getChild(index);
+		String spNodeName = getNodeName(curNode, parser);
+		int spLen = getApproxLen(curNode.getText());
+		horizontalVector.add(spNodeName);
+		horizontalLengthVector.add(spLen);
+		int horizontalCount = horizontalPathLength - 1;
+
+		for (int offset = 1; horizontalCount > 0; offset++) {
+			boolean extended = false;
+
+			// 向左
+			if (index - offset >= 0) {
+				ParseTree left = ctx.getChild(index - offset);
+				String name = getNodeName(left, parser);
+				horizontalVector.add(0, name); // 插到最前面
+				horizontalLengthVector.add(0, getApproxLen(left.getText()));
+				horizontalCount--;
+				extended = true;
+			}
+
+			// 向右
+			if (index + offset < ctx.getChildCount() && horizontalCount > 0) {
+				ParseTree right = ctx.getChild(index + offset);
+				String name = getNodeName(right, parser);
+				horizontalVector.add(name); // 插到末尾
+				horizontalLengthVector.add(getApproxLen(right.getText()));
+				horizontalCount--;
+				extended = true;
+			}
+
+			if (!extended) break;
+		}
 	}
 
 	private NewlineProperty extractProperty(ExtendContext ctx, int index, MyParser parser) {
@@ -143,4 +156,62 @@ public class NewlineStyler extends Styler {
 		}
 		return new NewlineProperty(numAfterCurToken + numBeforeNextToken);
 	}
+
+	private void addVerticalContext(List<String> verticalVector, List<Integer> verticalLengthVector,
+									ParseTree curNode, MyParser parser) {
+		String spNodeName = getNodeName(curNode, parser);
+		int spLen = getApproxLen(curNode.getText());
+		verticalVector.add(spNodeName);
+		verticalLengthVector.add(spLen);
+		int verticalCount = verticalPathLength - 1;
+		ParseTree node = curNode;
+		for (int offset = 1; verticalCount > 0; offset++) {
+			boolean extended = false;
+
+			// 向上 parent
+			ParseTree parent = node.getParent();
+			if (parent != null) {
+				String name = getNodeName(parent,parser);
+				verticalVector.add(0, name); // 插到最前面
+				verticalLengthVector.add(0, getApproxLen(parent.getText()));
+				verticalCount--;
+				extended = true;
+				node = parent; // 向上继续
+			}
+
+			// 向下：尝试获取 child 节点（选第一个 child）
+//			if (verticalCount > 0 && curNode.getChildCount() >= offset) {
+//				ParseTree child = curNode.getChild(offset - 1);
+//				if (child != null) {
+//					String name = getNodeName(child, parser);
+//					verticalVector.add(name); // 插到末尾
+//					verticalLengthVector.add(getApproxLen(child.getText()));
+//					verticalCount--;
+//					extended = true;
+//				}
+//			}
+
+			if (!extended) break;
+		}
+	}
+
+
+	private String getNodeName(ParseTree node, MyParser parser) {
+		if (node instanceof TerminalNode ter) {
+			return parser.getTokenName(ter.getSymbol().getType());
+		} else {
+			return node.getClass().getSimpleName();
+		}
+	}
+
+	private int getApproxLen(String text) {
+		int len = text.length();
+		int mod = len % 10;
+		if (mod >= 5) {
+			return len + (10 - mod); // 向上凑
+		} else {
+			return len - mod;        // 向下凑
+		}
+	}
+
 }

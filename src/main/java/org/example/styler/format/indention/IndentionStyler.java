@@ -2,12 +2,14 @@ package org.example.styler.format.indention;
 
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
+import org.example.utils.Helper;
 
 import java.util.*;
 
@@ -79,24 +81,30 @@ public class IndentionStyler extends Styler {
 
 
         try {
-            int topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+            int topHierarchyIndention = 0;
+            if (!topIndentionMap.isEmpty()) {
+                topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+            }
 
             Map<Integer, Integer> indentionUnitMap = new HashMap<>();
-            indentionLengthMap.entrySet().stream().filter(e -> e.getKey().hierarchy > 0)
-                    .forEach(e -> {
-                                int indentionUnit = (e.getKey().indentionLength - topHierarchyIndention) / e.getKey().hierarchy;
-                                indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + e.getValue());
-                            }
-                    );
+            for (Map.Entry<IndentionInfo, Integer> entry : indentionLengthMap.entrySet()) {
+                IndentionInfo info = entry.getKey();
+                if (info.hierarchy > 0) {
+                    int indentionUnit = (info.indentionLength - topHierarchyIndention) / info.hierarchy;
+                    indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + entry.getValue());
+                }
+            }
+
             int indentionUnit = indentionUnitMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
 
             char indentionType = typeMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
             boolean indentEmptyLines = totalEmptyLines > 0 && indentedEmptyLines > totalEmptyLines - indentedEmptyLines;
             style.addRule(null, new IndentionProperty(indentionUnit, indentionType, indentEmptyLines, topHierarchyIndention));
         } catch (NoSuchElementException ignored) {
-
+            ignored.printStackTrace();
         }
 
+        style.fillStyle();
 
 
         indentedEmptyLines = 0;
