@@ -68,6 +68,8 @@ public class NewlineStyler extends Styler {
 
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+		NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
+
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
@@ -91,15 +93,15 @@ public class NewlineStyler extends Styler {
 //				}
 //			}
 
-			for (NewlineStyle specificStyle : newlineStyles) {
-				NewlineProperty targetProperty = specificStyle.getProperty(context, similarityThreshold);
+			if (style instanceof NewlineStyle newlineStyle) {
+				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold);
 				if (targetProperty == null) {
 					continue;
 				}
 
 				int diff = targetProperty.newlines - property.newlines;
 				if (diff > 0) {
-					NewlineApplicator.addNewline(ctx.getChild(i), diff, targetProperty.hwsStr, parser);
+					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
 				} else if (diff < 0) {
 					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
 				}

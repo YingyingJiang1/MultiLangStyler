@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NewlineApplicator {
-	public static void addNewline(ParseTree node, int num, String hwsStr, MyParser parser) {
+	public static Token addNewline(ParseTree node, int num, MyParser parser) {
 		ExtendToken token = getStopToken(node);
 		if (token != null) {
 			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat(System.lineSeparator(), num));
@@ -30,10 +30,9 @@ public class NewlineApplicator {
 				}
 			}
 			token.addToken(i, vws);
-//			if (vws instanceof ExtendToken extendToken) {
-//				extendToken.indention = hwsStr;
-//			}
+			return vws;
 		}
+		return null;
 	}
 
 	public static void removeNewline(ParseTree node, int num, MyParser parser) {
