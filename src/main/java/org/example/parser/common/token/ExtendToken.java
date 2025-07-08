@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 public class ExtendToken extends CommonToken {
 
     protected int hierarchy = 0;
-    public int indention = 0;
+    public String indention = ""; // Added indention by NewlineStyler.
     // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
     private List<Token> contextTokens = null;
     public boolean hasTrailingComment = false;
@@ -42,9 +42,6 @@ public class ExtendToken extends CommonToken {
         super(oldToken);
     }
 
-    public void setIndention(int indention) {
-        this.indention = indention;
-    }
 
     @Override
     public ExtendToken clone() {
@@ -212,4 +209,7 @@ public class ExtendToken extends CommonToken {
         contextTokens = null;
     }
 
+    public void setContextTokens(List<Token> newCtxTokens) {
+        this.contextTokens = newCtxTokens;
+    }
 }

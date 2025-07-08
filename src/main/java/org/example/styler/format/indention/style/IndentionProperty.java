@@ -1,5 +1,6 @@
 package org.example.styler.format.indention.style;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
@@ -20,6 +21,11 @@ public class IndentionProperty extends StyleProperty {
         this.indentionType = indentionType;
         this.indentEmptyLine = indentEmptyLine;
         this.topHierarchyIndention = topHierarchyIndention;
+    }
+
+    public String getIndentionStr(int hierarchy) {
+        int indentionLength = topHierarchyIndention + indentionUnit * hierarchy;
+        return StringUtils.repeat(indentionType,indentionLength);
     }
 
     @Override

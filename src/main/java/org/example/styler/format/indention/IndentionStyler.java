@@ -3,8 +3,10 @@ package org.example.styler.format.indention;
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.SelfStyleManager;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionProperty;
@@ -44,9 +46,10 @@ public class IndentionStyler extends Styler {
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
         IndentionProperty targetProperty = (IndentionProperty) style.getProperty(null);
+
+
         if (targetProperty != null) {
-            int indentionLength = targetProperty.topHierarchyIndention + targetProperty.indentionUnit * curToken.getHierarchy();
-            String indentionStr = StringUtils.repeat(targetProperty.indentionType,indentionLength);
+            String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + curToken.indention;
 
             if (curToken.getType() == parser.getHws()) {
                 Token nextToken = tokens.get(index + 1);

@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NewlineApplicator {
-	public static void addNewline(ParseTree node, int num, MyParser parser) {
+	public static void addNewline(ParseTree node, int num, String hwsStr, MyParser parser) {
 		ExtendToken token = getStopToken(node);
 		if (token != null) {
 			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat(System.lineSeparator(), num));
@@ -30,6 +30,9 @@ public class NewlineApplicator {
 				}
 			}
 			token.addToken(i, vws);
+			if (vws instanceof ExtendToken extendToken) {
+				extendToken.indention = hwsStr;
+			}
 		}
 	}
 
@@ -42,20 +45,28 @@ public class NewlineApplicator {
 		int idxInCtxTokens = token.indexInContextTokens();
 
 		int toRemove = num;
-		Iterator<Token> iter = ctxTokens.listIterator(idxInCtxTokens + 1);
-		while (iter.hasNext() && toRemove > 0) {
-			Token t = iter.next();
+		List<Token> newCtxTokens = new ArrayList<>(ctxTokens.subList(0, idxInCtxTokens + 1));
+		for (int i = idxInCtxTokens + 1; i < ctxTokens.size(); i++) {
+			Token t = ctxTokens.get(i);
 			if (t.getType() == parser.getVws() && t instanceof ExtendToken extendToken) {
 				int newlineCount = (int) t.getText().chars().filter(c -> c == '\n').count();
 
 				if (toRemove >= newlineCount) {
-					iter.remove();
+					// Hws after the removed Vws should also be removed.
+					if (i + 1 < ctxTokens.size() && ctxTokens.get(i + 1).getType() == parser.getHws()) {
+						i++;
+					}
 				} else {
 					extendToken.setText(StringUtils.repeat(System.lineSeparator(), newlineCount - toRemove));
+					newCtxTokens.add(extendToken);
 				}
 				toRemove -= newlineCount;
+			} else {
+				newCtxTokens.add(t);
 			}
 		}
+		token.setContextTokens(newCtxTokens);
+
 	}
 
 

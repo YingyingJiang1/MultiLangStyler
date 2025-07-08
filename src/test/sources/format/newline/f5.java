@@ -1,11 +1,5 @@
-public void setJdkVersion(String jdkVersion) {
-	final String singleVersionNumber;
-	if
-	(jdkVersion.startsWith("1.")) {
-		singleVersionNumber = jdkVersion.substring(2);
-	} else {
-		singleVersionNumber = jdkVersion;
-	}
-
-	this.jdkVersion = Integer.parseInt(singleVersionNumber);
+private static boolean hasLiteralNull(DetailAST caseAST) {
+	return Optional.ofNullable(caseAST.findFirstToken(TokenTypes.EXPR))
+			.map(exp -> exp.findFirstToken(TokenTypes.LITERAL_NULL))
+			.isPresent();
 }

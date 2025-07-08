@@ -1,15 +1,26 @@
 package org.example.styler.format.newline;
 
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.poi.poifs.property.Parent;
+import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.SelfStyleManager;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.indention.style.IndentionProperty;
+import org.example.styler.format.indention.style.IndentionStyle;
 import org.example.styler.format.newline.style.BlockLevelNewlineStyle;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
+import org.example.utils.NodeUtil;
+import org.example.utils.ParseTreeUtil;
+import org.example.utils.editor.NodeEditor;
+import org.example.utils.editor.NodeEditorFactory;
 
 
 import java.util.ArrayList;
@@ -17,7 +28,7 @@ import java.util.List;
 
 public class NewlineStyler extends Styler {
 	static int verticalPathLength = 0, horizontalPathLength = 5;
-	static double similarityThreshold = 0.8;
+	static double similarityThreshold = 0.7;
 
 	// newline styles for different granularity.
 	private List<NewlineStyle> newlineStyles;
@@ -33,6 +44,8 @@ public class NewlineStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
+		NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
+
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
@@ -46,6 +59,24 @@ public class NewlineStyler extends Styler {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
 
+			// newline is found, add indention string virtually
+			if (property.newlines > 0) {
+				Token token = null;
+				if (ctx.getChild(i) instanceof ExtendContext extendContext) {
+					token = extendContext.getStop();
+				} else if (ctx.getChild(i) instanceof TerminalNode ter) {
+					token = ter.getSymbol();
+				}
+
+				if (token instanceof ExtendToken extendToken) {
+					extendToken.getContextTokens().forEach(t -> {
+						if (t.getType() == parser.getVws() && t instanceof ExtendToken vwsExt) {
+							vwsExt.indention = property.hwsStr;
+						}
+					});
+				}
+			}
+
 			for (NewlineStyle specificStyle : newlineStyles) {
 				NewlineProperty targetProperty = specificStyle.getProperty(context, similarityThreshold);
 				if (targetProperty == null) {
@@ -54,11 +85,12 @@ public class NewlineStyler extends Styler {
 
 				int diff = targetProperty.newlines - property.newlines;
 				if (diff > 0) {
-					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
+					NewlineApplicator.addNewline(ctx.getChild(i), diff, targetProperty.hwsStr, parser);
 				} else if (diff < 0) {
 					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
 				}
 			}
+
 		}
 		return ctx;
 	}
@@ -124,7 +156,7 @@ public class NewlineStyler extends Styler {
 		}
 	}
 
-	private NewlineProperty extractProperty(ExtendContext ctx, int index, MyParser parser) {
+	private NewlineProperty extractProperty(ExtendContext ctx, int index, MyParser parser, Stage stage) {
 		ParseTree curNode = ctx.getChild(index);
 		ExtendToken curToken = null;
 		if (curNode instanceof ExtendContext extCtx) {
@@ -140,21 +172,51 @@ public class NewlineStyler extends Styler {
 			nextToken = (ExtendToken) tNode.getSymbol();
 		}
 
-		int numAfterCurToken = curToken == null ? 0 :
+
+		List<Token> formatTokens = new ArrayList<>(curToken == null ? new ArrayList<>() :
 				curToken.getContextTokens()
-				.subList(curToken.indexInContextTokens() + 1, curToken.getContextTokens().size())
-				.stream().mapToInt(t -> t.getType() == parser.getVws() ? (int) t.getText().chars().filter(c -> c == '\n').count() : 0)
-				.sum();
-		int numBeforeNextToken = nextToken == null ? 0 :
-				nextToken.getContextTokens()
-				.subList(0, nextToken.indexInContextTokens())
-				.stream().mapToInt(t -> t.getType() == parser.getVws() ? (int) t.getText().chars().filter(c -> c == '\n').count() : 0)
+						.subList(curToken.indexInContextTokens() + 1, curToken.getContextTokens().size())
+						.stream()
+						.filter(t -> t.getType() == parser.getVws() || t.getType() == parser.getHws())
+						.toList());
+
+		formatTokens.addAll(
+				nextToken == null ? new ArrayList<>() :
+						nextToken.getContextTokens().subList(0, nextToken.indexInContextTokens())
+								.stream()
+								.filter(t -> t.getType() == parser.getVws() || t.getType() == parser.getHws())
+								.toList()
+		);
+
+		int newlineNum = formatTokens.stream()
+				.mapToInt(t -> t.getType() == parser.getVws() ? (int) t.getText().chars().filter(c -> c == '\n').count() : 0)
 				.sum();
 
 		if (curToken != null && curToken.getTrailingCommentIndex(parser) >= 0) {
-			numAfterCurToken += 1;
+			newlineNum += 1;
 		}
-		return new NewlineProperty(numAfterCurToken + numBeforeNextToken);
+
+		String hwsStr = "";
+		for (int i = 0; i < formatTokens.size() - 1; i++) {
+			// vws hws
+			if (formatTokens.get(i).getType() == parser.getVws() && formatTokens.get(i + 1).getType() == parser.getHws()) {
+				hwsStr = formatTokens.get(i + 1).getText();
+			}
+		}
+//
+//		int hierarchy = 0;
+//		ParseTree parent = curNode.getParent();
+//		while (parent != null) {
+//			if (parent instanceof ExtendContext extCtx) {
+//				hierarchy = extCtx.hierarchy;
+//				break;
+//			}
+//			parent = parent.getParent();
+//		}
+
+
+
+		return new NewlineProperty(newlineNum, hwsStr);
 	}
 
 	private void addVerticalContext(List<String> verticalVector, List<Integer> verticalLengthVector,

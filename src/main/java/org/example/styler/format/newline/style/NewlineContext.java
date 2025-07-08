@@ -68,6 +68,10 @@ public class NewlineContext extends StyleContext {
 		}
 	}
 
+	public String getSPNodeName() {
+		return horizontalVector.get(horizontalSP);
+	}
+
 
 	/**
 	 *
