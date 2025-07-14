@@ -90,7 +90,14 @@ public class TestBase {
 		FileCollection targetCollection = new FileCollection();
 		targetCollection.add(targetPath);
 
-		ProgramStyle sytle = controller.extractStyle(targetCollection);
+		ProgramStyle sytle = null;
+		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
+			sytle = StyleFileIO.read(targetCollection.getFilePath(0), MyParserFactory.createParser("java"));
+
+		} else {
+			sytle = controller.extractStyle(targetCollection);
+		}
+		controller.setTargetProgramStyle(sytle);
 		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
 		String code = controller.applyStyle(srcCollection);
 

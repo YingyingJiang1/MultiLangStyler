@@ -135,6 +135,10 @@ public class Controller {
         this.container = container;
     }
 
+    public void setTargetProgramStyle(ProgramStyle targetStyle) {
+        this.targetProgramStyle = targetStyle;
+    }
+
 
     private void applyInitialize(FileCollection files, ProgramStyle programStyle) {
         // Fill style object of stylers.

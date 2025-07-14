@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 public class StyleFileIO {
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(StyleFileIO.class);
 
-    public static ProgramStyle read(String file, MyParser parser) throws DocumentException {
+    public static ProgramStyle read(String file, MyParser parser) {
         ProgramStyle programStyle = new ProgramStyle();
         final List<Styler> stylers = new StylerContainer().getStylers();
         stylers.forEach(styler -> programStyle.add(styler.getStyle()));

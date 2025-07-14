@@ -86,17 +86,20 @@ class StructureStylerTest extends TestBase {
 			}
 		}
 
+		String dir = "src/test/sources/structure/redundant_code/";
 		String[] srcFiles = {
-				"src/test/sources/structure/redundant_code/f1.java",
+				"f1.java",
+				"f3.java"
 		};
 
 		String[] targetFiles = {
-				"src/test/sources/structure/redundant_code/f2.java",
+				"f2.java",
+				"pair2.xml"
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get("src/test/sources/structure/redundant_code", String.format("gt%s.java", i + 1));
-			String actual = apply(Paths.get(srcFiles[i]), Paths.get(targetFiles[i]), List.of(StructureStyler.class));
+			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 //			try{
 //				Files.writeString(gtPath, actual);
 //			}	catch (Exception e) {

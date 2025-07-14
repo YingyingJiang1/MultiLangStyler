@@ -10,35 +10,32 @@
   <style name="expression_complexity"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="1" category="Increment or decrement preferences"/>
+      <style_context id="22" category="Continue preferences"/>
       <style_property preferenceIndex="0"/>
-    </rule>
-    <rule>
-      <style_context id="19" category="Literal position in bool expression"/>
-      <style_property preferenceIndex="1"/>
-    </rule>
-    <rule>
-      <style_context id="6" category="Loops"/>
-      <style_property preferenceIndex="1"/>
-    </rule>
-    <rule>
-      <style_context id="7" category="Loops"/>
-      <style_property preferenceIndex="1"/>
-    </rule>
-    <rule>
-      <style_context id="23" category="Continue preferences"/>
-      <style_property preferenceIndex="2"/>
     </rule>
     <rule>
       <style_context id="24" category="Redundant code"/>
       <style_property preferenceIndex="1"/>
     </rule>
-    <rule>
-      <style_context id="25" category="Redundant code"/>
-      <style_property preferenceIndex="1"/>
-    </rule>
   </style>
   <style name="declaration_layout"/>
   <style name="declaration_location"/>
-  <style name="space"/>
+  <style name="space">
+    <rule>
+      <style_context token="IDENTIFIER KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+  </style>
 </program_style>
