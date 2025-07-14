@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -83,6 +84,26 @@ class StructureStylerTest extends TestBase {
 				assertEquals(1, ((StructPreferenceProperty) rule.getStyleProperty()).getPreferenceIndex());
 				System.out.println("OK!");
 			}
+		}
+
+		String[] srcFiles = {
+				"src/test/sources/structure/redundant_code/f1.java",
+		};
+
+		String[] targetFiles = {
+				"src/test/sources/structure/redundant_code/f2.java",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get("src/test/sources/structure/redundant_code", String.format("gt%s.java", i + 1));
+			String actual = apply(Paths.get(srcFiles[i]), Paths.get(targetFiles[i]), List.of(StructureStyler.class));
+//			try{
+//				Files.writeString(gtPath, actual);
+//			}	catch (Exception e) {
+//				e.printStackTrace();
+//			}
+
+			testCodeEqual(actual, gtPath);
 		}
 
 	}

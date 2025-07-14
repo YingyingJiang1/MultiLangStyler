@@ -42,18 +42,19 @@ public class TestBase {
 	 */
 //	@Test
 //	void applyStyle() {
+//		String dir = "src/test/sources/format/newline";
 //		String[] srcFiles = {
-//				"src/test/sources/format/newline/f1.java",
-//				"src/test/sources/format/newline/f3.java",
+//				"f1.java",
+//				"f3.java",
 //		};
 //
 //		String[] targetFiles = {
-//				"src/test/sources/format/newline/f2.java",
-//				"src/test/sources/format/newline/f1.java",
+//				"f2.java",
+//				"f1.java",
 //		};
 //
 //		for (int i = 0; i < srcFiles.length; i++) {
-//			Path gtPath = Paths.get("src/test/sources/format/newline", String.format("gt%s.java", i + 1));
+//			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
 //			String actual = apply(Paths.get(srcFiles[i]), Paths.get(targetFiles[i]), List.of(NewlineStyler.class));
 //			try{
 //				Files.writeString(gtPath, actual);

@@ -34,7 +34,7 @@ public class NoStmtChecker extends Checker{
             String holderName = args.get(index);
             List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
             for (ParseTree tree : realTrees) {
-                if (tree instanceof ExtendContext ctx && stmtTypes.contains(ctx.getRuleIndex())) {
+                if (tree instanceof ExtendContext ctx && stmtTypes.contains(parser.getSpecificStmtType(ctx))) {
                     return false; // Found a statement in the given stmt types.
                 }
             }

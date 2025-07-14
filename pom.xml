@@ -169,6 +169,7 @@
 <!--                    <skipTests>true</skipTests> &lt;!&ndash; 禁用测试 &ndash;&gt;-->
 <!--                </configuration>-->
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

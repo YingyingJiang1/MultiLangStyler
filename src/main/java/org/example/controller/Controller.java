@@ -12,6 +12,7 @@ import org.example.style.CommonStyle;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyleManager;
 import org.example.style.Style;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
 import org.slf4j.Logger;
@@ -175,7 +176,9 @@ public class Controller {
 
     private void extractFinalize() {
         for (Styler styler : container.getStylers()) {
-            styler.extractFinalize();
+            if (styler.isEnable(Stage.EXTRACT)) {
+                styler.extractFinalize();
+            }
         }
     }
 
