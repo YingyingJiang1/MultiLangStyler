@@ -1,0 +1,1184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+  <style name="">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="2"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="3"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="4"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="5"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="6"/>
+      <property statistic="{2=2, 3=1}"/>
+    </rule>
+    <rule>
+      <context number="7"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="8"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="9"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="10"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="11"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="12"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="13"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="14"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="15"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="16"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="17"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="18"/>
+      <property statistic="{3=2}"/>
+    </rule>
+    <rule>
+      <context number="19"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="20"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="21"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="22"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="23"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="24"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="25"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="26"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="27"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="28"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="29"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="30"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="31"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="32"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="33"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="34"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="35"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="36"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="37"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="38"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="39"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="40"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="41"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="42"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="43"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="44"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="45"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="46"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="47"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="48"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="49"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="50"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="51"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="52"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="53"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="54"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="55"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="56"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="57"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="58"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="59"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="60"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="61"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="62"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="63"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="64"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="65"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="66"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="67"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="68"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="69"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="70"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="71"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="72"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="73"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="74"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="75"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="76"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="77"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="78"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="79"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="80"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="81"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="82"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="83"/>
+      <property statistic="{2=1, 4=1}"/>
+    </rule>
+    <rule>
+      <context number="84"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="85"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="86"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="87"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="88"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="89"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="90"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="91"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="92"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="93"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="94"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="95"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="96"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="97"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="98"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="99"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="100"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="101"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="102"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="103"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="104"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="105"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="106"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="107"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="108"/>
+      <property statistic="{3=1}"/>
+    </rule>
+    <rule>
+      <context number="109"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="110"/>
+      <property statistic="{3=1}"/>
+    </rule>
+    <rule>
+      <context number="111"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="112"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="113"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="114"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="115"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="116"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="117"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="118"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="119"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="120"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="121"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="122"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="123"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="124"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="125"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="126"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="127"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="128"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="129"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="130"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="131"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="132"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="133"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="134"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="135"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="136"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="137"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="138"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="139"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="140"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="141"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="142"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="143"/>
+      <property statistic="{1=6}"/>
+    </rule>
+    <rule>
+      <context number="144"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="145"/>
+      <property statistic="{4=1, 5=1}"/>
+    </rule>
+    <rule>
+      <context number="146"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="147"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="148"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="149"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="150"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="151"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="152"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="153"/>
+      <property statistic="{3=2}"/>
+    </rule>
+    <rule>
+      <context number="154"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="155"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="156"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="157"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="158"/>
+      <property statistic="{4=2}"/>
+    </rule>
+    <rule>
+      <context number="159"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="160"/>
+      <property statistic="{3=2}"/>
+    </rule>
+    <rule>
+      <context number="161"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="162"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="163"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="164"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="165"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="166"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="167"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="168"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="169"/>
+      <property statistic="{2=2}"/>
+    </rule>
+    <rule>
+      <context number="170"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="171"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="172"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="173"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="174"/>
+      <property statistic="{3=1}"/>
+    </rule>
+    <rule>
+      <context number="175"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="176"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="177"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="178"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="179"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="180"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="181"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="182"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="183"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="184"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="185"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="186"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="187"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="188"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="189"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="190"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="191"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="192"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="193"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="194"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="195"/>
+      <property statistic="{2=1, 6=1}"/>
+    </rule>
+    <rule>
+      <context number="196"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="197"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="198"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="199"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="200"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="201"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="202"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="203"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="204"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="205"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="206"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="207"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="208"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="209"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="210"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="211"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="212"/>
+      <property statistic="{2=2, 3=1}"/>
+    </rule>
+    <rule>
+      <context number="213"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="214"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="215"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="216"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="217"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="218"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="219"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="220"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="221"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="222"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="223"/>
+      <property statistic="{1=1}"/>
+    </rule>
+    <rule>
+      <context number="224"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="225"/>
+      <property statistic="{1=3}"/>
+    </rule>
+    <rule>
+      <context number="226"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="227"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="228"/>
+      <property statistic="{2=2, 3=1}"/>
+    </rule>
+    <rule>
+      <context number="229"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="230"/>
+      <property statistic="{1=1}"/>
+    </rule>
+  </style>
+  <style name="naming_format">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="2"/>
+      <property statistic="{2=22, 3=2}"/>
+    </rule>
+    <rule>
+      <context number="3"/>
+      <property statistic="{2=4}"/>
+    </rule>
+    <rule>
+      <context number="4"/>
+      <property statistic="{2=8}"/>
+    </rule>
+  </style>
+  <style name="if_else_body_order"/>
+  <style name="indention">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=2}"/>
+    </rule>
+  </style>
+  <style name="optional_brace">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=6}"/>
+    </rule>
+  </style>
+  <style name="modifier_order">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=38}"/>
+    </rule>
+  </style>
+  <style name="expression_complexity">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=1, 2=1}"/>
+    </rule>
+    <rule>
+      <context number="2"/>
+      <property statistic="{3=1, 4=1}"/>
+    </rule>
+    <rule>
+      <context number="3"/>
+      <property statistic="{5=1, 6=1}"/>
+    </rule>
+  </style>
+  <style name="structure_preference">
+    <rule>
+      <context number="16"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="1"/>
+      <property statistic="{2=2}"/>
+    </rule>
+    <rule>
+      <context number="17"/>
+      <property statistic="{0=6}"/>
+    </rule>
+    <rule>
+      <context number="3"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="19"/>
+      <property statistic="{1=6}"/>
+    </rule>
+    <rule>
+      <context number="22"/>
+      <property statistic="{2=2}"/>
+    </rule>
+    <rule>
+      <context number="7"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="24"/>
+      <property statistic="{0=4}"/>
+    </rule>
+  </style>
+  <style name="declaration_layout"/>
+  <style name="declaration_location">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=2}"/>
+    </rule>
+  </style>
+  <style name="space">
+    <rule>
+      <context number="1"/>
+      <property statistic="{1=24}"/>
+    </rule>
+    <rule>
+      <context number="2"/>
+      <property statistic="{1=10}"/>
+    </rule>
+    <rule>
+      <context number="3"/>
+      <property statistic="{2=2}"/>
+    </rule>
+    <rule>
+      <context number="4"/>
+      <property statistic="{1=28}"/>
+    </rule>
+    <rule>
+      <context number="5"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="6"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="7"/>
+      <property statistic="{1=10}"/>
+    </rule>
+    <rule>
+      <context number="8"/>
+      <property statistic="{1=18}"/>
+    </rule>
+    <rule>
+      <context number="9"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="10"/>
+      <property statistic="{2=4}"/>
+    </rule>
+    <rule>
+      <context number="11"/>
+      <property statistic="{1=68, 3=40, 4=2}"/>
+    </rule>
+    <rule>
+      <context number="12"/>
+      <property statistic="{2=4}"/>
+    </rule>
+    <rule>
+      <context number="13"/>
+      <property statistic="{1=20}"/>
+    </rule>
+    <rule>
+      <context number="14"/>
+      <property statistic="{1=2, 2=2}"/>
+    </rule>
+    <rule>
+      <context number="15"/>
+      <property statistic="{1=8, 2=8}"/>
+    </rule>
+    <rule>
+      <context number="16"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="17"/>
+      <property statistic="{1=24}"/>
+    </rule>
+    <rule>
+      <context number="18"/>
+      <property statistic="{1=18}"/>
+    </rule>
+    <rule>
+      <context number="19"/>
+      <property statistic="{2=4}"/>
+    </rule>
+    <rule>
+      <context number="20"/>
+      <property statistic="{2=8}"/>
+    </rule>
+    <rule>
+      <context number="21"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="22"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="23"/>
+      <property statistic="{1=10}"/>
+    </rule>
+    <rule>
+      <context number="24"/>
+      <property statistic="{1=14}"/>
+    </rule>
+    <rule>
+      <context number="25"/>
+      <property statistic="{1=8}"/>
+    </rule>
+    <rule>
+      <context number="26"/>
+      <property statistic="{1=6}"/>
+    </rule>
+    <rule>
+      <context number="27"/>
+      <property statistic="{1=12}"/>
+    </rule>
+    <rule>
+      <context number="28"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="29"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="30"/>
+      <property statistic="{1=4}"/>
+    </rule>
+    <rule>
+      <context number="31"/>
+      <property statistic="{1=34}"/>
+    </rule>
+    <rule>
+      <context number="32"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="33"/>
+      <property statistic="{1=12}"/>
+    </rule>
+    <rule>
+      <context number="34"/>
+      <property statistic="{1=12}"/>
+    </rule>
+    <rule>
+      <context number="35"/>
+      <property statistic="{1=14}"/>
+    </rule>
+    <rule>
+      <context number="36"/>
+      <property statistic="{1=14}"/>
+    </rule>
+    <rule>
+      <context number="37"/>
+      <property statistic="{2=1}"/>
+    </rule>
+    <rule>
+      <context number="38"/>
+      <property statistic="{1=12}"/>
+    </rule>
+    <rule>
+      <context number="39"/>
+      <property statistic="{1=2}"/>
+    </rule>
+    <rule>
+      <context number="40"/>
+      <property statistic="{1=12}"/>
+    </rule>
+    <rule>
+      <context number="41"/>
+      <property statistic="{1=8}"/>
+    </rule>
+  </style>
+</program_style>

@@ -35,7 +35,7 @@ public class ExpressionComplexity {
 
 	public void parseElement(Element parent) {
 //		textLength = Integer.parseInt(parent.attributeValue("textLength"));
-		depth = Integer.parseInt(parent.attributeValue("depth"));
+		depth = Double.parseDouble(parent.attributeValue("depth"));
 	}
 
 	@Override
