@@ -12,6 +12,7 @@ import org.example.style.Style;
 import org.example.style.StyleFileIO;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -42,28 +43,28 @@ public class TestBase {
 	 */
 //	@Test
 //	void applyStyle() {
-//		String dir = "src/test/sources/format/newline";
-//		String[] srcFiles = {
-//				"f1.java",
-//				"f3.java",
-//		};
+//	String dir = "src/test/sources/structure/redundant_code/";
+//	String[] srcFiles = {
+//			"f1.java",
+//			"f3.java"
+//	};
 //
-//		String[] targetFiles = {
-//				"f2.java",
-//				"f1.java",
-//		};
+//	String[] targetFiles = {
+//			"f2.java",
+//			"pair2.xml"
+//	};
 //
 //		for (int i = 0; i < srcFiles.length; i++) {
-//			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
-//			String actual = apply(Paths.get(srcFiles[i]), Paths.get(targetFiles[i]), List.of(NewlineStyler.class));
-//			try{
-//				Files.writeString(gtPath, actual);
-//			}	catch (Exception e) {
-//				e.printStackTrace();
-//			}
+//		Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+//		String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
+////			try{
+////				Files.writeString(gtPath, actual);
+////			}	catch (Exception e) {
+////				e.printStackTrace();
+////			}
 //
-//			testCodeEqual(actual, gtPath);
-//		}
+//		testCodeEqual(actual, gtPath);
+//	}
 //	}
 
 	/**
@@ -93,11 +94,11 @@ public class TestBase {
 		ProgramStyle sytle = null;
 		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
 			sytle = StyleFileIO.read(targetCollection.getFilePath(0), MyParserFactory.createParser("java"));
+			controller.setTargetProgramStyle(sytle);
 
 		} else {
 			sytle = controller.extractStyle(targetCollection);
 		}
-		controller.setTargetProgramStyle(sytle);
 		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
 		String code = controller.applyStyle(srcCollection);
 

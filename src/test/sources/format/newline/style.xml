@@ -2408,22 +2408,5 @@
   <style name="structure_preference"/>
   <style name="declaration_layout"/>
   <style name="declaration_location"/>
-  <style name="space">
-    <rule>
-      <style_context token="IDENTIFIER KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="IDENTIFIER IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context token="KEYWORD IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-  </style>
+  <style name="space"/>
 </program_style>

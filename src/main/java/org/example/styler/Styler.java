@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.style.CommonStyle;
+import org.example.style.InconsistencyInfo;
 import org.example.style.Style;
 
 import java.util.List;
@@ -47,6 +48,10 @@ public abstract class Styler {
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {}
 
     public void extractStyle(ExtendContext ctx, MyParser parser) {}
+
+    public InconsistencyInfo analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+        return null;
+    }
 
     public boolean isEnable(Stage stage) {
         if (stage == Stage.EXTRACT) {

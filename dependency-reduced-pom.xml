@@ -30,7 +30,7 @@
               <appendAssemblyId>false</appendAssemblyId>
               <archive>
                 <manifestEntries>
-                  <Main-Class>org.example.experiment.TransformAuthorPair</Main-Class>
+                  <Main-Class>org.example.Main</Main-Class>
                 </manifestEntries>
               </archive>
             </configuration>
@@ -40,11 +40,6 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
-      </plugin>
-      <plugin>
-        <groupId>org.jetbrains.intellij</groupId>
-        <artifactId>intellij-maven-plugin</artifactId>
-        <version>2.6.0</version>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>

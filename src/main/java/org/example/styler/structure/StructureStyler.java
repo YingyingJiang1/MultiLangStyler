@@ -109,6 +109,8 @@ public class StructureStyler extends Styler {
         return (ExtendContext) newTree;
     }
 
+
+
     /**
      * Apply the structure to the context. This method is specifically used for the mutator experiment.
      * @param ctx the context to be matched

@@ -154,7 +154,7 @@
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <manifestEntries>
-                                    <Main-Class>org.example.experiment.TransformAuthorPair</Main-Class> <!-- 设置主类 -->
+                                    <Main-Class>org.example.Main</Main-Class> <!-- 设置主类 -->
                                 </manifestEntries>
                             </archive>
                         </configuration>
