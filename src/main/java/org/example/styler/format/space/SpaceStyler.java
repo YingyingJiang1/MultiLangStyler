@@ -2,15 +2,20 @@ package org.example.styler.format.space;
 
 import org.antlr.v4.runtime.Token;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenGroup;
 import org.example.parser.common.token.TokenGrouper;
+import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.space.style.SpaceContext;
+import org.example.styler.format.space.style.SpaceInconsistencyInfo;
 import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.format.space.style.SpaceStyle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -67,7 +72,46 @@ public class SpaceStyler extends Styler {
         return null;
     }
 
-    
+    @Override
+    public List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
+        List<InconsistencyInfo> infos = null;
+
+        SpaceContext context = extractContext(tokens, index, parser);
+        SpaceProperty property = extractProperty(context,tokens,  index, parser);
+        SpaceProperty targetProperty = (SpaceProperty) style.getProperty(context);
+
+
+        if (property != null && targetProperty != null && !property.equals(targetProperty)) {
+            infos = new ArrayList<>();
+            if (property.space2 != targetProperty.space2) {
+
+                if (targetProperty.space2) {
+                    int[] loc = {tokens.get(index).getLine(), tokens.get(index).getCharPositionInLine()};
+                    String message = "A space should be added to the right of the position.";
+                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
+                } else {
+                    int[] loc = {tokens.get(index + 1).getLine(), tokens.get(index + 1).getCharPositionInLine()};
+                    String message = "This space should be removed.";
+                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
+                }
+            }
+
+            if (context.tokenName2.isEmpty() && property.space1 != targetProperty.space1) {
+                if(targetProperty.space1) {
+                    int[] loc = {tokens.get(index).getLine(), tokens.get(index).getCharPositionInLine()};
+                    String message = "A space should be added to the left of the position";
+                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
+                } else {
+                    int[] loc = {tokens.get(index - 1).getLine(), tokens.get(index - 1).getCharPositionInLine()};
+                    String message = "This space should be removed.";
+                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
+                }
+            }
+        }
+
+        return infos;
+    }
+
     private SpaceContext extractContext(List<Token> tokens, int index, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         String name = generateTokenName(token, parser);

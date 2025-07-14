@@ -8,9 +8,11 @@ import org.checkerframework.checker.index.qual.SameLen;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.InconsistencyInfo;
 import org.example.style.SelfStyleManager;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
 import org.example.utils.Helper;
@@ -73,6 +75,56 @@ public class IndentionStyler extends Styler {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
+        List<InconsistencyInfo> infos = null;
+
+        ExtendToken curToken = (ExtendToken) tokens.get(index);
+        IndentionProperty targetProperty = (IndentionProperty) style.getProperty(null);
+
+
+        if (targetProperty != null) {
+            String extraIndention = "";
+            if (index - 1 >= 0 && tokens.get(index - 1).getType() == parser.getVws() && tokens.get(index - 1) instanceof ExtendToken preExt) {
+                extraIndention = preExt.indention;
+            }
+            String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + extraIndention;
+            int indentionLen = indentionStr.length();
+
+            if (curToken.getType() == parser.getHws()) {
+                int[] loc = {curToken.getLine(), curToken.getCharPositionInLine()};
+                Token nextToken = tokens.get(index + 1);
+                if (nextToken.getType() == parser.getVws() && !targetProperty.indentEmptyLine) {
+                    infos = new ArrayList<>();
+                    infos.add(new IndentionInconsistencyInfo(loc, loc, "The indention should be removed."));
+                } else if (indentionStr.equals(curToken.getText())) {
+                    infos = new ArrayList<>();
+                    String message = "";
+                    if (targetProperty.indentionType != curToken.getText().charAt(0)) {
+                        message += String.format("Indention type should be changed into '%c'", targetProperty.indentionType);
+                    }
+
+                    int diff = indentionLen- curToken.getText().length();
+                    if (diff > 0) {
+                        message += String.format("%d indention should be added.", diff);
+                    } else if (diff < 0) {
+                        message += String.format("%d indention should be removed.", Math.abs(diff));
+                    }
+                    infos.add(new IndentionInconsistencyInfo(loc, loc, message));
+                }
+
+            } else if (!indentionStr.isEmpty()) {
+                if (targetProperty.indentEmptyLine || parser.getVws() != curToken.getType()) {
+                    int[] loc = {curToken.getLine(), curToken.getCharPositionInLine()};
+                    infos = new ArrayList<>();
+                    infos.add(new IndentionInconsistencyInfo(loc, loc, String.format("%d indention should be added before the position.", indentionLen)));
+                }
+            }
+        }
+
+        return infos;
     }
 
     @Override

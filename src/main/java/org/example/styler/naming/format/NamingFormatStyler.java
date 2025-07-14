@@ -1,5 +1,6 @@
 package org.example.styler.naming.format;
 
+import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
@@ -8,6 +9,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
+import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
@@ -19,10 +21,9 @@ import org.example.styler.naming.NameType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.naming.format.style.NamingFormatStyle;
+import org.example.styler.naming.format.style.NamingInconsistencyInfo;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NamingFormatStyler extends Styler {
     Map<StyleContext, Integer> maxLengthMap = new HashMap<>();
@@ -35,25 +36,9 @@ public class NamingFormatStyler extends Styler {
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
-            String name = symbol.getText();
-            MyCaseFormat caseFormat = getCaseFormat(name);
-
             NamingFormatContext context = extractStyleContext(symbol, parser);
-            int curLength = name.length();
-            if (!maxLengthMap.containsKey(context) || maxLengthMap.get(context) < curLength) {
-                maxLengthMap.put(context, curLength);
-                // Update max length;
-                List<StyleProperty> properties = style.getProperties(context);
-                if (properties != null) {
-                    for (StyleProperty property : properties) {
-                        if (property instanceof NamingFormatProperty namingProperty) {
-                            namingProperty.maxLength = curLength;
-                        }
-                    }
-                }
-            }
-            NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, maxLengthMap.get(context));
-            style.addRule(context, property);
+
+            style.addRule(context, extractProperty(symbol, context, parser));
         }
     }
 
@@ -89,6 +74,50 @@ public class NamingFormatStyler extends Styler {
             }
         }
         return ctx;
+    }
+
+    @Override
+    public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+        List<InconsistencyInfo> infos = new ArrayList<>();
+        List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
+        for (Symbol symbol : symbols) {
+            if (!isMutable(symbol)) {
+                continue;
+            }
+
+            NamingFormatContext context = extractStyleContext(symbol, parser);
+            NamingFormatProperty property = extractProperty(symbol, context, parser);
+
+            NamingFormatProperty targetProperty = (NamingFormatProperty) style.getProperty(context);
+            if (!Objects.equals(property, targetProperty)) {
+                Token token = symbol.getDecIdentifierNode().getStop();
+                int[] loc = {token.getLine(), token.getCharPositionInLine()};
+                infos.add(new NamingInconsistencyInfo(loc, loc, ""));
+            }
+        }
+        return infos;
+    }
+
+    private NamingFormatProperty extractProperty(Symbol symbol, NamingFormatContext context, MyParser parser) {
+        String name = symbol.getText();
+        MyCaseFormat caseFormat = getCaseFormat(name);
+
+        int curLength = name.length();
+        if (!maxLengthMap.containsKey(context) || maxLengthMap.get(context) < curLength) {
+            maxLengthMap.put(context, curLength);
+            // Update max length;
+            List<StyleProperty> properties = style.getProperties(context);
+            if (properties != null) {
+                for (StyleProperty property : properties) {
+                    if (property instanceof NamingFormatProperty namingProperty) {
+                        namingProperty.maxLength = curLength;
+                    }
+                }
+            }
+        }
+
+        NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, maxLengthMap.get(context));
+        return property;
     }
 
     private NamingFormatContext extractStyleContext(Symbol symbol, MyParser parser) {

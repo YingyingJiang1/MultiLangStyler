@@ -1,7 +1,10 @@
 package org.example.utils;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.token.ExtendToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,16 @@ public class NodeUtil {
 		int startLine = node.getStart().getLine();
 		int endLine = node.getStop().getLine();
 		return String.join("\n", codeLines.subList(startLine - 1, endLine));
+	}
+
+	public static ExtendToken getStopToken(ParseTree node) {
+		ExtendToken token = null;
+		if (node instanceof ExtendContext extCtx) {
+			token = (ExtendToken) extCtx.getStop();
+		} else if (node instanceof TerminalNode tNode) {
+			token = (ExtendToken) tNode.getSymbol();
+		}
+		return token;
 	}
 
 }

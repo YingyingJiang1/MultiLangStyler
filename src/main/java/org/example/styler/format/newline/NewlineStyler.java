@@ -12,6 +12,7 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.token.ExtendToken;
+import org.example.style.InconsistencyInfo;
 import org.example.style.ProgramStyle;
 import org.example.style.SelfStyleManager;
 import org.example.styler.Stage;
@@ -32,6 +33,7 @@ import org.example.utils.editor.NodeEditorFactory;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class NewlineStyler extends Styler {
@@ -73,25 +75,6 @@ public class NewlineStyler extends Styler {
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
-			ParseTree node = ctx.getChild(i);
-
-			// newline is found, add indention string virtually
-//			if (property.newlines > 0) {
-//				Token token = null;
-//				if (ctx.getChild(i) instanceof ExtendContext extendContext) {
-//					token = extendContext.getStop();
-//				} else if (ctx.getChild(i) instanceof TerminalNode ter) {
-//					token = ter.getSymbol();
-//				}
-//
-//				if (token instanceof ExtendToken extendToken) {
-//					extendToken.getContextTokens().forEach(t -> {
-//						if (t.getType() == parser.getVws() && t instanceof ExtendToken vwsExt) {
-//							vwsExt.indention = createExtraIndentionStr(node, property.hwsStr, parser);
-//						}
-//					});
-//				}
-//			}
 
 			if (style instanceof NewlineStyle newlineStyle) {
 				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold);
@@ -111,6 +94,36 @@ public class NewlineStyler extends Styler {
 		return ctx;
 	}
 
+	@Override
+	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+		List<InconsistencyInfo> infos = null;
+
+		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+			NewlineProperty property = extractProperty(ctx, i, parser);
+			NewlineContext context = extractContext(ctx, i, parser);
+
+			if (style instanceof NewlineStyle newlineStyle) {
+				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold);
+				if (Objects.equals(property, targetProperty)) {
+					continue;
+				}
+
+				if (infos == null) {
+					infos = new ArrayList<>();
+				}
+
+
+				int diff = targetProperty.newlines - property.newlines;
+				if (diff > 0) {
+					infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser));
+				} else if (diff < 0) {
+					infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), Math.abs(diff), parser));
+				}
+			}
+
+		}
+		return infos;
+	}
 
 	private NewlineContext extractContext(ExtendContext ctx, int index, MyParser parser) {
 		ParseTree curNode = ctx.getChild(index);

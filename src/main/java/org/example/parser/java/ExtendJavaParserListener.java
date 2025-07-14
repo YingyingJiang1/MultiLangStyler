@@ -2,12 +2,14 @@ package org.example.parser.java;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.global.GlobalInfo;
+import org.example.parser.common.ExtendListener;
 import org.example.parser.common.ListenerState;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.java.antlr.JavaParser;
 import org.example.parser.java.antlr.JavaParserBaseListener;
 import org.example.parser.java.antlr.JavaParserListener;
+import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.slf4j.Logger;
@@ -20,13 +22,14 @@ import java.util.List;
  * @author     : Jiang Yingying
  * @create     : 2024/1/22 17:32
  */
-public class ExtendJavaParserListener extends JavaParserBaseListener {
+public class ExtendJavaParserListener extends JavaParserBaseListener implements ExtendListener {
 	public static Logger logger = LoggerFactory.getLogger(JavaParserListener.class);
 	public Stage stage;
 	public List<Styler> enterStylers = new ArrayList<>();
 	public List<Styler> exitStylers = new ArrayList<>();
 	private MyParser parser;
 	private ListenerState listenerState = new ListenerState();
+	private List<InconsistencyInfo> infos = new ArrayList<>();
 
 	public ExtendJavaParserListener(Stage stage, List<Styler> stylers, MyParser parser) {
 		this.stage = stage;
@@ -42,6 +45,10 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 
 	public ExtendJavaParserListener(MyParser parser) {
 		this.parser = parser;
+	}
+
+	public List<InconsistencyInfo> getInconsistencyInfos() {
+		return infos;
 	}
 
 	private void doTask(ExtendContext ctx, List<Styler> stylers) {
@@ -61,6 +68,19 @@ public class ExtendJavaParserListener extends JavaParserBaseListener {
 				if(styler.isEnable(stage) && styler.isRelevant(newCtx, stage,parser)) {
 					try {
 						newCtx = styler.applyStyle(newCtx,parser);
+					} catch (Exception e) {
+						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage, e);
+					}
+				}
+			}
+		} else if (stage == Stage.ANALYZE) {
+			for (Styler styler : stylers) {
+				if(styler.isEnable(stage) && styler.isRelevant(ctx, stage,parser)) {
+					try {
+						List<InconsistencyInfo> ret = styler.analyzeInconsistency(ctx, parser);
+						if (ret != null) {
+							infos.addAll(ret);
+						}
 					} catch (Exception e) {
 						logger.error("{} exception at stage {}.", styler.getClass().getSimpleName(), stage, e);
 					}

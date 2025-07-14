@@ -6,6 +6,7 @@ import org.example.parser.common.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.InconsistencyInfo;
 import org.example.style.Style;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -49,7 +50,11 @@ public abstract class Styler {
 
     public void extractStyle(ExtendContext ctx, MyParser parser) {}
 
-    public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+    public @Nullable List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+        return null;
+    }
+
+    public @Nullable List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
         return null;
     }
 

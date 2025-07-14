@@ -11,6 +11,8 @@ import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.token.TokenNameGetter;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
+import org.example.parser.java.antlr.JavaParserListener;
+import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.slf4j.Logger;
@@ -764,6 +766,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public int getHiddenChannel() {
         return JavaLexer.HIDDEN;
+    }
+
+    @Override
+    public ExtendListener getListener() {
+        return listener;
     }
 
     @Override

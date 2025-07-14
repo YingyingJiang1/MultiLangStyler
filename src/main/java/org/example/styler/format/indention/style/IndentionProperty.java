@@ -28,6 +28,10 @@ public class IndentionProperty extends StyleProperty {
         return StringUtils.repeat(indentionType,indentionLength);
     }
 
+    public int getIndentionLength(int hierarchy) {
+        return topHierarchyIndention + indentionUnit * hierarchy;
+    }
+
     @Override
     public void addElement(Element parent, MyParser parser) {
         parent.addAttribute("indentionUnit", String.valueOf(indentionUnit));

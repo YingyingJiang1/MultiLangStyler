@@ -5,13 +5,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.Configuration;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.token.ExtendToken;
-import org.example.style.StyleFileIO;
+import org.example.style.*;
 import org.example.parser.common.*;
 import org.example.parser.common.factory.MyParserFactory;
-import org.example.style.CommonStyle;
-import org.example.style.ProgramStyle;
-import org.example.style.SelfStyleManager;
-import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
@@ -131,6 +127,28 @@ public class Controller {
         return combineStyle();
     }
 
+    public List<InconsistencyInfo> analyzeInconsistency(String file) {
+        fillStylers(targetProgramStyle);
+
+        String code = null;
+        try {
+            curPath = Paths.get(file);
+            String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+            GlobalInfo.setLanguage(language);
+            parser = MyParserFactory.createParser(language);
+            ParseTree tree = parser.parse(curPath);
+            if (tree == null) {
+                logger.info("Failed to analyze style inconsistencies on file '{}' because of compilation error.", curPath.toString());
+            }
+
+			return Analyzer.analyzeInconsistency(parser, container);
+        } catch (Exception e) {
+            logger.error("Failed to analyze inconsistent style on file: {}", curPath);
+            logger.error("Exception details:", e);
+        }
+        return null;
+    }
+
     public void setStylers(StylerContainer container) {
         this.container = container;
     }
@@ -142,18 +160,7 @@ public class Controller {
 
     private void applyInitialize(FileCollection files, ProgramStyle programStyle) {
         // Fill style object of stylers.
-        if (programStyle != null) {
-            if (container == null) {
-                container = new StylerContainer();
-            }
-
-            for (Styler styler : container.getStylers()) {
-                Style style = programStyle.getStyle(styler.getStyle().getStyleName());
-                if (style != null) {
-                    styler.setStyle(style);
-                }
-            }
-        }
+        fillStylers(programStyle);
 
         for (Styler styler : container.getStylers()) {
             if (styler.getStyle() instanceof CommonStyle commonStyle) {
@@ -207,7 +214,18 @@ public class Controller {
     }
 
     private void fillStylers(ProgramStyle programStyle) {
+        if (programStyle != null) {
+            if (container == null) {
+                container = new StylerContainer();
+            }
 
+            for (Styler styler : container.getStylers()) {
+                Style style = programStyle.getStyle(styler.getStyle().getStyleName());
+                if (style != null) {
+                    styler.setStyle(style);
+                }
+            }
+        }
     }
 
 

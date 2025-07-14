@@ -245,4 +245,5 @@ public interface MyParser {
     int getDefaultChannel();
     int getCommentChannel();
     int getHiddenChannel();
+    ExtendListener getListener();
 }
