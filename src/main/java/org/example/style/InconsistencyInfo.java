@@ -2,8 +2,29 @@ package org.example.style;
 
 import pascal.taie.analysis.pta.core.heap.Obj;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class InconsistencyInfo {
-	private int row, column; // start from 0
-	private String message;
-	private Object styleSpecificInfo;
+	protected int[] startLoc, endLoc; // start from 0
+	protected String message;
+
+	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
+		this.startLoc = startLoc;
+		this.endLoc = endLoc;
+		this.message = message;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		InconsistencyInfo that = (InconsistencyInfo) o;
+		return Objects.deepEquals(startLoc, that.startLoc) && Objects.deepEquals(endLoc, that.endLoc) && Objects.equals(message, that.message);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(Arrays.hashCode(startLoc), Arrays.hashCode(endLoc), message);
+	}
 }

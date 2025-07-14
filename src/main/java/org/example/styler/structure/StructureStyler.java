@@ -1,20 +1,27 @@
 package org.example.styler.structure;
 
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.java.MyJavaParser;
 import org.example.parser.java.Spot;
+import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
+import org.example.styler.structure.style.StructureInconsistencyInfo;
 import org.example.styler.structure.style.StructureStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.*;
 
@@ -45,6 +52,56 @@ public class StructureStyler extends Styler {
         // executeWhenExit is true
     }
 
+
+    /**
+     *
+     * @param ctx
+     * @param parser
+     * @return the inconsistency info if found, otherwise null
+     */
+    @Override
+    public @Nullable List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+        List<InconsistencyInfo> infos = null;
+
+        int ruIndex = ctx.getRuleIndex();
+        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
+            ruIndex = parser.getSpecificStmt(ctx).getRuleIndex();
+        }
+        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
+        if (equivalentStructures != null) {
+            Set<MatchedStructure> matchedStructures = new TreeSet<>();
+            for (EquivalentStructure structure : equivalentStructures) {
+                int matchedIndex = structure.match(ctx, parser);
+                StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
+                StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
+                int targetIndex = property == null ? -1 : property.preferenceIndex;
+                if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
+                    // Create inconsistency info
+                    int[] startLoc = { ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine() };
+                    Token stopToken = ctx.getStop();
+                    int off = structure.getForests().get(targetIndex).getTrees().size() - 1;
+                    if (off > 0) {
+                        ExtendContext parent = (ExtendContext) ctx.getParent();
+                        ParseTree lastMatchedTreeRoot = parent.getChild(parent.children.indexOf(ctx) + off);
+                        if (lastMatchedTreeRoot instanceof ExtendContext ctx1) {
+                            stopToken = ctx1.getStop();
+                        } else if (lastMatchedTreeRoot instanceof TerminalNode ter) {
+                            stopToken = ter.getSymbol();
+                        }
+                    }
+                    int[] endLoc = { stopToken.getLine(), stopToken.getCharPositionInLine() };
+
+                    infos = new ArrayList<>();
+                    infos.add(new StructureInconsistencyInfo(startLoc, endLoc, ""));
+                    break; // Meet first matched structure, break
+                }
+            }
+
+        }
+
+        return infos;
+    }
+
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         int ruIndex = ctx.getRuleIndex();
@@ -55,11 +112,7 @@ public class StructureStyler extends Styler {
         ParseTree newTree = ctx;
         List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
         if (equivalentStructures != null) {
-        /*if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
-          System.out.println("--------------------waiting to match---------------------");
-          System.out.println(ctx.getText());
-            TreePrinter.printTree(ctx, parser);
-        }*/
+            // Get all matched structures
             Set<MatchedStructure> matchedStructures = new TreeSet<>();
             for (EquivalentStructure structure : equivalentStructures) {
                 int matchedIndex = structure.match(ctx, parser);
@@ -89,6 +142,7 @@ public class StructureStyler extends Styler {
                     try {
                         newTree = targetStructure.convert(from, to, ctx, parser);
                         RunStatistic.addStructureRule(matchedStructure.structure.id);
+                        break;
                     } catch (Exception e) {
                         logger.error("Note: Fail to convert from {} to {} when structure id = {}.", from, to, targetStructure.getId(), e);
                     }
@@ -216,7 +270,8 @@ public class StructureStyler extends Styler {
         return ctx.getRuleIndex() == parser.getRuleStmt() || ctx.getRuleIndex() == parser.getRuleExpression();
     }
 
-    static class MatchedStructure implements Comparable<MatchedStructure> {
+
+    public static class MatchedStructure implements Comparable<MatchedStructure> {
 
         EquivalentStructure structure;
         int index;

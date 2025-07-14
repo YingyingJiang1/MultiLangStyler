@@ -49,7 +49,7 @@ public abstract class Styler {
 
     public void extractStyle(ExtendContext ctx, MyParser parser) {}
 
-    public InconsistencyInfo analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+    public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
         return null;
     }
 
