@@ -20,7 +20,7 @@ public class CommonStyle implements DomIO,Style {
     public FileCollection srcFileCollection = null, targetFileCollection = null;
     public String styleName = "";
 //    protected List<StyleRule> rules = new ArrayList<>();
-    protected RuleSet ruleSet = new StatisticRuleSet();
+    protected RuleSet ruleSet = new MapRuleSet();
 
     public void addElement(Element parent, MyParser parser){
         Element styleEle = parent.addElement("style");

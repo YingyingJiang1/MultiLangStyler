@@ -16,10 +16,7 @@ import org.example.styler.declaration.layout.style.DeclarationLayoutContext;
 import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
 import org.example.styler.declaration.layout.style.DeclarationNumberStyle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DeclarationLayoutStyler extends Styler {
     private Map<DeclarationLayoutContext, Integer> maxLengthMap = new HashMap<>();
@@ -221,4 +218,16 @@ public class DeclarationLayoutStyler extends Styler {
         return ctx.getFirstParentIf(t -> parser.isBlock(t) || parser.isBody(t));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeclarationLayoutStyler that = (DeclarationLayoutStyler) o;
+        return Objects.equals(maxLengthMap, that.maxLengthMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maxLengthMap);
+    }
 }

@@ -91,7 +91,6 @@ public class MapRuleSet implements RuleSet{
         for (StyleContext context : toBeRemoved) {
             rules.remove(context);
         }
-        frequencies.clear();
         return toBeRemoved;
     }
 

@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public class NewlineStyle extends CommonStyle {
+
+	public NewlineStyle() {
+		styleName = "newline";
+	}
+
 	public NewlineProperty getProperty(NewlineContext context, double threshold) {
         List<Double> weights = getWeights();
 

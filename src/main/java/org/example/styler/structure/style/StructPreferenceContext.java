@@ -41,15 +41,15 @@ public class StructPreferenceContext extends StyleContext {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(structID);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StructPreferenceContext that = (StructPreferenceContext) o;
+        return structID == that.structID && Objects.equals(structCategory, that.structCategory);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof StructPreferenceContext context) {
-            return structID == context.structID;
-        }
-        return false;
+    public int hashCode() {
+        return Objects.hash(structID, structCategory);
     }
 }

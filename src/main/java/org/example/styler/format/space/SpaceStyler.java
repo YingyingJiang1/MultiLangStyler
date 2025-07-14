@@ -116,6 +116,21 @@ public class SpaceStyler extends Styler {
     }
 
     @Override
+    public void extractFinalize() {
+        // There's always a space between keywords and identifiers.
+        String identifier = TokenGroup.IDENTIFIER.name(), keyword = TokenGroup.KEYWORD.name();
+        List<SpaceContext> defaultContexts = List.of(
+                new SpaceContext(keyword, identifier),new SpaceContext(identifier, keyword),
+                new SpaceContext(keyword, keyword), new SpaceContext(identifier, identifier)
+        );
+        for (SpaceContext context : defaultContexts) {
+            style.addRule(context, new SpaceProperty(true));
+        }
+
+        super.extractFinalize();
+    }
+
+    @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
         int type = tokens.get(i).getType();
         return type != parser.getHws() && type != parser.getVws() && !parser.belongToComment(type);

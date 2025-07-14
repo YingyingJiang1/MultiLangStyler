@@ -149,14 +149,6 @@ public class StyleFileIO {
             for (String styleName : styleMap.keySet())  {
                 Element styleEle = root.addElement("style");
                 styleEle.addAttribute("name", styleName);
-                Map<Integer, Map<Integer, Integer>> ruleMap = styleMap.get(styleName);
-                for (Integer cnumber : ruleMap.keySet()) {
-                    Element ruleEle = styleEle.addElement("rule");
-                    Element contextEle = ruleEle.addElement("context");
-                    contextEle.addAttribute("number", String.valueOf(cnumber));
-                    Element propertyEle = ruleEle.addElement("property");
-                    propertyEle.addAttribute("statistic", ruleMap.get(cnumber).toString());
-                }
             }
             File dir = new File(file).getParentFile();
             if (!dir.exists()) {

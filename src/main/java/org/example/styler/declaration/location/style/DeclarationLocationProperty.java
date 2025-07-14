@@ -5,6 +5,8 @@ import org.example.parser.common.MyParser;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.declaration.location.Location;
 
+import java.util.Objects;
+
 public class DeclarationLocationProperty extends StyleProperty {
 
     public double avgLineDis2firstUse;
@@ -31,15 +33,15 @@ public class DeclarationLocationProperty extends StyleProperty {
     }
 
     @Override
-    public int hashCode() {
-        return location.hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeclarationLocationProperty property = (DeclarationLocationProperty) o;
+        return Double.compare(avgLineDis2firstUse, property.avgLineDis2firstUse) == 0 && location == property.location;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof DeclarationLocationProperty other) {
-            return location == other.location;
-        }
-        return false;
+    public int hashCode() {
+        return Objects.hash(avgLineDis2firstUse, location);
     }
 }
