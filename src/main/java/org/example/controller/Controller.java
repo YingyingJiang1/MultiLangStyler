@@ -62,8 +62,8 @@ public class Controller {
                 }
             }
 
-            applyStyle(conf.applicationCollection);
-
+            String code = applyStyle(conf.applicationCollection);
+            saveApplyResult(code);
             return targetProgramStyle;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -90,7 +90,6 @@ public class Controller {
                 TokenAugmentor tokenAugmentor = new TokenAugmentor();
                 List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
                 code = toString(tokens, tokenAugmentor);
-                saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
                 logger.error("Exception details:", e);

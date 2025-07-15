@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 public class NewlineStyler extends Styler {
 	static int verticalPathLength = 0, horizontalPathLength = 5;
 	static double similarityThreshold = 0.7;
+	private String newline = "\n";
 
 	// newline styles for different granularity.
 	private List<NewlineStyle> newlineStyles;
@@ -83,7 +84,7 @@ public class NewlineStyler extends Styler {
 
 				int diff = targetProperty.newlines - property.newlines;
 				if (diff > 0) {
-					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
+					NewlineApplicator.addNewline(ctx.getChild(i), diff, newline, parser);
 				} else if (diff < 0) {
 					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
 				}
@@ -240,6 +241,12 @@ public class NewlineStyler extends Styler {
 				break;
 			}
 			parent = parent.getParent();
+		}
+
+		Token vwsToken = formatTokens.stream().filter(t -> t.getType() == parser.getVws())
+				.findAny().orElse(null);
+		if (vwsToken != null) {
+			newline = vwsToken.getText().contains("\r\n") ? "\r\n" : "\n";
 		}
 		return new NewlineProperty(newlineNum, hwsStr, hierarchy);
 	}

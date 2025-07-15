@@ -15,10 +15,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NewlineApplicator {
-	public static Token addNewline(ParseTree node, int num, MyParser parser) {
+	public static Token addNewline(ParseTree node, int num, String newline,  MyParser parser) {
 		ExtendToken token = getStopToken(node);
 		if (token != null) {
-			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat(System.lineSeparator(), num));
+			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat(newline, num));
 
 			// vws should be inserted after trailing comment or before non-trailing comment.
 			int i = token.getTrailingCommentIndex(parser);
