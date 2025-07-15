@@ -14,28 +14,34 @@ class NewlineStylerTest extends TestBase {
 
 	@Test
 	void applyStyle() {
+		String dir = "src/test/sources/format/newline/";
 		String[] srcFiles = {
-				"src/test/sources/format/newline/f1.java",
-				"src/test/sources/format/newline/f3.java",
-				"src/test/sources/format/newline/f1.java",
-				"src/test/sources/format/newline/f5.java",
+				"f1.java",
+				"f3.java",
+				"f1.java",
+				"f5.java",
+				"f7.java"
 		};
 		
 		String[] targetFiles = {
-				"src/test/sources/format/newline/f2.java",
-				"src/test/sources/format/newline/f1.java",
-				"src/test/sources/format/newline/f4.java",
-				"src/test/sources/format/newline/f4.java",
+				"f2.java",
+				"f1.java",
+				"f4.java",
+				"f4.java",
+				"f7.java"
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get("src/test/sources/format/newline", String.format("gt%s.txt", i + 1));
-			String actual = apply(Paths.get(srcFiles[i]), Paths.get(targetFiles[i]), List.of(NewlineStyler.class, IndentionStyler.class));
-//			try{
-//				Files.writeString(gtPath, actual);
-//			}	catch (Exception e) {
-//				e.printStackTrace();
-//			}
+			Path gtPath = Paths.get(dir, String.format("gt%s.txt", i + 1));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(NewlineStyler.class, IndentionStyler.class));
+			if (false) {
+							try{
+				Files.writeString(gtPath, actual);
+			}	catch (Exception e) {
+				e.printStackTrace();
+			}
+			}
+
 
 			testCodeEqual(actual, gtPath);
 //			break;

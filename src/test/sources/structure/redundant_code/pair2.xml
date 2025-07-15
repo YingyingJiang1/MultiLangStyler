@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style>
-    <style name=""/>
+    <style name="newline"/>
     <style name="naming_format"/>
     <style name="if_else_body_order"/>
     <style name="indention"/>

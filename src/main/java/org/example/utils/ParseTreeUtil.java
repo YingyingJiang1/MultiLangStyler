@@ -254,11 +254,17 @@ public class ParseTreeUtil {
       int idxInList = tokens.size() + token.indexInContextTokens();
 //      token.resetContextTokens();
       tokens.addAll(contextTokens);
-      for (int i = idxInList - 1; i >= 0; i--) {
+
+      // case: token1 format_token_1...format_token_n token2
+      // set hierarchy of format_token_n to token2's hierarchy, and set hierarchy of other format tokens to the greater hierarchy between token1 and token2.
+      if (idxInList - 1 >= 0 && tokens.get(idxInList - 1) instanceof ExtendToken extendToken && extendToken.getChannel() != parser.getDefaultChannel()) {
+        extendToken.setHierarchy(token.getHierarchy());
+      }
+      for (int i = idxInList - 2; i >= 0; i--) {
         if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
           break;
         }
-        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() != token.getHierarchy()) {
+        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() < token.getHierarchy()) {
           extendToken.setHierarchy(token.getHierarchy());
         }
       }
