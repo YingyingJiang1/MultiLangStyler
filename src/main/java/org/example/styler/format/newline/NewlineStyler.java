@@ -44,7 +44,7 @@ public class NewlineStyler extends Styler {
 	private List<NewlineStyle> newlineStyles;
 	private MutablePair<String, IndentionStyle> styleCache = null; // cache of original indention style.
 
-	private IndentionStyler indentionStyler = new IndentionStyler(); // styler for target style files.
+//	private IndentionStyler indentionStyler = new IndentionStyler(); // styler for target style files.
 
 
 	public NewlineStyler() {
@@ -65,7 +65,6 @@ public class NewlineStyler extends Styler {
 			style.addRule(context, property);
 		}
 
-		Extractor.extractOnTS(parser, List.of(indentionStyler));
 	}
 
 	@Override
@@ -245,19 +244,6 @@ public class NewlineStyler extends Styler {
 		return new NewlineProperty(newlineNum, hwsStr, hierarchy);
 	}
 
-	@Override
-	public void extractFinalize() {
-		indentionStyler.extractFinalize();
-		IndentionProperty indentionProperty = (IndentionProperty) indentionStyler.getStyle().getProperty(null);
-
-		style.getRules().forEach(rule -> {
-			if (rule.getStyleProperty() instanceof NewlineProperty property) {
-				property.hwsStr = property.hwsStr.replaceFirst(indentionProperty.getIndentionStr(property.hierarchy), "");
-				property.hierarchy = 0;
-			}
-		});
-		style.fillStyle();
-	}
 
 
 	private void addVerticalContext(List<String> verticalVector, List<Integer> verticalLengthVector,

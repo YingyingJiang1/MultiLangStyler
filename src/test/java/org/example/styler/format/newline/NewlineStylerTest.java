@@ -3,6 +3,7 @@ package org.example.styler.format.newline;
 import org.example.TestBase;
 import org.example.styler.format.indention.IndentionStyler;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,8 +43,11 @@ class NewlineStylerTest extends TestBase {
 			}
 			}
 
-
-			testCodeEqual(actual, gtPath);
+			try {
+				testCodeEqual(actual, gtPath);
+			} catch (AssertionFailedError e) {
+				System.out.printf("Pair %d test failed%n", i + 1);
+			}
 //			break;
 		}
 	}

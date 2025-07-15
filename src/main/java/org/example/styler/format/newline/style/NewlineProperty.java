@@ -9,7 +9,7 @@ import java.util.Objects;
 public class NewlineProperty extends StyleProperty {
 	public int newlines;
 	public String hwsStr; // hws string after vws (hierarchy indention is excluded).
-	public int hierarchy; // Temp variable
+	public int hierarchy = 0; // Temp variable
 
 	public NewlineProperty() {
 	}
