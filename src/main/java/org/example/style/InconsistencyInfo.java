@@ -27,4 +27,24 @@ public class InconsistencyInfo {
 	public int hashCode() {
 		return Objects.hash(Arrays.hashCode(startLoc), Arrays.hashCode(endLoc), message);
 	}
+
+	public int getStartRow() {
+		return startLoc[0];
+	}
+
+	public int getStartColumn() {
+		return startLoc[1];
+	}
+
+	public int getEndRow() {
+		return endLoc[0];
+	}
+
+	public int getEndColumn() {
+		return endLoc[0];
+	}
+
+	public String getMessage() {
+		return message;
+	}
 }
