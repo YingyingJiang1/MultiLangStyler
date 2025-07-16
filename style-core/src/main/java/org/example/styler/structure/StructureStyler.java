@@ -92,7 +92,7 @@ public class StructureStyler extends Styler {
                     int[] endLoc = { stopToken.getLine(), stopToken.getCharPositionInLine() };
 
                     infos = new ArrayList<>();
-                    infos.add(new StructureInconsistencyInfo(startLoc, endLoc, ""));
+                    infos.add(new StructureInconsistencyInfo(startLoc, endLoc, "Inconsistent syntax structure"));
                     break; // Meet first matched structure, break
                 }
             }

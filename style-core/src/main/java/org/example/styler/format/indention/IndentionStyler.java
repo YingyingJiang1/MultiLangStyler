@@ -11,6 +11,7 @@ import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
 
+import java.awt.dnd.InvalidDnDOperationException;
 import java.util.*;
 
 public class IndentionStyler extends Styler {
@@ -78,39 +79,48 @@ public class IndentionStyler extends Styler {
 
         if (targetProperty != null) {
             String extraIndention = "";
-            if (index - 1 >= 0 && tokens.get(index - 1).getType() == parser.getVws() && tokens.get(index - 1) instanceof ExtendToken preExt) {
-                extraIndention = preExt.indention;
-            }
+//            if (index - 1 >= 0 && tokens.get(index - 1).getType() == parser.getVws() && tokens.get(index - 1) instanceof ExtendToken preExt) {
+//                extraIndention = preExt.indention;
+//            }
             String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + extraIndention;
             int indentionLen = indentionStr.length();
 
+            // Indention detected
             if (curToken.getType() == parser.getHws()) {
+                int actualIndentLen = curToken.getText().length();
                 int[] loc = {curToken.getLine(), curToken.getCharPositionInLine()};
+
+                // check indention length
                 Token nextToken = tokens.get(index + 1);
+                // Indent empty line is prohibited, but empty line is indented actually.
                 if (nextToken.getType() == parser.getVws() && !targetProperty.indentEmptyLine) {
                     infos = new ArrayList<>();
-                    infos.add(new IndentionInconsistencyInfo(loc, loc, "The indention should be removed."));
-                } else if (indentionStr.equals(curToken.getText())) {
-                    infos = new ArrayList<>();
-                    String message = "";
-                    if (targetProperty.indentionType != curToken.getText().charAt(0)) {
-                        message += String.format("Indention type should be changed into '%c'", targetProperty.indentionType);
+                    infos.add(new IndentionInconsistencyInfo(loc, loc, "Extra indention before blank lines"));
+                } else if (nextToken.getType() != parser.getVws()) {
+                    if (indentionLen > actualIndentLen) {
+                        infos = new ArrayList<>();
+                        infos.add(new IndentionInconsistencyInfo(loc, loc, "Indent too short"));
+                    } else if (indentionLen < actualIndentLen) {
+                        infos = new ArrayList<>();
+                        infos.add(new IndentionInconsistencyInfo(loc, loc, "Indent too long"));
                     }
-
-                    int diff = indentionLen- curToken.getText().length();
-                    if (diff > 0) {
-                        message += String.format("%d indention should be added.", diff);
-                    } else if (diff < 0) {
-                        message += String.format("%d indention should be removed.", Math.abs(diff));
-                    }
-                    infos.add(new IndentionInconsistencyInfo(loc, loc, message));
                 }
 
-            } else if (!indentionStr.isEmpty()) {
+                // Check indention type
+                if (targetProperty.indentionType != curToken.getText().charAt(0)) {
+                    String message = String.format("Inconsistent indention type '%c',", curToken.getText().charAt(0));
+                    if (infos == null) {
+                        infos = new ArrayList<>();
+                        infos.add(new IndentionInconsistencyInfo(loc, loc, message));
+                    } else {
+                        infos.get(0).setMessage(infos.get(0).getMessage() + ", " + message);
+                    }
+                }
+            } else if (!indentionStr.isEmpty()) { // Need indention, but no indention detected actually
                 if (targetProperty.indentEmptyLine || parser.getVws() != curToken.getType()) {
                     int[] loc = {curToken.getLine(), curToken.getCharPositionInLine()};
                     infos = new ArrayList<>();
-                    infos.add(new IndentionInconsistencyInfo(loc, loc, String.format("%d indention should be added before the position.", indentionLen)));
+                    infos.add(new IndentionInconsistencyInfo(loc, loc, "Indent too short"));
                 }
             }
         }

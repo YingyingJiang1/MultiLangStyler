@@ -32,7 +32,7 @@ public class NewlineAnalyzer {
 			}
 
 			int[] loc = {token.getLine(), token.getCharPositionInLine()};
-			return new NewlineInconsistencyInfo(loc, loc, String.format("%d more newlines to be added after here.", num));
+			return new NewlineInconsistencyInfo(loc, loc, "Too few line breaks");
 		}
 
 		return null;
@@ -56,8 +56,8 @@ public class NewlineAnalyzer {
 				if (toRemove >= newlineCount) {
 					// Hws after the removed Vws should also be removed.
 					if (i + 1 < ctxTokens.size() && ctxTokens.get(i + 1).getType() == parser.getHws()) {
-						i++;
 						removeList.add(ctxTokens.get(i + 1));
+						i++;
 					}
 				}
 				removeList.add(t);
@@ -70,6 +70,6 @@ public class NewlineAnalyzer {
 		}
 		int[] startLoc = {removeList.get(0).getLine(), removeList.get(0).getCharPositionInLine()};
 		int[] endLoc = {removeList.get(removeList.size() - 1).getLine(), removeList.get(removeList.size() - 1).getCharPositionInLine()};
-		return new NewlineInconsistencyInfo(startLoc, endLoc, String.format("%d extra newlines to be removed.", num));
+		return new NewlineInconsistencyInfo(startLoc, endLoc, "Too many line breaks");
 	}
 }

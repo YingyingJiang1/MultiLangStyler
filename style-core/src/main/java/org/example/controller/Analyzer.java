@@ -38,9 +38,11 @@ public class Analyzer {
 		List<InconsistencyInfo> infos = new ArrayList<>();
 		for (int i = 0; i < tokens.size(); i++) {
 			for (Styler styler : stylers) {
-				List<InconsistencyInfo> ret = styler.analyzeInconsistency(tokens, i, parser);
-				if (ret != null) {
-					infos.addAll(ret);
+				if (styler.isRelevant(tokens, i, Stage.ANALYZE, parser)) {
+					List<InconsistencyInfo> ret = styler.analyzeInconsistency(tokens, i, parser);
+					if (ret != null) {
+						infos.addAll(ret);
+					}
 				}
 			}
 		}

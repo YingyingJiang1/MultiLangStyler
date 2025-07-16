@@ -47,4 +47,8 @@ public class InconsistencyInfo {
 	public String getMessage() {
 		return message;
 	}
+
+	public void setMessage(String str) {
+		message = str;
+	}
 }

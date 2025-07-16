@@ -218,7 +218,10 @@
     "class" : "NoStmtChecker",
     "argsList" : [ [ 2, "continueStmt", "$S+" ] ]
   } ],
-  "handlers" : [
+  "handlers" : [ {
+    "class" : "CondReverserHandler",
+    "argsList" : [ [ 0, 2, "$E" ], [ 1, 2, "$E" ], [ 2, 0, "$E" ], [ 2, 1, "$E" ] ]
+  } ,
     {
       "class" : "BraceWrapHandler",
       "argsList" : [ [ 1, 0, "$E", "LOOP"],[ 2, 0, "$E", "LOOP"]]

@@ -87,11 +87,11 @@ public class SpaceStyler extends Styler {
 
                 if (targetProperty.space2) {
                     int[] loc = {tokens.get(index).getLine(), tokens.get(index).getCharPositionInLine()};
-                    String message = "A space should be added to the right of the position.";
+                    String message = "Missing space on the right";
                     infos.add(new SpaceInconsistencyInfo(loc, loc, message));
                 } else {
                     int[] loc = {tokens.get(index + 1).getLine(), tokens.get(index + 1).getCharPositionInLine()};
-                    String message = "This space should be removed.";
+                    String message = "An extra space";
                     infos.add(new SpaceInconsistencyInfo(loc, loc, message));
                 }
             }
@@ -99,11 +99,11 @@ public class SpaceStyler extends Styler {
             if (context.tokenName2.isEmpty() && property.space1 != targetProperty.space1) {
                 if(targetProperty.space1) {
                     int[] loc = {tokens.get(index).getLine(), tokens.get(index).getCharPositionInLine()};
-                    String message = "A space should be added to the left of the position";
+                    String message = "Missing space on the left";
                     infos.add(new SpaceInconsistencyInfo(loc, loc, message));
                 } else {
                     int[] loc = {tokens.get(index - 1).getLine(), tokens.get(index - 1).getCharPositionInLine()};
-                    String message = "This space should be removed.";
+                    String message = "An extra space";
                     infos.add(new SpaceInconsistencyInfo(loc, loc, message));
                 }
             }

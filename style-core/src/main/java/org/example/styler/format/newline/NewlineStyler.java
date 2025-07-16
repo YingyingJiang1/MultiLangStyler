@@ -43,7 +43,7 @@ public class NewlineStyler extends Styler {
 
 	// newline styles for different granularity.
 	private List<NewlineStyle> newlineStyles;
-	private MutablePair<String, IndentionStyle> styleCache = null; // cache of original indention style.
+//	private MutablePair<String, IndentionStyle> styleCache = null; // cache of original indention style.
 
 //	private IndentionStyler indentionStyler = new IndentionStyler(); // styler for target style files.
 
@@ -104,7 +104,7 @@ public class NewlineStyler extends Styler {
 
 			if (style instanceof NewlineStyle newlineStyle) {
 				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold);
-				if (Objects.equals(property, targetProperty)) {
+				if (targetProperty == null || Objects.equals(property, targetProperty)) {
 					continue;
 				}
 
@@ -310,46 +310,46 @@ public class NewlineStyler extends Styler {
 		}
 	}
 
-	private String createExtraIndentionStr(ParseTree node, String fullIndentionStr, MyParser parser) {
-		if (fullIndentionStr.isEmpty()) {
-			return "";
-		}
-
-		int hierarchy = 0;
-		ParseTree parent = node.getParent();
-		ExtendToken token = null;
-		if (node instanceof ExtendContext extCtx && extCtx.getStop() != null) {
-			token = (ExtendToken) extCtx.getStop();
-		} else if(node instanceof TerminalNode ter){
-			token = (ExtendToken) ter.getSymbol();
-		}
-
-		if (token == null) {
-			return "";
-		}
-
-
-		// Extract indention style
-		IndentionProperty property = null;
-		try {
-			if (styleCache == null || !styleCache.left.equals(parser.getSourceFile())) {
-				IndentionStyler styler = new IndentionStyler();
-				Extractor.extractOnTS(parser, List.of(styler));
-				styler.extractFinalize();
-
-				styleCache = new MutablePair<>(parser.getSourceFile(), (IndentionStyle) styler.getStyle());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-
-		if (token != null) {
-			hierarchy = token.getHierarchy();
-		}
-		property = (IndentionProperty) styleCache.right.getProperty(null);
-
-		return fullIndentionStr.replaceFirst(property.getIndentionStr(hierarchy), "");
-	}
+//	private String createExtraIndentionStr(ParseTree node, String fullIndentionStr, MyParser parser) {
+//		if (fullIndentionStr.isEmpty()) {
+//			return "";
+//		}
+//
+//		int hierarchy = 0;
+//		ParseTree parent = node.getParent();
+//		ExtendToken token = null;
+//		if (node instanceof ExtendContext extCtx && extCtx.getStop() != null) {
+//			token = (ExtendToken) extCtx.getStop();
+//		} else if(node instanceof TerminalNode ter){
+//			token = (ExtendToken) ter.getSymbol();
+//		}
+//
+//		if (token == null) {
+//			return "";
+//		}
+//
+//
+//		// Extract indention style
+//		IndentionProperty property = null;
+//		try {
+//			if (styleCache == null || !styleCache.left.equals(parser.getSourceFile())) {
+//				IndentionStyler styler = new IndentionStyler();
+//				Extractor.extractOnTS(parser, List.of(styler));
+//				styler.extractFinalize();
+//
+//				styleCache = new MutablePair<>(parser.getSourceFile(), (IndentionStyle) styler.getStyle());
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//
+//		if (token != null) {
+//			hierarchy = token.getHierarchy();
+//		}
+//		property = (IndentionProperty) styleCache.right.getProperty(null);
+//
+//		return fullIndentionStr.replaceFirst(property.getIndentionStr(hierarchy), "");
+//	}
 
 }

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class StructPreferenceContext extends StyleContext {
     int structID;
-    String structCategory;
+    String structCategory; // This field is not used when calling equals
 
     public StructPreferenceContext() {
     }
@@ -45,11 +45,11 @@ public class StructPreferenceContext extends StyleContext {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructPreferenceContext that = (StructPreferenceContext) o;
-        return structID == that.structID && Objects.equals(structCategory, that.structCategory);
+        return structID == that.structID ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(structID, structCategory);
+        return Objects.hash(structID);
     }
 }

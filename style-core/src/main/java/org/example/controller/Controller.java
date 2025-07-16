@@ -11,13 +11,14 @@ import org.example.parser.common.factory.MyParserFactory;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
+import org.example.utils.FileCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
 
 /*
  * @description
@@ -126,26 +127,57 @@ public class Controller {
         return combineStyle();
     }
 
-    public List<InconsistencyInfo> analyzeInconsistency(String file) {
+    public List<InconsistencyInfo> analyzeInconsistency(String codeStr, String language) {
         fillStylers(targetProgramStyle);
 
-        String code = null;
-        try {
-            curPath = Paths.get(file);
-            String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
-            GlobalInfo.setLanguage(language);
-            parser = MyParserFactory.createParser(language);
-            ParseTree tree = parser.parse(curPath);
-            if (tree == null) {
-                logger.info("Failed to analyze style inconsistencies on file '{}' because of compilation error.", curPath.toString());
+        String languageName = language.toLowerCase();
+        GlobalInfo.setLanguage(languageName);
+        parser = MyParserFactory.createParser(languageName);
+        ParseTree tree = parser.parseFromString(codeStr);
+        List<InconsistencyInfo> infos = null;
+        if (tree == null) {
+            logger.info("Failed to analyze style inconsistencies on because of compilation error.");
+        } else {
+            try {
+                infos = Analyzer.analyzeInconsistency(parser, container);
+            } catch (Exception e) {
+                logger.error("Failed to analyze inconsistent style on file");
+                logger.error("Exception details:", e);
             }
-
-			return Analyzer.analyzeInconsistency(parser, container);
-        } catch (Exception e) {
-            logger.error("Failed to analyze inconsistent style on file: {}", curPath);
-            logger.error("Exception details:", e);
         }
-        return null;
+
+
+        if (infos != null) {
+            Set<InconsistencyInfo> infoSet = new HashSet<>(infos);
+            return infoSet.stream().toList();
+        }
+        return infos;
+    }
+
+    public List<InconsistencyInfo> checkStyle(FileCollection files) {
+        targetProgramStyle = extractStyle(conf.extractionCollection);
+        fillStylers(targetProgramStyle);
+        String code = null;
+        for (int i = 0; i < files.size(); i++) {
+            try {
+                curPath = Paths.get(files.getFilePath(i));
+                String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+                GlobalInfo.setLanguage(language);
+                parser = MyParserFactory.createParser(language);
+                ParseTree tree = parser.parse(curPath);
+                if (tree == null) {
+                    logger.info("Failed to check inconsistent style on file '{}' because of compilation error.", curPath.toString());
+                    continue;
+                }
+
+                List<InconsistencyInfo> infos = Analyzer.analyzeInconsistency(parser, container);
+               return infos;
+            } catch (Exception e) {
+                logger.error("Failed to check inconsistent style on file: {}", files.getFilePath(i));
+                logger.error("Exception details:", e);
+            }
+        }
+       return null;
     }
 
     public void setStylers(StylerContainer container) {

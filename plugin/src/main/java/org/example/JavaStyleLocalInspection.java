@@ -7,6 +7,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import org.example.Configuration;
 import org.example.controller.Controller;
+import org.example.settings.AppSettings;
 import org.example.style.InconsistencyInfo;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,11 +16,10 @@ import java.util.List;
 public class JavaStyleLocalInspection extends LocalInspectionTool {
 	LocalQuickFix quickFix = null;
 
-	protected List<InconsistencyInfo> checkStyle(String codeStr) {
-		System.out.println(codeStr);
+	protected List<InconsistencyInfo> checkStyle(String codeStr, AppSettings.Language language) {
 		Controller controller = new Controller(new Configuration());
 		controller.setTargetProgramStyle(CodeStyleManger.getStyle());
-		List<InconsistencyInfo> infos = controller.analyzeInconsistency(codeStr);
+		List<InconsistencyInfo> infos = controller.analyzeInconsistency(codeStr, language.name());
 		return infos;
 	}
 
@@ -64,7 +64,7 @@ public class JavaStyleLocalInspection extends LocalInspectionTool {
 			public void visitMethod(@NotNull PsiMethod method) {
 				super.visitMethod(method);
 
-				List<InconsistencyInfo> infos = checkStyle(method.getText());
+				List<InconsistencyInfo> infos = checkStyle(method.getText(), AppSettings.Language.JAVA);
 				highlightInconsistencies(method, infos, holder);
 			}
 		};

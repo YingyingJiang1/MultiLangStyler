@@ -43,6 +43,8 @@ public final class AppSettings implements PersistentStateComponent<AppSettings.S
 		public Language language = Language.JAVA;
 		// Default action is modify the file directly, when `override` is false, a copy of file will be created.
 		public boolean override = false;
+		public String styleOutputPath = "";
+
 
 		public void loadState(State state) {
 			styleSource = state.styleSource;

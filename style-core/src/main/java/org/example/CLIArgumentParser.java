@@ -1,6 +1,7 @@
 package org.example;
 
 import org.apache.commons.cli.*;
+import org.checkerframework.checker.nullness.Opt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,8 @@ public class CLIArgumentParser {
             if (styleOut != null) {
                 config.setStyleOutPath(styleOut);
             }
+
+            config.styleCheckOnly = cmd.hasOption("check");
 
             // 参数验证
             if (validateParameters(config)) {
@@ -82,7 +85,7 @@ public class CLIArgumentParser {
     private static void printHelp(Options options) {
         // 创建帮助生成器
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("\n-src <arg> -target <arg> [-f/-d <arg>] [-so <arg>]\n-target <arg> -so <arg>\n\n", options);
+        formatter.printHelp("\n-src <arg> -target <arg> [-f/-d <arg>] [-so <arg>] [-c/--check]\n-target <arg> -so <arg> [-c/--check]\n\n", options);
     }
 
     private static Options getOptions() {
@@ -93,6 +96,7 @@ public class CLIArgumentParser {
         Option outputFileOption = new Option("f", true, "Output file path of transformed codes.");
         Option outputDirOption = new Option("d", true, "Output directory path of transformed codes, file name is the same as the original file name");
         Option styleOutOption = new Option("so", "style-out", true, "Output path for the style file (optional)");
+        Option doCheckOption = new Option("c", "check", false, "Execute style check only");
 
         targetOption.setRequired(true);
 
@@ -101,6 +105,7 @@ public class CLIArgumentParser {
         options.addOption(outputFileOption);
         options.addOption(outputDirOption);
         options.addOption(styleOutOption);
+        options.addOption(doCheckOption);
 
         return options;
     }

@@ -21,7 +21,11 @@ public class Main {
         if (config != null) {
             GlobalInfo.setConf(config);
             Controller controller = new Controller(config);
-            controller.execute();
+            if (config.styleCheckOnly) {
+                controller.checkStyle(config.applicationCollection);
+            } else {
+                controller.execute();
+            }
             RunStatistic.printStatistic();
         }
     }

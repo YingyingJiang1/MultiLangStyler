@@ -41,7 +41,7 @@ public class ParseTreeUtil {
     compareOpMap.put(">", "<=");
     compareOpMap.put("<", ">=");
     compareOpMap.put(">=", "<");
-    compareOpMap.put("<=", ">=");
+    compareOpMap.put("<=", ">");
     compareOpMap.put("==", "!=");
     compareOpMap.put("!=", "==");
 

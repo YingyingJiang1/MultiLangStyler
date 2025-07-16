@@ -34,6 +34,7 @@ public class Configuration {
   private String target;
   public boolean overrideSource = false;
   public boolean isSaveSelfStyle = true;
+  public boolean styleCheckOnly = false;
   public FileCollection extractionCollection = new FileCollection();
   public FileCollection applicationCollection = new FileCollection();
   private String resOutFile;
@@ -55,7 +56,7 @@ public class Configuration {
     } catch (Exception e) {
       llmConfig = new LLMConfig();
       languageConfig = new LanguageConfig();
-      log.error("Failed to load configuration");
+      log.warn("Failed to load configuration");
     }
   }
 

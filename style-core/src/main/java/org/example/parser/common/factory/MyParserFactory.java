@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory;
 
 public class MyParserFactory {
     public static MyParser createParser(String language) {
-        MyParser parser =  switch (language) {
+        String languageName = language.toLowerCase();
+        MyParser parser =  switch (languageName) {
             case "java" -> new MyJavaParser();
             default -> null;
         };

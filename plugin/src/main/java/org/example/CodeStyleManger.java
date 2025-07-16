@@ -2,32 +2,47 @@ package org.example;
 
 import org.example.Configuration;
 import org.example.controller.Controller;
+import org.example.parser.common.factory.MyParserFactory;
 import org.example.settings.AppSettings;
 import org.example.style.ProgramStyle;
+import org.example.style.StyleFileIO;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class CodeStyleManger {
 	static ProgramStyle programStyle = null;
+	private static AppSettings.StyleSource cachedStyleSource = null;
 
 
 	public static ProgramStyle getStyle() {
+		// TODO: 利用缓存提高效率
 		AppSettings.State state = AppSettings.getInstance().getState();
-		programStyle = extractStyle(state.styleSource);
+		if (isStyleSourceChanged(state.styleSource)) {
+			programStyle = extractStyle(state);
+			cachedStyleSource = state.styleSource;
+		}
 		return programStyle;
 	}
 
-	public static ProgramStyle extractStyle(AppSettings.StyleSource styleSource) {
-		FileCollection fileCollection = collectStyleExamples(styleSource);
+	public static ProgramStyle extractStyle(AppSettings.State state) {
+		FileCollection fileCollection = collectStyleExamples(state.styleSource);
 		if (fileCollection == null) {
 			return null;
 		}
 
 		Configuration conf = new Configuration();
 		Controller controller = new Controller(conf);
-		return controller.extractStyle(fileCollection);
+		ProgramStyle programStyle1 = controller.extractStyle(fileCollection);
+		if (!fileCollection.isEmpty()) {
+			// 风格文件保存在同目录下
+			String dir = new File(fileCollection.getFilePath(0)).getParentFile().getParent();
+			StyleFileIO.write(programStyle1, Paths.get(dir, "style.xml").toString(), MyParserFactory.createParser(state.language.name()));
+		}
+		return programStyle1;
 	}
 
 	private static FileCollection collectStyleExamples(AppSettings.StyleSource styleSource) {
@@ -59,6 +74,10 @@ public class CodeStyleManger {
 			}
 		}
 		return null;
+	}
+
+	private static boolean isStyleSourceChanged(AppSettings.StyleSource styleSource) {
+		return cachedStyleSource == null || !cachedStyleSource.equals(styleSource);
 	}
 
 }
