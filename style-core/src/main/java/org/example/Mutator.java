@@ -1,4 +1,4 @@
-package org.example.experiment;
+package org.example;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -221,19 +221,5 @@ public class Mutator {
         List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), CONF_FILE);
         return equivalences.stream()
                 .collect(Collectors.toMap(EquivalentStructure::getId, structure -> structure.getForests().size()));
-    }
-
-    public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
-            logger.error("Usage: java Mutator <input file> <output file> [style file]");
-        }
-        String inputFile = args[0];
-        String snippet = Files.readString(Path.of(inputFile), StandardCharsets.UTF_8)
-                .lines()
-                .collect(Collectors.joining("\n"));
-        List<Integer> sequence = List.of(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, 1, -1);
-        var mutant = span("java", snippet, sequence);
-        // var mutant = apply("java", snippet, args[2]);
-        Files.writeString(Path.of(args[1]), mutant, StandardCharsets.UTF_8);
     }
 }
