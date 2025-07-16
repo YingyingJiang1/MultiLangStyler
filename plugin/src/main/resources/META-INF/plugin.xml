@@ -12,14 +12,14 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow
-                factoryClass="org.example.plugin.MyToolWindowFactory" id="Styler" icon="/icons/pentagram.svg"/>
+                factoryClass="org.example.MyToolWindowFactory" id="Styler" icon="/icons/pentagram.svg"/>
 <!--        <postStartupActivity implementation="org.jetbrains.plugins.template.startup.MyProjectActivity" />-->
         <applicationConfigurable
-                instance="org.example.plugin.settings.AppSettingsConfigurable" id="org.example.plugin.settings.AppSettingsConfigurable" parentId="tools" key="plugin.settings.name" bundle="messages.MyBundle" />
+                instance="org.example.settings.AppSettingsConfigurable" id="org.example.settings.AppSettingsConfigurable" parentId="tools" key="plugin.settings.name" bundle="messages.MyBundle" />
         <applicationService
-                serviceImplementation="org.example.plugin.settings.AppSettings"/>
+                serviceImplementation="org.example.settings.AppSettings"/>
         <localInspection
-                language="JAVA" implementationClass="org.example.plugin.JavaStyleLocalInspection"
+                language="JAVA" implementationClass="org.example.JavaStyleLocalInspection"
                 key="inspection.codestyle" bundle="messages.MyBundle"
                 level="WARNING"
                 enabledByDefault="true"
@@ -30,13 +30,13 @@
 
     <actions>
         <action id="SetStyleDirectory"
-                class="org.example.plugin.SetStyleDirectoryAction"
+                class="org.example.SetStyleDirectoryAction"
                 text="Set as Style Directory"
                 description="Set this directory as the style source directory">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
         <action id="FixStyleInconsistency"
-                class="org.example.plugin.FixStyleInconsistencyAction"
+                class="org.example.FixStyleInconsistencyAction"
                 text="Fix Code Style Inconsistencies"
                 description="Automatically fix code style inconsistencies in this file">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>

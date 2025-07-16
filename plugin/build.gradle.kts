@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.kotlin.gradle.utils.COMPILE_ONLY
 
 // 项目构建时所需的gradle插件
 plugins {
@@ -65,33 +66,33 @@ dependencies {
     }
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter
-    implementation("org.springframework.boot:spring-boot-starter:3.5.3")
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
-    testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
-
-    implementation("org.antlr:antlr4-runtime:4.9.3")
-    implementation("org.dom4j:dom4j:2.1.1")
-    implementation("commons-io:commons-io:2.8.0")
-    implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
-    implementation("org.apache.commons:commons-math3:3.6.1")
-
-    implementation("org.slf4j:slf4j-api:2.0.16") {
-        exclude(group = "org.slf4j", module = "slf4j-nop")
-    }
-
-    implementation("ch.qos.logback:logback-classic:1.5.12")
-    implementation("tech.tablesaw:tablesaw-core:0.43.1")
-    implementation("org.apache.poi:poi-ooxml:5.2.3")
-    implementation("commons-cli:commons-cli:1.9.0")
-    implementation("net.pascal-lab:tai-e:0.5.1")
-
-    testImplementation(platform("org.junit:junit-bom:5.11.3"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    testImplementation("org.mockito:mockito-core:5.3.1")
+//    implementation("org.springframework.boot:spring-boot-starter:3.5.3")
+//    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
+//    testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.3")
+//
+//    implementation("org.antlr:antlr4-runtime:4.9.3")
+//    implementation("org.dom4j:dom4j:2.1.1")
+//    implementation("commons-io:commons-io:2.8.0")
+//    implementation("org.apache.commons:commons-lang3:3.12.0")
+//    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
+//    implementation("org.apache.commons:commons-math3:3.6.1")
+//
+//    implementation("org.slf4j:slf4j-api:2.0.16") {
+//        exclude(group = "org.slf4j", module = "slf4j-nop")
+//    }
+//
+//    implementation("ch.qos.logback:logback-classic:1.5.12")
+//    implementation("tech.tablesaw:tablesaw-core:0.43.1")
+//    implementation("org.apache.poi:poi-ooxml:5.2.3")
+//    implementation("commons-cli:commons-cli:1.9.0")
+//    implementation("net.pascal-lab:tai-e:0.5.1")
+//
+//    testImplementation(platform("org.junit:junit-bom:5.11.3"))
+//    testImplementation("org.junit.jupiter:junit-jupiter")
+//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+//
+//    testImplementation("org.mockito:mockito-core:5.3.1")
     implementation("org.example:style-core:1.0-SNAPSHOT")
 }
 
@@ -202,3 +203,7 @@ intellijPlatformTesting {
         }
     }
 }
+
+
+
+
