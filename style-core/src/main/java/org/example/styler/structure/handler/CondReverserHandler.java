@@ -16,7 +16,7 @@ import java.util.Map;
  * @create       2024/4/4 23:48
  */
 public class CondReverserHandler extends Handler{
-  // key: compare operator, value: reversing compare operator
+  // key: compare operator, value: reversed compare operator
   static Map<String, String> compareOpMap ;
   static Map<String, String> logicalOpMap;
 
@@ -25,7 +25,7 @@ public class CondReverserHandler extends Handler{
     compareOpMap.put(">", "<=");
     compareOpMap.put("<", ">=");
     compareOpMap.put(">=", "<");
-    compareOpMap.put("<=", ">=");
+    compareOpMap.put("<=", ">");
     compareOpMap.put("==", "!=");
     compareOpMap.put("!=", "==");
 
