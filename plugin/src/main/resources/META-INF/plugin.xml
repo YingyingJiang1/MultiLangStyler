@@ -1,0 +1,47 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>org.jetbrains.plugins.template</id>
+    <name>styler</name>
+    <vendor>JetBrains</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>     <!-- 使用 PSI 的基础 -->
+    <depends>com.intellij.modules.java</depends>
+
+    <resource-bundle>messages.MyBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow
+                factoryClass="org.example.MyToolWindowFactory" id="Styler" icon="/icons/pentagram.svg"/>
+<!--        <postStartupActivity implementation="org.jetbrains.plugins.template.startup.MyProjectActivity" />-->
+        <applicationConfigurable
+                instance="org.example.settings.AppSettingsConfigurable" id="org.example.settings.AppSettingsConfigurable" parentId="tools" key="plugin.settings.name" bundle="messages.MyBundle" />
+        <applicationService
+                serviceImplementation="org.example.settings.AppSettings"/>
+        <localInspection
+                language="JAVA" implementationClass="org.example.JavaStyleLocalInspection"
+                key="inspection.codestyle" bundle="messages.MyBundle"
+                level="WARNING"
+                enabledByDefault="true"
+        />
+        <notificationGroup displayType="BALLOON" id="Styler"/>
+
+    </extensions>
+
+    <actions>
+        <action id="SetStyleDirectory"
+                class="org.example.SetStyleDirectoryAction"
+                text="Set as Style Directory"
+                description="Set this directory as the style source directory">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="FixStyleInconsistency"
+                class="org.example.FixStyleInconsistencyAction"
+                text="Fix Code Style Inconsistencies"
+                description="Automatically fix code style inconsistencies in this file">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
+    </actions>
+
+</idea-plugin>
