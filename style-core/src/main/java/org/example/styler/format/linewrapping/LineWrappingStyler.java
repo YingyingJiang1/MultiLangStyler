@@ -80,7 +80,7 @@ public class LineWrappingStyler extends Styler {
             LineWrappingProperty property = (LineWrappingProperty) style.getProperty(new LineWrappingContext(LineWrappingContext.Attr.CODE));
             int totalLen = calculateTotalLen(tokens);
 
-            if (property.isLineWrapping(totalLen)) {
+            if (property != null && property.isLineWrapping(totalLen)) {
                 // key: priority, value: list of indices of tokens.
                 Map<Integer, List<Integer>> breakLocsPriority = new HashMap<Integer, List<Integer>>();
                 for (int i = 0; i < tokens.size(); i++) {
