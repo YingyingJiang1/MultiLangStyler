@@ -27,38 +27,49 @@ public class RedundantCodeHandler extends Handler{
 			return;
 		}
 
-		List<ParseTree> firstTree = structure.getVNode(args.get(0)).matchedTrees;
 		List<List<ParseTree>> treesList = new ArrayList<>();
-		for (int i = 1; i < args.size() - 1; i++) {
+		for (int i = 0; i < args.size() - 1; i++) {
 			treesList.add(structure.getVNode(args.get(i)).matchedTrees);
 		}
+		int commonSuffixLength = getCommonSuffixLength(treesList);
 
-		// Get redundant code trees
-		int off = 0;
-		for (int i = firstTree.size() - 1; i >= 0; i--,off++) {
-			ParseTree tree = firstTree.get(i);
-			String code = tree.getText();
-			boolean flag = true;
-			for (int j = 0; j < treesList.size(); j++) {
-				ParseTree tree1 = treesList.get(j).get(treesList.get(j).size() - 1 - off);
-				if (!code.equals(tree1.getText())) {
-					flag = false;
+		if (commonSuffixLength > 0) {
+			// Add common codes to target tree.
+			List<ParseTree> firstTree = treesList.get(0);
+			List<ParseTree> redundantTrees = firstTree.subList(firstTree.size() - commonSuffixLength, firstTree.size());
+			structure.getVNode(args.get(args.size() - 1)).matchedTrees.addAll(redundantTrees);
+
+			treesList.forEach(t -> t.removeAll(t.subList(t.size() - commonSuffixLength, t.size())));
+		}
+	}
+
+	private int getCommonSuffixLength(List<List<ParseTree>> treesList) {
+		// Find the minimum length, avoid index out of bounds.
+		int minLength = treesList.stream()
+				.mapToInt(List::size)
+				.min()
+				.orElse(0);
+
+		int commonSuffixLength = 0;
+		// Comparation from end to start
+		for (int i = 1; i <= minLength; i++) {
+			String expected = treesList.get(0).get(treesList.get(0).size() - i).getText();
+			boolean allMatch = true;
+
+			for (int j = 1; j < treesList.size(); j++) {
+				String current = treesList.get(j).get(treesList.get(j).size() - i).getText();
+				if (!expected.equals(current)) {
+					allMatch = false;
 					break;
 				}
 			}
-			if (!flag) {
+
+			if (allMatch) {
+				commonSuffixLength++;
+			} else {
 				break;
 			}
 		}
-
-		if (off > 0) {
-			List<ParseTree> redundantTrees = firstTree.subList(firstTree.size() - off, firstTree.size());
-			structure.getVNode(args.get(args.size() - 1)).matchedTrees.addAll(redundantTrees);
-			firstTree.removeAll(redundantTrees);
-			for (int i = 0; i < treesList.size(); i++) {
-				List<ParseTree> trees = treesList.get(i);
-				trees.removeAll(trees.subList(trees.size() - off, trees.size()));
-			}
-		}
+		return commonSuffixLength;
 	}
 }

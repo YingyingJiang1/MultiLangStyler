@@ -72,34 +72,10 @@ class StructureStylerTest extends TestBase {
 			}
 		}
 
-		String dir = "src/test/sources/structure/continue/";
-		String[] srcFiles = {
-				"f2.java",
-
-		};
-
-		String[] targetFiles = {
-				"style1.xml",
-		};
-
-		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (false) {
-				try{
-					Files.writeString(gtPath, actual);
-				}	catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-
-			testCodeEqual(actual, gtPath);
-		}
 	}
 
 	@Test
-	void extractStyle_redudantCode() {
+	void testRedudantCode() {
 		String code = "for (int i = 0; i < 4; ++i) { if (test(i)) {a *= i;b += a;} else {a -= i;b += a;}}";
 		StructureStyler styler = doStyler(code, "java", Stage.EXTRACT);
 		for (StyleRule rule : styler.getStyle().getRules()) {
@@ -114,23 +90,26 @@ class StructureStylerTest extends TestBase {
 		String dir = "src/test/sources/structure/redundant_code/";
 		String[] srcFiles = {
 				"f1.java",
-				"f3.java"
+				"f3.java",
+				"f4.java",
 		};
 
 		String[] targetFiles = {
 				"f2.java",
-				"pair2.xml"
+				"style1.xml",
+				"style2.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-//			try{
-//				Files.writeString(gtPath, actual);
-//			}	catch (Exception e) {
-//				e.printStackTrace();
-//			}
-
+			if (i == 2) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			testCodeEqual(actual, gtPath);
 		}
 
@@ -162,16 +141,29 @@ class StructureStylerTest extends TestBase {
 
 	@Test
 	void testApplyStyle_continuePreference() {
-		String dir = "src/test/sources/structure/continue";
-		Path src = Paths.get(dir, "f1.java");
-		Path gt = Paths.get(dir, "gt1.txt");
-		StructureStyler styler = new StructureStyler();
-		styler.getStyle().addRule(
-				new StructPreferenceContext("Continue preferences", 22),
-				new StructPreferenceProperty(0));
+		String dir = "src/test/sources/structure/continue/";
+		String[] srcFiles = {
+				"f2.java",
 
-		String result = doApply(src, styler);
-//		System.out.println(result);
-		super.testCodeEqual(result, gt);
+		};
+
+		String[] targetFiles = {
+				"style1.xml",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+
+			testCodeEqual(actual, gtPath);
+		}
 	}
 }
