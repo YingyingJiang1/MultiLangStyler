@@ -23,26 +23,13 @@ public class CutRibbon {
 		}
 		mem[0]=0;
 		for(int i = 1;i<mem.length;i++){
-			if(i>=a && i>=b && i>=c){
-				mem[i]= Math.max(1+mem[i-a], Math.max(1+mem[i-b],1+mem[i-c]));
-			}
-			else
-			if(i>=a && i>=b)
-				mem[i]= Math.max(1+mem[i-a],1+mem[i-b]);
-			else
-			if(i>=c && i>=b)
-				mem[i]= Math.max(1+mem[i-c],1+mem[i-b]);
-			else
-			if(i>=a && i>=c)
-				mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
-			else
-			if(i>=a)
-				mem[i]= 1+mem[i-a];
-			else
-			if(i>=b)
-				mem[i]= 1+mem[i-b];
-			else
-			if(i>=c)
+			if ( !(i>=a && i>=b && i>=c)) { mem[i]= Math.max(1+mem[i-a], Math.max(1+mem[i-b],1+mem[i-c]));
+				continue ; }  if ( !(i>=a && i>=b)) { mem[i]= Math.max(1+mem[i-a],1+mem[i-b]);
+				continue ; }  if ( !(i>=c && i>=b)) { mem[i]= Math.max(1+mem[i-c],1+mem[i-b]);
+				continue ; }  if ( !(i>=a && i>=c)) { mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
+				continue ; }  if ( i<a) { mem[i]= 1+mem[i-a];
+				continue ; }  if ( i<b) { mem[i]= 1+mem[i-b];
+				continue ; }  if(i>=c)
 				mem[i]= 1+mem[i-c];
 		}
 		System.out.println(mem[valor]);
