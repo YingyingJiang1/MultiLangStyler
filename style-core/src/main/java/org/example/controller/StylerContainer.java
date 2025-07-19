@@ -42,27 +42,27 @@ public class StylerContainer {
         firstRoundStylers.add(new NamingFormatStyler());
 
 
-//        firstRoundStylers.add(new ArrangementStyler());
-//        firstRoundStylers.add(new LiteralUsageStyler());
-//        firstRoundStylers.add(new UpdateVarStyler());
-//        firstRoundStylers.add(new MethodComplexityStyler());
-//        firstRoundStylers.add(new ParameterOrderStyler());
-//        firstRoundStylers.add(new MultiBranchStyler());
-//        firstRoundStylers.add(new CommentSyntaxStyler());
-//        firstRoundStylers.add(new CommentedStmtDensityStyler());
-//         firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
-		//        tsStylers.add(new CommentLineDensityStyler());
+        // firstRoundStylers.add(new ArrangementStyler());
+        // firstRoundStylers.add(new LiteralUsageStyler());
+        // firstRoundStylers.add(new UpdateVarStyler());
+        // firstRoundStylers.add(new MethodComplexityStyler());
+        // firstRoundStylers.add(new ParameterOrderStyler());
+        // firstRoundStylers.add(new MultiBranchStyler());
+        // firstRoundStylers.add(new CommentSyntaxStyler());
+        // firstRoundStylers.add(new CommentedStmtDensityStyler());
+        // firstRoundStylers.add(new UnusedCodeStyler()); // FIXME: causes crash
+        // tsStylers.add(new CommentLineDensityStyler());
 
 		/********************************************************** Lexical **********************************************************/
 		firstRoundStylers.add(new ModifierOrderStyler());
 
 		/**********************************************************  Format Styles(Lexical) **********************************************************/
-//        secondRoundStylers.add(new NewlineStyler());
-        secondRoundStylers.add(new BodyLayoutStyler());
-        secondRoundStylers.add(new BraceFormatStyler());
-        secondRoundStylers.add(new LineWrappingStyler());
-        secondRoundStylers.add(new LineStmtStyler());
-        secondRoundStylers.add(new BlankLineStyler());
+        secondRoundStylers.add(new NewlineStyler());
+        // secondRoundStylers.add(new BodyLayoutStyler());
+        // secondRoundStylers.add(new BraceFormatStyler());
+        // secondRoundStylers.add(new LineWrappingStyler());
+        // secondRoundStylers.add(new LineStmtStyler());
+        // secondRoundStylers.add(new BlankLineStyler());
 
         tsStylers.add(new SpaceStyler());
         tsStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.

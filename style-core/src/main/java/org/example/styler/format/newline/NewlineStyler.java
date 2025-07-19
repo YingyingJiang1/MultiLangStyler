@@ -1,45 +1,28 @@
 package org.example.styler.format.newline;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.poi.poifs.property.Parent;
-import org.example.controller.Controller;
-import org.example.controller.Extractor;
-import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
-import org.example.style.ProgramStyle;
-import org.example.style.SelfStyleManager;
-import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.format.indention.IndentionStyler;
-import org.example.styler.format.indention.style.IndentionProperty;
-import org.example.styler.format.indention.style.IndentionStyle;
 import org.example.styler.format.newline.style.BlockLevelNewlineStyle;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
-import org.example.utils.NodeUtil;
-import org.example.utils.ParseTreeUtil;
-import org.example.utils.editor.NodeEditor;
 import org.example.utils.editor.NodeEditorFactory;
 
-
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.logging.Logger;
-
 public class NewlineStyler extends Styler {
-	static int verticalPathLength = 0, horizontalPathLength = 5;
-	static double similarityThreshold = 0.7;
-	private String newline = "\n";
+    static int verticalPathLength = 0;
+    static int horizontalPathLength = 3;
+    static double similarityThreshold = 0.7;
+    private String newline = "\n";
 
 	// newline styles for different granularity.
 	private List<NewlineStyle> newlineStyles;

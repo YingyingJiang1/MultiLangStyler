@@ -70,7 +70,7 @@ public class Mutator {
      * @param sequence the sequence of structure indices. -1 means no transformation
      * @return the transformed code
      */
-    public static String span(String language, String snippet, List<Integer> sequence) {
+    public static synchronized String span(String language, String snippet, List<Integer> sequence) {
         GlobalInfo.setConf(new Configuration());
         GlobalInfo.setLanguage(language);
 
