@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.token.ExtendToken;
 import org.example.utils.editor.NodeEditorFactory;
@@ -168,9 +169,17 @@ public class ParseTreeUtil {
 
 
   public ExtendContext encapsulateExpWithParen(ExtendContext expCtx, MyParser parser) {
-    if (expCtx.start.getType() == parser.getLParen() && expCtx.stop.getType() == parser.getRParen()) {
+    // expression has wrapped by () already
+    if (expCtx.getChildCount() == 3
+            && expCtx.getChild(0) instanceof TerminalNode ter1 && ter1.getSymbol().getType() == parser.getLParen()
+    && expCtx.getChild(2) instanceof TerminalNode ter2 && ter2.getSymbol().getType() == parser.getRParen()) {
       return expCtx;
     }
+
+    if (expCtx.getChildCount() == 1) {
+      return expCtx;
+    }
+
     Token lParen = parser.getTokenFactory().create(parser.getLParen(), "(");
     Token rParen = parser.getTokenFactory().create(parser.getRParen(), ")");
 
@@ -223,6 +232,14 @@ public class ParseTreeUtil {
     ExtendContext blockNode = TreeNodeFactoryGetter.getFactory(parser).createBlock(newStmt);
     Token lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
     Token rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
+    // Add Format tokens
+    if (lBrace instanceof ExtendToken extendToken) {
+      extendToken.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+    }
+    if (rBrace instanceof ExtendToken extendToken) {
+      extendToken.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+      extendToken.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+    }
 
 //    ((ExtendToken) lBrace).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
 //    ((ExtendToken) rBrace).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);

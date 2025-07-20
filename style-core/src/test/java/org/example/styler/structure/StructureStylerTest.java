@@ -25,6 +25,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StructureStylerTest extends TestBase {
+	/********************************************************** Note!!!  **********************************************************/
+	// 配置文件中结构id会影响使用风格文件作为目标风格的测试用例，不要变更结构id
+	/**********************************************************   **********************************************************/
 
 	private static final Logger log = LoggerFactory.getLogger(StructureStylerTest.class);
 
@@ -92,18 +95,20 @@ class StructureStylerTest extends TestBase {
 				"f1.java",
 				"f3.java",
 				"f4.java",
+				"f4.java",
 		};
 
 		String[] targetFiles = {
 				"f2.java",
 				"style1.xml",
 				"style2.xml",
+				"style3.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (i == 2) {
+			if (i == 3) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
@@ -144,17 +149,18 @@ class StructureStylerTest extends TestBase {
 		String dir = "src/test/sources/structure/continue/";
 		String[] srcFiles = {
 				"f2.java",
-
+				"f3.java"
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
+				"style3.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (false) {
+			if (i == 1) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
