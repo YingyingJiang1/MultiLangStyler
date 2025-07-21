@@ -149,18 +149,23 @@ class StructureStylerTest extends TestBase {
 		String dir = "src/test/sources/structure/continue/";
 		String[] srcFiles = {
 				"f2.java",
-				"f3.java"
+				"f3.java",
+				"f4.java",
+				"f5.java"
+
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
 				"style3.xml",
+				"style4.xml",
+				"style5.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (i == 1) {
+			if (i == 3) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

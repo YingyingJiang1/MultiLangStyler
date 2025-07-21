@@ -216,7 +216,7 @@
     "argsList" : [ [ 0, "$S1+" ], [ 1, "$E" ], [ 2, "$E" ] ]
   }, {
     "class" : "NoStmtChecker",
-    "argsList" : [ [ 2, "continueStmt", "$S+" ] ]
+    "argsList" : [ [ 2, "continueStmt", "breakStmt", "returnStmt", "$S+" ] ]
   } ],
   "handlers" : [
     {

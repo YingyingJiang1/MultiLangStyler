@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+    <style name="newline"/>
+    <style name="naming_format"/>
+    <style name="if_else_body_order"/>
+    <style name="indention"/>
+    <style name="optional_brace"/>
+    <style name="modifier_order"/>
+    <style name="expression_complexity"/>
+    <style name="structure_preference">
+        <rule>
+            <style_context id="24" category=""/>
+            <style_property preferenceIndex="1"/>
+        </rule>
+    </style>
+    <style name="declaration_layout"/>
+    <style name="declaration_location"/>
+    <style name="space"/>
+</program_style>
