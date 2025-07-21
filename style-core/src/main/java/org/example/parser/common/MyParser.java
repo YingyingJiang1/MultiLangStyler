@@ -182,6 +182,7 @@ public interface MyParser {
     int getRuleStringLiteral();
     int getRuleBoolLiteral();
     int getRuleTextBlockLiteral();
+    int getRuleThrowStmt();
 
 
 
@@ -246,4 +247,5 @@ public interface MyParser {
     int getCommentChannel();
     int getHiddenChannel();
     ExtendListener getListener();
+
 }

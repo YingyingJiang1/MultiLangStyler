@@ -215,8 +215,8 @@
     "class" : "ContinuePreferenceChecker",
     "argsList" : [ [ 0, "$S1+" ], [ 1, "$E" ], [ 2, "$E" ] ]
   }, {
-    "class" : "NoStmtChecker",
-    "argsList" : [ [ 2, "continueStmt", "breakStmt", "returnStmt", "$S+" ] ]
+    "class" : "UnreachableCauseChecker",
+    "argsList" : [ [ 2, "$S+" ] ]
   } ],
   "handlers" : [
     {
@@ -228,8 +228,8 @@
   "category" : "Redundant code",
   "codes" : [ "$^ if ( $E ) { $S+ }  $S1+", "if ( $E ) { $S+ } else { $S1+ }" ],
   "checkers" : [ {
-    "class" : "NoStmtChecker",
-    "argsList" : [ [ 0, "continueStmt", "breakStmt", "returnStmt", "$S+" ], [ 1, "continueStmt", "breakStmt", "returnStmt", "$S+" ]]
+    "class" : "UnreachableCauseChecker",
+    "argsList" : [ [ 0, "$S+" ], [ 1, "$S+" ]]
   }, {
     "class" : "EndsWithChecker",
     "argsList" : [ [ 1, "$S+", "$S1+" ] ]
@@ -247,8 +247,8 @@
   "category" : "Redundant code",
   "codes" : [ "$^ if ( $E ) { $S+ } else { $S1+ } $S2+", "if ( $E ) { $S+ } else { $S1+ }" ],
   "checkers" : [ {
-    "class" : "NoStmtChecker",
-    "argsList" : [ [ 0, "continueStmt", "breakStmt", "returnStmt", "$S+", "$S1+" ], [ 1, "continueStmt", "breakStmt", "returnStmt", "$S+", "$S1+" ]]
+    "class" : "UnreachableCauseChecker",
+    "argsList" : [ [ 0, "$S+", "$S1+" ], [ 1, "$S+", "$S1+" ]]
   }, {
     "class" : "HasSameEndingStmtChecker",
     "argsList" : [ [ 1, "$S+", "$S1+" ] ]

@@ -54,7 +54,7 @@ public abstract class Checker {
       case "NotIntegerChecker" -> new NotIntegerChecker(argsList);
       case "NotIdentifierExpChecker" -> new NotIdentifierExpChecker(argsList);
       case "IdentifierExpChecker" -> new IdentifierExpChecker(argsList);
-      case "NoStmtChecker" -> new NoStmtChecker(argsList);
+      case "UnreachableCauseChecker" -> new UnreachableCauseChecker(argsList);
       case "ContainChecker" -> new ContainChecker(argsList);
       case "HasSameEndingStmtChecker" -> new HasSameEndingStmtChecker(argsList);
       case "StmtComplexityChecker" -> new StmtComplexityChecker(argsList);

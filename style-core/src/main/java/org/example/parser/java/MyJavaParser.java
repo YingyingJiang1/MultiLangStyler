@@ -1069,6 +1069,11 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleThrowStmt() {
+        return JavaParser.RULE_throwStmt;
+    }
+
+    @Override
     public Set<Integer> getArrayInitializerRules() {
         return Set.of(JavaParser.RULE_initializer, JavaParser.RULE_arrayInitializer, JavaParser.RULE_elementValueArrayInitializer);
     }

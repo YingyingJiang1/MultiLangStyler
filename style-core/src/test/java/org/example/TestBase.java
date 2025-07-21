@@ -51,7 +51,7 @@ public class TestBase {
 //
 //	String[] targetFiles = {
 //			"f2.java",
-//			"style1.xml"
+//			"style2.xml"
 //	};
 //
 //		for (int i = 0; i < srcFiles.length; i++) {
