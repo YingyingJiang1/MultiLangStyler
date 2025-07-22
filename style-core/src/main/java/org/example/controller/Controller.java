@@ -63,8 +63,7 @@ public class Controller {
                 }
             }
 
-            String code = applyStyle(conf.applicationCollection);
-            saveApplyResult(code);
+            applyStyle(conf.applicationCollection);
             return targetProgramStyle;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -73,7 +72,7 @@ public class Controller {
         return null;
     }
 
-    public String applyStyle(FileCollection files) {
+    public void applyStyle(FileCollection files) {
         applyInitialize(files, targetProgramStyle);
         String code = null;
         for (int i = 0; i < files.size(); i++) {
@@ -91,13 +90,36 @@ public class Controller {
                 TokenAugmentor tokenAugmentor = new TokenAugmentor();
                 List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
                 code = toString(tokens, tokenAugmentor);
+                saveApplyResult(code);
             } catch (Exception e) {
                 logger.error("Failed to apply style rules to file: {}", files.getFilePath(i));
                 logger.error("Exception details:", e);
             }
         }
         applyFinalize();
-        return code;
+    }
+
+    public String applyStyle(Path filepath) {
+        fillStylers(targetProgramStyle);
+        try {
+            curPath = filepath;
+            String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+            GlobalInfo.setLanguage(language);
+            parser = MyParserFactory.createParser(language);
+            ParseTree tree = parser.parse(curPath);
+            if (tree == null) {
+                logger.info("Failed to apply style rules to file '{}' because of compilation error.", curPath.toString());
+                return null;
+            }
+
+            TokenAugmentor tokenAugmentor = new TokenAugmentor();
+            List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+            return toString(tokens, tokenAugmentor);
+        } catch (Exception e) {
+            logger.error("Failed to apply style rules to file: {}", filepath.toString());
+            logger.error("Exception details:", e);
+        }
+        return null;
     }
 
     public ProgramStyle extractStyle(FileCollection files) {

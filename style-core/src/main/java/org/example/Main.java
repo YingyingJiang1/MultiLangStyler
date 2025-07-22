@@ -26,7 +26,7 @@ public class Main {
             } else {
                 controller.execute();
             }
-            RunStatistic.printStatistic();
+            RunStatistic.save(RunStatistic.getDefaultOutputPath(config.getSrc(), config.getResOutDir()));
         }
     }
 //

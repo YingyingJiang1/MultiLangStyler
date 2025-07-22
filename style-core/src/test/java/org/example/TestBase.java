@@ -86,8 +86,6 @@ public class TestBase {
 		}
 		controller.setStylers(container);
 
-		FileCollection srcCollection = new FileCollection();
-		srcCollection.add(srcPath);
 		FileCollection targetCollection = new FileCollection();
 		targetCollection.add(targetPath);
 
@@ -100,9 +98,7 @@ public class TestBase {
 			sytle = controller.extractStyle(targetCollection);
 		}
 		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
-		String code = controller.applyStyle(srcCollection);
-
-		return code;
+		return controller.applyStyle(srcPath);
 	}
 
 	protected void testCodeEqual(String actual, Path gtPath) {

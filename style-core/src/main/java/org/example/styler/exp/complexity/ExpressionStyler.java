@@ -231,9 +231,13 @@ public class ExpressionStyler extends Styler {
         if (type == null) {
             return "";
         }
-        ExtendContext decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
+        ExtendContext decStmt = null;
+        try {
+            decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
+        } catch (RuntimeException e) {
+            log.error("Fail to split expression because of adding variable declaration failed.", e);
+        }
         if (decStmt == null) {
-            log.info("Fail to split expression because of adding variable declaration failed.");
             return "";
         }
 
