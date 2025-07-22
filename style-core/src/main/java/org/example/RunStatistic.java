@@ -31,7 +31,7 @@ public class RunStatistic implements Serializable {
 
 
 	public static void save(String filepath) {
-		File dir = new File(Paths.get(filepath).toString());
+		File dir = new File(Paths.get(filepath).getParent().toString());
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}

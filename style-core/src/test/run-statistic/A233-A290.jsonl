@@ -1,0 +1,10 @@
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M403"},"statistic":{"styleFreq":{"newline":9,"indention":26,"expression_complexity":7,"space":4},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M128"},"statistic":{"styleFreq":{"newline":7,"if_else_body_order":2,"indention":32,"modifier_order":1,"optional_brace":3,"expression_complexity":4,"space":2},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M31"},"statistic":{"styleFreq":{"newline":48,"indention":59,"expression_complexity":28,"space":19},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M307"},"statistic":{"styleFreq":{"newline":2,"indention":38,"expression_complexity":16},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M625"},"statistic":{"styleFreq":{"newline":118,"if_else_body_order":1,"indention":426,"modifier_order":1,"optional_brace":2,"expression_complexity":193,"structure_preference":2,"space":12},"structureIdFreq":{"16":1,"4":1}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M317"},"statistic":{"styleFreq":{"newline":17,"if_else_body_order":1,"indention":38,"optional_brace":1,"expression_complexity":15,"structure_preference":2,"space":10},"structureIdFreq":{"16":2}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M24"},"statistic":{"styleFreq":{"newline":11,"indention":52,"expression_complexity":10,"space":3},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M488"},"statistic":{"styleFreq":{"newline":9,"indention":22,"modifier_order":1,"optional_brace":1,"expression_complexity":4,"space":3},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M135"},"statistic":{"styleFreq":{"newline":15,"indention":20,"expression_complexity":6,"space":2},"structureIdFreq":{}}}
+{"key":{"srcAuthor":"A233","targetAuthor":"A290","srcFileID":"M101"},"statistic":{"styleFreq":{"newline":13,"if_else_body_order":1,"indention":15,"expression_complexity":7,"space":8},"structureIdFreq":{}}}
