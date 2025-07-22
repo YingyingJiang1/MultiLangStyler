@@ -2,6 +2,7 @@ package org.example.styler.format.indention;
 
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
@@ -57,12 +58,15 @@ public class IndentionStyler extends Styler {
                 Token nextToken = tokens.get(index + 1);
                 if (nextToken.getType() == parser.getVws() && !targetProperty.indentEmptyLine) {
                     curToken.setText("");
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 } else {
                     curToken.setText(indentionStr);
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             } else if (!indentionStr.isEmpty()) {
                 if (targetProperty.indentEmptyLine || parser.getVws() != curToken.getType()) {
                     curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             }
         }

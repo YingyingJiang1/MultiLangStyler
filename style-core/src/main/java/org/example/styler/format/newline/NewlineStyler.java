@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -68,8 +69,10 @@ public class NewlineStyler extends Styler {
 				int diff = targetProperty.newlines - property.newlines;
 				if (diff > 0) {
 					NewlineApplicator.addNewline(ctx.getChild(i), diff, newline, parser);
+					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
 				} else if (diff < 0) {
 					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
+					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
 				}
 			}
 

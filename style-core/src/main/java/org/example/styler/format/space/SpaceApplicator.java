@@ -1,8 +1,10 @@
 package org.example.styler.format.space;
 
 import org.antlr.v4.runtime.Token;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
+import org.example.styler.format.space.style.SpaceStyle;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class SpaceApplicator {
 				tokens.get(index - 1).getText().equals(curText) && !tokens.get(index + 1).getText().equals(curText);
 		if (noNeedCheck || isShiftEnd) {
 			cur.addTokenAfter(parser.getTokenFactory().create(parser.getHws(), " "), parser);
+			RunStatistic.addTriggeredStyle(parser.getSourceFile(), new SpaceStyle().getStyleName());
 		}
 	}
 
@@ -31,6 +34,7 @@ public class SpaceApplicator {
 				tokens.get(index + 1).getText().equals(curText) && !tokens.get(index - 1).getText().equals(curText);
 		if (noNeedCheck ||isShiftBegin ){
 			cur.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), " "), parser);
+			RunStatistic.addTriggeredStyle(parser.getSourceFile(), new SpaceStyle().getStyleName());
 		}
 	}
 
@@ -38,6 +42,7 @@ public class SpaceApplicator {
 		ExtendToken cur = (ExtendToken) tokens.get(index);
 		if (index + 1 < tokens.size() && parser.getHws() == tokens.get(index + 1).getType()) {
 			SpaceApplicator.remove(tokens, index + 1);
+			RunStatistic.addTriggeredStyle(parser.getSourceFile(), new SpaceStyle().getStyleName());
 		}
 	}
 
@@ -45,6 +50,7 @@ public class SpaceApplicator {
 		ExtendToken cur = (ExtendToken) tokens.get(index);
 		if (index - 1 >= 0 && parser.getHws() == tokens.get(index - 1).getType()) {
 			SpaceApplicator.remove(tokens, index - 1);
+			RunStatistic.addTriggeredStyle(parser.getSourceFile(), new SpaceStyle().getStyleName());
 		}
 	}
 

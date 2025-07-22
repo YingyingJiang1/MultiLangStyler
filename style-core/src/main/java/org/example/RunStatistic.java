@@ -2,26 +2,27 @@ package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.logging.LogFactory;
-import org.example.styler.Styler;
-import org.slf4j.ILoggerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class RunStatistic implements Serializable {
-	public static Map<Key, Map<String, Integer>> stat = new HashMap<>();
+	public static Map<Key, StyleTriggerStat> stat = new HashMap<>();
 
-	public void addTriggeredStyle(String filePath, String className) {
+	public static void addTriggeredStyle(String filePath, String className) {
 		Key key = Key.create(filePath);
-		Map<String, Integer> freq = stat.computeIfAbsent(key, k -> new HashMap<>());
-		freq.put(className, freq.getOrDefault(className, 0) + 1);
+		StyleTriggerStat styleStat = stat.computeIfAbsent(key, k -> new StyleTriggerStat());
+		styleStat.addStyle(className);
 	}
+
+	public static void addTriggeredStructureID(String filePath, int structureID) {
+		Key key = Key.create(filePath);
+		StyleTriggerStat styleStat = stat.computeIfAbsent(key, k -> new StyleTriggerStat());
+		styleStat.addStructure(structureID);
+	}
+
 
 	public static void save(String filepath) {
 		File dir = new File(Paths.get(filepath).toString());
@@ -32,12 +33,13 @@ public class RunStatistic implements Serializable {
 		ObjectMapper mapper = new ObjectMapper();
 
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
-			for (Map.Entry<Key, Map<String, Integer>> entry : stat.entrySet()) {
+			for (Map.Entry<Key, StyleTriggerStat> entry : stat.entrySet()) {
 				Key key = entry.getKey();
-				Map<String, Integer> freq = entry.getValue();
+				StyleTriggerStat info = entry.getValue();
+				ObjectNode jsonObject = mapper.createObjectNode();
+				jsonObject.set("key", mapper.valueToTree(key));
+				jsonObject.set("statistic", mapper.valueToTree(info));
 
-				ObjectNode jsonObject = mapper.valueToTree(key);
-				jsonObject.set("triggeredStyles", mapper.valueToTree(freq));
 
 				writer.write(mapper.writeValueAsString(jsonObject));
 				writer.newLine();
@@ -53,6 +55,19 @@ public class RunStatistic implements Serializable {
 				"run-statistic",
 				Paths.get(srcPath).getFileName() + ".jsonl"
 		).toString();
+	}
+
+	public static class StyleTriggerStat implements Serializable{
+		public Map<String, Integer> styleFreq = new HashMap<>();
+		public Map<Integer, Integer> structureIdFreq = new HashMap<>();
+
+		public void addStyle(String className) {
+			styleFreq.put(className, styleFreq.getOrDefault(className, 0) + 1);
+		}
+
+		public void addStructure(int id) {
+			structureIdFreq.put(id, structureIdFreq.getOrDefault(id, 0) + 1);
+		}
 	}
 
 	public static class Key implements Serializable {
