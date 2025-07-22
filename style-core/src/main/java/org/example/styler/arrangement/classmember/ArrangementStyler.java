@@ -119,7 +119,6 @@ public class ArrangementStyler extends Styler {
 			bodyCtx.replaceChildren(from, to + 1, newListCtxs);
 		}
 
-		RunStatistic.hit(this.getClass());
 		return ctx;
 	}
 

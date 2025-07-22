@@ -13,12 +13,18 @@ public class RunStatistic implements Serializable {
 
 	public static void addTriggeredStyle(String filePath, String className) {
 		Key key = Key.create(filePath);
+		if (key == null) {
+			return;
+		}
 		StyleTriggerStat styleStat = stat.computeIfAbsent(key, k -> new StyleTriggerStat());
 		styleStat.addStyle(className);
 	}
 
 	public static void addTriggeredStructureID(String filePath, int structureID) {
 		Key key = Key.create(filePath);
+		if (key == null) {
+			return;
+		}
 		StyleTriggerStat styleStat = stat.computeIfAbsent(key, k -> new StyleTriggerStat());
 		styleStat.addStructure(structureID);
 	}
@@ -29,6 +35,8 @@ public class RunStatistic implements Serializable {
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
+
+		System.out.println(filepath);
 
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -82,8 +90,11 @@ public class RunStatistic implements Serializable {
 
 		public static Key create(String filePath) {
 			Path path = Paths.get(filePath);
-			String[] authors = path.getParent().toString().split("-");
-			return new Key(authors[0], authors[1], path.getFileName().toString().replace(".java", ""));
+			String[] authors = path.getParent().getFileName().toString().split("-");
+			if (authors.length == 2) {
+				return new Key(authors[0], authors[1], path.getFileName().toString().replace(".java", ""));
+			}
+			return null;
 		}
 
 		@Override

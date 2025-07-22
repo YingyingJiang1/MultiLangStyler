@@ -43,7 +43,6 @@ public class CommentLineDensityStyler extends Styler {
                 int linesToRemoved = (int) (totalLines * (lineDensity - densityProperty.commentDensity));
                 removeComment(commentMap, tokens, linesToRemoved, parser);
 
-                RunStatistic.hit(this.getClass());
             }
         }
         return null;

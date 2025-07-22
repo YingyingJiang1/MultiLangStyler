@@ -54,7 +54,6 @@ public class UnusedCodeStyler extends Styler {
             }
             removeUnusedCode(symbol, parser);
 
-            RunStatistic.hit(this.getClass());
         }
         return ctx;
     }
