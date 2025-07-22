@@ -2,6 +2,7 @@ package org.example.styler.format.body.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
@@ -65,11 +66,15 @@ public class OptionalBraceStyler extends BodyStyler {
                 children.add(rb);
                 block.addChildren(children);
                 ctx.replaceChild(body, block);
+
+                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
             } else if (!property.useBrace) {
                 // Removing {} happens when the bodyNumType is EMPTY or SINGLE. Otherwise, it may cause an error.
                 boolean isBraceRemovable = parser.isBlock(specificBody) && (bodyContext.bodyNumType == BodyNumType.EMPTY || bodyContext.bodyNumType == BodyNumType.SINGLE);
                 if (isBraceRemovable) {
                     ctx.replaceChild(body, specificBody.getFirstCtxChildIf(t -> true));
+
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             }
         }
