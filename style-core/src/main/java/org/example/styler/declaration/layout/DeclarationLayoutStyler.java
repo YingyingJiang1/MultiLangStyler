@@ -75,8 +75,10 @@ public class DeclarationLayoutStyler extends Styler {
         if (styleProperty instanceof DeclarationLayoutProperty property) {
             if (decCount > 1 && property.maxVariableCount == 1) {
                 splitDeclarations(ctx, parser);
+                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
             } else if (property.maxVariableCount > 1) {
                 mergeDeclarations(ctx, parser, context, property);
+                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
             }
         }
         return ctx;
@@ -151,7 +153,6 @@ public class DeclarationLayoutStyler extends Styler {
         int index = blockContainer.indexOfFirstChild(child -> child instanceof  ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(ctx));
         blockContainer.replaceChildren(index, index + 1, declarationStmtList);
 
-        RunStatistic.hit(this.getClass());
     }
 
 
@@ -202,7 +203,6 @@ public class DeclarationLayoutStyler extends Styler {
             blockContainer.children.removeAll(blockContainer.children.subList(curIndex + 1, nextIndex));
         }
 
-        RunStatistic.hit(this.getClass());
     }
 
 

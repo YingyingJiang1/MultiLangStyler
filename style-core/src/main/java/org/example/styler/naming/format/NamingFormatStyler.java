@@ -69,7 +69,7 @@ public class NamingFormatStyler extends Styler {
                 if (!newName.equals(name)) {
                     symbol.modifyName(newName);
 
-                    RunStatistic.hit(this.getClass());
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             }
         }

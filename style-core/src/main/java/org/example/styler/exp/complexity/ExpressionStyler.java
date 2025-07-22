@@ -67,9 +67,20 @@ public class ExpressionStyler extends Styler {
         StyleProperty property = style.getProperty(styleContext);
         if (property instanceof ExpressionProperty targetProperty) {
             if (complexity.isMoreComplex(targetProperty.maxComplexity)) {
-                splitExpression(expression, complexity, targetProperty, parser);
+                try {
+                    splitExpression(expression, complexity, targetProperty, parser);
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                } catch (RuntimeException e) {
+                    log.error("Fail to split expression.", e);
+                }
+
             } else if (targetProperty.avgComplexity.isMoreComplex(complexity)) {
-                mergeExpression(expression, complexity, targetProperty, parser);
+                try {
+                    mergeExpression(expression, complexity, targetProperty, parser);
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                }  catch (RuntimeException e) {
+                    log.error("Fail to merge expression.", e);
+                }
             }
         }
 
@@ -231,15 +242,7 @@ public class ExpressionStyler extends Styler {
         if (type == null) {
             return "";
         }
-        ExtendContext decStmt = null;
-        try {
-            decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
-        } catch (RuntimeException e) {
-            log.error("Fail to split expression because of adding variable declaration failed.", e);
-        }
-        if (decStmt == null) {
-            return "";
-        }
+        ExtendContext decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
 
         // Set a meaningful name for the newly created variable
         DecStmtSearcher decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
@@ -270,8 +273,6 @@ public class ExpressionStyler extends Styler {
         Symbol newSym = new VarSym(type, identifier, null, NameType.LOCAL_VARIABLE);
         copies.forEach(newSym::addReference);
         SymbolTableManager.getSymbolTable(parser.getRoot()).addSymbol(newSym, parser);
-
-        RunStatistic.hit(this.getClass());
 
         return identifier.getText();
     }

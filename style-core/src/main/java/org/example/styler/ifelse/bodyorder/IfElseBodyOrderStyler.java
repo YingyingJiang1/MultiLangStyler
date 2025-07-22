@@ -1,5 +1,6 @@
 package org.example.styler.ifelse.bodyorder;
 
+import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.utils.ParseTreeUtil;
@@ -51,6 +52,8 @@ public class IfElseBodyOrderStyler extends Styler {
                 ExtendContext negatedExp = ParseTreeUtil.getInstance()
                         .negateExpressionSmart((ExtendContext) conditionCtx.getChild(1), parser);
                 conditionCtx.replaceChild(conditionCtx.getChild(1), negatedExp);
+
+                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
             }
         }
         return ctx;

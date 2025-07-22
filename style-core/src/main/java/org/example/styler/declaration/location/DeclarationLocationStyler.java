@@ -222,7 +222,7 @@ public class DeclarationLocationStyler extends Styler {
             block.insertChild(insertionPoint, decStmt);
             updateCurrentLine(block, currentIndex, insertionPoint);
 
-            RunStatistic.hit(this.getClass());
+            RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
         }
     }
 
@@ -246,7 +246,7 @@ public class DeclarationLocationStyler extends Styler {
             block.children.remove(currentIndex);
             updateCurrentLine(block, currentIndex, insertionPoint - 1);
 
-            RunStatistic.hit(this.getClass());
+            RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
         }
     }
 

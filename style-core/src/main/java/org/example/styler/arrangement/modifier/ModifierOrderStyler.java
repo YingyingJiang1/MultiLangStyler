@@ -48,15 +48,19 @@ public class ModifierOrderStyler extends Styler {
             }
         }
 
-        // Resort modifier which are in the target order list.
-        List<ParseTree> ordered = inTargetMap.keySet().stream().sorted(Comparator.comparing(inTargetMap::get)).toList();
-        List<Integer> indices = inTargetMap.values().stream().sorted().toList();
-        for (int i = 0; i < ordered.size(); i++) {
-            ctx.children.set(indexInOriginalMap.get(ordered.get(i)), ordered.get(i));
+        if (!inTargetMap.equals(indexInOriginalMap)) {
+            // Resort modifier which are in the target order list.
+            List<ParseTree> ordered = inTargetMap.keySet().stream().sorted(Comparator.comparing(inTargetMap::get)).toList();
+            List<Integer> indices = inTargetMap.values().stream().sorted().toList();
+            for (int i = 0; i < ordered.size(); i++) {
+                ctx.children.set(indexInOriginalMap.get(ordered.get(i)), ordered.get(i));
+            }
+            ctx.updateStartToken();
+            ctx.updateStopToken();
+
+            RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
         }
-        ctx.updateStartToken();
-        ctx.updateStopToken();
-        RunStatistic.hit(this.getClass());
+
         return ctx;
     }
 
