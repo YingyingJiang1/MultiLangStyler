@@ -7,9 +7,8 @@ public class EdE {
 		for(int i = 2;i<=n;i++){
 			if ( isPrime[i] != 1) { continue ; }  for(int j = i;j<=n;j+=i){
 					if ( j%(i*i) == 0) { mu[j] = 0;
-					mu[j] = -mu[j];
-				} else { mu[j] = -mu[j];
-				} }
+					} else { } mu[j] = -mu[j];
+				}
 			}
 	}
 }

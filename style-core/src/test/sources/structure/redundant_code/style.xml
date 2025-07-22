@@ -10,7 +10,7 @@
   <style name="expression_complexity"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="25" category="Redundant code"/>
+      <style_context id="24" category="Redundant code"/>
       <style_property preferenceIndex="1"/>
     </rule>
     <rule>

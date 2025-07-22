@@ -142,7 +142,11 @@
     "class" : "EqualChecker",
     "argsList" : [ [ 0, "$I", "$E3" ], [ 2, "$I", "$E3" ], [ 3, "$I", "$E3", "$E4" ] ]
   } ],
-  "handlers" : [ {
+  "handlers" : [
+    {
+      "class": "DecThenAssignExceptionHandler",
+      "argsList": [[0, 1, "$I", "$E", "$E1", "$E2"], [2, 1, "$I", "$E", "$E1", "$E2"], [3, 1, "$I", "$E", "$E1", "$E2"]]
+    },{
     "class" : "ReplicationHandler",
     "argsList" : [ [ 0, "$I", "$E3" ], [ 2, "$I", "$E3" ], [ 3, "$I", "$E3", "$E4" ] ]
   } ]

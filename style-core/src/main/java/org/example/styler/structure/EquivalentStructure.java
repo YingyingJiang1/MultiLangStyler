@@ -4,9 +4,11 @@ package org.example.styler.structure;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antlr.v4.runtime.tree.*;
+import org.example.myException.TreeConvertException;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.styler.structure.handler.ExceptionHandler;
 import org.example.utils.ParseTreeUtil;
 import org.example.myException.CompilationException;
 import org.example.parser.java.MyJavaParser;
@@ -248,9 +250,18 @@ public class EquivalentStructure {
 		if(bannedTransfer != null && bannedTransfer.get(from) != null && bannedTransfer.get(from).contains(to)) {
 			return null;
 		}
+
 		if (handlers != null) {
 			for (Handler handler : handlers) {
-				handler.handle(this, from, to, parser);
+				if (handler instanceof ExceptionHandler exceptionHandler) {
+					try {
+						exceptionHandler.handleException(this, from, to, parser);
+					} catch (TreeConvertException e) {
+						return oldTree; // Exception caught, don't do any convert.
+					}
+				} else {
+					handler.handle(this, from, to, parser);
+				}
 			}
 		}
 
