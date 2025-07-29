@@ -102,9 +102,10 @@ public class DeclarationLayoutStyler extends Styler {
     }
 
     private DeclarationLayoutContext extractContext(ExtendContext ctx, MyParser parser) {
-        ExtendToken extStart = (ExtendToken) ctx.start;
-        ExtendToken extStop = (ExtendToken) ctx.stop;
-        boolean hasComment = extStart.hasContextTokens(parser::belongToComment) || extStop.hasContextTokens(parser::belongToComment);
+        ExtendToken extStart = (ExtendToken) ctx.getStart();
+        ExtendToken extStop = (ExtendToken) ctx.getStop();
+        boolean hasComment = extStart != null && extStart.hasContextTokens(parser::belongToComment)
+                || extStop != null && extStop.hasContextTokens(parser::belongToComment);
         return new DeclarationLayoutContext(hasComment);
     }
 
