@@ -3,6 +3,7 @@ package org.example.styler.structure.handler;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.myException.TreeConvertException;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.Arrays;
@@ -32,15 +33,23 @@ public class DecThenAssignExceptionHandler extends Handler implements ExceptionH
 			int index1 = Integer.parseInt(args[0]), index2 = Integer.parseInt(args[1]);
 			if(index1 == from && index2 == to) {
 				String decIdentifierHolderName = args[2];
-				List<ParseTree> decIdentifier = structure.getVNode(decIdentifierHolderName).matchedTrees;
-				if (!decIdentifier.isEmpty()) {
-					for (int i = 3; i < args.length; i++) {
-						List<ParseTree> conditionExp = structure.getVNode(args[i]).matchedTrees;
-						if (!conditionExp.isEmpty() && conditionExp.get(0).getText().contains(decIdentifier.get(0).getText())) {
-							throw new TreeConvertException("This convert will cause \"use before declaration\" exception.");
+				List<ParseTree> matchedDecIdentifiers = structure.getVNode(decIdentifierHolderName).matchedTrees;
+				if (matchedDecIdentifiers.isEmpty()) {
+					return;
+				}
+
+				ExtendContext decIdentifier = (ExtendContext) matchedDecIdentifiers.get(0);
+				for (int i = 3; i < args.length; i++) {
+					List<ParseTree> conditionExp = structure.getVNode(args[i]).matchedTrees;
+					for (ParseTree node : conditionExp) {
+						if (node instanceof ExtendContext ctx) {
+							ctx.getAllCtxsRecIf(e -> e.getRuleIndex() == decIdentifier.getRuleIndex()).forEach(e -> {
+								if (e.getText().equals(decIdentifier.getText())) {
+									throw new TreeConvertException("This convert will cause \"use before declaration\" exception.");
+								}
+							});
 						}
 					}
-
 				}
 			}
 		}

@@ -9,6 +9,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.styler.structure.handler.ExceptionHandler;
+import org.example.styler.structure.vtree.VirtualNodeMatcher;
 import org.example.utils.ParseTreeUtil;
 import org.example.myException.CompilationException;
 import org.example.parser.java.MyJavaParser;
@@ -182,7 +183,7 @@ public class EquivalentStructure {
 			realTrees = List.of(t);
 		}
 
-		// Try to match a writing.
+		// Try to match structure.
 		for (Map.Entry<Forest, Integer> entry : vtMap.entrySet()) {
 			Forest forest = entry.getKey();
 			int index = entry.getValue();
@@ -214,6 +215,7 @@ public class EquivalentStructure {
 				}
 			}
 
+			// Check context of code
 			boolean isLastNodeRepeatable = vi == forest.size() - 1 && vTreeMap.get(forest.getTree(vi)) != null && vTreeMap.get(forest.getTree(vi)).moveStep() == 0;
 			boolean isASTMatched = vi == forest.size() || isLastNodeRepeatable;
 			if(isASTMatched && isContextMatched(forest.getvNodes(), parser) && check(index, parser))  {
@@ -246,6 +248,14 @@ public class EquivalentStructure {
 		return true;
 	}
 
+	/**
+	 * Note: call `cleanState()` before exiting this method.
+	 * @param from
+	 * @param to
+	 * @param oldTree
+	 * @param parser
+	 * @return
+	 */
 	public ParseTree convert(int from, int to, ParseTree oldTree, MyParser parser) {
 		if(bannedTransfer != null && bannedTransfer.get(from) != null && bannedTransfer.get(from).contains(to)) {
 			return null;
@@ -257,6 +267,7 @@ public class EquivalentStructure {
 					try {
 						exceptionHandler.handleException(this, from, to, parser);
 					} catch (TreeConvertException e) {
+						cleanState();
 						return oldTree; // Exception caught, don't do any convert.
 					}
 				} else {
@@ -448,18 +459,20 @@ public class EquivalentStructure {
 	// param t is a real tree.
 
 	/**
-	 * @apiNote Associates a placeholder-generated tree in the tree to a specific virtual node.
+	 * Associates a placeholder-generated tree in the tree to a specific virtual node.
+	 *
 	 */
 	private void doUnique(ParseTree node, Forest forest, MyParser parser) {
 		if (!(node instanceof ExtendContext)) {
 			return;
 		}
 		VirtualNode vNode = placeholderContainer.getVNode(node, parser);
-		if (vNode != null) {
+		if (vNode != null && VirtualNodeMatcher.getInstance(parser).isMatched(vNode.type, node, parser)) {
 			if (vNode.isEmpty()) {
 				vTreeMap.put(node, vNode);
 				vNode.tree = node;
 			} else {
+				// ?? 这是干啥的
 				if (node.getParent() != null) {
 					((ExtendContext) node.getParent()).replaceChild(node, vNode.tree);
 				}

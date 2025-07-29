@@ -103,7 +103,7 @@
   "id" : 10,
   "name" : "loop4",
   "category" : "Loops",
-  "codes" : [ "for ( ; $E1 ; $EXP_LIST ) { $S }", "while ( $E1 ) { $S $S(expStmt)+ }" ],
+  "codes" : [ "for ( ; $E1 ; $EXP_LIST ) { $S* }", "while ( $E1 ) { $S* $S(expStmt)+ }" ],
   "checker" : [ {
     "checker_description" : "检查1号写法中的$S(expStmt)+，他们必须对更新了表达式的值"
   } ]
@@ -111,7 +111,7 @@
   "id" : 11,
   "name" : "loop5",
   "category" : "Loops",
-  "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S }", "$S(expStmt)+ while ( $E1 ) { $S $S1(expStmt)+ }" ],
+  "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }", "$S(expStmt)+ while ( $E1 ) { $S* $S1(expStmt)+ }" ],
   "checker" : [ {
     "checker_description" : "检查1号写法中的$S(expStmt)+,$S1(expStmt)+，他们必须对更新了表达式的值"
   } ]
@@ -119,7 +119,7 @@
   "id" : 12,
   "name" : "loop4",
   "category" : "Loops",
-  "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S }", "$VAR_DEC ; while ( $E1 ) { $S $S(expStmt)+ }" ],
+  "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }", "$VAR_DEC ; while ( $E1 ) { $S* $S(expStmt)+ }" ],
   "checker" : [ {
     "checker_description" : "检查1号写法中的$S(expStmt)+，他们必须对更新了表达式的值"
   } ],

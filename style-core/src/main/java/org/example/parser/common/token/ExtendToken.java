@@ -212,4 +212,16 @@ public class ExtendToken extends CommonToken {
     public void setContextTokens(List<Token> newCtxTokens) {
         this.contextTokens = newCtxTokens;
     }
+
+	public String getFormattedText() {
+        if (contextTokens == null) {
+            return getText();
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (Token t : contextTokens) {
+            builder.append(t.getText());
+        }
+        return  builder.toString();
+	}
 }

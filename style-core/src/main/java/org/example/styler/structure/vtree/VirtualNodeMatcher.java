@@ -23,13 +23,14 @@ public class VirtualNodeMatcher {
         if (ret == null) {
             ret = new VirtualNodeMatcher(parser);
             instances.put(parser.getClass(), ret);
+            init(parser);
         }
         return ret;
     }
 
 
     public boolean isMatched(String type, ParseTree tree, MyParser parser) {
-        init(parser);
+
         if (tree instanceof TerminalNode) {
             if (tree.getText().equals(";") && type.equals("$S")) {
                 return true;
@@ -49,13 +50,10 @@ public class VirtualNodeMatcher {
         matchRules.put("$T", Set.of(parser.getRuleTypeType()));
         matchRules.put("$M", Set.of(parser.getRuleModifierList()));
         matchRules.put("$LITERAL", Set.of(parser.getRuleLiteral()));
-        matchTokens.put("$VAR_DEC", Set.of(parser.getRuleLocalVarDeclaration()));
-
-
+        matchRules.put("$VAR_DEC", Set.of(parser.getRuleLocalVarDeclaration()));
         matchRules.put("$S(ifStmt)", Set.of(parser.getRuleIfStmt()));
         matchRules.put("$S(ifElseStmt)", Set.of(parser.getRuleIfElseStmt()));
         matchRules.put("$S(expStmt)", Set.of(parser.getRuleExpStmt()));
-
         matchRules.put("$EXP_LIST", Set.of(parser.getRuleExpressionList()));
 
         matchTokens.put("$HOMO_BOP", parser.getHomoOps());

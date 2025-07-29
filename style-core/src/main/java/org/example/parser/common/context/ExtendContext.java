@@ -158,13 +158,19 @@ public class ExtendContext extends ParserRuleContext {
                         (parser.getIdentifier() == token2.getType() || parser.belongToKeyword(token2));
             }
         };
-        for (int i = 0; i < tokens.size() - 1; i++) {
-            builder.append(tokens.get(i).getText());
-            if (isSpaceNecessary.test(tokens.get(i), tokens.get(i + 1))) {
-                builder.append(" ");
+
+        for (Token token : tokens) {
+            if (token instanceof ExtendToken extendToken) {
+                builder.append(extendToken.getFormattedText());
             }
         }
-        builder.append(tokens.get(tokens.size() - 1).getText());
+//        for (int i = 0; i < tokens.size() - 1; i++) {
+//            builder.append(tokens.get(i).getText());
+//            if (isSpaceNecessary.test(tokens.get(i), tokens.get(i + 1))) {
+//                builder.append(" ");
+//            }
+//        }
+//        builder.append(tokens.get(tokens.size() - 1).getText());
         return builder.toString();
     }
 
