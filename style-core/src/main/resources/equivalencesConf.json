@@ -81,7 +81,7 @@
   "id" : 8,
   "name" : "loop2",
   "category" : "Loops",
-  "codes" : [ "for ( $EXP_LIST ; $E1 ; ) $S", "$S(expStmt)+ while ( $E1 ) $S" ],
+  "codes" : [ "for ( $EXP_LIST ; $E1 ; ) $S", "$^ $S(expStmt)+ while ( $E1 ) $S" ],
   "handlers" : [ {
     "class" : "Exp2ExpStmtHandler",
     "argsList" : [ [ 0, 1, "$EXP_LIST", "$S(expStmt)" ] ]
@@ -93,41 +93,64 @@
   "id" : 9,
   "name" : "loop3",
   "category" : "Loops",
-  "codes" : [ "for ( $VAR_DEC ; $E ; ) $S", "$VAR_DEC ; while ( $E ) $S" ],
+  "codes" : [ "for ( $VAR_DEC ; $E ; ) $S", "$^ $VAR_DEC ; for ( ; $E ; ) $S","$^ $VAR_DEC ; while ( $E ) $S" ],
   "handlers" : [ {
-    "case_handled" : "0到1转换时，根据需要修改$VAR_DEC1中的变量名以保证和当前block不存在变量名称声明冲突（虽然Java不需要考虑这种情况）"
-  }, {
-    "case_handled" : "1到0转换时，将for的$VAR_DEC处替换为空，"
-  } ]
+    "class" : "ConflictNameHandler",
+    "argsList" : [ [ 0, 1, "$VAR_DEC", "$$VAR_DEC" ] ]
+  }],
+  "bannedTransfer":[[1, 0], [2, 0]]
 }, {
   "id" : 10,
   "name" : "loop4",
   "category" : "Loops",
-  "codes" : [ "for ( ; $E1 ; $EXP_LIST ) { $S* }", "while ( $E1 ) { $S* $S(expStmt)+ }" ],
+  "codes" : [ "for ( ; $E1 ; $EXP_LIST ) { $S* }", "while ( $E1 ) { $S* $S(expStmt) }" ],
   "checker" : [ {
-    "checker_description" : "检查1号写法中的$S(expStmt)+，他们必须对更新了表达式的值"
+    "class": "VarUpdateStmtChecker",
+    "argsList" : [ [ 1, "$S(expStmt)"] ]
+  } ],
+  "handlers" : [ {
+    "class" : "Exp2ExpStmtHandler",
+    "argsList" : [ [ 0, 1, "$EXP_LIST", "$S(expStmt)" ] ]
+  }, {
+    "class" : "ExpStmt2ExpHandler",
+    "argsList" : [ [ 1, 0, "$S(expStmt)", "$EXP_LIST" ] ]
   } ]
 }, {
   "id" : 11,
   "name" : "loop5",
   "category" : "Loops",
-  "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }", "$S(expStmt)+ while ( $E1 ) { $S* $S1(expStmt)+ }" ],
+  "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }", "$^ $S(expStmt)+ while ( $E1 ) { $S* $S1(expStmt) }" ],
   "checker" : [ {
-    "checker_description" : "检查1号写法中的$S(expStmt)+,$S1(expStmt)+，他们必须对更新了表达式的值"
+    "class": "VarUpdateStmtChecker",
+    "argsList" : [ [ 1, "$S(expStmt)"] ]
+  } ],
+  "handlers" : [ {
+    "class" : "Exp2ExpStmtHandler",
+    "argsList" : [ [ 0, 1, "$EXP_LIST", "$S(expStmt)" ] ]
+  }, {
+    "class" : "ExpStmt2ExpHandler",
+    "argsList" : [ [ 1, 0, "$S(expStmt)", "$EXP_LIST" ] ]
   } ]
 }, {
   "id" : 12,
   "name" : "loop4",
   "category" : "Loops",
-  "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }", "$VAR_DEC ; while ( $E1 ) { $S* $S(expStmt)+ }" ],
-  "checker" : [ {
-    "checker_description" : "检查1号写法中的$S(expStmt)+，他们必须对更新了表达式的值"
+  "codes" : [ "for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }", "$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }", "$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }" ],
+  "checkers" : [ {
+    "class": "VarUpdateStmtChecker",
+    "argsList" : [ [ 1, "$S(expStmt)"] ]
   } ],
-  "handlers" : [ {
-    "case_handled" : "0到1转换时，根据需要修改$VAR_DEC1中的变量名以保证和当前block不存在变量名称声明冲突（虽然Java不需要考虑这种情况）"
+  "handlers" : [  {
+    "class" : "ConflictNameHandler",
+    "argsList" : [ [ 0, 1, "$VAR_DEC", "$$VAR_DEC" ] ]
   }, {
-    "case_handled" : "1到0转换时，将for的$VAR_DEC处替换为空，"
-  } ]
+    "class" : "Exp2ExpStmtHandler",
+    "argsList" : [ [ 0, 2, "$EXP_LIST", "$S(expStmt)" ],[ 1, 2, "$EXP_LIST", "$S(expStmt)" ] ]
+  }, {
+    "class" : "ExpStmt2ExpHandler",
+    "argsList" : [ [ 2, 0, "$S(expStmt)", "$EXP_LIST" ], [ 2, 1, "$S(expStmt)", "$EXP_LIST" ] ]
+  } ],
+  "bannedTransfer":[[1, 0], [2, 0]]
 }, {
   "id" : 13,
   "name" : "check_then_return",

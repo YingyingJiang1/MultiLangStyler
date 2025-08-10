@@ -155,7 +155,6 @@ public class EquivalentStructure {
     public List<Forest> getForests() {
         return forests;
     }
-
 	public VirtualNode getVNode(String placeholderName) {
 		return placeholderContainer.getVNodeByPlaceholderName(placeholderName);
 	}
@@ -276,10 +275,10 @@ public class EquivalentStructure {
 			}
 		}
 
-		Forest Toforest = forests.get(to);
+		Forest toforest = forests.get(to);
 		int fromSize = forests.get(from).getRealForestSize(); // size of matched real trees(real trees are subtrees of input codes).
 		List<ParseTree> newTrees = new ArrayList<>();
-		for(ParseTree t : Toforest.getTrees()) {
+		for(ParseTree t : toforest.getTrees()) {
 			newTrees.addAll(createTree(t));
 		}
 

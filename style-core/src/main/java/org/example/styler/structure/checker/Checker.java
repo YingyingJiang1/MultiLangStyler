@@ -59,6 +59,7 @@ public abstract class Checker {
       case "HasSameEndingStmtChecker" -> new HasSameEndingStmtChecker(argsList);
       case "StmtComplexityChecker" -> new StmtComplexityChecker(argsList);
       case "EndsWithChecker" -> new EndsWithChecker(argsList);
+      case "VarUpdateStmtChecker" -> new VarUpdateStmtChecker(argsList);
       default -> null;
     };
     if (checker == null) {

@@ -47,7 +47,7 @@ public abstract class Handler {
       case "AppendTreeHandler" -> new AppendTreeHandler(argsList);
       case "RedundantCodeHandler" -> new RedundantCodeHandler(argsList);
       case "BraceWrapHandler" -> new BraceWrapHandler(argsList);
-
+      case "ConflictNameHandler" -> new ConflictNameHandler(argsList);
       case "DecThenAssignExceptionHandler" -> new DecThenAssignExceptionHandler(argsList);
       default -> null;
     };
