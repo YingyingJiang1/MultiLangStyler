@@ -81,13 +81,13 @@
   "id" : 8,
   "name" : "loop2",
   "category" : "Loops",
-  "codes" : [ "for ( $E_LIST ; $E1 ; ) $S", "$S(expStmt)+ while ( $E1 ) $S" ],
+  "codes" : [ "for ( $EXP_LIST ; $E1 ; ) $S", "$S(expStmt)+ while ( $E1 ) $S" ],
   "handlers" : [ {
     "class" : "Exp2ExpStmtHandler",
-    "argsList" : [ [ 0, 1, "$E_LIST", "$S(expStmt)" ] ]
+    "argsList" : [ [ 0, 1, "$EXP_LIST", "$S(expStmt)" ] ]
   }, {
     "class" : "ExpStmt2ExpHandler",
-    "argsList" : [ [ 1, 0, "$S(expStmt)", "$E_LIST" ] ]
+    "argsList" : [ [ 1, 0, "$S(expStmt)", "$EXP_LIST" ] ]
   } ]
 }, {
   "id" : 9,

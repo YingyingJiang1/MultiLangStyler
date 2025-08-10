@@ -34,12 +34,16 @@ public class VirtualNode {
     }
 
     public boolean matches(ParseTree t1, MyParser parser) {
+        // Check node
         boolean isMatched = VirtualNodeMatcher.getInstance(parser).isMatched(type, t1, parser);
-        if (isMatched) {
+        // Check state
+        int step = moveStep();
+
+        if (isMatched && step == 0) {
             addMatchedTree(t1);
             return true;
         }
-        return repetition.equals("*") || repetition.equals("?");
+        return false;
     }
 
     public boolean checkState(MyParser parser) {
@@ -62,7 +66,7 @@ public class VirtualNode {
         if (repetition.equals("*") || repetition.equals("+") || repetition.equals("?") && matchedTrees.isEmpty()) {
             return 0;
         }
-        return 1;
+        return matchedTrees.size() == 1 ? 1 : 0;
     }
 
 
