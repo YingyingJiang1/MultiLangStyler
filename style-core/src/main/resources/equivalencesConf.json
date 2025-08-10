@@ -81,7 +81,7 @@
   "id" : 8,
   "name" : "loop2",
   "category" : "Loops",
-  "codes" : [ "for ( $EXP_LIST ; $E1 ; ) $S", "$^ $S(expStmt)+ while ( $E1 ) $S" ],
+  "codes" : [ "for ( $EXP_LIST ; $E1 ; ) $S", "$^ $S(expStmt) while ( $E1 ) $S" ],
   "handlers" : [ {
     "class" : "Exp2ExpStmtHandler",
     "argsList" : [ [ 0, 1, "$EXP_LIST", "$S(expStmt)" ] ]
@@ -119,7 +119,7 @@
   "id" : 11,
   "name" : "loop5",
   "category" : "Loops",
-  "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }", "$^ $S(expStmt)+ while ( $E1 ) { $S* $S1(expStmt) }" ],
+  "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }", "$^ $S(expStmt) while ( $E1 ) { $S* $S1(expStmt) }" ],
   "checker" : [ {
     "class": "VarUpdateStmtChecker",
     "argsList" : [ [ 1, "$S(expStmt)"] ]
