@@ -258,6 +258,11 @@ public class ParseTreeUtil {
   }
 
   public static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
+    generateTokensRec(root, tokens, parser);
+    updateTokenLocation(tokens);
+  }
+
+  public static void generateTokensRec(ParseTree root, List<Token> tokens, MyParser parser) {
     if (root instanceof TerminalNode) {
       int hierarchy = ((ExtendContext) root.getParent()).hierarchy;
       ExtendToken token = (ExtendToken) (((TerminalNode) root).getSymbol());
@@ -295,6 +300,28 @@ public class ParseTreeUtil {
       }
     }
   }
+
+  public static void updateTokenLocation(List<Token> tokens) {
+    int curLine = 1;
+    int curPositionInLine = 0;
+
+    for (Token t : tokens) {
+      if (t instanceof ExtendToken extendToken) {
+        extendToken.setLine(curLine);
+        extendToken.setCharPositionInLine(curPositionInLine);
+      }
+
+      long newlineCount = t.getText().chars().filter(ch -> ch == '\n').count();
+
+      if (newlineCount == 0) {
+        curPositionInLine += t.getText().length();
+      } else {
+        curLine += (int) newlineCount;
+        curPositionInLine = 0;
+      }
+    }
+  }
+
 
 //  private void modifyLink(ExtendContext parent, ParseTree newChild, ParseTree oldChild) {
 //    for (int i = 0; i < parent.getChildCount(); i++) {
