@@ -13,6 +13,7 @@ import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.junit.jupiter.api.Test;
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -181,11 +182,15 @@ class StructureStylerTest extends TestBase {
 		String dir = "src/test/sources/structure/loop/";
 		String[] srcFiles = {
 				"f1.java",
+				"f2.java",
+				"f3.java",
 
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
+				"style2.xml",
+				"style3.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {

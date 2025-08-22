@@ -6,6 +6,12 @@ import org.example.utils.searcher.intf.*;
 import org.example.utils.searcher.javaimpl.*;
 
 public class NodeSearcherFactory {
+	private static NodeSearcherFactory instance = new NodeSearcherFactory();
+
+	public static NodeSearcherFactory getInstance() {
+		return instance;
+	}
+
 	public ArgumentsSearcher createArgumentsSearcher() {
 		String language = GlobalInfo.getConf().getLanguageConfig().getLanguage();
 		switch (language) {
@@ -26,11 +32,11 @@ public class NodeSearcherFactory {
 		}
 	}
 
-	public DecStmtSearcher createDecStmtSearcher() {
+	public DeclarationSearcher createDeclarationSearcher() {
 		String language = GlobalInfo.getConf().getLanguageConfig().getLanguage();
 		switch (GlobalInfo.getConf().getLanguageConfig().getLanguage()) {
 			case "java":
-				return new JavaDecStmtSearcher();
+				return new JavaDeclarationSearcher();
 			default:
 				throw new IllegalArgumentException("Unsupported language: " + GlobalInfo.getConf().getLanguageConfig().getLanguage());
 		}

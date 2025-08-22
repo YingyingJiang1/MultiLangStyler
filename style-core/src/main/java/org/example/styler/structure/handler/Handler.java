@@ -49,6 +49,7 @@ public abstract class Handler {
       case "BraceWrapHandler" -> new BraceWrapHandler(argsList);
       case "ConflictNameHandler" -> new ConflictNameHandler(argsList);
       case "DecThenAssignExceptionHandler" -> new DecThenAssignExceptionHandler(argsList);
+      case "VarUndefExceptionHandler" -> new VarUndefExceptionHandler(argsList);
       default -> null;
     };
     if (handler == null) {

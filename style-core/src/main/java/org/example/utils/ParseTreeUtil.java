@@ -322,6 +322,33 @@ public class ParseTreeUtil {
     }
   }
 
+  public static void toNiceFormat(ParseTree root, MyParser parser) {
+    if (root instanceof ExtendContext ctx) {
+      if (parser.isStatement(ctx)) {
+        if (ctx.getStop() instanceof ExtendToken token && ctx.getStop().getText().equals(";") ) {
+          token.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+        }
+        if (parser.isBlock(parser.getSpecificStmt(ctx))) {
+          ExtendContext block = parser.getSpecificStmt(ctx);
+          for (ParseTree child : block.children) {
+            if (child instanceof TerminalNode ter && ter.getSymbol() instanceof ExtendToken extendToken) {
+              if (extendToken.getText().equals("{")) {
+                extendToken.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+              } else if (extendToken.getText().equals("}")) {
+                extendToken.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+                extendToken.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+              }
+            }
+          }
+        }
+      }
+
+      for (ParseTree child : ctx.children) {
+        toNiceFormat(child, parser);
+      }
+    }
+  }
+
 
 //  private void modifyLink(ExtendContext parent, ParseTree newChild, ParseTree oldChild) {
 //    for (int i = 0; i < parent.getChildCount(); i++) {

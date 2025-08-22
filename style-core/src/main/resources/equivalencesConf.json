@@ -96,9 +96,11 @@
   "codes" : [ "for ( $VAR_DEC ; $E ; ) $S", "$^ $VAR_DEC ; for ( ; $E ; ) $S","$^ $VAR_DEC ; while ( $E ) $S" ],
   "handlers" : [ {
     "class" : "ConflictNameHandler",
-    "argsList" : [ [ 0, 1, "$VAR_DEC", "$$VAR_DEC" ] ]
-  }],
-  "bannedTransfer":[[1, 0], [2, 0]]
+    "argsList" : [ [ 0, 1, "$VAR_DEC", 1], [ 0, 2, "$VAR_DEC", 1] ]
+  },{
+    "class": "VarUndefExceptionHandler",
+    "argsList" : [ [ 1, 0, "$VAR_DEC", "$E" ], [ 2, 0, "$VAR_DEC", "$E" ] ]
+  }]
 }, {
   "id" : 10,
   "name" : "loop4",
@@ -142,15 +144,17 @@
   } ],
   "handlers" : [  {
     "class" : "ConflictNameHandler",
-    "argsList" : [ [ 0, 1, "$VAR_DEC", "$$VAR_DEC" ] ]
+    "argsList" : [ [ 0, 1, "$VAR_DEC", 1 ] , [ 0, 2, "$VAR_DEC", 1]]
   }, {
+    "class": "VarUndefExceptionHandler",
+    "argsList" : [ [ 1, 0, "$VAR_DEC", "$E1" ], [ 2, 0, "$VAR_DEC", "$E1" ] ]
+  },{
     "class" : "Exp2ExpStmtHandler",
     "argsList" : [ [ 0, 2, "$EXP_LIST", "$S(expStmt)" ],[ 1, 2, "$EXP_LIST", "$S(expStmt)" ] ]
   }, {
     "class" : "ExpStmt2ExpHandler",
     "argsList" : [ [ 2, 0, "$S(expStmt)", "$EXP_LIST" ], [ 2, 1, "$S(expStmt)", "$EXP_LIST" ] ]
-  } ],
-  "bannedTransfer":[[1, 0], [2, 0]]
+  } ]
 }, {
   "id" : 13,
   "name" : "check_then_return",

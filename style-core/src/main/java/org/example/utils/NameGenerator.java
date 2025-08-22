@@ -12,11 +12,18 @@ import org.example.styler.naming.format.AbbreviationLibrary;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NameGenerator {
+    public static List<AlternativeNames> names = new ArrayList<>();
+
+    static {
+        names.add(new AlternativeNames(List.of("i", "j", "k")));
+    }
+
     private static final Pattern pattern = Pattern.compile("(\"|```|`|')([a-zA-Z_][a-zA-Z0-9_]*)(\"|```|`|')");;
 
     public static String generateName(String suffix, MyCaseFormat caseFormat) {
@@ -25,6 +32,20 @@ public class NameGenerator {
             name +=  "_" + suffix;
         }
         return MyCaseFormat.LOWER_UNDERSCORE.to(caseFormat, name);
+    }
+
+    public static String getAlternativeName(String oldName) {
+        String newName = oldName;
+
+        for (AlternativeNames name : names) {
+            if (name.isAlternative(oldName)) {
+                do {
+                    newName = name.getName();
+                } while (newName != null && newName.equals(oldName));
+            }
+        }
+
+        return newName;
     }
 
     public static String generateMeaningfulName(ExtendContext identifier, MyParser parser, int nameLengthLimit) {
@@ -104,6 +125,28 @@ public class NameGenerator {
         promptBuilder.append("```\n<new_name>\n```\n");
         promptBuilder.append("Now, provide the best variable name:");
         return promptBuilder.toString();
+    }
+
+    private static class AlternativeNames {
+        private List<String> names;
+        private Iterator<String> iterator;
+
+        public AlternativeNames(List<String> names) {
+            this.names = names;
+            iterator = names.iterator();
+        }
+
+        public String getName() {
+            if (iterator.hasNext()) {
+                return iterator.next();
+            }
+            iterator = names.iterator();
+            return null;
+        }
+
+        public boolean isAlternative(String name) {
+            return names.contains(name);
+        }
     }
 
 }

@@ -36,7 +36,7 @@ public class JavaResolver implements Resolver {
         Symbol ret = null;
 
         // Resolve all identifiers in current ast.
-        SymbolTable st = SymbolTableManager.getSymbolTable(root);
+        SymbolTable st = SymbolTableManager.getSymbolTable(parser);
         if (st == null) {
             st = resolveAll(root, parser);
             SymbolTableManager.addSymbolTable(root, st);
@@ -66,8 +66,8 @@ public class JavaResolver implements Resolver {
 
 
     @Override
-    public SymbolTable getSymbolTable(ParseTree root) {
-        return SymbolTableManager.getSymbolTable(root);
+    public SymbolTable getSymbolTable(MyParser parser) {
+        return SymbolTableManager.getSymbolTable(parser);
     }
 
 

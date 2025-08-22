@@ -63,6 +63,7 @@ public class EquivalentStructure {
 		ObjectMapper objectMapper = new ObjectMapper();
 		MyParser parser = MyParserFactory.createParser(parserClass);
 		String[] codes = objectMapper.convertValue(node.get("codes"), String[].class);
+
 //        String[] holders = objectMapper.convertValue(node.get("holders"), String[].class);
 		List<Checker> checkers = parseCheckers(node.get("checkers"), objectMapper, parser);
 		List<Handler> handlers = parseHandlers(node.get("handlers"), objectMapper, parser);
@@ -70,6 +71,7 @@ public class EquivalentStructure {
 		Map<Integer, List<Integer>> bannedTransferMap = parseBannedTransferMap(node.get("banned_transfer"), objectMapper, parser);
 		EquivalentStructure structure = new EquivalentStructure(id, category, checkers, handlers, bannedTransferMap);
 		structure.compile(codes);
+
 		return structure;
 	}
 

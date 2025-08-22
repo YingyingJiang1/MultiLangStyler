@@ -1,0 +1,311 @@
+<rule>
+  <codes>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+  </handlers>
+</rule>
+<rule id="1" name="inc" category="Increment or decrement preferences">
+  <codes>
+    <code>$E ++ ;</code>
+    <code>++ $E ;</code>
+    <code>$E += 1 ;</code>
+    <code>$E = $E1 + 1 ;</code>
+    <code>$E = 1 + $E1 ;</code>
+  </codes>
+  <checkers>
+[{"class":"EqualChecker","argsList":[[3,"$E","$E1"],[4,"$E","$E1"]]}]
+  </checkers>
+  <handlers>
+[{"class":"ReplicationHandler","argsList":[[3,"$E","$E1"],[4,"$E","$E1"]]}]
+  </handlers>
+</rule>
+<rule id="2" name="dec" category="Increment or decrement preferences">
+  <codes>
+    <code>$E -- ;</code>
+    <code>-- $E ;</code>
+    <code>$E -= 1 ;</code>
+    <code>$E = $E1 - 1 ;</code>
+  </codes>
+  <checkers>
+[{"class":"EqualChecker","argsList":[[3,"$E","$E1"]]}]
+  </checkers>
+  <handlers>
+[{"class":"ReplicationHandler","argsList":[[3,"$E","$E1"]]}]
+  </handlers>
+</rule>
+<rule id="3" category="Assignment statement preferences">
+  <codes>
+    <code>$E = $E1 $HOMO_BOP $E2 ;</code>
+    <code>$E $HOMO_BOP_ASSIGN $E2 ;</code>
+  </codes>
+  <checkers>
+[{"class":"EqualChecker","argsList":[[0,"$E","$E1"]]},{"class":"NotIntegerChecker","argsList":[[0,1,"$E2"],[1,1,"$E2"]]}]
+  </checkers>
+  <handlers>
+[{"class":"ReplicationHandler","argsList":[[0,"$E","$E1"]]},{"class":"OpOpAssignConvertHandler","argsList":[[0,1,"$HOMO_BOP","$HOMO_BOP_ASSIGN"],[1,0,"$HOMO_BOP_ASSIGN","$HOMO_BOP"]]}]
+  </handlers>
+  <comment>exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT).</comment>
+</rule>
+<rule id="4" name="nesting if" category="Continuous logic and preferences">
+  <codes>
+    <code>if ( $E && $E1 ) $S</code>
+    <code>if ( $E ) { if ( $E1 ) $S }</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+[{"class":"WrapCondHandler","argsList":[[1,0,"$E","$E1"],[2,0,"$E","$E1"]]}]
+  </handlers>
+</rule>
+<rule id="5" name="cascading if" category="Continuous logic or preferences">
+  <codes>
+    <code>if ( $E || $E1 ) $S</code>
+    <code>$^ if ( $E ) $S if ( $E1 ) $S1 </code>
+  </codes>
+  <checkers>
+[{"class":"EqualChecker","argsList":[[1,"$S","$S1"]]}]
+  </checkers>
+  <handlers>
+[{"class":"ReplicationHandler","argsList":[[1,"$S","$S1"]]}]
+  </handlers>
+</rule>
+<rule id="6" name="loop_empty" category="Loops">
+  <codes>
+    <code>for ( ; ; ) $S</code>
+    <code>while ( true ) $S</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+  </handlers>
+</rule>
+<rule id="7" name="loop1" category="Loops">
+  <codes>
+    <code>for ( ; $E ; ) $S</code>
+    <code>while ( $E ) $S</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+  </handlers>
+</rule>
+<rule id="8" name="loop2" category="Loops">
+  <codes>
+    <code>for ( $EXP_LIST ; $E1 ; ) $S</code>
+    <code>$^ $S(expStmt) while ( $E1 ) $S</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+[{"class":"Exp2ExpStmtHandler","argsList":[[0,1,"$EXP_LIST","$S(expStmt)"]]},{"class":"ExpStmt2ExpHandler","argsList":[[1,0,"$S(expStmt)","$EXP_LIST"]]}]
+  </handlers>
+</rule>
+<rule id="9" name="loop3" category="Loops">
+  <codes>
+    <code>for ( $VAR_DEC ; $E ; ) $S</code>
+    <code>$^ $VAR_DEC ; for ( ; $E ; ) $S</code>
+    <code>$^ $VAR_DEC ; while ( $E ) $S</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+[{"class":"ConflictNameHandler","argsList":[[0,1,"$VAR_DEC","$$VAR_DEC"]]}]
+  </handlers>
+  <bannedTransfer>[[1,0],[2,0]]</bannedTransfer>
+</rule>
+<rule id="10" name="loop4" category="Loops">
+  <codes>
+    <code>for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
+    <code>while ( $E1 ) { $S* $S(expStmt) }</code>
+  </codes>
+  <checkers>
+[{"class":"VarUpdateStmtChecker","argsList":[[1,"$S(expStmt)"]]}]
+  </checkers>
+  <handlers>
+[{"class":"Exp2ExpStmtHandler","argsList":[[0,1,"$EXP_LIST","$S(expStmt)"]]},{"class":"ExpStmt2ExpHandler","argsList":[[1,0,"$S(expStmt)","$EXP_LIST"]]}]
+  </handlers>
+</rule>
+<rule id="11" name="loop5" category="Loops">
+  <codes>
+    <code>for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }</code>
+    <code>$^ $S(expStmt) while ( $E1 ) { $S* $S1(expStmt) }</code>
+  </codes>
+  <checkers>
+[{"class":"VarUpdateStmtChecker","argsList":[[1,"$S(expStmt)"]]}]
+  </checkers>
+  <handlers>
+[{"class":"Exp2ExpStmtHandler","argsList":[[0,1,"$EXP_LIST","$S(expStmt)"]]},{"class":"ExpStmt2ExpHandler","argsList":[[1,0,"$S(expStmt)","$EXP_LIST"]]}]
+  </handlers>
+</rule>
+<rule id="12" name="loop4" category="Loops">
+  <codes>
+    <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
+    <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
+    <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
+  </codes>
+  <checkers>
+[{"class":"VarUpdateStmtChecker","argsList":[[1,"$S(expStmt)"]]}]
+  </checkers>
+  <handlers>
+[{"class":"ConflictNameHandler","argsList":[[0,1,"$VAR_DEC","$$VAR_DEC"]]},{"class":"Exp2ExpStmtHandler","argsList":[[0,2,"$EXP_LIST","$S(expStmt)"],[1,2,"$EXP_LIST","$S(expStmt)"]]},{"class":"ExpStmt2ExpHandler","argsList":[[2,0,"$S(expStmt)","$EXP_LIST"],[2,1,"$S(expStmt)","$EXP_LIST"]]}]
+  </handlers>
+  <bannedTransfer>[[1,0],[2,0]]</bannedTransfer>
+</rule>
+<rule id="13" name="check_then_return" category="Check then return preferences">
+  <codes>
+    <code>return $E ? $E1 : $E2 ;</code>
+    <code>if ( $E ) { return $E1 ; } else { return $E2 ; }</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+  </handlers>
+</rule>
+<rule id="14" name="dec_then_check_assign" category="Check then assign preferences">
+  <codes>
+    <code>$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
+    <code>$M $T $I = $E ? $E1 : $E2 ;</code>
+    <code>$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>
+    <code>$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
+  </codes>
+  <checkers>
+[{"class":"EqualChecker","argsList":[[0,"$I","$E3"],[2,"$I","$E3"],[3,"$I","$E3","$E4"]]}]
+  </checkers>
+  <handlers>
+[{"class":"DecThenAssignExceptionHandler","argsList":[[0,1,"$I","$E","$E1","$E2"],[2,1,"$I","$E","$E1","$E2"],[3,1,"$I","$E","$E1","$E2"]]},{"class":"ReplicationHandler","argsList":[[0,"$I","$E3"],[2,"$I","$E3"],[3,"$I","$E3","$E4"]]}]
+  </handlers>
+</rule>
+<rule id="15" name="check_then_assign" category="Check then assign preferences">
+  <codes>
+    <code>$E = $E1 ? $E2 : $E3 ;</code>
+    <code>if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }</code>
+  </codes>
+  <checkers>
+[{"class":"EqualChecker","argsList":[[1,"$E","$E4"]]}]
+  </checkers>
+  <handlers>
+[{"class":"ReplicationHandler","argsList":[[1,"$E","$E4"]]}]
+  </handlers>
+</rule>
+<rule id="16" category="Operator preferences">
+  <codes>
+    <code>$E < $E1</code>
+    <code>$E1 > $E</code>
+  </codes>
+  <checkers>
+[]
+  </checkers>
+  <handlers>
+[]
+  </handlers>
+</rule>
+<rule id="17" category="Operator preferences">
+  <codes>
+    <code>$E <= $E1</code>
+    <code>$E1 >= $E</code>
+  </codes>
+  <checkers>
+[]
+  </checkers>
+  <handlers>
+[]
+  </handlers>
+</rule>
+<rule id="18" category="Operator preferences">
+  <codes>
+    <code>$E == false</code>
+    <code>! $E</code>
+  </codes>
+  <checkers>
+[]
+  </checkers>
+  <handlers>
+[]
+  </handlers>
+</rule>
+<rule id="19" category="Literal position in bool expression">
+  <codes>
+    <code>$LITERAL == $E</code>
+    <code>$E == $LITERAL</code>
+  </codes>
+  <checkers>
+[]
+  </checkers>
+  <handlers>
+[]
+  </handlers>
+</rule>
+<rule id="20" category="Array declaration style">
+  <codes>
+    <code>$M $T [] $I ;</code>
+    <code>$M $T $I [] ;</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+  </handlers>
+</rule>
+<rule id="21" category="Array declaration style">
+  <codes>
+    <code>$M $T [] $I = $ARRAY_INITIALIZER ;</code>
+    <code>$M $T $I [] = $ARRAY_INITIALIZER ;</code>
+  </codes>
+  <checkers>
+  </checkers>
+  <handlers>
+  </handlers>
+</rule>
+<rule id="22" category="Continue preferences">
+  <codes>
+    <code>$^ if ( $E ) { continue ; }  $S+</code>
+    <code>if ( $E ) { continue ; } else { $S+ }</code>
+    <code>if ( $E ) { $S+ }</code>
+  </codes>
+  <checkers>
+[{"class":"ContinuePreferenceChecker","argsList":[[0,"$S+"],[1,"$E"],[2,"$E"]]}]
+  </checkers>
+  <handlers>
+[{"class":"CondReverserHandler","argsList":[[0,2,"$E"],[1,2,"$E"],[2,0,"$E"],[2,1,"$E"]]},{"class":"BraceWrapHandler","argsList":[[1,0,"$E","LOOP"],[2,0,"$E","LOOP"]]}]
+  </handlers>
+</rule>
+<rule id="23" category="Continue preferences">
+  <codes>
+    <code>$^ if ( $E ) { $S+ continue ; }  $S1+</code>
+    <code>if ( $E ) { $S+ continue ; } else { $S1+ }</code>
+    <code>if ( $E ) { $S+ } else { $S1+ }</code>
+  </codes>
+  <checkers>
+[{"class":"ContinuePreferenceChecker","argsList":[[0,"$S1+"],[1,"$E"],[2,"$E"]]},{"class":"UnreachableCauseChecker","argsList":[[2,"$S+"]]}]
+  </checkers>
+  <handlers>
+[{"class":"BraceWrapHandler","argsList":[[1,0,"$E","LOOP"],[2,0,"$E","LOOP"]]}]
+  </handlers>
+</rule>
+<rule id="24" category="Redundant code">
+  <codes>
+    <code>$^ if ( $E ) { $S+ }  $S1+</code>
+    <code>if ( $E ) { $S+ } else { $S1+ }</code>
+  </codes>
+  <checkers>
+[{"class":"UnreachableCauseChecker","argsList":[[0,"$S+"],[1,"$S+"]]},{"class":"EndsWithChecker","argsList":[[1,"$S+","$S1+"]]},{"class":"StmtComplexityChecker","argsList":[[0,"$S1+",3,"SINGLE_STMT"],[1,"$S1+",3,"SINGLE_STMT"]]}]
+  </checkers>
+  <handlers>
+[{"class":"AppendTreeHandler","argsList":[[0,1,"$S+","$S1+"]]}]
+  </handlers>
+  <comments>"Consider to add complexity checker to check the complexity of '$S1+'"</comments>
+</rule>
+<rule id="25" category="Redundant code">
+  <codes>
+    <code>$^ if ( $E ) { $S+ } else { $S1+ } $S2+</code>
+    <code>if ( $E ) { $S+ } else { $S1+ }</code>
+  </codes>
+  <checkers>
+[{"class":"UnreachableCauseChecker","argsList":[[0,"$S+","$S1+"],[1,"$S+","$S1+"]]},{"class":"HasSameEndingStmtChecker","argsList":[[1,"$S+","$S1+"]]},{"class":"StmtComplexityChecker","argsList":[[0,"$S2+",3,"SINGLE_STMT"],[1,"$S2+",3,"SINGLE_STMT"]]}]
+  </checkers>
+  <handlers>
+[{"class":"AppendTreeHandler","argsList":[[0,1,"$S+","$S2+"],[0,1,"$S1+","$S2+"]]},{"class":"RedundantCodeHandler","argsList":[[1,0,"$S+","$S1+","$S2+"]]}]
+  </handlers>
+  <comments>"Consider to add complexity checker to check the complexity of '$S1+'"</comments>
+</rule>

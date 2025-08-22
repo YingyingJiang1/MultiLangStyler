@@ -1,36 +1,62 @@
-	import java.util.Scanner;
+package org.example.styler.structure.handler;
 
-	public class Chessboard {
-		public static void main(String[] args) {
-			Scanner sc = new Scanner(System.in);
-			while (true) {
-				int h = sc.nextInt();
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.myException.UndefException;
+import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
+import org.example.semantic.Scope;
+import org.example.semantic.SymbolTable;
+import org.example.semantic.SymbolTableManager;
+import org.example.semantic.intf.symbol.Symbol;
+import org.example.styler.structure.EquivalentStructure;
+import org.example.utils.searcher.NodeSearcherFactory;
 
-				int w = sc.nextInt();
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-				if (h == 0 && w == 0) {
-					break;
-				}
+public class VarUndefExceptionHandler extends Handler implements ExcepH{
+	public VarUndefExceptionHandler(String[][] argsList) {
+		super(argsList);
+	}
 
-				for (int i = 0; i < h; i++) {
-					for (int j = 0; j < w; j++) {
-						if ((i + j) % 2 == 0) {
-							System.out.print("#");
-						} 
-						else {
-							System.out.print(".");
-						}
-					}
-					System.out.println();
-				}
-				System.out.println();
-			}
-			sc.close();
+	/**
+	 * TODO: handle conflicts of variable name in specified domain.
+	 * @param structure
+	 * @param args [variable declaration, new scope]
+	 * @param parser
+	 */
+	@Override
+	protected void doHandle(EquivalentStructure structure, List<String> args, MyParser parser) {
+		List<ParseTree> nodes = structure.getVNode(args.get(0)).matchedTrees;
+		List<ParseTree> scopeNodes = structure.getVNode(args.get(1)).matchedTrees;
+		if (nodes.isEmpty() || scopeNodes.isEmpty()) {
+			return;
 		}
 
-	}
+		if (nodes.get(0) instanceof ExtendContext ctx) {
+			ExtendContext declarationNode = ctx.getAllCtxsRecIf(parser::isLocalVarDeclaration).stream().findAny().orElseGet(null);
+			if (declarationNode != null) {
+				List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 
+				SymbolTableManager.getAllSymbols(parser);
+				SymbolTable st = SymbolTableManager.getSymbolTable(parser.getRoot());
+				for (ExtendContext identifier : identifiers) {
+					Symbol symbol = st.getSymbol(identifier, parser);
+					Set<ParseTree> scopeNodeOfUsages = new HashSet<>();
+					for (ParseTree ref : symbol.getReferences()) {
+						scopeNodeOfUsages.add(Scope.getScopeNode(ref, parser));
+					}
 
-	public static void drawPlayException(TableElement table, ObjectVO throwableVO) {
-		// 执行失败:输出失败状态table.row("IS-RETURN", ""+false);table.row("IS-EXCEPTION", ""+true);// 执行失败:输出失败异常信息Throwable cause;Throwable t = (Throwable) throwableVO.getObject();if (t instanceof InvocationTargetException) {cause = t.getCause();} else {cause = t;}if (throwableVO.needExpand()) {table.row("THROW-EXCEPTION", new ObjectView(cause, throwableVO.expandOrDefault()).draw());} else {StringWriter stringWriter = new StringWriter();PrintWriter printWriter = new PrintWriter(stringWriter);try {cause.printStackTrace(printWriter);table.row("THROW-EXCEPTION", stringWriter.toString());}finally {printWriter.close();}}}
+					// Check whether `new scope` < any original scope
+					ParseTree newScopeNode = Scope.getScopeNode(scopeNodes.get(0), parser);
+					for (ParseTree originalScope : scopeNodeOfUsages) {
+						if (Scope.compareTo(newScopeNode, originalScope, parser) < 0) {
+							throw new UndefException("May result in undefined exceptions!");
+						}
+					}
+				}
+			}
+		}
 	}
+}

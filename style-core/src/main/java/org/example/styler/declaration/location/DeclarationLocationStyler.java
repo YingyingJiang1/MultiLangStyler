@@ -16,7 +16,7 @@ import org.example.styler.Styler;
 import org.example.styler.declaration.location.style.DeclarationLocationProperty;
 import org.example.styler.declaration.location.style.DeclarationLocationStyle;
 import org.example.styler.naming.NameType;
-import org.example.utils.searcher.intf.DecStmtSearcher;
+import org.example.utils.searcher.intf.DeclarationSearcher;
 import org.example.utils.searcher.intf.ExpressionSearcher;
 
 import java.util.ArrayList;
@@ -138,8 +138,8 @@ public class DeclarationLocationStyler extends Styler {
     }
 
     private int getForwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
-        DecStmtSearcher  decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
-        List<ExtendContext> decIdentifiers = decStmtSearcher.searchIdentifiers(decStmt, parser);
+        DeclarationSearcher declarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDeclarationSearcher();
+        List<ExtendContext> decIdentifiers = declarationSearcher.searchIdentifiers(decStmt, parser);
 
         // Init insertion point with the next index of last variable declaration statement in the block start.
         int insetionPoint = 1;
@@ -153,7 +153,7 @@ public class DeclarationLocationStyler extends Styler {
 
 
         for (ExtendContext decIdentifier : decIdentifiers) {
-            ExtendContext initializer = decStmtSearcher.searchInitializer(decStmt, decIdentifier, parser);
+            ExtendContext initializer = declarationSearcher.searchInitializer(decStmt, decIdentifier, parser);
             List<ExtendContext> usedNodes = initializer.getAllChildContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
             Resolver resolver = GlobalInfo.getResolver();
             for (ExtendContext node : usedNodes) {
@@ -179,8 +179,8 @@ public class DeclarationLocationStyler extends Styler {
 
 
     private int getBackwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
-        DecStmtSearcher  decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
-        List<ExtendContext> decIdentifiers = decStmtSearcher.searchIdentifiers(decStmt, parser);
+        DeclarationSearcher declarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDeclarationSearcher();
+        List<ExtendContext> decIdentifiers = declarationSearcher.searchIdentifiers(decStmt, parser);
         Resolver resolver = GlobalInfo.getResolver();
 
         int insertionPoint = block.indexOfIf(t -> t instanceof ExtendContext ctx && parser.getSpecificStmt(ctx) == decStmt); // before }

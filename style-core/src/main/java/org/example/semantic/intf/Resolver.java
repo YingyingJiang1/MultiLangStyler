@@ -14,5 +14,5 @@ public interface Resolver {
     // Resolve for `identifierNode`
     Symbol resolve(ExtendContext identifierNode, MyParser parser);
     SymbolTable resolveAll(ParseTree root, MyParser parser);
-    SymbolTable getSymbolTable(ParseTree root);
+    SymbolTable getSymbolTable(MyParser parser);
 }

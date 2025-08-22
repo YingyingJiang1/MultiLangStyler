@@ -2,7 +2,6 @@ package org.example.styler.exp.complexity;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -31,7 +30,7 @@ import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.NameType;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.DecStmtSearcher;
+import org.example.utils.searcher.intf.DeclarationSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -245,8 +244,8 @@ public class ExpressionStyler extends Styler {
         ExtendContext decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
 
         // Set a meaningful name for the newly created variable
-        DecStmtSearcher decStmtSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDecStmtSearcher();
-        ExtendContext identifier = decStmtSearcher.searchIdentifiers(decStmt, parser).get(0);
+        DeclarationSearcher declarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDeclarationSearcher();
+        ExtendContext identifier = declarationSearcher.searchIdentifiers(decStmt, parser).get(0);
         String newName = NameGenerator.generateMeaningfulName(identifier, parser, GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit());
         if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
             extendToken.setText(newName);
@@ -272,7 +271,7 @@ public class ExpressionStyler extends Styler {
 
         Symbol newSym = new VarSym(type, identifier, null, NameType.LOCAL_VARIABLE);
         copies.forEach(newSym::addReference);
-        SymbolTableManager.getSymbolTable(parser.getRoot()).addSymbol(newSym, parser);
+        SymbolTableManager.getSymbolTable(parser).addSymbol(newSym, parser);
 
         return identifier.getText();
     }
@@ -287,7 +286,7 @@ public class ExpressionStyler extends Styler {
     }
 
     private boolean mayConflict(String name, MyParser parser) {
-        return GlobalInfo.getResolver().getSymbolTable(parser.getRoot()).hasSymbol(name);
+        return GlobalInfo.getResolver().getSymbolTable(parser).hasSymbol(name);
     }
 
     private ExtendContext addVarDeclaration(Type type, String name, ExtendContext initializer, MyParser parser) {

@@ -102,6 +102,7 @@ public class TestBase {
 	}
 
 	protected void testCodeEqual(String actual, Path gtPath) {
+		logger.info("Compare `{}`...", gtPath);
 		File gtFile = new File(gtPath.toString());
 		if (!gtFile.exists()) {
 			System.out.println("Warning: invalid test! Ground truth is not found!");
@@ -109,9 +110,10 @@ public class TestBase {
 		try {
 			String expected = Files.readString(gtPath);
 			assertEquals(expected, actual);
-		} catch (IOException e)  {
-			logger.error("File {} not found!", gtPath, e);
+		} catch (Exception e)  {
+			logger.error("Test `{}` failed!", gtPath, e);
 		}
+		logger.info("Compare `{}`...OK", gtPath);
 	}
 
 	protected String getFormattedText(ExtendContext ctx) {

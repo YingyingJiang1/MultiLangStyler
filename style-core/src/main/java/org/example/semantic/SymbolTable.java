@@ -18,7 +18,7 @@ public class SymbolTable {
     private Map<ParseTree, List<Symbol>> symbolMap = new HashMap<>(0);
 
     public void addSymbol(Symbol symbol, MyParser parser) {
-        ParseTree  defLocation = getOuterScope(symbol.getDecIdentifierNode(), parser);
+        ParseTree  defLocation = Scope.getScopeNode(symbol.getDecIdentifierNode(), parser);
         symbolMap.computeIfAbsent(defLocation, k -> new ArrayList<>()).add(symbol);
     }
 
@@ -30,10 +30,14 @@ public class SymbolTable {
         return allSymbols;
     }
 
+    public List<Symbol> getAllSymbolsIn(ParseTree scopeNode) {
+        return symbolMap.get(scopeNode);
+    }
+
 
     public Symbol getSymbol(ExtendContext identifierNode, MyParser parser) {
         String name = identifierNode.getText();
-        ParseTree curScope = getOuterScope(identifierNode, parser);
+        ParseTree curScope = Scope.getScopeNode(identifierNode, parser);
         while (curScope != null) {
             List<Symbol> symbols = symbolMap.get(curScope);
             if (symbols != null) {
@@ -43,7 +47,7 @@ public class SymbolTable {
                     }
                 }
             }
-            curScope = getOuterScope(curScope, parser);
+            curScope = Scope.getScopeNode(curScope.getParent(), parser);
         }
         return null;
     }
@@ -59,23 +63,5 @@ public class SymbolTable {
         return false;
     }
 
-    /**
-     *
-     * @return Location where the symbol is defined, including: compound statements, method declarations, type declarations
-     */
-    private ParseTree getOuterScope(ParseTree node, MyParser parser) {
-        ParseTree parent = node.getParent();
-        while (parent != null) {
-            if (parent instanceof ExtendContext ctx){
-                int ruleIndex = ctx.getRuleIndex();
-                if (parser.getCompoundStmts().contains(ruleIndex) || parser.belongToMethodDec(ruleIndex) ||
-                        parser.isLambdaExpression(parent) || parser.isTypeDeclaration(parent)) {
-                    return parent;
-                }
-            }
-            parent = parent.getParent();
-        }
-        return null;
-    }
 
 }

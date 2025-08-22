@@ -32,7 +32,7 @@ class SpaceStylerTest extends TestBase {
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(SpaceStyler.class));
-			if (fal) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
