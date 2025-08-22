@@ -90,6 +90,9 @@ public class RunStatistic implements Serializable {
 
 		public static Key create(String filePath) {
 			Path path = Paths.get(filePath);
+			if (path.getParent() == null) {
+				return null;
+			}
 			String[] authors = path.getParent().getFileName().toString().split("-");
 			if (authors.length == 2) {
 				return new Key(authors[0], authors[1], path.getFileName().toString().replace(".java", ""));

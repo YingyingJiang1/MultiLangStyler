@@ -11,12 +11,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.Configuration;
 import org.example.controller.Applicator;
 import org.example.controller.Extractor;
 import org.example.controller.StylerContainer;
@@ -34,6 +34,9 @@ import org.example.style.Style;
 import org.example.style.StyleFileIO;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.EquivalentStructureManager;
 import org.example.styler.structure.StructureStyler;
@@ -42,6 +45,8 @@ import org.slf4j.LoggerFactory;
 
 public class Mutator {
     private static final String CONF_FILE = "/equivalencesConf.json";
+    private static final Set<Class<? extends Styler>> FORMAT_STYLERS = Set.of(
+                NewlineStyler.class, SpaceStyler.class, IndentionStyler.class);
 
     private static final Logger logger = LoggerFactory.getLogger(Mutator.class);
 
@@ -50,8 +55,9 @@ public class Mutator {
 
     /**
      * Given a style file, applies the rules in the style file to the input snippet.
-     * @param language the language of the input code
-     * @param snippet the input code
+     *
+     * @param language  the language of the input code
+     * @param snippet   the input code
      * @param styleFile the path of the style file
      * @return the transformed code
      */
@@ -64,9 +70,11 @@ public class Mutator {
     }
 
     /**
-     * Given a sequence of structure indices, applies the rules in the style file to the input snippet.
+     * Given a sequence of structure indices, applies the rules in the style file to
+     * the input snippet.
+     *
      * @param language the language of the input code
-     * @param snippet the input code
+     * @param snippet  the input code
      * @param sequence the sequence of structure indices. -1 means no transformation
      * @return the transformed code
      */
@@ -81,6 +89,19 @@ public class Mutator {
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("StructureStyler not found"));
         structureStyler.setAs(language, sequence);
+        ProgramStyle selfStyle = extractFromCode(language, snippet);
+        if (selfStyle == null) {
+            return null;
+        }
+        for (Styler styler : container.getStylers()) {
+            if (styler.isEnable(Stage.APPLY) && FORMAT_STYLERS.contains(styler.getClass())) {
+                styler.setStyle(selfStyle.getStyle(styler.getStyle().getStyleName()));
+            }
+        }
+        /*
+         * TODO: 1. optional brace configuration
+         *       2. newline, space, and indentation configuration
+         */
         return applyWithContainer(language, snippet, container);
     }
 
@@ -119,7 +140,7 @@ public class Mutator {
         return container;
     }
 
-    public static ProgramStyle extractFromCode(String language, String snippet) throws ExtractException {
+    public static ProgramStyle extractFromCode(String language, String snippet) {
         GlobalInfo.setConf(new Configuration());
         GlobalInfo.setLanguage(language);
 
@@ -130,7 +151,12 @@ public class Mutator {
         }
         StylerContainer container = new StylerContainer();
         TokenAugmentor tokenAugmentor = new TokenAugmentor();
-        Extractor.extractRules(parser, container, tokenAugmentor);
+        try {
+            Extractor.extractRules(parser, container, tokenAugmentor);
+        } catch (ExtractException e) {
+            logger.error("Failed to extract rules: {}", e.getMessage());
+            return null;
+        }
         ProgramStyle programStyle = new ProgramStyle();
         for (Styler styler : container.getStylers()) {
             if (styler.isEnable(Stage.EXTRACT)) {
@@ -152,9 +178,11 @@ public class Mutator {
     }
 
     /**
-     * Counts the number of variants of given code snippet transformed in pairwise fashion.
+     * Counts the number of variants of given code snippet transformed in pairwise
+     * fashion.
+     *
      * @param language the language of the input code
-     * @param snippet the input code
+     * @param snippet  the input code
      * @return the number of variants
      */
     public static long countPairwiseCases(String language, String snippet) {
@@ -172,19 +200,19 @@ public class Mutator {
         Map<Integer, Integer> equivalentsCounts = getEquivalentsCounts(language);
         Path modelFile = null;
         try {
-            // create a model file contains lines in the format of "<spot key>: 1, 2, 3, ..., <equivalent count>"
             modelFile = Files.createTempFile("model", ".txt");
             List<String> lines = new ArrayList<>();
             for (var entry : spots.entrySet()) {
                 int tokenIndex = entry.getKey();
                 Spot spot = entry.getValue();
                 int equivalentCount = equivalentsCounts.getOrDefault(spot.structureIndex(), 0);
-                lines.add(String.format("SpotAt%d: %s", tokenIndex, IntStream.range(0, equivalentCount).mapToObj(String::valueOf).collect(Collectors.joining(", "))));
+                lines.add(String.format("SpotAt%d: %s", tokenIndex, IntStream.range(0, equivalentCount)
+                        .mapToObj(String::valueOf).collect(Collectors.joining(", "))));
             }
             Files.write(modelFile, lines, StandardCharsets.UTF_8);
 
             // execute `pict model_file`, count the number of pairwise cases and return
-            String[] command = {"pict", modelFile.toString()};
+            String[] command = { "pict", modelFile.toString() };
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             Process process = processBuilder.start();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -212,13 +240,16 @@ public class Mutator {
     }
 
     /**
-     * For each structure, gets the number of equivalents for each structure in the equivalent config file.
+     * For each structure, gets the number of equivalents for each structure in the
+     * equivalent config file.
+     *
      * @param parserClass the parser class
      * @return a map from structure id to equivalent count
      */
     public static Map<Integer, Integer> getEquivalentsCounts(String language) {
         MyParser parser = MyParserFactory.createParser(language);
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), CONF_FILE);
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance()
+                .loadEquivalences(parser.getClass(), CONF_FILE);
         return equivalences.stream()
                 .collect(Collectors.toMap(EquivalentStructure::getId, structure -> structure.getForests().size()));
     }
