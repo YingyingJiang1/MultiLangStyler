@@ -31,6 +31,7 @@ import java.util.*;
  * @create       2024/4/2 23:51
  */
 public class StructureStyler extends Styler {
+    private static final String CONF_FILE = "/equivalences.xml";
     private static final Map<Integer, List<EquivalentStructure>> equivalencesMap = new HashMap<>();
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
     private int recursiveDepth = 0;
@@ -38,7 +39,7 @@ public class StructureStyler extends Styler {
     public static Logger logger = LoggerFactory.getLogger(StructureStyler.class);
 
     static {
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class, "/equivalencesConf.json"); // TBD: extend for other languages
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class, CONF_FILE); // TBD: extend for other languages
         for (EquivalentStructure equivalence : equivalences) {
             for (int rule : equivalence.rules) {
                 // create map for efficiency, avoid to traverse all configured structures.
@@ -233,7 +234,7 @@ public class StructureStyler extends Styler {
     public void setAs(String language, List<Integer> sequence) {
         style = new StructureStyle();
         MyParser parser = MyParserFactory.createParser(language);
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), "/equivalencesConf.json");
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), CONF_FILE);
         for (int i = 0; i < equivalences.size(); i++) {
             EquivalentStructure structure = equivalences.get(i);
             int index = sequence.get(i);

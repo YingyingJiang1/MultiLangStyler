@@ -3,13 +3,19 @@ package org.example.styler.structure;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.styler.structure.checker.Checker;
-import org.example.styler.structure.handler.Handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +29,7 @@ import java.util.*;
 public class EquivalentStructureManager {
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
 //  private static List<EquivalentStructure> equivalences = new ArrayList<>();
-  JsonNode configJson = null;
+  Element rootEle = null;
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
 
 
@@ -37,12 +43,8 @@ public class EquivalentStructureManager {
     List<EquivalentStructure> equivalences = new ArrayList<>();
     try {
       loadConfFile(confFile);
-      for(JsonNode node : configJson) {
-        // Skip comment
-        if (node.get("id") == null) {
-          continue;
-        }
 
+      for(Element node : rootEle.elements()) {
         EquivalentStructure structure = EquivalentStructure.create(node, parserClass);
         equivalences.add(structure);
       }
@@ -54,28 +56,16 @@ public class EquivalentStructureManager {
   }
 
 
-  public void loadConfFile(String confFile) throws IOException {
-    InputStream is = getClass().getResourceAsStream(confFile);
-    ObjectMapper objectMapper = new ObjectMapper();
-    configJson =  objectMapper.readTree(is);
-  }
+  public void loadConfFile(String confFile) {
+    try {
+      InputStream is = getClass().getResourceAsStream(confFile);
+      SAXReader reader = new SAXReader();
+      Document document = reader.read(is);
+      rootEle = document.getRootElement();
+    }  catch (DocumentException e) {
+      logger.error("Failed to parse configuration file: {}", e.getMessage());
+	}
 
-  public void updateConfFile(String confFile) throws IOException {
-    InputStream is = getClass().getResourceAsStream("/equivalencesConf.json");
-    ObjectMapper objectMapper = new ObjectMapper();
-    configJson =  objectMapper.readTree(is);
-
-    if (configJson != null) {
-      objectMapper = new ObjectMapper();
-      int id = 1;
-      for (JsonNode node : configJson) {
-        if (node.get("id") != null) {
-          ((ObjectNode) node).put("id", id++);
-        }
-      }
-
-      objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(confFile), configJson);
-    }
   }
 
 

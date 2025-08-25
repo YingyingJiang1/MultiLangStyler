@@ -47,7 +47,7 @@ public abstract class Checker {
     return true;
   }
 
-  public static Checker createChecker(String cls, String[][] argsList) {
+  public static Checker create(String cls, String[][] argsList) {
     Checker checker = switch (cls) {
       case "ContinuePreferenceChecker" -> new ContinuePreferenceChecker(argsList);
       case "EqualChecker" -> new equalChecker(argsList);

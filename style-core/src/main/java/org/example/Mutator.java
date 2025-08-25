@@ -44,7 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Mutator {
-    private static final String CONF_FILE = "/equivalencesConf.json";
+    private static final String CONF_FILE = "/equivalences.xml";
     private static final Set<Class<? extends Styler>> FORMAT_STYLERS = Set.of(
                 NewlineStyler.class, SpaceStyler.class, IndentionStyler.class);
 

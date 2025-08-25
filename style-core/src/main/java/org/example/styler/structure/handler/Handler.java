@@ -34,7 +34,7 @@ public abstract class Handler {
     }
   }
 
-  public static Handler createHandler(String cls, String[][] argsList, MyParser parser) {
+  public static Handler create(String cls, String[][] argsList) {
     Handler handler =  switch (cls) {
       case "CondReverserHandler" -> new CondReverserHandler(argsList);
       case "ReplicationHandler" -> new ReplicationHandler(argsList);
