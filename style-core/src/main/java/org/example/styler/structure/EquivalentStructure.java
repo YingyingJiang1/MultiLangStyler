@@ -57,6 +57,9 @@ public class EquivalentStructure {
 
 	public static EquivalentStructure create(Element node, Class<? extends MyParser> parserClass) {
 		XmlRuleParser.Rule rule =  XmlRuleParser.parseRule(node);
+		if (rule == null) {
+			return null;
+		}
 		EquivalentStructure structure = new EquivalentStructure(Integer.parseInt(rule.id), rule.category, rule.checkers, rule.handlers, rule.bannedTransfer);
 		structure.compile(rule.codes.toArray(new String[0]));
 
@@ -544,6 +547,11 @@ class XmlRuleParser {
 
 	public static Rule parseRule(Element node) {
 		Rule rule = new Rule();
+
+		if (node.attribute("enable") != null && node.attributeValue("enable").equals("false")) {
+			return null;
+		}
+
 		rule.id = node.attributeValue("id");
 		rule.name = node.attributeValue("name");
 		rule.category = node.attribute("category") != null ? node.attributeValue("category") : "";

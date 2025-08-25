@@ -46,7 +46,10 @@ public class EquivalentStructureManager {
 
       for(Element node : rootEle.elements()) {
         EquivalentStructure structure = EquivalentStructure.create(node, parserClass);
-        equivalences.add(structure);
+
+        if (structure != null) {
+          equivalences.add(structure);
+        }
       }
     } catch (Exception e) {
       logger.error("Failed to load equivalent structures: {}", e.getMessage());

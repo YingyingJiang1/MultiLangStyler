@@ -27,7 +27,6 @@
             </handler>
         </handlers>
     </rule>
-
     <rule id="2" name="dec" category="Increment or decrement preferences">
         <codes>
             <code>$E -- ;</code>
@@ -347,13 +346,13 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="16" category="Operator preferences">
+    <rule id="16" category="Operator preferences" enable="false">
         <codes>
             <code>$E &lt; $E1</code>
             <code>$E1 > $E</code>
         </codes>
     </rule>
-    <rule id="17" category="Operator preferences">
+    <rule id="17" category="Operator preferences" enable="false">
         <codes>
             <code>$E &lt;= $E1</code>
             <code>$E1 >= $E</code>
