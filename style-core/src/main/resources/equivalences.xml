@@ -208,6 +208,12 @@
                     <args>1,0,$S(expStmt),$EXP_LIST</args>
                 </argsList>
             </handler>
+            <handler>
+                <class>For2whileHandler</class>
+                <argsList>
+                    <args>0,1,$S(expStmt),$S</args>
+                </argsList>
+            </handler>
         </handlers>
     </rule>
     <rule id="11" name="loop5" category="Loops">
@@ -236,6 +242,12 @@
                 <argsList>
                     <args>1,0,$S(expStmt),$EXP_LIST</args>
                     <args>1,0,$S(expStmt)1,$EXP_LIST1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>For2whileHandler</class>
+                <argsList>
+                    <args>0,1,$S(expStmt)1,$S</args>
                 </argsList>
             </handler>
         </handlers>
@@ -281,6 +293,13 @@
                 <argsList>
                     <args>2,0,$S(expStmt),$EXP_LIST</args>
                     <args>2,1,$S(expStmt),$EXP_LIST</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>For2whileHandler</class>
+                <argsList>
+                    <args>0,2,$S(expStmt),$S</args>
+                    <args>1,2,$S(expStmt),$S</args>
                 </argsList>
             </handler>
         </handlers>
