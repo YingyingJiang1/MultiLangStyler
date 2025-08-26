@@ -1,4 +1,5 @@
 <rules>
+    <!-- 要求每条规则的id和name唯一 -->
     <rule id="1" name="inc" category="Increment or decrement preferences">
         <codes>
             <code>$E ++ ;</code>
@@ -346,43 +347,43 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="16" category="Operator preferences" enable="false">
+    <rule id="16" name="op_preference1" category="Operator preferences" enable="true">
         <codes>
             <code>$E &lt; $E1</code>
             <code>$E1 > $E</code>
         </codes>
     </rule>
-    <rule id="17" category="Operator preferences" enable="false">
+    <rule id="17"  name="op_preference2" category="Operator preferences" enable="true">
         <codes>
             <code>$E &lt;= $E1</code>
             <code>$E1 >= $E</code>
         </codes>
     </rule>
-    <rule id="18" category="Operator preferences">
+    <rule id="18"  name="op_preference3" category="Operator preferences">
         <codes>
             <code>$E == false</code>
             <code>! $E</code>
         </codes>
     </rule>
-    <rule id="19" category="Literal position in bool expression">
+    <rule id="19"  name="literal_position" category="Literal position in bool expression">
         <codes>
             <code>$LITERAL == $E</code>
             <code>$E == $LITERAL</code>
         </codes>
     </rule>
-    <rule id="20" category="Array declaration style">
+    <rule id="20" name="array_declaration1" category="Array declaration style">
         <codes>
             <code>$M $T [] $I ;</code>
             <code>$M $T $I [] ;</code>
         </codes>
     </rule>
-    <rule id="21" category="Array declaration style">
+    <rule id="21"  name="array_declaration2" category="Array declaration style">
         <codes>
             <code>$M $T [] $I = $ARRAY_INITIALIZER ;</code>
             <code>$M $T $I [] = $ARRAY_INITIALIZER ;</code>
         </codes>
     </rule>
-    <rule id="22" category="Continue preferences">
+    <rule id="22"  name="continue_jump1" category="Continue preferences">
         <codes>
             <code>$^ if ( $E ) { continue ; }  $S+</code>
             <code>if ( $E ) { continue ; } else { $S+ }</code>
@@ -417,7 +418,7 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="23" category="Continue preferences">
+    <rule id="23" name="continue_jump2" category="Continue preferences">
         <codes>
             <code>$^ if ( $E ) { $S+ continue ; }  $S1+</code>
             <code>if ( $E ) { $S+ continue ; } else { $S1+ }</code>
@@ -450,7 +451,7 @@
         </handlers>
     </rule>
     <!-- Consider to add complexity checker to check the complexity of '$S1+' -->
-    <rule id="24" category="Redundant code">
+    <rule id="24" name="redundant_code1" category="Redundant code">
         <codes>
             <code>$^ if ( $E ) { $S+ }  $S1+</code>
             <code>if ( $E ) { $S+ } else { $S1+ }</code>
@@ -486,7 +487,7 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="25" category="Redundant code">
+    <rule id="25"  name="redundant_code1" category="Redundant code">
         <codes>
             <code>$^ if ( $E ) { $S+ } else { $S1+ } $S2+</code>
             <code>if ( $E ) { $S+ } else { $S1+ }</code>

@@ -30,10 +30,10 @@
   </style>
   <style name="expression_complexity">
     <rule>
-      <style_context expType="CONDITIONAL_EXP"/>
+      <style_context expType="TOP_EXP"/>
       <style_property>
-        <maxComplexity depth="9.0"/>
-        <avgComplexity depth="5.318181818181818"/>
+        <maxComplexity depth="23.0"/>
+        <avgComplexity depth="9.363636363636363"/>
       </style_property>
     </rule>
     <rule>
@@ -44,28 +44,14 @@
       </style_property>
     </rule>
     <rule>
-      <style_context expType="TOP_EXP"/>
+      <style_context expType="CONDITIONAL_EXP"/>
       <style_property>
-        <maxComplexity depth="23.0"/>
-        <avgComplexity depth="9.363636363636363"/>
+        <maxComplexity depth="9.0"/>
+        <avgComplexity depth="5.318181818181818"/>
       </style_property>
     </rule>
   </style>
   <style name="brace_format">
-    <rule>
-      <style_context>
-        <block_type>NORMAL_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
-    </rule>
-    <rule>
-      <style_context>
-        <block_type>DO_WHILE_BODY</block_type>
-        <body_type>MULTI</body_type>
-      </style_context>
-      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="false"/>
-    </rule>
     <rule>
       <style_context>
         <block_type>DEC_BODY</block_type>
@@ -76,9 +62,23 @@
     <rule>
       <style_context>
         <block_type>NORMAL_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>NORMAL_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="true"/>
+    </rule>
+    <rule>
+      <style_context>
+        <block_type>DO_WHILE_BODY</block_type>
+        <body_type>MULTI</body_type>
+      </style_context>
+      <style_property beforeLB="false" afterLB="true" beforeRB="false" afterRB="false"/>
     </rule>
   </style>
   <style name="declaration_layout"/>
