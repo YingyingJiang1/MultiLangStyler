@@ -21,7 +21,7 @@ import org.example.utils.editor.NodeEditorFactory;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
-    static int horizontalPathLength = 3;
+    static int horizontalPathLength = 2;
     static double similarityThreshold = 0.7;
     private String newline = "\n";
 
@@ -147,22 +147,22 @@ public class NewlineStyler extends Styler {
 		for (int offset = 1; horizontalCount > 0; offset++) {
 			boolean extended = false;
 
-			// 向左
-			if (index - offset >= 0) {
-				ParseTree left = ctx.getChild(index - offset);
-				String name = getNodeName(left, parser);
-				horizontalVector.add(0, name); // 插到最前面
-				horizontalLengthVector.add(0, getApproxLen(left.getText()));
-				horizontalCount--;
-				extended = true;
-			}
-
 			// 向右
 			if (index + offset < ctx.getChildCount() && horizontalCount > 0) {
 				ParseTree right = ctx.getChild(index + offset);
 				String name = getNodeName(right, parser);
 				horizontalVector.add(name); // 插到末尾
 				horizontalLengthVector.add(getApproxLen(right.getText()));
+				horizontalCount--;
+				extended = true;
+			}
+
+			// 向左
+			if (index - offset >= 0) {
+				ParseTree left = ctx.getChild(index - offset);
+				String name = getNodeName(left, parser);
+				horizontalVector.add(0, name); // 插到最前面
+				horizontalLengthVector.add(0, getApproxLen(left.getText()));
 				horizontalCount--;
 				extended = true;
 			}

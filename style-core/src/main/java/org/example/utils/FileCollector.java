@@ -79,14 +79,14 @@ public class FileCollector {
   }
 
 
-  public static FileCollection getJavaFileCollection(String dir, List<String> filenames) {
+  private static FileCollection getJavaFileCollection(String dir, List<String> filenames) {
 
     List<FileCollection.FileSet> fileSets = new ArrayList<>();
     fileSets.add(new FileCollection.FileSet(dir, filenames));
     return new FileCollection(fileSets);
   }
 
-  public static List<String> getJavaFileCollection(String path) {
+  private static List<String> getJavaFileCollection(String path) {
     File file = new File(path);
     List<String> ret = new ArrayList<>();
     getAllFiles(file, ".java", ret);

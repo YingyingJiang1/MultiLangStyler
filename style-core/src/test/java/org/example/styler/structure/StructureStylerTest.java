@@ -184,17 +184,18 @@ class StructureStylerTest extends TestBase {
 				"f1.java",
 				"f2.java",
 				"f3.java",
-
+				"f4.java",
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
 				"style2.xml",
 				"style3.xml",
+				"style4.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 			if (false) {
 				try{

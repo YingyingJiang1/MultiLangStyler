@@ -34,17 +34,17 @@ public class NameGenerator {
         return MyCaseFormat.LOWER_UNDERSCORE.to(caseFormat, name);
     }
 
-    public static String getAlternativeName(String oldName) {
+    public static String getAlternativeName(String oldName, List<String> conflictNames) {
         String newName = oldName;
 
         for (AlternativeNames name : names) {
             if (name.isAlternative(oldName)) {
                 do {
                     newName = name.getName();
-                } while (newName != null && newName.equals(oldName));
+                } while (newName != null && (newName.equals(oldName) || conflictNames.contains(newName)));
+                name.reset();
             }
         }
-
         return newName;
     }
 
@@ -127,6 +127,8 @@ public class NameGenerator {
         return promptBuilder.toString();
     }
 
+
+
     private static class AlternativeNames {
         private List<String> names;
         private Iterator<String> iterator;
@@ -146,6 +148,10 @@ public class NameGenerator {
 
         public boolean isAlternative(String name) {
             return names.contains(name);
+        }
+
+        public void reset() {
+            iterator = names.iterator();
         }
     }
 

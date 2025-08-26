@@ -14,6 +14,7 @@ import org.example.styler.Styler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
+import org.example.utils.FileCollector;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -88,6 +90,29 @@ public class TestBase {
 
 		FileCollection targetCollection = new FileCollection();
 		targetCollection.add(targetPath);
+
+		ProgramStyle sytle = null;
+		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
+			sytle = StyleFileIO.read(targetCollection.getFilePath(0), MyParserFactory.createParser("java"));
+			controller.setTargetProgramStyle(sytle);
+
+		} else {
+			sytle = controller.extractStyle(targetCollection);
+		}
+		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
+		return controller.applyStyle(srcPath);
+	}
+
+
+	protected String apply(Path srcPath, Path targetPath) {
+		Configuration conf = new Configuration();
+		Controller controller = new Controller(conf);
+
+		StylerContainer container = new StylerContainer();
+		controller.setStylers(container);
+
+		FileCollection targetCollection = FileCollector.getJavaFileCollection(List.of(targetPath.toString()));
+
 
 		ProgramStyle sytle = null;
 		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {

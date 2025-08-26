@@ -39,6 +39,6 @@ public class NewlineStyle extends CommonStyle {
      * @return vertical weight, horizontal weight, vertical length weight, horizontal length weight.
      */
     protected List<Double> getWeights() {
-        return List.of(0.0, 0.5, 0.0, 0.5);
+        return List.of(0.0, 1.0, 0.0, 0.0);
     }
 }

@@ -22,6 +22,12 @@ public class SymbolTable {
         symbolMap.computeIfAbsent(defLocation, k -> new ArrayList<>()).add(symbol);
     }
 
+    public void updateScope(Symbol symbol, ParseTree newScopeNode, MyParser parser) {
+        ParseTree  defLocation = Scope.getScopeNode(symbol.getDecIdentifierNode(), parser);
+        symbolMap.get(defLocation).remove(symbol);
+        symbolMap.computeIfAbsent(newScopeNode, k -> new ArrayList<>()).add(symbol);
+    }
+
     public List<Symbol> getAllSymbols() {
         List<Symbol> allSymbols = new ArrayList<>();
         for (List<Symbol> symbols : symbolMap.values()) {

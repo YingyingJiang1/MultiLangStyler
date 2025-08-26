@@ -44,19 +44,20 @@ public class ConflictNameHandler extends Handler{
 			if (declarationNode != null) {
 				List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 				SymbolTable st = SymbolTableManager.getSymbolTable(parser);
-				Set<ExtendContext> existedDecNodes = getExistedDecNodes(st, identifiers.get(0), parser);
+				ParseTree newScopeNode = Scope.getScopeNode(Scope.getScopeNode(identifiers.get(0), parser).getParent(), parser);
+				Set<ExtendContext> existedDecNodes = getExistedDecNodes(st, newScopeNode, parser);
+
 				Set<String> existedNames = new HashSet<>();
 				existedDecNodes.stream().filter(e -> !identifiers.contains(e)).forEach(e -> existedNames.add(e.getText()));
 
 				for (ExtendContext identifier : identifiers) {
 					Symbol symbol = st.getSymbol(identifier, parser);
+					st.updateScope(symbol, newScopeNode, parser);
 					String oldName = symbol.getText();
+					String newName = oldName;
 					if (existedNames.contains(symbol.getText())) {
 						// Try to get alternative names first, if failed then add suffix to `oldName` util conflicts removed.
-						String newName = null;
-						do {
-							newName = NameGenerator.getAlternativeName(oldName);
-						} while (newName != null && existedNames.contains(newName));
+						newName = NameGenerator.getAlternativeName(oldName, existedNames.stream().toList());
 						for (int i = 1; existedNames.contains(newName); i++) {
 							newName = String.format("%s%d", oldName, i);
 						}
@@ -74,19 +75,33 @@ public class ConflictNameHandler extends Handler{
 						}
 
 					}
+
+					// Update existed names
+					existedNames.add(newName);
 				}
 			}
 		}
 	}
 
+	/**
+	 * 获取所有可能和当前变量声明存在冲突的声明标识符：
+	 */
 	private Set<ExtendContext> getExistedDecNodes(SymbolTable st, ParseTree node, MyParser parser) {
-		ParseTree curScopeNode = Scope.getScopeNode(node, parser);
-		Set<ExtendContext> existedNames = new HashSet<>();
-		do {
-			st.getAllSymbolsIn(curScopeNode).forEach(s -> existedNames.add(s.getDecIdentifierNode()));
-			curScopeNode = Scope.getScopeNode(curScopeNode.getParent(), parser);
-		} while (curScopeNode != null);
-		return existedNames;
+		Set<ExtendContext> existedDecNodes = new HashSet<>();
+		if (Scope.isScopeNode(node, parser)) {
+			if (st.getAllSymbolsIn(node) != null) {
+				st.getAllSymbolsIn(node).forEach(e -> existedDecNodes.add((e.getDecIdentifierNode())));
+			}
+		}
+
+		if (node instanceof ExtendContext ctx) {
+			for (ParseTree child : ctx.children) {
+				getExistedDecNodes(st, child, parser);
+			}
+		}
+
+		return existedDecNodes;
 	}
+
 
 }
