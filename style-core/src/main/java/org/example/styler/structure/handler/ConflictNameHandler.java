@@ -45,7 +45,8 @@ public class ConflictNameHandler extends Handler{
 				List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 				SymbolTable st = SymbolTableManager.getSymbolTable(parser);
 				ParseTree newScopeNode = Scope.getScopeNode(Scope.getScopeNode(identifiers.get(0), parser).getParent(), parser);
-				Set<ExtendContext> existedDecNodes = getExistedDecNodes(st, newScopeNode, parser);
+				Set<ExtendContext> existedDecNodes = getExistedDecNodesIn(st, newScopeNode, parser);
+//				existedDecNodes.addAll(getExistedDecNodesOut(st, newScopeNode, parser));
 
 				Set<String> existedNames = new HashSet<>();
 				existedDecNodes.stream().filter(e -> !identifiers.contains(e)).forEach(e -> existedNames.add(e.getText()));
@@ -87,10 +88,15 @@ public class ConflictNameHandler extends Handler{
 		}
 	}
 
+
+	private Set<String> getConflictNames(SymbolTable st, List<ExtendContext> identifiers) {
+		return null;
+	}
+
 	/**
-	 * 获取所有可能和当前变量声明存在冲突的声明标识符：
+	 * 获取位于当前scope内部的所有声明标识符（包括当前scope）
 	 */
-	private Set<ExtendContext> getExistedDecNodes(SymbolTable st, ParseTree node, MyParser parser) {
+	private Set<ExtendContext> getExistedDecNodesIn(SymbolTable st, ParseTree node, MyParser parser) {
 		Set<ExtendContext> existedDecNodes = new HashSet<>();
 		if (Scope.isScopeNode(node, parser)) {
 			if (st.getAllSymbolsIn(node) != null) {
@@ -100,12 +106,29 @@ public class ConflictNameHandler extends Handler{
 
 		if (node instanceof ExtendContext ctx) {
 			for (ParseTree child : ctx.children) {
-				getExistedDecNodes(st, child, parser);
+				existedDecNodes.addAll(getExistedDecNodesIn(st, child, parser));
 			}
 		}
 
 		return existedDecNodes;
 	}
 
+	/**
+	 * 获取位于当前scope外部的所有声明标识符（包括当前scope）
+	 */
+	private Set<ExtendContext> getExistedDecNodesOut(SymbolTable st, ParseTree node, MyParser parser) {
+		Set<ExtendContext> existedDecNodes = new HashSet<>();
+		ParseTree cur = node;
+		while (cur != null) {
+			if (Scope.isScopeNode(cur, parser)) {
+				if (st.getAllSymbolsIn(cur) != null) {
+					st.getAllSymbolsIn(cur).forEach(e -> existedDecNodes.add((e.getDecIdentifierNode())));
+				}
+			}
+			cur = cur.getParent();
+		}
+
+		return existedDecNodes;
+	}
 
 }

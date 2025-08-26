@@ -2,17 +2,12 @@
 
 <program_style>
   <style name="naming_format"/>
+  <style name="newline"/>
   <style name="if_else_body_order"/>
   <style name="indention"/>
   <style name="optional_brace"/>
-  <style name="expression_complexity"/>
-  <style name="brace_format"/>
-  <style name="declaration_layout"/>
-  <style name="declaration_location"/>
-  <style name="lineWrapping"/>
-  <style name="space"/>
-  <style name="newline"/>
   <style name="modifier_order"/>
+  <style name="expression_complexity"/>
   <style name="structure_preference">
     <rule>
       <style_context id="24" category="Redundant code"/>
@@ -23,5 +18,7 @@
       <style_property preferenceIndex="0"/>
     </rule>
   </style>
-  <style name="body_layout"/>
+  <style name="declaration_layout"/>
+  <style name="declaration_location"/>
+  <style name="space"/>
 </program_style>

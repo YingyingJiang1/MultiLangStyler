@@ -186,7 +186,8 @@ class StructureStylerTest extends TestBase {
 				"f3.java",
 				"f4.java",
 				"f5.java",
-				"f6.java"
+				"f6.java",
+				"f7.java",
 		};
 
 		String[] targetFiles = {
@@ -196,12 +197,14 @@ class StructureStylerTest extends TestBase {
 				"style4.xml",
 				"style4.xml",
 				"style5.xml",
+				"style4.xml",
 		};
+
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (fasle) {
+			if (i == 6) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
@@ -213,6 +216,7 @@ class StructureStylerTest extends TestBase {
 			testCodeEqual(actual, gtPath);
 		}
 	}
+
 
 	@Test
 	void testCheckThenAssign() {
