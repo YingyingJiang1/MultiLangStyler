@@ -124,7 +124,7 @@
   "codes" : [ "for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }", "$^ $S(expStmt) while ( $E1 ) { $S* $S1(expStmt) }" ],
   "checker" : [ {
     "class": "VarUpdateStmtChecker",
-    "argsList" : [ [ 1, "$S(expStmt)"] ]
+    "argsList" : [ [ 1, "$S1(expStmt)"] ]
   } ],
   "handlers" : [ {
     "class" : "Exp2ExpStmtHandler",

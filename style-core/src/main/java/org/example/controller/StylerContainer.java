@@ -57,12 +57,12 @@ public class StylerContainer {
 		firstRoundStylers.add(new ModifierOrderStyler());
 
 		/**********************************************************  Format Styles(Lexical) **********************************************************/
-//        secondRoundStylers.add(new NewlineStyler());
-         secondRoundStylers.add(new BodyLayoutStyler());
-         secondRoundStylers.add(new BraceFormatStyler());
-         secondRoundStylers.add(new LineWrappingStyler());
-//         secondRoundStylers.add(new LineStmtStyler());
-         secondRoundStylers.add(new BlankLineStyler());
+        secondRoundStylers.add(new NewlineStyler());
+//         secondRoundStylers.add(new BodyLayoutStyler());
+//         secondRoundStylers.add(new BraceFormatStyler());
+//         secondRoundStylers.add(new LineWrappingStyler());
+////         secondRoundStylers.add(new LineStmtStyler());
+//         secondRoundStylers.add(new BlankLineStyler());
 
         tsStylers.add(new SpaceStyler());
         tsStylers.add(new IndentionStyler()); // `IndentionStyler` must be the last styler.
