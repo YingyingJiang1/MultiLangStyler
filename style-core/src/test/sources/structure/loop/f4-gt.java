@@ -1,6 +1,6 @@
 public void main(String[] args) {
 	int sum = 0;
-	int j = 0; for ( ; j < 10; j++) { sum += j * sum;
-	} int i = 0; for ( ; i < 20; i++) { sum += i * 2;
+	int i = 0; for ( ; i < 10; i++) { sum += i * sum;
+	} int i1 = 0; for ( ; i1 < 20; i1++) { sum += i1 * 2;
 	} System.out.println(sum);
 }

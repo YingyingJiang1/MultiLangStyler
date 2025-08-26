@@ -6,10 +6,10 @@ public class project{
 		String str = s.nextLine();
 		str = s.nextLine();
 		int ans = 0;
-		int i1 = 0; for ( ; i1 < n; ++i1) { } if (k == 0) {
+		int i = 0; for ( ; i < n; ++i) { } if (k == 0) {
 			ans = 1;
 		}
-		int i = 0; for ( ; i < n; ++i) { int j = i; for ( ; j < n && str.charAt(j) == 'N'; ++j) { if (j - i == k) {
+		int i1 = 0; for ( ; i1 < n; ++i1) { int j = i1; for ( ; j < n && str.charAt(j) == 'N'; ++j) { if (j - i1 == k) {
 					ans = 0;
 				}
 			} } if (ans == 1) {

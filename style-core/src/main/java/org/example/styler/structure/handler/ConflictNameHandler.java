@@ -2,6 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.Tree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -13,9 +14,8 @@ import org.example.styler.structure.EquivalentStructure;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.NodeSearcherFactory;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConflictNameHandler extends Handler{
 	public ConflictNameHandler(String[][] argsList) {
@@ -45,84 +45,117 @@ public class ConflictNameHandler extends Handler{
 				List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 				SymbolTable st = SymbolTableManager.getSymbolTable(parser);
 				ParseTree newScopeNode = Scope.getScopeNode(Scope.getScopeNode(identifiers.get(0), parser).getParent(), parser);
-				Set<ExtendContext> existedDecNodes = getExistedDecNodesIn(st, newScopeNode, parser);
-//				existedDecNodes.addAll(getExistedDecNodesOut(st, newScopeNode, parser));
+				Map<String, Set<Symbol>> conflictCandidatesMap = getPotentialConflicts(st, identifiers, parser);
 
-				Set<String> existedNames = new HashSet<>();
-				existedDecNodes.stream().filter(e -> !identifiers.contains(e)).forEach(e -> existedNames.add(e.getText()));
 
 				for (ExtendContext identifier : identifiers) {
 					Symbol symbol = st.getSymbol(identifier, parser);
 					st.updateScope(symbol, newScopeNode, parser);
 					String oldName = symbol.getText();
 					String newName = oldName;
-					if (existedNames.contains(symbol.getText())) {
-						// Try to get alternative names first, if failed then add suffix to `oldName` util conflicts removed.
-						newName = NameGenerator.getAlternativeName(oldName, existedNames.stream().toList());
-						if (newName == null) {
-							newName = oldName;
-							for (int i = 1; existedNames.contains(newName); i++) {
-								newName = String.format("%s%d", oldName, i);
-							}
+					Set<Symbol> conflicts = conflictCandidatesMap.get(oldName);
+
+					// 不存在命名冲突
+					if (conflicts == null || conflicts.size() == 1 && conflicts.contains(symbol)) {
+						continue;
+					}
+
+					Iterator<Symbol> iter = conflicts.iterator();
+					Symbol firstSym = iter.next(); // 从第二个开始
+					while (iter.hasNext()) {
+						Symbol conflictSym = iter.next();
+						for (int i = 1; conflictCandidatesMap.containsKey(newName); i++) {
+							newName = String.format("%s%d", oldName, i);
 						}
 
-
 						// Modify identifier name and its references
-						Token token = symbol.getDecIdentifierNode().getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
+						Token token = conflictSym.getDecIdentifierNode().getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
 						if (token instanceof ExtendToken t) {
 							t.setText(newName);
 						}
-						for (ExtendContext ref : symbol.getReferences()) {
+						for (ExtendContext ref : conflictSym.getReferences()) {
 							token = ref.getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
 							if (token instanceof ExtendToken t) {
 								t.setText(newName);
 							}
 						}
 
+						final String key = newName;
+						conflictCandidatesMap.compute(newName, (k, v) -> v == null ?
+								new TreeSet<>(Comparator.comparingInt(e -> e.getDecIdentifierNode().getStart().getLine()))
+								: conflictCandidatesMap.get(key)).add(conflictSym);
 					}
 
-					// Update existed names
-					existedNames.add(newName);
+					conflicts.clear();
+					conflicts.add(firstSym);
 				}
 			}
 		}
 	}
 
+	private void removeConflicts(Map<String, Set<Symbol>> candidateConflictsMap, Set<Symbol> conflicts) {
 
-	private Set<String> getConflictNames(SymbolTable st, List<ExtendContext> identifiers) {
-		return null;
+	}
+
+
+	/**
+	 * 返回的Symbol按照行号从小到大排列
+	 * @param st
+	 * @param identifiers
+	 * @param parser
+	 * @return
+	 */
+	private Map<String, Set<Symbol>> getPotentialConflicts(SymbolTable st, List<ExtendContext> identifiers, MyParser parser) {
+		ParseTree curScope = Scope.getScopeNode(identifiers.get(0), parser);
+
+		ParseTree newScope = Scope.getScopeNode(curScope.getParent(), parser);
+
+
+		Map<String, Set<Symbol>> candidates = new HashMap<>();
+		getSymbolsInRec(st, newScope, parser, candidates);
+		getSymbolsOut(st, newScope.getParent(), parser, candidates);
+
+		return candidates;
 	}
 
 	/**
 	 * 获取位于当前scope内部的所有声明标识符（包括当前scope）
 	 */
-	private Set<ExtendContext> getExistedDecNodesIn(SymbolTable st, ParseTree node, MyParser parser) {
+	private void getSymbolsInRec(SymbolTable st, ParseTree node, MyParser parser, Map<String, Set<Symbol>> candiates) {
 		Set<ExtendContext> existedDecNodes = new HashSet<>();
 		if (Scope.isScopeNode(node, parser)) {
 			if (st.getAllSymbolsIn(node) != null) {
-				st.getAllSymbolsIn(node).forEach(e -> existedDecNodes.add((e.getDecIdentifierNode())));
+				st.getAllSymbolsIn(node).forEach(e -> {
+					candiates.compute(e.getText(), (k, v) -> v == null ?
+									new TreeSet<>(Comparator.comparingInt(e1 -> e1.getDecIdentifierNode().getStart().getLine()))
+									: candiates.get(e.getText()))
+							.add(e);
+				});
 			}
 		}
 
 		if (node instanceof ExtendContext ctx) {
 			for (ParseTree child : ctx.children) {
-				existedDecNodes.addAll(getExistedDecNodesIn(st, child, parser));
+				getSymbolsInRec(st, child, parser, candiates);
 			}
 		}
-
-		return existedDecNodes;
 	}
 
 	/**
 	 * 获取位于当前scope外部的所有声明标识符（包括当前scope）
 	 */
-	private Set<ExtendContext> getExistedDecNodesOut(SymbolTable st, ParseTree node, MyParser parser) {
+	private Set<ExtendContext> getSymbolsOut(SymbolTable st, ParseTree node, MyParser parser,  Map<String, Set<Symbol>> candiates) {
 		Set<ExtendContext> existedDecNodes = new HashSet<>();
 		ParseTree cur = node;
 		while (cur != null) {
 			if (Scope.isScopeNode(cur, parser)) {
 				if (st.getAllSymbolsIn(cur) != null) {
-					st.getAllSymbolsIn(cur).forEach(e -> existedDecNodes.add((e.getDecIdentifierNode())));
+					st.getAllSymbolsIn(cur).forEach(e -> {
+						candiates.compute(e.getText(), (k, v) -> v == null ?
+										new TreeSet<>(Comparator.comparingInt(e1 -> e1.getDecIdentifierNode().getStart().getLine()))
+										: candiates.get(e.getText()))
+								.add(e);
+					});
 				}
 			}
 			cur = cur.getParent();
