@@ -150,7 +150,7 @@ class StructureStylerTest extends TestBase {
 				"f2.java",
 				"f3.java",
 				"f4.java",
-				"f5.java"
+				"f5.java",
 
 		};
 
@@ -185,12 +185,14 @@ class StructureStylerTest extends TestBase {
 				"f2.java",
 				"f3.java",
 				"f4.java",
+				"f5.java"
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
 				"style2.xml",
 				"style3.xml",
+				"style4.xml",
 				"style4.xml",
 		};
 

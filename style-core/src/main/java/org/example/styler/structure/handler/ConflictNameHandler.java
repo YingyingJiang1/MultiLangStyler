@@ -58,9 +58,13 @@ public class ConflictNameHandler extends Handler{
 					if (existedNames.contains(symbol.getText())) {
 						// Try to get alternative names first, if failed then add suffix to `oldName` util conflicts removed.
 						newName = NameGenerator.getAlternativeName(oldName, existedNames.stream().toList());
-						for (int i = 1; existedNames.contains(newName); i++) {
-							newName = String.format("%s%d", oldName, i);
+						if (newName == null) {
+							newName = oldName;
+							for (int i = 1; existedNames.contains(newName); i++) {
+								newName = String.format("%s%d", oldName, i);
+							}
 						}
+
 
 						// Modify identifier name and its references
 						Token token = symbol.getDecIdentifierNode().getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
