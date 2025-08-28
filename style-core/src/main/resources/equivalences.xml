@@ -368,13 +368,13 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="16" name="op_preference1" category="Operator preferences" enable="true">
+    <rule id="16" name="op_preference1" category="Operator preferences" enable="false">
         <codes>
             <code>$E &lt; $E1</code>
             <code>$E1 > $E</code>
         </codes>
     </rule>
-    <rule id="17"  name="op_preference2" category="Operator preferences" enable="true">
+    <rule id="17"  name="op_preference2" category="Operator preferences" enable="false">
         <codes>
             <code>$E &lt;= $E1</code>
             <code>$E1 >= $E</code>

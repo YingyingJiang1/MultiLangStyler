@@ -16,7 +16,7 @@ public class NewlineStyle extends CommonStyle {
 	}
 
 	public NewlineProperty getProperty(NewlineContext context, double threshold) {
-        List<Double> weights = getWeights();
+        List<Double> weights = getWeights(context);
 
 		NewlineProperty targetProperty = null;
 		double curSimilarity = 0;
@@ -38,7 +38,11 @@ public class NewlineStyle extends CommonStyle {
      *
      * @return vertical weight, horizontal weight, vertical length weight, horizontal length weight.
      */
-    protected List<Double> getWeights() {
-        return List.of(0.0, 0.5, 0.0, 0.5);
+    protected List<Double> getWeights(NewlineContext context) {
+		// Expression level
+		if (context.horizontalVector.stream().anyMatch(e -> e.toLowerCase().contains("expression"))) {
+			return List.of(0.0, 1.0, 0.0, 0.0);
+		}
+        return List.of(0.0, 0.8, 0.0, 0.2);
     }
 }

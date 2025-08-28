@@ -1,5 +1,6 @@
 package org.example.styler.format.newline.style;
 
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
@@ -71,7 +72,6 @@ public class NewlineContext extends StyleContext {
 	public String getSPNodeName() {
 		return horizontalVector.get(horizontalSP);
 	}
-
 
 	/**
 	 *

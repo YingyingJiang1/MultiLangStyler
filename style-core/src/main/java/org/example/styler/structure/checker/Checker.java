@@ -60,6 +60,7 @@ public abstract class Checker {
       case "StmtComplexityChecker" -> new StmtComplexityChecker(argsList);
       case "EndsWithChecker" -> new EndsWithChecker(argsList);
       case "VarUpdateStmtChecker" -> new VarUpdateStmtChecker(argsList);
+      case "NotLiteralExpChecker" -> new NotLiteralExpChecker(argsList);
       default -> null;
     };
     if (checker == null) {

@@ -10,10 +10,6 @@
     <style name="expression_complexity"/>
     <style name="structure_preference">
         <rule>
-            <style_context id="17" category=""/>
-            <style_property preferenceIndex="0"/>
-        </rule>
-        <rule>
             <style_context id="22" category=""/>
             <style_property preferenceIndex="1"/>
         </rule>

@@ -1445,17 +1445,17 @@
   </style>
   <style name="expression_complexity">
     <rule>
-      <style_context expType="TOP_EXP"/>
-      <style_property>
-        <maxComplexity depth="23.0"/>
-        <avgComplexity depth="9.363636363636363"/>
-      </style_property>
-    </rule>
-    <rule>
       <style_context expType="INITIALIZER_EXP"/>
       <style_property>
         <maxComplexity depth="13.0"/>
         <avgComplexity depth="8.409090909090908"/>
+      </style_property>
+    </rule>
+    <rule>
+      <style_context expType="TOP_EXP"/>
+      <style_property>
+        <maxComplexity depth="23.0"/>
+        <avgComplexity depth="9.363636363636363"/>
       </style_property>
     </rule>
     <rule>
