@@ -24,7 +24,7 @@ public class NewlineStyle extends CommonStyle {
 			if (rule.getStyleContext() instanceof NewlineContext context1 &&
 					rule.getStyleProperty() instanceof NewlineProperty property1) {
 				double similarity = context1.similarityTo(context, weights);
-				if (similarity >= curSimilarity) {
+				if (similarity >= curSimilarity && context.complexityComparision(context1) >= 0) {
 					curSimilarity = similarity;
 					targetProperty = property1;
 				}
@@ -43,6 +43,6 @@ public class NewlineStyle extends CommonStyle {
 		if (context.horizontalVector.stream().anyMatch(e -> e.toLowerCase().contains("expression"))) {
 			return List.of(0.0, 1.0, 0.0, 0.0);
 		}
-        return List.of(0.0, 0.8, 0.0, 0.2);
+        return List.of(0.0, 1.0, 0.0, 0.0);
     }
 }

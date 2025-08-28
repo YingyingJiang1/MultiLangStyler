@@ -69,6 +69,11 @@ public class NewlineContext extends StyleContext {
 		}
 	}
 
+	public int complexityComparision(NewlineContext other) {
+		int hDiff = horizontalLengthVector.stream().reduce(0, Integer::sum) - other.horizontalLengthVector.stream().reduce(0, Integer::sum);
+		return hDiff;
+	}
+
 	public String getSPNodeName() {
 		return horizontalVector.get(horizontalSP);
 	}

@@ -41,7 +41,8 @@
         args.add(ALIGN).add(align);
       }
 
-      args.add(AGGREGATION).add(aggregationType).add(toByteArray(bucketDuration));
+      args.add(AGGREGATION)
+              .add(aggregationType).add(toByteArray(bucketDuration));
 
       if (bucketTimestamp != null) {
         args.add(BUCKETTIMESTAMP).add(bucketTimestamp);

@@ -16,7 +16,7 @@ public class IntegrationTest extends TestBase {
 		String srcCodesDir = "src/test/codes/test1/srcs";
 		String[] srcFiles = {
 				"f1.java",
-
+				"f2.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {

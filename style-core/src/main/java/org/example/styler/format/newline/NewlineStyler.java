@@ -18,12 +18,15 @@ import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.utils.editor.NodeEditorFactory;
+import soot.jimple.parser.Parse;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
     static int horizontalPathLength = 2;
     static double similarityThreshold = 0.7;
     private String newline = "\n";
+	private int LINE_TOLERANCE = 5;
+	private int TEXT_LEN_TOLERANCE = 20;
 
 	// newline styles for different granularity.
 	private List<NewlineStyle> newlineStyles;
@@ -119,7 +122,7 @@ public class NewlineStyler extends Styler {
 		List<Integer> horizontalLengthVector = new ArrayList<>();
 
 		String spNodeName = getNodeName(curNode, parser);
-		int spLen = getApproxLen(curNode.getText());
+		int spLen = getApproxLen(curNode, parser);
 
 		if (verticalPathLength > 0) {
 			addVerticalContext(verticalVector, verticalLengthVector, curNode, parser);
@@ -139,7 +142,7 @@ public class NewlineStyler extends Styler {
 									  ExtendContext ctx, int index, MyParser parser) {
 		ParseTree curNode = ctx.getChild(index);
 		String spNodeName = getNodeName(curNode, parser);
-		int spLen = getApproxLen(curNode.getText());
+		int spLen = getApproxLen(curNode, parser);
 		horizontalVector.add(spNodeName);
 		horizontalLengthVector.add(spLen);
 		int horizontalCount = horizontalPathLength - 1;
@@ -152,7 +155,7 @@ public class NewlineStyler extends Styler {
 				ParseTree right = ctx.getChild(index + offset);
 				String name = getNodeName(right, parser);
 				horizontalVector.add(name); // 插到末尾
-				horizontalLengthVector.add(getApproxLen(right.getText()));
+				horizontalLengthVector.add(getApproxLen(right, parser));
 				horizontalCount--;
 				extended = true;
 			}
@@ -162,7 +165,7 @@ public class NewlineStyler extends Styler {
 				ParseTree left = ctx.getChild(index - offset);
 				String name = getNodeName(left, parser);
 				horizontalVector.add(0, name); // 插到最前面
-				horizontalLengthVector.add(0, getApproxLen(left.getText()));
+				horizontalLengthVector.add(0, getApproxLen(left, parser));
 				horizontalCount--;
 				extended = true;
 			}
@@ -242,7 +245,7 @@ public class NewlineStyler extends Styler {
 	private void addVerticalContext(List<String> verticalVector, List<Integer> verticalLengthVector,
 									ParseTree curNode, MyParser parser) {
 		String spNodeName = getNodeName(curNode, parser);
-		int spLen = getApproxLen(curNode.getText());
+		int spLen = getApproxLen(curNode, parser);
 		verticalVector.add(spNodeName);
 		verticalLengthVector.add(spLen);
 		int verticalCount = verticalPathLength - 1;
@@ -255,7 +258,7 @@ public class NewlineStyler extends Styler {
 			if (parent != null) {
 				String name = getNodeName(parent,parser);
 				verticalVector.add(0, name); // 插到最前面
-				verticalLengthVector.add(0, getApproxLen(parent.getText()));
+				verticalLengthVector.add(0, getApproxLen(parent, parser));
 				verticalCount--;
 				extended = true;
 				node = parent; // 向上继续
@@ -286,13 +289,22 @@ public class NewlineStyler extends Styler {
 		}
 	}
 
-	private int getApproxLen(String text) {
-		int len = text.length();
-		int mod = len % 10;
-		if (mod >= 5) {
-			return len + (10 - mod); // 向上凑
+	private int getApproxLen(ParseTree node, MyParser parser) {
+
+		int n = TEXT_LEN_TOLERANCE;
+		if (parser.isStatement(node)) {
+			n = LINE_TOLERANCE;
+		}
+
+		int textLength = node.getText().length();
+		int lower = (textLength / n) * n;         // 向下取最近的倍数
+		int upper = lower + n;                    // 向上取最近的倍数
+
+		// 判断哪个更近
+		if (textLength - lower <= upper - textLength) {
+			return lower;
 		} else {
-			return len - mod;        // 向下凑
+			return upper;
 		}
 	}
 

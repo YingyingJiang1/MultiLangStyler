@@ -4,10 +4,6 @@
   <style name="naming_format"/>
   <style name="newline">
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[100, 30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="      "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[90, 340, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="      "/>
     </rule>
@@ -16,23 +12,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 180]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 225]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 90, 340]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, ClassOrInterfaceTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -40,19 +28,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 50]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[55, 250, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="  "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, PrimitiveTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[AT, QualifiedNameContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -60,40 +44,36 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[NEW, CreatorContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 70]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 50]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, WHILE, ParExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[1400, 0, 60]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 560, 80]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 60, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[90, 35, 820]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 280]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 20]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[COMMA, ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 30]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[65, 105, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
@@ -104,19 +84,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, AND, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 1030]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 100, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 280]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 80]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -128,15 +104,23 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 20, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT]" verticalLengthVector="[]" horizontalLengthVector="[60, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="                "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[115, 55, 250]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="    "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 45, 90]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[1025, 0, 290]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -144,11 +128,7 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, NOTEQUAL]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF]" verticalLengthVector="[]" horizontalLengthVector="[20, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 120]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -160,43 +140,27 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, EQUAL]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 0, 290]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 1465]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="    "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[20, 200, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[90, 30, 820]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeIdentifierContext, TypeArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[20, 15, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[NEW, CreatorContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[BANG, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[NEW, CreatorContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[60, 40, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 70]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -208,7 +172,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 30]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext, BlockContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 40, 1260]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 20]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -216,27 +184,19 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 60, 105]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[COMMA, ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ForControlContext, RPAREN, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 30]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 50]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[30, 60, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="    "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 60]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 30]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, ADD, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -244,31 +204,23 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, COLONCOLON, NEW]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[COMMA, TypeArgumentContext, GT]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, EQUAL, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 0, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 25, 55]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext, BlockContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 1460]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 70]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, RPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[WHILE, ParExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[0, 60, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -280,16 +232,20 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF]" verticalLengthVector="[]" horizontalLengthVector="[10, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[25, 60, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="    "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeArgumentContext, COMMA, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 60, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[45, 30, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="        "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 40]" verticalSP="-1" horizontalSP="1"/>
@@ -304,35 +260,47 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[75, 25, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="    "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 35]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, ADD, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[35, 820, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="      "/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, QUESTION, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[COMMA, ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 190, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 40, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[85, 80, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="    "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, NOTEQUAL, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, RPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeIdentifierContext, TypeArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext, BlockContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 50, 1250]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 120]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 180]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -340,12 +308,12 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, IdentifierContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, IdentifierContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 45]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT]" verticalLengthVector="[]" horizontalLengthVector="[40, 0]" verticalSP="-1" horizontalSP="0"/>
@@ -360,11 +328,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 60, 50]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="          "/>
+      <style_context verticalVector="[]" horizontalVector="[NEW, CreatorContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 80]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, FormalParameterListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -372,75 +340,51 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[80, 80, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 60]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, NOTEQUAL, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, ClassOrInterfaceTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 50, 560]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="      "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[50, 30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, PrimitiveTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 90, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 25, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[40, 220, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[110, 30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="      "/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 85, 80]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="2" hwsStr="    "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="      "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext, GT]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, VariableDeclaratorIdContext, COLON]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[55, 45, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="          "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 55, 45]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 100]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, FormalParameterListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -452,27 +396,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, COLONCOLON, NEW]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 80]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[220, 0, 60]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 80]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 50, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -492,67 +424,87 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 80]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 80, 80]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="2" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[30, 820, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="      "/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[55, 45, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[510, 20, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="    "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[110, 110, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, AND, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 65]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 85]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="2" hwsStr="    "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, AnnotationListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, EQUAL, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 110, 115]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="    "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[105, 30, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, FormalParameterListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 15, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="    "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, AnnotationListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 80]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 105, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="        "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[180, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="            "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[200, 0, 325]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 15]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 90, 40]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, ADD]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, FormalParameterListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[0, 80, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 260]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -560,23 +512,23 @@
       <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[560, 80, 510]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="2" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 80]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[20, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, WHILE, ParExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[1400, 10, 60]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 20]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[WHILE, ParExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 60, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 280]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -584,39 +536,31 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 50, 60]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="          "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[80, 70, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="      "/>
+      <style_context verticalVector="[]" horizontalVector="[LocalVariableDeclarationContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[80, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 45, 75]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="2" hwsStr="      "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 1460]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="    "/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40, 35]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 70]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 40, 55]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 60]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, QUESTION, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -624,27 +568,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, RPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 65, 105]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[60, 250, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="  "/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[35, 90, 35]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 60, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 100, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 50, 50]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="2" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeArgumentContext, COMMA, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -652,11 +584,7 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[FOR, LPAREN, ForControlContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 30]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -664,19 +592,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 80]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, RPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, ADD, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 10, 10]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -688,15 +612,7 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeIdentifierContext, TypeArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[DO, StatementContext, WHILE]" verticalLengthVector="[]" horizontalLengthVector="[0, 1400, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 260]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ForControlContext, RPAREN, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 480]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -704,124 +620,60 @@
       <style_property newlines="1" hwsStr="            "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, ClassOrInterfaceTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 60]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="      "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 60]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext, GT]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[20, 1025, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 20]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 60, 100]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 40, 90]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, NOTEQUAL, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 70, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LocalVariableDeclarationContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 40, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 55, 45]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 0, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 55]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="          "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 60]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 270]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 330]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 260]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[COMMA, TypeArgumentContext, GT]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, EQUAL, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 25, 60]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="      "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorIdContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[70, 110, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[NEW, CreatorContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, COLONCOLON]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 75, 75]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
@@ -832,23 +684,23 @@
       <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, TypeTypeContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[50, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 35, 90]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 60, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[25, 55, 560]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40, 520]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -856,20 +708,8 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[20, 60, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[FOR, LPAREN, ForControlContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[20, 1030, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 80, 70]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 90]" verticalSP="-1" horizontalSP="1"/>
@@ -880,8 +720,8 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 60, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="          "/>
+      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, TypeTypeContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
@@ -896,39 +736,31 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[60, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 60]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="      "/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 90, 340]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="      "/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 1465, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="2" hwsStr="  "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 10, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext, GT]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT]" verticalLengthVector="[]" horizontalLengthVector="[30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 50, 1340]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="2" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ParExpressionContext, StatementContext, ELSE]" verticalLengthVector="[]" horizontalLengthVector="[40, 200, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[55, 560, 80]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 80, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -936,7 +768,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 50]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[110, 115, 55]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="    "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[TypeArgumentContext, COMMA, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -948,31 +784,55 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 220]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 90]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[200, 0, 55]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 30]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 35, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="    "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[1030, 0, 290]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, COLONCOLON]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[55, 1340, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="    "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 180]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="            "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 80]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 90]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 15]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="      "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 50]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ForControlContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -980,28 +840,28 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 20]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 55, 1340]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="2" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[200, 0, 575]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 80, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 1025]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[0, 60, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[70, 30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 50]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="      "/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[55, 45, 55]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 260, 0]" verticalSP="-1" horizontalSP="1"/>
@@ -1016,7 +876,15 @@
       <style_property newlines="1" hwsStr="      "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ForControlContext, RPAREN, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 0, 480]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, EQUAL]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[COMMA, ExpressionContext, COMMA]" verticalLengthVector="[]" horizontalLengthVector="[0, 180, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1024,11 +892,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 0, 120]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 110]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[DO, StatementContext, WHILE]" verticalLengthVector="[]" horizontalLengthVector="[0, 1400, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1040,19 +908,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 85]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1060,15 +924,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[60, 50, 30]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 45, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, QUESTION]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[15, 0, 35]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1076,23 +936,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[200, 0, 60]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 55, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="      "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[200, 0, 320]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[60, 50, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 70, 110]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 65]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
@@ -1100,35 +948,11 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LocalVariableDeclarationContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[50, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 0, 130]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[COMMA, TypeArgumentContext, GT]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[110, 60, 250]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext, BlockContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10, 1470]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 40]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1136,7 +960,19 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[NEW, CreatorContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[AT, QualifiedNameContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1144,68 +980,32 @@
       <style_property newlines="2" hwsStr="    "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[TypeIdentifierContext, TypeArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, TypeArgumentsOrDiamondContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 20]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40, 40]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, COLON, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COLON, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[50, 1340, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="    "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, RPAREN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[190, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="            "/>
+      <style_context verticalVector="[]" horizontalVector="[TypeArgumentContext, COMMA, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 60, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, ELSE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[200, 0, 580]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, LBRACK, RBRACK]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[30, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 1460, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="2" hwsStr="  "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[BANG, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
@@ -1216,27 +1016,23 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 60]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 40, 90]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 120]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 110, 110]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="    "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 30]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, ClassOrInterfaceTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[75, 75, 25]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, INSTANCEOF]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1244,39 +1040,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40, 80]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="2" hwsStr="      "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext, VariableDeclaratorsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 50]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 80]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ForControlContext, RPAREN, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 0, 30]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 100]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 50, 90]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 90, 30]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 60, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="          "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LT, TypeArgumentContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LPAREN, ForControlContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 30, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1284,31 +1056,19 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, COLON, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 40]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW]" verticalLengthVector="[]" horizontalLengthVector="[10, 0]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[45, 90, 45]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="        "/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[IF, ParExpressionContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 10, 20]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, MethodHeadContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="0" hwsStr=""/>
+      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[90, 45, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="2" hwsStr="        "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 20]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[CreatedNameContext, ClassCreatorRestContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 40]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1324,15 +1084,31 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[90, 40, 60]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="2" hwsStr="        "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[DO, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 1400]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[10, 330, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, EQUAL]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN, VariableInitializerContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 40]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LambdaParametersContext, ARROW, LambdaBodyContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 20]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[VariableDeclaratorIdContext, ASSIGN]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 45, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, NOTEQUAL]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1340,15 +1116,19 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, TypeArgumentsOrDiamondContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[0, 340, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 80]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 60, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, ADD, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[20, 0, 30]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ModifierListContext, TypeTypeContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 10]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1356,7 +1136,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 100]" verticalSP="-1" horizontalSP="0"/>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 60]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[IdentifierContext, ArgumentsContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 280]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LPAREN, ExpressionListContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 40]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1364,16 +1152,12 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[30, 0, 10]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 190]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="            "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[AnnotationListContext, TypeTypeContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 55, 45]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="1" hwsStr="          "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 60]" verticalSP="-1" horizontalSP="1"/>
@@ -1384,15 +1168,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 50, 0]" verticalSP="-1" horizontalSP="1"/>
-      <style_property newlines="1" hwsStr="      "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, VariableDeclaratorIdContext, COLON]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, COMMA, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0, 10]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 25]" verticalSP="-1" horizontalSP="0"/>
+      <style_property newlines="1" hwsStr="      "/>
+    </rule>
+    <rule>
+      <style_context verticalVector="[]" horizontalVector="[RETURN, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 340]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
@@ -1400,15 +1184,15 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
+      <style_context verticalVector="[]" horizontalVector="[THROW, ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[0, 40, 0]" verticalSP="-1" horizontalSP="1"/>
+      <style_property newlines="0" hwsStr=""/>
+    </rule>
+    <rule>
       <style_context verticalVector="[]" horizontalVector="[ExpressionContext, SEMI]" verticalLengthVector="[]" horizontalLengthVector="[40, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[50, 60, 40]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="          "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[10, 0, 70]" verticalSP="-1" horizontalSP="1"/>
+      <style_context verticalVector="[]" horizontalVector="[ExpressionContext, DOT, MethodCallContext]" verticalLengthVector="[]" horizontalLengthVector="[40, 0, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
   </style>
@@ -1425,14 +1209,14 @@
   <style name="optional_brace">
     <rule>
       <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <block_type>NORMAL_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property use_brace="true"/>
     </rule>
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property use_brace="true"/>
@@ -1445,10 +1229,10 @@
   </style>
   <style name="expression_complexity">
     <rule>
-      <style_context expType="INITIALIZER_EXP"/>
+      <style_context expType="CONDITIONAL_EXP"/>
       <style_property>
-        <maxComplexity depth="13.0"/>
-        <avgComplexity depth="8.409090909090908"/>
+        <maxComplexity depth="9.0"/>
+        <avgComplexity depth="5.318181818181818"/>
       </style_property>
     </rule>
     <rule>
@@ -1459,10 +1243,10 @@
       </style_property>
     </rule>
     <rule>
-      <style_context expType="CONDITIONAL_EXP"/>
+      <style_context expType="INITIALIZER_EXP"/>
       <style_property>
-        <maxComplexity depth="9.0"/>
-        <avgComplexity depth="5.318181818181818"/>
+        <maxComplexity depth="13.0"/>
+        <avgComplexity depth="8.409090909090908"/>
       </style_property>
     </rule>
   </style>
