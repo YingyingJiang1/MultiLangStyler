@@ -18,7 +18,6 @@ import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.utils.editor.NodeEditorFactory;
-import soot.jimple.parser.Parse;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;

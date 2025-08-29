@@ -211,7 +211,7 @@
             <handler>
                 <class>For2whileHandler</class>
                 <argsList>
-                    <args>0,1,$S(expStmt),$S</args>
+                    <args>0,1,$S(expStmt),$S*</args>
                 </argsList>
             </handler>
         </handlers>
@@ -247,7 +247,7 @@
             <handler>
                 <class>For2whileHandler</class>
                 <argsList>
-                    <args>0,1,$S(expStmt)1,$S</args>
+                    <args>0,1,$S(expStmt)1,$S*</args>
                 </argsList>
             </handler>
         </handlers>
@@ -298,8 +298,8 @@
             <handler>
                 <class>For2whileHandler</class>
                 <argsList>
-                    <args>0,2,$S(expStmt),$S</args>
-                    <args>1,2,$S(expStmt),$S</args>
+                    <args>0,2,$S(expStmt),$S*</args>
+                    <args>1,2,$S(expStmt),$S*</args>
                 </argsList>
             </handler>
         </handlers>

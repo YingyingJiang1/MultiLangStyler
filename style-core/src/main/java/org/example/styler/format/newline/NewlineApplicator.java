@@ -45,13 +45,7 @@ public class NewlineApplicator {
 		int idxInCtxTokens = token.indexInContextTokens();
 
 		if (token.getText().equals(";")) {
-			int totalNewlines = token.getContextTokens().subList(idxInCtxTokens + 1, ctxTokens.size()).stream()
-					.filter(e -> e.getType() == parser.getVws())
-					.mapToInt(e -> Math.toIntExact(e.getText().chars().filter(ch -> ch == '\n').count()))
-					.sum();
-			if (totalNewlines - num <= 0) {
-				return;
-			}
+			return;
 		}
 
 		int toRemove = num;

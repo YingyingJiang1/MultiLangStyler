@@ -17,7 +17,7 @@ public class For2whileHandler extends Handler{
     /**
      * 检查语句中是否有continue，有的话将update statement插入到continue之前
      * 注意：本类必须在{@link Exp2ExpStmtHandler}之后执行，因为只有这样`update_stmt_placeholder`才有对应的树
-     * argsList:[[update_stmt_placeholder, $S, $S1...]]
+     * argsList:[[$S, $S1...]]
      * @param structure
      * @param args
      * @param parser
@@ -58,7 +58,7 @@ public class For2whileHandler extends Handler{
         }
 
         for (ParseTree child : node.children) {
-            if (parser.belongToStmt(child)) {
+            if (parser.isStatement(child)) {
                 handleContinue((ExtendContext) child, updateStmts, parser);
             }
         }

@@ -50,6 +50,7 @@ public abstract class Handler {
       case "ConflictNameHandler" -> new ConflictNameHandler(argsList);
       case "DecThenAssignExceptionHandler" -> new DecThenAssignExceptionHandler(argsList);
       case "VarUndefExceptionHandler" -> new VarUndefExceptionHandler(argsList);
+      case "For2whileHandler" -> new For2whileHandler(argsList);
       default -> null;
     };
     if (handler == null) {

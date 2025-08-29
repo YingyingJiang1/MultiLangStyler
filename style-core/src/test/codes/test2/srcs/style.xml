@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+  <style name="naming_format"/>
+  <style name="newline"/>
+  <style name="if_else_body_order"/>
+  <style name="indention"/>
+  <style name="optional_brace"/>
+  <style name="modifier_order"/>
+  <style name="expression_complexity"/>
+  <style name="structure_preference"/>
+  <style name="declaration_layout"/>
+  <style name="declaration_location"/>
+  <style name="space">
+    <rule>
+      <style_context token="IDENTIFIER KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context token="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+  </style>
+</program_style>
