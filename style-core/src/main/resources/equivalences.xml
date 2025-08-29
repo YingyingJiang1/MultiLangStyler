@@ -117,6 +117,13 @@
                     <args>1,$S,$S1</args>
                 </argsList>
             </checker>
+            <Checker>
+                <class>HasJumpStmtChecker</class>
+                <argsList>
+                    <args>0,$S</args>
+                    <args>1,$S</args>
+                </argsList>
+            </Checker>
         </checkers>
         <handlers>
             <handler>
