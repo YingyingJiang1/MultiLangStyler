@@ -43,5 +43,10 @@ public class SymbolTableManager {
         stCache.put(root, st);
     }
 
+    public static SymbolTable updateSymbolTable(MyParser parser) {
+        stCache.remove(parser.getRoot());
+        return getSymbolTable(parser);
+    }
+
 
 }

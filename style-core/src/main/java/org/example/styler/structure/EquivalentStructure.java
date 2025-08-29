@@ -254,15 +254,17 @@ public class EquivalentStructure {
 		}
 
 		if (handlers != null) {
+			try {
+				handlers.stream().filter(h -> h instanceof ExceptionHandler).forEach(handler -> {
+					((ExceptionHandler) handler).handleException(this, from, to, parser);
+				});
+			} catch (TreeConvertException e) {
+				cleanState();
+				return oldTree; // Exception caught, don't do any convert.
+			}
+
 			for (Handler handler : handlers) {
-				if (handler instanceof ExceptionHandler exceptionHandler) {
-					try {
-						exceptionHandler.handleException(this, from, to, parser);
-					} catch (TreeConvertException e) {
-						cleanState();
-						return oldTree; // Exception caught, don't do any convert.
-					}
-				} else {
+				if (! (handler instanceof ExceptionHandler)) {
 					handler.handle(this, from, to, parser);
 				}
 			}

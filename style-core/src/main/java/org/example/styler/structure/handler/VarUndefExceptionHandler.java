@@ -54,12 +54,16 @@ public class VarUndefExceptionHandler extends Handler implements ExceptionHandle
 				if (declarationNode != null) {
 					List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 
-					// Get all scope nodes that use the variables in declaration
-					SymbolTableManager.getAllSymbols(parser);
+					// Get all scope nodes that use the variables in the declaration
 					SymbolTable st = SymbolTableManager.getSymbolTable(parser);
 					Set<ParseTree> scopeNodeOfUsages = new HashSet<>();
 					for (ExtendContext identifier : identifiers) {
 						Symbol symbol = st.getSymbol(identifier, parser);
+						// 符号表缓存失效
+						if (symbol == null) {
+							st = SymbolTableManager.updateSymbolTable(parser);
+							symbol = st.getSymbol(identifier, parser);
+						}
 						for (ParseTree ref : symbol.getReferences()) {
 							scopeNodeOfUsages.add(Scope.getScopeNode(ref, parser));
 						}

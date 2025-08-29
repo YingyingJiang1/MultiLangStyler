@@ -10,8 +10,12 @@
   <style name="expression_complexity"/>
   <style name="structure_preference">
     <rule>
+      <style_context id="9" category=""/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
       <style_context id="12" category=""/>
-      <style_property preferenceIndex="1"/>
+      <style_property preferenceIndex="2"/>
     </rule>
   </style>
   <style name="declaration_layout"/>

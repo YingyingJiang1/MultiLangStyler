@@ -1209,14 +1209,14 @@
   <style name="optional_brace">
     <rule>
       <style_context>
-        <block_type>NORMAL_BODY</block_type>
+        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property use_brace="true"/>
     </rule>
     <rule>
       <style_context>
-        <block_type>MULTI_BLOCK_STMT_BODY</block_type>
+        <block_type>NORMAL_BODY</block_type>
         <body_type>SINGLE</body_type>
       </style_context>
       <style_property use_brace="true"/>
@@ -1229,10 +1229,10 @@
   </style>
   <style name="expression_complexity">
     <rule>
-      <style_context expType="CONDITIONAL_EXP"/>
+      <style_context expType="INITIALIZER_EXP"/>
       <style_property>
-        <maxComplexity depth="9.0"/>
-        <avgComplexity depth="5.318181818181818"/>
+        <maxComplexity depth="13.0"/>
+        <avgComplexity depth="8.409090909090908"/>
       </style_property>
     </rule>
     <rule>
@@ -1243,10 +1243,10 @@
       </style_property>
     </rule>
     <rule>
-      <style_context expType="INITIALIZER_EXP"/>
+      <style_context expType="CONDITIONAL_EXP"/>
       <style_property>
-        <maxComplexity depth="13.0"/>
-        <avgComplexity depth="8.409090909090908"/>
+        <maxComplexity depth="9.0"/>
+        <avgComplexity depth="5.318181818181818"/>
       </style_property>
     </rule>
   </style>

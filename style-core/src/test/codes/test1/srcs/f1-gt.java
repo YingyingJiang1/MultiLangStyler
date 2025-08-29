@@ -1,9 +1,11 @@
 @Override
 public void draw(CommandProcess process, JvmModel result) {
     TableElement table = new TableElement(2, 5).leftCellPadding(1).rightCellPadding(1);
+
     for (Map.Entry<String, List<JvmItemVO>> entry : result.getJvmInfo().entrySet()) {
         String group = entry.getKey();
         List<JvmItemVO> items = entry.getValue();
+
         table.row(true, label(group).style(Decoration.bold.bold()));
 
         for (JvmItemVO item : items) {
