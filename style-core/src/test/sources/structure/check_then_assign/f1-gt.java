@@ -13,8 +13,7 @@ public class E {
 			bInd=2;
 		}
 
-		return 0l;
+		int a = first > 0? bInd: 0; return 0l;
 	}
 
-	static class Node { int ind; }
 }

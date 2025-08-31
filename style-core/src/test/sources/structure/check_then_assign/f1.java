@@ -15,8 +15,12 @@ public class E {
 			bInd=2;
 		}
 
+		int a = 0;
+		if (first > 0) {
+			a = bInd;
+		}
+
 		return 0l;
 	}
 
-	static class Node { int ind; }
 }

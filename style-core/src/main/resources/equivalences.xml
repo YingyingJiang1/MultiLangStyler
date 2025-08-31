@@ -340,14 +340,14 @@
                     <args>0,$I,$E3</args><args>2,$I,$E3</args><args>3,$I,$E3,$E4</args>
                 </argsList>
             </checker>
+            <checker>
+                <class>NoSubExpChecker</class>
+                <argsList>
+                    <args>0,$I,$E,$E1,$E2,$E3</args><args>1,$I,$E,$E1,$E2</args><args>2,$I,$E,$E1,$E2,$E3</args><args>3,$I,$E,$E1,$E2,$E3,$E4</args>
+                </argsList>
+            </checker>
         </checkers>
         <handlers>
-            <handler>
-                <class>DecThenAssignExceptionHandler</class>
-                <argsList>
-                    <args>0,1,$I,$E,$E1,$E2</args><args>2,1,$I,$E,$E1,$E2</args><args>3,1,$I,$E,$E1,$E2</args>
-                </argsList>
-            </handler>
             <handler>
                 <class>ReplicationHandler</class>
                 <argsList>

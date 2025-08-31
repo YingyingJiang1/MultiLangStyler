@@ -63,6 +63,7 @@ public abstract class Checker {
       case "NotLiteralExpChecker" -> new NotLiteralExpChecker(argsList);
       case "HasJumpStmtChecker" -> new HasJumpStmtChecker(argsList);
       case "CascadingIfChecker" -> new CascadingIfChecker(argsList);
+      case "NoSubExpChecker" -> new NoSubExpChecker(argsList);
       default -> null;
     };
     if (checker == null) {
