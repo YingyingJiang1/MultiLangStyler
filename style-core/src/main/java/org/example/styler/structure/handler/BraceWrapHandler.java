@@ -15,9 +15,10 @@ public class BraceWrapHandler extends Handler{
 	}
 
 	/**
-	 * Add brace for statement, which is 'stmtType' and is the first ancestor of the tree represented by `holderName` .
+	 *
 	 * @param structure
-	 * @param args [holderName, stmtType]
+	 * @param args [holderName, n]
+	 * 为`holderName`所代表的树的根节点的第n个compound语句祖先节点添加brace
 	 * @param parser
 	 */
 	@Override
@@ -27,18 +28,25 @@ public class BraceWrapHandler extends Handler{
 		}
 
 		List<ParseTree> matchedTrees = structure.getVNode(args.get(0)).matchedTrees;
-		StmtType stmtType = StmtType.valueOf(args.get(1));
+		int n = Integer.parseInt(args.get(1));
+		int count = 0;
 		if (!matchedTrees.isEmpty()) {
 			ParseTree cur = matchedTrees.get(0).getParent();
 			while (cur != null) {
 				if (cur instanceof ExtendContext ctx) {
-					if (StmtType.getType(ctx, parser) == stmtType) {
+					if (parser.belongToCompoundStmt(ctx)) {
+						++count;
+					}
+
+					if (count == n) {
 						// If no {}, then add {}.
 						ExtendContext subStmt = ctx.getFirstCtxChildIf(parser::belongToStmt);
 						if (!parser.isBlock(parser.getSpecificStmt(subStmt))) {
 							ParseTreeUtil.getInstance().encapsulateStmtWithBrace(subStmt, parser);
+							break;
 						}
 					}
+
 				}
 				cur = cur.getParent();
 			}

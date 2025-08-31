@@ -164,6 +164,12 @@
                     <args>1,0,$S(expStmt),$EXP_LIST</args>
                 </argsList>
             </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E1,2</args>
+                </argsList>
+            </handler>
         </handlers>
     </rule>
     <rule id="9" name="loop3" category="Loops">
@@ -185,6 +191,13 @@
                 <argsList>
                     <args>1,0,$VAR_DEC,$E</args>
                     <args>2,0,$VAR_DEC,$E</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E,2</args>
+                    <args>0,2,$E,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -257,6 +270,12 @@
                     <args>0,1,$S(expStmt)1,$S*</args>
                 </argsList>
             </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E1,2</args>
+                </argsList>
+            </handler>
         </handlers>
     </rule>
     <rule id="12" name="loop4" category="Loops">
@@ -307,6 +326,12 @@
                 <argsList>
                     <args>0,2,$S(expStmt),$S*</args>
                     <args>1,2,$S(expStmt),$S*</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E1,2</args><args>0,2,$E1,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -440,8 +465,8 @@
             <handler>
                 <class>BraceWrapHandler</class>
                 <argsList>
-                    <args>1,0,$E,LOOP</args>
-                    <args>2,0,$E,LOOP</args>
+                    <args>1,0,$E,2</args>
+                    <args>2,0,$E,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -472,8 +497,8 @@
             <handler>
                 <class>BraceWrapHandler</class>
                 <argsList>
-                    <args>1,0,$E,LOOP</args>
-                    <args>2,0,$E,LOOP</args>
+                    <args>1,0,$E,2</args>
+                    <args>2,0,$E,2</args>
                 </argsList>
             </handler>
         </handlers>
