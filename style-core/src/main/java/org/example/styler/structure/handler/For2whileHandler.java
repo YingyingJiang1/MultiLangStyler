@@ -3,7 +3,9 @@ package org.example.styler.structure.handler;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.styler.structure.EquivalentStructure;
+import org.example.utils.NodeUtil;
 import org.example.utils.ParseTreeUtil;
 
 import java.util.ArrayList;
@@ -39,28 +41,48 @@ public class For2whileHandler extends Handler{
         }
     }
 
-    private void handleContinue(ExtendContext node, List<ParseTree> updateStmts, MyParser parser) {
+
+    /**
+     * 在continue语句前添加update statements.
+     * @param node
+     * @param updateStmts
+     * @param parser
+     * @return 返回插入的语句数量
+     */
+    private int handleContinue(ExtendContext node, List<ParseTree> updateStmts, MyParser parser) {
+
         int rule = node.getRuleIndex();
         boolean stop = parser.belongToLoop(rule) || parser.isLambdaExpression(node) ||
                 parser.isTypeDeclaration(node);
         if (stop) {
-            return; // 停止递归
+            return 0; // 停止递归
         }
 
-        if (parser.isContinueStmt(parser.getSpecificStmt(node))) {
+        if (parser.isStatement(node) && parser.isContinueStmt(parser.getSpecificStmt(node))) {
             if (node.getParent() instanceof ExtendContext ctx) {
                 int insertionPoint = ctx.children.indexOf(node);
+
+                // 检查是否需要为父语句添加{}
+                ExtendContext parent = ctx;
+                if (!parser.isBlock(ctx)) {
+                    parent = ParseTreeUtil.getInstance().encapsulateStmtWithBrace(ctx, parser);
+                }
                 for (int i = 0; i < updateStmts.size(); i++) {
-                    ctx.insertChild(insertionPoint++,
+                    parent.insertChild(insertionPoint++,
                             ParseTreeUtil.getInstance().copyTree(updateStmts.get(i), false));
+                }
+                return updateStmts.size();
+            }
+        }
+
+        if (!parser.belongToSingleStmt(node)) {
+            for (int i = 0; i < node.children.size(); i++) {
+                ParseTree child = node.children.get(i);
+                if (child instanceof ExtendContext) {
+                    i += handleContinue((ExtendContext) child, updateStmts, parser);
                 }
             }
         }
-
-        for (ParseTree child : node.children) {
-            if (parser.isStatement(child)) {
-                handleContinue((ExtendContext) child, updateStmts, parser);
-            }
-        }
+        return 0;
     }
 }

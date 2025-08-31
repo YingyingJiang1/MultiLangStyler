@@ -9,4 +9,15 @@ public class Coloring {
 			}
 		}
 	}
+
+
+
+	void f() {
+		for (int j = 0; j < 20; j++)
+			if (sum > 100) {
+				continue;
+			} else {
+				j--;
+			}
+	}
 }

@@ -190,6 +190,7 @@ class StructureStylerTest extends TestBase {
 				"f7.java",
 				"f8.java",
 				"f9.java",
+
 		};
 
 		String[] targetFiles = {
