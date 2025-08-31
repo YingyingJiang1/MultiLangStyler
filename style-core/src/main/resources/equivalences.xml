@@ -13,8 +13,7 @@
             <checker>
                 <class>EqualChecker</class>
                 <argsList>
-                    <args>3,$E,$E1</args>
-                    <args>4,$E,$E1</args>
+                    <args>3,$E,$E1</args><args>4,$E,$E1</args>
                 </argsList>
             </checker>
         </checkers>
@@ -22,8 +21,7 @@
             <handler>
                 <class>ReplicationHandler</class>
                 <argsList>
-                    <args>3,$E,$E1</args>
-                    <args>4,$E,$E1</args>
+                    <args>3,$E,$E1</args><args>4,$E,$E1</args>
                 </argsList>
             </handler>
         </handlers>
@@ -68,8 +66,7 @@
             <checker>
                 <class>NotIntegerChecker</class>
                 <argsList>
-                    <args>0,1,$E2</args>
-                    <args>1,0,$E2</args>
+                    <args>0,1,$E2</args><args>1,0,$E2</args>
                 </argsList>
             </checker>
         </checkers>
@@ -83,8 +80,7 @@
             <handler>
                 <class>OpOpAssignConvertHandler</class>
                 <argsList>
-                    <args>0,1,$HOMO_BOP,$HOMO_BOP_ASSIGN</args>
-                    <args>1,0,$HOMO_BOP_ASSIGN,$HOMO_BOP</args>
+                    <args>0,1,$HOMO_BOP,$HOMO_BOP_ASSIGN</args><args>1,0,$HOMO_BOP_ASSIGN,$HOMO_BOP</args>
                 </argsList>
             </handler>
         </handlers>
@@ -99,8 +95,7 @@
             <handler>
                 <class>WrapCondHandler</class>
                 <argsList>
-                    <args>1,0,$E,$E1</args>
-                    <args>2,0,$E,$E1</args>
+                    <args>1,0,$E,$E1</args><args>2,0,$E,$E1</args>
                 </argsList>
             </handler>
         </handlers>
@@ -120,8 +115,7 @@
             <Checker>
                 <class>CascadingIfChecker</class>
                 <argsList>
-                    <args>0,$S</args>
-                    <args>1,$S</args>
+                    <args>0,$S</args><args>1,$S</args>
                 </argsList>
             </Checker>
         </checkers>
@@ -182,22 +176,19 @@
             <handler>
                 <class>ConflictNameHandler</class>
                 <argsList>
-                    <args>0,1,$VAR_DEC,1</args>
-                    <args>0,2,$VAR_DEC,1</args>
+                    <args>0,1,$VAR_DEC,1</args><args>0,2,$VAR_DEC,1</args>
                 </argsList>
             </handler>
             <handler>
                 <class>VarUndefExceptionHandler</class>
                 <argsList>
-                    <args>1,0,$VAR_DEC,$E</args>
-                    <args>2,0,$VAR_DEC,$E</args>
+                    <args>1,0,$VAR_DEC,$E</args><args>2,0,$VAR_DEC,$E</args>
                 </argsList>
             </handler>
             <handler>
                 <class>BraceWrapHandler</class>
                 <argsList>
-                    <args>0,1,$E,2</args>
-                    <args>0,2,$E,2</args>
+                    <args>0,1,$E,2</args><args>0,2,$E,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -253,15 +244,13 @@
             <handler>
                 <class>Exp2ExpStmtHandler</class>
                 <argsList>
-                    <args>0,1,$EXP_LIST,$S(expStmt)</args>
-                    <args>0,1,$EXP_LIST1,$S(expStmt)1</args>
+                    <args>0,1,$EXP_LIST,$S(expStmt)</args><args>0,1,$EXP_LIST1,$S(expStmt)1</args>
                 </argsList>
             </handler>
             <handler>
                 <class>ExpStmt2ExpHandler</class>
                 <argsList>
-                    <args>1,0,$S(expStmt),$EXP_LIST</args>
-                    <args>1,0,$S(expStmt)1,$EXP_LIST1</args>
+                    <args>1,0,$S(expStmt),$EXP_LIST</args><args>1,0,$S(expStmt)1,$EXP_LIST1</args>
                 </argsList>
             </handler>
             <handler>
@@ -296,36 +285,31 @@
             <handler>
                 <class>ConflictNameHandler</class>
                 <argsList>
-                    <args>0,1,$VAR_DEC,1</args>
-                    <args>0,2,$VAR_DEC,1</args>
+                    <args>0,1,$VAR_DEC,1</args><args>0,2,$VAR_DEC,1</args>
                 </argsList>
             </handler>
             <handler>
                 <class>VarUndefExceptionHandler</class>
                 <argsList>
-                    <args>1,0,$VAR_DEC,$E1</args>
-                    <args>2,0,$VAR_DEC,$E1</args>
+                    <args>1,0,$VAR_DEC,$E1</args><args>2,0,$VAR_DEC,$E1</args>
                 </argsList>
             </handler>
             <handler>
                 <class>Exp2ExpStmtHandler</class>
                 <argsList>
-                    <args>0,2,$EXP_LIST,$S(expStmt)</args>
-                    <args>1,2,$EXP_LIST,$S(expStmt)</args>
+                    <args>0,2,$EXP_LIST,$S(expStmt)</args><args>1,2,$EXP_LIST,$S(expStmt)</args>
                 </argsList>
             </handler>
             <handler>
                 <class>ExpStmt2ExpHandler</class>
                 <argsList>
-                    <args>2,0,$S(expStmt),$EXP_LIST</args>
-                    <args>2,1,$S(expStmt),$EXP_LIST</args>
+                    <args>2,0,$S(expStmt),$EXP_LIST</args><args>2,1,$S(expStmt),$EXP_LIST</args>
                 </argsList>
             </handler>
             <handler>
                 <class>For2whileHandler</class>
                 <argsList>
-                    <args>0,2,$S(expStmt),$S*</args>
-                    <args>1,2,$S(expStmt),$S*</args>
+                    <args>0,2,$S(expStmt),$S*</args><args>1,2,$S(expStmt),$S*</args>
                 </argsList>
             </handler>
             <handler>
@@ -353,9 +337,7 @@
             <checker>
                 <class>EqualChecker</class>
                 <argsList>
-                    <args>0,$I,$E3</args>
-                    <args>2,$I,$E3</args>
-                    <args>3,$I,$E3,$E4</args>
+                    <args>0,$I,$E3</args><args>2,$I,$E3</args><args>3,$I,$E3,$E4</args>
                 </argsList>
             </checker>
         </checkers>
@@ -363,17 +345,13 @@
             <handler>
                 <class>DecThenAssignExceptionHandler</class>
                 <argsList>
-                    <args>0,1,$I,$E,$E1,$E2</args>
-                    <args>2,1,$I,$E,$E1,$E2</args>
-                    <args>3,1,$I,$E,$E1,$E2</args>
+                    <args>0,1,$I,$E,$E1,$E2</args><args>2,1,$I,$E,$E1,$E2</args><args>3,1,$I,$E,$E1,$E2</args>
                 </argsList>
             </handler>
             <handler>
                 <class>ReplicationHandler</class>
                 <argsList>
-                    <args>0,$I,$E3</args>
-                    <args>2,$I,$E3</args>
-                    <args>3,$I,$E3,$E4</args>
+                    <args>0,$I,$E3</args><args>2,$I,$E3</args><args>3,$I,$E3,$E4</args>
                 </argsList>
             </handler>
         </handlers>
@@ -446,9 +424,7 @@
             <checker>
                 <class>ContinuePreferenceChecker</class>
                 <argsList>
-                    <args>0,$S+</args>
-                    <args>1,$E</args>
-                    <args>2,$E</args>
+                    <args>0,$S+</args><args>1,$E</args><args>2,$E</args>
                 </argsList>
             </checker>
         </checkers>
@@ -456,17 +432,13 @@
             <handler>
                 <class>CondReverserHandler</class>
                 <argsList>
-                    <args>0,2,$E</args>
-                    <args>1,2,$E</args>
-                    <args>2,0,$E</args>
-                    <args>2,1,$E</args>
+                    <args>0,2,$E</args><args>1,2,$E</args><args>2,0,$E</args><args>2,1,$E</args>
                 </argsList>
             </handler>
             <handler>
                 <class>BraceWrapHandler</class>
                 <argsList>
-                    <args>1,0,$E,2</args>
-                    <args>2,0,$E,2</args>
+                    <args>1,0,$E,2</args><args>2,0,$E,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -481,9 +453,7 @@
             <checker>
                 <class>ContinuePreferenceChecker</class>
                 <argsList>
-                    <args>0,$S1+</args>
-                    <args>1,$E</args>
-                    <args>2,$E</args>
+                    <args>0,$S1+</args><args>1,$E</args><args>2,$E</args>
                 </argsList>
             </checker>
             <checker>
@@ -497,8 +467,7 @@
             <handler>
                 <class>BraceWrapHandler</class>
                 <argsList>
-                    <args>1,0,$E,2</args>
-                    <args>2,0,$E,2</args>
+                    <args>1,0,$E,2</args><args>2,0,$E,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -513,8 +482,7 @@
             <checker>
                 <class>UnreachableCauseChecker</class>
                 <argsList>
-                    <args>0,$S+</args>
-                    <args>1,$S+</args>
+                    <args>0,$S+</args><args>1,$S+</args>
                 </argsList>
             </checker>
             <checker>
@@ -526,8 +494,7 @@
             <checker>
                 <class>StmtComplexityChecker</class>
                 <argsList>
-                    <args>0,$S1+,3,SINGLE_STMT</args>
-                    <args>1,$S1+,3,SINGLE_STMT</args>
+                    <args>0,$S1+,3,SINGLE_STMT</args><args>1,$S1+,3,SINGLE_STMT</args>
                 </argsList>
             </checker>
         </checkers>
@@ -549,8 +516,7 @@
             <checker>
                 <class>UnreachableCauseChecker</class>
                 <argsList>
-                    <args>0,$S+,$S1+</args>
-                    <args>1,$S+,$S1+</args>
+                    <args>0,$S+,$S1+</args><args>1,$S+,$S1+</args>
                 </argsList>
             </checker>
             <checker>
@@ -562,8 +528,7 @@
             <checker>
                 <class>StmtComplexityChecker</class>
                 <argsList>
-                    <args>0,$S2+,3,SINGLE_STMT</args>
-                    <args>1,$S2+,3,SINGLE_STMT</args>
+                    <args>0,$S2+,3,SINGLE_STMT</args><args>1,$S2+,3,SINGLE_STMT</args>
                 </argsList>
             </checker>
         </checkers>
@@ -571,8 +536,7 @@
            <handler>
                <class>AppendTreeHandler</class>
                <argsList>
-                   <args>0,1,$S+,$S2+</args>
-                   <args>0,1,$S1+,$S2+</args>
+                   <args>0,1,$S+,$S2+</args><args>0,1,$S1+,$S2+</args>
                </argsList>
            </handler>
            <handler>

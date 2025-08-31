@@ -236,7 +236,7 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean belongToCompoundStmt(ParseTree t) {
         if (t instanceof ExtendContext ctx) {
-            return compoundStmts.contains(getSpecificStmtType(ctx));
+            return compoundStmts.contains(ctx.getRuleIndex());
         }
         return false;
     }

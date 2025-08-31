@@ -73,7 +73,7 @@ public class DeclarationLocationStyler extends Styler {
                     }
                     ExtendContext block = decStmt;
                     Predicate<ExtendContext> isScopeCtx = (ExtendContext cur) -> cur != null && (
-                            parser.getSpecificStmtType(cur) == parser.getRuleBlock() || parser.belongToCompoundStmt(cur));
+                            parser.getSpecificStmtType(cur) == parser.getRuleBlock() || parser.belongToCompoundStmt(parser.getSpecificStmt(cur)));
                     while (block.getParent() != null && !isScopeCtx.test(block)) {
                         block = (ExtendContext) block.getParent();
                     }

@@ -43,8 +43,8 @@ public class BraceWrapHandler extends Handler{
 						ExtendContext subStmt = ctx.getFirstCtxChildIf(parser::belongToStmt);
 						if (!parser.isBlock(parser.getSpecificStmt(subStmt))) {
 							ParseTreeUtil.getInstance().encapsulateStmtWithBrace(subStmt, parser);
-							break;
 						}
+						break;
 					}
 
 				}
