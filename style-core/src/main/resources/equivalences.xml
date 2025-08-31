@@ -118,6 +118,13 @@
                 </argsList>
             </checker>
             <Checker>
+                <class>SingleStmtChecker</class>
+                <argsList>
+                    <args>0,$S</args>
+                    <args>1,$S</args>
+                </argsList>
+            </Checker>
+            <Checker>
                 <class>HasJumpStmtChecker</class>
                 <argsList>
                     <args>0,$S</args>

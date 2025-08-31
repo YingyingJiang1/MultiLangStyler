@@ -255,12 +255,16 @@ class StructureStylerTest extends TestBase {
 				"f1.java",
 				"f2.java",
 				"f3.java",
+				"f4.java",
+				"f5.java"
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
 				"style1.xml",
 				"style2.xml",
+				"style2.xml",
+				"style1.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
