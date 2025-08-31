@@ -13,7 +13,7 @@ public class HasJumpStmtChecker extends Checker{
 	}
 
 	/**
-	 * 检查各个placeholder匹配到的语法树中是否包含jump语句
+	 * 检查各个placeholder匹配到的语法树中是否包含jump语句, 非递归检查
 	 * args: [placeholder1, placeholder2, ...]
 	 */
 	@Override
@@ -28,12 +28,19 @@ public class HasJumpStmtChecker extends Checker{
 			List<ParseTree> nodes = structure.getVNode(arg).matchedTrees;
 			for (ParseTree node : nodes) {
 				if (node instanceof ExtendContext ctx) {
-					List<ExtendContext> descents = ctx.getAllCtxsRecIf(t -> true);
-					for (ExtendContext descent : descents) {
-						if (jumpStmts.contains(descent.getRuleIndex())) {
-							hasJumpStmt = true;
-							break;
+					int ruleIndex = parser.getSpecificStmtType(ctx);
+					// 检查子语句
+					if ( ruleIndex == parser.getRuleBlock()) {
+						List<ParseTree> subStmts = parser.getSpecificStmt(ctx).children;
+						for (ParseTree subStmt : subStmts) {
+							if (subStmt instanceof ExtendContext && jumpStmts.contains(parser.getSpecificStmtType((ExtendContext) subStmt))) {
+								hasJumpStmt = true;
+								break;
+							}
 						}
+					} else if (jumpStmts.contains(ruleIndex)) {
+						hasJumpStmt = true;
+						break;
 					}
 				}
 			}
