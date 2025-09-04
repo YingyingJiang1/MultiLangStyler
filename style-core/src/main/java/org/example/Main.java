@@ -1,17 +1,21 @@
 package org.example;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.controller.Controller;
 import org.example.global.GlobalInfo;
-import org.example.styler.structure.EquivalentStructureManager;
-
+import org.slf4j.LoggerFactory;
+import pascal.taie.World;
+import pascal.taie.config.LoggerConfigs;
+import pascal.taie.config.Options;
+import pascal.taie.frontend.soot.SootWorldBuilder;
+import pascal.taie.language.classes.JClass;
+import org.apache.logging.log4j.LogManager;
 
 
 public class Main {
 
 
     public static void main(String[] args) {
+        test();
 //        try {
 //            EquivalentStructureManager.getInstance().updateConfFile("equivalencesConf.json");
 //
@@ -42,4 +46,11 @@ public class Main {
 //        System.out.println(t.toStringTree(new JavaParser(null)));
 //
 //    }
+
+
+    public static void test() {
+        System.out.println(org.apache.logging.log4j.LogManager.getLogger(Main.class).getClass());
+        pascal.taie.Main.buildWorld("-cp", "./tmp");
+        World.get();
+    }
 }

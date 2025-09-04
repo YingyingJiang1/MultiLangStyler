@@ -1,11 +1,9 @@
 package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.myException.TreeConvertException;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
-import soot.jimple.parser.Parse;
 
 import java.util.List;
 

@@ -87,15 +87,43 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-nop</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
-        <!--         https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+
+        <!-- 排除 Logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.12</version>
-            <!--            <scope>test</scope>-->
+            <scope>provided</scope>
         </dependency>
+
+
+        <!--         https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+<!--        <dependency>-->
+<!--            <groupId>ch.qos.logback</groupId>-->
+<!--            <artifactId>logback-classic</artifactId>-->
+<!--            <version>1.5.12</version>-->
+<!--            &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/tech.tablesaw/tablesaw-core -->
         <dependency>
             <groupId>tech.tablesaw</groupId>

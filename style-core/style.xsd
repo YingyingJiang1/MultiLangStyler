@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified">
+
+    <!-- ========== 基础枚举/类型 ========== -->
+    <xs:simpleType name="StyleName">
+        <xs:restriction base="xs:string">
+            <!-- Format -->
+            <xs:enumeration value="newline"/>
+            <xs:enumeration value="space"/>
+            <xs:enumeration value="indention"/>
+
+            <!-- Structure -->
+
+            <xs:enumeration value="optional_brace"/>
+            <xs:enumeration value="modifier_order"/>
+            <xs:enumeration value="structure_preference"/>
+            <xs:enumeration value="declaration_layout"/>
+            <xs:enumeration value="declaration_location"/>
+
+            <!-- Semantic -->
+            <xs:enumeration value="naming_format"/>
+            <xs:enumeration value="expression_complexity"/>
+            <xs:enumeration value="if_else_body_order"/>
+
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="BlockType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MULTI_BLOCK_STMT_BODY"/>
+            <xs:enumeration value="NORMAL_BODY"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="BodyType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SINGLE"/>
+            <!-- 如需更多取值，可在此扩展 -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="ExpressionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INITIALIZER_EXP"/>
+            <xs:enumeration value="TOP_EXP"/>
+            <xs:enumeration value="CONDITIONAL_EXP"/>
+            <!-- 如需更多取值，可在此扩展 -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- 空数组字面值等用自由字符串 -->
+    <xs:simpleType name="VectorLiteral">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+
+    <xs:complexType name="StyleContextType">
+        <xs:sequence minOccurs="0">
+            <!-- optional_brace 场景 -->
+            <xs:element name="block_type" type="BlockType" minOccurs="0"/>
+            <xs:element name="body_type" type="BodyType" minOccurs="0"/>
+            <!-- expression_complexity 场景 -->
+            <!--（也允许用属性 expType，下方 attribute 定义）-->
+            <!-- structure_preference 场景（id/category 作为属性，下方 attribute 定义）-->
+        </xs:sequence>
+
+        <!-- space 场景 -->
+        <xs:attribute name="token" type="xs:string" use="required"/>
+
+        <!-- newline 场景：向量、间距等（作为属性） -->
+        <xs:attribute name="verticalVector" type="VectorLiteral"/>
+        <xs:attribute name="horizontalVector" type="VectorLiteral"/>
+        <xs:attribute name="verticalLengthVector" type="VectorLiteral"/>
+        <xs:attribute name="horizontalLengthVector" type="VectorLiteral"/>
+        <xs:attribute name="verticalSP" type="xs:int"/>
+        <xs:attribute name="horizontalSP" type="xs:int"/>
+
+        <!-- expression_complexity 场景 -->
+        <xs:attribute name="expType" type="ExpressionType" />
+
+        <!-- structure_preference 场景 -->
+        <xs:attribute name="id" type="xs:int" />
+
+        <!-- 允许将来扩展 -->
+        <xs:anyAttribute processContents="lax"/>
+    </xs:complexType>
+
+    <xs:complexType name="StylePropertyType">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <!-- expression_complexity 的嵌套元素 -->
+            <xs:element name="maxComplexity" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="depth" type="xs:decimal" use="required"/>
+                    <xs:anyAttribute processContents="lax"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="avgComplexity" minOccurs="0">
+                <xs:complexType>
+                    <xs:attribute name="depth" type="xs:decimal" use="required"/>
+                    <xs:anyAttribute processContents="lax"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+
+        <!-- indention 场景 -->
+        <xs:attribute name="indentionUnit" type="xs:int" />
+        <xs:attribute name="indentionType" type="xs:string" />
+        <xs:attribute name="indentEmptyLine" type="xs:boolean" />
+        <xs:attribute name="topHierarchyIndention" type="xs:int" />
+
+        <!-- space 场景 -->
+        <xs:attribute name="space1" type="xs:boolean" />
+        <xs:attribute name="space2" type="xs:boolean"/>
+
+        <!-- newline 场景 -->
+        <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
+
+        <!-- if_else_body_order 场景 -->
+        <xs:attribute name="short_body_comes_first" type="xs:boolean" />
+
+        <!-- optional_brace 场景 -->
+        <xs:attribute name="use_brace" type="xs:boolean" />
+
+        <!-- modifier_order 场景 -->
+        <xs:attribute name="order" type="xs:string" />
+
+        <!-- structure_preference 场景 -->
+        <xs:attribute name="preferenceIndex" type="xs:int" />
+
+        <!-- 允许将来扩展 -->
+        <xs:anyAttribute processContents="lax"/>
+    </xs:complexType>
+
+    <!-- ========== 根元素 ========== -->
+    <xs:element name="program_style">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="style" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="rule" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name="style_context" minOccurs="0" type="StyleContextType" />
+                                        <xs:element name="style_property" minOccurs="1" type="StylePropertyType" />
+                                    </xs:all>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="name" type="StyleName" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

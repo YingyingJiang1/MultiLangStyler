@@ -4,11 +4,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
-import soot.jimple.parser.Parse;
 
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
 
 public class CascadingIfChecker extends Checker{
 	public CascadingIfChecker(String[][] argsList) {
