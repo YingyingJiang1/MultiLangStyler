@@ -8,13 +8,13 @@ import java.util.Objects;
 
 public class BodyContext extends StyleContext {
     public BodyTypeEnum bodyType;
-    public BodyNumType bodyNumType;
+    public BodySizeType bodySizeType;
 
     public BodyContext() {}
 
-    public BodyContext(BodyTypeEnum bodyType, BodyNumType bodyNumType) {
+    public BodyContext(BodyTypeEnum bodyType, BodySizeType bodySizeType) {
         this.bodyType = bodyType;
-        this.bodyNumType = bodyNumType;
+        this.bodySizeType = bodySizeType;
     }
 
     @Override
@@ -29,9 +29,9 @@ public class BodyContext extends StyleContext {
                 distance -= context.DEC_WHEN_MIDDLE_SIMILAR;
             }
 
-            boolean numMeet = bodyNumType.equals(context.bodyNumType) ||
-                    bodyNumType.equals(BodyNumType.ANY) ||
-                    context.bodyNumType.equals(BodyNumType.ANY);
+            boolean numMeet = bodySizeType.equals(context.bodySizeType) ||
+                    bodySizeType.equals(BodySizeType.ANY) ||
+                    context.bodySizeType.equals(BodySizeType.ANY);
             return numMeet && distance != INIT_DISTANCE ? distance : INVALID_DISTANCE;
         }
 
@@ -40,25 +40,25 @@ public class BodyContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addElement("block_type").addText(bodyType.name());
-        parent.addElement("body_type").addText(bodyNumType.name());
+        parent.addElement("bodyType").addText(bodyType.name());
+        parent.addElement("bodySize").addText(bodySizeType.name());
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        bodyType = BodyTypeEnum.valueOf(parent.element("block_type").getText().toUpperCase());
-        bodyNumType = BodyNumType.valueOf(parent.element("body_type").getText().toUpperCase());
+        bodyType = BodyTypeEnum.valueOf(parent.element("bodyType").getText().toUpperCase());
+        bodySizeType = BodySizeType.valueOf(parent.element("bodySize").getText().toUpperCase());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bodyType, bodyNumType);
+        return Objects.hash(bodyType, bodySizeType);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof BodyContext context) {
-            return bodyType.equals(context.bodyType) && bodyNumType.equals(context.bodyNumType);
+            return bodyType.equals(context.bodyType) && bodySizeType.equals(context.bodySizeType);
         }
         return false;
     }

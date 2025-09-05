@@ -43,12 +43,12 @@ public class SpaceContext extends StyleContext {
         if (tokenName2 != null && !tokenName2.isEmpty()) {
             sb.append(" ").append(tokenName2);
         }
-        parent.addAttribute("token", sb.toString());
+        parent.addAttribute("tokens", sb.toString());
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        String[] tokens = Arrays.stream(parent.attributeValue("token").split(" "))
+        String[] tokens = Arrays.stream(parent.attributeValue("tokens").split(" "))
                 .map(String::trim)
                 .toArray(String[]::new);
         if (tokens.length > 0) {

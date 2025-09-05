@@ -5,17 +5,12 @@ import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.declaration.location.DeclarationLocationStyler;
 import org.example.styler.exp.complexity.ExpressionStyler;
-import org.example.styler.format.BlankLineStyler;
-import org.example.styler.format.LineStmtStyler;
-import org.example.styler.format.body.braceformat.BraceFormatStyler;
-import org.example.styler.format.body.layout.BodyLayoutStyler;
 import org.example.styler.format.body.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
-import org.example.styler.format.linewrapping.LineWrappingStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
-import org.example.styler.naming.format.NamingFormatStyler;
+import org.example.styler.naming.format.NamingStyler;
 import org.example.styler.structure.StructureStyler;
 
 import java.util.ArrayList;
@@ -39,7 +34,7 @@ public class StylerContainer {
         firstRoundStylers.add(new ExpressionStyler());
 
         /********************************************************** Naming Styles(Lexical) **********************************************************/
-        firstRoundStylers.add(new NamingFormatStyler());
+        firstRoundStylers.add(new NamingStyler());
 
 
         // firstRoundStylers.add(new ArrangementStyler());

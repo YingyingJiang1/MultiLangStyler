@@ -25,10 +25,10 @@ import org.example.styler.naming.format.style.NamingInconsistencyInfo;
 
 import java.util.*;
 
-public class NamingFormatStyler extends Styler {
+public class NamingStyler extends Styler {
     Map<StyleContext, Integer> maxLengthMap = new HashMap<>();
 
-    public NamingFormatStyler() {
+    public NamingStyler() {
         style = new NamingFormatStyle();
     }
 

@@ -26,27 +26,27 @@ public class NamingFormatProperty extends StyleProperty {
     @Override
     public void addElement(Element parent, MyParser parser) {
         if (caseFormat != null) {
-            parent.addAttribute("case_format", caseFormat.name());
+            parent.addAttribute("caseFormat", caseFormat.name());
         }
-        parent.addAttribute("start_with_underscore", String.valueOf(startsWithUnderScore));
+        parent.addAttribute("startsWithUnderScore", String.valueOf(startsWithUnderScore));
         if (maxLength != Integer.MAX_VALUE) {
-            parent.addAttribute("max_length", String.valueOf(maxLength));
+            parent.addAttribute("maxLength", String.valueOf(maxLength));
         }
 
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        String caseFormatName = parent.attributeValue("case_format");
+        String caseFormatName = parent.attributeValue("caseFormat");
         caseFormat = MyCaseFormat.valueOf(caseFormatName);
 
-        if (parent.attributeValue("max_length") != null) {
-            maxLength = Integer.parseInt(parent.attributeValue("max_length"));
+        if (parent.attributeValue("maxLength") != null) {
+            maxLength = Integer.parseInt(parent.attributeValue("maxLength"));
         } else {
             maxLength = Integer.MAX_VALUE;
         }
-        if (parent.attributeValue("start_with_underscore") != null) {
-            startsWithUnderScore = Boolean.parseBoolean(parent.attributeValue("start_with_underscore"));
+        if (parent.attributeValue("startsWithUnderScore") != null) {
+            startsWithUnderScore = Boolean.parseBoolean(parent.attributeValue("startsWithUnderScore"));
         } else {
             startsWithUnderScore = false;
         }

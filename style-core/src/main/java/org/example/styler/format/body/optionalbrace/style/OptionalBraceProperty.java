@@ -18,12 +18,12 @@ public class OptionalBraceProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("use_brace", Boolean.toString(useBrace));
+        parent.addAttribute("useBrace", Boolean.toString(useBrace));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        useBrace = Boolean.parseBoolean(parent.attributeValue("use_brace"));
+        useBrace = Boolean.parseBoolean(parent.attributeValue("useBrace"));
     }
 
     @Override

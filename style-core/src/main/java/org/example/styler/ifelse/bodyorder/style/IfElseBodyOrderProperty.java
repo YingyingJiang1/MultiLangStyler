@@ -18,12 +18,12 @@ public class IfElseBodyOrderProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("short_body_comes_first", Boolean.toString(shortBodyComesFirst));
+        parent.addAttribute("shortBodyComesFirst", Boolean.toString(shortBodyComesFirst));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        shortBodyComesFirst = Boolean.parseBoolean(parent.attributeValue("short_body_comes_first"));
+        shortBodyComesFirst = Boolean.parseBoolean(parent.attributeValue("shortBodyComesFirst"));
     }
 
     @Override

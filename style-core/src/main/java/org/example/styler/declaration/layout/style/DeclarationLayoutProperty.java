@@ -19,14 +19,14 @@ public class DeclarationLayoutProperty extends StyleProperty {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("variable_count", Integer.toString(maxVariableCount));
-        parent.addAttribute("max_length", Integer.toString(maxLength));
+        parent.addAttribute("maxVariableCount", Integer.toString(maxVariableCount));
+        parent.addAttribute("maxLength", Integer.toString(maxLength));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        maxVariableCount = Integer.parseInt(parent.attributeValue("variable_count"));
-        maxLength = Integer.parseInt(parent.attributeValue("max_length"));
+        maxVariableCount = Integer.parseInt(parent.attributeValue("maxVariableCount"));
+        maxLength = Integer.parseInt(parent.attributeValue("maxLength"));
     }
 
     @Override

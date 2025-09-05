@@ -17,12 +17,12 @@ public class DeclarationLayoutContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("has_comment", Boolean.toString(hasComment));
+        parent.addAttribute("hasComment", Boolean.toString(hasComment));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        hasComment = Boolean.parseBoolean(parent.attributeValue("has_comment"));
+        hasComment = Boolean.parseBoolean(parent.attributeValue("hasComment"));
     }
 
     @Override

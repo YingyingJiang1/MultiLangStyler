@@ -16,9 +16,9 @@
 
             <xs:enumeration value="optional_brace"/>
             <xs:enumeration value="modifier_order"/>
-            <xs:enumeration value="structure_preference"/>
             <xs:enumeration value="declaration_layout"/>
             <xs:enumeration value="declaration_location"/>
+            <xs:enumeration value="structure_preference"/>
 
             <!-- Semantic -->
             <xs:enumeration value="naming_format"/>
@@ -28,111 +28,6 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="BlockType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="MULTI_BLOCK_STMT_BODY"/>
-            <xs:enumeration value="NORMAL_BODY"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="BodyType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="SINGLE"/>
-            <!-- 如需更多取值，可在此扩展 -->
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="ExpressionType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="INITIALIZER_EXP"/>
-            <xs:enumeration value="TOP_EXP"/>
-            <xs:enumeration value="CONDITIONAL_EXP"/>
-            <!-- 如需更多取值，可在此扩展 -->
-        </xs:restriction>
-    </xs:simpleType>
-
-    <!-- 空数组字面值等用自由字符串 -->
-    <xs:simpleType name="VectorLiteral">
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
-
-
-    <xs:complexType name="StyleContextType">
-        <xs:sequence minOccurs="0">
-            <!-- optional_brace 场景 -->
-            <xs:element name="block_type" type="BlockType" minOccurs="0"/>
-            <xs:element name="body_type" type="BodyType" minOccurs="0"/>
-            <!-- expression_complexity 场景 -->
-            <!--（也允许用属性 expType，下方 attribute 定义）-->
-            <!-- structure_preference 场景（id/category 作为属性，下方 attribute 定义）-->
-        </xs:sequence>
-
-        <!-- space 场景 -->
-        <xs:attribute name="token" type="xs:string" use="required"/>
-
-        <!-- newline 场景：向量、间距等（作为属性） -->
-        <xs:attribute name="verticalVector" type="VectorLiteral"/>
-        <xs:attribute name="horizontalVector" type="VectorLiteral"/>
-        <xs:attribute name="verticalLengthVector" type="VectorLiteral"/>
-        <xs:attribute name="horizontalLengthVector" type="VectorLiteral"/>
-        <xs:attribute name="verticalSP" type="xs:int"/>
-        <xs:attribute name="horizontalSP" type="xs:int"/>
-
-        <!-- expression_complexity 场景 -->
-        <xs:attribute name="expType" type="ExpressionType" />
-
-        <!-- structure_preference 场景 -->
-        <xs:attribute name="id" type="xs:int" />
-
-        <!-- 允许将来扩展 -->
-        <xs:anyAttribute processContents="lax"/>
-    </xs:complexType>
-
-    <xs:complexType name="StylePropertyType">
-        <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <!-- expression_complexity 的嵌套元素 -->
-            <xs:element name="maxComplexity" minOccurs="0">
-                <xs:complexType>
-                    <xs:attribute name="depth" type="xs:decimal" use="required"/>
-                    <xs:anyAttribute processContents="lax"/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="avgComplexity" minOccurs="0">
-                <xs:complexType>
-                    <xs:attribute name="depth" type="xs:decimal" use="required"/>
-                    <xs:anyAttribute processContents="lax"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-
-        <!-- indention 场景 -->
-        <xs:attribute name="indentionUnit" type="xs:int" />
-        <xs:attribute name="indentionType" type="xs:string" />
-        <xs:attribute name="indentEmptyLine" type="xs:boolean" />
-        <xs:attribute name="topHierarchyIndention" type="xs:int" />
-
-        <!-- space 场景 -->
-        <xs:attribute name="space1" type="xs:boolean" />
-        <xs:attribute name="space2" type="xs:boolean"/>
-
-        <!-- newline 场景 -->
-        <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
-
-        <!-- if_else_body_order 场景 -->
-        <xs:attribute name="short_body_comes_first" type="xs:boolean" />
-
-        <!-- optional_brace 场景 -->
-        <xs:attribute name="use_brace" type="xs:boolean" />
-
-        <!-- modifier_order 场景 -->
-        <xs:attribute name="order" type="xs:string" />
-
-        <!-- structure_preference 场景 -->
-        <xs:attribute name="preferenceIndex" type="xs:int" />
-
-        <!-- 允许将来扩展 -->
-        <xs:anyAttribute processContents="lax"/>
-    </xs:complexType>
 
     <!-- ========== 根元素 ========== -->
     <xs:element name="program_style">
@@ -144,8 +39,20 @@
                             <xs:element name="rule" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:all>
-                                        <xs:element name="style_context" minOccurs="0" type="StyleContextType" />
-                                        <xs:element name="style_property" minOccurs="1" type="StylePropertyType" />
+                                        <xs:element name="style_context" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:union memberTypes="SpaceContext NewlineContext OptionalBraceContext DeclarationLayoutContext
+                                                StructurePreferenceContext NamingContext ExpComplexityContext" />
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="style_property">
+                                            <xs:simpleType>
+                                                <xs:union memberTypes="SpaceProperty IndentionProperty NewlineProperty
+                                                OptionalBraceProperty ModifierOrderProperty DeclarationLocationProperty
+                                                DeclarationLocationProperty StructurePreferenceCProperty NamingProperty ExpComplexityProperty
+IfElseBodyOrderProperty" />
+                                            </xs:simpleType>
+                                        </xs:element>
                                     </xs:all>
                                 </xs:complexType>
                             </xs:element>
@@ -156,5 +63,187 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
+    <!-- Space -->
+    <xs:complexType name="SpaceContext">
+        <xs:attribute name="tokens" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="SpaceProperty">
+        <xs:attribute name="space1" type="xs:boolean" />
+        <xs:attribute name="space2" type="xs:boolean"/>
+    </xs:complexType>
+
+    <!-- Indention -->
+    <xs:complexType name="IndentionProperty">
+        <xs:attribute name="indentionUnit" type="xs:int" />
+        <xs:attribute name="indentionType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="\t" />
+                    <xs:enumeration value=" " />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="indentEmptyLine" type="xs:boolean" />
+        <xs:attribute name="topHierarchyIndention" type="xs:int" />
+    </xs:complexType>
+
+    <!-- Newline -->
+    <xs:complexType name="NewlineContext">
+        <!-- AST nodes in vertical direction -->
+        <xs:attribute name="verticalVector" type="xs:string"/>
+        <!-- AST nodes in horizontal direction -->
+        <xs:attribute name="horizontalVector" type="xs:string"/>
+        <!-- text length or line count of vertical ast nodes -->
+        <xs:attribute name="verticalLengthVector" type="xs:string"/>
+        <!-- text length or line count of horizontal ast nodes -->
+        <xs:attribute name="horizontalLengthVector" type="xs:string"/>
+        <!-- Index of the AST node in the vertical path; newlines can be added/removed right after this node -->
+        <xs:attribute name="verticalSP" type="xs:int"/>
+        <!-- Index of the AST node in the horizontal path; newlines can be added/removed right after this node -->
+        <xs:attribute name="horizontalSP" type="xs:int"/>
+    </xs:complexType>
+    <xs:complexType name="NewlineProperty">
+        <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+
+    <!-- Optional Brace -->
+    <xs:simpleType name="BodyTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DEC_BODY"/>
+            <xs:enumeration value="MULTI_BLOCK_STMT_BODY"/>
+            <xs:enumeration value="ARRAY_INITIALIZER_BODY"/>
+            <xs:enumeration value="DO_WHILE_BODY"/>
+            <xs:enumeration value="NORMAL_BODY"/>
+            <xs:enumeration value="ANY_BODY"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BodySizeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="EMPTY"/>
+            <!-- one single statement -->
+            <xs:enumeration value="SINGLE"/>
+            <!-- >= 2 statements or one compound statement -->
+            <xs:enumeration value="MULTI"/>
+            <!-- any other cases -->
+            <xs:enumeration value="ANY"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="OptionalBraceContext">
+        <xs:attribute name="bodyType" type="BodyTypeType"/>
+        <xs:attribute name="bodySize" type="BodySizeType"/>
+    </xs:complexType>
+    <xs:complexType name="OptionalBraceProperty">
+        <xs:attribute name="useBrace" type="xs:boolean" />
+    </xs:complexType>
+
+    <!-- Modifier Order -->
+    <xs:complexType name="ModifierOrderProperty">
+        <xs:attribute name="order" type="xs:string" />
+    </xs:complexType>
+
+    <!-- Declaration Location -->
+    <xs:complexType name="DeclarationLocationProperty">
+        <xs:attribute name="avgLineDis2firstUse" type="xs:nonNegativeInteger" />
+        <xs:attribute name="location">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="NEAR_USE"/>
+                    <xs:enumeration value="BLOCK_START"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <!-- Declaration Layout -->
+    <xs:complexType name="DeclarationLayoutContext">
+        <xs:attribute name="hasComment" type="xs:boolean" />
+    </xs:complexType>
+    <xs:complexType name="DeclarationLayoutProperty">
+        <xs:attribute name="maxVariableCount" type="xs:int" />
+        <xs:attribute name="maxLength" type="xs:int"/>
+    </xs:complexType>
+
+    <!-- Structure preference -->
+    <xs:complexType name="StructurePreferenceContext">
+        <xs:attribute name="id" type="xs:int" />
+        <xs:attribute name="category" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="StructurePreferenceCProperty">
+        <xs:attribute name="preferenceIndex" type="xs:int" />
+    </xs:complexType>
+
+    <!-- Naming -->
+    <xs:complexType name="NamingContext">
+        <xs:attribute name="nameType" >
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="FIELD" />
+                    <xs:enumeration value="METHOD" />
+                    <xs:enumeration value="CONSTRUCTOR" />
+                    <xs:enumeration value="TYPE" />
+                    <xs:enumeration value="ENUM_CONSTANT" />
+                    <xs:enumeration value="PARAMETER" />
+                    <xs:enumeration value="TYPE_PARAMETER" />
+                    <xs:enumeration value="LOCAL_VARIABLE" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+       <xs:attribute name="attrs" use="optional" >
+           <xs:simpleType>
+               <xs:list>
+                   <xs:simpleType>
+                       <xs:restriction base="xs:string">
+                           <xs:enumeration value="EXPLICIT_CONST"/>
+                           <xs:enumeration value="IMPLICIT_CONST"/>
+                       </xs:restriction>
+                   </xs:simpleType>
+               </xs:list>
+           </xs:simpleType>
+       </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="NamingProperty">
+        <xs:attribute name="startsWithUnderScore" type="xs:boolean" />
+        <xs:attribute name="caseFormat" >
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="UPPER_UNDERSCORE"/>
+                    <xs:enumeration value="LOWER_UNDERSCORE"/>
+                    <xs:enumeration value="UPPER_CAMEL"/>
+                    <xs:enumeration value="LOWER_CAMEL"/>
+                    <xs:enumeration value="ALL_UPPER_CASE"/>
+                    <xs:enumeration value="ALL_LOWER_CASE"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="maxLength" type="xs:int" />
+    </xs:complexType>
+
+    <!-- Expression Complexity -->
+    <xs:complexType name="ComplexityType">
+        <xs:attribute name="depth" type="xs:int"/>
+    </xs:complexType>
+    <xs:complexType name="ExpComplexityContext">
+        <xs:attribute name="expType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="CONDITIONAL_EXP"/>
+                    <xs:enumeration value="TERNARY_EXP"/>
+                    <xs:enumeration value="RVALUE_EXP"/>
+                    <xs:enumeration value="INITIALIZER_EXP"/>
+                    <xs:enumeration value="TOP_EXP"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ExpComplexityProperty">
+        <xs:attribute name="maxComplexity" type="ComplexityType"/>
+        <xs:attribute name="avgComplexity" type="ComplexityType"/>
+    </xs:complexType>
+
+    <!-- If-else body order -->
+    <xs:complexType name="IfElseBodyOrderProperty">
+        <xs:attribute name="shortBodyComesFirst" type="xs:boolean"/>
+    </xs:complexType>
 
 </xs:schema>

@@ -8,7 +8,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 
 import org.example.styler.format.body.BodyContext;
-import org.example.styler.format.body.BodyNumType;
+import org.example.styler.format.body.BodySizeType;
 import org.example.styler.format.body.BodyStyler;
 import org.example.styler.format.body.braceformat.style.BraceFormatProperty;
 import org.example.styler.format.body.braceformat.style.BraceFormatStyle;
@@ -53,7 +53,7 @@ public class BraceFormatStyler extends BodyStyler {
                 }
 
                 // Process empty body specially.
-                if (context.bodyNumType == BodyNumType.EMPTY && afterLB && beforeRB) {
+                if (context.bodySizeType == BodySizeType.EMPTY && afterLB && beforeRB) {
                     beforeRB = false;
                 }
 

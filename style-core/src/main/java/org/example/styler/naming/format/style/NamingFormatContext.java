@@ -31,22 +31,23 @@ public class NamingFormatContext extends StyleContext {
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("name_type", nameType.name());
+        parent.addAttribute("nameType", nameType.name());
         if (attrs != null) {
-            for (SymbolAttr attr : attrs) {
-                parent.addAttribute(attr.name(), attr.name());
-            }
+            parent.addAttribute("attrs", attrs.toString());
         }
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        nameType = NameType.valueOf(parent.attributeValue("name_type"));
-        for (Attribute attr : parent.attributes()) {
-            if (!attr.getName().equals("name_type")) {
-                addAttr(SymbolAttr.valueOf(attr.getName()));
-            }
-        }
+        nameType = NameType.valueOf(parent.attributeValue("nameType"));
+       if (parent.attribute("attrs") != null) {
+           attrs = new ArrayList<>();
+           String[] arr = parent.attributeValue("attrs").substring(1, parent.attributeValue("attrs").length() - 1).split(",");
+           for (String attr : arr) {
+               attrs.add(SymbolAttr.valueOf(attr));
+           }
+       }
+
     }
 
     @Override
