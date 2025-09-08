@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+    <style name="structure_preference">
+        <rule>
+            <style_context id="14" category=""/>
+            <style_property preferenceIndex="3"/>
+        </rule>
+    </style>
+</program_style>

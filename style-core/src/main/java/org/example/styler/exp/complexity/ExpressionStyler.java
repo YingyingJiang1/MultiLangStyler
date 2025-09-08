@@ -34,6 +34,9 @@ import org.example.utils.searcher.intf.DeclarationSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 目前只能处理 primitive types
+ */
 public class ExpressionStyler extends Styler {
     private static final Logger log = LoggerFactory.getLogger(ExpressionStyler.class);
     private Map<ExpressionContext, List<ExpressionComplexity>> complexityMap = new HashMap<>();
@@ -291,7 +294,7 @@ public class ExpressionStyler extends Styler {
 
     private ExtendContext addVarDeclaration(Type type, String name, ExtendContext initializer, MyParser parser) {
         StringBuilder code = new StringBuilder();
-        code.append(type.getName()).append(" ").append(name).append(" = ").append(initializer.getText()).append(";");
+        code.append(type.getName()).append(" ").append(name).append(" = ").append(initializer.getText()).append(";\n");
         ParseTree stmt = MyParserFactory.createParser(parser.getClass()).parse(code.toString(), parser.getRuleStmt());
 
         if (type instanceof ReferenceType referenceType) {
@@ -307,7 +310,7 @@ public class ExpressionStyler extends Styler {
                 }
             }
 
-            if (!isImported) {
+            if (!isImported && referenceType.getQualifiedName() != null) {
                 String importCode = "import " + referenceType.getQualifiedName() + ";";
                 ParseTree importNode = MyParserFactory.createParser(parser.getClass()).parse(importCode, parser.getRuleImportDeclarationList());
                 if (importNode == null) {

@@ -94,18 +94,20 @@ class StructureStylerTest extends TestBase {
 		String dir = "src/test/sources/structure/redundant_code/";
 		String[] srcFiles = {
 				"f1.java",
+				"f2.java",
 				"f3.java",
 				"f4.java",
 		};
 
 		String[] targetFiles = {
 				"f2.java",
+				"f3.java",
 				"style2.xml",
 				"style3.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 			if (false) {
 				try{
@@ -162,7 +164,7 @@ class StructureStylerTest extends TestBase {
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 			if (false) {
 				try{
@@ -207,7 +209,7 @@ class StructureStylerTest extends TestBase {
 
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 			if (false) {
 				try{
@@ -274,7 +276,7 @@ class StructureStylerTest extends TestBase {
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 			if (false) {
 				try {

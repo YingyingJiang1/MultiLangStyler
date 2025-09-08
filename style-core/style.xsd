@@ -220,26 +220,26 @@ IfElseBodyOrderProperty" />
     </xs:complexType>
 
     <!-- Expression Complexity -->
-    <xs:complexType name="ComplexityType">
-        <xs:attribute name="depth" type="xs:int"/>
-    </xs:complexType>
-    <xs:complexType name="ExpComplexityContext">
-        <xs:attribute name="expType">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="CONDITIONAL_EXP"/>
-                    <xs:enumeration value="TERNARY_EXP"/>
-                    <xs:enumeration value="RVALUE_EXP"/>
-                    <xs:enumeration value="INITIALIZER_EXP"/>
-                    <xs:enumeration value="TOP_EXP"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-    </xs:complexType>
-    <xs:complexType name="ExpComplexityProperty">
-        <xs:attribute name="maxComplexity" type="ComplexityType"/>
-        <xs:attribute name="avgComplexity" type="ComplexityType"/>
-    </xs:complexType>
+<!--    <xs:complexType name="ComplexityType">-->
+<!--        <xs:attribute name="depth" type="xs:int"/>-->
+<!--    </xs:complexType>-->
+<!--    <xs:complexType name="ExpComplexityContext">-->
+<!--        <xs:attribute name="expType">-->
+<!--            <xs:simpleType>-->
+<!--                <xs:restriction base="xs:string">-->
+<!--                    <xs:enumeration value="CONDITIONAL_EXP"/>-->
+<!--                    <xs:enumeration value="TERNARY_EXP"/>-->
+<!--                    <xs:enumeration value="RVALUE_EXP"/>-->
+<!--                    <xs:enumeration value="INITIALIZER_EXP"/>-->
+<!--                    <xs:enumeration value="TOP_EXP"/>-->
+<!--                </xs:restriction>-->
+<!--            </xs:simpleType>-->
+<!--        </xs:attribute>-->
+<!--    </xs:complexType>-->
+<!--    <xs:complexType name="ExpComplexityProperty">-->
+<!--        <xs:attribute name="maxComplexity" type="ComplexityType"/>-->
+<!--        <xs:attribute name="avgComplexity" type="ComplexityType"/>-->
+<!--    </xs:complexType>-->
 
     <!-- If-else body order -->
     <xs:complexType name="IfElseBodyOrderProperty">

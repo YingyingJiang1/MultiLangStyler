@@ -22,7 +22,55 @@ public class IntegrationTest extends TestBase {
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(srcCodesDir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(srcCodesDir, srcFiles[i]), Paths.get(styleCodesDir));
-			if (true) {
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+
+			testCodeEqual(actual, gtPath);
+		}
+	}
+
+	@Test
+	public void test3() {
+		String styleCodesDir = "src/test/codes/test3/style-codes";
+		String srcCodesDir = "src/test/codes/test3/srcs";
+		String[] srcFiles = {
+				"f1.java",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(srcCodesDir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(srcCodesDir, srcFiles[i]), Paths.get(styleCodesDir));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+
+			testCodeEqual(actual, gtPath);
+		}
+	}
+
+	@Test
+	public void test4() {
+		String styleCodesDir = "src/test/codes/test4/style-codes";
+		String srcCodesDir = "src/test/codes/test4/srcs";
+		String[] srcFiles = {
+				"f1.java",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(srcCodesDir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(srcCodesDir, srcFiles[i]), Paths.get(styleCodesDir));
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

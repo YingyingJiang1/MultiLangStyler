@@ -15,13 +15,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-        test();
-//        try {
-//            EquivalentStructureManager.getInstance().updateConfFile("equivalencesConf.json");
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         Configuration config = CLIArgumentParser.parseArgs(args);
         if (config != null) {
             GlobalInfo.setConf(config);
@@ -48,9 +41,4 @@ public class Main {
 //    }
 
 
-    public static void test() {
-        System.out.println(org.apache.logging.log4j.LogManager.getLogger(Main.class).getClass());
-        pascal.taie.Main.buildWorld("-cp", "./tmp");
-        World.get();
-    }
 }

@@ -75,6 +75,11 @@ public class TypeResolverImpl implements TypeResolver {
 			}
 		}
 
+		for (Type t : types) {
+			if (t == null || t instanceof ReferenceType) {
+				return null;
+			}
+		}
 		if (types.contains(null)) {
 			return null;
 		}

@@ -126,6 +126,11 @@ public class SpaceStyler extends Styler {
         }
         Token rightToken = findFirstNonWSonRight(tokens, index + 1, parser);
 
+        // skip vws
+        if (rightToken.getType() == parser.getVws()) {
+            return null;
+        }
+
         String rightText = rightToken == null ? "" : rightToken.getText();
         String rightName = generateTokenName(rightToken, parser);
         if (!parser.belongToBinOp(rightText) && !rightName.equals("<EOF>")) {
@@ -144,9 +149,9 @@ public class SpaceStyler extends Styler {
         Token rightToken = index + 1 >= tokens.size() ? null :tokens.get(index + 1);
 
         // Skip all token pairs those have a vws.
-        if ((leftToken != null && leftToken.getType() == parser.getVws()) || (rightToken != null && rightToken.getType() == parser.getVws())) {
-            return null;
-        }
+//        if ((leftToken != null && leftToken.getType() == parser.getVws()) || (rightToken != null && rightToken.getType() == parser.getVws())) {
+//            return null;
+//        }
 
         boolean leftSpace = leftToken != null && parser.getHws() == leftToken.getType();
         boolean rightSpace = rightToken != null && parser.getHws() == rightToken.getType();
@@ -195,7 +200,7 @@ public class SpaceStyler extends Styler {
     private Token findFirstNonWSonRight(List<Token> tokens, int start, MyParser parser) {
         for (int right = start; right < tokens.size(); ++right) {
             int type = tokens.get(right).getType();
-            if (type != parser.getHws() && type != parser.getVws()) {
+            if (type != parser.getHws()) {
                 return tokens.get(right);
             }
         }

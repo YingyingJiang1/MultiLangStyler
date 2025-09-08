@@ -13,151 +13,151 @@
   <style name="declaration_location"/>
   <style name="space">
     <rule>
-      <style_context token="IDENTIFIER ("/>
+      <style_context tokens="IDENTIFIER ("/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER )"/>
+      <style_context tokens="IDENTIFIER )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="( )"/>
+      <style_context tokens="( )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="( LITERAL"/>
+      <style_context tokens="( LITERAL"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER ,"/>
+      <style_context tokens="IDENTIFIER ,"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL ;"/>
+      <style_context tokens="LITERAL ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD IDENTIFIER"/>
+      <style_context tokens="KEYWORD IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token=", IDENTIFIER"/>
+      <style_context tokens=", IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="BIN_OP"/>
+      <style_context tokens="BIN_OP"/>
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER {"/>
+      <style_context tokens="IDENTIFIER {"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER ;"/>
+      <style_context tokens="IDENTIFIER ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="; COMMENT"/>
+      <style_context tokens="; COMMENT"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD ("/>
+      <style_context tokens="KEYWORD ("/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="DOT"/>
+      <style_context tokens="DOT"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="[ IDENTIFIER"/>
+      <style_context tokens="[ IDENTIFIER"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="] IDENTIFIER"/>
+      <style_context tokens="] IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER KEYWORD"/>
+      <style_context tokens="IDENTIFIER KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token=") )"/>
+      <style_context tokens=") )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="( KEYWORD"/>
+      <style_context tokens="( KEYWORD"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="[ ]"/>
+      <style_context tokens="[ ]"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL ]"/>
+      <style_context tokens="LITERAL ]"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD ["/>
+      <style_context tokens="KEYWORD ["/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER UNARY_OP"/>
+      <style_context tokens="IDENTIFIER UNARY_OP"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="] )"/>
+      <style_context tokens="] )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="] ,"/>
+      <style_context tokens="] ,"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="UNARY_OP )"/>
+      <style_context tokens="UNARY_OP )"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="( IDENTIFIER"/>
+      <style_context tokens="( IDENTIFIER"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER IDENTIFIER"/>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token=") ;"/>
+      <style_context tokens=") ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token=") {"/>
+      <style_context tokens=") {"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER ["/>
+      <style_context tokens="IDENTIFIER ["/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="KEYWORD KEYWORD"/>
+      <style_context tokens="KEYWORD KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="IDENTIFIER ]"/>
+      <style_context tokens="IDENTIFIER ]"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="LITERAL ,"/>
+      <style_context tokens="LITERAL ,"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="; IDENTIFIER"/>
+      <style_context tokens="; IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context token="[ LITERAL"/>
+      <style_context tokens="[ LITERAL"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context token="] ;"/>
+      <style_context tokens="] ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
   </style>

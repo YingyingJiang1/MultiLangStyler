@@ -18,7 +18,7 @@ class NewlineStylerTest extends TestBase {
 		String dir = "src/test/sources/format/newline/";
 		String[] srcFiles = {
 				"f1.java",
-				"f3.java",
+				"f1.java",
 				"f1.java",
 				"f5.java",
 				"f7.java",

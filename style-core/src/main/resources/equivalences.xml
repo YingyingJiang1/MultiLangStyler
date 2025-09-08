@@ -505,6 +505,12 @@
                     <args>0,1,$S+,$S1+</args>
                 </argsList>
             </handler>
+            <handler>
+                <class>RedundantCodeHandler</class>
+                <argsList>
+                    <args>1,0,$S+,$S1+,$S1+</args>
+                </argsList>
+            </handler>
         </handlers>
     </rule>
     <rule id="25"  name="redundant_code1" category="Redundant code">

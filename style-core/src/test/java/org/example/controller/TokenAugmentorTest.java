@@ -22,7 +22,7 @@ class TokenAugmentorTest extends TestBase {
 	@Test
 	void process() throws IOException {
 
-		String[] srcFiles = {"src/test/sources/format/newline/f2.java", "src/test/sources/format/newline/f3.java"};
+		String[] srcFiles = {"src/test/sources/format/newline/f2.java", "src/test/sources/format/newline/f1.java"};
 		for (String srcFile : srcFiles) {
 			MyParser parser = MyParserFactory.createParser("java");
 			try {

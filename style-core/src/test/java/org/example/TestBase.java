@@ -48,7 +48,7 @@ public class TestBase {
 //	String dir = "src/test/sources/structure/redundant_code/";
 //	String[] srcFiles = {
 //			"f1.java",
-//			"f3.java"
+//			"f1.java"
 //	};
 //
 //	String[] targetFiles = {
