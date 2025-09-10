@@ -864,10 +864,6 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 25]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="            "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[StatementContext, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[50, 80, 0]" verticalSP="-1" horizontalSP="0"/>
       <style_property newlines="1" hwsStr="            "/>
     </rule>
@@ -1230,10 +1226,6 @@
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext, RBRACE]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="1" hwsStr="        "/>
-    </rule>
-    <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="            "/>
     </rule>
     <rule>
       <style_context verticalVector="[]" horizontalVector="[LBRACK, ExpressionContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 0]" verticalSP="-1" horizontalSP="0"/>
@@ -1600,10 +1592,6 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 15]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="                "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[LPAREN, ForControlContext, RPAREN]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 0]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
@@ -1812,10 +1800,6 @@
       <style_property newlines="0" hwsStr=""/>
     </rule>
     <rule>
-      <style_context verticalVector="[]" horizontalVector="[LBRACE, StatementContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 50]" verticalSP="-1" horizontalSP="0"/>
-      <style_property newlines="1" hwsStr="            "/>
-    </rule>
-    <rule>
       <style_context verticalVector="[]" horizontalVector="[TypeTypeContext, IdentifierContext, FormalParametersContext]" verticalLengthVector="[]" horizontalLengthVector="[0, 20, 20]" verticalSP="-1" horizontalSP="1"/>
       <style_property newlines="0" hwsStr=""/>
     </rule>
@@ -1926,22 +1910,7 @@
       <style_property indentionUnit="6" indentionType=" " indentEmptyLine="false" topHierarchyIndention="0"/>
     </rule>
   </style>
-  <style name="optional_brace">
-    <rule>
-      <style_context>
-        <bodyType>MULTI_BLOCK_STMT_BODY</bodyType>
-        <bodySize>SINGLE</bodySize>
-      </style_context>
-      <style_property useBrace="false"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>NORMAL_BODY</bodyType>
-        <bodySize>SINGLE</bodySize>
-      </style_context>
-      <style_property useBrace="false"/>
-    </rule>
-  </style>
+  <style name="optional_brace"/>
   <style name="modifier_order">
     <rule>
       <style_property order="access_control, synchronized"/>
@@ -1949,10 +1918,10 @@
   </style>
   <style name="expression_complexity">
     <rule>
-      <style_context expType="TOP_EXP"/>
+      <style_context expType="CONDITIONAL_EXP"/>
       <style_property>
-        <maxComplexity depth="16.0"/>
-        <avgComplexity depth="6.670103092783505"/>
+        <maxComplexity depth="8.0"/>
+        <avgComplexity depth="5.0"/>
       </style_property>
     </rule>
     <rule>
@@ -1963,10 +1932,10 @@
       </style_property>
     </rule>
     <rule>
-      <style_context expType="CONDITIONAL_EXP"/>
+      <style_context expType="TOP_EXP"/>
       <style_property>
-        <maxComplexity depth="8.0"/>
-        <avgComplexity depth="5.0"/>
+        <maxComplexity depth="16.0"/>
+        <avgComplexity depth="6.670103092783505"/>
       </style_property>
     </rule>
   </style>
@@ -1985,10 +1954,6 @@
     </rule>
     <rule>
       <style_context id="4" category="Continuous logic and preferences"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
-    <rule>
-      <style_context id="5" category="Continuous logic or preferences"/>
       <style_property preferenceIndex="0"/>
     </rule>
     <rule>
@@ -2122,10 +2087,6 @@
     <rule>
       <style_context tokens="IDENTIFIER IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="COLON"/>
-      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context tokens=") {"/>

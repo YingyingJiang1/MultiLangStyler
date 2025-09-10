@@ -1,6 +1,5 @@
 package org.example.style.rule;
 
-import org.example.style.rule.filter.StylePropertyFilter;
 
 import java.util.List;
 

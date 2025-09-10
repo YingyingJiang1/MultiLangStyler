@@ -56,9 +56,11 @@ public class Configuration {
       ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
       llmConfig = context.getBean(LLMConfig.class);
       languageConfig = context.getBean(LanguageConfig.class);
+      styleConfig = context.getBean(StyleConfig.class);
     } catch (Exception e) {
       llmConfig = new LLMConfig();
       languageConfig = new LanguageConfig();
+      styleConfig = new StyleConfig();
       log.warn("Failed to load configuration");
     }
   }
