@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class StatisticRuleSet extends MapRuleSet{
 	@Override
-	public List<StyleContext> filterRules(StylePropertyFilter filter) {
+	public List<StyleContext> filterRules() {
 		return new ArrayList<>();
 	}
 

@@ -48,6 +48,9 @@ public class Configuration {
   @Autowired
   private LanguageConfig languageConfig;
 
+  @Autowired
+  private StyleConfig styleConfig;
+
   public Configuration() {
     try {
       ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
@@ -103,6 +106,10 @@ public class Configuration {
 
   public LanguageConfig getLanguageConfig() {
     return languageConfig;
+  }
+
+  public StyleConfig getStyleConfig() {
+    return styleConfig;
   }
 
 
@@ -271,5 +278,17 @@ public class Configuration {
       this.parserFactory = parserFactory;
     }
 
+  }
+
+  public static class StyleConfig {
+    private double minDominantRatio;
+
+    public double getMinDominantRatio() {
+      return minDominantRatio;
+    }
+
+    public void setMinDominantRatio(double minDominantRatio) {
+      this.minDominantRatio = minDominantRatio;
+    }
   }
 }

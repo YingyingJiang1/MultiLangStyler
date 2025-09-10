@@ -2,8 +2,8 @@ package org.example.styler.declaration.layout.style;
 
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
+import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
-import org.example.style.rule.filter.MaxValueFilter;
 
 import java.util.List;
 
@@ -14,9 +14,20 @@ public class DeclarationNumberStyle extends CommonStyle {
         styleName = "declaration_layout";
     }
 
+
     @Override
-    public List<StyleContext> filterRules() {
-        return ruleSet.filterRules(MaxValueFilter.getInstance());
+    public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
+        if (ruleSet.getProperties(styleContext) instanceof DeclarationLayoutProperty property
+        && styleProperty instanceof DeclarationLayoutProperty newProperty) {
+            if (property.maxVariableCount < newProperty.maxVariableCount) {
+                property.maxVariableCount = newProperty.maxVariableCount;
+            }
+            if(property.maxLength < newProperty.maxLength) {
+                property.maxLength = newProperty.maxLength;
+            }
+        } else {
+            ruleSet.addRule(styleContext, styleProperty);
+        }
     }
 
     @Override

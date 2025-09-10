@@ -1,5 +1,5 @@
         @Override
-        public void onTextTracksChanged(@NonNullfinal Tracks currentTracks) {
+        public void onTextTracksChanged(@NonNull final Tracks currentTracks) {
             super.onTextTracksChanged(currentTracks);
 
             final boolean trackTypeTextSupported = !currentTracks.containsType(C.TRACK_TYPE_TEXT)
@@ -19,21 +19,14 @@
             // Find selected text track
             final Optional<Format> selectedTracks = textTracks.stream().filter(Tracks.Group::isSelected).filter(info -> info.getMediaTrackGroup().length >= 1).map(info -> info.getMediaTrackGroup().getFormat(0)).findFirst();
 
-            int aaaaaaaaaaaa = 1, bbbbbbbbbbbbbbbbbbbbb = 2, ccccccccccccccccc = 3, dddddddddd = 4;
-            int res = 0;
-            int tmp = aaaaaaaaaaaa * bbbbbbbbbbbbbbbbbbbbb;
-            int tmp1 = dddddddddd / ccccccccccccccccc;
-
-            int tmp2 = tmp + ccccccccccccccccc + tmp1 + aaaaaaaaaaaa;
-
-            res = tmp2 + tmp + ccccccccccccccccc + tmp1 + aaaaaaaaaaaa;
-
             // Build UI
             buildCaptionMenu(availableLanguages);
+
             if (player.getTrackSelector().getParameters().getRendererDisabled(player.getCaptionRendererIndex()) || selectedTracks.isEmpty()) {
                 binding.captionTextView.setText(R.string.caption_none);
-            }else {
+            } else {
                 binding.captionTextView.setText(selectedTracks.get().language);
             }
+
             binding.captionTextView.setVisibility(availableLanguages.isEmpty() ? View.GONE:View.VISIBLE);
-         }
+        }

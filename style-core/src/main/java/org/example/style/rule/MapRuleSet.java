@@ -1,11 +1,8 @@
 package org.example.style.rule;
 
-import org.example.style.rule.filter.StylePropertyFilter;
-import org.example.styler.structure.style.StructPreferenceContext;
-import org.slf4j.LoggerFactory;
+import org.example.global.GlobalInfo;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class MapRuleSet implements RuleSet{
     protected Map<StyleContext, List<StyleProperty>> rules = new HashMap<>();
@@ -75,16 +72,18 @@ public class MapRuleSet implements RuleSet{
     }
 
     @Override
-    public List<StyleContext> filterRules(StylePropertyFilter filter) {
+    public List<StyleContext> filterRules() {
         List<StyleContext> toBeRemoved = new ArrayList<>();
         for (Map.Entry<StyleContext, List<StyleProperty>> entry : rules.entrySet()) {
-            List<StyleProperty> properties = filter.get(entry.getValue(), frequencies.get(entry.getKey()));
-            boolean existsConflict = properties.size() > 1;
-            if (existsConflict) {
-                toBeRemoved.add(entry.getKey());
-                LoggerFactory.getLogger(MapRuleSet.class).debug("Conflict style exists: {}. Class of style property: {}", entry.getKey(), entry.getValue().getClass());
+            List<Integer> curFreList = frequencies.get(entry.getKey());
+            int index = getMaxFreqIndex(curFreList);
+            int totalFreq = curFreList.stream().reduce(Integer::sum).orElse(0);
+            double dominantRatio = (double) curFreList.get(index) / (double) totalFreq;
+            double threshold = GlobalInfo.getConf().getStyleConfig().getMinDominantRatio();
+            if (dominantRatio >= threshold) {
+                entry.setValue(List.of(entry.getValue().get(index)));
             } else {
-                entry.setValue(properties);
+                toBeRemoved.add(entry.getKey());
             }
         }
 
@@ -121,6 +120,20 @@ public class MapRuleSet implements RuleSet{
     public void clear() {
         rules.clear();
         frequencies.clear();
+    }
+
+    private int getMaxFreqIndex(List<Integer> frequencies) {
+        List<StyleProperty> ret = new ArrayList<>();
+        Optional<Integer> maxFrequency = frequencies.stream().max(Comparator.comparingInt(i -> i));
+        if (maxFrequency.isPresent()) {
+            int max = maxFrequency.get();
+            for (int i = 0; i < frequencies.size(); i++) {
+                if (frequencies.get(i) == max) {
+                   return i;
+                }
+            }
+        }
+        return -1;
     }
 
 }

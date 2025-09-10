@@ -3,7 +3,6 @@ package org.example.style;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
 import org.example.style.rule.*;
-import org.example.style.rule.filter.MaxFrequencyFilter;
 import org.example.utils.FileCollection;
 
 import java.util.List;
@@ -113,7 +112,7 @@ public class CommonStyle implements DomIO,Style {
 
     @Override
     public List<StyleContext> filterRules() {
-        return ruleSet.filterRules(MaxFrequencyFilter.getInstance());
+        return ruleSet.filterRules();
     }
 
     public RuleSet getRuleSet() {

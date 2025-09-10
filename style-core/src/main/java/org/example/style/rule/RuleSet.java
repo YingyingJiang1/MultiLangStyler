@@ -25,7 +25,7 @@ public interface RuleSet {
      * @description: When more than one rule with the same style context appears, the rule with the largest frequency is retained.
      * @return the style contexts of removed rules.
      */
-    List<StyleContext> filterRules(StylePropertyFilter filter);
+    List<StyleContext> filterRules();
 
     boolean updateKey(StyleContext oldContext, StyleContext newContext);
 

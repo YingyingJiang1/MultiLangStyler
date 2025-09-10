@@ -29,10 +29,6 @@ public void onTextTracksChanged(@NonNull final Tracks currentTracks) {
 			.map(info -> info.getMediaTrackGroup().getFormat(0))
 			.findFirst();
 
-	int aaaaaaaaaaaa = 1, bbbbbbbbbbbbbbbbbbbbb = 2, ccccccccccccccccc = 3, dddddddddd = 4;
-	int res = 0;
-	res = aaaaaaaaaaaa * bbbbbbbbbbbbbbbbbbbbb + ccccccccccccccccc + dddddddddd / ccccccccccccccccc + aaaaaaaaaaaa + aaaaaaaaaaaa * bbbbbbbbbbbbbbbbbbbbb + ccccccccccccccccc + dddddddddd / ccccccccccccccccc + aaaaaaaaaaaa;
-
 	// Build UI
 	buildCaptionMenu(availableLanguages);
 	if (player.getTrackSelector().getParameters().getRendererDisabled(

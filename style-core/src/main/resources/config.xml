@@ -22,4 +22,9 @@
         <property name="parserFactory" ref="parserFactory" />
     </bean>
 
+    <bean id="styleConfig" class="org.example.Configuration.StyleConfig">
+        <!-- When a value's proportion >= `minDominantRatio`, it is considered dominant, and the style is assigned this value. -->
+        <property name="minDominantRatio" value="0.7"/>
+    </bean>
+
 </beans>
