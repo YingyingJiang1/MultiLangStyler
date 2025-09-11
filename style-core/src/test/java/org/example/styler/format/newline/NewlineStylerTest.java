@@ -18,7 +18,7 @@ class NewlineStylerTest extends TestBase {
 		String dir = "src/test/sources/format/newline/";
 		String[] srcFiles = {
 				"f1.java",
-				"f1.java",
+				"f2.java",
 				"f1.java",
 				"f5.java",
 				"f7.java",
@@ -37,7 +37,7 @@ class NewlineStylerTest extends TestBase {
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.txt", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(NewlineStyler.class, IndentionStyler.class));
-			if (i == srcFiles.length - 1) {
+			if (i == 1) {
 							try{
 				Files.writeString(gtPath, actual);
 			}	catch (Exception e) {

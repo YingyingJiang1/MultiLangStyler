@@ -2,53 +2,53 @@ import java.util.Scanner;
 
 
 
-public class PalaceConstruction {
+public class PrimeCounter {
+	// Function to check if a number is prime
+	public static boolean isPrime(long n) {
 
-	public static void main(String[] args) {
+		// If number is less than 2, it's not prime
+		if (n < 2) return false;
 
-		Scanner scanner = new Scanner(System.in);
+			// Check for divisibility up to square root of n
+		for (long i = 2; i * i <= n; i++) {
 
-		// Read input
-		int N = scanner.nextInt();  // Number of places
+			if (n % i == 0) {
 
-		int T = scanner.nextInt();  // Base temperature
-
-		int A = scanner.nextInt();  // Target temperature
-
-		int[] H = new int[N];  // Array to store elevations
-
-		for (int i = 0; i < N; i++) {
-
-			H[i] = scanner.nextInt();
-
-		}
-
-		// Find the place with temperature closest to A
-		int bestPlace = 0;
-
-		double minDiff = Double.MAX_VALUE;
-
-		for (int i = 0; i < N; i++) {
-
-			// Calculate temperature at current place
-			double temp = T - (H[i] * 0.006);
-
-			// Calculate difference from target temperature
-			double diff = Math.abs(temp - A);
-
-			// Update best place if current difference is smaller
-			if (diff < minDiff) {
-
-				minDiff = diff;
-
-				bestPlace = i + 1;  // Adding 1 because places are 1-indexed
+				return false;
 
 			}
 
 		}
 
-		// Print result
-		System.out.println(bestPlace);
+		return true;
+
+	}
+
+	public static void main(String[] args) {
+
+		Scanner scanner = new Scanner(System.in);
+
+		// Read the number of elements
+		int N = scanner.nextInt();
+
+		// Counter for prime numbers
+		int primeCount = 0;
+
+		// Read N numbers and count primes
+		for (int i = 0; i < N; i++) {
+
+			long num = scanner.nextLong();
+
+			if (isPrime(num)) {
+
+				primeCount++;
+
+			}
+
+		}
+
+		// Print the result
+		System.out.println(primeCount);
 
 		scanner.close();
 
