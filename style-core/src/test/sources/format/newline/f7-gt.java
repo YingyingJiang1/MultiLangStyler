@@ -18,6 +18,7 @@ public class EdE {
         int[] isPrime = new int[n+1];
         
         Arrays.fill(isPrime, 1);
+        
         int[] mu = new int[n+1];
         Arrays.fill(mu,  1);
         for(int i = 2;i<=n;i++){
@@ -25,15 +26,13 @@ public class EdE {
                 for(int j = i;j<=n;j+=i){
                     if (j > i)
                         isPrime[j] = 0;
-                    if (j%(i*i) == 0)
-                        mu[j] = 0;
+                    if (j%(i*i) == 0)mu[j] = 0;
                     mu[j] = -mu[j];
                 }
             }
         }
         
         long sum = 0;
-        
         for(int i = 2;i<=n;i++){
             sum+=(((long)(0-mu[i])*((((long)(n/i))*power(n-n/i, num-2, num))%num))%num+num)%num;
             sum%=num;
@@ -51,7 +50,6 @@ public class EdE {
     }
     public static long power(long x, long y, long mod){
         long ans = 1;
-        
         while(y>0){
             if (y%2==1)
                 ans = (ans*x)%mod;

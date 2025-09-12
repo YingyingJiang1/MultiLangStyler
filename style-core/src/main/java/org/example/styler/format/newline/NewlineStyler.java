@@ -130,26 +130,28 @@ public class NewlineStyler extends Styler {
 
 	private NewlineContext extractContext(ExtendContext ctx, int index, MyParser parser) {
 		ParseTree curNode = ctx.getChild(index);
-		List<String> verticalVector = new ArrayList<>();
-		List<String> horizontalVector = new ArrayList<>();
-		List<Integer> verticalLengthVector = new ArrayList<>();
-		List<Integer> horizontalLengthVector = new ArrayList<>();
+		NewlineContext.FeatureVector verticalFeature = null;
+		NewlineContext.FeatureVector horizontalFeature = null;
 
 		String spNodeName = getNodeName(curNode, parser);
 		int spLen = getApproxLen(curNode, parser);
 
 		if (verticalPathLength > 0) {
+			List<String> verticalVector = new ArrayList<>();
+			List<Integer> verticalLengthVector = new ArrayList<>();
 			addVerticalContext(verticalVector, verticalLengthVector, curNode, parser);
+			int verticalSP = verticalVector.indexOf(spNodeName);
+			verticalFeature = new NewlineContext.FeatureVector(verticalVector, verticalLengthVector, verticalSP);
 		}
 		if (horizontalPathLength > 0) {
+			List<String> horizontalVector = new ArrayList<>();
+			List<Integer> horizontalLengthVector = new ArrayList<>();
 			addHorizontalContext(horizontalVector, horizontalLengthVector, ctx, index, parser);
+			int horizontalSP = horizontalVector.indexOf(spNodeName);
+			horizontalFeature = new NewlineContext.FeatureVector(horizontalVector, horizontalLengthVector, horizontalSP);
 		}
 
-		int verticalSP = verticalVector.indexOf(spNodeName);
-		int horizontalSP = horizontalVector.indexOf(spNodeName);
-
-		return new NewlineContext(verticalVector, horizontalVector, verticalLengthVector, horizontalLengthVector,
-				verticalSP, horizontalSP);
+		return new NewlineContext(verticalFeature, horizontalFeature);
 	}
 
 	private void addHorizontalContext(List<String> horizontalVector, List<Integer> horizontalLengthVector,
@@ -228,30 +230,12 @@ public class NewlineStyler extends Styler {
 			newlineNum += 1;
 		}
 
-		// Generates indention string( hierarchy indention is excluded).
-		String hwsStr = "";
-		for (int i = 0; i < formatTokens.size() - 1; i++) {
-			// vws hws
-			if (formatTokens.get(i).getType() == parser.getVws() && formatTokens.get(i + 1).getType() == parser.getHws()) {
-				hwsStr = formatTokens.get(i + 1).getText();
-			}
-		}
-		int hierarchy = 0;
-		ParseTree parent = curNode.getParent();
-		while (parent != null) {
-			if (parent instanceof ExtendContext extCtx) {
-				hierarchy = extCtx.hierarchy;
-				break;
-			}
-			parent = parent.getParent();
-		}
-
 		Token vwsToken = formatTokens.stream().filter(t -> t.getType() == parser.getVws())
 				.findAny().orElse(null);
 		if (vwsToken != null) {
 			newline = vwsToken.getText().contains("\r\n") ? "\r\n" : "\n";
 		}
-		return new NewlineProperty(newlineNum, hwsStr, hierarchy);
+		return new NewlineProperty(newlineNum);
 	}
 
 

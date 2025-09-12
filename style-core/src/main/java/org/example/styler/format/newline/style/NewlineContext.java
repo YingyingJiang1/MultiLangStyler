@@ -1,81 +1,72 @@
 package org.example.styler.format.newline.style;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.dom4j.Element;
 import org.example.parser.common.MyParser;
+import org.example.style.DomIO;
 import org.example.style.rule.StyleContext;
-import pascal.taie.analysis.pta.core.heap.Obj;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class NewlineContext extends StyleContext {
-	List<String> verticalVector; // vertical vector
-	List<String> horizontalVector; // horizontal vector
-	List<Integer> verticalLengthVector;
-	List<Integer> horizontalLengthVector;
-	int verticalSP, horizontalSP; // start point in vertical and horizontal directions
+	FeatureVector verticalFeature, horizontalFeature;
 
-	public NewlineContext() {
-		verticalVector = new ArrayList<>();
-		horizontalVector = new ArrayList<>();
-		horizontalLengthVector = new ArrayList<>();
-		verticalLengthVector = new ArrayList<>();
-	}
 
-	public NewlineContext(List<String> verticalVector, List<String> horizontalVector, List<Integer> verticalLengthVector,
-						  List<Integer> horizontalLengthVector, int verticalSP, int horizontalSP) {
-		this.verticalVector = verticalVector;
-		this.horizontalVector = horizontalVector;
-		this.verticalLengthVector = verticalLengthVector;
-		this.horizontalLengthVector = horizontalLengthVector;
-		this.verticalSP = verticalSP;
-		this.horizontalSP = horizontalSP;
+	public NewlineContext(FeatureVector verticalFeature, FeatureVector horizontalFeature) {
+		this.verticalFeature = verticalFeature;
+		this.horizontalFeature = horizontalFeature;
 	}
 
 	@Override
 	public void addElement(Element parent, MyParser parser) {
-		parent.addAttribute("verticalVector", verticalVector.toString());
-		parent.addAttribute("horizontalVector", horizontalVector.toString());
-		parent.addAttribute("verticalLengthVector", verticalLengthVector.toString());
-		parent.addAttribute("horizontalLengthVector", horizontalLengthVector.toString());
-		parent.addAttribute("verticalSP", Integer.toString(verticalSP));
-		parent.addAttribute("horizontalSP", Integer.toString(horizontalSP));
+		if (verticalFeature != null) {
+			Element verticalEle = parent.addElement("verticalFeature");
+			verticalFeature.addElement(verticalEle, parser);
+		}
+
+		if (horizontalFeature != null) {
+			Element horizontalEle = parent.addElement("horizontalFeature");
+			horizontalFeature.addElement(horizontalEle, parser);
+		}
 	}
 
 	@Override
 	public void parseElement(Element parent, MyParser parser) {
-		if (parent.attribute("verticalVector") != null) {
-			String str = parent.attributeValue("verticalVector");
-			verticalVector = parseList(str);
+		Element verticalEle  = parent.element("verticalFeature");
+		if (verticalFeature != null) {
+			verticalFeature.parseElement(verticalEle, parser);
 		}
-		if (parent.attribute("horizontalVector") != null) {
-			String str = parent.attributeValue("horizontalVector");
-			horizontalVector = parseList(str);
+
+		Element horizontalEle = parent.element("horizontalFeature");
+		if (horizontalFeature != null) {
+			horizontalFeature.parseElement(horizontalEle, parser);
 		}
-		if (parent.attribute("verticalLengthVector") != null) {
-			String str = parent.attributeValue("verticalLengthVector");
-			parseList(str).forEach(s -> verticalLengthVector.add(Integer.parseInt(s)));
-		}
-		if (parent.attribute("horizontalLengthVector") != null) {
-			String str = parent.attributeValue("horizontalLengthVector");
-			parseList(str).forEach(s -> horizontalLengthVector.add(Integer.parseInt(s)));
-		}
-		if (parent.attribute("verticalSP") != null) {
-			verticalSP = Integer.parseInt(parent.attributeValue("verticalSP"));
-		}
-		if (parent.attribute("horizontalSP") != null) {
-			horizontalSP = Integer.parseInt(parent.attributeValue("horizontalSP"));
-		}
+
 	}
 
 	public int complexityComparision(NewlineContext other) {
-		int hDiff = horizontalLengthVector.stream().reduce(0, Integer::sum) - other.horizontalLengthVector.stream().reduce(0, Integer::sum);
+		int hDiff = horizontalFeature.lenVec.stream().reduce(0, Integer::sum) - other.horizontalFeature.lenVec.stream().reduce(0, Integer::sum);
 		return hDiff;
 	}
 
 	public String getSPNodeName() {
-		return horizontalVector.get(horizontalSP);
+		return horizontalFeature.typeVec.get(horizontalFeature.startPoint);
+	}
+
+	public List<String> getVerticalVector() {
+		return verticalFeature.typeVec;
+	}
+
+	public List<String> getHorizontalVector() {
+		return horizontalFeature.typeVec;
+	}
+
+	public int getVerticalSPIndex() {
+		return verticalFeature.startPoint;
+	}
+
+	public int getHorizontalSPIndex() {
+		return horizontalFeature.startPoint;
 	}
 
 	/**
@@ -85,7 +76,7 @@ public class NewlineContext extends StyleContext {
 	 * @return
 	 */
 	public double similarityTo(NewlineContext other, List<Double> weights) {
-		if (horizontalSP < 0 || !horizontalVector.get(horizontalSP).equals(other.horizontalVector.get(other.horizontalSP))){
+		if (other.horizontalFeature == null || !horizontalFeature.hasSameSP(other.horizontalFeature)){
 			return 0.0;
 		}
 
@@ -94,10 +85,15 @@ public class NewlineContext extends StyleContext {
 		double vectorLenWeight = weights.get(2);
 		double horizontalLenWeight = weights.get(3);
 
-		double vSim = this.cosineSimilarity(this.verticalVector, other.verticalVector);
-		double hSim = this.cosineSimilarity(this.horizontalVector, other.horizontalVector);
-		double vLenSim = this.cosineSimilarity(this.verticalLengthVector, other.verticalLengthVector);
-		double hLenSim = this.cosineSimilarity(this.horizontalLengthVector, other.horizontalLengthVector);
+		double hSim = this.cosineSimilarity(this.horizontalFeature.typeVec, other.horizontalFeature.typeVec);
+		double hLenSim = this.cosineSimilarity(this.horizontalFeature.lenVec, other.horizontalFeature.lenVec);
+		double vSim = 0, vLenSim = 0;
+
+		if (verticalFeature != null) {
+			vSim = this.cosineSimilarity(this.verticalFeature.typeVec, other.verticalFeature.typeVec);
+			vLenSim = this.cosineSimilarity(this.verticalFeature.lenVec, other.verticalFeature.lenVec);
+		}
+
 
 		double sim = verticalWeight * vSim + horizontalWeight * hSim + vectorLenWeight * vLenSim + horizontalLenWeight * hLenSim;
 		return sim;
@@ -162,15 +158,57 @@ public class NewlineContext extends StyleContext {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		NewlineContext context = (NewlineContext) o;
-		return Objects.equals(verticalVector, context.verticalVector) && Objects.equals(horizontalVector, context.horizontalVector)
-				&& Objects.equals(verticalLengthVector, context.verticalLengthVector)
-				&& Objects.equals(horizontalLengthVector, context.horizontalLengthVector)
-		&& verticalSP == context.verticalSP && horizontalSP == context.horizontalSP;
+		return Objects.equals(verticalFeature, context.verticalFeature) && Objects.equals(horizontalFeature, context.horizontalFeature);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(verticalVector, horizontalVector, verticalLengthVector, horizontalLengthVector,
-				verticalSP, horizontalSP);
+		return Objects.hash(verticalFeature, horizontalFeature);
+	}
+
+	public static class FeatureVector implements DomIO {
+		public List<String> typeVec = new ArrayList<>();
+		public List<Integer> lenVec = new ArrayList<>();
+		// Start point is where newline will be added or removed after.
+		int startPoint;
+
+		public FeatureVector(List<String> typeVec, List<Integer> lenVec, int startPoint) {
+			this.typeVec = typeVec;
+			this.lenVec = lenVec;
+			this.startPoint = startPoint;
+		}
+
+		@Override
+		public void addElement(Element parent, MyParser parser) {
+			parent.addAttribute("typeVec", typeVec.toString().substring(1, typeVec.toString().length() - 1));
+			parent.addAttribute("lenVec", lenVec.toString().substring(1, lenVec.toString().length() - 1));
+			parent.addAttribute("startPoint", Integer.toString(startPoint));
+		}
+
+		@Override
+		public void parseElement(Element parent, MyParser parser) {
+			typeVec = Arrays.stream(parent.attributeValue("typeVec").split(",")).toList();
+			lenVec = Arrays.stream(parent.attributeValue("lenVec").split(","))
+					.map(Integer::parseInt)
+					.collect(Collectors.toList());
+			startPoint = Integer.parseInt(parent.attributeValue("startPoint"));
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			FeatureVector that = (FeatureVector) o;
+			return startPoint == that.startPoint && Objects.equals(typeVec, that.typeVec) && Objects.equals(lenVec, that.lenVec);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(typeVec, lenVec, startPoint);
+		}
+
+		public boolean hasSameSP(FeatureVector horizontalFeature) {
+			return typeVec.get(startPoint).equals(horizontalFeature.typeVec.get(startPoint));
+		}
 	}
 }
