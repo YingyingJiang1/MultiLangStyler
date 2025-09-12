@@ -12,7 +12,11 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.newline.inter.InterNewlineStyler;
+import org.example.styler.format.newline.inter.style.InterNewlineContext;
+import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.format.newline.style.BlockLevelNewlineStyle;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
@@ -21,17 +25,18 @@ import org.example.utils.editor.NodeEditorFactory;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
-    static int horizontalPathLength = 5;
+    static int horizontalPathLength = 2;
     static double similarityThreshold = 0.7;
     private String newline = "\n";
-	private int LINE_TOLERANCE = 5;
+	private int LINE_TOLERANCE = 1;
 	private int TEXT_LEN_TOLERANCE = 20;
 
-	// newline styles for different granularity.
-	private List<NewlineStyle> newlineStyles;
-//	private MutablePair<String, IndentionStyle> styleCache = null; // cache of original indention style.
 
-//	private IndentionStyler indentionStyler = new IndentionStyler(); // styler for target style files.
+	// 补充的newline stylers， 处理更加细节的换行
+	List<Styler> stylers = List.of(
+//			new IntraNewlineStyler(),
+//			new InterNewlineStyler()
+	);
 
 
 	public NewlineStyler() {
@@ -47,6 +52,12 @@ public class NewlineStyler extends Styler {
 			NewlineProperty property = extractProperty(ctx, i, parser);
 			NewlineContext context = extractContext(ctx, i, parser);
 			style.addRule(context, property);
+		}
+
+		for (Styler styler : stylers) {
+			if (styler.isRelevant(ctx, Stage.EXTRACT, parser)) {
+				styler.extractStyle(ctx, parser);
+			}
 		}
 
 	}
@@ -76,6 +87,13 @@ public class NewlineStyler extends Styler {
 			}
 
 		}
+
+		for (Styler styler : stylers) {
+			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
+				styler.applyStyle(ctx, parser);
+			}
+		}
+
 		return ctx;
 	}
 
@@ -281,7 +299,18 @@ public class NewlineStyler extends Styler {
 		if (node instanceof TerminalNode ter) {
 			return parser.getTokenName(ter.getSymbol().getType());
 		} else {
-			return node.getClass().getSimpleName();
+			int rule = ((ExtendContext) node).getRuleIndex();
+			if (parser.isStatement(node)) {
+				rule = parser.getSpecificStmtType((ExtendContext) node);
+			}
+			if (rule == parser.getRuleIfStmt() || rule == parser.getRuleIfElseStmt() || rule == parser.getRuleSwitchStmt()) {
+				return "BRANCH_STMT";
+			} else if (rule == parser.getRuleForStmt() || rule == parser.getRuleWhileStmt() || rule == parser.getRuleDoWhileStmt()) {
+				return "LOOP_STMT";
+			} else if (parser.belongToSingleStmt(node) && rule != parser.getRuleLocalVarDeclarationStmt()) {
+				return "SINGLE_STMT";
+			}
+			return parser.getRuleName(rule);
 		}
 	}
 
