@@ -1,6 +1,7 @@
 package org.example.styler.format.indention;
 
 import org.antlr.v4.runtime.Token;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
@@ -48,10 +49,12 @@ public class IndentionStyler extends Styler {
 
 
         if (targetProperty != null) {
-            String extraIndention = "";
-            if (index - 1 >= 0 && tokens.get(index - 1).getType() == parser.getVws() && tokens.get(index - 1) instanceof ExtendToken preExt) {
-                extraIndention = preExt.indention;
+            String extraIndention = curToken.getType() == parser.getHws() ? ((ExtendToken) tokens.get(index + 1)).indention : curToken.indention;
+            // 缩进不一致，统一转换为目标缩进
+            if (!extraIndention.isEmpty() && extraIndention.indexOf(targetProperty.indentionType) < 0) {
+                extraIndention = StringUtils.repeat(targetProperty.indentionType, targetProperty.indentionUnit);
             }
+
             String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + extraIndention;
 
             if (curToken.getType() == parser.getHws()) {

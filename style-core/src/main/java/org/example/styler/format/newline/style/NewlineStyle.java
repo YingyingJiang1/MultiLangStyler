@@ -39,10 +39,6 @@ public class NewlineStyle extends CommonStyle {
      * @return vertical weight, horizontal weight, vertical length weight, horizontal length weight.
      */
     protected List<Double> getWeights(NewlineContext context) {
-		// Expression level
-		if (context.horizontalVector.stream().anyMatch(e -> e.toLowerCase().contains("expression"))) {
-			return List.of(0.0, 1.0, 0.0, 0.0);
-		}
-        return List.of(0.0, 1.0, 0.0, 0.0);
+        return List.of(0.0, 0.8, 0.0, 0.2);
     }
 }

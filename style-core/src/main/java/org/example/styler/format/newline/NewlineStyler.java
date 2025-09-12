@@ -21,7 +21,7 @@ import org.example.utils.editor.NodeEditorFactory;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
-    static int horizontalPathLength = 2;
+    static int horizontalPathLength = 5;
     static double similarityThreshold = 0.7;
     private String newline = "\n";
 	private int LINE_TOLERANCE = 5;
@@ -37,9 +37,6 @@ public class NewlineStyler extends Styler {
 	public NewlineStyler() {
 		style = new NewlineStyle();
 
-		newlineStyles = List.of(
-				new BlockLevelNewlineStyle((NewlineStyle) style)
-		);
 	}
 
 	@Override
