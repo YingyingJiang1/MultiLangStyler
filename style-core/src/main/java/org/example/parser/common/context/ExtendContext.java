@@ -79,12 +79,12 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
-  public void addChild(ParseTree t) {
-    children.add(t);
-    t.setParent(this);
-    updateStartToken();
-    updateStopToken();
-  }
+    public void addChild(ParseTree t) {
+        children.add(t);
+        t.setParent(this);
+        updateStartToken();
+        updateStopToken();
+    }
 
     public void addChildren(List<ParseTree> trees) {
         for (ParseTree t : trees) {
@@ -460,13 +460,13 @@ public class ExtendContext extends ParserRuleContext {
 
     // Return the index of the first child satisfying the @cond.
     public int indexOfLastChild(Predicate<ParseTree> cond) {
-       for (int i = this.children.size() - 1; i >= 0; --i) {
+        for (int i = this.children.size() - 1; i >= 0; --i) {
             ParseTree treeNode = this.children.get(i);
             if (cond.test(treeNode)) {
                 return i;
             }
-       }
-       return -1;
+        }
+        return -1;
     }
 
 
@@ -487,10 +487,31 @@ public class ExtendContext extends ParserRuleContext {
     public List<Token> getAllTokensRec() {
         List<Token> tokens = new ArrayList<>();
         for (ParseTree root : children) {
-            if (root instanceof TerminalNode) {
-                tokens.add(((TerminalNode) root).getSymbol());
+            if (root instanceof TerminalNode terminalNode) {
+                if (terminalNode.getSymbol() instanceof ExtendToken extendToken) {
+                    extendToken.astRule = ((ExtendContext) root.getParent()).getRuleIndex();
+                }
+                tokens.add((terminalNode.getSymbol()));
             } else {
                 tokens.addAll(((ExtendContext) root).getAllTokensRec());
+            }
+        }
+        return tokens;
+    }
+
+    public List<Token> getAllExpandedTokensRec() {
+        List<Token> tokens = new ArrayList<>();
+        for (ParseTree root : children) {
+            if (root instanceof TerminalNode terminalNode) {
+                if (terminalNode.getSymbol() instanceof ExtendToken extendToken) {
+                    tokens.addAll(extendToken.getContextTokens());
+                    int astRule = ((ExtendContext) root.getParent()).getRuleIndex();
+                    for (Token t : extendToken.getContextTokens()) {
+                        ((ExtendToken) t).astRule = astRule;
+                    }
+                }
+            } else {
+                tokens.addAll(((ExtendContext) root).getAllExpandedTokensRec());
             }
         }
         return tokens;
