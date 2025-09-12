@@ -25,6 +25,7 @@ public class ExtendToken extends CommonToken {
     // Tokens those are not in default channel (comment tokens and format tokens) and the token itself.
     private List<Token> contextTokens = null;
     public boolean hasTrailingComment = false;
+    public int astRule;
 
     public ExtendToken(int type) {
         super(type);
@@ -224,4 +225,8 @@ public class ExtendToken extends CommonToken {
         }
         return  builder.toString();
 	}
+
+    public void setExtraIndention(String str) {
+        this.indention = str;
+    }
 }

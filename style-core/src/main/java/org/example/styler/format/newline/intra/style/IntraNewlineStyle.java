@@ -1,17 +1,17 @@
 package org.example.styler.format.newline.intra.style;
 
 import com.google.common.math.Quantiles;
+import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
-import org.example.styler.format.newline.block.style.NewlineStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IntraNewlineStyle extends NewlineStyle {
+public class IntraNewlineStyle extends CommonStyle {
 	// 进行换行的行长下界
 	List<Double> lineLens = new ArrayList<>();
 	List<Double> lineRatios = new ArrayList<>();
