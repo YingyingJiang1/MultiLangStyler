@@ -40,6 +40,7 @@ public class EdE {
 		
 		
 	}
+
 	public static long power(long x, long y, long mod){
 		long ans = 1;
 		while(y>0){

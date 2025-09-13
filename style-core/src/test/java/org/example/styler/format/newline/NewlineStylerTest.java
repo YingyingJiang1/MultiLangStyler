@@ -2,6 +2,7 @@ package org.example.styler.format.newline;
 
 import org.example.TestBase;
 import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
 import org.example.styler.format.newline.inter.InterNewlineStyler;
 import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.junit.jupiter.api.Test;
@@ -34,8 +35,13 @@ class NewlineStylerTest extends TestBase {
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(NewlineStyler.class, IndentionStyler.class));
-			if (true) {
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
+					NewlineStyler.class,
+					IntraNewlineStyler.class,
+					InterNewlineStyler.class,
+					BodyLayoutStyler.class,
+					IndentionStyler.class));
+			if (false) {
 							try{
 				Files.writeString(gtPath, actual);
 			}	catch (Exception e) {
@@ -43,11 +49,7 @@ class NewlineStylerTest extends TestBase {
 			}
 			}
 
-			try {
-				testCodeEqual(actual, gtPath);
-			} catch (AssertionFailedError e) {
-				System.out.printf("Pair %d test failed%n", i + 1);
-			}
+			testCodeEqual(actual, gtPath);
 //			break;
 		}
 	}

@@ -8,17 +8,11 @@ public class EdE {
 
         // TODO Auto-generated method stub
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        
         PrintWriter out = new PrintWriter(System.out);
-        
         int n = Integer.parseInt(bf.readLine());
-        
         long[] dp = new long[n+1];
-        
         int[] isPrime = new int[n+1];
-        
         Arrays.fill(isPrime, 1);
-        
         int[] mu = new int[n+1];
         Arrays.fill(mu,  1);
         for(int i = 2;i<=n;i++){
@@ -26,7 +20,8 @@ public class EdE {
                 for(int j = i;j<=n;j+=i){
                     if (j > i)
                         isPrime[j] = 0;
-                    if (j%(i*i) == 0)mu[j] = 0;
+                    if (j%(i*i) == 0)
+                        mu[j] = 0;
                     mu[j] = -mu[j];
                 }
             }
@@ -48,6 +43,7 @@ public class EdE {
         
         
     }
+
     public static long power(long x, long y, long mod){
         long ans = 1;
         while(y>0){
@@ -56,6 +52,7 @@ public class EdE {
             x = (x*x)%mod;
             y/=2;
         }
+        
         return ans;
     }
 }

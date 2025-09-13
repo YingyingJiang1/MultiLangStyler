@@ -91,10 +91,6 @@ public class NewlineApplicator {
 		List<Token> ctxTokens = token.getContextTokens();
 		int idxInCtxTokens = token.indexInContextTokens();
 
-		if (token.getText().equals(";")) {
-			return;
-		}
-
 		int toRemove = num;
 		List<Token> newCtxTokens = new ArrayList<>(ctxTokens.subList(0, idxInCtxTokens + 1));
 		for (int i = idxInCtxTokens + 1; i < ctxTokens.size(); i++) {

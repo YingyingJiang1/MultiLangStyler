@@ -10,6 +10,7 @@ import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.intra.style.IntraNewlineContext;
 import org.example.styler.format.newline.intra.style.IntraNewlineProperty;
 import org.example.styler.format.newline.intra.style.IntraNewlineStyle;
+import org.example.utils.NodeUtil;
 import org.example.utils.TokenStreamUtil;
 
 import java.util.ArrayList;
@@ -96,8 +97,7 @@ public class IntraNewlineStyler extends Styler {
 	private IntraNewlineProperty extractProperty(ExtendContext ctx, MyParser parser) {
 		IntraNewlineProperty noNewlineProperty = new IntraNewlineProperty(0);
 		Token start = ctx.getStart(), stop = ctx.getStop();
-
-		boolean inSameLine = start.getLine() == stop.getLine();
+		boolean inSameLine = NodeUtil.countNewlineBetween((ExtendToken) stop, (ExtendToken) start, parser) == 0;
 		if (inSameLine) {
 			return noNewlineProperty;
 		}
@@ -117,17 +117,19 @@ public class IntraNewlineStyler extends Styler {
 		Token indentionToken = null;
 		for (int i = startIndex - 1; i >= 0; i--) {
 			Token cur = tokens.get(i);
-			if (cur.getLine() != start.getLine()) {
+			int newlineCount = NodeUtil.countNewlineBetween((ExtendToken) cur, (ExtendToken) start, parser);
+			if (newlineCount > 0) {
 				break;
 			}
-			if (cur.getType() == parser.getHws()) {
+			if (cur.getType() == parser.getHws() && tokens.get(i - 1).getText().endsWith("\n")) {
 				indentionToken = cur;
 			}
 		}
-		if (indentionToken == null) {
-			return noNewlineProperty;
+
+		String indentionStr = "";
+		if (indentionToken != null) {
+			indentionStr = indentionToken.getText();
 		}
-		String indentionStr = indentionToken.getText();
 
 		IntraNewlineProperty property = new IntraNewlineProperty(1);
 		int cumulativeLength = 0;

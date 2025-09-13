@@ -33,4 +33,38 @@ public class NodeUtil {
 		return token;
 	}
 
+	public static ExtendToken getStartToken(ParseTree node) {
+		ExtendToken token = null;
+		if (node instanceof ExtendContext extCtx) {
+			token = (ExtendToken) extCtx.getStart();
+		} else if (node instanceof TerminalNode tNode) {
+			token = (ExtendToken) tNode.getSymbol();
+		}
+		return token;
+	}
+
+	public static int countNewlineBetween(ExtendToken stop, ExtendToken start, MyParser parser) {
+		long newline1 = stop.getContextTokens().subList(stop.getContextTokens().indexOf(stop) + 1, stop.getContextTokens().size())
+				.stream().filter(t -> parser.getVws() == t.getType())
+				.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count())
+				.sum();
+		long newline2 = start.getContextTokens().subList(0, start.getContextTokens().indexOf(start))
+				.stream().filter(t -> parser.getVws() == t.getType())
+				.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count())
+				.sum();
+		return (int) newline1 + (int) newline2;
+	}
+
+	public static int countCommentLineBetween(ExtendToken stop, ExtendToken start, MyParser parser) {
+		long commentLines = 0;
+		commentLines += stop.getContextTokens().subList(stop.getContextTokens().indexOf(stop) + 1, stop.getContextTokens().size())
+				.stream().filter(t -> parser.belongToComment(t.getType()))
+				.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count())
+				.sum();
+		commentLines += start.getContextTokens().subList(0, start.getContextTokens().indexOf(start))
+				.stream().filter(t -> parser.belongToComment(t.getType()))
+				.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count())
+				.sum();
+		return (int) commentLines;
+	}
 }

@@ -1,566 +1,350 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style>
-  <style name="naming_format"/>
-  <style name="newline">
+  <style name="">
     <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, SEMI" lenVec="20, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="WHILE, parExpression, block" lenVec="0, 0, 210" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="localVariableDeclarationStmt, LOOP_STMT, SINGLE_STMT" lenVec="32, 221, 11" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="		"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, LT" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, localVariableDeclarationStmt" lenVec="0, 32" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="		"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, MOD, expression" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="FOR, LPAREN" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, methodHead" lenVec="20, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, expressionList" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, localVariableDeclarationStmt, localVariableDeclarationStmt" lenVec="0, 18, 18" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="variableDeclaratorId, ASSIGN, variableInitializer" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, methodDeclarationList, RBRACE" lenVec="0, 300, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="SEMI, expression, SEMI" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="annotationList, classOrInterfaceType, annotationList" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, EQUAL" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="CLASS, identifier" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, SINGLE_STMT, RBRACE" lenVec="0, 6, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="localVariableDeclaration, SEMI" lenVec="20, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, forControl, RPAREN" lenVec="0, 20, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="localVariableDeclarationStmt, localVariableDeclarationStmt, BRANCH_STMT" lenVec="18, 18, 22" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, ADD" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="BRANCH_STMT, LOOP_STMT, SINGLE_STMT" lenVec="22, 129, 21" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, INC" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="localVariableDeclarationStmt, BRANCH_STMT, LOOP_STMT" lenVec="18, 22, 129" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, LOOP_STMT, SINGLE_STMT" lenVec="0, 87, 21" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="				"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LOOP_STMT, SINGLE_STMT, RBRACE" lenVec="129, 21, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="		"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, expressionList, RPAREN" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, SINGLE_STMT, RBRACE" lenVec="0, 22, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="					"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, typeType, variableDeclarators" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, SEMI, expressionList" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, typeType" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="forInit, SEMI, expression" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="importDeclarationList, typeDeclaration" lenVec="20, 320" startPoint="0"/>
-      </style_context>
-      <style_property newlines="4" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, methodHead, block" lenVec="20, 20, 260" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, classHead, body" lenVec="0, 20, 300" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="forControl, RPAREN, block" lenVec="20, 0, 110" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="DOT, identifier, DOT" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="IMPORT, qualifiedName" lenVec="0, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="annotationList, classOrInterfaceType" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, SEMI" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="parExpression, block, ELSE" lenVec="20, 24, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, DOT, methodCall" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="forControl, RPAREN, block" lenVec="20, 0, 68" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, BRANCH_STMT, RBRACE" lenVec="0, 66, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="				"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, BRANCH_STMT" lenVec="0, 66" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="					"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="identifier, DOT" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="IF, parExpression" lenVec="0, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, RPAREN" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, expression" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, methodDeclarationList" lenVec="0, 300" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="	"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, SINGLE_STMT" lenVec="0, 22" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="						"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="BREAK, SEMI" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, expression, RPAREN" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="typeType, identifier" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, AND" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, LT, expression" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="NEW, creator" lenVec="0, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, typeType, variableDeclarators" lenVec="0, 0, 20" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="FOR, LPAREN, forControl" lenVec="0, 0, 20" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, localVariableDeclarationStmt, LOOP_STMT" lenVec="0, 32, 221" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="		"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LOOP_STMT, SINGLE_STMT, RBRACE" lenVec="87, 21, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, formalParameterList, RPAREN" lenVec="0, 20, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="block, ELSE, block" lenVec="24, 0, 24" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, SINGLE_STMT" lenVec="0, 6" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="				"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="classOrInterfaceType, annotationList, LBRACK" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="createdName, classCreatorRest" lenVec="0, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, AND, expression" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="annotationList, primitiveType" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="modifierList, classHead" lenVec="0, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, DOT, identifier" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="IF, parExpression, block" lenVec="0, 20, 24" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="WHILE, parExpression" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, DOT" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, EQUAL, expression" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, LOOP_STMT" lenVec="0, 87" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="				"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LOOP_STMT, SINGLE_STMT, RBRACE" lenVec="221, 11, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="	"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="annotationList, LBRACK, RBRACK" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, MOD" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="variableDeclaratorId, ASSIGN" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="localVariableDeclaration, SEMI" lenVec="40, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="IF, parExpression, block" lenVec="0, 20, 8" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="identifier, DOT, identifier" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="typeType, identifier, formalParameters" lenVec="0, 0, 20" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="IMPORT, qualifiedName, SEMI" lenVec="0, 20, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="forInit, SEMI" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="identifier, arguments" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LBRACE, localVariableDeclarationStmt" lenVec="0, 18" startPoint="0"/>
-      </style_context>
-      <style_property newlines="2" hwsStr="			"/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="PUBLIC, STATIC" lenVec="0, 0" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="expression, ADD, expression" lenVec="0, 0, 0" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="variableDeclaratorId, ASSIGN, variableInitializer" lenVec="0, 0, 20" startPoint="1"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
-    </rule>
-    <rule>
-      <style_context>
-        <horizontalFeature typeVec="LPAREN, formalParameterList" lenVec="0, 20" startPoint="0"/>
-      </style_context>
-      <style_property newlines="0" hwsStr=""/>
+      <style_property hasNewline="true"/>
     </rule>
   </style>
+  <style name="naming_format"/>
   <style name="if_else_body_order"/>
   <style name="indention">
     <rule>
-      <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="0"/>
+      <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="1"/>
     </rule>
   </style>
   <style name="optional_brace"/>
-  <style name="modifier_order"/>
   <style name="expression_complexity"/>
-  <style name="structure_preference"/>
   <style name="declaration_layout"/>
   <style name="declaration_location"/>
   <style name="space"/>
+  <style name="newline">
+    <rule>
+      <style_context nodeTypes="identifier, arguments"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="RPAREN, block"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="typeType, variableDeclarators"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LT, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="parExpression, SINGLE_STMT"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="typeType, identifier"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, MUL"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, MOD"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="localVariableDeclarationStmt, BRANCH_STMT"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="forControl, RPAREN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="ASSIGN, variableInitializer"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LBRACE, SINGLE_STMT"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LBRACE, methodDeclarationList"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="EQUAL, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="variableDeclaratorId, ASSIGN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="classHead, body"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, EQUAL"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="createdName, classCreatorRest"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, SEMI"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="NEW, creator"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="DOT, methodCall"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LPAREN, formalParameterList"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="IMPORT, qualifiedName"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="methodDeclaration, methodDeclaration"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LPAREN, expressionList"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="localVariableDeclaration, SEMI"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="formalParameterList, RPAREN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="methodHead, block"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, DOT"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="identifier, DOT"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="SINGLE_STMT, SINGLE_STMT"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LPAREN, forControl"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="identifier, formalParameters"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="MOD, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="SEMI, expressionList"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="localVariableDeclarationStmt, LOOP_STMT"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="FOR, LPAREN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, LE"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, RPAREN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LPAREN, RPAREN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, INC"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="modifierList, classHead"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="IF, parExpression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="importDeclarationList, typeDeclaration"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LBRACK, RBRACK"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expression, LT"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="CLASS, identifier"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LBRACE, localVariableDeclarationStmt"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="SINGLE_STMT, RBRACE"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="localVariableDeclarationStmt, localVariableDeclarationStmt"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="ELSE, block"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LE, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="forInit, SEMI"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="parExpression, block"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="PUBLIC, STATIC"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="BRANCH_STMT, LOOP_STMT"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="RETURN, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LBRACE, BRANCH_STMT"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="DOT, identifier"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="MUL, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="BRANCH_STMT, RBRACE"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="modifierList, methodHead"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="LPAREN, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="methodDeclarationList, RBRACE"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="qualifiedName, SEMI"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="expressionList, RPAREN"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="block, ELSE"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="SEMI, expression"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+  </style>
+  <style name="modifier_order"/>
+  <style name="structure_preference"/>
+  <style name="body_layout">
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="2"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+  </style>
+  <style name="intra_newline"/>
 </program_style>

@@ -29,6 +29,8 @@ import java.util.Scanner;
 				long num = scanner.nextLong();
 				if (isPrime(num)) {
 					primeCount++;
+				} else {
+					System.out.println(primeCount);
 				}
 			}
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
@@ -12,15 +11,12 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
-import org.example.styler.Stage;
+import org.example.style.rule.StyleRule;
 import org.example.styler.Styler;
-import org.example.styler.format.newline.inter.InterNewlineStyler;
-import org.example.styler.format.newline.inter.style.InterNewlineContext;
-import org.example.styler.format.newline.intra.IntraNewlineStyler;
-import org.example.styler.format.newline.style.BlockLevelNewlineStyle;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
+import org.example.utils.NodeUtil;
 import org.example.utils.editor.NodeEditorFactory;
 
 public class NewlineStyler extends Styler {
@@ -33,10 +29,10 @@ public class NewlineStyler extends Styler {
 
 
 	// 补充的newline stylers， 处理更加细节的换行
-	List<Styler> stylers = List.of(
+//	List<Styler> stylers = List.of(
 //			new IntraNewlineStyler(),
 //			new InterNewlineStyler()
-	);
+//	);
 
 
 	public NewlineStyler() {
@@ -46,53 +42,55 @@ public class NewlineStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
-
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-			NewlineProperty property = extractProperty(ctx, i, parser);
-			NewlineContext context = extractContext(ctx, i, parser);
-			style.addRule(context, property);
-		}
-
-		for (Styler styler : stylers) {
-			if (styler.isRelevant(ctx, Stage.EXTRACT, parser)) {
-				styler.extractStyle(ctx, parser);
+			StyleRule rule = extractStyleRule(ctx, i, parser);
+			if (rule != null) {
+				style.addRule(rule.getStyleContext(), rule.getStyleProperty());
 			}
 		}
+
+//		for (Styler styler : stylers) {
+//			if (styler.isRelevant(ctx, Stage.EXTRACT, parser)) {
+//				styler.extractStyle(ctx, parser);
+//			}
+//		}
 
 	}
 
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-		NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
-
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-			NewlineProperty property = extractProperty(ctx, i, parser);
-			NewlineContext context = extractContext(ctx, i, parser);
+			StyleRule rule = extractStyleRule(ctx, i, parser);
+			if (rule == null) {
+				continue;
+			}
+
+			NewlineContext context = (NewlineContext) rule.getStyleContext();
+			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
+
 
 			if (style instanceof NewlineStyle newlineStyle) {
-				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold);
-				if (targetProperty == null) {
-					continue;
+				if (newlineStyle.getProperty(context) instanceof NewlineProperty targetProperty) {
+					int diff = targetProperty.newlines - property.newlines;
+					if (diff > 0) {
+						NewlineApplicator.addNewline(ctx.getChild(i), diff, newline, parser);
+						RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+					} else if (diff < 0) {
+						NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
+						RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+					}
 				}
 
-				int diff = targetProperty.newlines - property.newlines;
-				if (diff > 0) {
-					NewlineApplicator.addNewline(ctx.getChild(i), diff, newline, parser);
-					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-				} else if (diff < 0) {
-					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
-					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-				}
+
 			}
 
 		}
 
-		for (Styler styler : stylers) {
-			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
-				styler.applyStyle(ctx, parser);
-			}
-		}
+//		for (Styler styler : stylers) {
+//			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
+//				styler.applyStyle(ctx, parser);
+//			}
+//		}
 
 		return ctx;
 	}
@@ -102,25 +100,28 @@ public class NewlineStyler extends Styler {
 		List<InconsistencyInfo> infos = null;
 
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-			NewlineProperty property = extractProperty(ctx, i, parser);
-			NewlineContext context = extractContext(ctx, i, parser);
+			StyleRule rule = extractStyleRule(ctx, i, parser);
+			if (rule == null) {
+				continue;
+			}
+
+			NewlineContext context = (NewlineContext) rule.getStyleContext();
+			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
+
 
 			if (style instanceof NewlineStyle newlineStyle) {
-				NewlineProperty targetProperty = newlineStyle.getProperty(context, similarityThreshold);
-				if (targetProperty == null || Objects.equals(property, targetProperty)) {
-					continue;
-				}
-
-				if (infos == null) {
-					infos = new ArrayList<>();
-				}
+				if (newlineStyle.getProperty(context) instanceof NewlineProperty targetProperty && !Objects.equals(property, targetProperty)) {
+					if (infos == null) {
+						infos = new ArrayList<>();
+					}
 
 
-				int diff = targetProperty.newlines - property.newlines;
-				if (diff > 0) {
-					infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser));
-				} else if (diff < 0) {
-					infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), Math.abs(diff), parser));
+					int diff = targetProperty.newlines - property.newlines;
+					if (diff > 0) {
+						infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser));
+					} else if (diff < 0) {
+						infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), Math.abs(diff), parser));
+					}
 				}
 			}
 
@@ -128,154 +129,73 @@ public class NewlineStyler extends Styler {
 		return infos;
 	}
 
-	private NewlineContext extractContext(ExtendContext ctx, int index, MyParser parser) {
+	private StyleRule extractStyleRule(ExtendContext ctx, int index, MyParser parser) {
+		List<String> nodeTypes = new ArrayList<>();
 		ParseTree curNode = ctx.getChild(index);
-		NewlineContext.FeatureVector verticalFeature = null;
-		NewlineContext.FeatureVector horizontalFeature = null;
+		ParseTree nextNode = ctx.getChild(index + 1);
+		nodeTypes.add(getNodeName(curNode, parser));
+		nodeTypes.add(getNodeName(nextNode, parser));
+		int breakIndex = 1;
+		double totalTextLen = getApproxLen(curNode, parser) + getApproxLen(nextNode, parser);
 
-		String spNodeName = getNodeName(curNode, parser);
-		int spLen = getApproxLen(curNode, parser);
+		int count = horizontalPathLength - 2;
 
-		if (verticalPathLength > 0) {
-			List<String> verticalVector = new ArrayList<>();
-			List<Integer> verticalLengthVector = new ArrayList<>();
-			addVerticalContext(verticalVector, verticalLengthVector, curNode, parser);
-			int verticalSP = verticalVector.indexOf(spNodeName);
-			verticalFeature = new NewlineContext.FeatureVector(verticalVector, verticalLengthVector, verticalSP);
-		}
-		if (horizontalPathLength > 0) {
-			List<String> horizontalVector = new ArrayList<>();
-			List<Integer> horizontalLengthVector = new ArrayList<>();
-			addHorizontalContext(horizontalVector, horizontalLengthVector, ctx, index, parser);
-			int horizontalSP = horizontalVector.indexOf(spNodeName);
-			horizontalFeature = new NewlineContext.FeatureVector(horizontalVector, horizontalLengthVector, horizontalSP);
-		}
-
-		return new NewlineContext(verticalFeature, horizontalFeature);
-	}
-
-	private void addHorizontalContext(List<String> horizontalVector, List<Integer> horizontalLengthVector,
-									  ExtendContext ctx, int index, MyParser parser) {
-		ParseTree curNode = ctx.getChild(index);
-		String spNodeName = getNodeName(curNode, parser);
-		int spLen = getApproxLen(curNode, parser);
-		horizontalVector.add(spNodeName);
-		horizontalLengthVector.add(spLen);
-		int horizontalCount = horizontalPathLength - 1;
-
-		for (int offset = 1; horizontalCount > 0; offset++) {
+		boolean notReachRightNewline = true, notReachLeftNewline = true;
+		for (int leftIndex = index - 1, rightIndex = index + 2; count > 0 && (rightIndex < ctx.getChildCount() || leftIndex >= 0); --leftIndex, ++rightIndex) {
 			boolean extended = false;
 
 			// 向右
-			if (index + offset < ctx.getChildCount() && horizontalCount > 0) {
-				ParseTree right = ctx.getChild(index + offset);
-				String name = getNodeName(right, parser);
-				horizontalVector.add(name); // 插到末尾
-				horizontalLengthVector.add(getApproxLen(right, parser));
-				horizontalCount--;
-				extended = true;
+			if (rightIndex < ctx.getChildCount() && count > 0) {
+				ParseTree right = ctx.getChild(rightIndex);
+				ExtendToken stop = NodeUtil.getStopToken(ctx.getChild(rightIndex - 1));
+				ExtendToken start = NodeUtil.getStartToken(right);
+
+				boolean notInSameLine = stop == null || start == null || NodeUtil.countNewlineBetween(stop, start, parser) > 0;
+				if (notInSameLine) {
+					notReachRightNewline = false;
+				}
+
+				if (notReachRightNewline) {
+					String name = getNodeName(right, parser);
+					nodeTypes.add(name);
+					count--;
+					totalTextLen += getApproxLen(right, parser);
+				}
 			}
 
 			// 向左
-			if (index - offset >= 0) {
-				ParseTree left = ctx.getChild(index - offset);
-				String name = getNodeName(left, parser);
-				horizontalVector.add(0, name); // 插到最前面
-				horizontalLengthVector.add(0, getApproxLen(left, parser));
-				horizontalCount--;
-				extended = true;
+			if (leftIndex >= 0 && count > 0) {
+				ParseTree left = ctx.getChild(leftIndex);
+				ExtendToken stop = NodeUtil.getStopToken(left);
+				ExtendToken start = NodeUtil.getStartToken(ctx.getChild(leftIndex + 1));
+
+				boolean notInSameLine = stop == null || start == null || NodeUtil.countNewlineBetween(stop, start, parser) > 0;
+				if (notInSameLine) {
+					notReachLeftNewline = false;
+				}
+
+				if (notReachLeftNewline) {
+					String name = getNodeName(left, parser);
+					nodeTypes.add(0, name);
+					++breakIndex;
+					count--;
+					totalTextLen += getApproxLen(left, parser);
+				}
 			}
 
-			if (!extended) break;
-		}
-	}
-
-	private NewlineProperty extractProperty(ExtendContext ctx, int index, MyParser parser) {
-		ParseTree curNode = ctx.getChild(index);
-		ExtendToken curToken = null;
-		if (curNode instanceof ExtendContext extCtx) {
-			curToken = (ExtendToken) extCtx.getStop();
-		} else if (curNode instanceof TerminalNode tNode) {
-			curToken = (ExtendToken) tNode.getSymbol();
 		}
 
-		ExtendToken nextToken = null;
-		if (ctx.getChild(index + 1) instanceof ExtendContext extCtx) {
-			nextToken = (ExtendToken) extCtx.getStop();
-		} else if (ctx.getChild(index + 1) instanceof TerminalNode tNode) {
-			nextToken = (ExtendToken) tNode.getSymbol();
+		ExtendToken stop = NodeUtil.getStopToken(curNode);
+		ExtendToken start = NodeUtil.getStartToken(nextNode);
+
+		if (start == null || stop == null) {
+			return null;
 		}
 
-
-		List<Token> formatTokens = new ArrayList<>(curToken == null ? new ArrayList<>() :
-				curToken.getContextTokens()
-						.subList(curToken.indexInContextTokens() + 1, curToken.getContextTokens().size())
-						.stream()
-						.filter(t -> t.getType() == parser.getVws() || t.getType() == parser.getHws())
-						.toList());
-
-		formatTokens.addAll(
-				nextToken == null ? new ArrayList<>() :
-						nextToken.getContextTokens().subList(0, nextToken.indexInContextTokens())
-								.stream()
-								.filter(t -> t.getType() == parser.getVws() || t.getType() == parser.getHws())
-								.toList()
-		);
-
-		int newlineNum = formatTokens.stream()
-				.mapToInt(t -> t.getType() == parser.getVws() ? (int) t.getText().chars().filter(c -> c == '\n').count() : 0)
-				.sum();
-
-		if (curToken != null && curToken.getTrailingCommentIndex(parser) >= 0) {
-			newlineNum += 1;
-		}
-
-		Token vwsToken = formatTokens.stream().filter(t -> t.getType() == parser.getVws())
-				.findAny().orElse(null);
-		if (vwsToken != null) {
-			newline = vwsToken.getText().contains("\r\n") ? "\r\n" : "\n";
-		}
-		return new NewlineProperty(newlineNum);
-	}
-
-
-
-	private void addVerticalContext(List<String> verticalVector, List<Integer> verticalLengthVector,
-									ParseTree curNode, MyParser parser) {
-		String spNodeName = getNodeName(curNode, parser);
-		int spLen = getApproxLen(curNode, parser);
-		verticalVector.add(spNodeName);
-		verticalLengthVector.add(spLen);
-		int verticalCount = verticalPathLength - 1;
-		ParseTree node = curNode;
-		for (int offset = 1; verticalCount > 0; offset++) {
-			boolean extended = false;
-
-			// 向上 parent
-			ParseTree parent = node.getParent();
-			if (parent != null) {
-				String name = getNodeName(parent,parser);
-				verticalVector.add(0, name); // 插到最前面
-				verticalLengthVector.add(0, getApproxLen(parent, parser));
-				verticalCount--;
-				extended = true;
-				node = parent; // 向上继续
-			}
-
-			// 向下：尝试获取 child 节点（选第一个 child）
-//			if (verticalCount > 0 && curNode.getChildCount() >= offset) {
-//				ParseTree child = curNode.getChild(offset - 1);
-//				if (child != null) {
-//					String name = getNodeName(child, parser);
-//					verticalVector.add(name); // 插到末尾
-//					verticalLengthVector.add(getApproxLen(child.getText()));
-//					verticalCount--;
-//					extended = true;
-//				}
-//			}
-
-			if (!extended) break;
-		}
+		int newlineCount = NodeUtil.countNewlineBetween(stop, start, parser);
+		NewlineContext context = new NewlineContext(nodeTypes, List.of(totalTextLen));
+		NewlineProperty property = new NewlineProperty(newlineCount, breakIndex);
+		return new StyleRule(context, property);
 	}
 
 
@@ -301,9 +221,6 @@ public class NewlineStyler extends Styler {
 	private int getApproxLen(ParseTree node, MyParser parser) {
 
 		int n = TEXT_LEN_TOLERANCE;
-		if (parser.isStatement(node)) {
-			n = LINE_TOLERANCE;
-		}
 
 		int textLength = node.getText().length();
 		int lower = (textLength / n) * n;         // 向下取最近的倍数

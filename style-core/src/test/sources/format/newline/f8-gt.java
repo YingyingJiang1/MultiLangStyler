@@ -5,7 +5,6 @@ private void doPostprocessing() {
 	errObject = null;
 	Thread thread = Thread.currentThread();
 	notifyPostProcessing(1);
-
 	if (DEBUG) {
 
 		thread.setName("[" + TAG + "]  ps = " + psAlgorithm + "  filename = " + storage.getName());
@@ -21,11 +20,9 @@ private void doPostprocessing() {
 	} catch (Exception err) {
 
 		Log.e(TAG, "Post-processing failed. " + psAlgorithm.toString(), err);
-
 		if (err instanceof InterruptedIOException || err instanceof ClosedByInterruptException) {
 
 			notifyError(DownloadMission.ERROR_POSTPROCESSING_STOPPED, null);
-
 			return;
 
 		}
@@ -33,16 +30,18 @@ private void doPostprocessing() {
 		if (thread.isInterrupted()) {
 
 			notifyError(DownloadMission.ERROR_POSTPROCESSING_STOPPED, null);
-
 			return;
 
 		}
+
 		if (errCode == ERROR_NOTHING) {
 
 			errCode = ERROR_POSTPROCESSING;
 
 		}
+
 		exception = err;
+
 	} finally {
 
 		notifyPostProcessing(errCode == ERROR_NOTHING ? 2 : 0);
@@ -50,6 +49,7 @@ private void doPostprocessing() {
 	}
 
 	if (errCode != ERROR_NOTHING) {
+
 		if (exception == null) {
 
 			exception = errObject;
@@ -62,4 +62,5 @@ private void doPostprocessing() {
 	}
 
 	notifyFinished();
+
 }
