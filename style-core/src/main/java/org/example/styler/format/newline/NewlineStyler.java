@@ -12,7 +12,11 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleRule;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
+import org.example.styler.format.newline.inter.InterNewlineStyler;
+import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
@@ -25,17 +29,19 @@ public class NewlineStyler extends Styler {
     static double similarityThreshold = 0.7;
     private String newline = "\n";
 	private int LINE_TOLERANCE = 1;
-	private int TEXT_LEN_TOLERANCE = 20;
+	private int TEXT_LEN_TOLERANCE = 1;
 
 
 	// 补充的newline stylers， 处理更加细节的换行
 //	List<Styler> stylers = List.of(
 //			new IntraNewlineStyler(),
-//			new InterNewlineStyler()
+//			new InterNewlineStyler(),
+//			new BodyLayoutStyler()
 //	);
 
 
 	public NewlineStyler() {
+		executeWhenExit = false;
 		style = new NewlineStyle();
 
 	}

@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-
 public class EdE {
 
     public static void main(String[] args) throws Exception{
@@ -8,8 +7,11 @@ public class EdE {
 
         // TODO Auto-generated method stub
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        
         PrintWriter out = new PrintWriter(System.out);
+        
         int n = Integer.parseInt(bf.readLine());
+        
         long[] dp = new long[n+1];
         int[] isPrime = new int[n+1];
         Arrays.fill(isPrime, 1);
@@ -28,20 +30,17 @@ public class EdE {
         }
         
         long sum = 0;
+        
         for(int i = 2;i<=n;i++){
             sum+=(((long)(0-mu[i])*((((long)(n/i))*power(n-n/i, num-2, num))%num))%num+num)%num;
-            sum%=num;
             
+            sum%=num;
         }
         
         sum+=1;
         sum%=num;
         out.println(sum);
-        
         out.close();
-        
-        
-        
     }
 
     public static long power(long x, long y, long mod){

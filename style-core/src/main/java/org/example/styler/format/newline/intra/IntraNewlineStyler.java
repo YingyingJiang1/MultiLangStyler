@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class IntraNewlineStyler extends Styler {
 	public IntraNewlineStyler() {
+		executeWhenExit = false;
 		style = new IntraNewlineStyle();
 	}
 

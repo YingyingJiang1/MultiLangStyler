@@ -15,6 +15,7 @@ import org.example.styler.format.newline.inter.style.InterNewlineStyle;
  */
 public class InterNewlineStyler extends Styler {
 	public InterNewlineStyler() {
+		executeWhenExit = false;
 		style = new InterNewlineStyle();
 	}
 

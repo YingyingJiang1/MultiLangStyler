@@ -18,6 +18,7 @@ public class BodyLayoutStyler extends BodyStyler {
 	private static Set<Integer> relevantRules = null;
 
 	public BodyLayoutStyler() {
+		executeWhenExit = false;
 		style.setStyleName("body_layout");
 	}
 

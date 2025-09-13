@@ -1,5 +1,7 @@
 	import java.util.Scanner;
 
+
+
 	public class Chessboard {
 
 		public static void main(String[] args) {
@@ -12,7 +14,6 @@
 				if (h == 0 && w == 0) {
 					break;
 				}
-
 				if (h == 0 && w == 0)break;
 
 				for (int i = 0; i < h; i++) {

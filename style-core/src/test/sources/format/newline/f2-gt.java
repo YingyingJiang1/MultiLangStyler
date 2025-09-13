@@ -1,4 +1,5 @@
 import java.util.Scanner;
+
 public class PrimeCounter {
 	// Function to check if a number is prime
 	public static boolean isPrime(long n) {

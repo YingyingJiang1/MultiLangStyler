@@ -10,7 +10,7 @@ import org.example.style.rule.StyleProperty;
 import java.util.*;
 
 public class NewlineStyle extends CommonStyle {
-	Map<MutablePair<List<String>, NewlineProperty>, List<Double>> nodeType2LengthMap;
+	Map<List<String>, Map<NewlineProperty, List<Double>>> nodeTypeMap;
 	Map<List<String>, Set<NewlineContext>> lookupIndex = new HashMap<>();
 
 
@@ -20,14 +20,14 @@ public class NewlineStyle extends CommonStyle {
 
 	@Override
 	public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-		if (nodeType2LengthMap == null) {
-			nodeType2LengthMap = new HashMap<>();
+		if (nodeTypeMap == null) {
+			nodeTypeMap = new HashMap<>();
 		}
 		if (styleContext instanceof NewlineContext context
 				&& styleProperty instanceof NewlineProperty property) {
 			MutablePair<List<String>, NewlineProperty> key = new MutablePair<>(context.getNodeTypes(), property);
-			List<Double> lengths = nodeType2LengthMap.computeIfAbsent(key, k -> new ArrayList<>());
-			lengths.addAll(context.getLengths());
+			Map<NewlineProperty, List<Double>> propertyMap = nodeTypeMap.computeIfAbsent(context.getNodeTypes(), k -> new HashMap<>());
+			propertyMap.computeIfAbsent(property, k -> new ArrayList<>()).addAll(context.getLengths());
 		}
 	}
 
@@ -55,26 +55,66 @@ public class NewlineStyle extends CommonStyle {
 
 	@Override
 	public void fillStyle() {
-		if (nodeType2LengthMap != null) {
+		if (nodeTypeMap != null) {
 			ruleSet.clear();
-			for (Map.Entry<MutablePair<List<String>, NewlineProperty>, List<Double>> entry : nodeType2LengthMap.entrySet()) {
-				List<String> nodeTypes = entry.getKey().getLeft();
-				NewlineProperty property = entry.getKey().getRight();
-//				List<Double> lengths = List.of(Quantiles.median().compute(entry.getValue()));
-				List<Double> lengths = null; // 不考虑长度
+			for (List<String> nodeTypes : nodeTypeMap.keySet()) {
+				Map<NewlineProperty, List<Double>> propertyMap = nodeTypeMap.get(nodeTypes);
+				propertyMap = removeConflictProperties(propertyMap);
+				for (NewlineProperty property : propertyMap.keySet()) {
+					List<Double> lengths = List.of(Quantiles.median().compute(propertyMap.get(property)));
+//					List<Double> lengths = null; // 不考虑长度
+					NewlineContext context = new NewlineContext(nodeTypes, lengths);
 
-				NewlineContext context = new NewlineContext(nodeTypes, lengths);
-				// 一共有entry.getValue().size个property，不是一个
-				for (int i = 0; i < entry.getValue().size(); i++) {
+//					for (int i = 0; i < propertyMap.size(); i++) {
+//						ruleSet.addRule(context, property);
+//					}
+
 					ruleSet.addRule(context, property);
+					lookupIndex.computeIfAbsent(nodeTypes, k -> new HashSet<>()).add(context);
 				}
-
-				lookupIndex.computeIfAbsent(nodeTypes, k -> new HashSet<>()).add(context);
 			}
 
-			nodeType2LengthMap = null;
+			nodeTypeMap = null;
 		}
 
+	}
+
+	// 当某个property的区间被包含时，删除该property（因为从统计上来讲大概率是非dominant的）
+	private Map<NewlineProperty, List<Double>> removeConflictProperties(
+			Map<NewlineProperty, List<Double>> propertyMap) {
+
+		// 先计算每个 property 的区间 [min, max]
+		Map<NewlineProperty, double[]> intervals = new HashMap<>();
+		for (NewlineProperty property : propertyMap.keySet()) {
+			List<Double> lengths = propertyMap.get(property);
+			double min = lengths.stream().min(Double::compareTo).get();
+			double max = lengths.stream().max(Double::compareTo).get();
+			intervals.put(property, new double[]{min, max});
+		}
+
+		// 找出被包含的 property
+		Set<NewlineProperty> toRemove = new HashSet<>();
+		for (Map.Entry<NewlineProperty, double[]> e1 : intervals.entrySet()) {
+			for (Map.Entry<NewlineProperty, double[]> e2 : intervals.entrySet()) {
+				if (e1.getKey() == e2.getKey()) continue;
+
+				double[] i1 = e1.getValue();
+				double[] i2 = e2.getValue();
+
+				// 判断 i1 是否被 i2 包含
+				if (i1[0] >= i2[0] && i1[1] <= i2[1]) {
+					toRemove.add(e1.getKey());
+				}
+			}
+		}
+
+		// 删除被包含的 property
+		Map<NewlineProperty, List<Double>> filtered = new HashMap<>(propertyMap);
+		for (NewlineProperty p : toRemove) {
+			filtered.remove(p);
+		}
+
+		return filtered;
 	}
 
 

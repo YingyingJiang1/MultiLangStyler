@@ -10,7 +10,7 @@
   <style name="if_else_body_order"/>
   <style name="indention">
     <rule>
-      <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="1"/>
+      <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="0"/>
     </rule>
   </style>
   <style name="optional_brace"/>
@@ -20,276 +20,124 @@
   <style name="space"/>
   <style name="newline">
     <rule>
-      <style_context nodeTypes="identifier, arguments"/>
+      <style_context nodeTypes="LPAREN, forControl" lengths="15.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="RPAREN, block"/>
+      <style_context nodeTypes="methodHead, block" lengths="308.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="typeType, variableDeclarators"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="LT, expression"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="parExpression, SINGLE_STMT"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="typeType, identifier"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, MUL"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, MOD"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="localVariableDeclarationStmt, BRANCH_STMT"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="forControl, RPAREN"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="ASSIGN, variableInitializer"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="LBRACE, SINGLE_STMT"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="LBRACE, methodDeclarationList"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="EQUAL, expression"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="variableDeclaratorId, ASSIGN"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="classHead, body"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, EQUAL"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="createdName, classCreatorRest"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, SEMI"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="NEW, creator"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="DOT, methodCall"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="LPAREN, formalParameterList"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="IMPORT, qualifiedName"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="methodDeclaration, methodDeclaration"/>
+      <style_context nodeTypes="SINGLE_STMT, RBRACE" lengths="22.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="LPAREN, expressionList"/>
+      <style_context nodeTypes="classHead, body" lengths="337.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="localVariableDeclaration, SEMI"/>
+      <style_context nodeTypes="WHILE, parExpression" lengths="11.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="formalParameterList, RPAREN"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="methodHead, block"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, DOT"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="identifier, DOT"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="SINGLE_STMT, SINGLE_STMT"/>
+      <style_context nodeTypes="localVariableDeclarationStmt, localVariableDeclarationStmt" lengths="36.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="LPAREN, forControl"/>
+      <style_context nodeTypes="forControl, RPAREN" lengths="15.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="identifier, formalParameters"/>
-      <style_property newlines="0" breakIndex="1"/>
+      <style_context nodeTypes="importDeclarationList, typeDeclarationList" lengths="367.0"/>
+      <style_property newlines="4" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="MOD, expression"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="SEMI, expressionList"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="localVariableDeclarationStmt, LOOP_STMT"/>
+      <style_context nodeTypes="BRANCH_STMT, BRANCH_STMT" lengths="42.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="FOR, LPAREN"/>
+      <style_context nodeTypes="modifierList, methodHead" lengths="34.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="expression, LE"/>
+      <style_context nodeTypes="block, ELSE" lengths="28.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="expression, RPAREN"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="LPAREN, RPAREN"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, INC"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="modifierList, classHead"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="IF, parExpression"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="importDeclarationList, typeDeclaration"/>
+      <style_context nodeTypes="LBRACE, methodDeclarationList" lengths="321.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="LBRACK, RBRACK"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="expression, LT"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="CLASS, identifier"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="LBRACE, localVariableDeclarationStmt"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="SINGLE_STMT, RBRACE"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="localVariableDeclarationStmt, localVariableDeclarationStmt"/>
+      <style_context nodeTypes="LBRACE, BRANCH_STMT" lengths="67.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="ELSE, block"/>
+      <style_context nodeTypes="PUBLIC, STATIC" lengths="12.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="LE, expression"/>
+      <style_context nodeTypes="IF, parExpression" lengths="14.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="forInit, SEMI"/>
+      <style_context nodeTypes="parExpression, block" lengths="36.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="parExpression, block"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="PUBLIC, STATIC"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="BRANCH_STMT, LOOP_STMT"/>
+      <style_context nodeTypes="methodDeclarationList, RBRACE" lengths="321.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="RETURN, expression"/>
+      <style_context nodeTypes="localVariableDeclarationStmt, LOOP_STMT" lengths="273.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="BRANCH_STMT, RBRACE" lengths="67.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="BRANCH_STMT, LOOP_STMT" lengths="149.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeTypes="FOR, LPAREN" lengths="4.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="LBRACE, BRANCH_STMT"/>
-      <style_property newlines="1" breakIndex="1"/>
+      <style_context nodeTypes="LOOP_STMT, SINGLE_STMT" lengths="150.0"/>
+      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="DOT, identifier"/>
+      <style_context nodeTypes="modifierList, classHead" lengths="21.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="MUL, expression"/>
+      <style_context nodeTypes="RPAREN, block" lengths="90.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="BRANCH_STMT, RBRACE"/>
-      <style_property newlines="1" breakIndex="1"/>
+      <style_context nodeTypes="LBRACE, SINGLE_STMT" lengths="23.0"/>
+      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="modifierList, methodHead"/>
+      <style_context nodeTypes="ELSE, block" lengths="28.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="LPAREN, expression"/>
-      <style_property newlines="0" breakIndex="1"/>
+      <style_context nodeTypes="localVariableDeclarationStmt, BRANCH_STMT" lengths="40.0"/>
+      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="methodDeclarationList, RBRACE"/>
-      <style_property newlines="1" breakIndex="1"/>
+      <style_context nodeTypes="parExpression, SINGLE_STMT" lengths="18.0"/>
+      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="qualifiedName, SEMI"/>
-      <style_property newlines="0" breakIndex="1"/>
+      <style_context nodeTypes="LBRACE, localVariableDeclarationStmt" lengths="26.0"/>
+      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeTypes="expressionList, RPAREN"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="block, ELSE"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeTypes="SEMI, expression"/>
-      <style_property newlines="0" breakIndex="1"/>
+      <style_context nodeTypes="LBRACE, LOOP_STMT" lengths="88.0"/>
+      <style_property newlines="2" breakIndex="1"/>
     </rule>
   </style>
   <style name="modifier_order"/>
@@ -298,17 +146,7 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -323,17 +161,17 @@
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
+      <style_property beforeLB="0" afterRB="2"/>
     </rule>
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <bodySize>EMPTY</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
+        <hasBrace>false</hasBrace>
       </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
+      <style_property beforeLB="2" afterRB="0"/>
     </rule>
     <rule>
       <style_context>
@@ -344,6 +182,16 @@
         <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="2"/>
     </rule>
   </style>
   <style name="intra_newline"/>
