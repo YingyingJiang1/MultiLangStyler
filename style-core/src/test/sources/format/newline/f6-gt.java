@@ -11,7 +11,7 @@ public class Main {
 		}
 		catch (CheckstyleException exc) {
 			throw new IllegalArgumentException(
-					"Error reading or corrupted header file: " + headerPath, exc);
+			"Error reading or corrupted header file: " + headerPath, exc);
 		}
 	}
 

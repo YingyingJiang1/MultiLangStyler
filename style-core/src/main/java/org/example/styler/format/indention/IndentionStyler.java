@@ -12,6 +12,7 @@ import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
+import org.slf4j.LoggerFactory;
 
 import java.awt.dnd.InvalidDnDOperationException;
 import java.util.*;
@@ -182,8 +183,8 @@ public class IndentionStyler extends Styler {
 
             boolean indentEmptyLines = indentedEmptyLineCount > notIndentedEmptyLineCount;
             style.addRule(null, new IndentionProperty(indentionUnit, indentionType, indentEmptyLines, topHierarchyIndention));
-        } catch (NoSuchElementException ignored) {
-            ignored.printStackTrace();
+        } catch (Exception e) {
+            LoggerFactory.getLogger(this.getClass()).warn("No indention style was extracted.");
         }
 
         style.fillStyle();

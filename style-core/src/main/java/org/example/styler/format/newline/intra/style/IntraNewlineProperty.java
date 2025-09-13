@@ -23,6 +23,8 @@ public class IntraNewlineProperty extends StyleProperty {
 		breakAfter.put("@", Boolean.FALSE);
 		breakAfter.put(".", Boolean.FALSE);
 		breakAfter.put("->", Boolean.TRUE);
+		breakAfter.put("?", Boolean.TRUE);
+		breakAfter.put(":", Boolean.TRUE);
 	}
 
 	public IntraNewlineProperty(int newlines) {
