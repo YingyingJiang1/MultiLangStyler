@@ -32,8 +32,8 @@ public class StylerContainer {
 		firstRoundStylers.add(new StructureStyler());
 		firstRoundStylers.add(new IfElseBodyOrderStyler());
 		firstRoundStylers.add(new OptionalBraceStyler());
-        firstRoundStylers.add(new DeclarationLayoutStyler());
-        firstRoundStylers.add(new DeclarationLocationStyler());
+//        firstRoundStylers.add(new DeclarationLayoutStyler());
+//        firstRoundStylers.add(new DeclarationLocationStyler());
         firstRoundStylers.add(new ExpressionStyler());
 
         /********************************************************** Naming Styles(Lexical) **********************************************************/

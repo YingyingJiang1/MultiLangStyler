@@ -31,7 +31,7 @@ public class VarUndefExceptionHandler extends Handler implements ExceptionHandle
 	@Override
 	public void handleException(EquivalentStructure structure, int from, int to, MyParser parser) throws TreeConvertException {
 		for (String[] args : argsList) {
-			if (args.length != 4) {
+			if (args.length < 4) {
 				logger.error("Arguments error! Arguments format: {}", "[[from index, to index, variable declaration]]");
 			}
 

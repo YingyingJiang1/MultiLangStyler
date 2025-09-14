@@ -140,28 +140,29 @@
             <code>while ( $E ) $S</code>
         </codes>
     </rule>
-    <rule id="8" name="loop2" category="Loops">
+    <rule id="8" name="loop2" category="Loops" enable="false">
         <codes>
             <code>for ( $EXP_LIST ; $E1 ; ) $S</code>
+            <code>$^ $S(expStmt) for ( ; $E1 ; ) $S</code>
             <code>$^ $S(expStmt) while ( $E1 ) $S</code>
         </codes>
         <handlers>
             <handler>
                 <class>Exp2ExpStmtHandler</class>
                 <argsList>
-                    <args>0,1,$EXP_LIST,$S(expStmt)</args>
+                    <args>0,2,$EXP_LIST,$S(expStmt)</args><args>0,1,$EXP_LIST,$S(expStmt)</args>
                 </argsList>
             </handler>
             <handler>
                 <class>ExpStmt2ExpHandler</class>
                 <argsList>
-                    <args>1,0,$S(expStmt),$EXP_LIST</args>
+                    <args>2,0,$S(expStmt),$EXP_LIST</args><args>1,0,$S(expStmt),$EXP_LIST</args>
                 </argsList>
             </handler>
             <handler>
                 <class>BraceWrapHandler</class>
                 <argsList>
-                    <args>0,1,$E1,2</args>
+                    <args>0,1,$E1,2</args><args>0,2,$E1,2</args>
                 </argsList>
             </handler>
         </handlers>
@@ -170,7 +171,7 @@
         <codes>
             <code>for ( $VAR_DEC ; $E ; ) $S</code>
             <code>$^ $VAR_DEC ; for ( ; $E ; ) $S</code>
-            <code>$^ $VAR_DEC ; while ( $E ) $S</code>
+<!--            <code>$^ $VAR_DEC ; while ( $E ) $S</code>-->
         </codes>
         <handlers>
             <handler>
@@ -193,7 +194,7 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="10" name="loop4" category="Loops">
+    <rule id="10" name="loop4" category="Loops" enable="false">
         <codes>
             <code>for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
             <code>while ( $E1 ) { $S* $S(expStmt) }</code>
@@ -227,7 +228,7 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="11" name="loop5" category="Loops">
+    <rule id="11" name="loop5" category="Loops" enable="false">
         <codes>
             <code>for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }</code>
             <code>$^ $S(expStmt) while ( $E1 ) { $S* $S(expStmt)1 }</code>
@@ -271,7 +272,7 @@
         <codes>
             <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
             <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
-            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
+<!--            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>-->
         </codes>
         <checkers>
             <checker>
