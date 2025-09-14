@@ -151,7 +151,7 @@ public class MyJavaParser implements MyParser {
         }
 
 
-        new TokenAugmentor().process(this, null);
+        TokenAugmentor.addContextTokens(this);
         return root;
     }
 

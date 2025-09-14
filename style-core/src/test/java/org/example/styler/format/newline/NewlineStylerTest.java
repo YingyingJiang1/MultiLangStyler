@@ -75,7 +75,7 @@ class NewlineStylerTest extends TestBase {
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
 					IndentionStyler.class));
-			if (false) {
+			if (true) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

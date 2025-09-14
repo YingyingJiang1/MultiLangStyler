@@ -122,7 +122,7 @@ public class IntraNewlineStyler extends Styler {
 			}
 
 			ExtendContext expParent = ((ExtendContext) terminalNode.getParent()).findFirstParentIf(parser::isExpression);
-			boolean isExpressionStop = expParent != null && expParent.getStop() == terminalNode.getSymbol();
+			boolean isExpressionStop = expParent != null && expParent.getChildCount() > 1 && expParent.getStop() == terminalNode.getSymbol();
 			if (isExpressionStop) {
 				lastLowPriorityBreak = i;
 			}

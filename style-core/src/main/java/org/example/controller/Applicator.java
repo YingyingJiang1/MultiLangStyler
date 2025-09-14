@@ -42,20 +42,13 @@ public class Applicator {
     private static void applyOnTS(List<Token> tokens, MyParser parser, List<Styler> stylers) {
         int column = 0;
 
+        TokenAugmentor.processAmbiguousToken(tokens, parser);
         // Handle the first token.
 //        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
         for (int i = 0; i < tokens.size(); ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             curToken.resetContextTokens();
             int curTokenType = curToken.getType();
-
-            // Handle case: \n\n} -> \n}
-//            if (curTokenType == parser.getRBrace() &&
-//                    tokens.get(i - 1).getType() == parser.getVws() && tokens.get(i - 2).getType() == parser.getVws()) {
-//                if (tokens.get(i - 2) instanceof ExtendToken extToken) {
-//                    extToken.setText(""); // Virtually remove the token.
-//                }
-//            }
 
             // Skip deleted tokens.
             if (curTokenType == -1) {
@@ -89,6 +82,8 @@ public class Applicator {
 //                }
 //            }
         }
+
+        TokenAugmentor.restoreState(tokens, parser);
 
     }
 

@@ -12,6 +12,7 @@ import org.example.parser.common.token.AmbigousToken;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.styler.Stage;
+import org.example.utils.TokenStreamUtil;
 import org.example.utils.editor.NodeEditorFactory;
 
 import java.util.*;
@@ -24,24 +25,7 @@ import java.util.*;
 public class TokenAugmentor {
 	int curNestingDepth = 0;
 
-	public void process(MyParser parser, Stage stage) {
-		CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
-		for (int i = 0; i < tokenStream.size(); i++) {
-			ExtendToken token = (ExtendToken) tokenStream.get(i);
-			if (token.getChannel() != parser.getDefaultChannel()) {
-				continue;
-			}
-
-			setHierarchy(tokenStream, i);
-//			processComment(parser, tokenStream, i);
-			addContextTokens(parser, tokenStream, i);
-			processAmbiguousToken(parser, tokenStream, i);
-		}
-
-		traverseTree(parser.getRoot(), parser);
-	}
-
-	public void restoreState(List<Token> tokens, MyParser parser) {
+	public static void restoreState(List<Token> tokens, MyParser parser) {
 		Set<Integer> ambiguousTokens = Set.of(
 				parser.getLT(), parser.getGT(), parser.getSub(), parser.getMul()
 		);
@@ -54,23 +38,8 @@ public class TokenAugmentor {
 		}
 	}
 
-	private void setHierarchy(TokenStream tokenStream, int curIndex) {
 
-		ExtendToken token = (ExtendToken) tokenStream.get(curIndex);
-		int tokenType = token.getType();
-		// Update brace depth.
-		if (tokenType == JavaLexer.LBRACE) {
-			token.setHierarchy(curNestingDepth);
-			++curNestingDepth;
-		} else if (tokenType == JavaLexer.RBRACE) {
-			--curNestingDepth;
-			token.setHierarchy(curNestingDepth);
-		} else {
-			token.setHierarchy(curNestingDepth);
-		}
-	}
-
-	private void traverseTree(ParseTree node, MyParser parser) {
+	private static  void traverseTree(ParseTree node, MyParser parser) {
 		if (node instanceof ExtendContext ctx) {
 			NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
 			for (int i = 0; i < node.getChildCount(); i++) {
@@ -81,7 +50,7 @@ public class TokenAugmentor {
 
 
 //
-//  private void processBrace(CommonTokenStream tokenStream, int curIndex) {
+//  private static  void processBrace(CommonTokenStream tokenStream, int curIndex) {
 //    if(!AntlrHelper.isBrace(tokenStream.get(curIndex))) {
 //      return;
 //    }
@@ -95,54 +64,35 @@ public class TokenAugmentor {
 
 
 	/**
-     * Treat syntax-independent tokens(hws, vws and comments) as context tokens.
-     * Add comment tokens to the context tokens of first or last token of the commented code.
-     * Add format tokens to the context tokens of the first syntax-dependent token before the format tokens.
+	 * Treat syntax-independent tokens(hws, vws and comments) as context tokens.
+	 * Add comment tokens to the context tokens of first or last token of the commented code.
+	 * Add format tokens to the context tokens of the first syntax-dependent token before the format tokens.
 	 * @param parser
-	 * @param tokenStream
-	 * @param tokenIndex index of current syntax-dependent token
 	 */
-	public void addContextTokens(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
-		ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
+	public static void addContextTokens(MyParser parser) {
+		CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
+		List<Token> tokens = tokenStream.getTokens();
+		for (int i = 0; i < tokens.size(); i++) {
+			ExtendToken token = (ExtendToken) tokens.get(i);
+			if (token.getChannel() != parser.getDefaultChannel()) {
+				continue;
+			}
 
-		List<Token> contextTokens = tokenStream.getHiddenTokensToRight(tokenIndex);
-		if (contextTokens == null) {
-			return;
+
+			List<Token> contextTokens = TokenStreamUtil.findAllSyntaxIndependentTokensOnRight(tokens, i, parser);
+			if (contextTokens.isEmpty()) {
+				continue;
+			}
+
+			// Find the first comment that is not trailing, tokens before the comment token are the context tokens of current default token,
+			boolean isTrailingComment = true;
+			int insertionPoint = token.indexInContextTokens() + 1;
+			token.addTokens(insertionPoint, contextTokens);
 		}
-
-		// Find the first comment that is not trailing, tokens before the comment token are the context tokens of current default token,
-		int i = 0;
-		boolean isTrailingComment = true;
-		int insertionPoint = token.indexInContextTokens() + 1;
-		token.addTokens(insertionPoint, contextTokens);
-//		for (; i < contextTokens.size(); i++) {
-//			Token ct = contextTokens.get(i);
-//
-//			if (ct.getText().endsWith("\n")) {
-//				isTrailingComment = false;
-//			}
-//
-//			if (parser.belongToComment(ct.getType()) && !isTrailingComment) {
-//				break;
-//			}
-//			token.addToken(insertionPoint++, ct);
-//		}
-//
-//		if (isTrailingComment) {
-//			token.hasTrailingComment = isTrailingComment;
-//		}
-//
-//		// tokens after the non-trailing comment token and the comment token are the context tokens of the next default token.
-//		ExtendToken targetToken = tokenIndex + contextTokens.size() >= tokenStream.size() ?
-//				token : (ExtendToken) tokenStream.get(tokenIndex + contextTokens.size() + 1);
-//		if (targetToken != token) {
-//			insertionPoint = targetToken.indexInContextTokens();
-//		}
-//		targetToken.addTokens(insertionPoint, contextTokens.subList(i, contextTokens.size()));
 
 	}
 
-//	public void addContextTokens(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
+//	public static void addContextTokens(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
 //		ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
 //
 //		List<Token> contextTokens = tokenStream.getHiddenTokensToRight(tokenIndex);
@@ -182,11 +132,11 @@ public class TokenAugmentor {
 
 
 	/**
-     * Add comment tokens to the first or last token of the commented code
+	 * Add comment tokens to the first or last token of the commented code
 	 * @param tokenStream
 	 * @param tokenIndex
 	 */
-	public void processComment(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
+	public static void processComment(MyParser parser, CommonTokenStream tokenStream, int tokenIndex) {
 		ExtendToken token = (ExtendToken) tokenStream.get(tokenIndex);
 		if (token.getChannel() != JavaLexer.DEFAULT_TOKEN_CHANNEL) {
 			return;
@@ -222,18 +172,26 @@ public class TokenAugmentor {
 	/**
 	 * @Description Set real type for '<' and '-'.
 	 */
-	private void processAmbiguousToken(MyParser parser, TokenStream tStream, int index) {
-		int type = tStream.get(index).getType();
-		if (type == parser.getLT()) {
-			processAngleBracket(tStream, index, parser);
-		} else if (type == parser.getSub()) {
-			processNegativeOperator(tStream, index, parser);
-		} else if (type == parser.getMul()) {
-			processWildcard(tStream, index, parser);
+	public static void processAmbiguousToken(List<Token> tokens, MyParser parser) {
+		for (int i = 0; i < tokens.size(); i++) {
+			ExtendToken token = (ExtendToken) tokens.get(i);
+			if (token.getChannel() != parser.getDefaultChannel()) {
+				continue;
+			}
+
+			int type = tokens.get(i).getType();
+			if (type == parser.getLT()) {
+				processAngleBracket(tokens, i, parser);
+			} else if (type == parser.getSub()) {
+				processNegativeOperator(tokens, i, parser);
+			} else if (type == parser.getMul()) {
+				processWildcard(tokens, i, parser);
+			}
 		}
+
 	}
 
-	private void processWildcard(TokenStream tStream, int index, MyParser parser) {
+	private static  void processWildcard(List<Token> tStream, int index, MyParser parser) {
 		Token leftToken = findFirstDefaultToken(tStream, index, parser);
 		if (leftToken == null) {
 			return;
@@ -247,7 +205,7 @@ public class TokenAugmentor {
 	 * @param curIndex index of '-'
 	 * @return
 	 */
-	private List<Token> processNegativeOperator(TokenStream tStream, int curIndex, MyParser parser) {
+	private static  List<Token> processNegativeOperator(List<Token> tStream, int curIndex, MyParser parser) {
 		List<Token> negativeTokens = new ArrayList<>(1);
 		Token leftToken = findFirstDefaultToken(tStream, curIndex, parser);
 		if (leftToken == null) {
@@ -265,7 +223,7 @@ public class TokenAugmentor {
 		return negativeTokens;
 	}
 
-	private Token findFirstDefaultToken(TokenStream tokenStream, int curIndex, MyParser parser) {
+	private static  Token findFirstDefaultToken(List<Token> tokenStream, int curIndex, MyParser parser) {
 		int i = curIndex - 1;
 		for (; i >= 0; i--) {
 			if (tokenStream.get(i).getChannel() == parser.getDefaultChannel()) {
@@ -284,7 +242,7 @@ public class TokenAugmentor {
 	 *
 	 * @param curIndex Index of '<'
 	 */
-	private List<Token> processAngleBracket(TokenStream tStream, int curIndex, MyParser parser) {
+	private static  List<Token> processAngleBracket(List<Token> tStream, int curIndex, MyParser parser) {
 		int count = 1;
 		List<Token> matchedTokens = new ArrayList<>();
 		matchedTokens.add(tStream.get(curIndex));

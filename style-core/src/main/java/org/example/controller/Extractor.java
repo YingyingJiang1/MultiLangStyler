@@ -16,7 +16,6 @@ public class Extractor {
     public static void extractRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ExtractException {
         try {
 //            tokenAugmentor.process(parser, Stage.EXTRACT);
-            tokenAugmentor.restoreState(((CommonTokenStream) parser.getTokenStream()).getTokens(), parser);
             List<Styler> stylers = container.getStylers();
             extractOnAST(parser, stylers);
             extractOnTS(parser, stylers);
@@ -39,6 +38,8 @@ public class Extractor {
         List<Token> tokens = new ArrayList<>();
         ParseTreeUtil.generateTokens(parser.getRoot(), tokens, parser);
 
+        TokenAugmentor.processAmbiguousToken(tokens, parser);
+
         // Avoid exceptions caused by boundaries.
         int len = tokens.size() - 1;
         for (int i = 0; i < len; ++i) {
@@ -49,6 +50,8 @@ public class Extractor {
                 }
             }
         }
+
+        TokenAugmentor.restoreState(tokens, parser);
     }
 
 
