@@ -5,6 +5,7 @@ import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
+import org.example.utils.MathUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class IntraNewlineStyle extends CommonStyle {
 	// 进行换行的行长下界
 	List<Double> lineLens = new ArrayList<>();
 	List<Double> lineRatios = new ArrayList<>();
-	Map<String, int[]> breakCount = new HashMap<>(); // [trueCount, falseCount]
+//	Map<String, int[]> breakCount = new HashMap<>(); // [trueCount, falseCount]
 	List<String> relativeIndention = new ArrayList<>();
 
 
@@ -31,14 +32,14 @@ public class IntraNewlineStyle extends CommonStyle {
 
 			lineRatios.add(intraProperty.lineLengthRatio);
 
-			for (Map.Entry<String, Boolean> entry : intraProperty.breakAfter.entrySet()) {
-				breakCount.computeIfAbsent(entry.getKey(), k -> new int[2]);
-				if (entry.getValue()) {
-					breakCount.get(entry.getKey())[0]++; // trueCount
-				} else {
-					breakCount.get(entry.getKey())[1]++; // falseCount
-				}
-			}
+//			for (Map.Entry<String, Boolean> entry : intraProperty.breakAfter.entrySet()) {
+//				breakCount.computeIfAbsent(entry.getKey(), k -> new int[2]);
+//				if (entry.getValue()) {
+//					breakCount.get(entry.getKey())[0]++; // trueCount
+//				} else {
+//					breakCount.get(entry.getKey())[1]++; // falseCount
+//				}
+//			}
 
 			if (intraProperty.relativeIndention.size() > relativeIndention.size()) {
 				relativeIndention.addAll(intraProperty.relativeIndention);
@@ -69,17 +70,17 @@ public class IntraNewlineStyle extends CommonStyle {
 
 		if (lineRatios.size() > 0) {
 			lineRatios = lineRatios.stream().sorted().toList();
-			property.lineLengthRatio = Quantiles.median().compute(lineRatios);
+			property.lineLengthRatio = MathUtil.median(lineRatios);
 
-			property.breakAfter = new HashMap<>();
-			for (Map.Entry<String, int[]> entry : breakCount.entrySet()) {
-				int[] counts = entry.getValue();
-				property.breakAfter.put(entry.getKey(), counts[0] >= counts[1]);
-			}
+//			property.breakAfter = new HashMap<>();
+//			for (Map.Entry<String, int[]> entry : breakCount.entrySet()) {
+//				int[] counts = entry.getValue();
+//				property.breakAfter.put(entry.getKey(), counts[0] >= counts[1]);
+//			}
 
 			property.relativeIndention = relativeIndention;
 
-			ruleSet.addRule(new IntraNewlineContext(Quantiles.median().compute(lineLens)), property);
+			ruleSet.addRule(new IntraNewlineContext(MathUtil.median(lineLens)), property);
 		}
 
 

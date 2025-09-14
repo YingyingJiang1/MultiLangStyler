@@ -63,7 +63,7 @@ class NewlineStylerTest extends TestBase {
 		};
 
 		String[] targetFiles = {
-				"f6.java",
+				"f5.java",
 
 		};
 
@@ -75,7 +75,7 @@ class NewlineStylerTest extends TestBase {
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
 					IndentionStyler.class));
-			if (true) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

@@ -13,19 +13,27 @@ public class IntraNewlineProperty extends StyleProperty {
 	// line 0: the first line
 	// line 1:  the first succeed line.
 	public List<String> relativeIndention;
-	public double lineLengthRatio; // 每行的平均行长
-	public Map<String, Boolean> breakAfter = new HashMap<>();
-
-	{
-		breakAfter.put("&&", Boolean.TRUE);
-		breakAfter.put("||", Boolean.TRUE);
-		breakAfter.put(",", Boolean.TRUE);
-		breakAfter.put("@", Boolean.FALSE);
-		breakAfter.put(".", Boolean.FALSE);
-		breakAfter.put("->", Boolean.TRUE);
-		breakAfter.put("?", Boolean.TRUE);
-		breakAfter.put(":", Boolean.TRUE);
-	}
+	public double lineLengthRatio;
+	public boolean breakAfter;
+//	public Map<String, BreakLoc> breakAfter = new HashMap<>();
+//
+//	{
+//		breakAfter.put("?", new BreakLoc("?", 1));
+//		breakAfter.put(":", new BreakLoc(":",  1));
+//		breakAfter.put("&&", new BreakLoc("&&", 2));
+//		breakAfter.put("||",  new BreakLoc("||", 2));
+//		breakAfter.put(".",  new BreakLoc(".", 3));
+//		breakAfter.put("+", new BreakLoc("+", 4));
+//		breakAfter.put("-", new BreakLoc("-", 4));
+//		breakAfter.put("*", new BreakLoc("*", 4));
+//		breakAfter.put("/", new BreakLoc("/", 4));
+//		breakAfter.put("%", new BreakLoc("%", 4));
+//		breakAfter.put("@",  new BreakLoc("@", 8));
+//		breakAfter.put("->",new BreakLoc("->",true, 8));
+//		breakAfter.put("=", new BreakLoc("=", 9));
+//		breakAfter.put(",",  new BreakLoc(",",true, 10));
+//
+//	}
 
 	public IntraNewlineProperty(int newlines) {
 		this.newlines = newlines;
@@ -37,19 +45,7 @@ public class IntraNewlineProperty extends StyleProperty {
 		this.lineLengthRatio = lineLengthRatio;
 	}
 
-	public boolean isBreakLoc(String text) {
-		return breakAfter.containsKey(text);
-	}
 
-	public boolean isBreakAfter(String text) {
-		return breakAfter.get(text) != null;
-	}
-
-	public void updateBreakLoc(String text, boolean after) {
-		if (breakAfter.containsKey(text)) {
-			breakAfter.put(text, after);
-		}
-	}
 
 	public String getRelativeIndention(int line) {
 		if (relativeIndention == null) {
@@ -94,12 +90,29 @@ public class IntraNewlineProperty extends StyleProperty {
 		IntraNewlineProperty property = (IntraNewlineProperty) o;
 		return newlines == property.newlines
 				&& Double.compare(lineLengthRatio, property.lineLengthRatio) == 0
-				&& Objects.equals(relativeIndention, property.relativeIndention)
-				&& Objects.equals(breakAfter, property.breakAfter);
+				&& Objects.equals(relativeIndention, property.relativeIndention);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(newlines, relativeIndention, lineLengthRatio, breakAfter);
+		return Objects.hash(newlines, relativeIndention, lineLengthRatio);
+	}
+
+	public static class BreakLoc {
+		String text;
+		boolean after;
+		int priority;
+
+		public BreakLoc(String text, boolean after, int priority) {
+			this.text = text;
+			this.after = after;
+			this.priority = priority;
+		}
+
+		public BreakLoc(String text, int priority) {
+			after = false;
+			this.text = text;
+			this.priority = priority;
+		}
 	}
 }

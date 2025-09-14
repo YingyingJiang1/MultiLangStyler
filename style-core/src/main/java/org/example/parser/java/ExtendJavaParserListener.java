@@ -259,6 +259,26 @@ public class ExtendJavaParserListener extends JavaParserBaseListener implements 
 		doTask(ctx, enterStylers);
 	}
 
+	@Override
+	public void enterParExpression(JavaParser.ParExpressionContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterExpression(JavaParser.ExpressionContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterFormalParameterList(JavaParser.FormalParameterListContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
+	@Override
+	public void enterLocalVariableDeclaration(JavaParser.LocalVariableDeclarationContext ctx) {
+		doTask(ctx, enterStylers);
+	}
+
 	//--------------------------------------------------- exitxxx methods ---------------------------------------------------
 
 	@Override
