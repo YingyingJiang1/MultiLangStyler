@@ -18,14 +18,10 @@ public class BodyLayoutStyler extends BodyStyler {
 	private static Set<Integer> relevantRules = null;
 
 	public BodyLayoutStyler() {
-		executeWhenExit = false;
+//		executeWhenExit = false;
 		style.setStyleName("body_layout");
 	}
 
-	public BodyLayoutStyler(boolean executeWhenExit) {
-		super(executeWhenExit);
-		style.setStyleName("body_layout");
-	}
 
 
 	@Override

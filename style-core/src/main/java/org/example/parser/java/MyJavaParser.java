@@ -8,6 +8,7 @@ import org.example.controller.TokenAugmentor;
 import org.example.parser.common.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.ExtendTokenFactory;
+import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenNameGetter;
 import org.example.parser.java.antlr.JavaLexer;
 import org.example.parser.java.antlr.JavaParser;
@@ -152,6 +153,12 @@ public class MyJavaParser implements MyParser {
 
 
         TokenAugmentor.addContextTokens(this);
+        // 统一换行符
+        ((CommonTokenStream) parser.getTokenStream()).getTokens().forEach(t -> {
+            if (t.getType() == JavaParser.VWS || t.getType() == JavaParser.BLOCK_COMMENT || t.getType() == JavaParser.LINE_COMMENT) {
+                ((ExtendToken) t).setText(t.getText().replace("\r\n", "\n"));
+            }
+        });
         return root;
     }
 
@@ -166,6 +173,8 @@ public class MyJavaParser implements MyParser {
         // this.parser.setErrorHandler(new AntlrErrorHandler());
 //        parser.removeErrorListeners();
         root = tryParse();
+
+
         return root;
     }
 

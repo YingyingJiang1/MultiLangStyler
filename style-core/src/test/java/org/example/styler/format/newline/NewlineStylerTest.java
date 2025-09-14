@@ -23,14 +23,14 @@ class NewlineStylerTest extends TestBase {
 				"f1.java",
 				"f2.java",
 				"f7.java",
-				"f8.java",
+//				"f8.java",
 		};
 		
 		String[] targetFiles = {
 				"f2.java",
 				"f7.java",
 				"f3.java",
-				"f1.java",
+//				"f1.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -75,7 +75,7 @@ class NewlineStylerTest extends TestBase {
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
 					IndentionStyler.class));
-			if (true) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

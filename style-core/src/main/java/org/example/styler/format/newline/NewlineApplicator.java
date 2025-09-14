@@ -70,7 +70,7 @@ public class NewlineApplicator {
 							i++;
 						}
 					} else {
-						extendToken.setText(StringUtils.repeat(System.lineSeparator(), newlineCount - toRemove));
+						extendToken.setText(StringUtils.repeat("\n", newlineCount - toRemove));
 						newCtxTokens.add(extendToken);
 					}
 					toRemove -= newlineCount;
@@ -104,7 +104,7 @@ public class NewlineApplicator {
 						i++;
 					}
 				} else {
-					extendToken.setText(StringUtils.repeat(System.lineSeparator(), newlineCount - toRemove));
+					extendToken.setText(StringUtils.repeat("\n", newlineCount - toRemove));
 					newCtxTokens.add(extendToken);
 				}
 				toRemove -= newlineCount;

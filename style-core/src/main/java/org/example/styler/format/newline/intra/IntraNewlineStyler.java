@@ -32,8 +32,15 @@ public class IntraNewlineStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		IntraNewlineContext newlineContext = extractContext(ctx, parser);
-		IntraNewlineProperty property = extractProperty(ctx, parser, newlineContext);
+		ExtendContext targetNode = ctx;
+		if (parser.belongToSingleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
+			targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
+		}
+		if (targetNode == null) {
+			return;
+		}
+		IntraNewlineContext newlineContext = extractContext(targetNode, parser);
+		IntraNewlineProperty property = extractProperty(targetNode, parser, newlineContext);
 		if (property.newlines > 0) {
 			style.addRule(newlineContext, property);
 		}
@@ -41,12 +48,20 @@ public class IntraNewlineStyler extends Styler {
 
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-		IntraNewlineContext context =  extractContext(ctx, parser);
-		IntraNewlineProperty property = extractProperty(ctx, parser, context);
+		ExtendContext targetNode = ctx;
+		if (parser.belongToSingleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
+			targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
+		}
+		if (targetNode == null) {
+			return ctx;
+		}
+
+		IntraNewlineContext context =  extractContext(targetNode, parser);
+		IntraNewlineProperty property = extractProperty(targetNode, parser, context);
 		IntraNewlineProperty targetProperty = (IntraNewlineProperty) style.getProperty(context);
 
 		if (!property.equals(targetProperty)) {
-			List<TerminalNode> terminalNodes = ctx.getAllTerminalsRecIf(e -> true);
+			List<TerminalNode> terminalNodes = targetNode.getAllTerminalsRecIf(e -> true);
 
 			// 确保移除原来的所有换行
 			for (TerminalNode terminalNode : terminalNodes) {
@@ -55,7 +70,7 @@ public class IntraNewlineStyler extends Styler {
 
 			if (targetProperty.newlines == 1) {
 				// 按照新的策略添加换行
-				if (ctx.getRuleIndex() == parser.getRuleformalParameterList()) {
+				if (targetNode.getRuleIndex() == parser.getRuleformalParameterList()) {
 					applyOnFormalParameterList(terminalNodes, context, targetProperty, parser);
 				} else {
 					applyOnExpression(terminalNodes, context, targetProperty, parser);
@@ -289,7 +304,7 @@ public class IntraNewlineStyler extends Styler {
 	@Override
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
 		int rule = ctx.getRuleIndex();
-		boolean isTopExpression = rule == parser.getRuleExpression() && ctx.getParent() != null && ctx.getParent().getParent() != null && parser.isStatement(ctx.getParent().getParent());
-		return parser.getRuleformalParameterList() == rule || isTopExpression || rule == parser.getRuleLocalVarDeclaration() || rule == parser.getRuleParExpression();
+//		boolean isTopExpression = rule == parser.getRuleExpression() && ctx.getParent() != null && ctx.getParent().getParent() != null && parser.isStatement(ctx.getParent().getParent());
+		return parser.getRuleformalParameterList() == rule || rule == parser.getRuleLocalVarDeclaration() || rule == parser.getRuleParExpression() || parser.belongToSingleStmt(ctx);
 	}
 }
