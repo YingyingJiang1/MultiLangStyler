@@ -2,13 +2,13 @@ package org.example.utils.searcher.javaimpl;
 
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.utils.searcher.intf.DeclarationSearcher;
+import org.example.utils.searcher.intf.VarDeclarationSearcher;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaDeclarationSearcher implements DeclarationSearcher {
-    public JavaDeclarationSearcher() {}
+public class JavaVarDeclarationSearcher implements VarDeclarationSearcher {
+    public JavaVarDeclarationSearcher() {}
 
 
     public List<ExtendContext> searchIdentifiers(ExtendContext decNode, MyParser parser) {

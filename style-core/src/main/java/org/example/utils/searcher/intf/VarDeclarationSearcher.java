@@ -5,7 +5,7 @@ import org.example.parser.common.context.ExtendContext;
 
 import java.util.List;
 
-public interface DeclarationSearcher {
+public interface VarDeclarationSearcher {
     /**
      *
      * @param decNode specific declaration statement or declaration node

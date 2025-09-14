@@ -32,11 +32,11 @@ public class NodeSearcherFactory {
 		}
 	}
 
-	public DeclarationSearcher createDeclarationSearcher() {
+	public VarDeclarationSearcher createVarDeclarationSearcher() {
 		String language = GlobalInfo.getConf().getLanguageConfig().getLanguage();
 		switch (GlobalInfo.getConf().getLanguageConfig().getLanguage()) {
 			case "java":
-				return new JavaDeclarationSearcher();
+				return new JavaVarDeclarationSearcher();
 			default:
 				throw new IllegalArgumentException("Unsupported language: " + GlobalInfo.getConf().getLanguageConfig().getLanguage());
 		}

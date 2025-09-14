@@ -1,6 +1,5 @@
 package org.example.styler.structure.handler;
 
-import com.zaxxer.sparsebits.SparseBitSet;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.myException.TreeConvertException;
 import org.example.myException.UndefException;
@@ -52,7 +51,7 @@ public class VarUndefExceptionHandler extends Handler implements ExceptionHandle
 					declarationNode = ctx.getAllCtxsRecIf(parser::isLocalVarDeclaration).stream().findAny().orElseGet(() -> null);
 				}
 				if (declarationNode != null) {
-					List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
+					List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createVarDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 
 					// Get all scope nodes that use the variables in the declaration
 					SymbolTable st = SymbolTableManager.getSymbolTable(parser);

@@ -2,7 +2,6 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.Tree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -11,11 +10,9 @@ import org.example.semantic.SymbolTable;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.structure.EquivalentStructure;
-import org.example.utils.NameGenerator;
 import org.example.utils.searcher.NodeSearcherFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ConflictNameHandler extends Handler{
 	public ConflictNameHandler(String[][] argsList) {
@@ -42,7 +39,7 @@ public class ConflictNameHandler extends Handler{
 				declarationNode = ctx.getAllCtxsRecIf(parser::isLocalVarDeclaration).stream().findAny().orElseGet(() -> null);
 			}
 			if (declarationNode != null) {
-				List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createDeclarationSearcher().searchIdentifiers(declarationNode, parser);
+				List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createVarDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 				SymbolTable st = SymbolTableManager.getSymbolTable(parser);
 				ParseTree newScopeNode = Scope.getScopeNode(Scope.getScopeNode(identifiers.get(0), parser).getParent(), parser);
 				Map<String, Set<Symbol>> conflictCandidatesMap = getPotentialConflicts(st, identifiers, parser);

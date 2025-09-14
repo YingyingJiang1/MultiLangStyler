@@ -30,7 +30,7 @@ import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.NameType;
 import org.example.utils.NameGenerator;
 import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.DeclarationSearcher;
+import org.example.utils.searcher.intf.VarDeclarationSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -247,8 +247,8 @@ public class ExpressionStyler extends Styler {
         ExtendContext decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
 
         // Set a meaningful name for the newly created variable
-        DeclarationSearcher declarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createDeclarationSearcher();
-        ExtendContext identifier = declarationSearcher.searchIdentifiers(decStmt, parser).get(0);
+        VarDeclarationSearcher varDeclarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createVarDeclarationSearcher();
+        ExtendContext identifier = varDeclarationSearcher.searchIdentifiers(decStmt, parser).get(0);
         String newName = NameGenerator.generateMeaningfulName(identifier, parser, GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit());
         if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
             extendToken.setText(newName);
