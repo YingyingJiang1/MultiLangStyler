@@ -8,11 +8,10 @@
   <style name="indention"/>
   <style name="optional_brace"/>
   <style name="modifier_order"/>
-  <style name="expression_complexity"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="12" category=""/>
-      <style_property preferenceIndex="0"/>
+      <style_context id="11" category=""/>
+      <style_property preferenceIndex="1"/>
     </rule>
   </style>
   <style name="body_layout"/>

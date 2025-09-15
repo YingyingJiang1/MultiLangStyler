@@ -27,6 +27,8 @@ import java.util.*;
  * @create       2024/4/3 0:00
  */
 public class EquivalentStructureManager {
+
+
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
 //  private static List<EquivalentStructure> equivalences = new ArrayList<>();
   Element rootEle = null;

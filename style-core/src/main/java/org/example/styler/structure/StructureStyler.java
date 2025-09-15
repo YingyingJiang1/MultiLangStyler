@@ -31,6 +31,8 @@ import java.util.*;
  * @create       2024/4/2 23:51
  */
 public class StructureStyler extends Styler {
+    public static boolean TEST_MODE = false;
+
     private static final String CONF_FILE = "/equivalences.xml";
     private static final Map<Integer, List<EquivalentStructure>> equivalencesMap = new HashMap<>();
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
@@ -46,6 +48,7 @@ public class StructureStyler extends Styler {
                 equivalencesMap.computeIfAbsent(rule, v -> new ArrayList<>()).add(equivalence);
             }
         }
+
     }
 
     public StructureStyler() {

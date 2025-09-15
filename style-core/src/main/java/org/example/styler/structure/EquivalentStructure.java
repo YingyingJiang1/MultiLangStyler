@@ -550,9 +550,12 @@ class XmlRuleParser {
 	public static Rule parseRule(Element node) {
 		Rule rule = new Rule();
 
-		if (node.attribute("enable") != null && node.attributeValue("enable").equals("false")) {
-			return null;
+		if (!StructureStyler.TEST_MODE) {
+			if (node.attribute("enable") != null && node.attributeValue("enable").equals("false")) {
+				return null;
+			}
 		}
+
 
 		rule.id = node.attributeValue("id");
 		rule.name = node.attributeValue("name");
