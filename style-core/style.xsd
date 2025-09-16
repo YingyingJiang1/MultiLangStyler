@@ -139,6 +139,7 @@ IfElseBodyOrderProperty" />
 
     <!-- Modifier Order -->
     <xs:complexType name="ModifierOrderProperty">
+        <!-- value of order are java modifiers split by comma. Use ACCESS_CONTROL to substitute public,private and protected. -->
         <xs:attribute name="order" type="xs:string" />
     </xs:complexType>
 
