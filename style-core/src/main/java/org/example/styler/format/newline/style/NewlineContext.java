@@ -150,6 +150,9 @@ public class NewlineContext extends StyleContext {
 
 		// 去除开头和结尾的中括号 [ ]
 		String content = vectorStr.substring(1, vectorStr.length() - 1).trim();
+		if (content.isEmpty()) {
+			return result;
+		}
 		// 按逗号分割，并清除每项前后的空格
 		String[] items = content.split("\\s*,\\s*");
 		result.addAll(Arrays.asList(items));

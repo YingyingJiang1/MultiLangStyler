@@ -45,4 +45,9 @@ public class NewlineStyle extends CommonStyle {
 		}
         return List.of(0.0, 1.0, 0.0, 0.0);
     }
+
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        return new StyleRule(new NewlineContext(), new NewlineProperty());
+    }
 }
