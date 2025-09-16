@@ -13,6 +13,7 @@ import org.example.styler.body.BodySizeType;
 import org.example.styler.body.BodyStyler;
 import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.body.optionalbrace.style.OptionalBraceStyle;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
 import java.util.*;
 import java.util.ArrayList;

@@ -51,9 +51,10 @@ public class ModifierOrderStyler extends Styler {
         if (!inTargetMap.equals(indexInOriginalMap)) {
             // Resort modifier which are in the target order list.
             List<ParseTree> ordered = inTargetMap.keySet().stream().sorted(Comparator.comparing(inTargetMap::get)).toList();
-            List<Integer> indices = inTargetMap.values().stream().sorted().toList();
-            for (int i = 0; i < ordered.size(); i++) {
-                ctx.children.set(indexInOriginalMap.get(ordered.get(i)), ordered.get(i));
+            // 相关modifier在原始children中的索引按照从小到大顺序排列
+            List<Integer> originalIndices = indexInOriginalMap.values().stream().sorted().toList();
+            for (int i = 0; i < originalIndices.size(); i++) {
+                ctx.setChild(originalIndices.get(i), ordered.get(i));
             }
             ctx.updateStartToken();
             ctx.updateStopToken();
@@ -66,10 +67,10 @@ public class ModifierOrderStyler extends Styler {
 
     private String getModifierName(ParseTree t, MyParser parser) {
         if (parser.isAnnotation(t)) {
-            return  "annotation";
+            return  "ANNOTATION";
         } else if (isAccessControl(t.getText())) {
 
-            return "access_control";
+            return "ACCESS_CONTROL";
         }else {
             return t.getText();
         }

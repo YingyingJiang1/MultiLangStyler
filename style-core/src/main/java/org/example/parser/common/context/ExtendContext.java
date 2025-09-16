@@ -627,4 +627,8 @@ public class ExtendContext extends ParserRuleContext {
         return false;
     }
 
+	public void setChild(int index, ParseTree parseTree) {
+        children.set(index, parseTree);
+        parseTree.setParent(this);
+	}
 }
