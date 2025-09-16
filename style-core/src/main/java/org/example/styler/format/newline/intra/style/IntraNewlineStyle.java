@@ -95,4 +95,9 @@ public class IntraNewlineStyle extends CommonStyle {
 
 	}
 
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        return new StyleRule(new IntraNewlineContext(), new IntraNewlineProperty());
+    }
+
 }

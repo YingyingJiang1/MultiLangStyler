@@ -24,6 +24,9 @@ public class IntraNewlineProperty extends StyleProperty {
 
 	}
 
+    public IntraNewlineProperty() {
+    }
+
 	public IntraNewlineProperty(int newlines) {
 		this.newlines = newlines;
 	}

@@ -22,8 +22,6 @@ public class BodyLayoutStyler extends BodyStyler {
 		style = new BodyLayoutStyle();
 	}
 
-
-
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
 		List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);

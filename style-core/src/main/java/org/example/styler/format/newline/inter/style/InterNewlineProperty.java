@@ -9,6 +9,9 @@ import java.util.Objects;
 public class InterNewlineProperty extends StyleProperty {
 	public boolean hasNewline;
 
+    public InterNewlineProperty() {
+    }
+
 	public InterNewlineProperty(boolean hasNewline) {
 		this.hasNewline = hasNewline;
 	}
