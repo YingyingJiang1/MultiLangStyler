@@ -1,4 +1,4 @@
-package org.example.styler.format.body;
+package org.example.styler.body;
 
 public enum BodySizeType {
     EMPTY, // empty body

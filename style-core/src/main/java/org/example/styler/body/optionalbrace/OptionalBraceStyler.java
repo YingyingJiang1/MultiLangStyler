@@ -1,17 +1,18 @@
-package org.example.styler.format.body.optionalbrace;
+package org.example.styler.body.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
-import org.example.styler.format.body.BodyContext;
-import org.example.styler.format.body.BodySizeType;
-import org.example.styler.format.body.BodyStyler;
-import org.example.styler.format.body.optionalbrace.style.OptionalBraceProperty;
+import org.example.parser.common.token.ExtendToken;
+import org.example.styler.body.BodyContext;
+import org.example.styler.body.BodySizeType;
+import org.example.styler.body.BodyStyler;
+import org.example.styler.body.optionalbrace.style.OptionalBraceProperty;
+import org.example.styler.body.optionalbrace.style.OptionalBraceStyle;
 
 import java.util.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class OptionalBraceStyler extends BodyStyler {
     private static Set<Integer> relevantRules = null;
 
     public OptionalBraceStyler() {
-        style.setStyleName("optional_brace");
+        style = new OptionalBraceStyle();
     }
 
     @Override
@@ -73,10 +74,13 @@ public class OptionalBraceStyler extends BodyStyler {
                 boolean isBraceRemovable = parser.isBlock(specificBody) && (bodyContext.bodySizeType == BodySizeType.EMPTY || bodyContext.bodySizeType == BodySizeType.SINGLE);
                 if (isBraceRemovable) {
                     ExtendContext innerStmt = specificBody.getFirstCtxChildIf(t -> true);
+                    // 添加空语句
                     if (innerStmt == null) {
                         TreeNodeFactory factory = parser.getTreeNodeFactory();
                         innerStmt = factory.createStatement(ctx);
-                        innerStmt.addChild(factory.createTerminal(parser.getTokenFactory().create(parser.getSemi(), ";")));
+                        ExtendToken semiToken = parser.getTokenFactory().create(parser.getSemi(), ";");
+                        semiToken.addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+                        innerStmt.addChild(factory.createTerminal(semiToken));
                     }
                     ctx.replaceChild(body, innerStmt);
 

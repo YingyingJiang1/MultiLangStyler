@@ -34,6 +34,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBase {
+
+
 	Logger logger = LoggerFactory.getLogger(TestBase.class);
 	protected Style extract(String path) {
 		return null;

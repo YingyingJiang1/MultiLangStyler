@@ -1,4 +1,4 @@
-package org.example.styler.format.body;
+package org.example.styler.body;
 
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -6,7 +6,7 @@ import org.example.styler.Styler;
 
 import java.util.*;
 
-import static org.example.styler.format.body.BodyTypeEnum.*;
+import static org.example.styler.body.BodyTypeEnum.*;
 
 public abstract class BodyStyler extends Styler {
     private static Map<BodyTypeEnum, Set<Integer>> map = null;

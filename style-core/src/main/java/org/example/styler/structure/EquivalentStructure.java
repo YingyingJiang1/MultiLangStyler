@@ -587,6 +587,9 @@ class XmlRuleParser {
 		rule.id = node.attributeValue("id");
 		rule.name = node.attributeValue("name");
 		rule.category = node.attribute("category") != null ? node.attributeValue("category") : "";
+		if (rule.category.isEmpty()) {
+			rule.category = null;
+		}
 		try {
 			// Codes
 			node.element("codes").elements().forEach(e -> {

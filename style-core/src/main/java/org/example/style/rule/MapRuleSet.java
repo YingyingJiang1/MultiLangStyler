@@ -78,7 +78,7 @@ public class MapRuleSet implements RuleSet{
             List<Integer> curFreList = frequencies.get(entry.getKey());
             int index = getMaxFreqIndex(curFreList);
             int totalFreq = curFreList.stream().reduce(Integer::sum).orElse(0);
-            double dominantRatio = (double) curFreList.get(index) / (double) totalFreq;
+            double dominantRatio = totalFreq == 0 ? 0 : (double) curFreList.get(index) / (double) totalFreq;
             double threshold = GlobalInfo.getConf().getStyleConfig().getMinDominantRatio();
             if (dominantRatio >= threshold) {
                 entry.setValue(List.of(entry.getValue().get(index)));

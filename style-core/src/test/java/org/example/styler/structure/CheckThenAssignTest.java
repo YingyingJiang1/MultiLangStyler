@@ -18,6 +18,7 @@ public class CheckThenAssignTest extends TestBase {
 
 	@Test
 	void test() {
+		StructureStyler.TEST_MODE = true;
 		String dir = "src/test/sources/structure/check_then_assign/";
 		String[] srcFiles = {
 				"f1.java",
@@ -47,6 +48,7 @@ public class CheckThenAssignTest extends TestBase {
 
 	@Test
 	void testBatch() {
+		StructureStyler.TEST_MODE = true;
 		String dir = "src/test/sources/structure/check_then_assign/batch";
 		String[] srcFiles = {
 				"f1.java",

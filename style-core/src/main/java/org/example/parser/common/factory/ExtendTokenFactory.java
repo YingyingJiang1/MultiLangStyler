@@ -42,4 +42,5 @@ public class ExtendTokenFactory extends CommonTokenFactory {
   public ExtendToken create(int type, String text) {
     return new ExtendToken(type, text);
   }
+
 }
