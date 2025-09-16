@@ -87,4 +87,38 @@ class NewlineStylerTest extends TestBase {
 //			break;
 		}
 	}
+
+	@Test
+	void testOverall() {
+		String dir = "src/test/sources/format/newline/";
+		String[] srcFiles = {
+				"f9.java",
+
+		};
+
+		String[] targetFiles = {
+				"style1",
+
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
+					NewlineStyler.class,
+					IntraNewlineStyler.class,
+					InterNewlineStyler.class,
+					BodyLayoutStyler.class,
+					IndentionStyler.class));
+			if (true) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			testCodeEqual(actual, gtPath);
+//			break;
+		}
+	}
 }

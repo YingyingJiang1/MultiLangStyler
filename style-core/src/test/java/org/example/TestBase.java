@@ -88,8 +88,7 @@ public class TestBase {
 		}
 		controller.setStylers(container);
 
-		FileCollection targetCollection = new FileCollection();
-		targetCollection.add(targetPath);
+		FileCollection targetCollection = FileCollector.getJavaFileCollection(List.of(targetPath.toString()));
 
 		ProgramStyle sytle = null;
 		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
