@@ -5,6 +5,7 @@ import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.example.style.rule.StyleRule;
 
 
 import java.util.*;
@@ -124,5 +125,10 @@ public class NewlineStyle extends CommonStyle {
      */
     protected List<Double> getWeights(NewlineContext context) {
         return List.of(0.0, 1.0);
+    }
+
+    @Override
+    protected StyleRule createRule(String propertyName) {
+        return new StyleRule(new NewlineContext(), new NewlineProperty());
     }
 }

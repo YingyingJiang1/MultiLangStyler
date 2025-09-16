@@ -12,6 +12,7 @@ public class NewlineContext extends StyleContext {
 	private List<String> nodeTypes;
 	private List<Double> lengths;
 
+	public NewlineContext() {}
 
 	public NewlineContext(List<String> nodeTypes, List<Double> lengths) {
 		this.nodeTypes = nodeTypes;
@@ -67,6 +68,7 @@ public class NewlineContext extends StyleContext {
 					.map(Double::parseDouble)
 					.collect(Collectors.toList());
 		}
+
 	}
 
 	@Override
