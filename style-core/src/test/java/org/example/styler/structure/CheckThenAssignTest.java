@@ -1,6 +1,12 @@
 package org.example.styler.structure;
 
 import org.example.TestBase;
+import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
+import org.example.styler.format.newline.inter.InterNewlineStyler;
+import org.example.styler.format.newline.intra.IntraNewlineStyler;
+import org.example.styler.format.newline.style.NewlineStyle;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
@@ -52,8 +58,11 @@ public class CheckThenAssignTest extends TestBase {
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (true) {
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class
+//					, NewlineStyler.class, IntraNewlineStyler.class, InterNewlineStyler.class, BodyLayoutStyler.class
+//					,IndentionStyler.class
+			));
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

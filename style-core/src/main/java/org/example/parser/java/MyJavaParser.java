@@ -822,7 +822,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public TokenFactory getTokenFactory() {
+    public ExtendTokenFactory getTokenFactory() {
         return ExtendTokenFactory.DEFAULT;
     }
 

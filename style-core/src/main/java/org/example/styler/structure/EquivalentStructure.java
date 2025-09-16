@@ -7,7 +7,9 @@ import org.dom4j.Element;
 import org.example.myException.TreeConvertException;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.factory.MyParserFactory;
+import org.example.parser.common.token.ExtendToken;
 import org.example.styler.structure.handler.ExceptionHandler;
 import org.example.styler.structure.vtree.VirtualNodeMatcher;
 import org.example.utils.ParseTreeUtil;
@@ -97,13 +99,6 @@ public class EquivalentStructure {
 				String code = replacePlaceholder(codes[i]);
 				MyJavaParser parser = new MyJavaParser();
 
-				// 优化format
-				if (parser.getTokenStream() instanceof CommonTokenStream ts) {
-					ts.getTokens().forEach(t -> {
-
-					});
-				}
-
 				int priority = getPriority(code);
 				ParseTree tree = parser.parseFromString(code);
 				if (tree == null) {
@@ -128,6 +123,15 @@ public class EquivalentStructure {
 						}
 						rules.add(ruleIndex);
 					}
+				}
+
+				// 优化format
+				if (parser.getTokenStream() instanceof CommonTokenStream ts) {
+					ts.getTokens().forEach(t -> {
+						if (t.getType() == parser.getSemi() || t.getType() == parser.getRBrace()) {
+							((ExtendToken) t).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+						}
+					});
 				}
 
 				forests.add(new Forest(trees, priority, xmlRule.styles.get(i)));

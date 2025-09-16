@@ -8,10 +8,18 @@ import java.util.Objects;
 
 public class StructPreferenceContext extends StyleContext {
     // 两个属性互斥，styleCategory优先级更高
-    int structID;
-    String styleCategory;
+    int structID = -1;
+    String styleCategory = null;
 
     public StructPreferenceContext() {
+    }
+
+    public StructPreferenceContext(int structID) {
+        this.structID = structID;
+    }
+
+    public StructPreferenceContext(String styleCategory) {
+        this.styleCategory = styleCategory;
     }
 
     public StructPreferenceContext(String styleCategory, int structID) {

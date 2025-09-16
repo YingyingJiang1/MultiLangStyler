@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class StructPreferenceProperty extends StyleProperty {
     // 两个属性互斥，style优先级更高
-    private int preferenceIndex;
+    private int preferenceIndex = -1;
     private String style; // 当style无效时，使用preferenceIndex（当所有配置的写法都填充了style时，可以删除preferenceIndex）
 
     public StructPreferenceProperty() {

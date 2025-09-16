@@ -13,7 +13,8 @@ public class E {
 			bInd=2;
 		}
 
-		int a = first > 0? bInd: 0; return 0l;
+		int a = first > 0? bInd: 0; 
+return 0l;
 	}
 
 }

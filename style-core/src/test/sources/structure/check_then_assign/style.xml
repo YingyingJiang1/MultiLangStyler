@@ -10,8 +10,8 @@
   <style name="modifier_order"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="14" category=""/>
-      <style_property preferenceIndex="1"/>
+      <style_context id="14"/>
+      <style_property preferenceIndex="2"/>
     </rule>
   </style>
   <style name="body_layout"/>

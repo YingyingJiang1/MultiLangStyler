@@ -14,27 +14,19 @@
       <style_property style="TERNARY_STYLE"/>
     </rule>
     <rule>
-      <style_context id="24"/>
+      <style_context category="Redundant code"/>
       <style_property preferenceIndex="0"/>
     </rule>
     <rule>
-      <style_context id="23"/>
-      <style_property preferenceIndex="2"/>
-    </rule>
-    <rule>
-      <style_context id="7"/>
+      <style_context category="Loops"/>
       <style_property preferenceIndex="1"/>
     </rule>
     <rule>
-      <style_context id="22"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
-    <rule>
-      <style_context id="19"/>
+      <style_context category="Operator preferences"/>
       <style_property preferenceIndex="1"/>
     </rule>
     <rule>
-      <style_context id="18"/>
+      <style_context category="Literal position in bool expression"/>
       <style_property preferenceIndex="1"/>
     </rule>
   </style>

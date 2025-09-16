@@ -273,17 +273,8 @@ public class StructureStyler extends Styler {
     }
 
     private StructPreferenceContext extractContext(EquivalentStructure structure) {
-        StyleCategory category = null;
-        try {
-            category = StyleCategory.valueOf(structure.getCategory());
-        } catch (Exception e) {
 
-        }
-        if (category == null) {
-            return new StructPreferenceContext(null, structure.getId());
-        }
-        // 设置了有效category，id无效
-        return new StructPreferenceContext(structure.getCategory(), -1);
+        return new StructPreferenceContext(structure.getCategory(), structure.getId());
     }
 
     private int getTargetIndex(StructPreferenceProperty property, EquivalentStructure structure) {

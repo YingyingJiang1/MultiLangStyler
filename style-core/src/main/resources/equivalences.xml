@@ -331,7 +331,7 @@
         <codes>
             <code style="DEFAULT_OVERRIDE_STYLE">$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
             <code  style="TERNARY_STYLE">$M $T $I = $E ? $E1 : $E2 ;</code>
-<!--            <code  style="TERNARY_STYLE1">$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>-->
+            <code  style="TERNARY_STYLE1">$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>
             <code style="IF_ELSE_STYLE">$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
         </codes>
         <checkers>
