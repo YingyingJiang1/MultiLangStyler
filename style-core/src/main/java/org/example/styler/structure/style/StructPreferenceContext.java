@@ -7,14 +7,15 @@ import org.example.style.rule.StyleContext;
 import java.util.Objects;
 
 public class StructPreferenceContext extends StyleContext {
+    // 两个属性互斥，styleCategory优先级更高
     int structID;
-    String structCategory; // This field is not used when calling equals
+    String styleCategory;
 
     public StructPreferenceContext() {
     }
 
-    public StructPreferenceContext(String structCategory, int structID) {
-        this.structCategory = structCategory;
+    public StructPreferenceContext(String styleCategory, int structID) {
+        this.styleCategory = styleCategory;
         this.structID = structID;
     }
 
@@ -22,21 +23,27 @@ public class StructPreferenceContext extends StyleContext {
         return structID;
     }
 
-    public String getStructCategory() {
-        return structCategory;
+    public String getStyleCategory() {
+        return styleCategory;
     }
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("id", Integer.toString(structID));
-        parent.addAttribute("category", structCategory);
+        if (structID >= 0) {
+            parent.addAttribute("id", Integer.toString(structID));
+        }
+        if(styleCategory != null) {
+            parent.addAttribute("category", styleCategory);
+        }
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        structID = Integer.parseInt(parent.attributeValue("id"));
+        if (parent.attribute("id") != null) {
+            structID = Integer.parseInt(parent.attributeValue("id"));
+        }
         if (parent.attribute("category") != null) {
-            structCategory = parent.attributeValue("category");
+            styleCategory = parent.attributeValue("category");
         }
     }
 
@@ -45,11 +52,11 @@ public class StructPreferenceContext extends StyleContext {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructPreferenceContext that = (StructPreferenceContext) o;
-        return structID == that.structID ;
+        return structID == that.structID && Objects.equals(styleCategory, that.styleCategory) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(structID);
+        return Objects.hash(structID, styleCategory) ;
     }
 }

@@ -307,8 +307,8 @@
   <style name="modifier_order"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="18" category="Operator preferences"/>
-      <style_property preferenceIndex="1"/>
+      <style_context id="14" category="CHECK_THEN_ASSIGN"/>
+      <style_property style="TERNARY_STYLE"/>
     </rule>
     <rule>
       <style_context id="19" category="Literal position in bool expression"/>
@@ -319,18 +319,38 @@
       <style_property preferenceIndex="2"/>
     </rule>
     <rule>
-      <style_context id="14" category="Check then assign preferences"/>
+      <style_context id="18" category="Operator preferences"/>
       <style_property preferenceIndex="1"/>
     </rule>
   </style>
   <style name="body_layout">
     <rule>
       <style_context>
+        <bodyType>DEC_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
+        <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
     </rule>
@@ -357,30 +377,10 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>EMPTY</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
     </rule>

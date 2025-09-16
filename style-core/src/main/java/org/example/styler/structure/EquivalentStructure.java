@@ -1,6 +1,7 @@
 package org.example.styler.structure;
 
 
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.*;
 import org.dom4j.Element;
 import org.example.myException.TreeConvertException;
@@ -61,7 +62,7 @@ public class EquivalentStructure {
 			return null;
 		}
 		EquivalentStructure structure = new EquivalentStructure(Integer.parseInt(rule.id), rule.category, rule.checkers, rule.handlers, rule.bannedTransfer);
-		structure.compile(rule.codes.toArray(new String[0]));
+		structure.compile(rule);
 
 		return structure;
 	}
@@ -74,13 +75,34 @@ public class EquivalentStructure {
 		this.checkers = checkers;
 	}
 
-	void compile(String[] codes) {
+	public int getIndexOf(String style) {
+		for (int i = 0; i < forests.size(); i++) {
+			if (Objects.equals(forests.get(i).getStyle(), style)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public String getStyleOf(int index) {
+		return forests.get(index).getStyle();
+	}
+
+	void compile(XmlRuleParser.Rule xmlRule) {
+		String[] codes = xmlRule.codes.toArray(new String[0]);
 		try {
 			placeholderContainer = PlaceholderContainer.createInstance(codes);
 			for (int i = 0; i < codes.length; i++) {
 				boolean multiStmts = codes[i].startsWith("$^");
 				String code = replacePlaceholder(codes[i]);
 				MyJavaParser parser = new MyJavaParser();
+
+				// 优化format
+				if (parser.getTokenStream() instanceof CommonTokenStream ts) {
+					ts.getTokens().forEach(t -> {
+
+					});
+				}
 
 				int priority = getPriority(code);
 				ParseTree tree = parser.parseFromString(code);
@@ -108,7 +130,7 @@ public class EquivalentStructure {
 					}
 				}
 
-				forests.add(new Forest(trees, priority));
+				forests.add(new Forest(trees, priority, xmlRule.styles.get(i)));
 				uniqueVNodes(placeholderContainer, parser);
 			}
 		} catch (CompilationException e) {
@@ -533,6 +555,7 @@ class XmlRuleParser {
 		public String name;
 		public String category;
 		public List<String> codes = new ArrayList<>();
+		public List<String> styles = new ArrayList<>();
 		public List<Checker> checkers = new ArrayList<>();
 		public List<Handler> handlers = new ArrayList<>();
 		Map<Integer, List<Integer>> bannedTransfer;
@@ -560,10 +583,16 @@ class XmlRuleParser {
 		rule.id = node.attributeValue("id");
 		rule.name = node.attributeValue("name");
 		rule.category = node.attribute("category") != null ? node.attributeValue("category") : "";
-
 		try {
 			// Codes
-			node.element("codes").elements().forEach(e -> rule.codes.add(e.getText()));
+			node.element("codes").elements().forEach(e -> {
+				rule.codes.add(e.getText());
+				if (e.attribute("style") != null) {
+					rule.styles.add(e.attributeValue("style"));
+				} else {
+					rule.styles.add(null);
+				}
+			});
 
 			rule.checkers = parseCheckers(node);
 			rule.handlers = parseHandlers(node);

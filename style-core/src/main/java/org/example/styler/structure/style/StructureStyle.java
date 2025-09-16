@@ -10,6 +10,8 @@ public class StructureStyle extends CommonStyle {
         styleName = "structure_preference";
     }
 
+
+
     @Override
     protected StyleRule createRule(String propertyName) {
         StructPreferenceContext context = new StructPreferenceContext();

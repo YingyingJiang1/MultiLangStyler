@@ -8,6 +8,8 @@ import org.example.controller.TokenAugmentor;
 import org.example.parser.common.*;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.ExtendTokenFactory;
+import org.example.parser.common.factory.context.JavaTreeNodeFactory;
+import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.common.token.TokenNameGetter;
 import org.example.parser.java.antlr.JavaLexer;
@@ -821,7 +823,12 @@ public class MyJavaParser implements MyParser {
 
     @Override
     public TokenFactory getTokenFactory() {
-        return parser.getTokenFactory();
+        return ExtendTokenFactory.DEFAULT;
+    }
+
+    @Override
+    public TreeNodeFactory getTreeNodeFactory() {
+        return JavaTreeNodeFactory.getInstance();
     }
 
     @Override

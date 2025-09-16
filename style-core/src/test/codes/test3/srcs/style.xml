@@ -443,31 +443,15 @@
   </style>
   <style name="structure_preference">
     <rule>
-      <style_context id="18" category="Operator preferences"/>
-      <style_property preferenceIndex="1"/>
-    </rule>
-    <rule>
-      <style_context id="3" category="Assignment statement preferences"/>
-      <style_property preferenceIndex="1"/>
+      <style_context id="14" category="CHECK_THEN_ASSIGN"/>
+      <style_property style="TERNARY_STYLE"/>
     </rule>
     <rule>
       <style_context id="19" category="Literal position in bool expression"/>
       <style_property preferenceIndex="1"/>
     </rule>
     <rule>
-      <style_context id="4" category="Continuous logic and preferences"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
-    <rule>
-      <style_context id="22" category="Continue preferences"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
-    <rule>
       <style_context id="23" category="Continue preferences"/>
-      <style_property preferenceIndex="0"/>
-    </rule>
-    <rule>
-      <style_context id="24" category="Redundant code"/>
       <style_property preferenceIndex="0"/>
     </rule>
     <rule>
@@ -475,13 +459,39 @@
       <style_property preferenceIndex="0"/>
     </rule>
     <rule>
-      <style_context id="14" category="Check then assign preferences"/>
+      <style_context id="22" category="Continue preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="18" category="Operator preferences"/>
       <style_property preferenceIndex="1"/>
+    </rule>
+    <rule>
+      <style_context id="4" category="Continuous logic and preferences"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+    <rule>
+      <style_context id="3" category="Assignment statement preferences"/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+    <rule>
+      <style_context id="24" category="Redundant code"/>
+      <style_property preferenceIndex="0"/>
     </rule>
   </style>
   <style name="body_layout">
     <rule>
       <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
         <bodyType>STMT_BODY</bodyType>
         <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
@@ -505,7 +515,7 @@
         <bodyType>ANY_BODY</bodyType>
         <bodySize>EMPTY</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>false</hasBrace>
       </style_context>
       <style_property beforeLB="1" afterRB="0"/>
@@ -513,17 +523,7 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>true</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -533,16 +533,6 @@
     <rule>
       <style_context>
         <bodyType>ANY_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="1" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
         <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
@@ -553,7 +543,17 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>true</hasRightNeighbour>
         <hasBrace>true</hasBrace>

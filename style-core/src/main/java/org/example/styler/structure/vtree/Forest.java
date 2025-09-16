@@ -12,11 +12,13 @@ public class Forest implements Comparable {
     List<ParseTree> trees = new ArrayList<>(1);
     List<VirtualNode> vNodes = new ArrayList<>();
     int priority = 0;
+    String style;
 
 
-    public Forest(List<ParseTree> trees, int priority) {
+    public Forest(List<ParseTree> trees, int priority, String style) {
         this.trees = trees;
         this.priority = priority;
+        this.style = style;
     }
 
     @Override
@@ -43,6 +45,10 @@ public class Forest implements Comparable {
 
     public List<ParseTree> getTrees() {
         return trees;
+    }
+
+    public String getStyle() {
+        return style;
     }
 
     @Override

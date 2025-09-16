@@ -14,10 +14,7 @@ import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.structure.style.StructPreferenceContext;
-import org.example.styler.structure.style.StructPreferenceProperty;
-import org.example.styler.structure.style.StructureInconsistencyInfo;
-import org.example.styler.structure.style.StructureStyle;
+import org.example.styler.structure.style.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -76,9 +73,9 @@ public class StructureStyler extends Styler {
             Set<MatchedStructure> matchedStructures = new TreeSet<>();
             for (EquivalentStructure structure : equivalentStructures) {
                 int matchedIndex = structure.match(ctx, parser);
-                StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
+                StyleContext context = extractContext(structure);
                 StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
-                int targetIndex = property == null ? -1 : property.preferenceIndex;
+                int targetIndex = getTargetIndex(property, structure);
                 if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
                     // Create inconsistency info
                     int[] startLoc = { ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine() };
@@ -120,9 +117,9 @@ public class StructureStyler extends Styler {
             Set<MatchedStructure> matchedStructures = new TreeSet<>();
             for (EquivalentStructure structure : equivalentStructures) {
                 int matchedIndex = structure.match(ctx, parser);
-                StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
+                StyleContext context = extractContext(structure);
                 StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
-                int targetIndex = property == null ? -1 : property.preferenceIndex;
+                int targetIndex = getTargetIndex(property, structure);
                 if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
                     matchedStructures.add(new MatchedStructure(structure, matchedIndex));
                 }
@@ -134,9 +131,9 @@ public class StructureStyler extends Styler {
                 while (it.hasNext()) {
                     MatchedStructure matchedStructure = it.next();
                     EquivalentStructure targetStructure = matchedStructure.structure;
-                    StyleContext context = new StructPreferenceContext(matchedStructure.structure.getCategory(), matchedStructure.structure.getId());
+                    StyleContext context = extractContext(matchedStructure.structure);
                     StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
-                    int to = property.preferenceIndex;
+                    int to = getTargetIndex(property, targetStructure);
                     int from = matchedStructure.index;
                     // Check whether the conversion is performed before.
                     if (convertionPerformed.get(targetStructure) != null &&
@@ -221,8 +218,8 @@ public class StructureStyler extends Styler {
                 int index = structure.match(ctx, parser);
                 if (index != -1) {
                     style.addRule(
-                            new StructPreferenceContext(structure.getCategory(), structure.getId()),
-                            new StructPreferenceProperty(index));
+                            extractContext(structure),
+                            extractProperty(structure, index));
                     // break; // Can't break,because ctx may match multiple structures with different id.
                 }
             }
@@ -241,8 +238,8 @@ public class StructureStyler extends Styler {
         for (int i = 0; i < equivalences.size(); i++) {
             EquivalentStructure structure = equivalences.get(i);
             int index = sequence.get(i);
-            StyleContext context = new StructPreferenceContext(structure.getCategory(), structure.getId());
-            StructPreferenceProperty property = new StructPreferenceProperty(index);
+            StyleContext context = extractContext(structure);
+            StructPreferenceProperty property = extractProperty(structure, index);
             style.addRule(context, property);
         }
     }
@@ -268,6 +265,37 @@ public class StructureStyler extends Styler {
             }
         }
         return null;
+    }
+
+
+    private StructPreferenceProperty extractProperty(EquivalentStructure structure, int targetIndex) {
+        return new StructPreferenceProperty(targetIndex, structure.getStyleOf(targetIndex));
+    }
+
+    private StructPreferenceContext extractContext(EquivalentStructure structure) {
+        StyleCategory category = null;
+        try {
+            category = StyleCategory.valueOf(structure.getCategory());
+        } catch (Exception e) {
+
+        }
+        if (category == null) {
+            return new StructPreferenceContext(null, structure.getId());
+        }
+        // 设置了有效category，id无效
+        return new StructPreferenceContext(structure.getCategory(), -1);
+    }
+
+    private int getTargetIndex(StructPreferenceProperty property, EquivalentStructure structure) {
+        if (property == null) {
+            return -1;
+        }
+
+        int targetIndex = structure.getIndexOf(property.getStyle());
+        if (targetIndex == -1) {
+            targetIndex = property.getPreferenceIndex();
+        }
+        return targetIndex;
     }
 
     @Override

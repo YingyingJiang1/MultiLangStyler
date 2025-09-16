@@ -9,6 +9,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.example.parser.common.MyParser;
+import org.example.styler.structure.style.CategoryResult;
+import org.example.styler.structure.style.StyleCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -30,7 +32,8 @@ public class EquivalentStructureManager {
 
 
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
-//  private static List<EquivalentStructure> equivalences = new ArrayList<>();
+  private List<EquivalentStructure> equivalences = new ArrayList<>();
+  private Map<StyleCategory, List<EquivalentStructure>> categoryLookupCache;
   Element rootEle = null;
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
 
@@ -41,8 +44,37 @@ public class EquivalentStructureManager {
     return instance;
   }
 
+  public CategoryResult getCategoryResult(String categoryName, String style) {
+    StyleCategory category = null;
+    // 构建查询缓存
+    if (categoryLookupCache == null) {
+      categoryLookupCache = new HashMap<>();
+      for (EquivalentStructure equivalentStructure : equivalences) {
+        try {
+          category = StyleCategory.valueOf(categoryName);
+          categoryLookupCache.computeIfAbsent(category, k -> new ArrayList<>()).add(equivalentStructure);
+        } catch (Exception e) {
+          logger.warn("StyleCategory {} not found", categoryName);
+        }
+      }
+    }
+
+    // 获取当前风格类别的风格值所关联的代码结构id和写法
+    List<EquivalentStructure> structures = categoryLookupCache.get(category);
+    if (structures == null) {
+      return null;
+    }
+    CategoryResult result = new CategoryResult();
+    for (EquivalentStructure equivalentStructure : structures) {
+      int index = equivalentStructure.getIndexOf(style);
+      if (index >= 0) {
+        result.add(equivalentStructure.id, index);
+      }
+    }
+    return result;
+  }
+
   public List<EquivalentStructure> loadEquivalences(Class<? extends MyParser> parserClass, String confFile) {
-    List<EquivalentStructure> equivalences = new ArrayList<>();
     try {
       loadConfFile(confFile);
 
@@ -72,8 +104,6 @@ public class EquivalentStructureManager {
 	}
 
   }
-
-
 
 
 }

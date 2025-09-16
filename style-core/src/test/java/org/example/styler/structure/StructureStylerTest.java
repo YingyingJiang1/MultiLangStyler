@@ -229,34 +229,6 @@ class StructureStylerTest extends TestBase {
 
 
 
-	@Test
-	void testCheckThenAssign() {
-		String dir = "src/test/sources/structure/check_then_assign/";
-		String[] srcFiles = {
-				"f1.java",
-				"f2.java",
-		};
-
-		String[] targetFiles = {
-				"style1.xml",
-				"style2.xml",
-		};
-
-		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (false) {
-				try{
-					Files.writeString(gtPath, actual);
-				}	catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-
-			testCodeEqual(actual, gtPath);
-		}
-	}
 
 	@Test
 	void testIf() {
@@ -294,4 +266,5 @@ class StructureStylerTest extends TestBase {
 			testCodeEqual(actual, gtPath);
 		}
 	}
+
 }

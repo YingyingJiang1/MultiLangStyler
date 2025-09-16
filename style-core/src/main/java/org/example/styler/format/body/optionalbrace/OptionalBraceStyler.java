@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.styler.format.body.BodyContext;
@@ -71,7 +72,13 @@ public class OptionalBraceStyler extends BodyStyler {
                 // Removing {} happens when the bodyNumType is EMPTY or SINGLE. Otherwise, it may cause an error.
                 boolean isBraceRemovable = parser.isBlock(specificBody) && (bodyContext.bodySizeType == BodySizeType.EMPTY || bodyContext.bodySizeType == BodySizeType.SINGLE);
                 if (isBraceRemovable) {
-                    ctx.replaceChild(body, specificBody.getFirstCtxChildIf(t -> true));
+                    ExtendContext innerStmt = specificBody.getFirstCtxChildIf(t -> true);
+                    if (innerStmt == null) {
+                        TreeNodeFactory factory = parser.getTreeNodeFactory();
+                        innerStmt = factory.createStatement(ctx);
+                        innerStmt.addChild(factory.createTerminal(parser.getTokenFactory().create(parser.getSemi(), ";")));
+                    }
+                    ctx.replaceChild(body, innerStmt);
 
                     RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }

@@ -327,12 +327,12 @@
             <code>if ( $E ) { return $E1 ; } else { return $E2 ; }</code>
         </codes>
     </rule>
-    <rule id="14" name="dec_then_check_assign" category="Check then assign preferences">
+    <rule id="14" name="dec_then_check_assign" category="CHECK_THEN_ASSIGN">
         <codes>
-            <code>$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
-            <code>$M $T $I = $E ? $E1 : $E2 ;</code>
-            <code>$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>
-            <code>$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
+            <code style="DEFAULT_OVERRIDE_STYLE">$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
+            <code  style="TERNARY_STYLE">$M $T $I = $E ? $E1 : $E2 ;</code>
+<!--            <code  style="TERNARY_STYLE1">$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>-->
+            <code style="IF_ELSE_STYLE">$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
         </codes>
         <checkers>
             <checker>
@@ -357,16 +357,17 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="15" name="check_then_assign" category="Check then assign preferences">
+    <rule id="15" name="check_then_assign" category="CHECK_THEN_ASSIGN">
         <codes>
-            <code>$E = $E1 ? $E2 : $E3 ;</code>
-            <code>if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }</code>
+            <code style="DEFAULT_OVERRIDE_STYLE">$^ $E = $E3 ; if ( $E1 ) { $E4 = $E2 ; }</code>
+            <code style="TERNARY_STYLE">$E = $E1 ? $E2 : $E3 ;</code>
+            <code style="IF_ELSE_STYLE">if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }</code>
         </codes>
         <checkers>
             <checker>
                 <class>EqualChecker</class>
                 <argsList>
-                    <args>1,$E,$E4</args>
+                    <args>0,$E,$E4</args><args>2,$E,$E4</args>
                 </argsList>
             </checker>
         </checkers>
@@ -374,7 +375,7 @@
             <handler>
                 <class>ReplicationHandler</class>
                 <argsList>
-                    <args>1,$E,$E4</args>
+                    <args>0,$E,$E4</args><args>2,$E,$E4</args>
                 </argsList>
             </handler>
         </handlers>

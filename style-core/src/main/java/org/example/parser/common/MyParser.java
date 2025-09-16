@@ -3,6 +3,8 @@ package org.example.parser.common;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.context.ExtendContext;
+import org.example.parser.common.factory.ExtendTokenFactory;
+import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.common.token.AmbigousToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -216,7 +218,8 @@ public interface MyParser {
     String getTokenName(int type);
     String getRuleName(int type);
 
-    TokenFactory getTokenFactory();
+    ExtendTokenFactory getTokenFactory();
+    TreeNodeFactory getTreeNodeFactory();
     Set<String> getOperators();
     Set<String> getSeparators();
     Set<String> getBinOps();
