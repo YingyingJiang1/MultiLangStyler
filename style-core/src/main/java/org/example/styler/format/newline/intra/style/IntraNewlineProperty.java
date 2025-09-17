@@ -12,6 +12,7 @@ public class IntraNewlineProperty extends StyleProperty {
 	// relativeIndention[i] is the indention of line i+1 relative to line i
 	// line 0: the first line
 	// line 1:  the first succeed line.
+	// 当数组长度不足时，默认返回最后一个元素。关于相对缩进的实现，只区分两种情况：第一行后继行（line1)相对起始行（line0)的缩进，后继行之间的相对缩进。
 	public List<String> relativeIndention;
 	public double lineLengthRatio;
 	public boolean breakAfter;
@@ -56,6 +57,7 @@ public class IntraNewlineProperty extends StyleProperty {
 		if (index < relativeIndention.size()) {
 			return relativeIndention.get(index);
 		}
+		// line超过数组长度时，默认返回最后一个元素
 		return relativeIndention.get(relativeIndention.size() - 1);
 	}
 
@@ -64,7 +66,7 @@ public class IntraNewlineProperty extends StyleProperty {
 	public void addElement(Element parent, MyParser parser) {
 		parent.addAttribute("newlines", Integer.toString(newlines));
 		if (relativeIndention != null) {
-			parent.addAttribute("relativeIndention", relativeIndention.toString().substring(1, relativeIndention.toString().length() - 1));
+			parent.addAttribute("relativeIndention", String.join(",", relativeIndention));
 		}
 		parent.addAttribute("lineLengthRatio", String.valueOf(lineLengthRatio));
 	}

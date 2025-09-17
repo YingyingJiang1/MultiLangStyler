@@ -7,17 +7,14 @@ import org.example.style.rule.StyleProperty;
 import org.example.style.rule.StyleRule;
 import org.example.utils.MathUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IntraNewlineStyle extends CommonStyle {
 	// 进行换行的行长下界
 	List<Double> lineLens = new ArrayList<>();
 	List<Double> lineRatios = new ArrayList<>();
 //	Map<String, int[]> breakCount = new HashMap<>(); // [trueCount, falseCount]
-	List<String> relativeIndention = new ArrayList<>();
+	Map<Integer, List<String>> relativeIndentionMap = new HashMap<>();
 
 
 	public IntraNewlineStyle() {
@@ -26,9 +23,10 @@ public class IntraNewlineStyle extends CommonStyle {
 
 	@Override
 	public void addRule(StyleContext styleContext, StyleProperty styleProperty) {
-		if (styleContext instanceof IntraNewlineContext intraContext
-		&& styleProperty instanceof IntraNewlineProperty intraProperty) {
+		if (styleContext instanceof IntraNewlineContext intraContext) {
 			lineLens.add(intraContext.length);
+		}
+		if ( styleProperty instanceof IntraNewlineProperty intraProperty) {
 
 			lineRatios.add(intraProperty.lineLengthRatio);
 
@@ -41,8 +39,9 @@ public class IntraNewlineStyle extends CommonStyle {
 //				}
 //			}
 
-			if (intraProperty.relativeIndention.size() > relativeIndention.size()) {
-				relativeIndention.addAll(intraProperty.relativeIndention);
+			for (int i = 0; i < intraProperty.relativeIndention.size(); i++) {
+				int line = i > 0 ? 1 : 0; // 只区分起始行和第一行后继行，后继行之间这两种情况
+				relativeIndentionMap.computeIfAbsent(line, k -> new ArrayList<>()).add(intraProperty.relativeIndention.get(i));
 			}
 		}
 	}
@@ -68,7 +67,7 @@ public class IntraNewlineStyle extends CommonStyle {
 		IntraNewlineProperty property = new IntraNewlineProperty(1);
 		property.relativeIndention = null;
 
-		if (lineRatios.size() > 0) {
+		if (lineLens.size() > 0 && lineRatios.size() > 0) {
 			lineRatios = lineRatios.stream().sorted().toList();
 			property.lineLengthRatio = MathUtil.median(lineRatios);
 
@@ -78,9 +77,20 @@ public class IntraNewlineStyle extends CommonStyle {
 //				property.breakAfter.put(entry.getKey(), counts[0] >= counts[1]);
 //			}
 
-			property.relativeIndention = relativeIndention;
+			property.relativeIndention = new ArrayList<>();
+			for (int i = 0; i < relativeIndentionMap.size(); i++) {
+				List<String> indentions = relativeIndentionMap.get(i);
+				String maxFreqStr = indentions.stream()
+						.max(Comparator.comparingInt(s -> Collections.frequency(indentions, s)))
+						.orElse(null);
+				property.relativeIndention.add(maxFreqStr);
+			}
+			if (property.relativeIndention.size() < 2) {
+				property.relativeIndention.add("");
+			}
 
-			ruleSet.addRule(new IntraNewlineContext(MathUtil.median(lineLens)), property);
+			double lineLen = lineLens.stream().max(Comparator.comparingDouble(Double::doubleValue)).get();
+			ruleSet.addRule(new IntraNewlineContext(lineLen), property);
 		}
 
 

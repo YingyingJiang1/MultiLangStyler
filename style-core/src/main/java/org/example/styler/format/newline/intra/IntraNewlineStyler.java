@@ -1,7 +1,9 @@
 package org.example.styler.format.newline.intra;
 
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
@@ -17,6 +19,8 @@ import org.example.utils.NodeUtil;
 import org.example.utils.TokenStreamUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -32,18 +36,27 @@ public class IntraNewlineStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		ExtendContext targetNode = ctx;
-		if (parser.belongToSingleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
-			targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
+		// 获取最大行号
+		if (parser.getRoot() == ctx) {
+			CharStream cs = parser.getTokenStream().getTokenSource().getInputStream();
+			int maxLen = Arrays.stream(cs.getText(Interval.of(0, cs.size())).split("\n")).mapToInt(String::length).max().orElseGet(() -> -1);
+			style.addRule(new IntraNewlineContext(maxLen), null);
+		} else {
+			// 获取换行策略
+			ExtendContext targetNode = ctx;
+			if (parser.belongToSingleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
+				targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
+			}
+			if (targetNode == null) {
+				return;
+			}
+			IntraNewlineContext newlineContext = extractContext(targetNode, parser);
+			IntraNewlineProperty property = extractProperty(targetNode, parser, newlineContext);
+			if (property.newlines > 0) {
+				style.addRule(null, property);
+			}
 		}
-		if (targetNode == null) {
-			return;
-		}
-		IntraNewlineContext newlineContext = extractContext(targetNode, parser);
-		IntraNewlineProperty property = extractProperty(targetNode, parser, newlineContext);
-		if (property.newlines > 0) {
-			style.addRule(newlineContext, property);
-		}
+
 	}
 
 	@Override
@@ -187,6 +200,7 @@ public class IntraNewlineStyler extends Styler {
 
 	private IntraNewlineContext extractContext(ExtendContext ctx, MyParser parser) {
 		int len = ctx.getText().length();
+		len += getSameLineTokensBefore(ctx, parser).stream().mapToInt(t -> t.getText().length()).sum();
 		return new IntraNewlineContext(len);
 	}
 
@@ -284,6 +298,7 @@ public class IntraNewlineStyler extends Styler {
 					Token cur = tokens.get(j);
 
 					if (cur.getText().endsWith("\n")) {
+						Collections.reverse(result);
 						return result;
 					}
 					result.add(cur);
@@ -305,6 +320,7 @@ public class IntraNewlineStyler extends Styler {
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
 		int rule = ctx.getRuleIndex();
 //		boolean isTopExpression = rule == parser.getRuleExpression() && ctx.getParent() != null && ctx.getParent().getParent() != null && parser.isStatement(ctx.getParent().getParent());
-		return parser.getRuleformalParameterList() == rule || rule == parser.getRuleLocalVarDeclaration() || rule == parser.getRuleParExpression() || parser.belongToSingleStmt(ctx);
+		boolean isRelevantNode = parser.getRuleformalParameterList() == rule || rule == parser.getRuleLocalVarDeclaration() || rule == parser.getRuleParExpression() || parser.belongToSingleStmt(ctx);
+		return stage == Stage.EXTRACT && ctx == parser.getRoot() || isRelevantNode;
 	}
 }
