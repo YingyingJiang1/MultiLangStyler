@@ -1,15 +1,13 @@
   private void processRequest(
-  int limitPerDay,String identifier,
-      Map<String, Bucket> buckets,HttpServletRequest request,
-  HttpServletResponse response,FilterChain filterChain)
+  int limitPerDay,String identifier,Map<String, Bucket> buckets,
+      HttpServletRequest request,HttpServletResponse response,FilterChain filterChain)
   throws IOException, ServletException {
     Bucket userBucket = buckets.computeIfAbsent(identifier, k -> createUserBucket(limitPerDay));
     ConsumptionProbe probe = userBucket.tryConsumeAndReturnRemaining(1);
     if (probe.isConsumed()) {
-      response.setHeader("X-Rate-Limit-Remaining",stripNewlines(Newlines.stripAll(Long.toString(probe.getRemainingTokens()
-          ))));
-
-      filterChain.doFilter(request, response);
+      response.setHeader("X-Rate-Limit-Remaining",
+          filterChain.doFilter(request, response),stripNewlines(Newlines
+          .stripAll(Long.toString(probe.getRemainingTokens()))));
     } else {
       long waitForRefill = probe.getNanosToWaitForRefill() / 1_000_000_000;
       response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());

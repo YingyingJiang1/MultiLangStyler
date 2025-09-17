@@ -15,6 +15,7 @@ import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.intra.style.IntraNewlineContext;
 import org.example.styler.format.newline.intra.style.IntraNewlineProperty;
 import org.example.styler.format.newline.intra.style.IntraNewlineStyle;
+import org.example.utils.MathUtil;
 import org.example.utils.NodeUtil;
 import org.example.utils.TokenStreamUtil;
 
@@ -22,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 /**
  * 专注于单个语法树节点内部的换行符使用习惯
@@ -84,9 +83,9 @@ public class IntraNewlineStyler extends Styler {
 			if (targetProperty.newlines == 1) {
 				// 按照新的策略添加换行
 				if (targetNode.getRuleIndex() == parser.getRuleformalParameterList()) {
-					applyOnFormalParameterList(terminalNodes, context, targetProperty, parser);
+					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, List.of(parser.getRuleFormalParameter()));
 				} else {
-					applyOnExpression(terminalNodes, context, targetProperty, parser);
+					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, List.of(parser.getRuleExpression()));
 				}
 			}
 		}
@@ -99,7 +98,7 @@ public class IntraNewlineStyler extends Styler {
 
 	private void applyOnFormalParameterList(List<TerminalNode> terminalNodes, IntraNewlineContext context, IntraNewlineProperty targetProperty, MyParser parser) {
 		List<Integer> breakLoc = List.of(parser.getComma());
-		int targetLen = (int) (context.length * targetProperty.lineLengthRatio);
+		int targetLen = (int) (context.length * targetProperty.length);
 		int cumulativeLength = 0, succeedLineNumber = 0;
 		for (int i = 0; i < terminalNodes.size(); i++) {
 			TerminalNode terminalNode = terminalNodes.get(i);
@@ -113,68 +112,62 @@ public class IntraNewlineStyler extends Styler {
 
 	}
 
-	private void applyOnExpression(List<TerminalNode> terminalNodes, IntraNewlineContext context, IntraNewlineProperty targetProperty, MyParser parser) {
-		List<String> breakTokens = List.of("&&", "||", "?", ":");
-		// 表达式能够由break token划分为多个独立的子表达式。例如：如果 &&出现在函数参数计算时，就是不满足条件的
-		BiPredicate<TerminalNode, MyParser> inCompoundExp = new BiPredicate<TerminalNode, MyParser>() {
-			@Override
-			public boolean test(TerminalNode terminalNode, MyParser parser) {
-				ParseTree parent = terminalNode.getParent();
-				while (parent instanceof ExtendContext ctx) {
-					if (parser.getRuleExpression() != ctx.getRuleIndex()) {
-						break;
-					}
-					for (ParseTree child : ctx.children) {
-						if (child instanceof TerminalNode terNode && !breakTokens.contains(terNode.getText())) {
-							return false;
-						}
-					}
-					parent = parent.getParent();
+	private int doApply(ExtendContext node, int targetLineLen, IntraNewlineProperty targetProperty,
+						int succeedLineNum, MyParser parser, List<Integer> breakNodeTypes) {
+		IntraNewlineContext curContext = extractContext(node, parser);
+		// 当前长度不足，不用换行
+		if (curContext.length <= targetLineLen) {
+			return 0;
+		}
+
+		// 寻找当前节点的行拆分点
+		int breakIndex = 0;
+		while (breakIndex < node.getChildCount()) {
+			if (node.getChild(breakIndex) instanceof ExtendContext ctx) {
+				IntraNewlineContext context = extractContext(ctx, parser);
+				if (context.length >= targetProperty.minLen && breakNodeTypes.contains(ctx.getRuleIndex())) {
+					break;
 				}
-
-				return true;
 			}
-		};
+			++breakIndex;
+		}
 
-		int targetLen = (int) (context.length * targetProperty.lineLengthRatio);
-		int cumulativeLength = 0, succeedLineNumber = 0;
-		int lastHighPriorityBreak = -1; // 高优先级 break 点
-		int lastLowPriorityBreak = -1;  // 普通表达式 break 点
-
-		for (int i = 0; i < terminalNodes.size(); i++) {
-			TerminalNode terminalNode = terminalNodes.get(i);
-			cumulativeLength += terminalNode.getText().length();
-
-			if (breakTokens.contains(terminalNode.getText()) && inCompoundExp.test(terminalNode, parser)) {
-				lastHighPriorityBreak = i;
-			}
-
-			ExtendContext expParent = ((ExtendContext) terminalNode.getParent()).findFirstParentIf(parser::isExpression);
-			boolean isExpressionStop = expParent != null && expParent.getChildCount() > 1 && expParent.getStop() == terminalNode.getSymbol();
-			if (isExpressionStop) {
-				lastLowPriorityBreak = i;
-			}
-
-
-			if (cumulativeLength >= targetLen) {
-				int breakPos = -1;
-				if (lastHighPriorityBreak >= 0) {
-					breakPos = lastHighPriorityBreak - 1;
-				} else {
-					breakPos = lastLowPriorityBreak;
-				}
-
-				if (breakPos >= 0) {
-					succeedLineNumber++;
-					addNewline(terminalNodes, breakPos, targetProperty, succeedLineNumber, parser);
-
-					cumulativeLength = 0;
-					lastHighPriorityBreak = -1;
-					lastLowPriorityBreak = -1;
-				}
+		int curLineNum = succeedLineNum;
+		// 递归处理breakIndex以及前面的子节点
+		for (int i = 0; i <= breakIndex; i++) {
+			if (node.getChild(i) instanceof ExtendContext child) {
+				curLineNum += doApply(child, targetLineLen, targetProperty, curLineNum, parser, breakNodeTypes);
 			}
 		}
+
+		// 拆分当前节点，禁止在当前节点最后一个子节点后面拆分
+		if (breakIndex + 1 < node.getChildCount()) {
+			ParseTree nextNode = node.getChild(breakIndex + 1);
+			ExtendToken breakToken = null, nextStartToken = null;
+			if (nextNode instanceof TerminalNode terminalNode && targetProperty.isBreakAfter(terminalNode.getText())
+					&& breakIndex + 2 < node.getChildCount()) {
+				breakToken = (ExtendToken) terminalNode.getSymbol();
+				nextStartToken = NodeUtil.getStartToken(node.getChild(breakIndex + 2));
+			} else {
+				breakToken = NodeUtil.getStopToken(node.getChild(breakIndex));
+				nextStartToken = NodeUtil.getStartToken(node.getChild(breakIndex + 1));
+			}
+
+			NewlineApplicator.addNewline(breakToken, targetProperty.newlines, parser);
+			curLineNum += 1;
+			nextStartToken.setExtraIndention(targetProperty.getRelativeIndention(curLineNum));
+		}
+
+		// 递归处理breakIndex后面的子节点
+		for (int i = breakIndex + 1; i < node.getChildCount(); i++) {
+			if (node.getChild(i) instanceof ExtendContext child) {
+				curLineNum += doApply(child, targetLineLen, targetProperty, curLineNum, parser, breakNodeTypes);
+			}
+		}
+
+		return curLineNum;
 	}
+
 
 //	if (breakTokens.contains(terminalNode.getText())) {
 //		++succeedLineNumber;
@@ -200,7 +193,15 @@ public class IntraNewlineStyler extends Styler {
 
 	private IntraNewlineContext extractContext(ExtendContext ctx, MyParser parser) {
 		int len = ctx.getText().length();
-		len += getSameLineTokensBefore(ctx, parser).stream().mapToInt(t -> t.getText().length()).sum();
+		List<Token> tokensBefore = getSameLineTokensBefore(ctx, parser);
+		if (!tokensBefore.isEmpty()) {
+			len += tokensBefore.subList(1, tokensBefore.size()).stream().mapToInt(t -> t.getText().length()).sum();
+			// 长度不包含缩进，因为不同程序的缩进风格可能不一致
+			if (tokensBefore.get(0).getType() != parser.getHws()) {
+				len += tokensBefore.get(0).getText().length();
+			}
+		}
+
 		return new IntraNewlineContext(len);
 	}
 
@@ -228,15 +229,19 @@ public class IntraNewlineStyler extends Styler {
 		int cumulativeLength = 0;
 		int totalLength = (int) context.length;
 		List<String> relativeIndention = new ArrayList<>();
-		List<Double> ratios = new ArrayList<>(); // 每行长度占总长度的百分比
+		List<Double> lens = new ArrayList<>(); // 每行长度占总长度的百分比
 		for (int i = 1; i < tokens.size() - 1; i++) {
 			Token token = tokens.get(i);
-			cumulativeLength += token.getText().length();
+			boolean isIndention = token.getType() == parser.getHws() && tokens.get(i - 1).getText().endsWith("\n");
+			if (!isIndention) {
+				cumulativeLength += token.getText().length();
+			}
+
 			// 碰到换行
 			if (tokens.get(i).getType() == parser.getVws()) {
 				// 计算长度百分比
-				double ratio = (double) cumulativeLength / totalLength;
-				ratios.add(ratio);
+//				double ratio = (double) cumulativeLength / totalLength;
+				lens.add((double) cumulativeLength);
 
 				// 计算相对缩进
 				String relativeStr = "";
@@ -261,10 +266,11 @@ public class IntraNewlineStyler extends Styler {
 			}
 		}
 
-		if (!ratios.isEmpty()) {
-			double ratio = Math.round(ratios.stream().mapToDouble(Double::doubleValue).average().getAsDouble() * 10.0) / 10.0;
+		if (!lens.isEmpty()) {
+			double medianLen = MathUtil.median(lens);;
 			property.relativeIndention = relativeIndention;
-			property.lineLengthRatio = ratio;
+			property.length = medianLen;
+			property.minLen = lens.stream().min(Double::compareTo).get();
 			return property;
 		}
 		return noNewlineProperty;

@@ -408,7 +408,7 @@
   <style name="intra_newline">
     <rule>
       <style_context length="121.0"/>
-      <style_property newlines="1" relativeIndention="    ," lineLengthRatio="0.2"/>
+      <style_property newlines="1" relativeIndention="    " length="65.0" minLen="43.0"/>
     </rule>
   </style>
 </program_style>

@@ -1,6 +1,5 @@
 package org.example.styler.format.newline.intra.style;
 
-import com.google.common.math.Quantiles;
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
@@ -12,6 +11,7 @@ import java.util.*;
 public class IntraNewlineStyle extends CommonStyle {
 	// 进行换行的行长下界
 	List<Double> lineLens = new ArrayList<>();
+	List<Double> minLens = new ArrayList<>();
 	List<Double> lineRatios = new ArrayList<>();
 //	Map<String, int[]> breakCount = new HashMap<>(); // [trueCount, falseCount]
 	Map<Integer, List<String>> relativeIndentionMap = new HashMap<>();
@@ -28,7 +28,8 @@ public class IntraNewlineStyle extends CommonStyle {
 		}
 		if ( styleProperty instanceof IntraNewlineProperty intraProperty) {
 
-			lineRatios.add(intraProperty.lineLengthRatio);
+			lineRatios.add(intraProperty.length);
+			minLens.add(intraProperty.minLen);
 
 //			for (Map.Entry<String, Boolean> entry : intraProperty.breakAfter.entrySet()) {
 //				breakCount.computeIfAbsent(entry.getKey(), k -> new int[2]);
@@ -40,7 +41,7 @@ public class IntraNewlineStyle extends CommonStyle {
 //			}
 
 			for (int i = 0; i < intraProperty.relativeIndention.size(); i++) {
-				int line = i > 0 ? 1 : 0; // 只区分起始行和第一行后继行，后继行之间这两种情况
+				int line = 0; // 只区分起始行和第一行后继行，后继行之间这两种情况
 				relativeIndentionMap.computeIfAbsent(line, k -> new ArrayList<>()).add(intraProperty.relativeIndention.get(i));
 			}
 		}
@@ -69,7 +70,8 @@ public class IntraNewlineStyle extends CommonStyle {
 
 		if (lineLens.size() > 0 && lineRatios.size() > 0) {
 			lineRatios = lineRatios.stream().sorted().toList();
-			property.lineLengthRatio = MathUtil.median(lineRatios);
+			property.length = MathUtil.median(lineRatios);
+			property.minLen = minLens.stream().min(Comparator.comparingDouble(Double::doubleValue)).get();
 
 //			property.breakAfter = new HashMap<>();
 //			for (Map.Entry<String, int[]> entry : breakCount.entrySet()) {
@@ -84,9 +86,6 @@ public class IntraNewlineStyle extends CommonStyle {
 						.max(Comparator.comparingInt(s -> Collections.frequency(indentions, s)))
 						.orElse(null);
 				property.relativeIndention.add(maxFreqStr);
-			}
-			if (property.relativeIndention.size() < 2) {
-				property.relativeIndention.add("");
 			}
 
 			double lineLen = lineLens.stream().max(Comparator.comparingDouble(Double::doubleValue)).get();

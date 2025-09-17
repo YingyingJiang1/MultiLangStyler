@@ -12,41 +12,32 @@ public class IntraNewlineProperty extends StyleProperty {
 	// relativeIndention[i] is the indention of line i+1 relative to line i
 	// line 0: the first line
 	// line 1:  the first succeed line.
-	// 当数组长度不足时，默认返回最后一个元素。关于相对缩进的实现，只区分两种情况：第一行后继行（line1)相对起始行（line0)的缩进，后继行之间的相对缩进。
+	// 当数组长度不足时，默认返回最后一个元素。关于相对缩进的实现，只区分一种情况：后继行（line1-linen)相对起始行（line0)的缩进
 	public List<String> relativeIndention;
-	public double lineLengthRatio;
-	public boolean breakAfter;
-//	public Map<String, BreakLoc> breakAfter = new HashMap<>();
-//
-//	{
-//		breakAfter.put("?", new BreakLoc("?", 1));
-//		breakAfter.put(":", new BreakLoc(":",  1));
-//		breakAfter.put("&&", new BreakLoc("&&", 2));
-//		breakAfter.put("||",  new BreakLoc("||", 2));
-//		breakAfter.put(".",  new BreakLoc(".", 3));
-//		breakAfter.put("+", new BreakLoc("+", 4));
-//		breakAfter.put("-", new BreakLoc("-", 4));
-//		breakAfter.put("*", new BreakLoc("*", 4));
-//		breakAfter.put("/", new BreakLoc("/", 4));
-//		breakAfter.put("%", new BreakLoc("%", 4));
-//		breakAfter.put("@",  new BreakLoc("@", 8));
-//		breakAfter.put("->",new BreakLoc("->",true, 8));
-//		breakAfter.put("=", new BreakLoc("=", 9));
-//		breakAfter.put(",",  new BreakLoc(",",true, 10));
-//
-//	}
+	public double length;
+	public double minLen;
+//	public boolean breakAfter;
+	public Map<String, Boolean> breakAfter = new HashMap<>();
+
+	{
+		breakAfter.put(",",  true);
+
+	}
 
 	public IntraNewlineProperty(int newlines) {
 		this.newlines = newlines;
 	}
 
-	public IntraNewlineProperty(int newlines, List<String> relativeIndention, double lineLengthRatio) {
+	public IntraNewlineProperty(int newlines, List<String> relativeIndention, double length) {
 		this.newlines = newlines;
 		this.relativeIndention = relativeIndention;
-		this.lineLengthRatio = lineLengthRatio;
+		this.length = length;
 	}
 
-
+	public boolean isBreakAfter(String tokenStr) {
+		if (breakAfter.containsKey(tokenStr)) return breakAfter.get(tokenStr);
+		return false; // 默认在token前面换行
+	}
 
 	public String getRelativeIndention(int line) {
 		if (relativeIndention == null) {
@@ -68,7 +59,8 @@ public class IntraNewlineProperty extends StyleProperty {
 		if (relativeIndention != null) {
 			parent.addAttribute("relativeIndention", String.join(",", relativeIndention));
 		}
-		parent.addAttribute("lineLengthRatio", String.valueOf(lineLengthRatio));
+		parent.addAttribute("length", String.valueOf(length));
+		parent.addAttribute("minLen", String.valueOf(minLen));
 	}
 
 	@Override
@@ -82,7 +74,8 @@ public class IntraNewlineProperty extends StyleProperty {
 		if (relativeIndentionStr != null) {
 			relativeIndention = Arrays.stream(relativeIndentionStr.split(",")).toList();
 		}
-		lineLengthRatio = Double.parseDouble(parent.attributeValue("lineLengthRatio"));
+		length = Double.parseDouble(parent.attributeValue("length"));
+		minLen = Double.parseDouble(parent.attributeValue("minLen"));
 	}
 
 	@Override
@@ -91,13 +84,14 @@ public class IntraNewlineProperty extends StyleProperty {
 		if (o == null || getClass() != o.getClass()) return false;
 		IntraNewlineProperty property = (IntraNewlineProperty) o;
 		return newlines == property.newlines
-				&& Double.compare(lineLengthRatio, property.lineLengthRatio) == 0
-				&& Objects.equals(relativeIndention, property.relativeIndention);
+				&& Double.compare(length, property.length) == 0
+				&& Objects.equals(relativeIndention, property.relativeIndention)
+				&& Double.compare(minLen, property.minLen) == 0;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(newlines, relativeIndention, lineLengthRatio);
+		return Objects.hash(newlines, relativeIndention, length, minLen);
 	}
 
 	public static class BreakLoc {

@@ -11,8 +11,9 @@
         if (probe.isConsumed()) {
             response.setHeader(
                     "X-Rate-Limit-Remaining",
+                    filterChain.doFilter(request, response),
                     stripNewlines(Newlines.stripAll(Long.toString(probe.getRemainingTokens()))));
-            filterChain.doFilter(request, response);
+
         } else {
             long waitForRefill = probe.getNanosToWaitForRefill() / 1_000_000_000;
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
