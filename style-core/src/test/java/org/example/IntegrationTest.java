@@ -82,4 +82,32 @@ public class IntegrationTest extends TestBase {
 			testCodeEqual(actual, gtPath);
 		}
 	}
+
+	@Test
+	void testCombination2() {
+		String dir = "src/test/sources/combination-test/test2";
+		String[] srcFiles = {
+				"f1.java",
+		};
+
+		String[] targetFiles = {
+				"style1",
+				"style1",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]));
+			if (true) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			testCodeEqual(actual, gtPath);
+//			break;
+		}
+	}
 }
