@@ -17,25 +17,28 @@ public class StmtComplexityChecker extends  Checker{
 	/**
 	 *
 	 * @param structure
-	 * @param args [placeholder name, The max number of statements, (permitted statement types...)]
+	 * @param args [placeholder name, min_stmt_num,  max_stmt_num, (permitted statement types...)]
 	 *             (permitted statement types...) is optional.
 	 *             Permitted statement types: SINGLE_STMT
+	 *             min_stmt_num and max_stmt_num are inclusive.
 	 * @param parser
 	 * @return
 	 */
 	@Override
 	protected boolean doCheck(EquivalentStructure structure, List<String> args, MyParser parser) {
-		String holderName = args.get(0);
-		int maxStmtNum = Integer.parseInt(args.get(1));
+		int index = 0;
+		String holderName = args.get(index++);
+		int minStmtNum = Integer.parseInt(args.get(index++));
+		int maxStmtNum = Integer.parseInt(args.get(index++));
 		List<PermittedStmtType> permittedStmtTypes = new ArrayList<>();
-		if (args.size() > 2) {
-			for (int i = 2; i < args.size(); i++) {
+		if (args.size() > index) {
+			for (int i = index; i < args.size(); i++) {
 				permittedStmtTypes.add(PermittedStmtType.valueOf(args.get(i)));
 			}
 		}
 
 		List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
-		if (realTrees.size() > maxStmtNum) {
+		if (realTrees.size() > maxStmtNum || realTrees.size() < minStmtNum) {
 			return false;
 		}
 		for (ParseTree tree : realTrees) {

@@ -78,6 +78,9 @@ public class EquivalentStructure {
 	}
 
 	public int getIndexOf(String style) {
+		if (style == null) {
+			return -1;
+		}
 		for (int i = 0; i < forests.size(); i++) {
 			if (Objects.equals(forests.get(i).getStyle(), style)) {
 				return i;
@@ -128,7 +131,7 @@ public class EquivalentStructure {
 				// 优化format
 				if (parser.getTokenStream() instanceof CommonTokenStream ts) {
 					ts.getTokens().forEach(t -> {
-						if (t.getType() == parser.getSemi() || t.getType() == parser.getRBrace()) {
+						if (t.getType() == parser.getSemi() || t.getType() == parser.getRBrace() || t.getType() == parser.getLBrace()) {
 							((ExtendToken) t).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
 						}
 					});

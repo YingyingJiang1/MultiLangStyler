@@ -89,15 +89,17 @@ class NewlineStylerTest extends TestBase {
 	}
 
 	@Test
-	void testBatch() {
-		String dir = "src/test/sources/format/newline/batch";
+	void testCombination() {
+		String dir = "src/test/sources/combination-test/test1";
 		String[] srcFiles = {
-//				"f1.java",
+				"f1.java",
 				"f2.java",
+				"f3.java",
 		};
 
 		String[] targetFiles = {
-//				"style1",
+				"style1",
+				"style1",
 				"style1",
 		};
 
@@ -109,7 +111,7 @@ class NewlineStylerTest extends TestBase {
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
 					IndentionStyler.class));
-			if (true) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

@@ -273,8 +273,13 @@ public class StructureStyler extends Styler {
     }
 
     private StructPreferenceContext extractContext(EquivalentStructure structure) {
+        StyleCategory category = null;
+        try {
+            category = StyleCategory.valueOf(structure.getCategory());
+        } catch (Exception e) {
 
-        return new StructPreferenceContext(structure.getCategory(), structure.getId());
+        }
+        return new StructPreferenceContext(category, structure.getId());
     }
 
     private int getTargetIndex(StructPreferenceProperty property, EquivalentStructure structure) {

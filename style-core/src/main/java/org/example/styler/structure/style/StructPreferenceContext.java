@@ -9,7 +9,7 @@ import java.util.Objects;
 public class StructPreferenceContext extends StyleContext {
     // 两个属性互斥，styleCategory优先级更高
     int structID = -1;
-    String styleCategory = null;
+    StyleCategory styleCategory = null;
 
     public StructPreferenceContext() {
     }
@@ -18,11 +18,11 @@ public class StructPreferenceContext extends StyleContext {
         this.structID = structID;
     }
 
-    public StructPreferenceContext(String styleCategory) {
+    public StructPreferenceContext(StyleCategory styleCategory) {
         this.styleCategory = styleCategory;
     }
 
-    public StructPreferenceContext(String styleCategory, int structID) {
+    public StructPreferenceContext(StyleCategory styleCategory, int structID) {
         this.styleCategory = styleCategory;
         this.structID = structID;
     }
@@ -31,7 +31,7 @@ public class StructPreferenceContext extends StyleContext {
         return structID;
     }
 
-    public String getStyleCategory() {
+    public StyleCategory getStyleCategory() {
         return styleCategory;
     }
 
@@ -41,7 +41,7 @@ public class StructPreferenceContext extends StyleContext {
             parent.addAttribute("id", Integer.toString(structID));
         }
         if(styleCategory != null) {
-            parent.addAttribute("category", styleCategory);
+            parent.addAttribute("category", styleCategory.toString());
         }
     }
 
@@ -51,7 +51,12 @@ public class StructPreferenceContext extends StyleContext {
             structID = Integer.parseInt(parent.attributeValue("id"));
         }
         if (parent.attribute("category") != null) {
-            styleCategory = parent.attributeValue("category");
+            try {
+                styleCategory = StyleCategory.valueOf(parent.attributeValue("category"));
+            } catch (Exception e) {
+                styleCategory = null;
+            }
+
         }
     }
 

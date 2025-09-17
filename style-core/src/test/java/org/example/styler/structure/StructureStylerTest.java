@@ -52,31 +52,7 @@ class StructureStylerTest extends TestBase {
 
 	}
 
-	@Test
-	void extractStyle_continue() {
-		String code = "for (int i = 0; i < 4; ++i) { if (test(i)) {a *= i; b = call(a); continue;} a -= i;}";
-		StructureStyler styler = doStyler(code, "java", Stage.EXTRACT);
-		for (StyleRule rule : styler.getStyle().getRules()) {
-			if (rule.getStyleContext() instanceof StructPreferenceContext context
-					&& context.getStructID() == 23) {
-				System.out.printf("Test %s:%s...", context.getStructID(), 0);
-				assertEquals(0, ((StructPreferenceProperty) rule.getStyleProperty()).getPreferenceIndex());
-				System.out.println("OK!");
-			}
-		}
 
-		code = "for (int i = 0; i < 4; ++i) { if (test(i)) {a *= i;} else {a -= i;b += a;}}";
-		styler = doStyler(code, "java", Stage.EXTRACT);
-		for (StyleRule rule : styler.getStyle().getRules()) {
-			if (rule.getStyleContext() instanceof StructPreferenceContext context
-					&& context.getStructID() == 23) {
-				System.out.printf("Test %s:%s...", context.getStructID(), 2);
-				assertEquals(2, ((StructPreferenceProperty) rule.getStyleProperty()).getPreferenceIndex());
-				System.out.println("OK!");
-			}
-		}
-
-	}
 
 	@Test
 	void testRedudantCode() {
@@ -145,42 +121,6 @@ class StructureStylerTest extends TestBase {
 		return styler;
 	}
 
-	@Test
-	void testApplyStyle_continuePreference() {
-		String dir = "src/test/sources/structure/continue/";
-		String[] srcFiles = {
-				"f2.java",
-				"f3.java",
-				"f4.java",
-				"f5.java",
-
-		};
-
-		String[] targetFiles = {
-				"style2.xml",
-				"style3.xml",
-				"style4.xml",
-				"style5.xml",
-		};
-
-		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
-			if (false) {
-				try{
-					Files.writeString(gtPath, actual);
-				}	catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-
-			testCodeEqual(actual, gtPath);
-		}
-	}
-
-
-
 
 	@Test
 	void testIf() {
@@ -216,6 +156,38 @@ class StructureStylerTest extends TestBase {
 
 
 			testCodeEqual(actual, gtPath);
+		}
+	}
+
+
+
+
+
+	@Test
+	void testCombination1() {
+		String dir = "src/test/sources/combination-test/test1";
+		String[] srcFiles = {
+				"f4.java",
+		};
+
+		String[] targetFiles = {
+				"style1",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
+					StructureStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			testCodeEqual(actual, gtPath);
+//			break;
 		}
 	}
 

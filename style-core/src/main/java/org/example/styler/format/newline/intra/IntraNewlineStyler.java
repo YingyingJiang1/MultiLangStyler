@@ -304,10 +304,9 @@ public class IntraNewlineStyler extends Styler {
 					Token cur = tokens.get(j);
 
 					if (cur.getText().endsWith("\n")) {
-						Collections.reverse(result);
 						return result;
 					}
-					result.add(cur);
+					result.add(0, cur);
 				}
 
 			}
@@ -326,7 +325,11 @@ public class IntraNewlineStyler extends Styler {
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
 		int rule = ctx.getRuleIndex();
 //		boolean isTopExpression = rule == parser.getRuleExpression() && ctx.getParent() != null && ctx.getParent().getParent() != null && parser.isStatement(ctx.getParent().getParent());
-		boolean isRelevantNode = parser.getRuleformalParameterList() == rule || rule == parser.getRuleLocalVarDeclaration() || rule == parser.getRuleParExpression() || parser.belongToSingleStmt(ctx);
+		boolean isRelevantNode = parser.getRuleformalParameterList() == rule
+				|| rule == parser.getRuleLocalVarDeclaration()
+				|| rule == parser.getRuleParExpression()
+				|| parser.belongToSingleStmt(ctx)
+				|| parser.getRuleAnnotationList() == rule;
 		return stage == Stage.EXTRACT && ctx == parser.getRoot() || isRelevantNode;
 	}
 }
