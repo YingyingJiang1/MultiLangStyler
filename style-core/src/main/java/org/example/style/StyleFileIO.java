@@ -41,6 +41,7 @@ public class StyleFileIO {
             Element root = document.getRootElement();
             programStyle.parseElement(root, parser);
             for (Style style : programStyle.getStyles()) {
+                style.fillStyle();
                 List<StyleContext> removedContexts = style.filterRules();
                 if (removedContexts != null) {
                     for (StyleContext context : removedContexts) {

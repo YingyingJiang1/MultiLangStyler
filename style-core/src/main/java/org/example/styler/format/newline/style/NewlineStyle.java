@@ -71,13 +71,17 @@ public class NewlineStyle extends CommonStyle {
 //					}
 
 					ruleSet.addRule(context, property);
-					lookupIndex.computeIfAbsent(nodeTypes, k -> new HashSet<>()).add(context);
 				}
 			}
 
 			nodeTypeMap = null;
 		}
 
+		for (StyleRule rule : ruleSet.getRules()) {
+			if (rule.getStyleContext() instanceof NewlineContext context) {
+				lookupIndex.computeIfAbsent(context.getNodeTypes(), k -> new HashSet<>()).add(context);
+			}
+		}
 	}
 
 	// 当某个property的区间被包含时，删除该property（因为从统计上来讲大概率是非dominant的）
