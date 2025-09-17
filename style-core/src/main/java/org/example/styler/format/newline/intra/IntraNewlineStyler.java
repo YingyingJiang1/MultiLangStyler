@@ -1,6 +1,7 @@
 package org.example.styler.format.newline.intra;
 
 import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
@@ -19,15 +20,15 @@ import org.example.utils.MathUtil;
 import org.example.utils.NodeUtil;
 import org.example.utils.TokenStreamUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * 专注于单个语法树节点内部的换行符使用习惯
  */
 public class IntraNewlineStyler extends Styler {
+	private Token topLevelIndention;
 	public IntraNewlineStyler() {
 //		executeWhenExit = false;
 		style = new IntraNewlineStyle();
@@ -40,6 +41,10 @@ public class IntraNewlineStyler extends Styler {
 			CharStream cs = parser.getTokenStream().getTokenSource().getInputStream();
 			int maxLen = Arrays.stream(cs.getText(Interval.of(0, cs.size())).split("\n")).mapToInt(String::length).max().orElseGet(() -> -1);
 			style.addRule(new IntraNewlineContext(maxLen), null);
+			Token firstToken = ((CommonTokenStream) parser.getTokenStream()).getTokens().get(0);
+			if ( firstToken.getType() == parser.getHws()) {
+				topLevelIndention = firstToken;
+			}
 		} else {
 			// 获取换行策略
 			ExtendContext targetNode = ctx;
@@ -82,10 +87,33 @@ public class IntraNewlineStyler extends Styler {
 
 			if (targetProperty.newlines == 1) {
 				// 按照新的策略添加换行
-				if (targetNode.getRuleIndex() == parser.getRuleformalParameterList()) {
-					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, List.of(parser.getRuleFormalParameter()));
+				if (parser.belongToMethodHead(targetNode.getRuleIndex())) {
+					Predicate<ParseTree> isBreakNode = new Predicate<ParseTree>() {
+						@Override
+						public boolean test(ParseTree node) {
+							if (node instanceof ExtendContext ctx){
+								int rule = ctx.getRuleIndex();
+								return rule == parser.getRuleFormalParameter();
+							}
+//							else if (node instanceof TerminalNode terminal) {
+//								return terminal.getText().equals("throws");
+//							}
+							return false;
+						}
+					};
+					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, isBreakNode);
 				} else {
-					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, List.of(parser.getRuleExpression()));
+					Predicate<ParseTree> isBreakNode = new Predicate<ParseTree>() {
+						@Override
+						public boolean test(ParseTree node) {
+							if (node instanceof ExtendContext ctx) {
+								int rule = ctx.getRuleIndex();
+								return rule == parser.getRuleExpression();
+							}
+							return false;
+						}
+					};
+					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, isBreakNode);
 				}
 			}
 		}
@@ -113,55 +141,58 @@ public class IntraNewlineStyler extends Styler {
 	}
 
 	private int doApply(ExtendContext node, int targetLineLen, IntraNewlineProperty targetProperty,
-						int succeedLineNum, MyParser parser, List<Integer> breakNodeTypes) {
+						int succeedLineNum, MyParser parser, Predicate<ParseTree> isBreakNode) {
 		IntraNewlineContext curContext = extractContext(node, parser);
 		// 当前长度不足，不用换行
 		if (curContext.length <= targetLineLen) {
 			return 0;
 		}
 
-		// 寻找当前节点的行拆分点
+		// 寻找当前节点的行拆分点并进行拆分
 		int breakIndex = 0;
-		while (breakIndex < node.getChildCount()) {
-			if (node.getChild(breakIndex) instanceof ExtendContext ctx) {
-				IntraNewlineContext context = extractContext(ctx, parser);
-				if (context.length >= targetProperty.minLen && breakNodeTypes.contains(ctx.getRuleIndex())) {
-					break;
+		Map<Integer, ExtendToken> breakIndex2NextStartTokenMap = new HashMap<>();
+		while (breakIndex < node.getChildCount() - 1) { // 禁止在最后一个子节点拆分
+			ParseTree cur = node.getChild(breakIndex);
+			IntraNewlineContext context = extractContext(cur, parser);
+			// 进行行拆分
+			if (context.length >= targetProperty.minLen && isBreakNode.test(cur)) {
+				ParseTree nextNode = node.getChild(breakIndex + 1);
+				ExtendToken breakToken = null, nextStartToken = null;
+				if (cur instanceof TerminalNode terminal) {
+					if (!targetProperty.isBreakAfter(terminal.getText()) && breakIndex - 1 >= 0) {
+						breakToken = NodeUtil.getStopToken(node.getChild(breakIndex - 1));
+						nextStartToken = (ExtendToken) terminal.getSymbol();
+					} else {
+						breakToken = (ExtendToken) terminal.getSymbol();
+						nextStartToken = NodeUtil.getStartToken(nextNode);
+					}
+				} else {
+					if (nextNode instanceof TerminalNode terminalNode && targetProperty.isBreakAfter(terminalNode.getText())
+							&& breakIndex + 2 < node.getChildCount()) {
+						breakToken = (ExtendToken) terminalNode.getSymbol();
+						nextStartToken = NodeUtil.getStartToken(node.getChild(breakIndex + 2));
+					} else {
+						breakToken = NodeUtil.getStopToken(node.getChild(breakIndex));
+						nextStartToken = NodeUtil.getStartToken(node.getChild(breakIndex + 1));
+					}
 				}
+
+				NewlineApplicator.addNewline(breakToken, targetProperty.newlines, parser);
+				breakIndex2NextStartTokenMap.put(breakIndex, nextStartToken);
 			}
 			++breakIndex;
 		}
 
 		int curLineNum = succeedLineNum;
-		// 递归处理breakIndex以及前面的子节点
-		for (int i = 0; i <= breakIndex; i++) {
+		for (int i = 0; i < node.getChildCount(); i++) {
+			// 递归处理子节点
 			if (node.getChild(i) instanceof ExtendContext child) {
-				curLineNum += doApply(child, targetLineLen, targetProperty, curLineNum, parser, breakNodeTypes);
+				curLineNum += doApply(child, targetLineLen, targetProperty, curLineNum, parser, isBreakNode);
 			}
-		}
-
-		// 拆分当前节点，禁止在当前节点最后一个子节点后面拆分
-		if (breakIndex + 1 < node.getChildCount()) {
-			ParseTree nextNode = node.getChild(breakIndex + 1);
-			ExtendToken breakToken = null, nextStartToken = null;
-			if (nextNode instanceof TerminalNode terminalNode && targetProperty.isBreakAfter(terminalNode.getText())
-					&& breakIndex + 2 < node.getChildCount()) {
-				breakToken = (ExtendToken) terminalNode.getSymbol();
-				nextStartToken = NodeUtil.getStartToken(node.getChild(breakIndex + 2));
-			} else {
-				breakToken = NodeUtil.getStopToken(node.getChild(breakIndex));
-				nextStartToken = NodeUtil.getStartToken(node.getChild(breakIndex + 1));
-			}
-
-			NewlineApplicator.addNewline(breakToken, targetProperty.newlines, parser);
-			curLineNum += 1;
-			nextStartToken.setExtraIndention(targetProperty.getRelativeIndention(curLineNum));
-		}
-
-		// 递归处理breakIndex后面的子节点
-		for (int i = breakIndex + 1; i < node.getChildCount(); i++) {
-			if (node.getChild(i) instanceof ExtendContext child) {
-				curLineNum += doApply(child, targetLineLen, targetProperty, curLineNum, parser, breakNodeTypes);
+			// 更新后继行号和相对缩进
+			if (breakIndex2NextStartTokenMap.get(i) != null) {
+				curLineNum += 1;
+				breakIndex2NextStartTokenMap.get(i).setExtraIndention(targetProperty.getRelativeIndention(curLineNum));
 			}
 		}
 
@@ -191,9 +222,9 @@ public class IntraNewlineStyler extends Styler {
 		}
 	}
 
-	private IntraNewlineContext extractContext(ExtendContext ctx, MyParser parser) {
-		int len = ctx.getText().length();
-		List<Token> tokensBefore = getSameLineTokensBefore(ctx, parser);
+	private IntraNewlineContext extractContext(ParseTree node, MyParser parser) {
+		int len = node.getText().length();
+		List<Token> tokensBefore = getSameLineTokensBefore(node, parser);
 		if (!tokensBefore.isEmpty()) {
 			len += tokensBefore.subList(1, tokensBefore.size()).stream().mapToInt(t -> t.getText().length()).sum();
 			// 长度不包含缩进，因为不同程序的缩进风格可能不一致
@@ -276,11 +307,15 @@ public class IntraNewlineStyler extends Styler {
 		return noNewlineProperty;
 	}
 
-	private List<Token> getSameLineTokensBefore(ExtendContext ctx, MyParser parser) {
-		Token start = ctx.getStart();
-		ParseTree node = ctx;
-		ParserRuleContext parent = ctx.getParent();
+	private List<Token> getSameLineTokensBefore(ParseTree targetNode, MyParser parser) {
 		List<Token> result = new ArrayList<>();
+		if (targetNode.getParent() == null) {
+			return result;
+		}
+
+		Token start = NodeUtil.getStartToken(targetNode);
+		ParseTree node = targetNode;
+		ParserRuleContext parent = (ParserRuleContext) targetNode.getParent();
 		// 向上遍历祖先：在每一层检查 node 的前面兄弟节点
 		while (parent != null) {
 			// 没有前置兄弟，向上一层继续
@@ -321,15 +356,67 @@ public class IntraNewlineStyler extends Styler {
 	}
 
 
+	private List<Token> getPrecedingLineToken(ExtendContext ctx, MyParser parser, int targetLineCount) {
+		int lineCount = 0;
+		Token start = ctx.getStart();
+		ParseTree node = ctx;
+		ParserRuleContext parent = ctx.getParent();
+		List<Token> result = new ArrayList<>();
+		// 向上遍历祖先：在每一层检查 node 的前面兄弟节点
+		while (parent != null) {
+			// 没有前置兄弟，向上一层继续
+			if (parent.getChildCount() == 1 || parent.children.indexOf(node) <= 0) {
+				node = parent;
+				parent = parent.getParent();
+				continue;
+			}
+
+			// 获取 parent 的 tokens（父节点内的线性 token 列表）
+			int nodeIndex = parent.children.indexOf(node);
+			for (int i = nodeIndex - 1; i >= 0; i--) {
+				List<Token> tokens = null;
+				if (parent.getChild(i) instanceof TerminalNode terminalNode) {
+					tokens = ((ExtendToken) terminalNode.getSymbol()).getContextTokens();
+				} else if (parent.getChild(i) instanceof ExtendContext extendContext) {
+					tokens = extendContext.getAllExpandedTokensRec();
+				}
+
+				for (int j = tokens.size() - 1; j >= 0; j--) {
+					Token cur = tokens.get(j);
+
+					if (cur.getText().endsWith("\n")) {
+						if (lineCount == targetLineCount) {
+							// 到达第一个token，添加顶层缩进
+							if (((ExtendContext) parser.getRoot()).getStart() == cur) {
+								result.add(0, topLevelIndention);
+							}
+							return result;
+						}
+						++lineCount;
+					}
+					result.add(0, cur);
+				}
+
+			}
+
+			// 这一层的所有前兄弟都扫描完毕，仍未找到换行，向上一层继续
+			node = parent;
+			parent = parent.getParent();
+		}
+
+		// 没有找到
+		return result;
+	}
+
+
 	@Override
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
 		int rule = ctx.getRuleIndex();
 //		boolean isTopExpression = rule == parser.getRuleExpression() && ctx.getParent() != null && ctx.getParent().getParent() != null && parser.isStatement(ctx.getParent().getParent());
-		boolean isRelevantNode = parser.getRuleformalParameterList() == rule
+		boolean isRelevantNode = parser.belongToMethodHead(rule)
 				|| rule == parser.getRuleLocalVarDeclaration()
 				|| rule == parser.getRuleParExpression()
-				|| parser.belongToSingleStmt(ctx)
-				|| parser.getRuleAnnotationList() == rule;
+				|| parser.belongToSingleStmt(ctx);
 		return stage == Stage.EXTRACT && ctx == parser.getRoot() || isRelevantNode;
 	}
 }

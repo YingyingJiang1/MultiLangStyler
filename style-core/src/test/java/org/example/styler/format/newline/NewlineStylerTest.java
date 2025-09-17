@@ -95,9 +95,11 @@ class NewlineStylerTest extends TestBase {
 				"f1.java",
 				"f2.java",
 				"f3.java",
+				"f5.java",
 		};
 
 		String[] targetFiles = {
+				"style1",
 				"style1",
 				"style1",
 				"style1",

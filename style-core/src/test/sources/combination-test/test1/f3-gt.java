@@ -3,8 +3,7 @@
     summary = "Convert a file to a PDF using LibreOffice",
     description =
     "This endpoint converts a given file to a PDF using LibreOffice API  Input:ANY"+ " Output:PDF Type:SISO")
-  public ResponseEntity<byte[]> processFileToPDF(@ModelAttribute GeneralFile generalFile)
-  throws Exception {
+  public ResponseEntity<byte[]> processFileToPDF(@ModelAttribute GeneralFile generalFile) throws Exception {
     MultipartFile inputFile = generalFile.getFileInput();
     // unused but can start server instance if startup time is to long
     // LibreOfficeListener.getInstance().start();
