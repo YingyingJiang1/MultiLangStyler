@@ -71,7 +71,7 @@ public class IntraNewlineStyle extends CommonStyle {
 		if (lineLens.size() > 0 && lineRatios.size() > 0) {
 			lineRatios = lineRatios.stream().sorted().toList();
 			property.length = MathUtil.median(lineRatios);
-			property.minLen = MathUtil.median(minLens);
+			property.minLen = Double.max(MathUtil.median(minLens), 20); // 防止异常情况
 
 //			property.breakAfter = new HashMap<>();
 //			for (Map.Entry<String, int[]> entry : breakCount.entrySet()) {

@@ -41,18 +41,21 @@ public class StmtComplexityChecker extends  Checker{
 		if (realTrees.size() > maxStmtNum || realTrees.size() < minStmtNum) {
 			return false;
 		}
-		for (ParseTree tree : realTrees) {
-			boolean permitted = false;
-			for (PermittedStmtType type : permittedStmtTypes) {
-				if (type.isType(tree, parser)) {
-					permitted = true;
-					break;
+		if (!permittedStmtTypes.isEmpty()) {
+			for (ParseTree tree : realTrees) {
+				boolean permitted = false;
+				for (PermittedStmtType type : permittedStmtTypes) {
+					if (type.isType(tree, parser)) {
+						permitted = true;
+						break;
+					}
+				}
+				if (!permitted) {
+					return false;
 				}
 			}
-			if (!permitted) {
-				return false;
-			}
 		}
+
 		return true;
 	}
 

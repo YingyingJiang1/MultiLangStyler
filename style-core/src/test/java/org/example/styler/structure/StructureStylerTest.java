@@ -167,10 +167,12 @@ class StructureStylerTest extends TestBase {
 	void testCombination1() {
 		String dir = "src/test/sources/combination-test/test1";
 		String[] srcFiles = {
-				"f4.java",
+//				"f4.java",
+				"f7.java",
 		};
 
 		String[] targetFiles = {
+				"style1",
 				"style1",
 		};
 
@@ -178,7 +180,7 @@ class StructureStylerTest extends TestBase {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
 					StructureStyler.class));
-			if (false) {
+			if (true) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
