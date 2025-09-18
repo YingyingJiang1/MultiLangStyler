@@ -70,7 +70,7 @@ public class OptionalBraceStyler extends BodyStyler {
                     // Add {}
 //                    TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
 //                    ExtendContext block = factory.createBlock((ExtendContext) body.getParent());
-                    ExtendContext bracedStmt = ParseTreeUtil.getInstance().encapsulateStmtWithBrace(body, parser);
+                    ExtendContext bracedBody = ParseTreeUtil.getInstance().encapsulateStmtWithBrace(body, parser);
 //                    TerminalNode lb = factory.createTerminal(parser.getTokenFactory().create(parser.getLBrace(), "{"));
 //                    TerminalNode rb = factory.createTerminal(parser.getTokenFactory().create(parser.getRBrace(), "}"));
 //                    List<ParseTree> children = new ArrayList<>();
@@ -78,7 +78,7 @@ public class OptionalBraceStyler extends BodyStyler {
 //                    children.add(body);
 //                    children.add(rb);
 //                    block.addChildren(children);
-                    typeNode.replaceChild(body, bracedStmt);
+                    typeNode.replaceChild(body, bracedBody);
 
                     RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 } else if (!targetProperty.useBrace) {
@@ -122,7 +122,8 @@ public class OptionalBraceStyler extends BodyStyler {
     protected Set<Integer> getRelevantRules(MyParser parser) {
         if (relevantRules == null) {
             relevantRules = new HashSet<>(List.of(
-                    parser.getRuleIfElseStmt(), parser.getRuleIfStmt(), parser.getRuleWhileStmt(), parser.getRuleForStmt()
+                    parser.getRuleIfElseStmt(), parser.getRuleIfStmt(), parser.getRuleWhileStmt(), parser.getRuleForStmt(),
+                    parser.getRuleDoWhileStmt()
             ));
         }
         return relevantRules;

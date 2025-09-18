@@ -69,7 +69,8 @@ public class BodyLayoutStyler extends BodyStyler {
 			List<Token> tokens = ((ExtendContext) targetAncestor).getAllTokensRec();
 			BodyLayoutProperty property = extractProperty(tokens, startToken, stopToken, parser);
 
-			if (style.getProperty(styleContext) instanceof BodyLayoutProperty targetProperty ) {
+			if (style.getProperty(styleContext) instanceof BodyLayoutProperty targetProperty
+					&& property != null ) {
 				if (startToken != null) {
 					if (property.beforeLB != targetProperty.beforeLB) {
 						Token targetToken = tokens.get(tokens.indexOf(startToken) - 1);

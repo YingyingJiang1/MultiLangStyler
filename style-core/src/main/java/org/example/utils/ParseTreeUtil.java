@@ -226,20 +226,17 @@ public class ParseTreeUtil {
 
   public ExtendContext encapsulateStmtWithBrace(ExtendContext stmtCtx, MyParser parser) {
     ExtendContext parent = (ExtendContext) stmtCtx.getParent();
+    Token stop = stmtCtx.getStop();
 
     ExtendContext newStmt = TreeNodeFactoryGetter.getFactory(parser).createStatement(parent);
 
     ExtendContext blockNode = TreeNodeFactoryGetter.getFactory(parser).createBlock(newStmt);
-    Token lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
-    Token rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
+    ExtendToken lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
+    ExtendToken rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
     // Add Format tokens
-    if (lBrace instanceof ExtendToken extendToken) {
-      extendToken.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
-    }
-    if (rBrace instanceof ExtendToken extendToken) {
-      extendToken.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
-      extendToken.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
-    }
+//    lBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+//    rBrace.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+//    rBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 
 //    ((ExtendToken) lBrace).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
 //    ((ExtendToken) rBrace).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
@@ -253,6 +250,44 @@ public class ParseTreeUtil {
 
     newStmt.addChild(blockNode);
     parent.replaceChild(stmtCtx, newStmt);
+
+    // 修正{附近的context tokens
+    while (parent != null && parent.getStart() == lBrace) {
+      if (parent.getParent() == null) {
+        break;
+      }
+      parent = (ExtendContext) parent.getParent();
+    }
+    List<Token> tokens = parent.getAllTokensRec();
+    int lbIndex = tokens.indexOf(lBrace);
+    if (lbIndex - 1 >= 0 &&  tokens.get(lbIndex - 1) instanceof ExtendToken leftToken) {
+      List<Token> movenTokens = leftToken.getContextTokens().subList(leftToken.indexInContextTokens() + 1, leftToken.getContextTokens().size());
+      lBrace.getContextTokens().addAll(movenTokens);
+      leftToken.getContextTokens().removeAll(movenTokens);
+    }
+
+    // 移除空语句
+    if (stmtCtx.getChild(0) instanceof TerminalNode terminal) {
+      blockNode.removeChildIf(e -> e == stmtCtx);
+      if (terminal.getSymbol() instanceof ExtendToken extendToken) {
+        List<Token> moveTokens = extendToken.getContextTokens().subList(extendToken.indexInContextTokens() + 1, extendToken.getTrailingCommentIndex(parser) + 1);
+        lBrace.getContextTokens().addAll(moveTokens);
+      }
+    }
+    // 修正}附近的context tokens
+    if (stop instanceof ExtendToken extendToken) {
+      int trailingCommentIndex = extendToken.getTrailingCommentIndex(parser);
+      int targetIndex = 0;
+      if (trailingCommentIndex >= 0) {
+        targetIndex = trailingCommentIndex;
+      } else {
+        targetIndex = extendToken.indexInContextTokens();
+      }
+      List<Token> moveTokens = extendToken.getContextTokens().subList(targetIndex + 1, extendToken.getContextTokens().size());
+      // AddAll 和removeAll操作不能变更顺序，否则会出错
+      rBrace.getContextTokens().addAll(moveTokens);
+      extendToken.getContextTokens().removeAll(moveTokens);
+    }
 
     return newStmt;
   }

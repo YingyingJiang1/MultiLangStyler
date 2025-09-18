@@ -307,7 +307,7 @@ public class BlankLineStyler extends Styler {
     private int getNewlineAfter(ExtendContext parent, AdjacentCodeBlock.CodeBlock info, MyParser parser) {
         int count = 0;
         // line comment has a newline at the end, so sub 1.
-        boolean hasTrailingLineComment = info.token.indexOfLastTokenAfterIf(type -> type == parser.getLineComment()) > 0;
+        boolean hasTrailingLineComment = info.token.indexOfFirstTokenAfterIf(type -> type == parser.getLineComment()) > 0;
         if(hasTrailingLineComment) {
             count = 1;
         }

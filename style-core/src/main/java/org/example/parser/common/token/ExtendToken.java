@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 /*
@@ -136,7 +135,7 @@ public class ExtendToken extends CommonToken {
         return  ret;
     }
 
-    public int indexOfLastTokenAfterIf(Predicate<Integer> cond) {
+    public int indexOfFirstTokenAfterIf(Predicate<Integer> cond) {
         int ret = -1;
         if (contextTokens != null) {
             int start = contextTokens.indexOf(this);
