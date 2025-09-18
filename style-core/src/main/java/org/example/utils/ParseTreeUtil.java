@@ -253,6 +253,9 @@ public class ParseTreeUtil {
     newStmt.addChild(blockNode);
     parent.replaceChild(stmtCtx, newStmt);
 
+    newStmt.updateStartToken();
+    newStmt.updateStopToken();
+
     // 修正{附近的context tokens
     while (parent != null && parent.getStart() == lBrace) {
       if (parent.getParent() == null) {
@@ -317,6 +320,7 @@ public class ParseTreeUtil {
       innerStmt.updateStartToken();
     }
 
+    // 把lbrace后面的内容移到）后面，如果内部是空语句，那么仅把lbrace后面的注释内容移到空语句后面
     ExtendToken lbBrace = (ExtendToken) block.getStart();
     ExtendToken preToken = getPreToken(stmtCtx, lbBrace);
     if (isEmptyStmt && innerStmt.getStop() instanceof ExtendToken stmtEndToken) {
@@ -329,10 +333,13 @@ public class ParseTreeUtil {
       fixContextTokensWhenRemove(preToken, lbBrace, parser);
     }
 
+    // 把rbrace后面内容移到内部语句的最后一个token后面，注意检查合并后的换行符
     ExtendToken rbBrace = (ExtendToken) block.getStop();
     fixContextTokensWhenRemove((ExtendToken) innerStmt.getStop(), rbBrace, parser);
 
     parent.replaceChild(stmtCtx, innerStmt);
+    stmtCtx.updateStartToken();
+    stmtCtx.updateStopToken();
     return innerStmt;
   }
 
@@ -443,13 +450,13 @@ public class ParseTreeUtil {
 
   private void fixContextTokensWhenRemove(ExtendToken leftToken, ExtendToken removedToken, MyParser parser) {
     if (leftToken != null) {
-      int targetInex = removedToken.indexInContextTokens() + 1;
+//      int targetInex = removedToken.indexInContextTokens() + 1;
+      int targetInex = removedToken.indexOfFirstTokenAfterIf(parser::belongToComment);
       if (targetInex >= 0) {
         List<Token> movenTokens = removedToken.getContextTokens().subList(targetInex, removedToken.getContextTokens().size());
         leftToken.addAllContextTokens(movenTokens, parser);
         removedToken.getContextTokens().removeAll(movenTokens);
       }
-
     }
 
   }

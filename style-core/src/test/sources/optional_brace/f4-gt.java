@@ -4,6 +4,8 @@ public class BraceExample {
 		int y = 10;
 		int sum = 0;
 
+
+
 		if (x > 0) 
 			sum += x;
 		else 
@@ -31,7 +33,6 @@ public class BraceExample {
 				sum = x;
 			else 
 				sum = y;
-
 		}
 
 		if (x == y) 
@@ -44,7 +45,6 @@ public class BraceExample {
 				continue;
 			else 
 				sum += i;
-
 		}
 
 		int result = 0;

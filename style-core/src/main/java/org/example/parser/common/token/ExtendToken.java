@@ -232,10 +232,9 @@ public class ExtendToken extends CommonToken {
         }
         for (Token token : tokens) {
             ExtendToken lastToken = (ExtendToken) contextTokens.get(contextTokens.size() - 1);
-            if (lastToken.getType() == token.getType()) {
-                if (token.getType() == parse.getHws() || token.getType() == parse.getVws()) {
+            if (lastToken.getType() == token.getType() &&
+             (token.getType() == parse.getHws() || token.getType() == parse.getVws())) {
                     lastToken.setText(lastToken.getText() + token.getText());
-                }
             } else {
                 contextTokens.add(token);
             }

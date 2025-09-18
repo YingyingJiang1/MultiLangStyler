@@ -29,6 +29,8 @@ public class NewlineApplicator {
 						break;
 					}
 				}
+			} else {
+				i++;
 			}
 			token.addToken(i, vws);
 			return vws;
