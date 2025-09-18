@@ -87,15 +87,7 @@ public class OptionalBraceStyler extends BodyStyler {
                             (optionalBraceContext.bodySizeType == BodySizeType.EMPTY
                                     || optionalBraceContext.bodySizeType == BodySizeType.ONE_SINGLE_STMT);
                     if (isBraceRemovable) {
-                        ExtendContext innerStmt = specificBody.getFirstCtxChildIf(t -> true);
-                        // 添加空语句
-                        if (innerStmt == null) {
-                            TreeNodeFactory factory = parser.getTreeNodeFactory();
-                            innerStmt = factory.createStatement(ctx);
-                            ExtendToken semiToken = parser.getTokenFactory().create(parser.getSemi(), ";");
-                            semiToken.addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
-                            innerStmt.addChild(factory.createTerminal(semiToken));
-                        }
+                        ExtendContext innerStmt = ParseTreeUtil.getInstance().removeBraceOfStmt(body, parser);
                         ctx.replaceChild(body, innerStmt);
 
                         RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());

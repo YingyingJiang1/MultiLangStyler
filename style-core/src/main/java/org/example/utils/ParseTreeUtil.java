@@ -1,6 +1,7 @@
 package org.example.utils;
 
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -9,6 +10,7 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.factory.ExtendTokenFactory;
 import org.example.parser.common.factory.TreeNodeFactoryGetter;
+import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.common.token.ExtendToken;
 import org.example.utils.editor.NodeEditorFactory;
 import org.slf4j.Logger;
@@ -292,6 +294,40 @@ public class ParseTreeUtil {
     return newStmt;
   }
 
+
+  public ExtendContext removeBraceOfStmt(ExtendContext stmtCtx, MyParser parser) {
+
+    ExtendContext block = parser.getSpecificStmt(stmtCtx);
+    ExtendContext innerStmt = block.getFirstCtxChildIf(t -> true);
+    ExtendContext parent = new ExtendContext();
+    if (stmtCtx.getParent() instanceof ExtendContext) {
+      parent = (ExtendContext) stmtCtx.getParent();
+    }
+
+    // 添加空语句
+    boolean isEmptyStmt = false;
+    if (innerStmt == null) {
+      isEmptyStmt = true;
+      TreeNodeFactory factory = parser.getTreeNodeFactory();
+      innerStmt = factory.createStatement(parent);
+      ExtendToken semiToken = parser.getTokenFactory().create(parser.getSemi(), ";");
+      semiToken.addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+      innerStmt.addChild(factory.createTerminal(semiToken));
+      innerStmt.updateStopToken();
+      innerStmt.updateStartToken();
+    }
+
+    ExtendToken lbBrace = (ExtendToken) block.getStart();
+    ExtendToken preToken = getPreToken(stmtCtx, lbBrace);
+    fixContextTokensWhenRemove(preToken, lbBrace, parser);
+
+    ExtendToken rbBrace = (ExtendToken) block.getStop();
+    fixContextTokensWhenRemove((ExtendToken) innerStmt.getStop(), rbBrace, parser);
+
+    parent.replaceChild(stmtCtx, innerStmt);
+    return innerStmt;
+  }
+
   public static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
     generateTokensRec(root, tokens, parser);
     updateTokenLocation(tokens);
@@ -332,6 +368,23 @@ public class ParseTreeUtil {
         generateTokens(child, tokens, parser);
       }
     }
+  }
+
+  public ExtendToken getPreToken(ExtendContext ctx, Token targetToken) {
+    ParserRuleContext parent = ctx.getParent();
+    while (parent != null && parent.getStart() == targetToken) {
+      if (parent.getParent() == null) {
+        break;
+      }
+      parent = parent.getParent();
+    }
+
+    if (parent == null) {
+      return null;
+    }
+    List<Token> tokens = ((ExtendContext) parent).getAllTokensRec();
+    int index = tokens.indexOf(targetToken) -1;
+    return index >= 0 ? (ExtendToken) tokens.get(index) : null;
   }
 
   public static void updateTokenLocation(List<Token> tokens) {
@@ -380,6 +433,20 @@ public class ParseTreeUtil {
         toNiceFormat(child, parser);
       }
     }
+  }
+
+
+  private void fixContextTokensWhenRemove(ExtendToken leftToken, ExtendToken removedToken, MyParser parser) {
+    if (leftToken != null) {
+      int targetInex = removedToken.indexInContextTokens() + 1;
+      if (targetInex >= 0) {
+        List<Token> movenTokens = removedToken.getContextTokens().subList(targetInex, removedToken.getContextTokens().size());
+        leftToken.addAllContextTokens(movenTokens, parser);
+        removedToken.getContextTokens().removeAll(movenTokens);
+      }
+
+    }
+
   }
 
 

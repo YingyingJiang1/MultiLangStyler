@@ -97,21 +97,26 @@ public abstract class BodyStyler extends Styler {
         if (parser.isBody(body)) {
             return body.getAllChildContextsIf(Objects::nonNull).isEmpty() ? BodySizeType.EMPTY : BodySizeType.MULTI_STMTS;
         } else {
+            List<ExtendContext> stmts = null;
             ExtendContext specificNode = null;
             if (parser.isStatement(body)) {
                 specificNode = parser.getSpecificStmt(body);
+                if (parser.isStatement(specificNode)) { // 空语句
+                    stmts = new ArrayList<>();
+                } else if (parser.isBlock(specificNode)) {
+                    stmts = specificNode.getAllChildContextsIf(parser::isStatement);
+                } else {
+                    stmts = List.of(specificNode);
+                }
             } else if (parser.isBlock(body)) {
-                specificNode = body;
+                stmts = body.getAllChildContextsIf(parser::isStatement);
             } else {
                 specificNode = body.getFirstCtxChildIf(parser::isBlock);
+                stmts = specificNode.getAllChildContextsIf(parser::isStatement);
             }
 
-            if (specificNode == null) {
-                LoggerFactory.getLogger(this.getClass()).error("Exception case in {}$getBodySizeType, body type: {}", this.getClass().getSimpleName(), body.getClass().getSimpleName());
-                return null;
-            }
 
-            List<ExtendContext> stmts = specificNode.getAllChildContextsIf(parser::isStatement); // Exclude LBRACE and RBRACE.
+
             int stmtNum = stmts.size();
             if (stmtNum == 0) {
                 return BodySizeType.EMPTY;

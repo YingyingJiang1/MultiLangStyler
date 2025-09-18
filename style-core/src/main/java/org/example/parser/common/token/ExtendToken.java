@@ -181,18 +181,14 @@ public class ExtendToken extends CommonToken {
             return -1;
         }
 
-        int i = 0;
-        boolean isTrailing = true;
-        for (; i < contextTokens.size(); i++) {
+        for ( int i = indexInContextTokens() + 1; i < contextTokens.size(); i++) {
             if (parser.belongToComment(contextTokens.get(i).getType())) {
-                if (isTrailing) {
-                    return i + 1;
-                }
-                break;
+                return i;
             }
             if (contextTokens.get(i).getText().contains("\n")) {
-                isTrailing = false;
+                return -1;
             }
+
         }
         return -1;
     }
@@ -227,5 +223,22 @@ public class ExtendToken extends CommonToken {
 
     public void setExtraIndention(String str) {
         this.indention = str;
+    }
+
+    public void addAllContextTokens(List<Token> tokens, MyParser parse) {
+        if (contextTokens == null) {
+            contextTokens = new ArrayList<>();
+            contextTokens.add(this);
+        }
+        for (Token token : tokens) {
+            ExtendToken lastToken = (ExtendToken) contextTokens.get(contextTokens.size() - 1);
+            if (lastToken.getType() == token.getType()) {
+                if (token.getType() == parse.getHws() || token.getType() == parse.getVws()) {
+                    lastToken.setText(lastToken.getText() + token.getText());
+                }
+            } else {
+                contextTokens.add(token);
+            }
+        }
     }
 }

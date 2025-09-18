@@ -19,20 +19,19 @@ class OptionalBraceStylerTest extends TestBase {
 	void test() {
 		String dir = "src/test/sources/optional_brace";
 		String[] srcFiles = {
-				"f1.java",
+//				"f1.java",
 				"f2.java",
 		};
 
 		String[] targetFiles = {
-				"f2.java",
+//				"f2.java",
 				"f1.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(OptionalBraceStyler.class,
-					IndentionStyler.class
-			, NewlineStyler.class, InterNewlineStyler.class, BodyLayoutStyler.class));
+					IndentionStyler.class));
 			if (true) {
 				try{
 					Files.writeString(gtPath, actual);

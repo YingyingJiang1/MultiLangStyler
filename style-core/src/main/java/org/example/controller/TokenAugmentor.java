@@ -88,6 +88,8 @@ public class TokenAugmentor {
 			boolean isTrailingComment = true;
 			int insertionPoint = token.indexInContextTokens() + 1;
 			token.addTokens(insertionPoint, contextTokens);
+
+
 		}
 
 	}
