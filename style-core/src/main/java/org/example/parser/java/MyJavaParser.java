@@ -589,6 +589,17 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public int getRuleCatchClause() {
+        return JavaParser.RULE_catchClause;
+    }
+
+    @Override
+    public int getRuleFinallyBlock() {
+        return JavaParser.RULE_finallyBlock;
+    }
+
+
+    @Override
     public int getRuleElementValueArrayInitializer() {
         return JavaParser.RULE_elementValueArrayInitializer;
     }

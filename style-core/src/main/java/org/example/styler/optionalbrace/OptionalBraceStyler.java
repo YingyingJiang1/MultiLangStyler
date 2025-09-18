@@ -100,16 +100,27 @@ public class OptionalBraceStyler extends BodyStyler {
         return ctx;
     }
 
+    /**
+     *
+     * @param typeNode a specific statement node
+     * @param parser
+     * @return
+     */
     @Override
     protected List<ExtendContext> getBodyNodes(ExtendContext typeNode, MyParser parser) {
         List<ExtendContext> bodies = new ArrayList<>();
 
-        // 特殊处理if-else
-        if (parser.getSpecificStmtType(typeNode) == parser.getRuleIfElseStmt()) {
-
+        // 特殊处理if-else, 如果最后一个stmt节点为if或者if-else类型，那么不属于当前语句的body
+        if (typeNode.getRuleIndex() == parser.getRuleIfElseStmt()) {
+            ExtendContext lastStmt = (ExtendContext) typeNode.getChild(typeNode.getChildCount() - 1);
+            int rule = parser.getSpecificStmtType(lastStmt);
+            if (rule == parser.getRuleIfStmt() || rule == parser.getRuleIfElseStmt()) {
+                return List.of(typeNode.getFirstInnerChildByType(parser.getRuleStmt()));
+            }
         }
+
         for (ParseTree child : typeNode.children) {
-            if (parser.isBlock(child) || parser.isBody(child) || parser.isStatement(child) || parser.isCatchClause(child)) {
+            if (parser.isBlock(child) || parser.isBody(child) || parser.isStatement(child)) {
                 bodies.add((ExtendContext) child);
             }
         }

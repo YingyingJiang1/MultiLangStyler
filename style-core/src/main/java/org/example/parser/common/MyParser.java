@@ -139,6 +139,8 @@ public interface MyParser {
     int getRuleSyncStmt();
     int getRuleInitializer();
     int getRuleArrayInitializer();
+    int getRuleCatchClause();
+    int getRuleFinallyBlock();
     int getRuleElementValueArrayInitializer();
     int getRuleTryCatchStmt();
     int getRuleForStmt();

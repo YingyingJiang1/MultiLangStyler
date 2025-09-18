@@ -64,19 +64,28 @@ public abstract class BodyStyler extends Styler {
 
     /**
      *
-     * @param ctx declaration node or specific statement node
+     * @param typeNode declaration node or specific statement node
      * @param parser
      * @return
      */
-    protected List<ExtendContext> getBodyNodes(ExtendContext ctx, MyParser parser) {
-        int ruleIndex = ctx.getRuleIndex();
+    protected List<ExtendContext> getBodyNodes(ExtendContext typeNode, MyParser parser) {
+        int ruleIndex = typeNode.getRuleIndex();
         List<ExtendContext> bodies = new ArrayList<>();
+
+        // 特殊处理if-else, 如果最后一个stmt节点为if或者if-else类型，那么不属于当前语句的body
+        if (typeNode.getRuleIndex() == parser.getRuleIfElseStmt()) {
+            ExtendContext lastStmt = (ExtendContext) typeNode.getChild(typeNode.getChildCount() - 1);
+            int rule = parser.getSpecificStmtType(lastStmt);
+            if (rule == parser.getRuleIfStmt() || rule == parser.getRuleIfElseStmt()) {
+                return List.of(typeNode.getFirstInnerChildByType(parser.getRuleStmt()));
+            }
+        }
 
         if (ruleIndex == parser.getRuleBody() ||
                 ruleIndex == parser.getRuleArrayInitializer() || ruleIndex == parser.getRuleElementValueArrayInitializer()) {
-            bodies.add(ctx);
+            bodies.add(typeNode);
         }  else {
-            for (ParseTree child : ctx.children) {
+            for (ParseTree child : typeNode.children) {
                 if (parser.isBlock(child) || parser.isBody(child) || parser.isStatement(child) || parser.isCatchClause(child)) {
                     bodies.add((ExtendContext) child);
                 }

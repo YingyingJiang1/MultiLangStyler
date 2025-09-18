@@ -36,7 +36,9 @@ class OptionalBraceStylerTest extends TestBase {
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(OptionalBraceStyler.class,
-					IndentionStyler.class, InterNewlineStyler.class, NewlineStyler.class, BodyLayoutStyler.class,
+					IndentionStyler.class, InterNewlineStyler.class,
+					NewlineStyler.class,
+					BodyLayoutStyler.class,
 					IntraNewlineStyler.class));
 			if (true) {
 				try{

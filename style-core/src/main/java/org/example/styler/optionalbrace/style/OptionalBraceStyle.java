@@ -8,10 +8,6 @@ public class OptionalBraceStyle extends CommonStyle {
 		styleName = "optional_brace";
 	}
 
-	@Override
-	public void fillStyle() {
-		super.fillStyle();
-	}
 
 	@Override
 	protected StyleRule createRule(String propertyName) {

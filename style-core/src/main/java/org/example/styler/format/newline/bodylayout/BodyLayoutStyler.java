@@ -58,6 +58,7 @@ public class BodyLayoutStyler extends BodyStyler {
 				continue;
 			}
 
+			// 获取token list: ... startToken ... stopToken
 			Token startToken = bodyNode.getStart(), stopToken = bodyNode.getStop();
 			ParserRuleContext targetAncestor = ctx.getParent();
 			while (targetAncestor != null && targetAncestor.getChildCount() == 1) {
@@ -67,6 +68,8 @@ public class BodyLayoutStyler extends BodyStyler {
 				targetAncestor = ctx;
 			}
 			List<Token> tokens = ((ExtendContext) targetAncestor).getAllTokensRec();
+
+
 			BodyLayoutProperty property = extractProperty(tokens, startToken, stopToken, parser);
 
 			if (style.getProperty(styleContext) instanceof BodyLayoutProperty targetProperty
@@ -124,6 +127,8 @@ public class BodyLayoutStyler extends BodyStyler {
 					parser.getRuleSyncStmt(),
 					parser.getRuleInitializer(),
 					parser.getRuleArrayInitializer(),
+					parser.getRuleCatchClause(),
+					parser.getRuleFinallyBlock(),
 					parser.getRuleElementValueArrayInitializer()
 			));
 			relevantRules.addAll(parser.getCompoundStmts());
