@@ -134,8 +134,8 @@ public class TestBase {
 			System.out.println("Warning: invalid test! Ground truth is not found!");
 		}
 		try {
-			String expected = Files.readString(gtPath);
-			assertEquals(expected, actual);
+			String expected = Files.readString(gtPath).replace("\r\n", "\n");
+			assertEquals(expected, actual.replace("\r\n", "\n"));
 		} catch (Exception e)  {
 			logger.error("Test `{}` failed!", gtPath, e);
 		}

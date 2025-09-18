@@ -188,7 +188,6 @@ public class NewlineStyler extends Styler {
 					totalTextLen += getApproxLen(left, parser);
 				}
 			}
-
 		}
 
 		ExtendToken stop = NodeUtil.getStopToken(curNode);
@@ -217,6 +216,8 @@ public class NewlineStyler extends Styler {
 				return "BRANCH_STMT";
 			} else if (rule == parser.getRuleForStmt() || rule == parser.getRuleWhileStmt() || rule == parser.getRuleDoWhileStmt()) {
 				return "LOOP_STMT";
+			} else if (parser.isStatement(node) && node.getChild(0) instanceof TerminalNode) {
+				return "EMPTY_STMT";
 			} else if (parser.belongToSingleStmt(node) && rule != parser.getRuleLocalVarDeclarationStmt()) {
 				return "SINGLE_STMT";
 			}

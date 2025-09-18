@@ -46,7 +46,7 @@ public class InterNewlineStyler extends Styler {
 	private InterNewlineProperty extractProperty(ExtendContext ctx, MyParser parser) {
 		Token stop = ctx.getStop();
 		if (stop instanceof ExtendToken extendToken) {
-			long newlines = extendToken.getContextTokens().stream().filter(t -> t.getType() == parser.getVws())
+			long newlines = extendToken.getContextTokens().stream()
 					.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count()).sum();
 			return new InterNewlineProperty(newlines > 0);
 		}
@@ -55,6 +55,8 @@ public class InterNewlineStyler extends Styler {
 
 	@Override
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-		return parser.belongToSingleStmt(ctx) || parser.getRuleImportDeclaration() == ctx.getRuleIndex();
+		return parser.belongToSingleStmt(ctx) ||
+		parser.isStatement(ctx) && ctx.getText().equals(";") // empty statement
+				|| parser.getRuleImportDeclaration() == ctx.getRuleIndex();
 	}
 }

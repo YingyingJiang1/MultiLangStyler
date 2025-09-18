@@ -311,7 +311,7 @@ public class ParseTreeUtil {
       TreeNodeFactory factory = parser.getTreeNodeFactory();
       innerStmt = factory.createStatement(parent);
       ExtendToken semiToken = parser.getTokenFactory().create(parser.getSemi(), ";");
-      semiToken.addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+//      semiToken.addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
       innerStmt.addChild(factory.createTerminal(semiToken));
       innerStmt.updateStopToken();
       innerStmt.updateStartToken();
@@ -319,7 +319,15 @@ public class ParseTreeUtil {
 
     ExtendToken lbBrace = (ExtendToken) block.getStart();
     ExtendToken preToken = getPreToken(stmtCtx, lbBrace);
-    fixContextTokensWhenRemove(preToken, lbBrace, parser);
+    if (isEmptyStmt && innerStmt.getStop() instanceof ExtendToken stmtEndToken) {
+      List<Token> commentTokens = lbBrace.getContextTokens().stream().filter(t -> parser.belongToComment(t.getType())).toList();
+      if (!commentTokens.isEmpty()) {
+        stmtEndToken.getContextTokens().addAll(commentTokens);
+        lbBrace.getContextTokens().removeAll(commentTokens);
+      }
+    } else {
+      fixContextTokensWhenRemove(preToken, lbBrace, parser);
+    }
 
     ExtendToken rbBrace = (ExtendToken) block.getStop();
     fixContextTokensWhenRemove((ExtendToken) innerStmt.getStop(), rbBrace, parser);
@@ -349,15 +357,12 @@ public class ParseTreeUtil {
       tokens.addAll(contextTokens);
 
       // case: token1 format_token_1...format_token_n token2
-      // set hierarchy of format_token_n to token2's hierarchy, and set hierarchy of other format tokens to the greater hierarchy between token1 and token2.
-      if (idxInList - 1 >= 0 && tokens.get(idxInList - 1) instanceof ExtendToken extendToken && extendToken.getChannel() != parser.getDefaultChannel()) {
-        extendToken.setHierarchy(token.getHierarchy());
-      }
-      for (int i = idxInList - 2; i >= 0; i--) {
+      // 设置两个 token之间的语法无关token的hierarchy与后一个token的hierarchy保持一致
+      for (int i = idxInList - 1; i >= 0; i--) {
         if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
           break;
         }
-        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() < token.getHierarchy()) {
+        if (tokens.get(i) instanceof ExtendToken extendToken) {
           extendToken.setHierarchy(token.getHierarchy());
         }
       }

@@ -83,13 +83,8 @@ public class TokenAugmentor {
 			if (contextTokens.isEmpty()) {
 				continue;
 			}
-
-			// Find the first comment that is not trailing, tokens before the comment token are the context tokens of current default token,
-			boolean isTrailingComment = true;
 			int insertionPoint = token.indexInContextTokens() + 1;
 			token.addTokens(insertionPoint, contextTokens);
-
-
 		}
 
 	}

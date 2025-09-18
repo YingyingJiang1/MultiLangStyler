@@ -5,6 +5,7 @@ import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
 import org.example.styler.format.newline.inter.InterNewlineStyler;
+import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.optionalbrace.OptionalBraceStyler;
 import org.junit.jupiter.api.Test;
 
@@ -20,18 +21,23 @@ class OptionalBraceStylerTest extends TestBase {
 		String dir = "src/test/sources/optional_brace";
 		String[] srcFiles = {
 //				"f1.java",
-				"f2.java",
+//				"f2.java",
+				"f3.java",
+//				"f4.java",
 		};
 
 		String[] targetFiles = {
 //				"f2.java",
-				"f1.java",
+//				"f1.java",
+				"f4.java",
+//				"f3.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(OptionalBraceStyler.class,
-					IndentionStyler.class));
+					IndentionStyler.class, InterNewlineStyler.class, NewlineStyler.class, BodyLayoutStyler.class,
+					IntraNewlineStyler.class));
 			if (true) {
 				try{
 					Files.writeString(gtPath, actual);

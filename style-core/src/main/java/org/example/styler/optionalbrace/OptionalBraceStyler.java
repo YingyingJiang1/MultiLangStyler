@@ -36,13 +36,14 @@ public class OptionalBraceStyler extends BodyStyler {
 
             if (isBraceOptional(context)) {
                 style.addRule(context, property);
-
             }
         }
     }
 
     private boolean isBraceOptional(OptionalBraceContext context) {
-        return context.bodySizeType == BodySizeType.ONE_SINGLE_STMT || context.bodySizeType == BodySizeType.EMPTY;
+        return context.bodySizeType == BodySizeType.ONE_SINGLE_STMT
+                || context.bodySizeType == BodySizeType.EMPTY
+                || context.bodySizeType == BodySizeType.ONE_COMPOUND_STMT;
     }
 
     private OptionalBraceContext extractContext(ExtendContext bodyNode, ExtendContext typeNode, MyParser parser) {
@@ -102,6 +103,11 @@ public class OptionalBraceStyler extends BodyStyler {
     @Override
     protected List<ExtendContext> getBodyNodes(ExtendContext typeNode, MyParser parser) {
         List<ExtendContext> bodies = new ArrayList<>();
+
+        // 特殊处理if-else
+        if (parser.getSpecificStmtType(typeNode) == parser.getRuleIfElseStmt()) {
+
+        }
         for (ParseTree child : typeNode.children) {
             if (parser.isBlock(child) || parser.isBody(child) || parser.isStatement(child) || parser.isCatchClause(child)) {
                 bodies.add((ExtendContext) child);

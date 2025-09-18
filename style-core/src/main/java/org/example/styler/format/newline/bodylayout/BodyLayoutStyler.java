@@ -158,6 +158,8 @@ public class BodyLayoutStyler extends BodyStyler {
 		int beforeRB =  NodeUtil.countNewlineBetween((ExtendToken) tokens.get(stopIndex - 1), (ExtendToken) stopToken, parser) ;
 		int afterRB = stopIndex + 1 < tokens.size() ?  NodeUtil.countNewlineBetween((ExtendToken) stopToken, (ExtendToken) tokens.get(stopIndex + 1), parser) : 0;
 
+		beforeLB = Math.min(beforeLB, 1);
+		afterRB = Math.min(afterRB, 1);
 		return new BodyLayoutProperty(beforeLB, afterRB);
 	}
 
