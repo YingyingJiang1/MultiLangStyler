@@ -2,7 +2,7 @@ package org.example.controller;
 
 import org.example.styler.Styler;
 import org.example.styler.arrangement.modifier.ModifierOrderStyler;
-import org.example.styler.body.optionalbrace.OptionalBraceStyler;
+import org.example.styler.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;

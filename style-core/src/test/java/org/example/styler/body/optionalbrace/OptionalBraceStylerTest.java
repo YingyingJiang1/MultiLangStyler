@@ -1,15 +1,13 @@
 package org.example.styler.body.optionalbrace;
 
 import org.example.TestBase;
-import org.example.styler.structure.StructureStyler;
+import org.example.styler.optionalbrace.OptionalBraceStyler;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OptionalBraceStylerTest extends TestBase {
 

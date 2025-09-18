@@ -2,7 +2,6 @@ package org.example.styler.format.newline.bodylayout;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -10,6 +9,7 @@ import org.example.styler.Stage;
 import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.bodylayout.style.BodyContext;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
+import org.example.styler.format.newline.bodylayout.style.BodyLayoutStyle;
 import org.example.utils.NodeUtil;
 
 import java.util.*;
@@ -19,7 +19,7 @@ public class BodyLayoutStyler extends BodyStyler {
 
 	public BodyLayoutStyler() {
 //		executeWhenExit = false;
-		style.setStyleName("body_layout");
+		style = new BodyLayoutStyle();
 	}
 
 
@@ -28,7 +28,7 @@ public class BodyLayoutStyler extends BodyStyler {
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
 		List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);
 		for (ExtendContext bodyNode : bodyNodes) {
-			BodyContext styleContext = extractContext(bodyNode, ctx, parser);
+			BodyContext styleContext = extractBodyContext(bodyNode, ctx, parser);
 
 			Token startToken = bodyNode.getStart(), stopToken = bodyNode.getStop();
 
@@ -53,7 +53,7 @@ public class BodyLayoutStyler extends BodyStyler {
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
 		List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);
 		for (ExtendContext bodyNode : bodyNodes) {
-			BodyContext styleContext = extractContext(bodyNode, ctx, parser);
+			BodyContext styleContext = extractBodyContext(bodyNode, ctx, parser);
 			if (styleContext == null) {
 				continue;
 			}

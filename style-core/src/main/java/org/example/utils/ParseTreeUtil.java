@@ -290,8 +290,6 @@ public class ParseTreeUtil {
           extendToken.setHierarchy(token.getHierarchy());
         }
       }
-
-
     } else {
       ExtendContext ctx = (ExtendContext) root;
       NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);

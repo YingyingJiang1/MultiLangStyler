@@ -88,6 +88,7 @@ public class IntegrationTest extends TestBase {
 		String dir = "src/test/sources/combination-test/test2";
 		String[] srcFiles = {
 				"f1.java",
+				"f2.java"
 		};
 
 		String[] targetFiles = {

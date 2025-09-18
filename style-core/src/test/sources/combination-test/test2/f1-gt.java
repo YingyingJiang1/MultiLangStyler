@@ -1,11 +1,13 @@
     public SSLContext createSslContext() throws IOException, GeneralSecurityException {
         KeyManager[] keyManagers = null;
         TrustManager[] trustManagers = null;
-        if (sslVerifyMode == SslVerifyMode.FULL) this.sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
-        else if (sslVerifyMode == SslVerifyMode.CA) this.sslParameters.setEndpointIdentificationAlgorithm("");
-            else if (sslVerifyMode == SslVerifyMode.INSECURE) {
-                    trustManagers = new TrustManager[] { INSECURE_TRUST_MANAGER };
-                }
+        if (sslVerifyMode == SslVerifyMode.FULL) {
+            this.sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
+        } else if (sslVerifyMode == SslVerifyMode.CA) {
+            this.sslParameters.setEndpointIdentificationAlgorithm("");
+        } else if (sslVerifyMode == SslVerifyMode.INSECURE) {
+            trustManagers = new TrustManager[] { INSECURE_TRUST_MANAGER };
+        }
 
         if (keystoreResource != null) {
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);

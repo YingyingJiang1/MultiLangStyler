@@ -5,7 +5,6 @@ import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.bodylayout.style.BodyContext;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -30,7 +29,7 @@ public abstract class BodyStyler extends Styler {
      * @param parser
      * @return
      */
-    protected BodyContext extractContext(ExtendContext bodyNode, ExtendContext typeNode, MyParser parser) {
+    protected BodyContext extractBodyContext(ExtendContext bodyNode, ExtendContext typeNode, MyParser parser) {
         BodyTypeEnum bodyType = getBodyType(typeNode, parser);
 
         int bodyNodeIndex = typeNode.children.indexOf(bodyNode);

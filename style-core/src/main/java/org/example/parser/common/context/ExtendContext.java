@@ -304,7 +304,7 @@ public class ExtendContext extends ParserRuleContext {
         int targetIndex = -1;
         for (int i = 0; i < children.size(); i++) {
             ParseTree child = children.get(i);
-            if (child.equals(oldChild)) {
+            if (child == oldChild) {
                 targetIndex = i;
                 children.set(i, newChild);
                 newChild.setParent(this);
