@@ -2,7 +2,6 @@ package org.example.styler.arrangement.classmember;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.style.Style;
 import org.example.styler.Stage;
@@ -389,7 +388,7 @@ public class ArrangementStyler extends Styler {
 		}
 		ExtendContext idCtx = null;
 		if (parser.isFieldDeclaration(ctx)) {
-			idCtx = ctx.getContextRecIf(context -> parser.isIdentifier(context));
+			idCtx = ctx.getFirstContextRecIf(context -> parser.isIdentifier(context));
 		} else {
 			idCtx = ((ExtendContext) ctx.getChild(1)).getFirstInnerChildByType(parser.getRuleIdentifier());
 		}

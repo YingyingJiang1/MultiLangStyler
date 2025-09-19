@@ -1,21 +1,20 @@
 package org.example.styler.declaration.layout;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.apache.logging.log4j.spi.Terminable;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
-import org.example.style.InconsistencyInfo;
-import org.example.utils.ParseTreeUtil;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.common.token.ExtendToken;
-import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.layout.style.DeclarationLayoutContext;
 import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
-import org.example.styler.declaration.layout.style.DeclarationNumberStyle;
+import org.example.styler.declaration.layout.style.DeclarationLayoutStyle;
+import org.example.utils.ParseTreeUtil;
+import org.example.utils.searcher.NodeSearcherFactory;
+import org.example.utils.searcher.intf.VarDeclarationSearcher;
 
 import java.util.*;
 
@@ -23,7 +22,7 @@ public class DeclarationLayoutStyler extends Styler {
     private Map<DeclarationLayoutContext, Integer> maxLengthMap = new HashMap<>();
 
     public DeclarationLayoutStyler() {
-        style = new DeclarationNumberStyle();
+        style = new DeclarationLayoutStyle();
     }
 
 
@@ -34,80 +33,116 @@ public class DeclarationLayoutStyler extends Styler {
      */
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
-        ExtendContext declaratorsNode = ctx.getContextRecIf(parser::isVariableDeclarators);
-        if (declaratorsNode == null) {
-            return;
-        }
-        int decCount = (declaratorsNode.getChildCount() + 1) / 2;
-        DeclarationLayoutContext context = extractContext(ctx, parser);
-
-		maxLengthMap.merge(context, ctx.getText().length(), Math::max);
-        if (decCount > 1) {
-            style.addRule(context, new DeclarationLayoutProperty(decCount));
-        } else {
-            // Declare one variable in a declaration statement, we need to further check the next adjacent declaration
-            // statement declares one variable of the same type.
-            if (ctx.parent instanceof ExtendContext parentCtx) {
-                int next = parentCtx.children.indexOf(ctx) + 1;
-                if (next < parentCtx.getChildCount() && parentCtx.children.get(next) instanceof ExtendContext nextDecStmt) {
-                    if (!parser.belongToVarDeclarationStmt(nextDecStmt.getRuleIndex())) {
-                        return;
-                    }
-                    if (extractContext(nextDecStmt, parser).equals(context)) {
-                        ExtendContext nextDeclarators = nextDecStmt.getContextRecIf(parser::isVariableDeclarators);
-                        int variableCount = (nextDeclarators.getChildCount() + 1)/2;
-                        if (variableCount == 1 && hasSameDeclarationPrefix(declaratorsNode, nextDeclarators, parser)) {
-                            style.addRule(context, new DeclarationLayoutProperty(1));
-                        }
-                    }
-                }
-            }
+        List<List<ExtendContext>> decGroup = getMergeableDecGroup(ctx, parser);
+        for (List<ExtendContext> group : decGroup) {
+            DeclarationLayoutProperty property = extractProperty(group,parser);
+            style.addRule(null, property);
         }
     }
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        DeclarationLayoutContext context = extractContext(ctx, parser);
-        StyleProperty styleProperty = style.getProperty(context);
-        ExtendContext declaratorsNode = ctx.getContextRecIf(parser::isVariableDeclarators);
-        int decCount = (declaratorsNode.getChildCount() + 1) / 2;
-
-        if (styleProperty instanceof DeclarationLayoutProperty property) {
-            if (decCount > 1 && property.maxVariableCount == 1) {
-                splitDeclarations(ctx, parser);
-                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-            } else if (property.maxVariableCount > 1) {
-                mergeDeclarations(ctx, parser, context, property);
-                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+        List<List<ExtendContext>> decGroup = getMergeableDecGroup(ctx, parser);
+        for (List<ExtendContext> group : decGroup) {
+            DeclarationLayoutProperty property = extractProperty(group,parser);
+            if (style.getProperty(null) instanceof DeclarationLayoutProperty targetProperty) {
+                if (targetProperty.isMerge() && property.hasSingleDec()) {
+                    ParseTreeUtil.getInstance().mergeDeclarations(group, parser);
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                } else if (!targetProperty.isMerge() && property.hasMergedDec()) {
+                    ParseTreeUtil.getInstance().splitDeclarations(group, parser);
+                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                }
             }
         }
         return ctx;
     }
 
+    private DeclarationLayoutProperty extractProperty(List<ExtendContext> decNodes, MyParser parser) {
+        VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+        int mergedCount = 0;
+        int totalVarCount = 0;
+        for (ExtendContext decNode : decNodes) {
+            int count = searcher.searchIdentifiers(decNode, parser).size();
+            totalVarCount += count;
+            if (count > 1) {
+                mergedCount += count;
+            }
+        }
+
+        return new DeclarationLayoutProperty(mergedCount, totalVarCount);
+    }
+
+    /**
+     * @param ctx block or body
+     * @param parser
+     * @return
+     */
+    private List<List<ExtendContext>> getMergeableDecGroup(ExtendContext ctx, MyParser parser) {
+        List<List<ExtendContext>> groups = new ArrayList<>();
+        // 临时存储同类型变量声明的连续组
+        List<ExtendContext> currentGroup = new ArrayList<>();
+        VarDecContext curVarDecContext = null;
+        for (int i = 0; i < ctx.getChildCount(); i++) {
+            ParseTree child = ctx.getChild(i);
+            if (isVarDeclaration(child, parser)) {
+                ExtendContext curNode = (ExtendContext) child;
+                if (curVarDecContext == null) {
+                    curVarDecContext = VarDecContext.parseContext(curNode, parser);
+                    curVarDecContext.indexInParent = i;
+                    currentGroup.add(curNode);
+                } else {
+                    VarDecContext varDecContext = VarDecContext.parseContext(curNode, parser);
+                    varDecContext.indexInParent = i;
+                    if (curVarDecContext.hasSameContext(varDecContext)) {
+                        currentGroup.add(curNode);
+                        curVarDecContext = varDecContext; // 必须更新，因为hasSameContext的实现不是单纯地判断值相等
+                    } else {
+                        if (isValidDecGroup(currentGroup, parser)) {
+                            groups.add(new ArrayList<>(currentGroup));
+                        }
+                        currentGroup.clear();
+                        curVarDecContext = varDecContext;
+                        currentGroup.add(curNode);
+                    }
+                }
+            } else {
+                if (isValidDecGroup(currentGroup, parser)) {
+                    groups.add(new ArrayList<>(currentGroup));
+                }
+                currentGroup.clear();
+                curVarDecContext = null;
+            }
+        }
+
+        if (isValidDecGroup(currentGroup, parser)) {
+            groups.add(new ArrayList<>(currentGroup));
+        }
+        return groups;
+    }
+
+    private boolean isValidDecGroup(List<ExtendContext> decGroup, MyParser parser) {
+        return decGroup.size() > 1 ||
+                ( decGroup.size() == 1 &&
+                        NodeSearcherFactory.getInstance().createVarDeclarationSearcher()
+                                .searchVarDeclaratorList(decGroup.get(0), parser).size() > 1);
+    }
+
+
+    private boolean isVarDeclaration(ParseTree node, MyParser parser) {
+        if (node == null || node instanceof TerminalNode) return false;
+        int rule = parser.getSpecificStmtType(((ExtendContext) node));
+        return rule == parser.getRuleLocalVarDeclarationStmt()
+                || rule == parser.getRuleFieldDeclaration();
+    }
+
+
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return parser.isLocalVarDeclarationStmt(ctx) || parser.isFieldDeclaration(ctx);
+        return parser.isBlock(ctx) || parser.isFieldDeclarationList(ctx);
     }
 
-    @Override
-    public void extractFinalize() {
-        super.extractFinalize();
-        for (StyleRule rule : style.getRules()) {
-            Integer maxLength = maxLengthMap.get(rule.getStyleContext());
-            if (maxLength != null && rule.getStyleProperty() instanceof DeclarationLayoutProperty property) {
-                property.maxLength = maxLength;
-            }
-        }
-    }
-
-    private DeclarationLayoutContext extractContext(ExtendContext ctx, MyParser parser) {
-        ExtendToken extStart = (ExtendToken) ctx.getStart();
-        ExtendToken extStop = (ExtendToken) ctx.getStop();
-        boolean hasComment = extStart != null && extStart.hasContextTokens(parser::belongToComment)
-                || extStop != null && extStop.hasContextTokens(parser::belongToComment);
-        return new DeclarationLayoutContext(hasComment);
-    }
 
     private boolean hasSameDeclarationPrefix(ExtendContext declarators1, ExtendContext declarators2, MyParser parser) {
         ExtendContext parent1 = (ExtendContext) declarators1.parent;
@@ -121,105 +156,6 @@ public class DeclarationLayoutStyler extends Styler {
         return str1.toString().contentEquals(str2);
     }
 
-    /**
-     * Split declarations of the same type and style context.
-     * @param ctx Local variable declaration statement node or field declaration statement node.
-     * @param parser
-     */
-    private void splitDeclarations(ExtendContext ctx, MyParser parser) {
-        ExtendContext declaratorsNode = ctx.getContextRecIf(parser::isVariableDeclarators);
-
-        // Clear declarators.
-        List<ParseTree> declaratorList = declaratorsNode.children.stream().filter(t -> t instanceof ExtendContext).toList();
-        declaratorsNode.children = new ArrayList<ParseTree>();
-
-        // Copy declaration statement with an empty declarators.
-        ParseTreeUtil factory = ParseTreeUtil.getInstance();
-        List<ParseTree> declarationStmtList = new ArrayList<>();
-        declarationStmtList.add(ctx);
-        for (int i = 0; i < declaratorList.size() - 1; i++) {
-            ExtendContext decStmtCopy = (ExtendContext) factory.copyTree(ctx, false);
-            declarationStmtList.add(decStmtCopy);
-        }
-
-        // Add a child for declarators in each declaration statement.
-        for (int i = 0; i < declaratorList.size(); i++) {
-            ExtendContext curDecStmt = (ExtendContext) declarationStmtList.get(i);
-            ExtendContext curDeclarators = getDeclarators(curDecStmt, parser);
-            curDeclarators.addChild(declaratorList.get(i));
-        }
-
-        // Replace the old declaration statement with multiple statements.
-        ExtendContext blockContainer = getBlockContainer(ctx, parser);
-        int index = blockContainer.indexOfFirstChild(child -> child instanceof  ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(ctx));
-        blockContainer.replaceChildren(index, index + 1, declarationStmtList);
-
-    }
-
-
-    /**
-     * Merge declarations of the same type and style context.
-     */
-    private void mergeDeclarations(ExtendContext decStmt, MyParser parser,
-                                   DeclarationLayoutContext styleContext, DeclarationLayoutProperty property) {
-        ExtendContext declaratorsNode = decStmt.getContextRecIf(parser::isVariableDeclarators);
-        int decCount = (declaratorsNode.getChildCount() + 1) / 2;
-        int curLength = decStmt.getText().length();
-
-        ExtendContext blockContainer = getBlockContainer(decStmt, parser);
-        int curIndex = blockContainer.indexOfFirstChild(child -> child instanceof  ExtendContext childCtx && parser.getSpecificStmt(childCtx) == parser.getSpecificStmt(decStmt));
-        int nextIndex = curIndex + 1;
-        ExtendToken comma = (ExtendToken) parser.getTokenFactory().create(parser.getComma(), ",");
-        TreeNodeFactory treeFactory = TreeNodeFactoryGetter.getFactory(parser);
-        List<ParseTree> tobeAdded = new ArrayList<>();
-
-        // Collect the variables to be merged.
-        while (nextIndex < blockContainer.getChildCount()) {
-            if (blockContainer.getChild(nextIndex) instanceof ExtendContext nextStmt) {
-                ExtendContext nextSpecificStmt = parser.getSpecificStmt(nextStmt);
-                boolean isNextDeclarationMergable = (parser.isLocalVarDeclarationStmt(nextSpecificStmt) || parser.isFieldDeclaration(nextSpecificStmt))
-                        && extractContext(nextSpecificStmt, parser).equals(styleContext);
-                if (isNextDeclarationMergable) {
-                    ExtendContext declaratorsOfNext = nextStmt.getContextRecIf(parser::isVariableDeclarators);
-                    decCount += (declaratorsOfNext.getChildCount() + 1) / 2;
-                    curLength += declaratorsOfNext.getText().length() + 1;
-                    if (!hasSameDeclarationPrefix(declaratorsNode, declaratorsOfNext, parser) ||
-                            decCount > property.maxVariableCount || curLength > property.maxLength) {
-                        break;
-                    }
-                    tobeAdded.add(treeFactory.createTerminal(comma.clone()));
-                    tobeAdded.addAll(declaratorsOfNext.children);
-                    ++nextIndex;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        // Modify the ast structure.
-        if (!tobeAdded.isEmpty()) {
-            declaratorsNode.addChildren(tobeAdded);
-            blockContainer.children.removeAll(blockContainer.children.subList(curIndex + 1, nextIndex));
-        }
-
-    }
-
-
-    private ExtendContext getDeclarators(ExtendContext decStmt, MyParser parser) {
-        ExtendContext declarators = decStmt.getFirstCtxChildIf(parser::isVariableDeclarators);
-        if (declarators == null) {
-            // decStmt is local declaration statement.
-            return ((ExtendContext)decStmt.getChild(0)).getFirstCtxChildIf(parser::isVariableDeclarators);
-        }
-        return declarators;
-    }
-
-    private ExtendContext getBlockContainer(ExtendContext ctx, MyParser parser) {
-        return ctx.getFirstParentIf(t -> parser.isBlock(t) || parser.isBody(t));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -231,5 +167,49 @@ public class DeclarationLayoutStyler extends Styler {
     @Override
     public int hashCode() {
         return Objects.hashCode(maxLengthMap);
+    }
+
+
+    private static class VarDecContext {
+        String type;
+        List<String> modifiers = new ArrayList<>();
+        boolean hasComment;
+        boolean hasTrailingComment;
+        int indexInParent;
+
+        public static VarDecContext parseContext(ExtendContext decNode, MyParser parser) {
+            decNode = parser.getSpecificStmt(decNode);
+            VarDecContext ctx = new VarDecContext();
+            VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+            searcher.searchModifiers(decNode, parser).forEach(e -> ctx.modifiers.add(e.getText()));
+            ctx.type = searcher.searchTypeNode(decNode, parser).getText();
+            ctx.hasComment = ((ExtendToken) decNode.getStop()).indexOfFirstTokenAfterIf(parser::belongToComment) >= 0;
+            ctx.hasTrailingComment = ((ExtendToken) decNode.getStop()).getTrailingCommentIndex(parser) >= 0;
+            return ctx;
+        }
+
+        public boolean hasSameContext(VarDecContext that) {
+            boolean valueEquals = Objects.equals(type, that.type) && Objects.equals(modifiers, that.modifiers);
+
+            VarDecContext leftCtx = this, rightCtx = that;
+            if (that.indexInParent < this.indexInParent) {
+                leftCtx = that;
+                rightCtx = this;
+            }
+            boolean hasCommentBetween = leftCtx.hasComment;
+            return valueEquals && !hasCommentBetween && !rightCtx.hasTrailingComment;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof VarDecContext that)) return false;
+			return Objects.equals(type, that.type) && Objects.equals(modifiers, that.modifiers);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(type, modifiers);
+        }
     }
 }

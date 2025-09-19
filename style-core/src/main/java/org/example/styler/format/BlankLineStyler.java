@@ -212,8 +212,8 @@ public class BlankLineStyler extends Styler {
         boolean is2declarationStmts = typeName1.equals(RuleGroup.DECLARATION_STMT.name()) && typeName2.equals(typeName1);
         if (is2declarationStmts) {
             if (codeBlock1.treeNode instanceof ExtendContext decStmt1 && codeBlock2.treeNode instanceof ExtendContext decStmt2) {
-                String dataType1 = decStmt1.getContextRecIf(parser::isTypeType).getText();
-                String dataType2 = decStmt2.getContextRecIf(parser::isTypeType).getText();
+                String dataType1 = decStmt1.getFirstContextRecIf(parser::isTypeType).getText();
+                String dataType2 = decStmt2.getFirstContextRecIf(parser::isTypeType).getText();
                 hasSameDataType = dataType1.equals(dataType2);
             }
         }

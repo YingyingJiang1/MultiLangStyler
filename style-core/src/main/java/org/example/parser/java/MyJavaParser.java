@@ -1060,10 +1060,6 @@ public class MyJavaParser implements MyParser {
         return JavaParser.RULE_localVariableDeclarationStmt;
     }
 
-    @Override
-    public int getRuleFieldDeclarationStmt() {
-        return JavaParser.RULE_fieldDeclaration;
-    }
 
     @Override
     public int getRuleIntegerLiteral() {

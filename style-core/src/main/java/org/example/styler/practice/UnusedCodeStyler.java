@@ -1,6 +1,5 @@
 package org.example.styler.practice;
 
-import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
@@ -105,7 +104,7 @@ public class UnusedCodeStyler extends Styler {
                 ArgumentsSearcher argsSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createArgumentsSearcher();
                 for (ExtendContext ref : refs) {
                     ExtendContext callSite = ref.findFirstParentIf(p -> p.getRuleIndex() == parser.getRuleExpression());
-                    ExtendContext args = callSite.getContextRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleArguments());
+                    ExtendContext args = callSite.getFirstContextRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleArguments());
                     ExtendContext arg = argsSearcher.searchArgument(args, parameterIndex, parser);
                     if (arg != null) {
                         argsToBeRemoved.add(arg);

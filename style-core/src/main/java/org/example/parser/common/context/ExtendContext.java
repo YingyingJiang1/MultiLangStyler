@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
-import org.example.controller.Applicator;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.token.ExtendToken;
 import org.example.parser.java.antlr.JavaLexer;
@@ -110,14 +109,14 @@ public class ExtendContext extends ParserRuleContext {
         return null;
     }
 
-    public ExtendContext getContextRecIf(Predicate<ExtendContext> cond) {
+    public ExtendContext getFirstContextRecIf(Predicate<ExtendContext> cond) {
         for (ParseTree child : children) {
             if (child instanceof ExtendContext) {
                 ExtendContext ctx1 = (ExtendContext) child;
                 if (cond.test(ctx1)) {
                     return ctx1;
                 }
-                ExtendContext res = ctx1.getContextRecIf(cond);
+                ExtendContext res = ctx1.getFirstContextRecIf(cond);
                 if (res != null) {
                     return res;
                 }
@@ -602,6 +601,16 @@ public class ExtendContext extends ParserRuleContext {
             }
         }
         children = newChildren;
+        updateStartToken();
+        updateStopToken();
+    }
+
+    public void removeAll(int start, int end) {
+        if (start >= end || start >= children.size()) {
+            return;
+        }
+        int safeEnd = Math.min(end, children.size());
+        children.subList(start, safeEnd).clear();
         updateStartToken();
         updateStopToken();
     }

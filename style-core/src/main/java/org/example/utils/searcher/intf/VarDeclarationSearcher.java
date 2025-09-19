@@ -1,5 +1,7 @@
 package org.example.utils.searcher.intf;
 
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 
@@ -20,5 +22,13 @@ public interface VarDeclarationSearcher {
      * @param parser
      * @return initializer node of @identifier in @decNode
      */
-    ExtendContext searchInitializer(ExtendContext decNode, ExtendContext identifier, MyParser parser);
+    ExtendContext searchInitializerNode(ExtendContext decNode, ExtendContext identifier, MyParser parser);
+
+    ParseTree searchTypeNode(ExtendContext decNode, MyParser parser);
+
+    ExtendContext searchVarDeclaratorsNode(ExtendContext decNode, MyParser parser);
+
+    List<TerminalNode> searchModifiers(ExtendContext decNode, MyParser parser);
+
+    List<ExtendContext> searchVarDeclaratorList(ExtendContext decNode, MyParser parser);
 }

@@ -153,7 +153,7 @@ public class DeclarationLocationStyler extends Styler {
 
 
         for (ExtendContext decIdentifier : decIdentifiers) {
-            ExtendContext initializer = varDeclarationSearcher.searchInitializer(decStmt, decIdentifier, parser);
+            ExtendContext initializer = varDeclarationSearcher.searchInitializerNode(decStmt, decIdentifier, parser);
             List<ExtendContext> usedNodes = initializer.getAllChildContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
             Resolver resolver = GlobalInfo.getResolver();
             for (ExtendContext node : usedNodes) {

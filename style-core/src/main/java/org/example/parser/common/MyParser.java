@@ -179,7 +179,6 @@ public interface MyParser {
     int getRuleReturnStmt();
     int getRuleExpressionStmt();
     int getRuleLocalVarDeclarationStmt();
-    int getRuleFieldDeclarationStmt();
     int getRuleIntegerLiteral();
     int getRuleFloatLiteral();
     int getRuleCharLiteral();

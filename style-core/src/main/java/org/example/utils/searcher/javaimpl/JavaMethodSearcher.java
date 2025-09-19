@@ -41,7 +41,7 @@ public class JavaMethodSearcher implements MethodSearcher {
 
     @Override
     public int indexOfParameter(ExtendContext methodHead, ExtendContext parameter, MyParser parser) {
-        ExtendContext paramList = methodHead.getContextRecIf(t -> t instanceof JavaParser.FormalParameterListContext);
+        ExtendContext paramList = methodHead.getFirstContextRecIf(t -> t instanceof JavaParser.FormalParameterListContext);
         return paramList.indexOfIf(child -> child == parameter);
     }
 }

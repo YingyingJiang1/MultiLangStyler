@@ -7,46 +7,51 @@ import org.example.style.rule.StyleProperty;
 import java.util.Objects;
 
 public class DeclarationLayoutProperty extends StyleProperty {
-    public int maxVariableCount;
-    public int maxLength;
+    public boolean mergeVar;
+    double mergeCount, totalCount;
 
     public DeclarationLayoutProperty() {
     }
 
-    public DeclarationLayoutProperty(int maxVariableCount) {
-        this.maxVariableCount = maxVariableCount;
+    public DeclarationLayoutProperty(double mergeCount, double totalCount) {
+        this.mergeCount = mergeCount;
+        this.totalCount = totalCount;
+        mergeVar = (double) mergeCount / totalCount > 0.5;
     }
+
+    public boolean hasMergedDec() {
+        return mergeCount > 0;
+    }
+
+    public boolean hasSingleDec() {
+        return totalCount - mergeCount > 0;
+    }
+
+    public boolean isMerge(){
+        return mergeVar;
+    }
+
 
     @Override
     public void addElement(Element parent, MyParser parser) {
-        parent.addAttribute("maxVariableCount", Integer.toString(maxVariableCount));
-        parent.addAttribute("maxLength", Integer.toString(maxLength));
+        parent.addAttribute("mergeVar", String.valueOf(mergeVar));
     }
 
     @Override
     public void parseElement(Element parent, MyParser parser) {
-        maxVariableCount = Integer.parseInt(parent.attributeValue("maxVariableCount"));
-        maxLength = Integer.parseInt(parent.attributeValue("maxLength"));
+        mergeVar = Boolean.parseBoolean(Objects.requireNonNull(parent.attributeValue("mergeVar")));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeclarationLayoutProperty property = (DeclarationLayoutProperty) o;
+        return mergeVar == property.mergeVar && Double.compare(mergeCount, property.mergeCount) == 0 && Double.compare(totalCount, property.totalCount) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxVariableCount);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof DeclarationLayoutProperty other) {
-            return other.maxVariableCount == maxVariableCount;
-        }
-        return false;
-    }
-
-    @Override
-    public int compareTo(StyleProperty o) {
-        if (o instanceof DeclarationLayoutProperty other) {
-            return Integer.compare(maxVariableCount, other.maxVariableCount);
-        }
-        return -1;
+        return Objects.hash(mergeVar, mergeCount, totalCount);
     }
 }

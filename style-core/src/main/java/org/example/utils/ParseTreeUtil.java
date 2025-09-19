@@ -13,6 +13,8 @@ import org.example.parser.common.factory.TreeNodeFactoryGetter;
 import org.example.parser.common.factory.context.TreeNodeFactory;
 import org.example.parser.common.token.ExtendToken;
 import org.example.utils.editor.NodeEditorFactory;
+import org.example.utils.searcher.NodeSearcherFactory;
+import org.example.utils.searcher.intf.VarDeclarationSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +75,10 @@ public class ParseTreeUtil {
       }
     }
 
+    if (newNode instanceof ExtendContext newCtx) {
+      newCtx.updateStartToken();
+      newCtx.updateStopToken();
+    }
     return newNode;
   }
 
@@ -341,6 +347,132 @@ public class ParseTreeUtil {
     stmtCtx.updateStartToken();
     stmtCtx.updateStopToken();
     return innerStmt;
+  }
+
+  /**
+   * Merge declarations of the same type and style context.
+   */
+  public ExtendContext mergeDeclarations(List<ExtendContext> decGroup, MyParser parser) {
+    if (decGroup.size() < 2) {
+      return null;
+    }
+
+    int index = 0;
+    // 合并声明
+    List<ExtendContext> newDecGroup = new ArrayList<>();
+    ExtendContext firstStmt = decGroup.get(index);
+    newDecGroup.add(firstStmt);
+    VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+    ExtendContext targetStmt = firstStmt;
+    boolean oneVarDec = (searcher.searchVarDeclaratorsNode(firstStmt, parser).getChildCount() + 1) / 2 == 1;  // 去除comma的计算
+
+    // 和下一条语句合并
+    if (oneVarDec) {
+      index = 1;
+      doMerge(targetStmt, decGroup.get(index), parser);
+      ++index;// 跳过下一条语句
+    }
+
+    for (int i = index; i < decGroup.size(); i++) {
+      ExtendContext decStmt = decGroup.get(i);
+      ExtendContext declaratorsNode = searcher.searchVarDeclaratorsNode(decStmt, parser);
+
+      // 将单独的变量声明和前一条合并
+      if ((declaratorsNode.getChildCount() + 1) / 2 == 1) {
+        doMerge(targetStmt, decGroup.get(i), parser);
+      } else {
+        targetStmt = decStmt;
+        newDecGroup.add(decStmt);
+      }
+    }
+
+    if (newDecGroup.size() != decGroup.size()) {
+      ExtendContext parent = (ExtendContext) decGroup.get(0).getParent();
+      int origIndex = parent.children.indexOf(decGroup.get(0));
+      parent.removeAll(origIndex, origIndex + decGroup.size());
+      for (ExtendContext decStmt : newDecGroup) {
+        parent.insertChild(origIndex++, decStmt);
+      }
+    }
+
+    return firstStmt;
+  }
+
+  private void doMerge(ExtendContext targetStmt, ExtendContext mergedStmt, MyParser parser) {
+    targetStmt = parser.getSpecificStmt(targetStmt);
+    mergedStmt = parser.getSpecificStmt(mergedStmt);
+    VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+    ExtendContext declaratorsNode = searcher.searchVarDeclaratorsNode(targetStmt, parser);
+    TerminalNode comma = parser.getTreeNodeFactory().createTerminal(parser.getTokenFactory().create(parser.getComma(), ","));
+    ExtendContext mergedDeclaratorsNode = searcher.searchVarDeclaratorsNode(mergedStmt, parser);
+    declaratorsNode.addChild(comma);
+    declaratorsNode.addChildren(mergedDeclaratorsNode.children);
+
+    // 移动语句末尾的语法无关token
+    ExtendToken mergedStop = NodeUtil.getStopToken(mergedStmt);
+    List<Token> commentContext = mergedStop.getContextTokens().stream().filter(t -> parser.belongToComment(t.getType())).toList();
+    NodeUtil.getStopToken(targetStmt).addAllContextTokens(commentContext, parser);
+    mergedStop.setContextTokens(null);
+  }
+
+  /**
+   * Split declarations of the same type and style context.
+   */
+  public ExtendContext splitDeclarations(List<ExtendContext> decGroup, MyParser parser) {
+    if (decGroup.isEmpty()) {
+      return null;
+    }
+
+    // 拆分变量声明
+    List<ExtendContext> newDecList = new ArrayList<>();
+    VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+    for (ExtendContext decStmt : decGroup) {
+      List<ExtendContext> varDeclaratorList = searcher.searchVarDeclaratorList(decStmt, parser);
+      if (varDeclaratorList.size() > 1) {
+        // 移除当前声明语句第一个变量后面的声明
+        ExtendContext declaratorsNode = searcher.searchVarDeclaratorsNode(decStmt, parser);
+        declaratorsNode.removeAll(1, declaratorsNode.getChildCount());
+        newDecList.add(decStmt);
+
+        for (int i = 1; i < varDeclaratorList.size(); i++) {
+          ExtendContext varDeclarator = varDeclaratorList.get(i);
+          ParseTree newDecStmt = copyTree(decStmt, false);
+
+          // 删除复制来的语句末尾的语法无关token
+          ExtendToken stop = NodeUtil.getStopToken(newDecStmt);
+          stop.setContextTokens(null);
+
+          if (newDecStmt instanceof ExtendContext copyStmt) {
+            declaratorsNode = searcher.searchVarDeclaratorsNode(copyStmt, parser);
+            declaratorsNode.replaceChildren(0, declaratorsNode.getChildCount(), List.of(varDeclarator));
+            newDecList.add(copyStmt);
+          }
+        }
+
+        // 将第一条语句的末尾的语法无关token移到最后一条语句末尾
+        ExtendToken stop = NodeUtil.getStopToken(decStmt);
+        ExtendToken lastStmtStop = NodeUtil.getStopToken(newDecList.get(newDecList.size() - 1));
+        int insertionIndex = stop.indexInContextTokens();
+        stop.getContextTokens().remove(stop);
+        stop.addToken(insertionIndex, lastStmtStop);
+        lastStmtStop.setContextTokens(stop.getContextTokens());
+        stop.setContextTokens(null);
+      } else {
+        newDecList.add(decStmt);
+      }
+    }
+
+   if (newDecList.size() != decGroup.size()) {
+     ExtendContext parent = (ExtendContext) decGroup.get(0).getParent();
+     int index = parent.children.indexOf(decGroup.get(0));
+     parent.removeAll(index, index + decGroup.size());
+     for (ExtendContext decStmt : newDecList) {
+       parent.insertChild(index++, decStmt);
+     }
+   }
+
+   return newDecList.get(0);
+
   }
 
   public static void generateTokens(ParseTree root, List<Token> tokens, MyParser parser) {
