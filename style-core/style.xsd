@@ -41,8 +41,8 @@
                                     <xs:all>
                                         <xs:element name="style_context" minOccurs="0">
                                             <xs:simpleType>
-                                                <xs:union memberTypes="SpaceContext NewlineContext OptionalBraceContext DeclarationLayoutContext
-                                                StructurePreferenceContext NamingContext ExpComplexityContext" />
+                                                <xs:union memberTypes="SpaceContext NewlineContext OptionalBraceContext
+                                                StructurePreferenceContext NamingContext ExpComplexityContext " />
                                             </xs:simpleType>
                                         </xs:element>
                                         <xs:element name="style_property">
@@ -157,12 +157,8 @@ IfElseBodyOrderProperty" />
     </xs:complexType>
 
     <!-- Declaration Layout -->
-    <xs:complexType name="DeclarationLayoutContext">
-        <xs:attribute name="hasComment" type="xs:boolean" />
-    </xs:complexType>
     <xs:complexType name="DeclarationLayoutProperty">
-        <xs:attribute name="maxVariableCount" type="xs:int" />
-        <xs:attribute name="maxLength" type="xs:int"/>
+        <xs:attribute name="mergeVar" type="xs:boolean" />
     </xs:complexType>
 
     <!-- Structure preference -->
