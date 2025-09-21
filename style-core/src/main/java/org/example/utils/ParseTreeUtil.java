@@ -496,12 +496,15 @@ public class ParseTreeUtil {
       tokens.addAll(contextTokens);
 
       // case: token1 format_token_1...format_token_n token2
-      // 设置两个 token之间的语法无关token的hierarchy与后一个token的hierarchy保持一致
-      for (int i = idxInList - 1; i >= 0; i--) {
+      // set hierarchy of format_token_n to token2's hierarchy, and set hierarchy of other format tokens to the greater hierarchy between token1 and token2.
+      if (idxInList - 1 >= 0 && tokens.get(idxInList - 1) instanceof ExtendToken extendToken && extendToken.getChannel() != parser.getDefaultChannel()) {
+        extendToken.setHierarchy(token.getHierarchy());
+      }
+      for (int i = idxInList - 2; i >= 0; i--) {
         if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
           break;
         }
-        if (tokens.get(i) instanceof ExtendToken extendToken) {
+        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() < token.getHierarchy()) {
           extendToken.setHierarchy(token.getHierarchy());
         }
       }

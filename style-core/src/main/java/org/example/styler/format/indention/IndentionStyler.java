@@ -56,7 +56,11 @@ public class IndentionStyler extends Styler {
                 extraIndention = StringUtils.repeat(targetProperty.indentionType, targetProperty.indentionUnit);
             }
 
-            String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + extraIndention;
+            int hierarchy = curToken.getHierarchy();
+            if (curToken.getType() == parser.getHws() && index + 1 < tokens.size()) {
+                hierarchy = ((ExtendToken) tokens.get(index + 1)).getHierarchy();
+            }
+            String indentionStr = targetProperty.getIndentionStr(hierarchy) + extraIndention;
 
             if (curToken.getType() == parser.getHws()) {
                 Token nextToken = tokens.get(index + 1);

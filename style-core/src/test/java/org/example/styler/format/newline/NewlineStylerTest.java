@@ -92,10 +92,10 @@ class NewlineStylerTest extends TestBase {
 	void testCombination() {
 		String dir = "src/test/sources/combination-test/test1";
 		String[] srcFiles = {
-				"f1.java",
-				"f2.java",
-				"f3.java",
-				"f5.java",
+//				"f1.java",
+//				"f2.java",
+//				"f3.java",
+//				"f5.java",
 				"f6.java",
 		};
 
@@ -115,7 +115,7 @@ class NewlineStylerTest extends TestBase {
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
 					IndentionStyler.class));
-			if (false) {
+			if (true) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

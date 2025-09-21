@@ -37,10 +37,10 @@ public class JavaNodeEditor implements NodeEditor {
 			// 位于else右边的语句
 			boolean isRightOfElse = parent instanceof JavaParser.IfElseStmtContext && parent.children.indexOf(node) == parent.children.size() - 1;
 			int rule = parser.getSpecificStmtType(node);
-			if (isRightOfElse && (parser.getRuleIfElseStmt() == rule || parser.getRuleIfStmt() == rule)) {
-				node.hierarchy = parent.hierarchy;
-			} else {
+			if (isRightOfElse && (parser.getRuleIfElseStmt() != rule && parser.getRuleIfStmt() != rule)) {
 				node.hierarchy = parent.hierarchy + 1;
+			} else {
+				node.hierarchy = parent.hierarchy;
 			}
 		} else {
 			node.hierarchy = parent.hierarchy;

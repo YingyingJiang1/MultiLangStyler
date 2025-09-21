@@ -17,6 +17,17 @@ public class TokenStreamUtil {
 		return null;
 	}
 
+	public static Token findFirstDefaultTokenOnLeft(List<Token> tokens, int start, MyParser parser) {
+		for (int left = start - 1; left >= 0; left--) {
+			int channel = tokens.get(left).getChannel();
+			if (channel == parser.getDefaultChannel()) {
+				return tokens.get(left);
+			}
+		}
+		return null;
+	}
+
+
 	public static Token findFirstNonWSonRight(List<Token> tokens, int start, MyParser parser) {
 		for (int right = start + 1; right < tokens.size(); ++right) {
 			int type = tokens.get(right).getType();
