@@ -60,7 +60,7 @@ public class IntraNewlineStyle extends CommonStyle {
 			return rule.getStyleProperty();
 		}
 
-		return new IntraNewlineProperty(0); // No newline
+		return null; // No newline
 	}
 
 	@Override

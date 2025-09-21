@@ -9,11 +9,11 @@ private ArrayList<Object> getSpecialItems() {
     // hide missions (if required)
     remove.removeIf(mission -> pending.remove(mission) || finished.remove(mission));
     int fakeTotal = pending.size();
-    if (fakeTotal > 0){
+    if (fakeTotal > 0) {
       fakeTotal++;
     }
     fakeTotal += finished.size();
-    if (finished.size() > 0){
+    if (finished.size() > 0) {
       fakeTotal++;
     }
 

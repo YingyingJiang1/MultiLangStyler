@@ -7,12 +7,13 @@
   <style name="if_else_body_order"/>
   <style name="indention">
     <rule>
-      <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="0"/>
+      <style_property indentionUnit="4" indentionType=" " indentEmptyLine="false" topHierarchyIndention="0"/>
     </rule>
   </style>
   <style name="optional_brace"/>
   <style name="modifier_order"/>
   <style name="structure_preference"/>
+  <style name="declaration_layout"/>
   <style name="body_layout"/>
   <style name="space"/>
   <style name="intra_newline"/>

@@ -1,5 +1,9 @@
 package org.example;
 
+import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
+import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.styler.structure.StructureStyler;
 import org.example.styler.structure.checker.ContainChecker;
 import org.junit.jupiter.api.Test;
@@ -127,8 +131,12 @@ public class IntegrationTest extends TestBase {
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]));
-			if (true) {
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
+					NewlineStyler.class,
+					BodyLayoutStyler.class,
+					IndentionStyler.class
+			));
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
@@ -155,7 +163,7 @@ public class IntegrationTest extends TestBase {
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]));
-			if (true) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

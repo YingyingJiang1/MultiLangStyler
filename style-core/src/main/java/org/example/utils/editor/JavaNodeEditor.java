@@ -29,19 +29,26 @@ public class JavaNodeEditor implements NodeEditor {
 		if (node.getParent() == null) return;
 
 		ExtendContext parent = (ExtendContext) node.getParent();
+		int parentRule = parent.getRuleIndex();
 		boolean isUnderCaseLabel = (parent instanceof JavaParser.SwitchLabeledRuleContext || parent instanceof JavaParser.SwitchBlockStatementGroupContext)
 				&& (node instanceof JavaParser.TypeDeclarationContext || node instanceof JavaParser.StatementContext);
 		if (parser.isBody(parent) || parser.isBlock(parent) || isUnderCaseLabel) {
 			node.hierarchy = parent.hierarchy + 1;
-		} else if (parser.belongToCompoundStmt(parent) && !parser.isBlock(parser.getSpecificStmt(node))) {
-			// 位于else右边的语句
-			boolean isRightOfElse = parent instanceof JavaParser.IfElseStmtContext && parent.children.indexOf(node) == parent.children.size() - 1;
-			int rule = parser.getSpecificStmtType(node);
-			if (isRightOfElse && (parser.getRuleIfElseStmt() != rule && parser.getRuleIfStmt() != rule)) {
-				node.hierarchy = parent.hierarchy + 1;
-			} else {
+		} else if (parser.getRuleIfElseStmt() == parentRule) {
+			if (parser.isBlock(parser.getSpecificStmt(node))) {
 				node.hierarchy = parent.hierarchy;
+			} else {
+				boolean ifLeftOfElse = parent instanceof JavaParser.IfElseStmtContext && parent.children.indexOf(node) < parent.children.size() - 1;
+				int rule = parser.getSpecificStmtType(node);
+				if (ifLeftOfElse || (parser.getRuleIfElseStmt() != rule && parser.getRuleIfStmt() != rule)) {
+					node.hierarchy = parent.hierarchy + 1;
+				} else {
+					node.hierarchy = parent.hierarchy;
+				}
 			}
+
+		} else if (parser.belongToCompoundStmt(parent) && parser.isStatement(node) && !parser.isBlock(parser.getSpecificStmt(node))) {
+			node.hierarchy = parent.hierarchy + 1;
 		} else {
 			node.hierarchy = parent.hierarchy;
 		}

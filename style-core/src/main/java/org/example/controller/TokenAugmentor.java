@@ -72,6 +72,18 @@ public class TokenAugmentor {
 	public static void addContextTokens(MyParser parser) {
 		CommonTokenStream tokenStream = (CommonTokenStream) parser.getTokenStream();
 		List<Token> tokens = tokenStream.getTokens();
+
+		Token firstDefaultToken = TokenStreamUtil.findFirstDefaultTokenOnRight(tokens, -1, parser);
+		if (firstDefaultToken == null) {
+			return;
+		}
+
+		int index = tokens.indexOf(firstDefaultToken);
+		if (firstDefaultToken instanceof ExtendToken ext) {
+			List<Token> nonDefaultToken = tokens.subList(0, index);
+			ext.getContextTokens().addAll(0, nonDefaultToken);
+		}
+
 		for (int i = 0; i < tokens.size(); i++) {
 			ExtendToken token = (ExtendToken) tokens.get(i);
 			if (token.getChannel() != parser.getDefaultChannel()) {

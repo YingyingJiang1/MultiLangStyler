@@ -18,7 +18,8 @@ public class BodyLayoutProperty extends StyleProperty {
         this.beforeLB = beforeLB;
     }
 
-    public BodyLayoutProperty(int beforeLB, int afterRB) {
+    public BodyLayoutProperty(int beforeLB, int afterLB, int afterRB) {
+        this.afterLB = afterLB;
         this.beforeLB = beforeLB;
         this.afterRB = afterRB;
     }

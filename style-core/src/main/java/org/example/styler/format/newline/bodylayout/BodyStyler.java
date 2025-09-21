@@ -66,7 +66,7 @@ public abstract class BodyStyler extends Styler {
      *
      * @param typeNode declaration node or specific statement node
      * @param parser
-     * @return
+     * @return a list of statement, block, body or array initializer
      */
     protected List<ExtendContext> getBodyNodes(ExtendContext typeNode, MyParser parser) {
         int ruleIndex = typeNode.getRuleIndex();
@@ -86,7 +86,7 @@ public abstract class BodyStyler extends Styler {
             bodies.add(typeNode);
         }  else {
             for (ParseTree child : typeNode.children) {
-                if (parser.isBlock(child) || parser.isBody(child) || parser.isStatement(child) || parser.isCatchClause(child)) {
+                if (parser.isBlock(child) || parser.isBody(child) || parser.isStatement(child)) {
                     bodies.add((ExtendContext) child);
                 }
             }

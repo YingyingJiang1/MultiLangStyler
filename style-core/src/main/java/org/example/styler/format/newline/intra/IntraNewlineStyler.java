@@ -77,7 +77,7 @@ public class IntraNewlineStyler extends Styler {
 		IntraNewlineProperty property = extractProperty(targetNode, parser, context);
 		IntraNewlineProperty targetProperty = (IntraNewlineProperty) style.getProperty(context);
 
-		if (!property.equals(targetProperty)) {
+		if (targetProperty != null && !property.equals(targetProperty)) {
 			List<TerminalNode> terminalNodes = targetNode.getAllTerminalsRecIf(e -> true);
 
 			// 确保移除原来的所有换行
@@ -85,8 +85,9 @@ public class IntraNewlineStyler extends Styler {
 				NewlineApplicator.removeNewline(terminalNode.getSymbol(), 100, parser);
 			}
 
+			// 按照新的策略添加换行
 			if (targetProperty.newlines == 1) {
-				// 按照新的策略添加换行
+				// 函数声明换行
 				if (parser.belongToMethodHead(targetNode.getRuleIndex())) {
 					Predicate<ParseTree> isBreakNode = new Predicate<ParseTree>() {
 						@Override
@@ -103,6 +104,7 @@ public class IntraNewlineStyler extends Styler {
 					};
 					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, isBreakNode);
 				} else {
+					// 表达式换行
 					Predicate<ParseTree> isBreakNode = new Predicate<ParseTree>() {
 						@Override
 						public boolean test(ParseTree node) {
@@ -142,6 +144,11 @@ public class IntraNewlineStyler extends Styler {
 
 	private int doApply(ExtendContext node, int targetLineLen, IntraNewlineProperty targetProperty,
 						int succeedLineNum, MyParser parser, Predicate<ParseTree> isBreakNode) {
+		// 表达式中存在block，直接返回。禁止
+		if (parser.isBlock(node)) {
+			return succeedLineNum;
+		}
+
 		IntraNewlineContext curContext = extractContext(node, parser);
 		// 当前长度不足，不用换行
 		if (curContext.length <= targetLineLen) {
@@ -411,12 +418,20 @@ public class IntraNewlineStyler extends Styler {
 
 	@Override
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+		if (stage == Stage.EXTRACT && ctx == parser.getRoot()) {
+			return true;
+		}
+
 		int rule = ctx.getRuleIndex();
 //		boolean isTopExpression = rule == parser.getRuleExpression() && ctx.getParent() != null && ctx.getParent().getParent() != null && parser.isStatement(ctx.getParent().getParent());
-		boolean isRelevantNode = parser.belongToMethodHead(rule)
-				|| rule == parser.getRuleLocalVarDeclaration()
-				|| rule == parser.getRuleParExpression()
-				|| parser.belongToSingleStmt(ctx);
-		return stage == Stage.EXTRACT && ctx == parser.getRoot() || isRelevantNode;
+		if (parser.belongToMethodHead(rule)) {
+			return true;
+		} else{
+			boolean isExpressionRelevant = rule == parser.getRuleLocalVarDeclaration()
+					|| rule == parser.getRuleParExpression()
+					|| parser.belongToSingleStmt(ctx);
+			boolean noFunctionDeclaration = ctx.getFirstContextRecIf(parser::isBlock) == null; // 排除变量初始化中定义函数
+			return isExpressionRelevant && noFunctionDeclaration;
+		}
 	}
 }

@@ -92,10 +92,10 @@ class NewlineStylerTest extends TestBase {
 	void testCombination() {
 		String dir = "src/test/sources/combination-test/test1";
 		String[] srcFiles = {
-//				"f1.java",
-//				"f2.java",
-//				"f3.java",
-//				"f5.java",
+				"f1.java",
+				"f2.java",
+				"f5.java",
+				"f3.java",
 				"f6.java",
 		};
 
@@ -114,6 +114,40 @@ class NewlineStylerTest extends TestBase {
 					IntraNewlineStyler.class,
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
+					IndentionStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			testCodeEqual(actual, gtPath);
+//			break;
+		}
+	}
+
+	@Test
+	void testLambdaExp() {
+		String dir = "src/test/sources/format/newline";
+		String[] srcFiles = {
+//				"f9.java",
+				"f10.java",
+		};
+
+		String[] targetFiles = {
+//				"style1.java",
+				"style2.java",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
+					NewlineStyler.class,
+					IntraNewlineStyler.class,
+					InterNewlineStyler.class,
+//					BodyLayoutStyler.class,
 					IndentionStyler.class));
 			if (true) {
 				try{

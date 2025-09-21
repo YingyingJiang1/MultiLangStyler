@@ -21,11 +21,13 @@ class IndentionStylerTest extends TestBase {
 		String[] srcFiles = {
 				"f1.java",
 				"f2.java",
+				"f3.java",
 		};
 
 		String[] targetFiles = {
 				"f1.java",
 				"f2.java",
+				"style1.java"
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {

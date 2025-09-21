@@ -242,7 +242,7 @@ public class ParseTreeUtil {
     ExtendToken lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
     ExtendToken rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
     // Add Format tokens
-    lBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+//    lBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 //    rBrace.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 //    rBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 
@@ -272,9 +272,13 @@ public class ParseTreeUtil {
     List<Token> tokens = parent.getAllTokensRec();
     int lbIndex = tokens.indexOf(lBrace);
     if (lbIndex - 1 >= 0 &&  tokens.get(lbIndex - 1) instanceof ExtendToken leftToken) {
-      List<Token> movenTokens = leftToken.getContextTokens().subList(leftToken.indexInContextTokens() + 1, leftToken.getContextTokens().size());
-      lBrace.getContextTokens().addAll(movenTokens);
-      leftToken.getContextTokens().removeAll(movenTokens);
+      // 将{前面一个的token的context tokens从第一个换行或者注释开始，移动到{的context tokens中
+      int index = leftToken.indexOfFirstTokenAfterIf(t -> parser.getVws() == t || parser.belongToComment(t));
+      if (index >= 0) {
+        List<Token> movenTokens = leftToken.getContextTokens().subList(index, leftToken.getContextTokens().size());
+        lBrace.getContextTokens().addAll(movenTokens);
+        leftToken.getContextTokens().removeAll(movenTokens);
+      }
     }
 
     // 移除空语句
@@ -495,19 +499,33 @@ public class ParseTreeUtil {
 //      token.resetContextTokens();
       tokens.addAll(contextTokens);
 
-      // case: token1 format_token_1...format_token_n token2
-      // set hierarchy of format_token_n to token2's hierarchy, and set hierarchy of other format tokens to the greater hierarchy between token1 and token2.
-      if (idxInList - 1 >= 0 && tokens.get(idxInList - 1) instanceof ExtendToken extendToken && extendToken.getChannel() != parser.getDefaultChannel()) {
-        extendToken.setHierarchy(token.getHierarchy());
+      Token leftToken = TokenStreamUtil.findFirstDefaultTokenOnLeft(tokens, idxInList, parser);
+      int greaterHierarchy = token.getHierarchy();
+      if (leftToken instanceof ExtendToken leftExt && leftExt.getHierarchy() > greaterHierarchy) {
+        greaterHierarchy = leftExt.getHierarchy();
       }
-      for (int i = idxInList - 2; i >= 0; i--) {
+      for (int i = idxInList - 1; i >= 0; i--) {
         if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
           break;
         }
-        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() < token.getHierarchy()) {
+        if (tokens.get(i) instanceof ExtendToken extendToken) {
           extendToken.setHierarchy(token.getHierarchy());
         }
       }
+
+      // case: token1 format_token_1...format_token_n token2
+      // set hierarchy of format_token_n to token2's hierarchy, and set hierarchy of other format tokens to the greater hierarchy between token1 and token2.
+//      if (idxInList - 1 >= 0 && tokens.get(idxInList - 1) instanceof ExtendToken extendToken && extendToken.getChannel() != parser.getDefaultChannel()) {
+//        extendToken.setHierarchy(token.getHierarchy());
+//      }
+//      for (int i = idxInList - 2; i >= 0; i--) {
+//        if (tokens.get(i).getChannel() == parser.getDefaultChannel()) {
+//          break;
+//        }
+//        if (tokens.get(i) instanceof ExtendToken extendToken && extendToken.getHierarchy() < token.getHierarchy()) {
+//          extendToken.setHierarchy(token.getHierarchy());
+//        }
+//      }
     } else {
       ExtendContext ctx = (ExtendContext) root;
       NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);

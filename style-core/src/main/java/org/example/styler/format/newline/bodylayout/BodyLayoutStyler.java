@@ -84,14 +84,15 @@ public class BodyLayoutStyler extends BodyStyler {
 							NewlineApplicator.removeNewline(targetToken, Math.abs(diff), parser);
 						}
 					}
-//					if (property.afterLB != targetProperty.afterLB) {
-//						Token targetToken = startToken;
-//						if (targetProperty.afterLB) {
-//							NewlineApplicator.addNewline(targetToken, 1, parser);
-//						} else {
-//							NewlineApplicator.removeNewline(targetToken, 1, parser);
-//						}
-//					}
+					if (property.afterLB != targetProperty.afterLB) {
+						Token targetToken = startToken;
+						int diff = targetProperty.afterLB - property.afterLB;
+						if (diff > 0) {
+							NewlineApplicator.addNewline(targetToken, diff, parser);
+						} else if (diff < 0) {
+							NewlineApplicator.removeNewline(targetToken, Math.abs(diff), parser);
+						}
+					}
 //					if (property.beforeRB != targetProperty.beforeRB) {
 //						Token targetToken = tokens.get(tokens.indexOf(stopToken) - 1);
 //						if (targetProperty.beforeRB) {
@@ -164,9 +165,10 @@ public class BodyLayoutStyler extends BodyStyler {
 		int afterRB = stopIndex + 1 < tokens.size() ?  NodeUtil.countNewlineBetween((ExtendToken) stopToken, (ExtendToken) tokens.get(stopIndex + 1), parser) : 0;
 
 		// 只处理一个换行
+		afterLB = Math.min(afterLB, 1);
 		beforeLB = Math.min(beforeLB, 1);
 		afterRB = Math.min(afterRB, 1);
-		return new BodyLayoutProperty(beforeLB, afterRB);
+		return new BodyLayoutProperty(beforeLB, afterLB, afterRB);
 	}
 
 
