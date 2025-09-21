@@ -111,7 +111,7 @@ public abstract class BodyStyler extends Styler {
             if (parser.isStatement(body)) {
                 specificNode = parser.getSpecificStmt(body);
                 if (parser.isStatement(specificNode)) { // 空语句
-                    stmts = new ArrayList<>();
+                    return BodySizeType.EMPTY;
                 } else if (parser.isBlock(specificNode)) {
                     stmts = specificNode.getAllChildContextsIf(parser::isStatement);
                 } else {

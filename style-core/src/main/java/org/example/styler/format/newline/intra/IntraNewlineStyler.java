@@ -102,7 +102,7 @@ public class IntraNewlineStyler extends Styler {
 							return false;
 						}
 					};
-					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, isBreakNode);
+					doApply(targetNode, targetProperty, 0, parser, isBreakNode);
 				} else {
 					// 表达式换行
 					Predicate<ParseTree> isBreakNode = new Predicate<ParseTree>() {
@@ -115,7 +115,7 @@ public class IntraNewlineStyler extends Styler {
 							return false;
 						}
 					};
-					doApply(targetNode, (int) targetProperty.length, targetProperty, 0, parser, isBreakNode);
+					doApply(targetNode, targetProperty, 0, parser, isBreakNode);
 				}
 			}
 		}
@@ -142,27 +142,39 @@ public class IntraNewlineStyler extends Styler {
 
 	}
 
-	private int doApply(ExtendContext node, int targetLineLen, IntraNewlineProperty targetProperty,
+	/**
+	 * 在语法树层面换行而不展开的原因是希望自顶向下对表达式进行拆分，使得被拆分后的表达式之间独立程度更高。
+	 * 例如: exp1 && exp2 || exp3, 我们可以优先基于逻辑操作符拆分表达式，而不是先进入exp1的内部
+	 */
+	private int doApply(ExtendContext node, IntraNewlineProperty targetProperty,
 						int succeedLineNum, MyParser parser, Predicate<ParseTree> isBreakNode) {
-		// 表达式中存在block，直接返回。禁止
-		if (parser.isBlock(node)) {
-			return succeedLineNum;
-		}
 
 		IntraNewlineContext curContext = extractContext(node, parser);
 		// 当前长度不足，不用换行
-		if (curContext.length <= targetLineLen) {
+		if (curContext.length <= targetProperty.length) {
 			return 0;
 		}
 
 		// 寻找当前节点的行拆分点并进行拆分
 		int breakIndex = 0;
 		Map<Integer, ExtendToken> breakIndex2NextStartTokenMap = new HashMap<>();
+		int breakThresholdLine = (int) (targetProperty.length * 0.8);
 		while (breakIndex < node.getChildCount() - 1) { // 禁止在最后一个子节点拆分
 			ParseTree cur = node.getChild(breakIndex);
+			if (!isBreakNode.test(cur)) {
+				++breakIndex;
+				continue;
+			}
+
+			// 判断是否满足长度条件: 当前拆分点的长度
 			IntraNewlineContext context = extractContext(cur, parser);
+			double leftLen = context.length, rightLen = curContext.length - leftLen;
+			boolean isLengthReasonable = leftLen >= targetProperty.minLen && rightLen >= targetProperty.minLen
+					&& context.length > breakThresholdLine;
+
+
 			// 进行行拆分
-			if (context.length >= targetProperty.minLen && isBreakNode.test(cur)) {
+			if (isLengthReasonable) {
 				ParseTree nextNode = node.getChild(breakIndex + 1);
 				ExtendToken breakToken = null, nextStartToken = null;
 				if (cur instanceof TerminalNode terminal) {
@@ -194,7 +206,7 @@ public class IntraNewlineStyler extends Styler {
 		for (int i = 0; i < node.getChildCount(); i++) {
 			// 递归处理子节点
 			if (node.getChild(i) instanceof ExtendContext child) {
-				curLineNum += doApply(child, targetLineLen, targetProperty, curLineNum, parser, isBreakNode);
+				curLineNum += doApply(child, targetProperty, curLineNum, parser, isBreakNode);
 			}
 			// 更新后继行号和相对缩进
 			if (breakIndex2NextStartTokenMap.get(i) != null) {
@@ -205,6 +217,8 @@ public class IntraNewlineStyler extends Styler {
 
 		return curLineNum;
 	}
+
+
 
 
 //	if (breakTokens.contains(terminalNode.getText())) {

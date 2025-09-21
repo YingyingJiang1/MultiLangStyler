@@ -50,7 +50,7 @@ public class IntraNewlineStyle extends CommonStyle {
 	@Override
 	public StyleProperty getProperty(StyleContext targetContext) {
 		if (ruleSet.getRules().isEmpty()) {
-			return new IntraNewlineProperty(0);
+			return null;
 		}
 
 		StyleRule rule = ruleSet.getRules().get(0);
@@ -60,7 +60,7 @@ public class IntraNewlineStyle extends CommonStyle {
 			return rule.getStyleProperty();
 		}
 
-		return null; // No newline
+		return new IntraNewlineProperty(0); // No newline
 	}
 
 	@Override

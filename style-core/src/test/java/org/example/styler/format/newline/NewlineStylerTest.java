@@ -132,12 +132,12 @@ class NewlineStylerTest extends TestBase {
 	void testLambdaExp() {
 		String dir = "src/test/sources/format/newline";
 		String[] srcFiles = {
-//				"f9.java",
+				"f9.java",
 				"f10.java",
 		};
 
 		String[] targetFiles = {
-//				"style1.java",
+				"style1.java",
 				"style2.java",
 		};
 
@@ -147,9 +147,9 @@ class NewlineStylerTest extends TestBase {
 					NewlineStyler.class,
 					IntraNewlineStyler.class,
 					InterNewlineStyler.class,
-//					BodyLayoutStyler.class,
+					BodyLayoutStyler.class,
 					IndentionStyler.class));
-			if (true) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {
