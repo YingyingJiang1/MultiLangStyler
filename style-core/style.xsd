@@ -122,11 +122,12 @@ IfElseBodyOrderProperty" />
         <xs:restriction base="xs:string">
             <xs:enumeration value="EMPTY"/>
             <!-- one single statement -->
-            <xs:enumeration value="SINGLE"/>
-            <!-- >= 2 statements or one compound statement -->
-            <xs:enumeration value="MULTI"/>
-            <!-- any other cases -->
-            <xs:enumeration value="ANY"/>
+            <xs:enumeration value="ONE_SINGLE_STMT"/>
+            <xs:enumeration value="ONE_COMPOUND_STMT"/>
+            <xs:enumeration value="MULTI_STMTS"/>
+            <!-- relevant to array initializer -->
+            <xs:enumeration value="ONE_INITIALIZER"/>
+            <xs:enumeration value="MULTI_INITIALIZER"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="OptionalBraceContext">
