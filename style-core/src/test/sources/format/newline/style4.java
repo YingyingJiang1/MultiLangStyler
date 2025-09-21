@@ -1,34 +1,5 @@
-// M43
-    @PreAuthorize("!hasAuthority('ROLE_DEMO_USER')")
-    @PostMapping("/change-password-on-login")
-    public RedirectView changePasswordOnLogin(
-            Principal principal,
-            @RequestParam(name = "currentPassword") String currentPassword,
-            @RequestParam(name = "newPassword") String newPassword,
-            HttpServletRequest request,
-            HttpServletResponse response,
-            RedirectAttributes redirectAttributes)
-            throws SQLException, UnsupportedProviderException {
-        if (principal == null) {
-            return new RedirectView("/change-creds?messageType=notAuthenticated", true);
-        }
-        Optional<User> userOpt = userService.findByUsernameIgnoreCase(principal.getName());
-        if (userOpt.isEmpty()) {
-            return new RedirectView("/change-creds?messageType=userNotFound", true);
-        }
-        User user = userOpt.get();
-        if (!userService.isPasswordCorrect(user, currentPassword)) {
-            return new RedirectView("/change-creds?messageType=incorrectPassword", true);
-        }
-        userService.changePassword(user, newPassword);
-        userService.changeFirstUse(user, false);
-        // Logout using Spring's utility
-        new SecurityContextLogoutHandler().logout(request, response, null);
-        return new RedirectView(LOGIN_MESSAGETYPE_CREDSUPDATED, true);
-    }
-
-
-// M547
+class Main {
+    // M547
     @PostMapping(consumes = "multipart/form-data", value = "/repair")
     @Operation(
             summary = "Repair a PDF file",
@@ -42,7 +13,7 @@
 
         // Use TempFile with try-with-resources for automatic cleanup
         try (TempFile tempInputFile = new TempFile(tempFileManager, ".pdf");
-                TempFile tempOutputFile = new TempFile(tempFileManager, ".pdf")) {
+             TempFile tempOutputFile = new TempFile(tempFileManager, ".pdf")) {
 
             // Save the uploaded file to the temporary location
             inputFile.transferTo(tempInputFile.getFile());
@@ -108,14 +79,13 @@
             // Return the repaired PDF as a response
             String outputFilename =
                     Filenames.toSimpleFileName(inputFile.getOriginalFilename())
-                                    .replaceFirst("[.][^.]+$", "")
+                            .replaceFirst("[.][^.]+$", "")
                             + "_repaired.pdf";
             return WebResponseUtils.bytesToWebResponse(pdfBytes, outputFilename);
         }
     }
 
-
-// M542
+    // M542
     @PostMapping(consumes = "multipart/form-data", value = "/compress-pdf")
     @Operation(
             summary = "Optimize PDF file",
@@ -264,7 +234,7 @@
 
             String outputFilename =
                     Filenames.toSimpleFileName(inputFile.getOriginalFilename())
-                                    .replaceFirst("[.][^.]+$", "")
+                            .replaceFirst("[.][^.]+$", "")
                             + "_Optimized.pdf";
 
             return WebResponseUtils.pdfDocToWebResponse(
@@ -281,5 +251,5 @@
             }
         }
     }
-
+}
 

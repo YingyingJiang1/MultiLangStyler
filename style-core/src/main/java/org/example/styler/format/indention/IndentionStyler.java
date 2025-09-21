@@ -19,7 +19,7 @@ import java.util.*;
 
 public class IndentionStyler extends Styler {
 
-    private int indentedEmptyLines = 0;
+    private IndentionInfo topHierarchyIndention;
     private int totalEmptyLines = -1;
     // key: indention info, value: frequency
     private Map<IndentionInfo, Integer> indentionLengthMap = new HashMap<>();
@@ -37,6 +37,9 @@ public class IndentionStyler extends Styler {
         ExtendToken token = (ExtendToken) tokens.get(index);
         IndentionInfo info = extractIndentionInfo(tokens, index, parser);
         if (info != null) {
+            if (topHierarchyIndention == null) { // 取首次提取到的值
+                topHierarchyIndention = info;
+            }
             indentionLengthMap.put(info, indentionLengthMap.getOrDefault(info, 0) + 1);
         }
     }
@@ -157,16 +160,16 @@ public class IndentionStyler extends Styler {
 
 
         try {
-            int topHierarchyIndention = 0;
-            if (!topIndentionMap.isEmpty()) {
-                topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
-            }
+            int topHierarchyIndentionLen = topHierarchyIndention.indentionLength;
+//            if (!topIndentionMap.isEmpty()) {
+//                topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+//            }
 
             Map<Integer, Integer> indentionUnitMap = new HashMap<>();
             for (Map.Entry<IndentionInfo, Integer> entry : indentionLengthMap.entrySet()) {
                 IndentionInfo info = entry.getKey();
                 if (info.hierarchy > 0) {
-                    int indentionUnit = (info.indentionLength - topHierarchyIndention) / info.hierarchy;
+                    int indentionUnit = (info.indentionLength - topHierarchyIndentionLen) / info.hierarchy;
                     indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + entry.getValue());
                 }
             }
@@ -186,7 +189,7 @@ public class IndentionStyler extends Styler {
                     .getValue();
 
             boolean indentEmptyLines = indentedEmptyLineCount > notIndentedEmptyLineCount;
-            style.addRule(null, new IndentionProperty(indentionUnit, indentionType, indentEmptyLines, topHierarchyIndention));
+            style.addRule(null, new IndentionProperty(indentionUnit, indentionType, indentEmptyLines, topHierarchyIndentionLen));
         } catch (Exception e) {
             LoggerFactory.getLogger(this.getClass()).warn("No indention style was extracted.");
         }
@@ -280,6 +283,9 @@ public class IndentionStyler extends Styler {
         }
 
         int hierarchy = token.getHierarchy();
+        if (index + 1 < tokens.size() && tokens.get(index + 1) instanceof ExtendToken extendToken) {
+            hierarchy = extendToken.getHierarchy();
+        }
         int nextType = -1;
         if (index + 1 < tokens.size()) {
             nextType = getTokenType(tokens.get(index + 1), parser);
