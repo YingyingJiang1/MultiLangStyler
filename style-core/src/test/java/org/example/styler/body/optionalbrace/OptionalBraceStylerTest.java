@@ -25,6 +25,7 @@ class OptionalBraceStylerTest extends TestBase {
 				"f2.java",
 				"f3.java",
 				"f4.java",
+				"f5.java"
 		};
 
 		String[] targetFiles = {
@@ -32,6 +33,7 @@ class OptionalBraceStylerTest extends TestBase {
 				"f1.java",
 				"f4.java",
 				"f3.java",
+				"style1.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {

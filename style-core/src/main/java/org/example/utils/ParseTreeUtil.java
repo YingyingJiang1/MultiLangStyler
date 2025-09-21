@@ -242,7 +242,7 @@ public class ParseTreeUtil {
     ExtendToken lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
     ExtendToken rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
     // Add Format tokens
-//    lBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
+    lBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 //    rBrace.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 //    rBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 
