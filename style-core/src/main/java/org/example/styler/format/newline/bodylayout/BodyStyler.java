@@ -111,7 +111,7 @@ public abstract class BodyStyler extends Styler {
             if (parser.isStatement(body)) {
                 specificNode = parser.getSpecificStmt(body);
                 if (parser.isStatement(specificNode)) { // 空语句
-                    return BodySizeType.EMPTY;
+                    stmts = new ArrayList<>();
                 } else if (parser.isBlock(specificNode)) {
                     stmts = specificNode.getAllChildContextsIf(parser::isStatement);
                 } else {
@@ -119,7 +119,10 @@ public abstract class BodyStyler extends Styler {
                 }
             } else if (parser.isBlock(body)) {
                 stmts = body.getAllChildContextsIf(parser::isStatement);
-            } else {
+            } else if (parser.getRuleArrayInitializer() == body.getRuleIndex() || parser.getRuleElementValueArrayInitializer() == body.getRuleIndex()) {
+                stmts = body.getAllChildContextsIf(t -> true);
+                return stmts.isEmpty() ? BodySizeType.EMPTY : stmts.size() == 1 ? BodySizeType.ONE_INITIALIZER : BodySizeType.MULTI_INITIALIZER;
+            } else{
                 specificNode = body.getFirstCtxChildIf(parser::isBlock);
                 stmts = specificNode.getAllChildContextsIf(parser::isStatement);
             }
