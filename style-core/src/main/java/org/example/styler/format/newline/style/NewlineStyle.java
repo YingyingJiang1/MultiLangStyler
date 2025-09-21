@@ -2,6 +2,7 @@ package org.example.styler.format.newline.style;
 
 import com.google.common.math.Quantiles;
 import org.apache.commons.lang3.tuple.MutablePair;
+import org.example.global.GlobalInfo;
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
@@ -11,8 +12,8 @@ import org.example.style.rule.StyleRule;
 import java.util.*;
 
 public class NewlineStyle extends CommonStyle {
-	Map<List<String>, Map<NewlineProperty, List<Double>>> nodeTypeMap;
-	Map<List<String>, Set<NewlineContext>> lookupIndex = new HashMap<>();
+	Map<List<NewlineContext.NodeType>, Map<NewlineProperty, List<Double>>> nodeTypeMap;
+	Map<List<NewlineContext.NodeType>, Set<NewlineContext>> lookupIndex = new HashMap<>();
 
 
 	public NewlineStyle() {
@@ -26,7 +27,7 @@ public class NewlineStyle extends CommonStyle {
 		}
 		if (styleContext instanceof NewlineContext context
 				&& styleProperty instanceof NewlineProperty property) {
-			MutablePair<List<String>, NewlineProperty> key = new MutablePair<>(context.getNodeTypes(), property);
+			MutablePair<List<NewlineContext.NodeType>, NewlineProperty> key = new MutablePair<>(context.getNodeTypes(), property);
 			Map<NewlineProperty, List<Double>> propertyMap = nodeTypeMap.computeIfAbsent(context.getNodeTypes(), k -> new HashMap<>());
 			propertyMap.computeIfAbsent(property, k -> new ArrayList<>()).addAll(context.getLengths());
 		}
@@ -58,9 +59,9 @@ public class NewlineStyle extends CommonStyle {
 	public void fillStyle() {
 		if (nodeTypeMap != null) {
 			ruleSet.clear();
-			for (List<String> nodeTypes : nodeTypeMap.keySet()) {
+			for (List<NewlineContext.NodeType> nodeTypes : nodeTypeMap.keySet()) {
 				Map<NewlineProperty, List<Double>> propertyMap = nodeTypeMap.get(nodeTypes);
-				propertyMap = removeConflictProperties(propertyMap);
+				propertyMap = removeConflictProperties(nodeTypes, propertyMap);
 				for (NewlineProperty property : propertyMap.keySet()) {
 					List<Double> lengths = List.of(Quantiles.median().compute(propertyMap.get(property)));
 //					List<Double> lengths = null; // 不考虑长度
@@ -85,8 +86,21 @@ public class NewlineStyle extends CommonStyle {
 	}
 
 	// 当某个property的区间被包含时，删除该property（因为从统计上来讲大概率是非dominant的）
-	private Map<NewlineProperty, List<Double>> removeConflictProperties(
+	private Map<NewlineProperty, List<Double>> removeConflictProperties( List<NewlineContext.NodeType> nodeTypes,
 			Map<NewlineProperty, List<Double>> propertyMap) {
+		// 如果存在非ast节点，去除冲突时不需要考虑长度
+		for (NewlineContext.NodeType nodeType : nodeTypes) {
+			if (!nodeType.isAstNode()) {
+				int maxFreq = 0;
+				Map.Entry<NewlineProperty, List<Double>> maxFreqEntry = propertyMap.entrySet().stream().sorted(Comparator.comparingInt(e -> -e.getValue().size())).toList().get(0);
+				double ratio = (double) maxFreqEntry.getValue().size() / (double) propertyMap.values().stream().mapToInt(List::size).sum();
+				if (ratio >= GlobalInfo.getConf().getStyleConfig().getMinDominantRatio()) {
+					propertyMap.clear();
+					propertyMap.put(maxFreqEntry.getKey(), maxFreqEntry.getValue());
+				}
+				return propertyMap;
+			}
+		}
 
 		// 先计算每个 property 的区间 [min, max]
 		Map<NewlineProperty, double[]> intervals = new HashMap<>();

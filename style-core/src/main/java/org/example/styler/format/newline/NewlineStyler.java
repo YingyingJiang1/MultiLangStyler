@@ -12,16 +12,11 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleRule;
-import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
-import org.example.styler.format.newline.inter.InterNewlineStyler;
-import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.utils.NodeUtil;
-import org.example.utils.editor.NodeEditorFactory;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
@@ -136,11 +131,11 @@ public class NewlineStyler extends Styler {
 	}
 
 	private StyleRule extractStyleRule(ExtendContext ctx, int index, MyParser parser) {
-		List<String> nodeTypes = new ArrayList<>();
+		List<NewlineContext.NodeType> nodeTypes = new ArrayList<>();
 		ParseTree curNode = ctx.getChild(index);
 		ParseTree nextNode = ctx.getChild(index + 1);
-		nodeTypes.add(getNodeName(curNode, parser));
-		nodeTypes.add(getNodeName(nextNode, parser));
+		nodeTypes.add(getNodeType(curNode, parser));
+		nodeTypes.add(getNodeType(nextNode, parser));
 		int breakIndex = 1;
 		double totalTextLen = getApproxLen(curNode, parser) + getApproxLen(nextNode, parser);
 
@@ -162,8 +157,7 @@ public class NewlineStyler extends Styler {
 				}
 
 				if (notReachRightNewline) {
-					String name = getNodeName(right, parser);
-					nodeTypes.add(name);
+					nodeTypes.add( getNodeType(right, parser));
 					count--;
 					totalTextLen += getApproxLen(right, parser);
 				}
@@ -181,8 +175,7 @@ public class NewlineStyler extends Styler {
 				}
 
 				if (notReachLeftNewline) {
-					String name = getNodeName(left, parser);
-					nodeTypes.add(0, name);
+					nodeTypes.add(0, getNodeType(left, parser));
 					++breakIndex;
 					count--;
 					totalTextLen += getApproxLen(left, parser);
@@ -204,24 +197,24 @@ public class NewlineStyler extends Styler {
 	}
 
 
-	private String getNodeName(ParseTree node, MyParser parser) {
+	private NewlineContext.NodeType getNodeType(ParseTree node, MyParser parser) {
 		if (node instanceof TerminalNode ter) {
-			return parser.getTokenName(ter.getSymbol().getType());
+			return new NewlineContext.NodeType(parser.getTokenName(ter.getSymbol().getType()), false);
 		} else {
 			int rule = ((ExtendContext) node).getRuleIndex();
 			if (parser.isStatement(node)) {
 				rule = parser.getSpecificStmtType((ExtendContext) node);
 			}
 			if (rule == parser.getRuleIfStmt() || rule == parser.getRuleIfElseStmt() || rule == parser.getRuleSwitchStmt()) {
-				return "BRANCH_STMT";
+				return new NewlineContext.NodeType("BRANCH_STMT");
 			} else if (rule == parser.getRuleForStmt() || rule == parser.getRuleWhileStmt() || rule == parser.getRuleDoWhileStmt()) {
-				return "LOOP_STMT";
+				return new NewlineContext.NodeType("LOOP_STMT");
 			} else if (parser.isStatement(node) && node.getChild(0) instanceof TerminalNode) {
-				return "EMPTY_STMT";
+				return new NewlineContext.NodeType("EMPTY_STMT");
 			} else if (parser.belongToSingleStmt(node) && rule != parser.getRuleLocalVarDeclarationStmt()) {
-				return "SINGLE_STMT";
+				return new NewlineContext.NodeType("SINGLE_STMT");
 			}
-			return parser.getRuleName(rule);
+			return new NewlineContext.NodeType(parser.getRuleName(rule));
 		}
 	}
 

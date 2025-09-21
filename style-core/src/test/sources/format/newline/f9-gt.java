@@ -21,6 +21,5 @@ private void executeJob(QueuedJob job) {
             job.future.completeExceptionally(e);
         }
     });
-
 }
 

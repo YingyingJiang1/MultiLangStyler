@@ -1,4 +1,5 @@
-// M43
+class Main {
+    // M43
     @PreAuthorize("!hasAuthority('ROLE_DEMO_USER')")
     @PostMapping("/change-password-on-login")
     public RedirectView changePasswordOnLogin(
@@ -28,7 +29,7 @@
     }
 
 
-// M547
+    // M547
     @PostMapping(consumes = "multipart/form-data", value = "/repair")
     @Operation(
             summary = "Repair a PDF file",
@@ -42,7 +43,7 @@
 
         // Use TempFile with try-with-resources for automatic cleanup
         try (TempFile tempInputFile = new TempFile(tempFileManager, ".pdf");
-                TempFile tempOutputFile = new TempFile(tempFileManager, ".pdf")) {
+             TempFile tempOutputFile = new TempFile(tempFileManager, ".pdf")) {
 
             // Save the uploaded file to the temporary location
             inputFile.transferTo(tempInputFile.getFile());
@@ -108,14 +109,14 @@
             // Return the repaired PDF as a response
             String outputFilename =
                     Filenames.toSimpleFileName(inputFile.getOriginalFilename())
-                                    .replaceFirst("[.][^.]+$", "")
+                            .replaceFirst("[.][^.]+$", "")
                             + "_repaired.pdf";
             return WebResponseUtils.bytesToWebResponse(pdfBytes, outputFilename);
         }
     }
 
 
-// M542
+    // M542
     @PostMapping(consumes = "multipart/form-data", value = "/compress-pdf")
     @Operation(
             summary = "Optimize PDF file",
@@ -264,7 +265,7 @@
 
             String outputFilename =
                     Filenames.toSimpleFileName(inputFile.getOriginalFilename())
-                                    .replaceFirst("[.][^.]+$", "")
+                            .replaceFirst("[.][^.]+$", "")
                             + "_Optimized.pdf";
 
             return WebResponseUtils.pdfDocToWebResponse(
@@ -281,5 +282,5 @@
             }
         }
     }
-
+}
 

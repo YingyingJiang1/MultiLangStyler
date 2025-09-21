@@ -134,11 +134,13 @@ class NewlineStylerTest extends TestBase {
 		String[] srcFiles = {
 				"f9.java",
 				"f10.java",
+				"f11.java",
 		};
 
 		String[] targetFiles = {
 				"style1.java",
 				"style2.java",
+				"style3.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
