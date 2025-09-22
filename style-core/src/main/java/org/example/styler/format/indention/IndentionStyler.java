@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
@@ -19,7 +20,7 @@ import java.util.*;
 
 public class IndentionStyler extends Styler {
 
-    private IndentionInfo topHierarchyIndention;
+    private int topHierarchyIndentionLen;
     private int totalEmptyLines = -1;
     // key: indention info, value: frequency
     private Map<IndentionInfo, Integer> indentionLengthMap = new HashMap<>();
@@ -31,15 +32,24 @@ public class IndentionStyler extends Styler {
         style = new IndentionStyle();
     }
 
+    @Override
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
+        ExtendContext targetNode = ctx.getFirstContextRecIf(t -> t.getRuleIndex() == parser.getRuleTypeDeclaration() ||
+                t.getRuleIndex() == parser.getRuleMethodDeclaration() || t.getRuleIndex() == parser.getRuleConstructorDeclaration()
+        || t.getRuleIndex() == parser.getRuleStmt());
+        topHierarchyIndentionLen = targetNode.getStart().getCharPositionInLine();
+    }
+
+    @Override
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+        return ctx == parser.getRoot();
+    }
 
     @Override
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         IndentionInfo info = extractIndentionInfo(tokens, index, parser);
         if (info != null) {
-            if (topHierarchyIndention == null) { // 取首次提取到的值
-                topHierarchyIndention = info;
-            }
             indentionLengthMap.put(info, indentionLengthMap.getOrDefault(info, 0) + 1);
         }
     }
@@ -160,16 +170,27 @@ public class IndentionStyler extends Styler {
 
 
         try {
-            int topHierarchyIndentionLen = topHierarchyIndention.indentionLength;
-//            if (!topIndentionMap.isEmpty()) {
-//                topHierarchyIndention = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+//            int topHierarchyIndentionLen = 0;
+//            // 去除顶层缩进中可能异常的情况（异常情况主要来自一些行封装）
+//            Map.Entry<IndentionInfo, Integer> hierarchy1Indention = indentionLengthMap.entrySet().stream().filter(e -> e.getKey().hierarchy == 1)
+//                    .max(Comparator.comparingInt(Map.Entry::getValue)).orElse(null);
+//            if (hierarchy1Indention != null) {
+//                topIndentionMap.keySet().stream()
+//                        .filter(e -> e >= hierarchy1Indention.getKey().indentionLength)
+//                        .forEach(e -> topIndentionMap.remove(e));
 //            }
+//            // 计算顶层缩进
+//            if (!topIndentionMap.isEmpty()) {
+//                topHierarchyIndentionLen = topIndentionMap.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+//            }
+
 
             Map<Integer, Integer> indentionUnitMap = new HashMap<>();
             for (Map.Entry<IndentionInfo, Integer> entry : indentionLengthMap.entrySet()) {
                 IndentionInfo info = entry.getKey();
                 if (info.hierarchy > 0) {
-                    int indentionUnit = (info.indentionLength - topHierarchyIndentionLen) / info.hierarchy;
+                    int indentionLen = info.indentionLength - topHierarchyIndentionLen > 0 ? info.indentionLength - topHierarchyIndentionLen : info.indentionLength;
+                    int indentionUnit = indentionLen / info.hierarchy;
                     indentionUnitMap.put(indentionUnit, indentionUnitMap.getOrDefault(indentionUnit, 0) + entry.getValue());
                 }
             }

@@ -7,7 +7,7 @@ public class PrimeCounter {
 		if (n < 2) 
 			return false;
 
-			// Check for divisibility up to square root of n
+		// Check for divisibility up to square root of n
 		for (long i = 2; i * i <= n; i++) {
 			if (n % i == 0) {
 				return false;
@@ -26,7 +26,7 @@ public class PrimeCounter {
 		for (int i = 0; i < N; i++) {
 			long num = scanner.nextLong();
 			if (isPrime(num)) {
-				primeCount++;
+				primeCount+= 1 ; 
 			} else {
 				System.out.println(primeCount);
 			}

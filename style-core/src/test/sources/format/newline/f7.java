@@ -36,9 +36,6 @@ public class EdE {
 		out.println(sum);
 			
 		out.close();
-		
-		
-		
 	}
 
 	public static long power(long x, long y, long mod){

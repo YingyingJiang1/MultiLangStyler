@@ -14,6 +14,7 @@
 				if (h == 0 && w == 0) {
 					break;
 				}
+
 				if (h == 0 && w == 0)break;
 
 				for (int i = 0; i < h; i++) {
@@ -25,6 +26,7 @@
 							System.out.print(".");
 						}
 					}
+
 					System.out.println();
 				}
 

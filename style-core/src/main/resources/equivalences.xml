@@ -272,7 +272,7 @@
         <codes>
             <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
             <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
-            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
+<!--            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>-->
         </codes>
         <checkers>
             <checker>

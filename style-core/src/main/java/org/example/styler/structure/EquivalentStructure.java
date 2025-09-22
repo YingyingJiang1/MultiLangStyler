@@ -129,13 +129,13 @@ public class EquivalentStructure {
 				}
 
 				// 优化format
-				if (parser.getTokenStream() instanceof CommonTokenStream ts) {
-					ts.getTokens().forEach(t -> {
-						if (t.getType() == parser.getSemi() || t.getType() == parser.getRBrace() || t.getType() == parser.getLBrace()) {
-							((ExtendToken) t).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
-						}
-					});
-				}
+//				if (parser.getTokenStream() instanceof CommonTokenStream ts) {
+//					ts.getTokens().forEach(t -> {
+//						if (t.getType() == parser.getSemi() || t.getType() == parser.getRBrace() || t.getType() == parser.getLBrace()) {
+//							((ExtendToken) t).addTokenAfter(parser.getTokenFactory().create(parser.getVws(), "\n"), parser);
+//						}
+//					});
+//				}
 
 				forests.add(new Forest(trees, priority, xmlRule.styles.get(i)));
 				uniqueVNodes(placeholderContainer, parser);

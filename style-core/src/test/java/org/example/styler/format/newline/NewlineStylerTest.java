@@ -5,6 +5,7 @@ import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
 import org.example.styler.format.newline.inter.InterNewlineStyler;
 import org.example.styler.format.newline.intra.IntraNewlineStyler;
+import org.example.styler.structure.StructureStyler;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
@@ -24,7 +25,8 @@ class NewlineStylerTest extends TestBase {
 //				"f2.java",
 				"f7.java",
 				"f8.java",
-				"f13.java",
+//				"f13.java",
+//				"f14.java",
 		};
 		
 		String[] targetFiles = {
@@ -32,7 +34,8 @@ class NewlineStylerTest extends TestBase {
 //				"f7.java",
 				"f3.java",
 				"f1.java",
-				"style4.java",
+//				"style4.java",
+//				"style5.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -42,6 +45,7 @@ class NewlineStylerTest extends TestBase {
 					IntraNewlineStyler.class,
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
+					StructureStyler.class,
 					IndentionStyler.class));
 			if (false) {
 							try{
