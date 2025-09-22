@@ -7,7 +7,7 @@
   <style name="if_else_body_order"/>
   <style name="indention">
     <rule>
-      <style_property indentionUnit="4" indentionType=" " indentEmptyLine="false" topHierarchyIndention="0"/>
+      <style_property indentionUnit="2" indentionType=" " indentEmptyLine="false" topHierarchyIndention="2"/>
     </rule>
   </style>
   <style name="optional_brace"/>

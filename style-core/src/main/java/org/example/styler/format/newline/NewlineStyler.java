@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
@@ -12,11 +13,13 @@ import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleRule;
+import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.utils.NodeUtil;
+import org.example.utils.ParseTreeUtil;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
@@ -34,6 +37,10 @@ public class NewlineStyler extends Styler {
 //			new BodyLayoutStyler()
 //	);
 
+	List<Styler> pathchStyler = List.of(
+			new AnnotationNewlinePatchStyler()
+	);
+
 
 	public NewlineStyler() {
 		executeWhenExit = false;
@@ -43,6 +50,13 @@ public class NewlineStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
+		for (Styler styler : pathchStyler) {
+			if (styler.isRelevant(ctx, Stage.EXTRACT, parser)) {
+				styler.extractStyle(ctx, parser);
+				return;
+			}
+		}
+
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
 			StyleRule rule = extractStyleRule(ctx, i, parser);
 			if (rule != null) {
@@ -60,6 +74,13 @@ public class NewlineStyler extends Styler {
 
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+		for (Styler styler : pathchStyler) {
+			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
+				styler.applyStyle(ctx, parser);
+				return ctx;
+			}
+		}
+
 		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
 			StyleRule rule = extractStyleRule(ctx, i, parser);
 			if (rule == null) {
@@ -70,19 +91,15 @@ public class NewlineStyler extends Styler {
 			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
 
 
-			if (style instanceof NewlineStyle newlineStyle) {
-				if (newlineStyle.getProperty(context) instanceof NewlineProperty targetProperty) {
-					int diff = targetProperty.newlines - property.newlines;
-					if (diff > 0) {
-						NewlineApplicator.addNewline(ctx.getChild(i), diff, newline, parser);
-						RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-					} else if (diff < 0) {
-						NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
-						RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-					}
+			if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
+				int diff = targetProperty.newlines - property.newlines;
+				if (diff > 0) {
+					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
+					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+				} else if (diff < 0) {
+					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
+					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
 				}
-
-
 			}
 
 		}
@@ -130,10 +147,14 @@ public class NewlineStyler extends Styler {
 		return infos;
 	}
 
-	private StyleRule extractStyleRule(ExtendContext ctx, int index, MyParser parser) {
+	protected StyleRule extractStyleRule(ExtendContext ctx, int index, MyParser parser) {
 		List<NewlineContext.NodeType> nodeTypes = new ArrayList<>();
 		ParseTree curNode = ctx.getChild(index);
-		ParseTree nextNode = ctx.getChild(index + 1);
+		ParseTree nextNode = getNextAdjacentNode(curNode);
+		if (nextNode == null) {
+			return null;
+		}
+
 		nodeTypes.add(getNodeType(curNode, parser));
 		nodeTypes.add(getNodeType(nextNode, parser));
 		int breakIndex = 1;
@@ -199,7 +220,15 @@ public class NewlineStyler extends Styler {
 
 	private NewlineContext.NodeType getNodeType(ParseTree node, MyParser parser) {
 		if (node instanceof TerminalNode ter) {
-			return new NewlineContext.NodeType(parser.getTokenName(ter.getSymbol().getType()), false);
+			String name = "";
+			if (parser.belongToKeyword(ter.getSymbol())) {
+				name = "KEYWORD";
+			} else if (ter.getSymbol().getType() == parser.getIdentifier()) {
+				name = "IDENTIFIER";
+			} else {
+				name = parser.getTokenName(ter.getSymbol().getType());
+			}
+			return new NewlineContext.NodeType(name, false);
 		} else {
 			int rule = ((ExtendContext) node).getRuleIndex();
 			if (parser.isStatement(node)) {
@@ -232,6 +261,28 @@ public class NewlineStyler extends Styler {
 		} else {
 			return upper;
 		}
+	}
+
+
+	private ParseTree getNextAdjacentNode(ParseTree cur) {
+		if (cur.getParent() == null) {
+			return null;
+		}
+
+		ParserRuleContext parent = (ParserRuleContext) cur.getParent();
+		int idx = parent.children.indexOf(cur);
+		if (idx + 1 < parent.getChildCount()) {
+			return parent.getChild(idx + 1);
+		}
+		return null;
+
+		// 遍历祖先节点
+//		ParseTree node = cur;
+//		while (parent != null && parent.getChild(parent.getChildCount() - 1) == node) {
+//			node = parent;
+//			parent = parent.getParent();
+//		}
+//		return parent == null ? null : parent.getChild(parent.children.indexOf(node) + 1);
 	}
 
 //	private String createExtraIndentionStr(ParseTree node, String fullIndentionStr, MyParser parser) {

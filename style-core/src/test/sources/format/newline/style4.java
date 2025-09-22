@@ -9,247 +9,88 @@ class Main {
                             + " returned as a response. Input:PDF Output:PDF Type:SISO")
     public ResponseEntity<byte[]> repairPdf(@ModelAttribute PDFFile file)
             throws IOException, InterruptedException {
-        MultipartFile inputFile = file.getFileInput();
-
-        // Use TempFile with try-with-resources for automatic cleanup
-        try (TempFile tempInputFile = new TempFile(tempFileManager, ".pdf");
-             TempFile tempOutputFile = new TempFile(tempFileManager, ".pdf")) {
-
-            // Save the uploaded file to the temporary location
-            inputFile.transferTo(tempInputFile.getFile());
-
-            boolean repairSuccess = false;
-
-            // Try Ghostscript first if available
-            if (isGhostscriptEnabled()) {
-                try {
-                    List<String> gsCommand = new ArrayList<>();
-                    gsCommand.add("gs");
-                    gsCommand.add("-o");
-                    gsCommand.add(tempOutputFile.getPath().toString());
-                    gsCommand.add("-sDEVICE=pdfwrite");
-                    gsCommand.add(tempInputFile.getPath().toString());
-
-                    ProcessExecutorResult gsResult =
-                            ProcessExecutor.getInstance(ProcessExecutor.Processes.GHOSTSCRIPT)
-                                    .runCommandWithOutputHandling(gsCommand);
-
-                    if (gsResult.getRc() == 0) {
-                        repairSuccess = true;
-                    }
-                } catch (Exception e) {
-                    // Log and continue to QPDF fallback
-                    log.warn("Ghostscript repair failed, trying QPDF fallback: ", e);
-                }
-            }
-
-            // Fallback to QPDF if Ghostscript failed or not available
-            if (!repairSuccess && isQpdfEnabled()) {
-                List<String> qpdfCommand = new ArrayList<>();
-                qpdfCommand.add("qpdf");
-                qpdfCommand.add("--replace-input"); // Automatically fixes problems it can
-                qpdfCommand.add("--qdf"); // Linearizes and normalizes PDF structure
-                qpdfCommand.add("--object-streams=disable"); // Can help with some corruptions
-                qpdfCommand.add(tempInputFile.getPath().toString());
-                qpdfCommand.add(tempOutputFile.getPath().toString());
-
-                ProcessExecutorResult qpdfResult =
-                        ProcessExecutor.getInstance(ProcessExecutor.Processes.QPDF)
-                                .runCommandWithOutputHandling(qpdfCommand);
-
-                repairSuccess = true;
-            }
-
-            // Use PDFBox as last resort if no external tools are available
-            if (!repairSuccess) {
-                if (!isGhostscriptEnabled() && !isQpdfEnabled()) {
-                    // Basic PDFBox repair - load and save to fix structural issues
-                    try (var document = pdfDocumentFactory.load(tempInputFile.getFile())) {
-                        document.save(tempOutputFile.getFile());
-                        repairSuccess = true;
-                    }
-                } else {
-                    throw new IOException("PDF repair failed with available tools");
-                }
-            }
-
-            // Read the repaired PDF file
-            byte[] pdfBytes = pdfDocumentFactory.loadToBytes(tempOutputFile.getFile());
-
-            // Return the repaired PDF as a response
-            String outputFilename =
-                    Filenames.toSimpleFileName(inputFile.getOriginalFilename())
-                            .replaceFirst("[.][^.]+$", "")
-                            + "_repaired.pdf";
-            return WebResponseUtils.bytesToWebResponse(pdfBytes, outputFilename);
-        }
     }
 
     // M542
     @PostMapping(consumes = "multipart/form-data", value = "/compress-pdf")
-    @Operation(
-            summary = "Optimize PDF file",
-            description =
-                    "This endpoint accepts a PDF file and optimizes it based on the provided"
-                            + " parameters. Input:PDF Output:PDF Type:SISO")
-    public ResponseEntity<byte[]> optimizePdf(@ModelAttribute OptimizePdfRequest request)
-            throws Exception {
-        MultipartFile inputFile = request.getFileInput();
-        Integer optimizeLevel = request.getOptimizeLevel();
-        String expectedOutputSizeString = request.getExpectedOutputSize();
-        Boolean convertToGrayscale = request.getGrayscale();
-        if (expectedOutputSizeString == null && optimizeLevel == null) {
-            throw new Exception("Both expected output size and optimize level are not specified");
-        }
+   	ResponseEntity<byte[]> optimizePdf(@ModelAttribute OptimizePdfRequest request)
+            throws Exception {}
 
-        Long expectedOutputSize = 0L;
-        boolean autoMode = false;
-        if (expectedOutputSizeString != null && expectedOutputSizeString.length() > 1) {
-            expectedOutputSize = GeneralUtils.convertSizeToBytes(expectedOutputSizeString);
-            autoMode = true;
-        }
+	@Bean(name = "machineType")
+	@Bean(name = "machineType")
+	String determineMachineType() {
+		// Use TempFile with try-with-resources for automatic cleanup
+		try (TempFile tempInputFile = new TempFile(tempFileManager, ".pdf");
+			 TempFile tempOutputFile = new TempFile(tempFileManager, ".pdf")) {
 
-        // Create initial input file
-        Path originalFile = Files.createTempFile("original_", ".pdf");
-        inputFile.transferTo(originalFile.toFile());
-        long inputFileSize = Files.size(originalFile);
+			// Save the uploaded file to the temporary location
+			inputFile.transferTo(tempInputFile.getFile());
 
-        Path currentFile = Files.createTempFile("working_", ".pdf");
-        Files.copy(originalFile, currentFile, StandardCopyOption.REPLACE_EXISTING);
+			boolean repairSuccess = false;
 
-        // Keep track of all temporary files for cleanup
-        List<Path> tempFiles = new ArrayList<>();
-        tempFiles.add(originalFile);
-        tempFiles.add(currentFile);
-        try {
-            if (autoMode) {
-                double sizeReductionRatio = expectedOutputSize / (double) inputFileSize;
-                optimizeLevel = determineOptimizeLevel(sizeReductionRatio);
-            }
+			// Try Ghostscript first if available
+			if (isGhostscriptEnabled()) {
+				try {
+					List<String> gsCommand = new ArrayList<>();
+					gsCommand.add("gs");
+					gsCommand.add("-o");
+					gsCommand.add(tempOutputFile.getPath().toString());
+					gsCommand.add("-sDEVICE=pdfwrite");
+					gsCommand.add(tempInputFile.getPath().toString());
 
-            boolean sizeMet = false;
-            boolean imageCompressionApplied = false;
-            boolean externalCompressionApplied = false;
+					ProcessExecutorResult gsResult =
+							ProcessExecutor.getInstance(ProcessExecutor.Processes.GHOSTSCRIPT)
+									.runCommandWithOutputHandling(gsCommand);
 
-            while (!sizeMet && optimizeLevel <= 9) {
-                // Apply external compression first
-                if (!externalCompressionApplied) {
-                    boolean ghostscriptSuccess = false;
+					if (gsResult.getRc() == 0) {
+						repairSuccess = true;
+					}
+				} catch (Exception e) {
+					// Log and continue to QPDF fallback
+					log.warn("Ghostscript repair failed, trying QPDF fallback: ", e);
+				}
+			}
 
-                    // Try Ghostscript first if available - for ANY compression level
-                    if (isGhostscriptEnabled()) {
-                        try {
-                            applyGhostscriptCompression(
-                                    request, optimizeLevel, currentFile, tempFiles);
-                            log.info("Ghostscript compression applied successfully");
-                            ghostscriptSuccess = true;
-                        } catch (IOException e) {
-                            log.warn("Ghostscript compression failed, trying fallback methods");
-                        }
-                    }
+			// Fallback to QPDF if Ghostscript failed or not available
+			if (!repairSuccess && isQpdfEnabled()) {
+				List<String> qpdfCommand = new ArrayList<>();
+				qpdfCommand.add("qpdf");
+				qpdfCommand.add("--replace-input"); // Automatically fixes problems it can
+				qpdfCommand.add("--qdf"); // Linearizes and normalizes PDF structure
+				qpdfCommand.add("--object-streams=disable"); // Can help with some corruptions
+				qpdfCommand.add(tempInputFile.getPath().toString());
+				qpdfCommand.add(tempOutputFile.getPath().toString());
 
-                    // Fallback to QPDF if Ghostscript failed or not available (levels 1-3 only)
-                    if (!ghostscriptSuccess && isQpdfEnabled() && optimizeLevel <= 3) {
-                        try {
-                            applyQpdfCompression(request, optimizeLevel, currentFile, tempFiles);
-                            log.info("QPDF compression applied successfully");
-                        } catch (IOException e) {
-                            log.warn("QPDF compression also failed");
-                        }
-                    }
+				ProcessExecutorResult qpdfResult =
+						ProcessExecutor.getInstance(ProcessExecutor.Processes.QPDF)
+								.runCommandWithOutputHandling(qpdfCommand);
 
-                    if (!ghostscriptSuccess && !isQpdfEnabled()) {
-                        log.info(
-                                "No external compression tools available, using image compression only");
-                    }
+				repairSuccess = true;
+			}
 
-                    externalCompressionApplied = true;
+			// Use PDFBox as last resort if no external tools are available
+			if (!repairSuccess) {
+				if (!isGhostscriptEnabled() && !isQpdfEnabled()) {
+					// Basic PDFBox repair - load and save to fix structural issues
+					try (var document = pdfDocumentFactory.load(tempInputFile.getFile())) {
+						document.save(tempOutputFile.getFile());
+						repairSuccess = true;
+					}
+				} else {
+					throw new IOException("PDF repair failed with available tools");
+				}
+			}
 
-                    // Skip image compression if Ghostscript succeeded
-                    if (ghostscriptSuccess) {
-                        imageCompressionApplied = true;
-                    }
-                }
+			// Read the repaired PDF file
+			byte[] pdfBytes = pdfDocumentFactory.loadToBytes(tempOutputFile.getFile());
 
-                // Apply image compression for levels 4+ only if Ghostscript didn't run
-                if ((optimizeLevel >= 4 || Boolean.TRUE.equals(convertToGrayscale))
-                        && !imageCompressionApplied) {
-                    // Use different scale factors based on level
-                    double scaleFactor =
-                            switch (optimizeLevel) {
-                                case 4 -> 0.95; // 95% of original size
-                                case 5 -> 0.9; // 90% of original size
-                                case 6 -> 0.8; // 80% of original size
-                                case 7 -> 0.7; // 70% of original size
-                                case 8 -> 0.65; // 65% of original size
-                                case 9 -> 0.5; // 50% of original size
-                                default -> 1.0;
-                            };
-
-                    log.info("Applying image compression with scale factor: {}", scaleFactor);
-                    Path compressedImageFile =
-                            compressImagesInPDF(
-                                    currentFile,
-                                    scaleFactor,
-                                    0.7f, // Default JPEG quality
-                                    Boolean.TRUE.equals(convertToGrayscale));
-
-                    tempFiles.add(compressedImageFile);
-                    currentFile = compressedImageFile;
-                    imageCompressionApplied = true;
-                }
-
-                // Check if target size reached or not in auto mode
-                long outputFileSize = Files.size(currentFile);
-                if (outputFileSize <= expectedOutputSize || !autoMode) {
-                    sizeMet = true;
-                } else {
-                    int newOptimizeLevel =
-                            incrementOptimizeLevel(
-                                    optimizeLevel, outputFileSize, expectedOutputSize);
-
-                    // Check if we can't increase the level further
-                    if (newOptimizeLevel == optimizeLevel) {
-                        if (autoMode) {
-                            log.info(
-                                    "Maximum optimization level reached without meeting target size.");
-                            sizeMet = true;
-                        }
-                    } else {
-                        // Reset flags for next iteration with higher optimization level
-                        imageCompressionApplied = false;
-                        externalCompressionApplied = false;
-                        optimizeLevel = newOptimizeLevel;
-                    }
-                }
-            }
-
-            // Use original if optimized file is somehow larger
-            long finalFileSize = Files.size(currentFile);
-            if (finalFileSize >= inputFileSize) {
-                log.warn(
-                        "Optimized file is larger than the original. Using the original file instead.");
-                currentFile = originalFile;
-            }
-
-            String outputFilename =
-                    Filenames.toSimpleFileName(inputFile.getOriginalFilename())
-                            .replaceFirst("[.][^.]+$", "")
-                            + "_Optimized.pdf";
-
-            return WebResponseUtils.pdfDocToWebResponse(
-                    pdfDocumentFactory.load(currentFile.toFile()), outputFilename);
-
-        } finally {
-            // Clean up all temporary files
-            for (Path tempFile : tempFiles) {
-                try {
-                    Files.deleteIfExists(tempFile);
-                } catch (IOException e) {
-                    log.warn("Failed to delete temporary file: " + tempFile, e);
-                }
-            }
-        }
-    }
+			// Return the repaired PDF as a response
+			String outputFilename =
+					Filenames.toSimpleFileName(inputFile.getOriginalFilename())
+							.replaceFirst("[.][^.]+$", "")
+							+ "_repaired.pdf";
+			return WebResponseUtils.bytesToWebResponse(pdfBytes, outputFilename);
+		}
+	}
 }
 
