@@ -26,7 +26,7 @@ public class PrimeCounter {
 		for (int i = 0; i < N; i++) {
 			long num = scanner.nextLong();
 			if (isPrime(num)) {
-				primeCount+= 1 ; 
+				primeCount++;
 			} else {
 				System.out.println(primeCount);
 			}

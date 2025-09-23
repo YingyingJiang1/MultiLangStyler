@@ -24,6 +24,8 @@ public class Chessboard {
 
 				break;
 
+			System.out.println();
+
 			for (int i = 0; i < h; i++) {
 
 				for (int j = 0; j < w; j++) {

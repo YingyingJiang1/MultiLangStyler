@@ -96,6 +96,14 @@ public class MyJavaParser implements MyParser {
             case JavaParser.RULE_importDeclarationList -> parser.importDeclarationList();
             default -> null;
         };
+
+        TokenAugmentor.addContextTokens(this);
+        // 统一换行符
+        ((CommonTokenStream) parser.getTokenStream()).getTokens().forEach(e -> {
+            if (e.getType() == JavaParser.VWS || e.getType() == JavaParser.BLOCK_COMMENT || e.getType() == JavaParser.LINE_COMMENT) {
+                ((ExtendToken) e).setText(e.getText().replace("\r\n", "\n"));
+            }
+        });
         return t;
     }
 

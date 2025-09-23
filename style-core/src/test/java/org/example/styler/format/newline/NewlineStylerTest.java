@@ -21,21 +21,19 @@ class NewlineStylerTest extends TestBase {
 	void applyStyle() {
 		String dir = "src/test/sources/format/newline/";
 		String[] srcFiles = {
-//				"f1.java",
-//				"f2.java",
+				"f1.java",
+				"f2.java",
 				"f7.java",
 				"f8.java",
-//				"f13.java",
-//				"f14.java",
+				"f13.java",
 		};
 		
 		String[] targetFiles = {
-//				"f2.java",
-//				"f7.java",
+				"f2.java",
+				"f7.java",
 				"f3.java",
 				"f1.java",
-//				"style4.java",
-//				"style5.java",
+				"style4.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -45,7 +43,6 @@ class NewlineStylerTest extends TestBase {
 					IntraNewlineStyler.class,
 					InterNewlineStyler.class,
 					BodyLayoutStyler.class,
-					StructureStyler.class,
 					IndentionStyler.class));
 			if (false) {
 							try{

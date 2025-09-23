@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style>
+    <style name=""/>
+    <style name="naming_format"/>
+    <style name="if_else_body_order"/>
+    <style name="indention"/>
+    <style name="optional_brace"/>
+    <style name="expression_complexity">
+        <rule>
+            <style_context expType="TOP_EXP"/>
+            <style_property>
+                <maxComplexity depth="4"/>
+                <avgComplexity depth="4"/>
+            </style_property>
+        </rule>
+        <rule>
+            <style_context expType="INITIALIZER_EXP"/>
+            <style_property>
+                <maxComplexity depth="4"/>
+                <avgComplexity depth="4"/>
+            </style_property>
+        </rule>
+    </style>
+    <style name="declaration_layout"/>
+    <style name="space"/>
+    <style name="newline"/>
+    <style name="modifier_order"/>
+    <style name="structure_preference"/>
+    <style name="body_layout"/>
+    <style name="intra_newline"/>
+</program_style>

@@ -112,7 +112,8 @@ public class TypeResolverImpl implements TypeResolver {
 			literalTypeMap.put(parser.getRuleTextBlockLiteral(), "String");
 		}
 
-		String typeName = literalTypeMap.get(literal.getRuleIndex());
+		String typeName = literalTypeMap.get(((ExtendContext)literal.getChild(0)).getRuleIndex());
+		// 在这里进行类型提升不合适！
 		if (typeName != null) {
 			if (typeName.equals("String")) {
 				return new ReferenceType(null, new ClassSym(typeName));
