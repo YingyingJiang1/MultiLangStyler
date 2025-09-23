@@ -30,7 +30,7 @@ class ExpressionStylerTest extends TestBase {
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
 					ExpressionStyler.class
 			));
-			if (false) {
+			if (true) {
 				try {
 					Files.writeString(gtPath, actual);
 				} catch (Exception e) {

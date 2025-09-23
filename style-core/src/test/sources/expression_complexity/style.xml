@@ -8,14 +8,14 @@
   <style name="optional_brace"/>
   <style name="expression_complexity">
     <rule>
-      <style_context expType="TOP_EXP"/>
+      <style_context expType="INITIALIZER_EXP"/>
       <style_property>
         <maxComplexity depth="4.0"/>
         <avgComplexity depth="4.0"/>
       </style_property>
     </rule>
     <rule>
-      <style_context expType="INITIALIZER_EXP"/>
+      <style_context expType="TOP_EXP"/>
       <style_property>
         <maxComplexity depth="4.0"/>
         <avgComplexity depth="4.0"/>
