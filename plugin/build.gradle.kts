@@ -24,7 +24,7 @@ kotlin {
 // Set the Java language level
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17)) // 或 11、21 等
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 

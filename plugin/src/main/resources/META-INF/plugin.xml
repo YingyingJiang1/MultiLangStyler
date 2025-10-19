@@ -35,10 +35,15 @@
                 description="Set this directory as the style source directory">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
-        <action id="FixStyleInconsistency"
-                class="org.example.FixStyleInconsistencyAction"
-                text="Fix Code Style Inconsistencies"
-                description="Automatically fix code style inconsistencies in this file">
+        <action id="ApplyStyle"
+                class="org.example.ApplyStyleAction"
+                text="Transfer Code Style"
+                description="Automatically fix code style inconsistencies">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+        <action id="SelectRefCode"
+                class="org.example.SelectRefCodeAction"
+                text="Select Reference Style">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
 

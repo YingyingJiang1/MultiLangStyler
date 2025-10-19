@@ -58,7 +58,8 @@ public final class AppSettings implements PersistentStateComponent<AppSettings.S
 		MOST_COMMON_AUTHOR,
 		SPECIFIC_AUTHOR,
 		SPECIFIC_DIRECTORY,
-		STYLE_CONFIG_FILE
+		STYLE_CONFIG_FILE,
+		SELECTED_CODE
 		;
 
 		public String getName() {
@@ -67,6 +68,7 @@ public final class AppSettings implements PersistentStateComponent<AppSettings.S
 				case SPECIFIC_AUTHOR -> "Specific author";
 				case SPECIFIC_DIRECTORY -> "Specific directory";
 				case STYLE_CONFIG_FILE -> "Style configuration file";
+				case SELECTED_CODE -> "Selected code";
 			};
 		}
 

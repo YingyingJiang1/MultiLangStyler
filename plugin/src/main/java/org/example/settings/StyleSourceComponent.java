@@ -31,6 +31,7 @@ public class StyleSourceComponent extends JPanel{
 		addOption(StyleSourceType.SPECIFIC_AUTHOR, StyleSourceType.SPECIFIC_AUTHOR.getName(), true, gbc, row++);
 		addOption(StyleSourceType.SPECIFIC_DIRECTORY, StyleSourceType.SPECIFIC_DIRECTORY.getName(), true, gbc, row++);
 		addOption(StyleSourceType.STYLE_CONFIG_FILE, StyleSourceType.STYLE_CONFIG_FILE.getName(), true, gbc, row++);
+		addOption(StyleSourceType.SELECTED_CODE, StyleSourceType.SELECTED_CODE.getName(), false, gbc, row++);
 
 		// 默认选中MOST_COMMON_AUTHOR
 		radioButtons.get(StyleSourceType.MOST_COMMON_AUTHOR).setSelected(true);
