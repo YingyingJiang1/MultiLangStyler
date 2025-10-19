@@ -16,6 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
         Configuration config = CLIArgumentParser.parseArgs(args);
+        long start = System.currentTimeMillis();
+
         if (config != null) {
             GlobalInfo.setConf(config);
             Controller controller = new Controller(config);
@@ -26,10 +28,12 @@ public class Main {
             }
 
             if (!RunStatistic.stat.isEmpty()) {
-                RunStatistic.save(RunStatistic.getDefaultOutputPath(config.getSrc(), config.getResOutDir()));
+//                RunStatistic.save(RunStatistic.getDefaultOutputPath(config.getSrc(), config.getResOutDir()));
             }
 
         }
+        long end = System.currentTimeMillis();
+        System.out.println("执行时间: " + (end - start) + " ms");
     }
 //
 //    public static void main(String[] args) {

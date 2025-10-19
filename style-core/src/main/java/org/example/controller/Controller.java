@@ -56,10 +56,10 @@ public class Controller {
 //            SelfStyleManager.addStyle(conf.extractionCollection, selfProgramStyle);
 
             if (conf.getStyleOutPath() != null) {
-                StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
-                StyleFileIO.writeStatistic(targetProgramStyle, conf.getStyleOutPath().replace(".xml", "-statistic.xml"));
+//                StyleFileIO.write(targetProgramStyle, conf.getStyleOutPath(), parser);
+//                StyleFileIO.writeStatistic(targetProgramStyle, conf.getStyleOutPath().replace(".xml", "-statistic.xml"));
                 if (conf.isSaveSelfStyle) {
-                    StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
+//                    StyleFileIO.write(selfProgramStyle, conf.getStyleOutPath().replace(".xml", "-self.xml"), parser);
                 }
             }
 
