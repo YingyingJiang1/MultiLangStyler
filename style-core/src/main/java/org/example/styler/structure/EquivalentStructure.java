@@ -90,6 +90,9 @@ public class EquivalentStructure {
 	}
 
 	public String getStyleOf(int index) {
+		if (index == -1) {
+			return null;
+		}
 		return forests.get(index).getStyle();
 	}
 
