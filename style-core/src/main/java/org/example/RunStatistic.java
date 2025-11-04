@@ -12,6 +12,9 @@ public class RunStatistic implements Serializable {
 	public static Map<Key, StyleTriggerStat> stat = new HashMap<>();
 
 	public static void addTriggeredStyle(String filePath, String className) {
+		if (!new File(filePath).exists()) {
+			return;
+		}
 		Key key = Key.create(filePath);
 		if (key == null) {
 			return;

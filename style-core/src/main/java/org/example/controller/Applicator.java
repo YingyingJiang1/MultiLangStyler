@@ -45,7 +45,7 @@ public class Applicator {
         TokenAugmentor.processAmbiguousToken(tokens, parser);
         // Handle the first token.
 //        tokens.add(0, parser.getTokenFactory().create(-1, "<Virtual Head>"));
-        for (int i = 0; i < tokens.size(); ++i) {
+        for (int i = 0; i < tokens.size() - 1; ++i) {
             ExtendToken curToken = (ExtendToken) tokens.get(i);
             curToken.resetContextTokens();
             int curTokenType = curToken.getType();

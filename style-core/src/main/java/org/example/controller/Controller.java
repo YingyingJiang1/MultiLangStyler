@@ -99,6 +99,26 @@ public class Controller {
         applyFinalize();
     }
 
+    public String applyStyle(String code, ProgramStyle style,  String language) {
+        fillStylers(style);
+        try {
+            language = language.toLowerCase();
+            GlobalInfo.setLanguage(language);
+            parser = MyParserFactory.createParser(language);
+            ParseTree tree = parser.parseFromString(code);
+            if (tree == null) {
+                return code;
+            }
+
+            TokenAugmentor tokenAugmentor = new TokenAugmentor();
+            List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+            return toString(tokens, tokenAugmentor);
+        } catch (Exception e) {
+            logger.error("Exception details:", e);
+        }
+        return code;
+    }
+
     public String applyStyle(Path filepath) {
         fillStylers(targetProgramStyle);
         try {
@@ -122,13 +142,35 @@ public class Controller {
         return null;
     }
 
+    public ProgramStyle extractStyle(String code, String language) {
+        container = new StylerContainer();
+        language = language.toLowerCase();
+        GlobalInfo.setLanguage(language);
+        parser = MyParserFactory.createParser(language);
+        ParseTree tree = parser.parseFromString(code);
+        if (tree == null) {
+            return null;
+        }
+
+        try {
+            TokenAugmentor tokenAugmentor = new TokenAugmentor();
+            Extractor.extractRules(parser, container, tokenAugmentor);
+            extractFinalize();
+            return combineStyle();
+        } catch (Exception e) {
+            logger.error("Failed to extract style .",  e);
+        }
+        return null;
+    }
+
     public ProgramStyle extractStyle(FileCollection files) {
         extractInitialize(files);
 
         for (int i = 0; i < files.size(); i++) {
             try {
                 curPath = Paths.get(files.getFilePath(i));
-                String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+                String[] strs = curPath.getFileName().toString().split("\\.");
+                String language = strs[strs.length - 1].toLowerCase();
                 GlobalInfo.setLanguage(language);
                 parser = MyParserFactory.createParser(language);
                 ParseTree tree = parser.parse(curPath);

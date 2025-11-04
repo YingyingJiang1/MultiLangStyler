@@ -175,4 +175,31 @@ public class IntegrationTest extends TestBase {
 //			break;
 		}
 	}
+
+	@Test
+	void testCombination5() {
+		String dir = "src/test/sources/combination-test";
+		String[] srcFiles = {
+				"f1.java",
+		};
+
+		String[] targetFiles = {
+				"f2.java",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]));
+			if (true) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			testCodeEqual(actual, gtPath);
+//			break;
+		}
+	}
 }

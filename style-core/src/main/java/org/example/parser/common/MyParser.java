@@ -252,4 +252,5 @@ public interface MyParser {
     int getHiddenChannel();
     ExtendListener getListener();
 
+	void updateRoot(List<ParseTree> newTrees);
 }

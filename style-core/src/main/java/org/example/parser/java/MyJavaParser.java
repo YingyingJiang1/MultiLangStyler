@@ -804,6 +804,20 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
+    public void updateRoot(List<ParseTree> newTrees) {
+        if (newTrees.isEmpty()) {
+            return;
+        }
+
+        JavaParser.StatementContext virtualRoot = new JavaParser.StatementContext(null, -1);
+        for (ParseTree tree : newTrees) {
+            virtualRoot.addChild(tree);
+        }
+        root = virtualRoot;
+
+    }
+
+    @Override
     public int getVar() {
         return JavaParser.VAR;
     }

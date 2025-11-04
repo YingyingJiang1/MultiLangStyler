@@ -125,6 +125,9 @@ public class SpaceStyler extends Styler {
             return null;
         }
         Token rightToken = findFirstNonWSonRight(tokens, index + 1, parser);
+        if (rightToken == null) {
+            return null;
+        }
 
         // skip vws
         if (rightToken.getType() == parser.getVws()) {

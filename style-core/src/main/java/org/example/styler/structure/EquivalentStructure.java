@@ -311,6 +311,8 @@ public class EquivalentStructure {
 			ExtendContext parent = (ExtendContext) oldTree.getParent();
 			int startIndex = parent.children.indexOf(oldTree);
 			parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
+		} else {
+			parser.updateRoot(newTrees);
 		}
 		cleanState();
 		return newTrees.isEmpty() ? null : newTrees.get(0);

@@ -70,7 +70,7 @@ public class IndentionStyler extends Styler {
 
 
         if (targetProperty != null) {
-            String extraIndention = curToken.getType() == parser.getHws() ? ((ExtendToken) tokens.get(index + 1)).indention : curToken.indention;
+            String extraIndention = curToken.getType() == parser.getHws() && index + 1 < tokens.size() ? ((ExtendToken) tokens.get(index + 1)).indention : curToken.indention;
             // 缩进不一致，统一转换为目标缩进
             if (!extraIndention.isEmpty() && extraIndention.indexOf(targetProperty.indentionType) < 0) {
                 extraIndention = StringUtils.repeat(targetProperty.indentionType, targetProperty.indentionUnit);

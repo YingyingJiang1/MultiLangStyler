@@ -13,6 +13,8 @@ public class InterNewlineProperty extends StyleProperty {
 		this.hasNewline = hasNewline;
 	}
 
+	public InterNewlineProperty() {}
+
 	@Override
 	public void addElement(Element parent, MyParser parser) {
 		parent.addAttribute("hasNewline", String.valueOf(hasNewline));

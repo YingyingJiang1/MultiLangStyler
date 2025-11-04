@@ -37,8 +37,11 @@ public class NamingStyler extends Styler {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             NamingFormatContext context = extractStyleContext(symbol, parser);
+            NamingFormatProperty property = extractProperty(symbol, context, parser);
 
-            style.addRule(context, extractProperty(symbol, context, parser));
+            if (property.caseFormat != MyCaseFormat.ALL_LOWER_CASE) {
+                style.addRule(context, property);
+            }
         }
     }
 
@@ -179,7 +182,7 @@ public class NamingStyler extends Styler {
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return parser.isCompilationUnit(ctx);
+        return ctx == parser.getRoot();
     }
 
     @Override

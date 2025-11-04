@@ -142,8 +142,8 @@ public class StructureStyler extends Styler {
                     }
                     try {
                         newTree = targetStructure.convert(from, to, ctx, parser);
-                        RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-                        RunStatistic.addTriggeredStructureID(parser.getSourceFile(), matchedStructure.structure.id);
+//                        RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+//                        RunStatistic.addTriggeredStructureID(parser.getSourceFile(), matchedStructure.structure.id);
                         break;
                     } catch (Exception e) {
                         logger.error("Note: Fail to convert from {} to {} when structure id = {}.", from, to, targetStructure.getId(), e);

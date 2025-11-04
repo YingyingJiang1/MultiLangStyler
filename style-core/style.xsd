@@ -11,6 +11,9 @@
             <xs:enumeration value="newline"/>
             <xs:enumeration value="space"/>
             <xs:enumeration value="indention"/>
+            <xs:enumeration value="intra_newline"/>
+            <xs:enumeration value="inter_newline"/>
+            <xs:enumeration value="body_layout"/>
 
             <!-- Structure -->
 
@@ -35,28 +38,10 @@
             <xs:sequence>
                 <xs:element name="style" maxOccurs="unbounded">
                     <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="rule" minOccurs="0" maxOccurs="unbounded">
-                                <xs:complexType>
-                                    <xs:all>
-                                        <xs:element name="style_context" minOccurs="0">
-                                            <xs:simpleType>
-                                                <xs:union memberTypes="SpaceContext NewlineContext OptionalBraceContext
-                                                StructurePreferenceContext NamingContext ExpComplexityContext " />
-                                            </xs:simpleType>
-                                        </xs:element>
-                                        <xs:element name="style_property">
-                                            <xs:simpleType>
-                                                <xs:union memberTypes="SpaceProperty IndentionProperty NewlineProperty
-                                                OptionalBraceProperty ModifierOrderProperty DeclarationLocationProperty
-                                                DeclarationLocationProperty StructurePreferenceCProperty NamingProperty ExpComplexityProperty
-IfElseBodyOrderProperty" />
-                                            </xs:simpleType>
-                                        </xs:element>
-                                    </xs:all>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
+                        <xs:choice>
+                            <xs:element name="rule" type="SpaceRule"/>
+                            <xs:element name="rule" type="IndentionRule"/>
+                        </xs:choice>
                         <xs:attribute name="name" type="StyleName" use="required"/>
                     </xs:complexType>
                 </xs:element>
@@ -64,7 +49,14 @@ IfElseBodyOrderProperty" />
         </xs:complexType>
     </xs:element>
 
+
     <!-- Space -->
+    <xs:complexType name="SpaceRule">
+        <xs:all>
+            <xs:element name="style_context" type="SpaceContext"/>
+            <xs:element name="style_property" type="SpaceProperty"/>
+        </xs:all>
+    </xs:complexType>
     <xs:complexType name="SpaceContext">
         <xs:attribute name="tokens" type="xs:string" use="required"/>
     </xs:complexType>
@@ -74,6 +66,12 @@ IfElseBodyOrderProperty" />
     </xs:complexType>
 
     <!-- Indention -->
+    <xs:complexType name="IndentionRule">
+        <xs:all>
+            <xs:element name="style_context" type="SpaceContext"/>
+            <xs:element name="style_property" type="SpaceProperty"/>
+        </xs:all>
+    </xs:complexType>
     <xs:complexType name="IndentionProperty">
         <xs:attribute name="indentionUnit" type="xs:int" />
         <xs:attribute name="indentionType">
@@ -106,6 +104,32 @@ IfElseBodyOrderProperty" />
     <xs:complexType name="NewlineProperty">
         <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
     </xs:complexType>
+
+    <!-- intra-newline -->
+    <xs:complexType name="IntraNewlineContext">
+        <!-- Text length of AST node -->
+        <xs:attribute name="length" type="xs:double"/>
+    </xs:complexType>
+    <xs:complexType name="IntraNewlineProperty">
+        <!-- The number of newline -->
+        <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
+        <!-- The indentation string of the current line relative to the previous line.
+        Currently, only a single-element list is supported, which represents the indentation string of the succeeding line relative to the starting line.  -->
+        <xs:attribute name="relativeIndention" type="StringList"/>
+        <!-- Average text length of wrapped lines -->
+        <xs:attribute name="length" type="xs:double"/>
+        <!-- Minimum text length of wrapped lines -->
+        <xs:attribute name="minLen" type="xs:double"/>
+    </xs:complexType>
+
+    <!-- inter-newline: a patch for improving newline -->
+    <xs:complexType name="InterNewlineProperty">
+        <!-- Whether it has a newline after simple statement or import -->
+        <xs:attribute name="hasNewline" type="xs:boolean"/>
+    </xs:complexType>
+
+    <!-- body layout -->
+
 
     <!-- Optional Brace -->
     <xs:simpleType name="BodyTypeType">
@@ -218,30 +242,34 @@ IfElseBodyOrderProperty" />
     </xs:complexType>
 
     <!-- Expression Complexity -->
-<!--    <xs:complexType name="ComplexityType">-->
-<!--        <xs:attribute name="depth" type="xs:int"/>-->
-<!--    </xs:complexType>-->
-<!--    <xs:complexType name="ExpComplexityContext">-->
-<!--        <xs:attribute name="expType">-->
-<!--            <xs:simpleType>-->
-<!--                <xs:restriction base="xs:string">-->
-<!--                    <xs:enumeration value="CONDITIONAL_EXP"/>-->
-<!--                    <xs:enumeration value="TERNARY_EXP"/>-->
-<!--                    <xs:enumeration value="RVALUE_EXP"/>-->
-<!--                    <xs:enumeration value="INITIALIZER_EXP"/>-->
-<!--                    <xs:enumeration value="TOP_EXP"/>-->
-<!--                </xs:restriction>-->
-<!--            </xs:simpleType>-->
-<!--        </xs:attribute>-->
-<!--    </xs:complexType>-->
-<!--    <xs:complexType name="ExpComplexityProperty">-->
-<!--        <xs:attribute name="maxComplexity" type="ComplexityType"/>-->
-<!--        <xs:attribute name="avgComplexity" type="ComplexityType"/>-->
-<!--    </xs:complexType>-->
+    <xs:complexType name="ComplexityType">
+        <xs:attribute name="depth" type="xs:int"/>
+    </xs:complexType>
+    <xs:complexType name="ExpComplexityContext">
+        <xs:attribute name="expType">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="CONDITIONAL_EXP"/>
+                    <xs:enumeration value="TERNARY_EXP"/>
+                    <xs:enumeration value="RVALUE_EXP"/>
+                    <xs:enumeration value="INITIALIZER_EXP"/>
+                    <xs:enumeration value="TOP_EXP"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ExpComplexityProperty">
+        <xs:attribute name="maxComplexity" type="ComplexityType"/>
+        <xs:attribute name="avgComplexity" type="ComplexityType"/>
+    </xs:complexType>
 
     <!-- If-else body order -->
     <xs:complexType name="IfElseBodyOrderProperty">
         <xs:attribute name="shortBodyComesFirst" type="xs:boolean"/>
     </xs:complexType>
+
+    <xs:simpleType name="StringList">
+        <xs:list itemType="xs:string"/>
+    </xs:simpleType>
 
 </xs:schema>
