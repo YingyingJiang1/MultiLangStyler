@@ -1,3 +1,4 @@
+
 public static void f(){
 	Scanner c = new Scanner(System.in);
 	int n = c.nextInt();
@@ -10,6 +11,4 @@ public static void f(){
 		ans = Math.max(ans,nums[0]+nums[1]);
 	}
 
-	int a ; 
-a = first > 0? bInd: 0; 
-}
+	int a ; a = first > 0? bInd: 0; }

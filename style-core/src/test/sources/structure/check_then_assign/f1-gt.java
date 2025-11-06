@@ -1,3 +1,5 @@
+// Seq=[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
@@ -13,8 +15,7 @@ public class E {
 			bInd=2;
 		}
 
-		int a = first > 0? bInd: 0; 
-return 0l;
+		int a = first > 0? bInd: 0; return 0l;
 	}
 
 }

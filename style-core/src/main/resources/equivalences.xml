@@ -378,6 +378,10 @@
                     <args>0,$E,$E4</args><args>2,$E,$E4</args>
                 </argsList>
             </handler>
+            <handler>
+                <class>CheckThenAssignHandler</class>
+                <argsList></argsList>
+            </handler>
         </handlers>
     </rule>
     <rule id="16" name="op_preference1" category="Operator preferences" enable="false">

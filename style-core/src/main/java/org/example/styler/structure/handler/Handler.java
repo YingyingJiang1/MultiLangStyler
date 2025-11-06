@@ -52,6 +52,7 @@ public abstract class Handler {
       case "VarUndefExceptionHandler" -> new VarUndefExceptionHandler(argsList);
       case "For2whileHandler" -> new For2whileHandler(argsList);
       case "RemoveCommonSuffixHandler" -> new RemoveCommonSuffixHandler(argsList);
+      case "CheckThenAssignHandler" -> new CheckThenAssignHandler(argsList);
       default -> null;
     };
     if (handler == null) {

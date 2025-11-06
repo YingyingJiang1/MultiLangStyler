@@ -23,15 +23,17 @@ public class CheckThenAssignTest extends TestBase {
 		String[] srcFiles = {
 				"f1.java",
 				"f2.java",
+				"f4.java"
 		};
 
 		String[] targetFiles = {
 				"style1.xml",
 				"style2.xml",
+				"style4.xml",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("f%s-gt.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format(srcFiles[i].replace(".java", "-gt.java")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
 			if (false) {
 				try{
