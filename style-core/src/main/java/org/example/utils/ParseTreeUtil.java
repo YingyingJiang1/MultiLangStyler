@@ -374,10 +374,9 @@ public class ParseTreeUtil {
     if (oneVarDec) {
       index = 1;
       doMerge(targetStmt, decGroup.get(index), parser);
-      ++index;// 跳过下一条语句
     }
 
-    for (int i = index; i < decGroup.size(); i++) {
+    for (int i = index + 1; i < decGroup.size(); i++) {
       ExtendContext decStmt = decGroup.get(i);
       ExtendContext declaratorsNode = searcher.searchVarDeclaratorsNode(decStmt, parser);
 

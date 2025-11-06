@@ -53,4 +53,13 @@ public class SplitStyle1 {
 			String msg = e.getMessage();
 		}
 	}
+
+
+	public static void main(String[] args) throws IOException {
+		long n = 1, k = 2;
+		long a = 3;
+		long b = 4;
+
+		System.out.println(a + " " + b + " " + (n - a - b));
+	}
 }

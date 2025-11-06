@@ -42,4 +42,10 @@ List<Integer> numbers,values = new ArrayList<>();
 			String err,msg = e.getMessage();
 			}
 	}
+
+
+	public static void main(String[] args) throws IOException {
+		long n = 1, k = 2,a = 3,b = 4;
+		System.out.println(a + " " + b + " " + (n - a - b));
+	}
 }
