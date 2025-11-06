@@ -38,7 +38,7 @@ public class Controller {
         GlobalInfo.setConf(this.conf);
     }
 
-    public Controller() {}
+//    public Controller() {}
 
 
     public ProgramStyle execute() {

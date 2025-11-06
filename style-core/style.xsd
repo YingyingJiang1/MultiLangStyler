@@ -88,18 +88,12 @@
 
     <!-- Newline -->
     <xs:complexType name="NewlineContext">
-        <!-- AST nodes in vertical direction -->
-        <xs:attribute name="verticalVector" type="xs:string"/>
-        <!-- AST nodes in horizontal direction -->
-        <xs:attribute name="horizontalVector" type="xs:string"/>
-        <!-- text length or line count of vertical ast nodes -->
-        <xs:attribute name="verticalLengthVector" type="xs:string"/>
-        <!-- text length or line count of horizontal ast nodes -->
-        <xs:attribute name="horizontalLengthVector" type="xs:string"/>
-        <!-- Index of the AST node in the vertical path; newlines can be added/removed right after this node -->
-        <xs:attribute name="verticalSP" type="xs:int"/>
-        <!-- Index of the AST node in the horizontal path; newlines can be added/removed right after this node -->
-        <xs:attribute name="horizontalSP" type="xs:int"/>
+        <!-- Two adjacent node names in horizontal direction, split by ','. -->
+        <xs:attribute name="nodeTypes" type="xs:string"/>
+        <!-- Whether it is an inner node, split by ','. -->
+        <xs:attribute name="isAstNode" type="xs:string"/>
+        <!-- Text lengths of nodes, split by ','. -->
+        <xs:attribute name="lengths" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="NewlineProperty">
         <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
@@ -111,7 +105,7 @@
         <xs:attribute name="length" type="xs:double"/>
     </xs:complexType>
     <xs:complexType name="IntraNewlineProperty">
-        <!-- The number of newline -->
+        <!-- The number of newline(0: no newline, >=1: has a newline). -->
         <xs:attribute name="newlines" type="xs:nonNegativeInteger"/>
         <!-- The indentation string of the current line relative to the previous line.
         Currently, only a single-element list is supported, which represents the indentation string of the succeeding line relative to the starting line.  -->
@@ -129,16 +123,30 @@
     </xs:complexType>
 
     <!-- body layout -->
-
+    <xs:complexType name="BodyContext">
+        <xs:attribute name="bodyType" type="BodyTypeType"/>
+        <xs:attribute name="bodySize" type="BodySizeType"/>
+        <xs:attribute name="hasLeftNeighbour" type="xs:boolean"/>
+        <xs:attribute name="hasRightNeighbour" type="xs:boolean"/>
+        <xs:attribute name="hasBrace" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:complexType name="BodyLayoutProperty">
+        <!--  If {} is missing, only `beforeLB` is meaningful. -->
+        <xs:attribute name="beforeLB" type="xs:boolean"/>
+        <!-- Uncomment this attr in addElement and parseElement. -->
+        <xs:attribute name="afterLB" type="xs:boolean"/>
+        <xs:attribute name="afterRB" type="xs:boolean"/>
+    </xs:complexType>
 
     <!-- Optional Brace -->
     <xs:simpleType name="BodyTypeType">
         <xs:restriction base="xs:string">
+            <!-- Body of type declaration or method declaration.-->
             <xs:enumeration value="DEC_BODY"/>
-            <xs:enumeration value="MULTI_BLOCK_STMT_BODY"/>
+            <!-- array initializer -->
             <xs:enumeration value="ARRAY_INITIALIZER_BODY"/>
-            <xs:enumeration value="DO_WHILE_BODY"/>
-            <xs:enumeration value="NORMAL_BODY"/>
+            <xs:enumeration value="STMT_BODY"/>
+            <!--  Match any type of bodies -->
             <xs:enumeration value="ANY_BODY"/>
         </xs:restriction>
     </xs:simpleType>
@@ -211,18 +219,18 @@
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-       <xs:attribute name="attrs" use="optional" >
-           <xs:simpleType>
-               <xs:list>
-                   <xs:simpleType>
-                       <xs:restriction base="xs:string">
-                           <xs:enumeration value="EXPLICIT_CONST"/>
-                           <xs:enumeration value="IMPLICIT_CONST"/>
-                       </xs:restriction>
-                   </xs:simpleType>
-               </xs:list>
-           </xs:simpleType>
-       </xs:attribute>
+        <xs:attribute name="attrs" use="optional" >
+            <xs:simpleType>
+                <xs:list>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="EXPLICIT_CONST"/>
+                            <xs:enumeration value="IMPLICIT_CONST"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:list>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="NamingProperty">
         <xs:attribute name="startsWithUnderScore" type="xs:boolean" />

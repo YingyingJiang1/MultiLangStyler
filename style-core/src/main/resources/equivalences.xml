@@ -112,12 +112,12 @@
                     <args>1,$S,$S1</args>
                 </argsList>
             </checker>
-            <Checker>
+            <checker>
                 <class>CascadingIfChecker</class>
                 <argsList>
                     <args>0,$S</args><args>1,$S</args>
                 </argsList>
-            </Checker>
+            </checker>
         </checkers>
         <handlers>
             <handler>

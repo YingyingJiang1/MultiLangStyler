@@ -62,6 +62,10 @@ public class IfElseBodyOrderStyler extends Styler {
 
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-        return ctx.getRuleIndex() == parser.getRuleIfElseStmt();
+        if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
+            int subSubStmtType = parser.getSpecificStmtType(ctx.getLastCtxChildIf(parser::isStatement));
+            return subSubStmtType != parser.getRuleIfStmt() && subSubStmtType != parser.getRuleIfElseStmt(); // Binary branch
+        }
+        return false;
     }
 }
