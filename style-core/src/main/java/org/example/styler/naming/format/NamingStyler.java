@@ -47,6 +47,7 @@ public class NamingStyler extends Styler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        SymbolTableManager.removeCache(parser.getRoot());
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             if (!isMutable(symbol)) {

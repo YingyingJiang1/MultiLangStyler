@@ -48,5 +48,10 @@ public class SymbolTableManager {
         return getSymbolTable(parser);
     }
 
+    public static SymbolTable removeCache(ParseTree root) {
+        SymbolTable st = stCache.get(root);
+        stCache.remove(root);
+        return st;
+    }
 
 }
