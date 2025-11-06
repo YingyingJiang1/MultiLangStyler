@@ -32,8 +32,6 @@ public class TokenGrouper {
 			return TokenGroup.COLON_COLON;
 		} else if (parser.getBinOps().contains(text)) {
 			return TokenGroup.BIN_OP;
-		} else if (parser.getBinOps().contains(text)) {
-			return TokenGroup.BIN_OP;
 		} else if (parser.getUnaryOps().contains(text)) {
 			return TokenGroup.UNARY_OP;
 		} else if (parser.getLiterals().contains(token.getType())) {

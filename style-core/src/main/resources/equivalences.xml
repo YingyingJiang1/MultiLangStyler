@@ -268,7 +268,7 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="12" name="loop4" category="Loops">
+    <rule id="12" name="loop6" category="Loops">
         <codes>
             <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
             <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
@@ -521,7 +521,7 @@
             </handler>
         </handlers>
     </rule>
-    <rule id="25"  name="redundant_code1" category="Redundant code">
+    <rule id="25"  name="redundant_code2" category="Redundant code">
         <codes>
             <code>$^ if ( $E ) { $S+ } else { $S1+ } $S2+</code>
             <code>if ( $E ) { $S+ } else { $S1+ }</code>

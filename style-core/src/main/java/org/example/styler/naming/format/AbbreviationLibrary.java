@@ -65,11 +65,10 @@ public class AbbreviationLibrary {
         int curLen = name.length();
         int i = 0;
         while (curLen > maxLength && i < words.length) {
-            String word = words[i];
-            String abbreviation = abbreviationLibrary.lookUpAbbreviation(words[0]);
+            String abbreviation = abbreviationLibrary.lookUpAbbreviation(words[i]);
             if (abbreviation != null) {
-                name = name.replace(words[0], abbreviation);
-                curLen -= words[0].length() - abbreviation.length();
+                name = name.replace(words[i], abbreviation);
+                curLen -= words[i].length() - abbreviation.length();
             }
             i++;
         }

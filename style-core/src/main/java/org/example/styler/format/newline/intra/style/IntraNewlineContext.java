@@ -9,6 +9,9 @@ import java.util.Objects;
 public class IntraNewlineContext extends StyleContext {
 	public double length;
 
+    public IntraNewlineContext() {
+    }
+
 	public IntraNewlineContext(double length) {
 		this.length = length;
 	}

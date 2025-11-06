@@ -62,7 +62,7 @@ public class NamingStyler extends Styler {
                 String newName = AbbreviationLibrary.getInstance().getAbbreviation(name, property.maxLength);
 
                 if (curFormat != null && curFormat.isConvertible(property.caseFormat)) {
-                    newName = curFormat.to(property.caseFormat, name);
+                    newName = curFormat.to(property.caseFormat, newName);
                 }
 
                 if (property.startsWithUnderScore && !newName.startsWith("_")) {

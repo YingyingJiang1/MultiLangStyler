@@ -51,13 +51,8 @@ public class SpaceContext extends StyleContext {
         String[] tokens = Arrays.stream(parent.attributeValue("tokens").split(" "))
                 .map(String::trim)
                 .toArray(String[]::new);
-        if (tokens.length > 0) {
-            tokenName1 = tokens[0];
-        }
-        if (tokens.length > 1) {
-            tokenName2 = tokens[1];
-        }
-        
+        tokenName1 = tokens.length > 0 ? tokens[0] : "";
+        tokenName2 = tokens.length > 1 ? tokens[1] : "";
     }
 
     @Override

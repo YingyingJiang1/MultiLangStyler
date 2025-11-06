@@ -229,17 +229,17 @@ public class StructureStyler extends Styler {
     /**
      * Sets structure preference rules based on the given sequence in order.
      * @param language the language of the parser
-     * @param sequence the sequence of preference indices
+     * @param choices a map from structure index to the preferred choice index
      */
-    public void setAs(String language, List<Integer> sequence) {
+    public void setAs(String language, Map<Integer, Integer> choices) {
         style = new StructureStyle();
         MyParser parser = MyParserFactory.createParser(language);
         List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), CONF_FILE);
         for (int i = 0; i < equivalences.size(); i++) {
             EquivalentStructure structure = equivalences.get(i);
-            int index = sequence.get(i);
+            int choice = choices.get(structure.getId());
             StyleContext context = extractContext(structure);
-            StructPreferenceProperty property = extractProperty(structure, index);
+            StructPreferenceProperty property = extractProperty(structure, choice);
             style.addRule(context, property);
         }
     }

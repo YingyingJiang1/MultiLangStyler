@@ -13,6 +13,8 @@ public class BodyLayoutProperty extends StyleProperty {
      */
     public int beforeLB, afterLB, beforeRB, afterRB;
 
+    public BodyLayoutProperty() {
+    }
 
     public BodyLayoutProperty(int beforeLB) {
         this.beforeLB = beforeLB;
@@ -30,10 +32,6 @@ public class BodyLayoutProperty extends StyleProperty {
         this.beforeRB = beforeRB;
         this.afterRB = afterRB;
     }
-
-	public BodyLayoutProperty() {
-
-	}
 
 //    public void updateStatistic(int beforeLB, int afterLB, int beforeRB, int afterRB) {
 //        int integer = beforeLB ? 1 : 0;
