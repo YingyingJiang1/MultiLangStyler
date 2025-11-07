@@ -122,10 +122,6 @@ public class ExtendJavaParserListener extends JavaParserBaseListener implements 
 
 	@Override
 	public void enterTypeDeclaration(JavaParser.TypeDeclarationContext ctx) {
-		// Change child of body to list-type nodes.
-		ExtendContext body = ctx.getFirstCtxChildIf(child -> parser.isBody(child));
-		body.expandChildren(parser);
-
 		doTask(ctx, enterStylers);
 	}
 
