@@ -82,7 +82,7 @@ public class MyJavaParser implements MyParser {
     public MyJavaParser() {}
 
 
-    public ParseTree parse(String text, int rule) {
+    public synchronized ParseTree parse(String text, int rule) {
         ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
         Lexer lexer = new JavaLexer(CharStreams.fromString(text));
         lexer.setTokenFactory(tokenFactory);
@@ -108,7 +108,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public ParseTree parseFromString(String code) {
+    public synchronized ParseTree parseFromString(String code) {
         ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
         Lexer lexer = new JavaLexer(CharStreams.fromString(code));
         lexer.setTokenFactory(tokenFactory);
@@ -126,7 +126,7 @@ public class MyJavaParser implements MyParser {
      * Alternative implementation: modify the rule in JavaParser.g4，Add more productions to the compilationUnit rule.
      * But must be careful when return the root, root should be the child of compilationUnit node if the production used is new added.
      */
-    private ParseTree tryParse() {
+    private synchronized ParseTree tryParse() {
         Predicate<ExtendContext> parseFailTester = new Predicate<ExtendContext>() {
             @Override
             public boolean test(ExtendContext root) {
@@ -172,7 +172,7 @@ public class MyJavaParser implements MyParser {
         return root;
     }
 
-    public ParseTree parse(Path filePath) throws IOException {
+    public synchronized ParseTree parse(Path filePath) throws IOException {
         curFile = filePath;
         ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
         Lexer lexer = new JavaLexer(CharStreams.fromPath(filePath));
@@ -197,7 +197,7 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public void walkTree(Stage stage, List<Styler> stylers) {
+    public synchronized void walkTree(Stage stage, List<Styler> stylers) {
         listener = new ExtendJavaParserListener(stage, stylers, this);
         ParseTreeWalker walker = new MyParseTreeWalker();
         walker.walk(listener, root);
