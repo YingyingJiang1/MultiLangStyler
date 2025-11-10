@@ -1,4 +1,4 @@
-void drain() {
+        void drain() {
             if (getAndIncrement() != 0) {
                 return;
             }

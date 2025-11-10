@@ -1,244 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style>
-  <style name="">
+  <style name="naming_format">
     <rule>
-      <style_property hasNewline="true"/>
-    </rule>
-  </style>
-  <style name="naming_format"/>
-  <style name="if_else_body_order"/>
-  <style name="indention">
-    <rule>
-      <style_property indentionUnit="2" indentionType=" " indentEmptyLine="false" topHierarchyIndention="2"/>
-    </rule>
-  </style>
-  <style name="optional_brace">
-    <rule>
-      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="true"/>
-      <style_property useBrace="true"/>
+      <style_context nameType="METHOD"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
     </rule>
     <rule>
-      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="false"/>
-      <style_property useBrace="true"/>
-    </rule>
-  </style>
-  <style name="expression_complexity">
-    <rule>
-      <style_context expType="INITIALIZER_EXP"/>
-      <style_property>
-        <maxComplexity depth="13.0"/>
-        <avgComplexity depth="8.409090909090908"/>
-      </style_property>
+      <style_context nameType="PARAMETER"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="7"/>
     </rule>
     <rule>
-      <style_context expType="TOP_EXP"/>
-      <style_property>
-        <maxComplexity depth="23.0"/>
-        <avgComplexity depth="9.363636363636363"/>
-      </style_property>
+      <style_context nameType="LOCAL_VARIABLE" attrs="[EXPLICIT_CONST]"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
     </rule>
     <rule>
-      <style_context expType="CONDITIONAL_EXP"/>
-      <style_property>
-        <maxComplexity depth="9.0"/>
-        <avgComplexity depth="5.318181818181818"/>
-      </style_property>
-    </rule>
-  </style>
-  <style name="declaration_layout">
-    <rule>
-      <style_property mergeVar="false"/>
-    </rule>
-  </style>
-  <style name="space">
-    <rule>
-      <style_context tokens="IDENTIFIER ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens=") KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="RIGHT_ANGLE_BRACKET )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="RIGHT_ANGLE_BRACKET ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( LITERAL"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER ,"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="UNARY_OP IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="LEFT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="BIN_OP"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens=", IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="LEFT_ANGLE_BRACKET IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens=") IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD ("/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="RIGHT_ANGLE_BRACKET IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="DOT"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="@ IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="] IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens=") )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( KEYWORD"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="QUESTION LITERAL"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="[ ]"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens=") ,"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD ["/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER RIGHT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="] )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="} KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="RIGHT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="UNARY_OP ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="LITERAL )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="COLON"/>
-      <style_property space1="true" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens=") ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens=") {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens=") QUESTION"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="COLON_COLON"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER LEFT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="false"/>
+      <style_context nameType="LOCAL_VARIABLE"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="13"/>
     </rule>
   </style>
   <style name="newline">
@@ -507,6 +285,26 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
   </style>
+  <style name="if_else_body_order">
+    <rule>
+      <style_property shortBodyComesFirst="false"/>
+    </rule>
+  </style>
+  <style name="indention">
+    <rule>
+      <style_property indentionUnit="2" indentionType=" " indentEmptyLine="false" topHierarchyIndention="2"/>
+    </rule>
+  </style>
+  <style name="optional_brace">
+    <rule>
+      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="true"/>
+      <style_property useBrace="true"/>
+    </rule>
+    <rule>
+      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="false"/>
+      <style_property useBrace="true"/>
+    </rule>
+  </style>
   <style name="modifier_order"/>
   <style name="structure_preference">
     <rule>
@@ -526,27 +324,17 @@
       <style_property preferenceIndex="1"/>
     </rule>
   </style>
+  <style name="declaration_layout">
+    <rule>
+      <style_property mergeVar="false"/>
+    </rule>
+  </style>
+  <style name="inter_newline">
+    <rule>
+      <style_property hasNewline="true"/>
+    </rule>
+  </style>
   <style name="body_layout">
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
@@ -560,22 +348,12 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
     </rule>
     <rule>
       <style_context>
@@ -596,6 +374,226 @@
         <hasBrace>false</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+  </style>
+  <style name="space">
+    <rule>
+      <style_context tokens="IDENTIFIER ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=") KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="RIGHT_ANGLE_BRACKET )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="RIGHT_ANGLE_BRACKET ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( LITERAL"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ,"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="UNARY_OP IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="LEFT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="BIN_OP"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens=", IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="LEFT_ANGLE_BRACKET IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=") IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD ("/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="RIGHT_ANGLE_BRACKET IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="DOT"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="@ IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="] IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens=") )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( KEYWORD"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="QUESTION LITERAL"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="[ ]"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=") ,"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD ["/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( UNARY_OP"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER RIGHT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="] )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="} KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="RIGHT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="UNARY_OP ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="LITERAL )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="COLON"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens=") ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=") {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens=") QUESTION"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="COLON_COLON"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER LEFT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
     </rule>
   </style>
   <style name="intra_newline">

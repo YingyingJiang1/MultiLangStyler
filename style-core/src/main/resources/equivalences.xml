@@ -171,7 +171,7 @@
         <codes>
             <code>for ( $VAR_DEC ; $E ; ) $S</code>
             <code>$^ $VAR_DEC ; for ( ; $E ; ) $S</code>
-<!--            <code>$^ $VAR_DEC ; while ( $E ) $S</code>-->
+            <code>$^ $VAR_DEC ; while ( $E ) $S</code>
         </codes>
         <handlers>
             <handler>
@@ -272,7 +272,7 @@
         <codes>
             <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
             <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
-<!--            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>-->
+            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
         </codes>
         <checkers>
             <checker>
@@ -506,7 +506,7 @@
             <checker>
                 <class>StmtComplexityChecker</class>
                 <argsList>
-                    <args>0,$S1+,1,3,SINGLE_STMT</args><args>1,$S1+,1,3,SINGLE_STMT</args>
+                    <args>0,$S1+,1,3,SINGLE_STMT</args>
                 </argsList>
             </checker>
         </checkers>
@@ -546,7 +546,7 @@
             <checker>
                 <class>StmtComplexityChecker</class>
                 <argsList>
-                    <args>0,$S2+,1,3,SINGLE_STMT</args><args>1,$S2+,1,3,SINGLE_STMT</args>
+                    <args>0,$S2+,1,3,SINGLE_STMT</args>
                 </argsList>
             </checker>
         </checkers>

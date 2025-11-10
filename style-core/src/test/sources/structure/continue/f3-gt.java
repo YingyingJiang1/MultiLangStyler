@@ -1,3 +1,5 @@
+// Seq=[-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 1, 1, 0]
+
 import java.util.*;
 import java.io.*;
 
@@ -28,12 +30,12 @@ public class Main143A
 						if ( !((x+y)==r1&&(x+z)==c1&&(y+p)==c2&&(z+p)==r2&&(x+p)==d1&&(y+z)==d2&&check(x,y,z,p))) { continue ; } else { flag=true;
 							break;
 						} }
-					if ( !flag) { continue ; } else { break;
-				} }
-				if ( !flag) { continue ; } else { break;
-			} }
-			if ( !flag) { continue ; } else { break;
-		} }
+					if(flag) break;
+				}
+				if(flag) break;
+			}
+			if(flag) break;
+		}
 		if(flag)
 		{
 			out.println(x+" "+y);

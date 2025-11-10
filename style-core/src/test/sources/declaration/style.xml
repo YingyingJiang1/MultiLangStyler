@@ -10,7 +10,7 @@
   <style name="structure_preference"/>
   <style name="declaration_layout">
     <rule>
-      <style_property mergeVar="true"/>
+      <style_property mergeVar="false"/>
     </rule>
   </style>
   <style name="inter_newline"/>

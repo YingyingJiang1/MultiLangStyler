@@ -2,6 +2,7 @@ package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.parser.common.MyParser;
+import org.example.parser.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.security.PrivilegedAction;
@@ -38,11 +39,21 @@ public class StmtComplexityChecker extends  Checker{
 		}
 
 		List<ParseTree> realTrees = structure.getVNode(holderName).matchedTrees;
-		if (realTrees.size() > maxStmtNum || realTrees.size() < minStmtNum) {
+		List<ExtendContext> stmts = new ArrayList<>();
+		realTrees.forEach(t -> {
+			if (t instanceof ExtendContext ctx) {
+				if (parser.isStatement(ctx)) {
+					stmts.add(ctx);
+				}
+				stmts.addAll(ctx.getAllCtxsRecIf(parser::isStatement));
+
+			}
+		});
+		if (stmts.size() > maxStmtNum || stmts.size() < minStmtNum) {
 			return false;
 		}
 		if (!permittedStmtTypes.isEmpty()) {
-			for (ParseTree tree : realTrees) {
+			for (ParseTree tree : stmts) {
 				boolean permitted = false;
 				for (PermittedStmtType type : permittedStmtTypes) {
 					if (type.isType(tree, parser)) {

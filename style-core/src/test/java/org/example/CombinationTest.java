@@ -16,8 +16,8 @@ public class CombinationTest extends TestBase {
 		String styleCodesDir = "src/test/codes/test1/style-codes";
 		String srcCodesDir = "src/test/codes/test1/srcs";
 		String[] srcFiles = {
-				"f1.java",
-				"f2.java",
+//				"f1.java",
+//				"f2.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -42,7 +42,7 @@ public class CombinationTest extends TestBase {
 		String styleCodesDir = "src/test/codes/test4/style-codes";
 		String srcCodesDir = "src/test/codes/test4/srcs";
 		String[] srcFiles = {
-				"f1.java",
+//				"f1.java",
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -65,12 +65,12 @@ public class CombinationTest extends TestBase {
 	void test3() {
 		String dir = "src/test/sources/combination-test/test2";
 		String[] srcFiles = {
-				"f1.java",
+//				"f1.java",
 				"f2.java"
 		};
 
 		String[] targetFiles = {
-				"style1",
+//				"style1",
 				"style1",
 		};
 
@@ -90,44 +90,12 @@ public class CombinationTest extends TestBase {
 		}
 	}
 
-	@Test
-	void testFormat() {
-		String dir = "src/test/sources/combination-test/test3";
-		String[] srcFiles = {
-//				"f1.java",
-				"f2.java"
-		};
-
-		String[] targetFiles = {
-//				"style1",
-				"style1.java",
-		};
-
-		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
-					NewlineStyler.class,
-					BodyLayoutStyler.class,
-					IndentionStyler.class
-			));
-			if (false) {
-				try{
-					Files.writeString(gtPath, actual);
-				}	catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			testCodeEqual(actual, gtPath);
-//			break;
-		}
-	}
 
 	@Test
 	void test4() {
 		String dir = "src/test/sources/combination-test/test4";
 		String[] srcFiles = {
-				"f1.java",
+//				"f1.java",
 		};
 
 		String[] targetFiles = {

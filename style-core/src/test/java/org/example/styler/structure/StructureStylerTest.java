@@ -167,7 +167,7 @@ class StructureStylerTest extends TestBase {
 	void testCombination1() {
 		String dir = "src/test/sources/combination-test/test1";
 		String[] srcFiles = {
-//				"f4.java",
+				"f4.java",
 				"f7.java",
 		};
 

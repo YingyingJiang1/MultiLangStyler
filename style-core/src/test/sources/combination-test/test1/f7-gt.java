@@ -1,4 +1,4 @@
-@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     void remove(PublishSubscription<T> ps) {
         for (;;) {
             PublishSubscription<T>[] a = subscribers.get();
@@ -9,10 +9,7 @@
             int n = a.length;
             int j = -1;
             for (int i = 0; i < n; i++) {
-                if ( a[i] != ps) { 
-continue ; 
-}  
-j = i;
+                if ( a[i] != ps) { continue ; }  j = i;
                     break;
                 }
 

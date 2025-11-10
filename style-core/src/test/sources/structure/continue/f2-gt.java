@@ -29,8 +29,9 @@ public class CutRibbon {
 			continue ; }  if ( i>=a && i>=c) { mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
 			continue ; }  if ( i>=a) { mem[i]= 1+mem[i-a];
 			continue ; }  if ( i>=b) { mem[i]= 1+mem[i-b];
-			continue ; }  if ( i<c) { continue ; } else { mem[i]= 1+mem[i-c];
-		} }
+			continue ; }  if(i>=c)
+				mem[i]= 1+mem[i-c];
+		}
 		System.out.println(mem[valor]);
 
 	}

@@ -1,4 +1,4 @@
-public static void drawPlayException(TableElement table, ObjectVO throwableVO) {
+    public static void drawPlayException(TableElement table, ObjectVO throwableVO) {
         // 执行失败:输出失败状态
         table.row("IS-RETURN", "" + false);
         table.row("IS-EXCEPTION", "" + true);
@@ -6,8 +6,7 @@ public static void drawPlayException(TableElement table, ObjectVO throwableVO) {
         // 执行失败:输出失败异常信息
         Throwable cause;
         Throwable t = (Throwable) throwableVO.getObject();
-        cause = t instanceof InvocationTargetException? t.getCause(): t; 
-if (throwableVO.needExpand()) {
+        cause = t instanceof InvocationTargetException? t.getCause(): t; if (throwableVO.needExpand()) {
             table.row("THROW-EXCEPTION", new ObjectView(cause, throwableVO.expandOrDefault()).draw());
         } else {
             StringWriter stringWriter = new StringWriter();

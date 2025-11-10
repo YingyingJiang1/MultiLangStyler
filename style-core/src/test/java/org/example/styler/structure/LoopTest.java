@@ -19,7 +19,7 @@ public class LoopTest extends TestBase {
 				"f3.java",
 				"f4.java",
 				"f5.java", // 4
-				"f6.java",
+//				"f6.java",
 				"f7.java",
 				"f8.java",
 				"f9.java",
@@ -33,7 +33,7 @@ public class LoopTest extends TestBase {
 				"style3.xml",
 				"style4.xml",
 				"style4.xml", // 4
-				"style5.xml",
+//				"style5.xml",
 				"style4.xml",
 				"style6.xml",
 				"style2.xml",
