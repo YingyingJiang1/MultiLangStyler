@@ -30,6 +30,7 @@ public class HasSameEndingStmtChecker extends Checker{
 
 		int sameEndingCount = 0;
 		for (int i = stmtList.size() - 1, j = stmtList1.size() - 1; i >= 0 && j >= 0; i--, j--) {
+			// 检查内容和在AST中的深度
 			if (stmtList.get(i).getText().equals(stmtList1.get(j).getText())) {
 				sameEndingCount++;
 			}

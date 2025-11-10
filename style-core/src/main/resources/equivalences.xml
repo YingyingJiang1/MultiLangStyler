@@ -566,5 +566,7 @@
        </handlers>
     </rule>
 
+    <!-- 级联和嵌套if-else互相转换,例如： if(a)$S else if(b)$S1 else if(c)$S2 <==> if(!a){if(b)$S1 else if(c)$S2} else$S -->
+
 
 </rules>
