@@ -2,6 +2,7 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.TestBase;
+import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.factory.MyParserFactory;
@@ -101,7 +102,8 @@ class StructureStylerTest extends TestBase {
 		try {
 			MyParser parser = MyParserFactory.createParser("java");
 			ParseTree root = parser.parse(srcPath);
-			parser.walkTree(Stage.APPLY, List.of(styler));
+			MyParseTreeWalker walker = new MyParseTreeWalker(parser, List.of(styler));
+			walker.walkTree(Stage.APPLY);
 			if (root instanceof ExtendContext ctx) {
 				return getFormattedText(ctx);
 			}
@@ -117,7 +119,8 @@ class StructureStylerTest extends TestBase {
 		StructureStyler styler = new StructureStyler();
 		MyParser parser = MyParserFactory.createParser("java");
 		ParseTree root = parser.parseFromString(code);
-		parser.walkTree(stage, List.of(styler));
+		MyParseTreeWalker walker = new MyParseTreeWalker(parser, List.of(styler));
+		walker.walkTree(stage);
 		return styler;
 	}
 

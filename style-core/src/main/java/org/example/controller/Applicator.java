@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.myException.ApplyException;
+import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
 import org.example.parser.common.token.ExtendToken;
@@ -18,8 +19,10 @@ public class Applicator {
     public static List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
         try {
 //            tokenAugmentor.process(parser, Stage.APPLY);
-            parser.walkTree(Stage.APPLY, container.getFirstRoundStylers());
-            parser.walkTree(Stage.APPLY, container.getSecondRoundStylers());
+            MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());
+            walker.walkTree(Stage.APPLY);
+            walker = new MyParseTreeWalker(parser, container.getSecondRoundStylers());
+            walker.walkTree(Stage.APPLY);
 
             List<Token> tokens = new LinkedList<>();
             ParseTreeUtil.generateTokens(parser.getRoot(), tokens, parser);

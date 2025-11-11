@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.ListenerState;
@@ -121,9 +122,8 @@ public class LiteralUsageStyler extends Styler {
             return declaredCons.get();
         }
 
-        // Get location of declaration.
-        ListenerState listenerState = parser.getListenerState();
-        ExtendContext parent = listenerState.getHighestLevel();
+        // TODO: Get location of declaration.
+        ExtendContext parent = null;
         if (parent == null) {
             logger.warn("If your code has a block structure, there may be something wrong of the state of tree listener.");
             return null;

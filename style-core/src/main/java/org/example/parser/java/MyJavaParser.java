@@ -37,7 +37,6 @@ public class MyJavaParser implements MyParser {
     JavaParser parser = null;
     Path curFile = null;
     ParseTree root = null;
-    ExtendJavaParserListener listener;
 
     private static Set<Integer> changeHierarchyRule = new HashSet<>(Arrays.asList(
             JavaParser.RULE_block, JavaParser.RULE_body, JavaParser.RULE_arrayInitializer,
@@ -196,12 +195,6 @@ public class MyJavaParser implements MyParser {
         return parser.getTokenStream();
     }
 
-    @Override
-    public void walkTree(Stage stage, List<Styler> stylers) {
-        listener = new ExtendJavaParserListener(stage, stylers, this);
-        ParseTreeWalker walker = new MyParseTreeWalker();
-        walker.walk(listener, root);
-    }
 
     @Override
     public String getLanguage() {
@@ -787,22 +780,6 @@ public class MyJavaParser implements MyParser {
         return JavaParser.RBRACK;
     }
 
-
-    @Override
-    public int getCommentChannel() {
-        return JavaLexer.COMMENT_CHANNEL;
-    }
-
-    @Override
-    public int getHiddenChannel() {
-        return JavaLexer.HIDDEN;
-    }
-
-    @Override
-    public ExtendListener getListener() {
-        return listener;
-    }
-
     @Override
     public void updateRoot(List<ParseTree> newTrees) {
         if (newTrees.isEmpty()) {
@@ -953,11 +930,6 @@ public class MyJavaParser implements MyParser {
     @Override
     public ParseTree getRoot() {
         return root;
-    }
-
-    @Override
-    public ListenerState getListenerState() {
-        return listener.getListenerState();
     }
 
     @Override

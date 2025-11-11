@@ -3,14 +3,6 @@
 <program_style>
   <style name="naming_format">
     <rule>
-      <style_context nameType="METHOD"/>
-      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
-    </rule>
-    <rule>
-      <style_context nameType="LOCAL_VARIABLE" attrs="[EXPLICIT_CONST]"/>
-      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
-    </rule>
-    <rule>
       <style_context nameType="LOCAL_VARIABLE"/>
       <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="20"/>
     </rule>
@@ -18,71 +10,39 @@
       <style_context nameType="PARAMETER"/>
       <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
     </rule>
+    <rule>
+      <style_context nameType="LOCAL_VARIABLE" attrs="[EXPLICIT_CONST]"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
+    </rule>
+    <rule>
+      <style_context nameType="METHOD"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="9"/>
+    </rule>
   </style>
   <style name="newline">
     <rule>
-      <style_context nodeNames="LOOP_STMT, RBRACE" isAstNode="true, false" lengths="54.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
       <style_context nodeNames="LBRACE, localVariableDeclarationStmt" isAstNode="false, true" lengths="68.0"/>
       <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="expression, GE" isAstNode="true, false" lengths="15.0"/>
-      <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="GE, expression" isAstNode="false, true" lengths="15.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="localVariableDeclarationStmt, LOOP_STMT" isAstNode="true, true" lengths="271.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="parExpression, block" isAstNode="true, true" lengths="126.0"/>
+      <style_context nodeNames="localVariableDeclaration, SEMI" isAstNode="true, false" lengths="55.0"/>
       <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="expression, AND" isAstNode="true, false" lengths="17.5"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="KEYWORD, block" isAstNode="false, true" lengths="111.5"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="LBRACE, RBRACE" isAstNode="false, false" lengths="2.0"/>
-      <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="BRANCH_STMT, localVariableDeclarationStmt" isAstNode="true, true" lengths="463.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="modifierList, methodHead" isAstNode="true, true" lengths="49.0"/>
+      <style_context nodeNames="LPAREN, formalParameterList" isAstNode="false, true" lengths="22.0"/>
       <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="SINGLE_STMT, RBRACE" isAstNode="true, false" lengths="8.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="methodHead, block" isAstNode="true, true" lengths="2679.0"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="BRANCH_STMT, SINGLE_STMT" isAstNode="true, true" lengths="184.0"/>
-      <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="block, catchClause" isAstNode="true, true" lengths="300.0"/>
       <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="LBRACE, BRANCH_STMT" isAstNode="false, true" lengths="85.0"/>
-      <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="LOOP_STMT, localVariableDeclarationStmt" isAstNode="true, true" lengths="375.0"/>
@@ -97,11 +57,11 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="expression, DOT" isAstNode="true, false" lengths="8.0"/>
+      <style_context nodeNames="forControl, RPAREN" isAstNode="true, false" lengths="21.5"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="forControl, RPAREN" isAstNode="true, false" lengths="21.5"/>
+      <style_context nodeNames="formalParameterList, RPAREN" isAstNode="true, false" lengths="22.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
@@ -109,15 +69,11 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="KEYWORD, BRANCH_STMT" isAstNode="false, true" lengths="756.0"/>
+      <style_context nodeNames="expression, GT" isAstNode="true, false" lengths="19.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="LOOP_STMT, SINGLE_STMT" isAstNode="true, true" lengths="125.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="expression, GT" isAstNode="true, false" lengths="19.0"/>
+      <style_context nodeNames="identifier, RPAREN" isAstNode="true, false" lengths="2.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
@@ -125,75 +81,51 @@
       <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="localVariableDeclarationStmt, LOOP_STMT" isAstNode="true, true" lengths="1386.0"/>
-      <style_property newlines="2" breakIndex="1"/>
+      <style_context nodeNames="modifierList, typeType" isAstNode="true, true" lengths="11.0"/>
+      <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="expression, ASSIGN" isAstNode="true, false" lengths="9.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="annotation, KEYWORD" isAstNode="true, false" lengths="15.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="modifierList, typeType" isAstNode="true, true" lengths="11.0"/>
+      <style_context nodeNames="KEYWORD, LPAREN" isAstNode="false, false" lengths="6.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="localVariableDeclarationStmt, BRANCH_STMT" isAstNode="true, true" lengths="554.5"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="DOT, identifier" isAstNode="false, true" lengths="9.0"/>
+      <style_context nodeNames="variableDeclaratorId, COLON" isAstNode="true, false" lengths="5.5"/>
       <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="expression, AND" isAstNode="true, false" lengths="35.0"/>
-      <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="SINGLE_STMT, BRANCH_STMT" isAstNode="true, true" lengths="161.0"/>
       <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
+      <style_context nodeNames="LT, typeArgument" isAstNode="false, true" lengths="8.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LBRACK, RBRACK" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
       <style_context nodeNames="expression, ADD" isAstNode="true, false" lengths="42.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="BRANCH_STMT, BRANCH_STMT" isAstNode="true, true" lengths="303.0"/>
-      <style_property newlines="2" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="LOOP_STMT, BRANCH_STMT" isAstNode="true, true" lengths="505.0"/>
-      <style_property newlines="2" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="RPAREN, expression" isAstNode="false, true" lengths="11.0"/>
+      <style_context nodeNames="typeType, identifier" isAstNode="true, true" lengths="11.0"/>
       <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="GT, expression" isAstNode="false, true" lengths="2.0"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="localVariableDeclarationStmt, SINGLE_STMT" isAstNode="true, true" lengths="119.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="LPAREN, expression" isAstNode="false, true" lengths="23.0"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="localVariableDeclarationStmt, BRANCH_STMT" isAstNode="true, true" lengths="1866.0"/>
-      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="BANG, expression" isAstNode="false, true" lengths="14.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="NOTEQUAL, expression" isAstNode="false, true" lengths="6.0"/>
+      <style_context nodeNames="expressionList, RPAREN" isAstNode="true, false" lengths="17.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="COMMA, typeArgument" isAstNode="false, true" lengths="7.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
@@ -201,7 +133,7 @@
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="SUB, expression" isAstNode="false, true" lengths="2.0"/>
+      <style_context nodeNames="createdName, arrayCreatorRest" isAstNode="true, true" lengths="8.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
@@ -209,23 +141,7 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="BRANCH_STMT, BRANCH_STMT" isAstNode="true, true" lengths="174.5"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="KEYWORD, LPAREN" isAstNode="false, false" lengths="4.0"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="BRANCH_STMT, tryCatchStmt" isAstNode="true, true" lengths="507.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
       <style_context nodeNames="ADD, expression" isAstNode="false, true" lengths="12.0"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="RPAREN, block" isAstNode="false, true" lengths="344.5"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
@@ -237,39 +153,23 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="tryCatchStmt, SINGLE_STMT" isAstNode="true, true" lengths="242.0"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
       <style_context nodeNames="LBRACE, tryCatchStmt" isAstNode="false, true" lengths="38.0"/>
       <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="LPAREN, forControl" isAstNode="false, true" lengths="21.5"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="LOOP_STMT, tryCatchStmt" isAstNode="true, true" lengths="1751.0"/>
-      <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="BRANCH_STMT, SINGLE_STMT" isAstNode="true, true" lengths="2477.0"/>
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="expression, EQUAL" isAstNode="true, false" lengths="15.5"/>
-      <style_property newlines="0" breakIndex="1"/>
-    </rule>
-    <rule>
       <style_context nodeNames="BRANCH_STMT, RBRACE" isAstNode="true, false" lengths="360.5"/>
       <style_property newlines="1" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="expression, NOTEQUAL" isAstNode="true, false" lengths="10.0"/>
+      <style_context nodeNames="expression, EQUAL" isAstNode="true, false" lengths="15.5"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="KEYWORD, parExpression" isAstNode="false, true" lengths="26.0"/>
+      <style_context nodeNames="KEYWORD, expression" isAstNode="false, true" lengths="10.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
@@ -289,10 +189,6 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="tryCatchStmt, RBRACE" isAstNode="true, false" lengths="317.5"/>
-      <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
       <style_context nodeNames="catchClause, finallyBlock" isAstNode="true, true" lengths="147.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
@@ -301,20 +197,256 @@
       <style_property newlines="2" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="typeType, RPAREN" isAstNode="true, false" lengths="4.0"/>
+      <style_context nodeNames="AT, qualifiedName" isAstNode="false, true" lengths="9.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
-      <style_context nodeNames="AT, qualifiedName" isAstNode="false, true" lengths="9.0"/>
+      <style_context nodeNames="COLON, expression" isAstNode="false, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="block, KEYWORD" isAstNode="true, false" lengths="134.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="identifier, arguments" isAstNode="true, true" lengths="17.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="createdName, classCreatorRest" isAstNode="true, true" lengths="22.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, creator" isAstNode="false, true" lengths="24.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LOOP_STMT, RBRACE" isAstNode="true, false" lengths="54.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, GE" isAstNode="true, false" lengths="15.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LPAREN, expressionList" isAstNode="false, true" lengths="17.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="localVariableDeclarationStmt, LOOP_STMT" isAstNode="true, true" lengths="271.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="parExpression, block" isAstNode="true, true" lengths="126.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, AND" isAstNode="true, false" lengths="17.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LBRACE, RBRACE" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, SEMI" isAstNode="true, false" lengths="39.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="ASSIGN, variableInitializer" isAstNode="false, true" lengths="33.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="modifierList, methodHead" isAstNode="true, true" lengths="49.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="SINGLE_STMT, RBRACE" isAstNode="true, false" lengths="8.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="methodHead, block" isAstNode="true, true" lengths="2679.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, SINGLE_STMT" isAstNode="true, true" lengths="184.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LBRACE, BRANCH_STMT" isAstNode="false, true" lengths="85.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, DOT" isAstNode="true, false" lengths="8.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, BRANCH_STMT" isAstNode="false, true" lengths="756.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LBRACK, expression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="variableDeclaratorId, ASSIGN" isAstNode="true, false" lengths="12.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LOOP_STMT, SINGLE_STMT" isAstNode="true, true" lengths="125.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, RBRACK" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="localVariableDeclarationStmt, LOOP_STMT" isAstNode="true, true" lengths="1386.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="annotation, KEYWORD" isAstNode="true, false" lengths="15.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, block" isAstNode="false, true" lengths="93.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="typeType, variableDeclaratorId" isAstNode="true, true" lengths="13.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="localVariableDeclarationStmt, BRANCH_STMT" isAstNode="true, true" lengths="554.5"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="DOT, identifier" isAstNode="false, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, COMMA" isAstNode="true, false" lengths="5.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, SEMI" isAstNode="false, false" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="catchType, identifier" isAstNode="true, true" lengths="11.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, AND" isAstNode="true, false" lengths="35.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LPAREN, RPAREN" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, BRANCH_STMT" isAstNode="true, true" lengths="303.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LOOP_STMT, BRANCH_STMT" isAstNode="true, true" lengths="505.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="RPAREN, expression" isAstNode="false, true" lengths="11.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="localVariableDeclarationStmt, SINGLE_STMT" isAstNode="true, true" lengths="119.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="GT, expression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="typeArgument, COMMA" isAstNode="true, false" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LPAREN, expression" isAstNode="false, true" lengths="23.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="localVariableDeclarationStmt, BRANCH_STMT" isAstNode="true, true" lengths="1866.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="typeArgument, GT" isAstNode="true, false" lengths="8.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="NOTEQUAL, expression" isAstNode="false, true" lengths="6.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="SUB, expression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, BRANCH_STMT" isAstNode="true, true" lengths="174.5"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, tryCatchStmt" isAstNode="true, true" lengths="507.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="tryCatchStmt, SINGLE_STMT" isAstNode="true, true" lengths="242.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="typeIdentifier, typeArguments" isAstNode="true, true" lengths="13.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LPAREN, forControl" isAstNode="false, true" lengths="21.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LOOP_STMT, tryCatchStmt" isAstNode="true, true" lengths="1751.0"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="identifier, typeArgumentsOrDiamond" isAstNode="true, true" lengths="19.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, NOTEQUAL" isAstNode="true, false" lengths="10.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, parExpression" isAstNode="false, true" lengths="26.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="COMMA, expression" isAstNode="false, true" lengths="16.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="tryCatchStmt, RBRACE" isAstNode="true, false" lengths="317.5"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="identifier, formalParameters" isAstNode="true, true" lengths="30.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="RPAREN, block" isAstNode="false, true" lengths="103.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="typeType, RPAREN" isAstNode="true, false" lengths="4.0"/>
       <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="SINGLE_STMT, localVariableDeclarationStmt" isAstNode="true, true" lengths="73.0"/>
       <style_property newlines="1" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="block, KEYWORD" isAstNode="true, false" lengths="134.0"/>
-      <style_property newlines="0" breakIndex="1"/>
     </rule>
     <rule>
       <style_context nodeNames="LBRACE, SINGLE_STMT" isAstNode="false, true" lengths="51.0"/>
@@ -327,10 +459,6 @@
     <rule>
       <style_context nodeNames="SINGLE_STMT, localVariableDeclarationStmt" isAstNode="true, true" lengths="67.0"/>
       <style_property newlines="2" breakIndex="1"/>
-    </rule>
-    <rule>
-      <style_context nodeNames="KEYWORD, creator" isAstNode="false, true" lengths="24.0"/>
-      <style_property newlines="0" breakIndex="1"/>
     </rule>
   </style>
   <style name="if_else_body_order">
@@ -345,11 +473,11 @@
   </style>
   <style name="optional_brace">
     <rule>
-      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="true"/>
+      <style_context bodyType="STMT_BODY" bodySize="ONE_COMPOUND_STMT" hasRightNeighbour="false"/>
       <style_property useBrace="true"/>
     </rule>
     <rule>
-      <style_context bodyType="STMT_BODY" bodySize="ONE_COMPOUND_STMT" hasRightNeighbour="false"/>
+      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="true"/>
       <style_property useBrace="true"/>
     </rule>
     <rule>
@@ -409,17 +537,27 @@
   <style name="body_layout">
     <rule>
       <style_context>
-        <bodyType>ANY_BODY</bodyType>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
         <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
+      <style_property beforeLB="0" afterRB="1"/>
     </rule>
     <rule>
       <style_context>
-        <bodyType>ANY_BODY</bodyType>
+        <bodyType>DEC_BODY</bodyType>
         <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
@@ -430,7 +568,57 @@
     <rule>
       <style_context>
         <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
         <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -449,73 +637,13 @@
     </rule>
     <rule>
       <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
+        <bodyType>ANY_BODY</bodyType>
         <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
     </rule>
   </style>
   <style name="space">

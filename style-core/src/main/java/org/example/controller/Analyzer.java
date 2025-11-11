@@ -3,6 +3,7 @@ package org.example.controller;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.SemanticContext;
 import org.example.myException.ApplyException;
+import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.MyParser;
 import org.example.style.InconsistencyInfo;
 import org.example.style.Style;
@@ -19,13 +20,14 @@ import java.util.List;
 public class Analyzer {
 	public static List<InconsistencyInfo> analyzeInconsistency(MyParser parser, StylerContainer container) {
 		// Analyze on ast.
-		parser.walkTree(Stage.ANALYZE, container.getFirstRoundStylers());
-		parser.walkTree(Stage.ANALYZE, container.getSecondRoundStylers());
-		List<InconsistencyInfo> infos = new ArrayList<>();
-		List<InconsistencyInfo> ret = parser.getListener().getInconsistencyInfos();
-		if (ret != null) {
-			infos.addAll(ret);
-		}
+
+		MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());
+		walker.walkTree(Stage.ANALYZE);
+		List<InconsistencyInfo> infos = new ArrayList<>(walker.getInconsistencyInfos());
+
+		walker = new MyParseTreeWalker(parser, container.getSecondRoundStylers());
+		walker.walkTree(Stage.ANALYZE);
+		infos.addAll(walker.getInconsistencyInfos());
 
 		List<Token> tokens = new LinkedList<>();
 		ParseTreeUtil.generateTokens(parser.getRoot(), tokens, parser);

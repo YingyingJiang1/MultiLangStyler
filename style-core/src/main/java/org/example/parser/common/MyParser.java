@@ -53,7 +53,6 @@ public interface MyParser {
     ParseTree parse(String code, int rule);
     ParseTree parseFromString(String code);
     TokenStream getTokenStream();
-    void walkTree(Stage stage, List<Styler> stylers);
 
     String getLanguage();
 
@@ -240,7 +239,6 @@ public interface MyParser {
     int getRuleIndex(String ruleName);
 
     ParseTree getRoot();
-    ListenerState getListenerState();
 
     String getConstKeyword();
     String getSourceFile();
@@ -248,9 +246,6 @@ public interface MyParser {
 
 
     int getDefaultChannel();
-    int getCommentChannel();
-    int getHiddenChannel();
-    ExtendListener getListener();
 
 	void updateRoot(List<ParseTree> newTrees);
 }

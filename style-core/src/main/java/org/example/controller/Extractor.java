@@ -3,6 +3,7 @@ package org.example.controller;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.example.myException.ExtractException;
+import org.example.parser.common.MyParseTreeWalker;
 import org.example.parser.common.MyParser;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -26,7 +27,8 @@ public class Extractor {
     }
 
     public static void extractOnAST(MyParser parser, List<Styler> stylers) {
-        parser.walkTree(Stage.EXTRACT, stylers);
+        MyParseTreeWalker walker = new MyParseTreeWalker(parser, stylers);
+        walker.walkTree(Stage.EXTRACT);
     }
 
     // Extract style from token stream.
