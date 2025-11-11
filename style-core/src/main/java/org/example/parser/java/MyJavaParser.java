@@ -203,17 +203,6 @@ public class MyJavaParser implements MyParser {
 
 
     @Override
-    public boolean isChangeHierarchy(ParseTree t, ParseTree parent) {
-        if (t instanceof ExtendContext ctx && parent instanceof ExtendContext parentCtx) {
-            int rule = ctx.getRuleIndex(), parentRule = parentCtx.getRuleIndex();
-            return changeHierarchyRule.contains(parentRule) ||
-                    parentRule == JavaParser.RULE_switchBlockStatementGroup && rule != JavaParser.RULE_switchLabel ||
-                    compoundStmts.contains(parentRule) && belongToStmt(t) && rule != JavaParser.RULE_block;
-        }
-        return false;
-    }
-
-    @Override
     public boolean belongToStmt(ParseTree t) {
         if (t instanceof ExtendContext ctx) {
             // block is included ??
@@ -222,11 +211,6 @@ public class MyJavaParser implements MyParser {
                     compoundStmts.contains(ctx.getRuleIndex()) || ctx.getRuleIndex() == JavaParser.RULE_block;
         }
         return ((TerminalNode) t).getSymbol().getType() == JavaParser.SEMI;
-    }
-
-    @Override
-    public boolean belongToExpandChildren(ParseTree t) {
-        return !(t instanceof JavaParser.AnnotationContext || t instanceof JavaParser.AnnotationListContext);
     }
 
     @Override
@@ -309,11 +293,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean isVws(ParseTree t) {
-        return t  instanceof TerminalNode terminalNode && terminalNode.getSymbol().getType() == JavaParser.VWS;
-    }
-
-    @Override
     public boolean isBlock(ParseTree t) {
         if (t instanceof JavaParser.BlockContext) {
             return true;
@@ -321,10 +300,6 @@ public class MyJavaParser implements MyParser {
         return false;
     }
 
-    @Override
-    public boolean isCatchClause(ParseTree t) {
-        return t instanceof JavaParser.CatchClauseContext;
-    }
 
     @Override
     public boolean isTypeDeclaration(ParseTree t) {
@@ -333,18 +308,8 @@ public class MyJavaParser implements MyParser {
 
 
     @Override
-    public boolean isVariableDeclarators(ParseTree t) {
-        return t instanceof JavaParser.VariableDeclaratorsContext;
-    }
-
-    @Override
     public boolean isTypeType(ParseTree tree) {
         return tree instanceof JavaParser.TypeTypeContext;
-    }
-
-    @Override
-    public boolean isReturnStmt(ParseTree t) {
-        return t instanceof JavaParser.ReturnStmtContext;
     }
 
     @Override
@@ -367,10 +332,6 @@ public class MyJavaParser implements MyParser {
         return t instanceof JavaParser.LambdaExpressionContext;
     }
 
-    @Override
-    public boolean isCompilationUnit(ParseTree t) {
-        return t instanceof JavaParser.CompilationUnitContext;
-    }
 
     @Override
     public boolean isTypeParameter(ParseTree t) {
@@ -392,10 +353,6 @@ public class MyJavaParser implements MyParser {
         return t instanceof JavaParser.VariableInitializerContext;
     }
 
-    @Override
-    public boolean isFunctionCall(ParseTree t) {
-        return t instanceof JavaParser.MethodCallContext;
-    }
 
     @Override
     public boolean isLambdaLVTIParameter(ParseTree t) {
@@ -429,19 +386,10 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public boolean belongToBraceOptionalStmt(int rule) {
-        return braceOptionalBlocks.contains(rule);
-    }
-
-    @Override
     public boolean belongToFileHeadDec(int rule) {
         return rule == JavaParser.RULE_importDeclaration || rule == JavaParser.RULE_packageDeclaration;
     }
 
-    @Override
-    public boolean belongToVarDeclarationStmt(int ruleIndex) {
-        return ruleIndex == JavaParser.RULE_localVariableDeclarationStmt || ruleIndex == JavaParser.RULE_fieldDeclaration;
-    }
 
     @Override
     public boolean belongToMethodHead(int ruleIndex) {
@@ -453,10 +401,6 @@ public class MyJavaParser implements MyParser {
         return ruleIndex == JavaParser.RULE_forStmt || ruleIndex == JavaParser.RULE_whileStmt || ruleIndex == JavaParser.RULE_doWhileStmt;
     }
 
-    @Override
-    public boolean belongToParameter(ParseTree t) {
-        return t instanceof JavaParser.FormalParameterContext || t instanceof JavaParser.LambdaLVTIParameterContext;
-    }
 
     @Override
     public boolean belongToAssignOp(String text) {
@@ -483,10 +427,6 @@ public class MyJavaParser implements MyParser {
         return unaryOps.contains(name);
     }
 
-    @Override
-    public boolean belongToSeparator(String name) {
-        return separators.contains(name);
-    }
 
     @Override
     public boolean belongToOperator(String name) {
@@ -498,10 +438,6 @@ public class MyJavaParser implements MyParser {
         return type == JavaParser.LINE_COMMENT || type == JavaParser.BLOCK_COMMENT;
     }
 
-    @Override
-    public boolean belongToBrace(int type) {
-        return type == JavaParser.LBRACE || type == JavaParser.RBRACE;
-    }
 
     @Override
     public boolean belongToKeyword(Token token) {
@@ -701,16 +637,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public int getEQ() {
-        return JavaParser.EQUAL;
-    }
-
-    @Override
-    public int getNEQ() {
-        return JavaParser.NOTEQUAL;
-    }
-
-    @Override
     public int getComma() {
         return JavaParser.COMMA;
     }
@@ -850,11 +776,6 @@ public class MyJavaParser implements MyParser {
     }
 
     @Override
-    public Set<String> getSeparators() {
-        return separators;
-    }
-
-    @Override
     public Set<String> getBinOps() {
         return binOps;
     }
@@ -864,14 +785,6 @@ public class MyJavaParser implements MyParser {
         return unaryOps;
     }
 
-    @Override
-    public Set<Integer> getAllStmts() {
-        Set<Integer> allStmts = new HashSet<>();
-        allStmts.addAll(singleStmts);
-        allStmts.addAll(compoundStmts);
-        allStmts.add(JavaParser.RULE_block);
-        return allStmts;
-    }
 
     @Override
     public Set<Integer> getCompoundStmts() {
@@ -881,14 +794,6 @@ public class MyJavaParser implements MyParser {
     @Override
     public Set<Integer> getSingleStmts() {
         return singleStmts;
-    }
-
-    @Override
-    public Set<Integer> getDecHeads() {
-        return new HashSet<>(List.of(
-                JavaParser.RULE_classHead, JavaParser.RULE_enumHead, JavaParser.RULE_interfaceHead,
-                JavaParser.RULE_recordHead, JavaParser.RULE_constructorHead, JavaParser.RULE_methodHead
-        ));
     }
 
     @Override
@@ -917,10 +822,6 @@ public class MyJavaParser implements MyParser {
         return memberLists;
     }
 
-    @Override
-    public Set<Integer> getMemberDecs() {
-        return memberDecs;
-    }
 
     @Override
     public int getRuleIndex(String ruleName) {
@@ -1094,12 +995,6 @@ public class MyJavaParser implements MyParser {
     public Set<Integer> getArrayInitializerRules() {
         return Set.of(JavaParser.RULE_initializer, JavaParser.RULE_arrayInitializer, JavaParser.RULE_elementValueArrayInitializer);
     }
-
-    @Override
-    public Set<Integer> getBraceOptionalStmtRules() {
-        return braceOptionalBlocks;
-    }
-
 
     @Override
     public int getVws() {

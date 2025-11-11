@@ -555,17 +555,7 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -595,7 +585,7 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -604,13 +594,13 @@
     </rule>
     <rule>
       <style_context>
-        <bodyType>ANY_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
       </style_context>
-      <style_property beforeLB="1" afterRB="0"/>
+      <style_property beforeLB="0" afterRB="0"/>
     </rule>
     <rule>
       <style_context>
@@ -621,6 +611,16 @@
         <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="1" afterRB="0"/>
     </rule>
     <rule>
       <style_context>
@@ -645,12 +645,12 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>EMPTY</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
+      <style_property beforeLB="0" afterRB="1"/>
     </rule>
   </style>
   <style name="space"/>

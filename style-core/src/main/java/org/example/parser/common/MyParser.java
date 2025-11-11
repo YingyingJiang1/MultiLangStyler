@@ -56,29 +56,20 @@ public interface MyParser {
 
     String getLanguage();
 
-    boolean isChangeHierarchy(ParseTree t, ParseTree parent);
     boolean belongToStmt(ParseTree t);
-    boolean belongToExpandChildren(ParseTree t);
     boolean belongToMemberList(ParseTree t);
     boolean belongToSingleStmt(ParseTree t);
     boolean belongToCompoundStmt(ParseTree t);
-    boolean belongToBraceOptionalStmt(int rule);
     boolean belongToFileHeadDec(int rule);
-    boolean belongToVarDeclarationStmt(int ruleIndex);
     boolean belongToMethodHead(int ruleIndex);
     boolean belongToLoop(int ruleIndex);
-    boolean belongToParameter(ParseTree t);
-
-
 
     boolean belongToAssignOp(String text);
     boolean belongToCompareOp(String text);
     boolean belongToBinOp(String text);
     boolean belongToUnOp(String name);
-    boolean belongToSeparator(String name);
     boolean belongToOperator(String name);
     boolean belongToComment(int type);
-    boolean belongToBrace(int type);
     boolean belongToKeyword(Token token);
     boolean belongToIntLiteral(int type);
     boolean belongToFloadLiteral(int type);
@@ -99,23 +90,17 @@ public interface MyParser {
     boolean isTypeDeclarationList(ParseTree t);
     boolean isBody(ParseTree t);
     boolean isAnnotation(ParseTree t);
-    boolean isVws(ParseTree t);
     boolean isBlock(ParseTree t);
-    boolean isCatchClause(ParseTree t);
     boolean isTypeDeclaration(ParseTree t);
-    boolean isVariableDeclarators(ParseTree t);
     boolean isTypeType(ParseTree tree);
-    boolean isReturnStmt(ParseTree t);
     boolean isContinueStmt(ParseTree lastTree);
     boolean isLocalVarDeclaration(ParseTree t);
     boolean isLocalVarDeclarationStmt(ParseTree t);
     boolean isLambdaExpression(ParseTree t);
-    boolean isCompilationUnit(ParseTree t);
     boolean isTypeParameter(ParseTree t);
     boolean isLiteral(ParseTree node);
     boolean isVariableDeclaratorId(ParseTree t);
     boolean isVariableInitializer(ParseTree t);
-    boolean isFunctionCall(ParseTree t);
     boolean isLambdaLVTIParameter(ParseTree t);
     boolean isLambdaParameters(ParseTree t);
     boolean isExpression(ParseTree t);
@@ -195,8 +180,6 @@ public interface MyParser {
     int getGE();
     int getLT();
     int getGT();
-    int getEQ();
-    int getNEQ();
     int getComma();
     int getSemi();
     int getLineComment();
@@ -221,20 +204,15 @@ public interface MyParser {
     ExtendTokenFactory getTokenFactory();
     TreeNodeFactory getTreeNodeFactory();
     Set<String> getOperators();
-    Set<String> getSeparators();
     Set<String> getBinOps();
     Set<String> getUnaryOps();
-    Set<Integer> getAllStmts();
     Set<Integer> getCompoundStmts();
     Set<Integer> getSingleStmts();
-    Set<Integer> getDecHeads();
     Set<Integer> getHomoOps(); // All operands have the same type.
     Set<Integer> getCompoundAssign();
     Set<Integer> getLiterals();
     Set<Integer> getMemberLists();
-    Set<Integer> getMemberDecs();
     Set<Integer> getArrayInitializerRules();
-    Set<Integer> getBraceOptionalStmtRules();
 
     int getRuleIndex(String ruleName);
 

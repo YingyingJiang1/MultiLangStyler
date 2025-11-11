@@ -173,22 +173,6 @@ public class ExtendContext extends ParserRuleContext {
         return builder.toString();
     }
 
-    /*
-     * Put the children of the context instance on one line,
-     * then calculate and return the column length(excluding all horizontal whitespace length).
-     * */
-    public int calColumnSumInOneLine(ExtendContext ctx) {
-        int columnLength = 0;
-        for (ParseTree root : ctx.children) {
-            if (root instanceof ExtendContext) {
-                columnLength += calColumnSumInOneLine((ExtendContext) root);
-            } else {
-                columnLength += ((TerminalNode) root).getSymbol().getText().length();
-            }
-        }
-        return columnLength;
-    }
-
     public int countCtxChildren() {
         int count = 0;
         for (ParseTree child : children) {
@@ -200,74 +184,13 @@ public class ExtendContext extends ParserRuleContext {
     }
 
 
-    public int countChildIf(Predicate<ParseTree> cond) {
-        int count = 0;
-        for (ParseTree child : children) {
-            if (cond.test(child)) {
-                ++count;
-            }
-        }
-        return count;
-    }
-
     public void decBraceDepth() {
         --braceDepth;
-    }
-
-    public int getBraceDepth() {
-        return braceDepth;
-    }
-
-    public void incBraceDepth() {
-        ++braceDepth;
-    }
-
-    /**
-     *
-     * @return The next token of the ctx.stop
-     */
-    public Token getNextToken() {
-        ExtendContext parent = (ExtendContext) this.parent;
-        ExtendContext cur = this;
-        Token nextToken = null;
-        while (parent != null) {
-            if (parent.getChild(parent.getChildCount() - 1) != cur) {
-                ParseTree nextTree = parent.getChild(parent.children.indexOf(cur) + 1);
-                nextToken = nextTree instanceof TerminalNode ter ? ter.getSymbol() : ((ExtendContext) nextTree).start;
-                break;
-            }
-            cur = parent;
-            parent = (ExtendContext) parent.parent;
-        }
-        return nextToken;
-    }
-
-    /**
-     * @return The previous token of the ctx.start
-     */
-    public Token getPrevToken() {
-        ExtendContext parent = (ExtendContext) this.parent;
-        ExtendContext cur = this;
-        Token preToken = null;
-        while (parent != null) {
-            if (parent.getChild(0) != cur) {
-                ParseTree preTree = parent.getChild(parent.children.indexOf(cur) - 1);
-                preToken = preTree instanceof TerminalNode ter ? ter.getSymbol() : ((ExtendContext) preTree).stop;
-                break;
-            }
-            cur = parent;
-            parent = (ExtendContext) parent.parent;
-        }
-        return preToken;
     }
 
     @Override
     public List<TerminalNode> getTokens(int ttype) {
         return super.getTokens(ttype);
-    }
-
-    public void expandChildren(MyParser parser) {
-        expandChildIf(parser::belongToExpandChildren);
     }
 
 
@@ -324,14 +247,6 @@ public class ExtendContext extends ParserRuleContext {
         updateStopToken();
     }
 
-    public void deleteStatementCtx(MyParser parser) {
-        for (int i = 0; i < getChildCount(); ++i) {
-            if (parser.isStatement(getChild(i))) {
-                ExtendContext stmtCtx = (ExtendContext) getChild(i);
-                this.replaceChild(stmtCtx, stmtCtx.getChild(0));
-            }
-        }
-    }
 
     public ExtendContext getFirstInnerChildByType(int ruleIndex) {
         for (int i = 0; i < this.children.size(); ++i) {
@@ -340,18 +255,6 @@ public class ExtendContext extends ParserRuleContext {
                 ExtendContext innerNode = (ExtendContext) treeNode;
                 if (innerNode.getRuleIndex() == ruleIndex)
                     return innerNode;
-            }
-        }
-        return null;
-    }
-
-    public Token getFirstTokenByType(int tokenType) {
-        for (int i = 0; i < this.children.size(); ++i) {
-            ParseTree treeNode = this.children.get(i);
-            if (treeNode instanceof TerminalNode) {
-                TerminalNode terNode = (TerminalNode) treeNode;
-                if (terNode.getSymbol().getType() == tokenType)
-                    return terNode.getSymbol();
             }
         }
         return null;
@@ -457,31 +360,6 @@ public class ExtendContext extends ParserRuleContext {
         return -1;
     }
 
-    // Return the index of the first child satisfying the @cond.
-    public int indexOfLastChild(Predicate<ParseTree> cond) {
-        for (int i = this.children.size() - 1; i >= 0; --i) {
-            ParseTree treeNode = this.children.get(i);
-            if (cond.test(treeNode)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-
-    // find terminal child
-    public int findFirstTerChildByType(int tokenType) {
-        for (int i = 0; i < this.children.size(); ++i) {
-            ParseTree treeNode = this.children.get(i);
-            if (treeNode instanceof TerminalNode) {
-                TerminalNode terMode = (TerminalNode) treeNode;
-                if (terMode.getSymbol().getType() == tokenType)
-                    return i;
-            }
-        }
-        return -1;
-    }
-
     // Get all tokens recursively.
     public List<Token> getAllTokensRec() {
         List<Token> tokens = new ArrayList<>();
@@ -544,12 +422,6 @@ public class ExtendContext extends ParserRuleContext {
         System.out.println(System.lineSeparator());
     }
 
-
-    // Remove all extra SEMI tokens.
-    private void removeAllExtraSemi(ExtendContext ctx) {
-        ctx.children.removeIf(root -> root instanceof TerminalNode
-                && ((TerminalNode) root).getSymbol().getType() == JavaLexer.SEMI);
-    }
 
     /**
      * @apiNote If the start token is used to do something, then make sure no styler that adds format tokens(vws,hws...) has executed style application.
