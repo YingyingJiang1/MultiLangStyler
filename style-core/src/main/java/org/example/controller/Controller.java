@@ -38,6 +38,12 @@ public class Controller {
         GlobalInfo.setConf(this.conf);
     }
 
+    public Controller(Configuration conf, StylerContainer container) {
+        this.conf = conf;
+        this.container = container;
+        GlobalInfo.setConf(this.conf);
+    }
+
 //    public Controller() {}
 
 

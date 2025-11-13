@@ -79,6 +79,7 @@ public interface MyParser {
 
     ParseTree createExpression(ParserRuleContext parent, int invokingState);
 
+    /********************************************************** 节点类型判断  **********************************************************/
     boolean isStatement(ParseTree t);
     boolean isInitializer(ParseTree t);
     boolean isFieldDeclaration(ParseTree t);
