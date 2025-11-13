@@ -9,12 +9,12 @@
   <style name="modifier_order"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="9"/>
-      <style_property preferenceIndex="2"/>
-    </rule>
-    <rule>
       <style_context category="CHECK_THEN_ASSIGN"/>
       <style_property style="TERNARY_STYLE"/>
+    </rule>
+    <rule>
+      <style_context id="9"/>
+      <style_property preferenceIndex="2"/>
     </rule>
     <rule>
       <style_context id="24"/>
