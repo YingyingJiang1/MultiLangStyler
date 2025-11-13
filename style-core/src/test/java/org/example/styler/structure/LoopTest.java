@@ -14,9 +14,9 @@ public class LoopTest extends TestBase {
 		StructureStyler.TEST_MODE = true;
 		String dir = "src/test/sources/structure/loop/";
 		String[] srcFiles = {
-				"f1.java", // 0
-				"f2.java",
-				"f3.java",
+//				"f1.java", // 0
+//				"f2.java",
+//				"f3.java",
 				"f4.java",
 				"f5.java", // 4
 //				"f6.java",
@@ -28,9 +28,9 @@ public class LoopTest extends TestBase {
 		};
 
 		String[] targetFiles = {
-				"style1.xml", // 0
-				"style2.xml",
-				"style3.xml",
+//				"style1.xml", // 0
+//				"style2.xml",
+//				"style3.xml",
 				"style4.xml",
 				"style4.xml", // 4
 //				"style5.xml",

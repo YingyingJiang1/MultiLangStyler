@@ -58,6 +58,23 @@ public class SymbolTable {
         return null;
     }
 
+    public boolean hasConflictSymbol(Symbol targetSym, MyParser parser) {
+        String name = targetSym.getText();
+        ParseTree curScope = Scope.getScopeNode(targetSym.getDecIdentifierNode(), parser);
+        while (curScope != null) {
+            List<Symbol> symbols = symbolMap.get(curScope);
+            if (symbols != null) {
+                for (Symbol symbol : symbols ) {
+                    if (symbol.getText().equals(name) && symbol != targetSym) {
+                        return true;
+                    }
+                }
+            }
+            curScope = Scope.getScopeNode(curScope.getParent(), parser);
+        }
+        return false;
+    }
+
     public boolean hasSymbol(String text) {
         for (List<Symbol> symbols : symbolMap.values()) {
             for (Symbol symbol : symbols) {

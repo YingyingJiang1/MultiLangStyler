@@ -24,7 +24,7 @@ public abstract class Symbol {
     public Symbol() {}
 
     public String getText() {
-        return identifierNode.getText();
+        return text;
     }
 
     public void modifyName(String name) {
@@ -34,6 +34,7 @@ public abstract class Symbol {
             extendToken = (ExtendToken) reference.start;
             extendToken.setText(name);
         }
+        text = name;
     }
 
     public NameType getSymbolType() {
@@ -62,5 +63,9 @@ public abstract class Symbol {
 
     public boolean isPrivate() {
         return hasModifier("private");
+    }
+
+    public void setText(String newName) {
+        this.text = newName;
     }
 }
