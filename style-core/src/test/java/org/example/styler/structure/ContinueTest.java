@@ -31,6 +31,7 @@ public class ContinueTest extends TestBase {
 				"f3.java",
 				"f4.java",
 				"f5.java",
+				"f6.java"
 
 		};
 
@@ -39,6 +40,7 @@ public class ContinueTest extends TestBase {
 				"style3.xml",
 				"style4.xml",
 				"style5.xml",
+				"style6.xml"
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
