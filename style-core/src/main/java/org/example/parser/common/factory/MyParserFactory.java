@@ -2,7 +2,9 @@ package org.example.parser.common.factory;
 
 import org.apache.commons.logging.Log;
 import org.example.parser.common.MyParser;
+import org.example.parser.cpp.MyCppParser;
 import org.example.parser.java.MyJavaParser;
+import org.example.parser.python.MyPythonParser;
 import org.slf4j.LoggerFactory;
 
 public class MyParserFactory {
@@ -10,6 +12,7 @@ public class MyParserFactory {
         String languageName = language.toLowerCase();
         MyParser parser =  switch (languageName) {
             case "java" -> new MyJavaParser();
+            case "cpp" -> new MyCppParser();
             default -> null;
         };
         if (parser == null) {
