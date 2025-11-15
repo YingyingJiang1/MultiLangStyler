@@ -66,16 +66,17 @@ public class ConflictNameHandler extends Handler{
 						}
 
 						// Modify identifier name and its references
-						Token token = conflictSym.getDecIdentifierNode().getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
-						if (token instanceof ExtendToken t) {
-							t.setText(newName);
-						}
-						for (ExtendContext ref : conflictSym.getReferences()) {
-							token = ref.getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
-							if (token instanceof ExtendToken t) {
-								t.setText(newName);
-							}
-						}
+						conflictSym.modifyName(newName);
+//						Token token = conflictSym.getDecIdentifierNode().getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
+//						if (token instanceof ExtendToken t) {
+//							t.setText(newName);
+//						}
+//						for (ExtendContext ref : conflictSym.getReferences()) {
+//							token = ref.getAllTokensByType(parser.getIdentifier()).stream().findFirst().orElseGet(() -> null);
+//							if (token instanceof ExtendToken t) {
+//								t.setText(newName);
+//							}
+//						}
 
 						final String key = newName;
 						conflictCandidatesMap.compute(newName, (k, v) -> v == null ?

@@ -6,6 +6,7 @@ import org.example.RunStatistic;
 import org.example.global.GlobalInfo;
 import org.example.parser.common.MyParser;
 import org.example.parser.common.context.ExtendContext;
+import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
@@ -48,7 +49,8 @@ public class NamingStyler extends Styler {
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
         SymbolTableManager.removeCache(parser.getRoot());
-        List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
+        SymbolTable st = SymbolTableManager.getSymbolTable(parser);
+        List<Symbol> symbols = st.getAllSymbols();
         for (Symbol symbol : symbols) {
             if (!isMutable(symbol)) {
                 continue;
@@ -71,9 +73,17 @@ public class NamingStyler extends Styler {
                 }
 
                 if (!newName.equals(name)) {
-                    symbol.modifyName(newName);
+                    // 预修改
+                    symbol.setText(newName);
 
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                    if (!st.hasConflictSymbol(symbol, parser)) {
+                        symbol.modifyName(newName);
+                        RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                    } else {
+                        symbol.setText(name);
+                    }
+
+
                 }
             }
         }

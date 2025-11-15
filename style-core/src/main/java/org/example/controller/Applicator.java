@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Applicator {
-    public static List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
+    public static synchronized List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
         try {
 //            tokenAugmentor.process(parser, Stage.APPLY);
             MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());

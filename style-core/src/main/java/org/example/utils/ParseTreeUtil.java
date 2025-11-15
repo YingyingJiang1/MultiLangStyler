@@ -239,8 +239,8 @@ public class ParseTreeUtil {
     ExtendContext newStmt = TreeNodeFactoryGetter.getFactory(parser).createStatement(parent);
 
     ExtendContext blockNode = TreeNodeFactoryGetter.getFactory(parser).createBlock(newStmt);
-    ExtendToken lBrace = parser.getTokenFactory().create(parser.getLParen(), "{");
-    ExtendToken rBrace = parser.getTokenFactory().create(parser.getRParen(), "}");
+    ExtendToken lBrace = parser.getTokenFactory().create(parser.getLBrace(), "{");
+    ExtendToken rBrace = parser.getTokenFactory().create(parser.getRBrace(), "}");
     // Add Format tokens
 //    lBrace.addTokenAfter(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
 //    rBrace.addTokenBefore(ExtendTokenFactory.DEFAULT.create(parser.getVws(), "\n"), parser);
