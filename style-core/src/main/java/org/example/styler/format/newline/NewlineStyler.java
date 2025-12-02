@@ -8,9 +8,9 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
@@ -19,7 +19,6 @@ import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.utils.NodeUtil;
-import org.example.utils.ParseTreeUtil;
 
 public class NewlineStyler extends Styler {
     static int verticalPathLength = 0;
@@ -221,7 +220,7 @@ public class NewlineStyler extends Styler {
 	private NewlineContext.NodeType getNodeType(ParseTree node, MyParser parser) {
 		if (node instanceof TerminalNode ter) {
 			String name = "";
-			if (parser.belongToKeyword(ter.getSymbol())) {
+			if (parser.isKeyword(ter.getSymbol())) {
 				name = "KEYWORD";
 			} else if (ter.getSymbol().getType() == parser.getIdentifier()) {
 				name = "IDENTIFIER";

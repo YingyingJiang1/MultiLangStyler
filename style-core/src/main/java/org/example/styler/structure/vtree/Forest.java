@@ -1,9 +1,7 @@
 package org.example.styler.structure.vtree;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.*;
 import java.util.Objects;
 

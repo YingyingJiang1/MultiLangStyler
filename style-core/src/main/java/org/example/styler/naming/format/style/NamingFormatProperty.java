@@ -1,8 +1,7 @@
 package org.example.styler.naming.format.style;
 
-import com.google.common.base.CaseFormat;
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.naming.MyCaseFormat;
 

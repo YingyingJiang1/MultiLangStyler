@@ -2,7 +2,7 @@ package org.example.style.rule;
 
 import org.dom4j.Element;
 import org.example.style.DomIO;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 
 import java.util.Objects;
 

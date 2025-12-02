@@ -1,8 +1,9 @@
 package org.example.styler.ifelse.bodyorder;
 
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.utils.ParseTreeUtil;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
@@ -49,7 +50,7 @@ public class IfElseBodyOrderStyler extends Styler {
 
                 // negate condition
                 ExtendContext conditionCtx = (ExtendContext) ctx.getChild(1);
-                ExtendContext negatedExp = ParseTreeUtil.getInstance()
+                ExtendContext negatedExp = LangAdapterCreator.createASTRewriter(parser.getLanguage())
                         .negateExpressionSmart((ExtendContext) conditionCtx.getChild(1), parser);
                 conditionCtx.replaceChild(conditionCtx.getChild(1), negatedExp);
 

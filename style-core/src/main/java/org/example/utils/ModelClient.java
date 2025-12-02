@@ -1,12 +1,9 @@
 package org.example.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.example.Configuration;
-import org.example.global.GlobalInfo;
+import org.example.config.IConfig;
+import org.example.MyEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +23,7 @@ public class ModelClient {
     private static ModelClient instance = new ModelClient();
 
     public static ModelClient getInstance() {
-        String url = GlobalInfo.getConf().getLlmConfig().getModelURL();
+        String url = MyEnvironment.getIConfig().getLLMUrl();
         if (url == null) {
             System.err.println("Model URL is not set.");
             return instance;
@@ -54,13 +51,7 @@ public class ModelClient {
     }
 
     public String sendRequest(String prompt) {
-        String serverType = GlobalInfo.getConf().getLlmConfig().getServerType();
-        String jsonBody =  switch (serverType) {
-            case "self" -> createSelfJsonBody(prompt);
-            case "openrouter" -> createOpenrouterJsonBody(prompt);
-            default -> null;
-        };
-
+        String jsonBody =  createOpenrouterJsonBody(prompt);
         String response = communicate(jsonBody);
         return response;
     }
@@ -110,14 +101,13 @@ public class ModelClient {
     }
 
     private String createOpenrouterJsonBody(String promptStr) {
-
-        Configuration.LLMConfig llmConfig = GlobalInfo.getConf().getLlmConfig();
+        IConfig config = MyEnvironment.getIConfig();
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode requestBody = objectMapper.createObjectNode();
-        requestBody.put("model", llmConfig.getModel());
+        requestBody.put("model", config.getLLMModel());
         requestBody.put("prompt", toValidJsonStr(promptStr));
-        requestBody.put("temperature", llmConfig.getTemperature());
-        requestBody.put("max_new_tokens", llmConfig.getMaxNewTokens());
+        requestBody.put("temperature", config.getLLMTemperature());
+        requestBody.put("max_new_tokens", config.getLLMMaxTokens());
 
         // 将请求体转为 JSON 字符串
         try {
@@ -140,7 +130,7 @@ public class ModelClient {
             HttpURLConnection con = (HttpURLConnection) modelURL.openConnection();
 
             con.setRequestMethod("POST");
-            String apikey = GlobalInfo.getConf().getLlmConfig().getApikey();
+            String apikey = MyEnvironment.getIConfig().getLLMApiKey();
             if (apikey != null) {
                 con.setRequestProperty("Authorization", String.format("Bearer %s", apikey));
             }

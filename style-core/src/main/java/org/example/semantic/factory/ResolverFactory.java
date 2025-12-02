@@ -7,6 +7,7 @@ public class ResolverFactory {
     public static Resolver createResolver(String language) {
         return switch (language) {
             case "java" -> new JavaResolver();
+            case "cpp" -> null;
             default -> throw new IllegalArgumentException("Unsupported language: " + language);
         };
     }

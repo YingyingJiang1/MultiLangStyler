@@ -31,7 +31,7 @@ class SpaceStylerTest extends TestBase {
 
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
-			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(SpaceStyler.class));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "java", List.of(SpaceStyler.class));
 			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
@@ -44,6 +44,44 @@ class SpaceStylerTest extends TestBase {
 				testCodeEqual(actual, gtPath);
 			} catch (AssertionFailedError e) {
 				System.out.printf("Pair %d test failed%n", i + 1);
+			}
+//			break;
+		}
+	}
+
+	@Test
+	void applyStyleCpp() {
+		String fileExt = ".cpp";
+		String dir = "src/test/cpp-sources/space/";
+		String[] srcFiles = {
+//				"f1" + fileExt,
+//				"f2" + fileExt,
+				"f3" + fileExt,
+//				"f4" + fileExt
+		};
+
+		String[] targetFiles = {
+//				"f2" + fileExt,
+//				"f1" + fileExt,
+				"f4" + fileExt,
+//				"f3" + fileExt
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt" + fileExt, srcFiles[i].replace(fileExt, "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "cpp", List.of(SpaceStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			try {
+				testCodeEqual(actual, gtPath);
+			} catch (AssertionFailedError e) {
+				logger.error("Pair `{}` test failed%n", i + 1, e);
 			}
 //			break;
 		}

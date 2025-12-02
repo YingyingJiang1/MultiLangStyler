@@ -3,10 +3,11 @@ package org.example.styler.structure.checker;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
-import org.example.utils.searcher.NodeSearcherFactory;
+import org.example.lang.intf.INodeSearcherFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class VarUpdateStmtChecker extends Checker{
 				if (node instanceof ExtendContext extendContext) {
 					int rule = parser.getSpecificStmtType(extendContext);
 					if (parser.getRuleLocalVarDeclarationStmt() == rule || parser.getRuleLocalVarDeclaration() == rule) {
-						List<ExtendContext> decIds = NodeSearcherFactory.getInstance().createVarDeclarationSearcher().searchIdentifiers(parser.getSpecificStmt(extendContext), parser);
+						List<ExtendContext> decIds = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher().searchIdentifiers(parser.getSpecificStmt(extendContext), parser);
 						updateAny.addAll(decIds);
 					} else {
 						updateAny.addAll(getUpdatedVars(extendContext, parser));

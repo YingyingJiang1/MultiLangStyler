@@ -16,6 +16,7 @@ import org.example.styler.naming.format.NamingStyler;
 import org.example.styler.structure.StructureStyler;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class StylerContainer {
@@ -65,6 +66,16 @@ public class StylerContainer {
 
 	}
 
+	public StylerContainer(List<Class<?>> enabledStylers) {
+		this();
+		if (enabledStylers == null || enabledStylers.isEmpty()) {
+			return;
+		}
+		retainStylers(firstRoundStylers, enabledStylers);
+		retainStylers(secondRoundStylers, enabledStylers);
+		retainStylers(tsStylers, enabledStylers);
+	}
+
 	public List<Styler> getStylers() {
 		List<Styler> allStylers = new ArrayList<>();
 		allStylers.addAll(firstRoundStylers);
@@ -98,6 +109,10 @@ public class StylerContainer {
 			}
 		}
 		return null;
+	}
+
+	private void retainStylers(List<Styler> oldStylers, List<Class<?>> retainedStylers) {
+		oldStylers.removeIf(styler -> !retainedStylers.contains(styler.getClass()));
 	}
 
 }

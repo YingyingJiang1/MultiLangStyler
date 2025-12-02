@@ -1,8 +1,8 @@
 package org.example.semantic.java;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.Resolver;

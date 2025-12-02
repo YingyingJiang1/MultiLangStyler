@@ -1,11 +1,7 @@
 package org.example.styler.format.space.style;
 
-import org.example.parser.common.token.TokenGroup;
 import org.example.style.CommonStyle;
-import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleRule;
-
-import java.util.List;
 
 public class SpaceStyle extends CommonStyle {
 

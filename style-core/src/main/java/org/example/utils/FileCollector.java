@@ -18,14 +18,14 @@ public class FileCollector {
   public static Logger logger = LoggerFactory.getLogger(FileCollector.class);
   public static final int MAX_FILE_COUNT = 1000;
 
-  public static FileCollection getJavaFileCollection(List<String> paths) {
+  public static FileCollection getFileCollection(List<String> paths) {
     List<FileCollection.FileSet> fileSets = new ArrayList<>();
     for(String path : paths) {
       List<FileCollection.FileSet> tmpFileSets = new ArrayList<>();
       getFileRecursivelyIf(path, tmpFileSets, new Predicate<File>() {
         @Override
         public boolean test(File file) {
-          return file.getName().endsWith(".java");
+          return file.isFile();
         }
       });
 
@@ -79,14 +79,14 @@ public class FileCollector {
   }
 
 
-  private static FileCollection getJavaFileCollection(String dir, List<String> filenames) {
+  private static FileCollection getFileCollection(String dir, List<String> filenames) {
 
     List<FileCollection.FileSet> fileSets = new ArrayList<>();
     fileSets.add(new FileCollection.FileSet(dir, filenames));
     return new FileCollection(fileSets);
   }
 
-  private static List<String> getJavaFileCollection(String path) {
+  private static List<String> getFileCollection(String path) {
     File file = new File(path);
     List<String> ret = new ArrayList<>();
     getAllFiles(file, ".java", ret);

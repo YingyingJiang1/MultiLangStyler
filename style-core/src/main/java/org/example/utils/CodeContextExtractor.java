@@ -1,7 +1,7 @@
 package org.example.utils;
 
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 
 public class CodeContextExtractor {
 	public static String extractMethodContext(ExtendContext node, MyParser parser) {

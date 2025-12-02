@@ -7,12 +7,12 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.utils.ParseTreeUtil;
-import org.example.parser.common.token.ExtendToken;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
@@ -29,8 +29,8 @@ import org.example.styler.exp.complexity.style.ExpressionStyle;
 import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.NameType;
 import org.example.utils.NameGenerator;
-import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.VarDeclarationSearcher;
+import org.example.lang.intf.searcher.CompilationUnitSearcher;
+import org.example.lang.intf.searcher.VarDeclarationSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +93,7 @@ public class ExpressionStyler extends Styler {
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         // For efficiency, do not select the expression node for checking.
-        return ctx.getRuleIndex() == parser.getRuleExpStmt() || ctx.getRuleIndex() == parser.getRuleParExpression() || parser.isVariableInitializer(ctx);
+        return ctx.getRuleIndex() == parser.getRuleExpressionStmt() || ctx.getRuleIndex() == parser.getRuleParExpression() || parser.isVariableInitializer(ctx);
     }
 
     @Override
@@ -240,16 +240,16 @@ public class ExpressionStyler extends Styler {
         // Create a variable declaration statement for the expressions.
         MyCaseFormat caseFormat = MyCaseFormat.LOWER_CAMEL;
         String name = NameGenerator.generateName("",caseFormat );
-        Type type = GlobalInfo.getTypeResolver().getType(selectedSubExp.getValue().get(0), parser);
+        Type type = MyEnvironment.getTypeResolver().getType(selectedSubExp.getValue().get(0), parser);
         if (type == null) {
             return "";
         }
         ExtendContext decStmt = addVarDeclaration(type, name, selectedSubExp.getValue().get(0), parser);
 
         // Set a meaningful name for the newly created variable
-        VarDeclarationSearcher varDeclarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createVarDeclarationSearcher();
+        VarDeclarationSearcher varDeclarationSearcher =LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
         ExtendContext identifier = varDeclarationSearcher.searchIdentifiers(decStmt, parser).get(0);
-        String newName = NameGenerator.generateMeaningfulName(identifier, parser, GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit());
+        String newName = NameGenerator.generateMeaningfulName(identifier, parser, MyEnvironment.getIConfig().getIdentifierLengthLimit());
         if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
             extendToken.setText(newName);
         }
@@ -289,17 +289,17 @@ public class ExpressionStyler extends Styler {
     }
 
     private boolean mayConflict(String name, MyParser parser) {
-        return GlobalInfo.getResolver().getSymbolTable(parser).hasSymbol(name);
+        return MyEnvironment.getResolver().getSymbolTable(parser).hasSymbol(name);
     }
 
     private ExtendContext addVarDeclaration(Type type, String name, ExtendContext initializer, MyParser parser) {
         StringBuilder code = new StringBuilder();
         code.append(type.getName()).append(" ").append(name).append(" = ").append(initializer.getText()).append(";\n");
-        ParseTree stmt = MyParserFactory.createParser(parser.getClass()).parse(code.toString(), parser.getRuleStmt());
+        ParseTree stmt = LangAdapterCreator.createParser(parser.getLanguage()).parse(code.toString(), parser.getRuleStmt());
 
         if (type instanceof ReferenceType referenceType) {
             // Import if necessary.
-            CompilationUnitSearcher cuSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createCompilationUnitSearcher();
+            CompilationUnitSearcher cuSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createCompilationUnitSearcher();
             ExtendContext cu = (ExtendContext) parser.getRoot();
             List<ExtendContext> imports = cuSearcher.searchImports(cu, parser);
             boolean isImported = false;
@@ -312,7 +312,7 @@ public class ExpressionStyler extends Styler {
 
             if (!isImported && referenceType.getQualifiedName() != null) {
                 String importCode = "import " + referenceType.getQualifiedName() + ";";
-                ParseTree importNode = MyParserFactory.createParser(parser.getClass()).parse(importCode, parser.getRuleImportDeclarationList());
+                ParseTree importNode = LangAdapterCreator.createParser(parser.getLanguage()).parse(importCode, parser.getRuleImportDeclarationList());
                 if (importNode == null) {
                     log.error("Fail to create import!");
                     return null;

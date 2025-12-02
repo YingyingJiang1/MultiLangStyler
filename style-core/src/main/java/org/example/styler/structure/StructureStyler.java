@@ -1,15 +1,11 @@
 package org.example.styler.structure;
 
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.java.MyJavaParser;
-import org.example.parser.java.Spot;
+import org.example.MyEnvironment;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
@@ -17,7 +13,6 @@ import org.example.styler.Styler;
 import org.example.styler.structure.style.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.util.*;
@@ -38,7 +33,7 @@ public class StructureStyler extends Styler {
     public static Logger logger = LoggerFactory.getLogger(StructureStyler.class);
 
     static {
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyJavaParser.class, CONF_FILE); // TBD: extend for other languages
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyEnvironment.getIConfig().getJavaEquivalencesConfig(), "java"); // TBD: extend for other languages
         for (EquivalentStructure equivalence : equivalences) {
             for (int rule : equivalence.rules) {
                 // create map for efficiency, avoid to traverse all configured structures.
@@ -166,41 +161,6 @@ public class StructureStyler extends Styler {
     }
 
 
-
-    /**
-     * Apply the structure to the context. This method is specifically used for the mutator experiment.
-     * @param ctx the context to be matched
-     * @param parser the parser
-     * @param from the spot of the source structure
-     * @param to the index of the target structure
-     */
-    public static void applyStructure(ExtendContext ctx, MyParser parser, Spot from, int to) {
-        int ruleIndex = ctx.getRuleIndex();
-        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
-            ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
-        }
-        if (ruleIndex != from.ruleIndex()) {
-            logger.info("Fiailed to apply structure due to mismatched rule index ({} vs {}).", ruleIndex, from.ruleIndex());
-            return;
-        }
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
-        for (EquivalentStructure structure : equivalentStructures) {
-            if (structure.getId() == from.structureIndex()) {
-                if (structure.match(ctx, parser) != from.treeIndex()) {
-                    logger.info("Failed to apply structure due to mismatched tree index ({} vs {}).", structure.match(ctx, parser), from.treeIndex());
-                    return;
-                }
-                ParseTree newTree = structure.convert(from.treeIndex(), to, ctx, parser);
-                if (newTree == null) {
-                    logger.info("Failed to convert from {} to {} when structure id = {}.", from.treeIndex(), to, from.structureIndex());
-                }
-                logger.info("Converted from {} to {} when structure id = {}.", from.treeIndex(), to, from.structureIndex());
-                return;
-            }
-        }
-        logger.info("Note: Fail to apply structure when structure id = {}.", from.treeIndex(), to, from.structureIndex());
-    }
-
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
@@ -226,46 +186,6 @@ public class StructureStyler extends Styler {
         }
     }
 
-    /**
-     * Sets structure preference rules based on the given sequence in order.
-     * @param language the language of the parser
-     * @param choices a map from structure index to the preferred choice index
-     */
-    public void setAs(String language, Map<Integer, Integer> choices) {
-        style = new StructureStyle();
-        MyParser parser = MyParserFactory.createParser(language);
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(parser.getClass(), CONF_FILE);
-        for (int i = 0; i < equivalences.size(); i++) {
-            EquivalentStructure structure = equivalences.get(i);
-            int choice = choices.get(structure.getId());
-            StyleContext context = extractContext(structure);
-            StructPreferenceProperty property = extractProperty(structure, choice);
-            style.addRule(context, property);
-        }
-    }
-
-    /**
-     * Matches the context with the equivalent structures and returns the structure id. This method is specifically used for the mutator experiment.
-     * @param ctx the context to be matched
-     * @param parser the parser
-     * @return the structure id if matched, otherwise -1
-     */
-    public static Spot extractSpot(ExtendContext ctx, MyParser parser) {
-        int ruleIndex = ctx.getRuleIndex();
-        if (ctx.getRuleIndex() == parser.getRuleStmt()) {
-            ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
-        }
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
-        if (equivalentStructures != null) {
-            for (EquivalentStructure structure : equivalentStructures) {
-                int treeId = structure.match(ctx, parser);
-                if (treeId != -1) {
-                    return new Spot(ruleIndex, structure.getId(), treeId);
-                }
-            }
-        }
-        return null;
-    }
 
 
     private StructPreferenceProperty extractProperty(EquivalentStructure structure, int targetIndex) {

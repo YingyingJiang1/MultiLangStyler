@@ -7,9 +7,9 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.NewlineApplicator;
@@ -21,7 +21,6 @@ import org.example.utils.NodeUtil;
 import org.example.utils.TokenStreamUtil;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**

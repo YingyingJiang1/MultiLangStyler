@@ -1,7 +1,7 @@
 package org.example.utils;
 
 import org.antlr.v4.runtime.Token;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class TokenStreamUtil {
 		List<Token> result = new ArrayList<Token>();
 		for (int right = start + 1; right < tokens.size(); ++right) {
 			int type = tokens.get(right).getType();
-			if (type == parser.getHws() || type == parser.getVws() || parser.belongToComment(type)) {
+			if (type == parser.getHws() || type == parser.getVws() || parser.isComment(type)) {
 				result.add(tokens.get(right));
 			} else {
 				break;

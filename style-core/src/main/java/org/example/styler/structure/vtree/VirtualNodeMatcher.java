@@ -2,8 +2,8 @@ package org.example.styler.structure.vtree;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +53,7 @@ public class VirtualNodeMatcher {
         matchRules.put("$VAR_DEC", Set.of(parser.getRuleLocalVarDeclaration()));
         matchRules.put("$S(ifStmt)", Set.of(parser.getRuleIfStmt()));
         matchRules.put("$S(ifElseStmt)", Set.of(parser.getRuleIfElseStmt()));
-        matchRules.put("$S(expStmt)", Set.of(parser.getRuleExpStmt()));
+        matchRules.put("$S(expStmt)", Set.of(parser.getRuleExpressionStmt()));
         matchRules.put("$EXP_LIST", Set.of(parser.getRuleExpressionList()));
 
         matchTokens.put("$HOMO_BOP", parser.getHomoOps());

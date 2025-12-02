@@ -1,18 +1,18 @@
 package org.example.styler.comment.density;
 
 import org.antlr.v4.runtime.Token;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.token.ExtendToken;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+
+import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.comment.CommentContext;
 import org.example.styler.comment.CommentType;
 import org.example.styler.comment.density.style.CommentDensityProperty;
 import org.example.utils.ModelClient;
-import org.example.utils.NodeUtil;
 
 import java.util.*;
 import java.util.ArrayList;
@@ -57,12 +57,12 @@ public class CommentedStmtDensityStyler extends Styler {
 						targetProperty.commentDensity, ctx.getFormattedText(parser));
 		String constraints = "1. Output the resulting Java code only. Do not include any explanations or additional text outside the code block.\n" +
 				"2. You may only add, delete or modify comments.";
-		List<String> candidates = ModelClient.getInstance().sendRequestWithTemplate(taskDescription, constraints, GlobalInfo.getLanguage());
+		List<String> candidates = ModelClient.getInstance().sendRequestWithTemplate(taskDescription, constraints, MyEnvironment.getLanguage());
 		if (candidates == null) {
 			return;
 		}
 		for (String candidate : candidates) {
-			MyParser newParser = MyParserFactory.createParser(GlobalInfo.getLanguage());
+			MyParser newParser = LangAdapterCreator.createParser(MyEnvironment.getLanguage());
 			newParser.parseFromString(candidate);
 			if (newParser.getRoot() == null) {
 				continue;
@@ -87,10 +87,10 @@ public class CommentedStmtDensityStyler extends Styler {
 			for (int i = 0; i < removeCount; i++) {
 				ExtendContext stmt = commentedStmts.get(i);
 				if (stmt.getStart() instanceof ExtendToken token) {
-					token.getContextTokens().removeIf(t -> parser.belongToComment(t.getType()));
+					token.getContextTokens().removeIf(t -> parser.isComment(t.getType()));
 				}
 				if (stmt.getStop() instanceof ExtendToken token) {
-					token.getContextTokens().removeIf(t -> parser.belongToComment(t.getType()));
+					token.getContextTokens().removeIf(t -> parser.isComment(t.getType()));
 				}
 			}
 		}
@@ -114,7 +114,7 @@ public class CommentedStmtDensityStyler extends Styler {
 		for (ExtendContext stmt : stmts) {
 			if (stmt.getStart() instanceof ExtendToken extToken) {
 				Optional<Token> commentToken = extToken.getContextTokens().stream()
-						.filter(t -> parser.belongToComment(t.getType())).findAny();
+						.filter(t -> parser.isComment(t.getType())).findAny();
 				if (commentToken.isPresent()) {
 					commentedStmts.add(stmt);
 					continue;
@@ -123,7 +123,7 @@ public class CommentedStmtDensityStyler extends Styler {
 
 			if (stmt.getStop() instanceof ExtendToken extToken) {
 				Optional<Token> commentToken = extToken.getContextTokens().stream()
-						.filter(t -> parser.belongToComment(t.getType())).findAny();
+						.filter(t -> parser.isComment(t.getType())).findAny();
 				if (commentToken.isPresent()) {
 					commentedStmts.add(stmt);
 				}

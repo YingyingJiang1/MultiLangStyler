@@ -1,7 +1,7 @@
 package org.example.semantic;
 
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.intf.ReferenceResolver;
 import org.example.semantic.intf.symbol.Symbol;
 

@@ -2,19 +2,15 @@ package org.example.styler.structure;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.TestBase;
-import org.example.parser.common.MyParseTreeWalker;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.MyParseTreeWalker;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
-import org.example.styler.Styler;
-import org.example.styler.format.indention.IndentionStyler;
-import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.junit.jupiter.api.Test;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +34,7 @@ class StructureStylerTest extends TestBase {
 		StructureStyler styler = new StructureStyler();
 
 		String code = "a = a + 3;";
-		MyParser parser = MyParserFactory.createParser("java");
+		MyParser parser = LangAdapterCreator.createParser("java");
 		ParseTree root = parser.parseFromString(code);
 		if (root instanceof ExtendContext ctx) {
 			styler.extractStyle(ctx, parser);
@@ -100,7 +96,7 @@ class StructureStylerTest extends TestBase {
 
 	private String doApply(Path srcPath, StructureStyler styler) {
 		try {
-			MyParser parser = MyParserFactory.createParser("java");
+			MyParser parser = LangAdapterCreator.createParser("java");
 			ParseTree root = parser.parse(srcPath);
 			MyParseTreeWalker walker = new MyParseTreeWalker(parser, List.of(styler));
 			walker.walkTree(Stage.APPLY);
@@ -117,7 +113,7 @@ class StructureStylerTest extends TestBase {
 
 	private StructureStyler doStyler(String code, String language, Stage stage) {
 		StructureStyler styler = new StructureStyler();
-		MyParser parser = MyParserFactory.createParser("java");
+		MyParser parser = LangAdapterCreator.createParser("java");
 		ParseTree root = parser.parseFromString(code);
 		MyParseTreeWalker walker = new MyParseTreeWalker(parser, List.of(styler));
 		walker.walkTree(stage);

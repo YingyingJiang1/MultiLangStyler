@@ -3,15 +3,13 @@ package org.example.controller;
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.AntlrHelper;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.AmbigousToken;
-import org.example.parser.common.token.ExtendToken;
-import org.example.parser.java.antlr.JavaLexer;
-import org.example.styler.Stage;
+import org.example.antlr.common.AntlrHelper;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.AmbigousToken;
+import org.example.antlr.common.token.ExtendToken;
+import org.example.antlr.java.JavaLexer;
 import org.example.utils.TokenStreamUtil;
 import org.example.utils.editor.NodeEditorFactory;
 
@@ -197,7 +195,6 @@ public class TokenAugmentor {
 				processWildcard(tokens, i, parser);
 			}
 		}
-
 	}
 
 	private static  void processWildcard(List<Token> tStream, int index, MyParser parser) {

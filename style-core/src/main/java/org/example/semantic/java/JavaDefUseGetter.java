@@ -1,12 +1,12 @@
 package org.example.semantic.java;
 
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.intf.DefUseGetter;
-import org.example.utils.searcher.intf.CompilationUnitSearcher;
-import org.example.utils.searcher.intf.MethodSearcher;
-import org.example.utils.searcher.intf.TypeDecSearcher;
+import org.example.lang.intf.searcher.CompilationUnitSearcher;
+import org.example.lang.intf.searcher.MethodSearcher;
+import org.example.lang.intf.searcher.TypeDecSearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pascal.taie.Main;
@@ -80,7 +80,7 @@ public class JavaDefUseGetter implements DefUseGetter {
 			return null;
 		}
 
-		MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
+		MethodSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createMethodDecSearcher();
 		ExtendContext retType = searcher.searchRetType(functionHead, parser);
 		ExtendContext functionName = searcher.searchMethodName(functionHead, parser);
 		List<ExtendContext> paraTypes = searcher.searchParaTypes(functionHead, parser);
@@ -92,7 +92,7 @@ public class JavaDefUseGetter implements DefUseGetter {
 
 	private String getContainerClassQualifiedName(ExtendContext node, MyParser parser) {
 		ExtendContext classDec = node.getFirstParentIf(parser::isTypeDeclaration);
-		TypeDecSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createTypeDecSearcher();
+		TypeDecSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createTypeDecSearcher();
 		ExtendContext className = searcher.searchName(classDec, parser);
 
 		ExtendContext outerClass = classDec.getFirstParentIf(parser::isTypeDeclaration);
@@ -101,7 +101,7 @@ public class JavaDefUseGetter implements DefUseGetter {
 			outClasses.add(searcher.searchName(outerClass, parser).getText());
 			outerClass = outerClass.getFirstParentIf(parser::isTypeDeclaration);
 		}
-		CompilationUnitSearcher cuSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createCompilationUnitSearcher();
+		CompilationUnitSearcher cuSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createCompilationUnitSearcher();
 		ExtendContext packageName = cuSearcher.searchPackageName((ExtendContext) parser.getRoot(), parser);
 
 		StringBuilder nameBuilder = new StringBuilder();
@@ -119,10 +119,10 @@ public class JavaDefUseGetter implements DefUseGetter {
 
 	private String getMainClass(MyParser parser) {
 		ExtendContext root = (ExtendContext) parser.getRoot();
-		CompilationUnitSearcher cuSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createCompilationUnitSearcher();
+		CompilationUnitSearcher cuSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createCompilationUnitSearcher();
 		List<ExtendContext> typeDecs = cuSearcher.searchAllTypeDecs(root, parser);
 
-		TypeDecSearcher typeDecSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createTypeDecSearcher();
+		TypeDecSearcher typeDecSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createTypeDecSearcher();
 		for (ExtendContext typeDec : typeDecs) {
 			if (typeDecSearcher.searchPublicModifier(typeDec, parser) != null) {
 				return typeDecSearcher.searchName(typeDec, parser).getText();

@@ -1,15 +1,15 @@
 package org.example.styler.format.space;
 
 import org.antlr.v4.runtime.Token;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
-import org.example.parser.common.token.TokenGroup;
-import org.example.parser.common.token.TokenGrouper;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.CodeContextPredicate;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
+import org.example.antlr.common.token.TokenGroup;
+import org.example.lang.base.FormatUnitGrouperBase;
 import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceInconsistencyInfo;
 import org.example.styler.format.space.style.SpaceProperty;
@@ -17,14 +17,11 @@ import org.example.styler.format.space.style.SpaceStyle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @Description This class focuses on the spaces around separators and operators.
  */
 public class SpaceStyler extends Styler {
-    static Set<String> relevantTokens = null;
 
     public SpaceStyler() {
         style = new SpaceStyle();
@@ -184,10 +181,8 @@ public class SpaceStyler extends Styler {
 
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
-        int type = tokens.get(i).getType();
-        return type != parser.getHws() && type != parser.getVws() && !parser.belongToComment(type);
-//        String text = tokens.get(i).getText();
-//        return type == parser.getIdentifier() || parser.getSeparators().contains(text) || parser.getOperators().contains(text) || parser.belongToKeyword(tokens.get(i));
+        CodeContextPredicate predicate = LangAdapterCreator.createCodeContextPredicate(parser.getLanguage());
+        return predicate.isSpaceContext(tokens, i, parser);
     }
 
     private Token findFirstNonWSonLeft(List<Token> tokens, int start, MyParser parser) {
@@ -219,7 +214,7 @@ public class SpaceStyler extends Styler {
         if (token == null) {
             return "";
         }
-        TokenGroup group = TokenGrouper.getInstance().getGroup(token, parser);
+        TokenGroup group = FormatUnitGrouperBase.getInstance().getTokenGroup(token, parser);
         if (group != TokenGroup.SELF_TOKEN) {
             return group.name();
         }

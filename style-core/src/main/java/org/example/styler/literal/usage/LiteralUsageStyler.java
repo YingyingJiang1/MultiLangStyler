@@ -6,13 +6,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.ListenerState;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.style.rule.StyleProperty;
@@ -47,7 +45,7 @@ public class LiteralUsageStyler extends Styler {
                 style.addRule(context, new LiteralUsageProperty(false));
             }
         } else if(parser.isIdentifier(ctx)) {
-            Symbol symbol = GlobalInfo.getResolver().resolve(ctx, parser);
+            Symbol symbol = MyEnvironment.getResolver().resolve(ctx, parser);
             if (symbol instanceof VarSym varSym && varSym.hasModifier(parser.getConstKeyword())) {
                 style.addRule(extractStyleContext(varSym), new LiteralUsageProperty(true));
             }
@@ -57,14 +55,14 @@ public class LiteralUsageStyler extends Styler {
 
     private LiteralUsageContext extractStyleContext(Token token, MyParser parser) {
         int type = token.getType();
-        if (parser.belongToLiteralType(type)) {
+        if (parser.belongToStringLiteral(type)) {
             return new LiteralUsageContext(LiteralEnum.STRING);
         } else if (type == parser.getCharLiteralType()) {
             return new LiteralUsageContext(LiteralEnum.CHAR);
         } else if (!excludedNumbers.contains(token.getText())) {
             if (parser.belongToIntLiteral(type)) {
                 return new LiteralUsageContext(LiteralEnum.INT_NUMBER);
-            } else if (parser.belongToFloadLiteral(type)) {
+            } else if (parser.belongToFloatLiteral(type)) {
                 return new LiteralUsageContext(LiteralEnum.FLOAT_NUMBER);
             }
         }
@@ -84,12 +82,9 @@ public class LiteralUsageStyler extends Styler {
                 return new LiteralUsageContext(LiteralEnum.CHAR);
             }
             default -> {
-                if (typeName.equals(GlobalInfo.getSpecialClass().getStringQualifiedName()))
-                    return new LiteralUsageContext(LiteralEnum.STRING);
+               return null;
             }
         }
-
-        return null;
     }
 
     @Override
@@ -103,7 +98,7 @@ public class LiteralUsageStyler extends Styler {
                         Token declaredCons = declareCons(ter.getSymbol(),context, parser);
                         if (declaredCons != null) {
                             Token newToken = parser.getTokenFactory().create(declaredCons.getType(), declaredCons.getText());
-                            ctx.replaceChild(ctx.getChild(i), TreeNodeFactoryGetter.getFactory(parser).createTerminal(newToken));
+                            ctx.replaceChild(ctx.getChild(i), LangAdapterCreator.createTreeNodeFactory(parser.getLanguage()).createTerminal(newToken));
                         }
                     }
                 }
@@ -131,7 +126,7 @@ public class LiteralUsageStyler extends Styler {
         if (parser.isBody(parent)) {
             ExtendContext  fieldDeclarationList = parent.getFirstCtxChildIf(parser::isFieldDeclarationList);
             if (fieldDeclarationList == null) {
-                fieldDeclarationList = TreeNodeFactoryGetter.getFactory(parser).createFieldDeclarationList(parent);
+                fieldDeclarationList = LangAdapterCreator.createTreeNodeFactory(parser.getLanguage()).createFieldDeclarationList(parent);
             }
             parent = fieldDeclarationList;
         }

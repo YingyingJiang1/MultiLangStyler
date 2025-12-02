@@ -36,7 +36,7 @@ parser grammar JavaParser;
 
 options {
     tokenVocab = JavaLexer;
-    contextSuperClass = org.example.ExtendContext;
+    contextSuperClass = org.example.antlr.common.context.ExtendContext;
 }
 
 compilationUnit

@@ -1,49 +1,58 @@
 package org.example;
 
 import org.apache.commons.cli.*;
-import org.checkerframework.checker.nullness.Opt;
+import org.example.config.MyConfiguration;
+import org.example.controller.TaskOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pascal.taie.ir.exp.BinaryExp;
 
 import java.io.File;
-import java.util.Arrays;
 
 public class CLIArgumentParser {
     public static Logger logger = LoggerFactory.getLogger(CLIArgumentParser.class);
     
-    public static Configuration parseArgs(String[] args) {
+    public static TaskOptions parseArgs(String[] args) {
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
         Options options = getOptions();
 
         try {
             cmd = parser.parse(options, args);
-            Configuration config = new Configuration();
+            TaskOptions taskOptions = new TaskOptions();
 
             // 获取并设置参数
             String src = cmd.getOptionValue("src");
             String target = cmd.getOptionValue("target");
-            config.setSrc(src);
-            config.setTarget(target);
+            taskOptions.setSrc(src);
+            taskOptions.setTarget(target);
 
             String outputFile = cmd.getOptionValue("f");
             String outputDir = cmd.getOptionValue("d");
-            config.setResOutFile(outputFile);
-            config.setResOutDir(outputDir);
+
+            if (outputFile != null) {
+                taskOptions.setResOutPath(outputFile);
+            }
+
+            if (outputDir != null) {
+                taskOptions.setResOutPath(outputDir);
+            }
             if (outputFile == null && outputDir == null) {
-               config.setOverrideSource(true);
+                taskOptions.setOverrideSource(true);
             }
 
             String styleOut = cmd.getOptionValue("so");
             if (styleOut != null) {
-                config.setStyleOutPath(styleOut);
+                taskOptions.setStyleOutPath(styleOut);
             }
 
-            config.styleCheckOnly = cmd.hasOption("check");
+            taskOptions.setDoCheck(cmd.hasOption("check"));
+
+            taskOptions.setLanguage(cmd.getOptionValue("lang", "java"));
 
             // 参数验证
-            if (validateParameters(config)) {
-                return config;
+            if (validateParameters(taskOptions)) {
+                return taskOptions;
             }
 
         } catch (ParseException e) {
@@ -54,29 +63,14 @@ public class CLIArgumentParser {
         return null;
     }
 
-    private static boolean validateParameters(Configuration config) {
-        String src = config.getSrc();
-        String target = config.getTarget();
-        String styleOutPath = config.getStyleOutPath();
+    private static boolean validateParameters(TaskOptions taskOptions) {
+        String src = taskOptions.getSrc();
+        String target = taskOptions.getTarget();
+        String styleOutPath = taskOptions.getStyleOutPath();
 
         if (target == null || (src == null &&  styleOutPath == null)) {
             logger.error("Wrong usage.\n Correct argument usage:\n -src <arg> -target <arg> \n or \n -target <arg> -so <arg>");
             return false;
-        }
-
-        // 检查 -src 和 -target 是否符合规则
-        if (src != null) {
-            File srcFile = new File(src);
-            String resOutFile = config.getResOutFile();
-            String resOutDir = config.getResOutDir();
-
-            if (srcFile.isFile() && resOutDir != null) {
-                logger.error("Error: If -src is a file, use -f to specify the output file.");
-                return false;
-            } else if (srcFile.isDirectory() && resOutFile != null) {
-                logger.error("Error: If -src is a directory, use -d to specify the output directory.");
-                return false;
-            }
         }
 
         return true;
@@ -97,6 +91,7 @@ public class CLIArgumentParser {
         Option outputDirOption = new Option("d", true, "Output directory path of transformed codes, file name is the same as the original file name");
         Option styleOutOption = new Option("so", "style-out", true, "Output path for the style file (optional)");
         Option doCheckOption = new Option("c", "check", false, "Execute style check only");
+        Option langOption = new Option("lang", true, "Programming language (default: java)");
 
         targetOption.setRequired(true);
 
@@ -106,6 +101,7 @@ public class CLIArgumentParser {
         options.addOption(outputDirOption);
         options.addOption(styleOutOption);
         options.addOption(doCheckOption);
+        options.addOption(langOption);
 
         return options;
     }

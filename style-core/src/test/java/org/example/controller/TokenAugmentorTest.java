@@ -1,16 +1,14 @@
 package org.example.controller;
 
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.example.TestBase;
 import org.example.Utils;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.MyParserFactory;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ class TokenAugmentorTest extends TestBase {
 
 		String[] srcFiles = {"src/test/sources/format/newline/f2.java", "src/test/sources/format/newline/f1.java"};
 		for (String srcFile : srcFiles) {
-			MyParser parser = MyParserFactory.createParser("java");
+			MyParser parser = LangAdapterCreator.createParser("java");
 			try {
 				parser.parse(Paths.get(srcFile));
 			} catch (IOException e) {

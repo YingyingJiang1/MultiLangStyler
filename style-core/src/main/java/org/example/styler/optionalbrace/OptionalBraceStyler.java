@@ -1,13 +1,10 @@
 package org.example.styler.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.parser.common.factory.context.TreeNodeFactory;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.format.newline.bodylayout.BodySizeType;
 import org.example.styler.format.newline.bodylayout.BodyStyler;
 import org.example.styler.format.newline.bodylayout.style.BodyContext;
@@ -71,7 +68,7 @@ public class OptionalBraceStyler extends BodyStyler {
                     // Add {}
 //                    TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
 //                    ExtendContext block = factory.createBlock((ExtendContext) body.getParent());
-                    ExtendContext bracedBody = ParseTreeUtil.getInstance().encapsulateStmtWithBrace(body, parser);
+                    ExtendContext bracedBody = LangAdapterCreator.createASTRewriter(parser.getLanguage()).encapsulateStmtWithBrace(body, parser);
 //                    TerminalNode lb = factory.createTerminal(parser.getTokenFactory().create(parser.getLBrace(), "{"));
 //                    TerminalNode rb = factory.createTerminal(parser.getTokenFactory().create(parser.getRBrace(), "}"));
 //                    List<ParseTree> children = new ArrayList<>();
@@ -88,7 +85,7 @@ public class OptionalBraceStyler extends BodyStyler {
                             (optionalBraceContext.bodySizeType == BodySizeType.EMPTY
                                     || optionalBraceContext.bodySizeType == BodySizeType.ONE_SINGLE_STMT);
                     if (isBraceRemovable) {
-                        ExtendContext innerStmt = ParseTreeUtil.getInstance().removeBraceOfStmt(body, parser);
+                        ExtendContext innerStmt = LangAdapterCreator.createASTRewriter(parser.getLanguage()).removeBraceOfStmt(body, parser);
                         ctx.replaceChild(body, innerStmt);
 
                         RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());

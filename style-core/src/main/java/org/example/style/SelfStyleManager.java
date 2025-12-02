@@ -1,7 +1,5 @@
 package org.example.style;
 
-import org.example.Configuration;
-import org.example.controller.Controller;
 import org.example.utils.FileCollection;
 
 import java.util.HashMap;

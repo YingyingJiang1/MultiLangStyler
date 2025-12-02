@@ -1,7 +1,7 @@
 package org.example.styler.ifelse.multibranch.style;
 
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.ifelse.multibranch.BranchType;
 

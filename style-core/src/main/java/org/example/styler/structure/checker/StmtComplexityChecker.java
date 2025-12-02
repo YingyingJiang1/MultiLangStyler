@@ -1,11 +1,10 @@
 package org.example.styler.structure.checker;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
 
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 

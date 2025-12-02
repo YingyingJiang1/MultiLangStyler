@@ -2,11 +2,10 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.parser.common.factory.context.TreeNodeFactory;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.intf.TreeNodeFactory;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class ExpStmt2ExpHandler extends Handler{
     }
 
     private ExtendContext toExpListNode(List<ExtendContext> expressionList, MyParser parser) {
-        TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
+        TreeNodeFactory factory =  LangAdapterCreator.createTreeNodeFactory(parser.getLanguage());
         ExtendContext expressionListNode = factory.createExpressionList(null);
         List<ParseTree> children = new ArrayList<>();
         if (expressionList.isEmpty()) {

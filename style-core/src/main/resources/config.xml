@@ -3,7 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="llmConfig" class="org.example.Configuration.LLMConfig">
+    <bean id="llmConfig" class="org.example.config.MyConfiguration.LLMConfig">
         <property name="serverType" value="self" /> <!-- self/openrouter -->
 <!--        <property name="apikey" value="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" />-->
 <!--        <property name="serverURL" value="http://210.28.134.91:8000/deepseekcoder" />-->
@@ -14,15 +14,15 @@
     <!--    if `identifierLengthLimit` is not set or less 0, then this value will be the max length of all identifiers in the target style.-->
     </bean>
 
-    <bean id="nodeSearcherFactory" class="org.example.utils.searcher.NodeSearcherFactory" />
-    <bean id="parserFactory" class="org.example.parser.common.factory.MyParserFactory" />
-    <bean id="languageConfig" class="org.example.Configuration.LanguageConfig">
+    <bean id="nodeSearcherFactory" class="org.example.lang.intf.INodeSearcherFactory" />
+    <bean id="parserFactory" class="org.example.lang.intf.factory.MyParserFactory" />
+    <bean id="languageConfig" class="org.example.config.MyConfiguration.LanguageConfig">
         <property name="language" value="java" />
         <property name="nodeSearcherFactory" ref="nodeSearcherFactory" />
         <property name="parserFactory" ref="parserFactory" />
     </bean>
 
-    <bean id="styleConfig" class="org.example.Configuration.StyleConfig">
+    <bean id="styleConfig" class="org.example.config.MyConfiguration$GeneralConfig">
         <!-- When a value's proportion >= `minDominantRatio`, it is considered dominant, and the style is assigned this value. -->
         <property name="minDominantRatio" value="0.7"/>
     </bean>

@@ -4,19 +4,16 @@ import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
-import org.example.utils.NodeUtil;
 import org.slf4j.LoggerFactory;
 
-import java.awt.dnd.InvalidDnDOperationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -60,7 +57,6 @@ public class IndentionStyler extends Styler {
             indentionLengthMap.put(info, indentionLengthMap.getOrDefault(info, 0) + 1);
         }
     }
-
 
 
     @Override
@@ -242,7 +238,6 @@ public class IndentionStyler extends Styler {
         } else {
             return false;
         }
-
     }
 
     /**

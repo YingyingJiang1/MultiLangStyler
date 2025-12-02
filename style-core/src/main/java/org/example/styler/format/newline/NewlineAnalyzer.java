@@ -2,10 +2,8 @@ package org.example.styler.format.newline;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.apache.commons.lang3.StringUtils;
-import org.example.controller.Applicator;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.styler.format.newline.style.NewlineInconsistencyInfo;
 import org.example.utils.NodeUtil;
@@ -21,7 +19,7 @@ public class NewlineAnalyzer {
 			int i = token.getTrailingCommentIndex(parser);
 			if (i < 0) {
 				for (i = 0; i < token.getContextTokens().size(); i++) {
-					if (parser.belongToComment(token.getContextTokens().get(i).getType())) {
+					if (parser.isComment(token.getContextTokens().get(i).getType())) {
 						break;
 					}
 				}

@@ -1,8 +1,9 @@
 package org.example.styler.practice;
 
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;
@@ -10,8 +11,8 @@ import org.example.styler.naming.NameType;
 import org.example.styler.practice.style.UnusedCodeContext;
 import org.example.styler.practice.style.UnusedCodeProperty;
 import org.example.styler.practice.style.UnusedCodeStyle;
-import org.example.utils.searcher.intf.ArgumentsSearcher;
-import org.example.utils.searcher.intf.MethodSearcher;
+import org.example.lang.intf.searcher.ArgumentsSearcher;
+import org.example.lang.intf.searcher.MethodSearcher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -95,13 +96,13 @@ public class UnusedCodeStyler extends Styler {
             if (symbol.getSymbolType() == NameType.PARAMETER) {
                 ExtendContext methodDec = symbol.getDecIdentifierNode()
                         .findFirstParentIf(p1 -> p1.getRuleIndex() == parser.getRuleMethodDeclaration() || p1.getRuleIndex() == parser.getRuleConstructorDeclaration());
-                MethodSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createMethodDecSearcher();
+                MethodSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createMethodDecSearcher();
                 ExtendContext methodHead = searcher.searchMethodHead(methodDec, parser);
                 int parameterIndex = searcher.indexOfParameter(methodHead, unusedNode, parser);
 
                 ExtendContext identifierNode = searcher.searchMethodName(methodHead, parser);
-                List<ExtendContext> refs = GlobalInfo.getResolver().resolve(identifierNode, parser).getReferences();
-                ArgumentsSearcher argsSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createArgumentsSearcher();
+                List<ExtendContext> refs = MyEnvironment.getResolver().resolve(identifierNode, parser).getReferences();
+                ArgumentsSearcher argsSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createArgumentsSearcher();
                 for (ExtendContext ref : refs) {
                     ExtendContext callSite = ref.findFirstParentIf(p -> p.getRuleIndex() == parser.getRuleExpression());
                     ExtendContext args = callSite.getFirstContextRecIf(ctx -> ctx.getRuleIndex() == parser.getRuleArguments());

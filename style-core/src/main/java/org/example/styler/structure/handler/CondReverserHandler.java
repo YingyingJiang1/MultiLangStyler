@@ -1,14 +1,14 @@
 package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.*;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+
 import org.example.utils.ParseTreeUtil;
-import org.example.parser.java.antlr.JavaParser;
+import org.example.antlr.java.JavaParser;
 import org.example.styler.structure.EquivalentStructure;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /*
  * @description
@@ -30,7 +30,7 @@ public class CondReverserHandler extends Handler{
       for (int j = 0; j < matchedTrees.size(); j++) {
         ParseTree t = matchedTrees.get(j);
         if (t instanceof JavaParser.ExpressionContext ctx) {
-          matchedTrees.set(j, ParseTreeUtil.getInstance().negateExpressionSmart(ctx, parser));
+          matchedTrees.set(j, LangAdapterCreator.createASTRewriter(parser.getLanguage()).negateExpressionSmart(ctx, parser));
         }
       }
     }

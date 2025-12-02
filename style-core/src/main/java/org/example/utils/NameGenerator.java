@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.antlr.v4.runtime.RuleContext;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.MyEnvironment;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.format.AbbreviationLibrary;
 
@@ -114,7 +114,7 @@ public class NameGenerator {
                 + "\n");
         if (codeContext != null) {
             promptBuilder.append(
-                    String.format("Here is the %s code snippet:\n", GlobalInfo.getLanguage()) +
+                    String.format("Here is the %s code snippet:\n", MyEnvironment.getLanguage()) +
                             "\n" +
                             "\"" + codeContext + "\"\n");
         }

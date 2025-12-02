@@ -1,9 +1,9 @@
 package org.example.styler.format.style;
 
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.RuleGroup;
-import org.example.parser.common.context.RuleGrouper;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.RuleGroup;
+import org.example.antlr.common.context.RuleGrouper;
 import org.example.style.rule.StyleContext;
 
 import java.util.*;

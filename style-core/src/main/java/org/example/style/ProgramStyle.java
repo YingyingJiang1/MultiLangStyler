@@ -1,7 +1,7 @@
 package org.example.style;
 
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 
 import java.util.*;
 

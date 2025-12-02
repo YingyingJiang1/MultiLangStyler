@@ -2,7 +2,7 @@ package org.example.styler.format.newline.style;
 
 import com.google.common.math.Quantiles;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.example.global.GlobalInfo;
+import org.example.MyEnvironment;
 import org.example.style.CommonStyle;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
@@ -94,7 +94,7 @@ public class NewlineStyle extends CommonStyle {
 				int maxFreq = 0;
 				Map.Entry<NewlineProperty, List<Double>> maxFreqEntry = propertyMap.entrySet().stream().sorted(Comparator.comparingInt(e -> -e.getValue().size())).toList().get(0);
 				double ratio = (double) maxFreqEntry.getValue().size() / (double) propertyMap.values().stream().mapToInt(List::size).sum();
-				if (ratio >= GlobalInfo.getConf().getStyleConfig().getMinDominantRatio()) {
+				if (ratio >= MyEnvironment.getIConfig().getMinDominantRatio()) {
 					propertyMap.clear();
 					propertyMap.put(maxFreqEntry.getKey(), maxFreqEntry.getValue());
 				}

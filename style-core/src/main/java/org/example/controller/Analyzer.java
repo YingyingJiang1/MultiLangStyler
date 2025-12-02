@@ -1,21 +1,19 @@
 package org.example.controller;
 
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.atn.SemanticContext;
-import org.example.myException.ApplyException;
-import org.example.parser.common.MyParseTreeWalker;
-import org.example.parser.common.MyParser;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.MyParseTreeWalker;
+import org.example.lang.intf.MyParser;
 import org.example.style.InconsistencyInfo;
-import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.FileCollection;
 import org.example.utils.ParseTreeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class Analyzer {
 	public static List<InconsistencyInfo> analyzeInconsistency(MyParser parser, StylerContainer container) {
@@ -50,5 +48,32 @@ public class Analyzer {
 		}
 		return infos;
 	}
+//
+//	public List<InconsistencyInfo> checkStyle(FileCollection files) {
+//		targetProgramStyle = extractStyle(taskOptions.extractionCollection);
+//		fillStylers(targetProgramStyle);
+//		String code = null;
+//		for (int i = 0; i < files.size(); i++) {
+//			try {
+//				curPath = Paths.get(files.getFilePath(i));
+//				String language = curPath.getFileName().toString().split("\\.")[1].toLowerCase();
+//				MyEnvironment.setLanguage(language);
+//				parser = LangAdapterCreator.createParser(language);
+//				ParseTree tree = parser.parse(curPath);
+//				if (tree == null) {
+//					logger.info("Failed to check inconsistent style on file '{}' because of compilation error.", curPath.toString());
+//					continue;
+//				}
+//
+//				List<InconsistencyInfo> infos = Analyzer.analyzeInconsistency(parser, container);
+//				return infos;
+//			} catch (Exception e) {
+//				logger.error("Failed to check inconsistent style on file: {}", files.getFilePath(i));
+//				logger.error("Exception details:", e);
+//			}
+//		}
+//		return null;
+//	}
+
 
 }

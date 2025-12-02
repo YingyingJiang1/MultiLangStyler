@@ -1,42 +1,40 @@
 package org.example;
 
+import org.example.config.IConfig;
+import org.example.config.MyConfiguration;
 import org.example.controller.Controller;
 import org.example.controller.StylerContainer;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.token.ExtendToken;
-import org.example.parser.java.antlr.JavaParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.controller.TaskOptions;
+import org.example.lang.LangAdapterCreator;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.style.ProgramStyle;
 import org.example.style.Style;
 import org.example.style.StyleFileIO;
 import org.example.styler.Styler;
-import org.example.styler.format.newline.NewlineStyler;
-import org.example.styler.structure.StructureStyler;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.support.SimpleTriggerContext;
-import pascal.taie.analysis.pta.core.heap.Obj;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 public class TestBase {
 
 
-	Logger logger = LoggerFactory.getLogger(TestBase.class);
+	public Logger logger = LoggerFactory.getLogger(TestBase.class);
+	@Autowired
+	MyConfiguration conf;
 	protected Style extract(String path) {
 		return null;
 	}
@@ -79,53 +77,71 @@ public class TestBase {
 	 * @return the transformed code
 	 */
 	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Object>> classes) {
-		Configuration conf = new Configuration();
-		Controller controller = new Controller(conf);
+//		Controller controller = new Controller();
+//
+//		StylerContainer container = new StylerContainer();
+//		for (Styler styler : container.getStylers()) {
+//			if (!classes.contains(styler.getClass())) {
+//				styler.disable();
+//			}
+//		}
+//
+//
+//		FileCollection targetCollection = FileCollector.getFileCollection(List.of(targetPath.toString()));
+//
+//		ProgramStyle sytle = null;
+//		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
+//			sytle = StyleFileIO.read(targetCollection.getFilePath(0));
+//			controller.setTargetProgramStyle(sytle);
+//
+//		} else {
+//			sytle = controller.extractStyle(targetCollection);
+//		}
+//		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), LangAdapterCreator.createParser("java"));
+//		return controller.applyStyle(srcPath);
+		return null;
+	}
 
-		StylerContainer container = new StylerContainer();
-		for (Styler styler : container.getStylers()) {
-			if (!classes.contains(styler.getClass())) {
-				styler.disable();
-			}
+	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {
+		conf.SetEnabledStylers(lang, classes);
+
+		TaskOptions taskOptions = new TaskOptions();
+		taskOptions.setLanguage(lang);
+		taskOptions.setSrc(srcPath.toString());
+		taskOptions.setTarget(targetPath.toString());
+		taskOptions.setStyleOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
+
+		Controller controller = new Controller();
+		Map<String, String> results = controller.execute(conf, taskOptions);
+		for (Map.Entry<String, String> entry : results.entrySet()) {
+			return entry.getValue();
 		}
-		controller.setStylers(container);
-
-		FileCollection targetCollection = FileCollector.getJavaFileCollection(List.of(targetPath.toString()));
-
-		ProgramStyle sytle = null;
-		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
-			sytle = StyleFileIO.read(targetCollection.getFilePath(0), MyParserFactory.createParser("java"));
-			controller.setTargetProgramStyle(sytle);
-
-		} else {
-			sytle = controller.extractStyle(targetCollection);
-		}
-		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
-		return controller.applyStyle(srcPath);
+		return null;
 	}
 
 
-	protected String apply(Path srcPath, Path targetPath) {
-		Configuration conf = new Configuration();
-		Controller controller = new Controller(conf);
 
-		StylerContainer container = new StylerContainer();
-		controller.setStylers(container);
-
-		FileCollection targetCollection = FileCollector.getJavaFileCollection(List.of(targetPath.toString()));
-
-
-		ProgramStyle sytle = null;
-		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
-			sytle = StyleFileIO.read(targetCollection.getFilePath(0), MyParserFactory.createParser("java"));
-			controller.setTargetProgramStyle(sytle);
-
-		} else {
-			sytle = controller.extractStyle(targetCollection);
-		}
-		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), MyParserFactory.createParser("java"));
-		return controller.applyStyle(srcPath);
-	}
+//	protected String apply(Path srcPath, Path targetPath) {
+//		MyConfiguration conf = new MyConfiguration();
+//		Controller controller = new Controller(conf);
+//
+//		StylerContainer container = new StylerContainer();
+//		controller.setStylers(container);
+//
+//		FileCollection targetCollection = FileCollector.getFileCollection(List.of(targetPath.toString()));
+//
+//
+//		ProgramStyle sytle = null;
+//		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
+//			sytle = StyleFileIO.read(targetCollection.getFilePath(0));
+//			controller.setTargetProgramStyle(sytle);
+//
+//		} else {
+//			sytle = controller.extractStyle(targetCollection);
+//		}
+//		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), LangAdapterCreator.createParser("java"));
+//		return controller.applyStyle(srcPath);
+//	}
 
 	protected void testCodeEqual(String actual, Path gtPath) {
 		logger.info("Compare `{}`...", gtPath);

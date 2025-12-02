@@ -1,14 +1,12 @@
 package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
-import org.example.utils.NodeUtil;
 import org.example.utils.ParseTreeUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class For2whileHandler extends Handler{
@@ -65,11 +63,11 @@ public class For2whileHandler extends Handler{
                 // 检查是否需要为父语句添加{}
                 ExtendContext parent = ctx;
                 if (!parser.isBlock(ctx)) {
-                    parent = ParseTreeUtil.getInstance().encapsulateStmtWithBrace(ctx, parser);
+                    parent = LangAdapterCreator.createASTRewriter(parser.getLanguage()).encapsulateStmtWithBrace(ctx, parser);
                 }
                 for (int i = 0; i < updateStmts.size(); i++) {
                     parent.insertChild(insertionPoint++,
-                            ParseTreeUtil.getInstance().copyTree(updateStmts.get(i), false));
+                            ParseTreeUtil.copyTree(updateStmts.get(i), false));
                 }
                 return updateStmts.size();
             }

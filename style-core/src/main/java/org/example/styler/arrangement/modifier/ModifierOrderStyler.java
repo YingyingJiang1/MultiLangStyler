@@ -1,10 +1,9 @@
 package org.example.styler.arrangement.modifier;
 
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.modifier.style.ModifierOrderProperty;

@@ -1,16 +1,14 @@
 package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.checkerframework.checker.units.qual.K;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
+import org.example.MyEnvironment;
+import org.example.lang.intf.MyParser;
 import org.example.semantic.factory.ResolverFactory;
 import org.example.semantic.intf.symbol.Symbol;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class SymbolTableManager {
     private static final Map<ParseTree, SymbolTable> stCache = new HashMap<>();
@@ -18,7 +16,7 @@ public class SymbolTableManager {
     public static List<Symbol> getAllSymbols(MyParser parser) {
         SymbolTable st = stCache.get(parser.getRoot());
         if (st == null) {
-            st = ResolverFactory.createResolver(GlobalInfo.getLanguage()).resolveAll(parser.getRoot(), parser);
+            st = ResolverFactory.createResolver(MyEnvironment.getLanguage()).resolveAll(parser.getRoot(), parser);
             stCache.put(parser.getRoot(), st);
         }
 

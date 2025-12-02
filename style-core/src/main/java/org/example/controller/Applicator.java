@@ -2,21 +2,94 @@ package org.example.controller;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
 import org.example.myException.ApplyException;
-import org.example.parser.common.MyParseTreeWalker;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.MyParseTreeWalker;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
+import org.example.style.ProgramStyle;
+import org.example.style.Style;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.utils.FileCollection;
+import org.example.utils.FileCollector;
+import org.example.utils.GeneralUtil;
 import org.example.utils.ParseTreeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class Applicator {
-    public static synchronized List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
+    private static final Logger logger = LoggerFactory.getLogger(Applicator.class);
+
+    private ProgramStyle targetProgramStyle;
+    private StylerContainer container;
+    private String language;
+
+
+    public Applicator(String language, ProgramStyle targetProgramStyle) {
+        this.targetProgramStyle = targetProgramStyle;
+        this.container = MyEnvironment.getIConfig().getStylerContainer(language);
+        this.language = language;
+        fillStylers(container, this.targetProgramStyle);
+    }
+
+    /**
+     * Apply style rules to program files.
+     * @param path program file or directory paths separated by semicolon.
+     * @return Map<file path, result code>
+     */
+    public Map<String, String> applyStyle(String path) {
+        FileCollection fileCollection = FileCollector.getFileCollection(List.of(path.split(";")));
+
+        Map<String, String> results = new HashMap<>();
+        for (int i = 0; i < fileCollection.size(); i++) {
+            try {
+                Path curPath = Paths.get(fileCollection.getFilePath(i));
+                if (GeneralUtil.checkFileExtension(curPath.getFileName().toString(), language)) {
+                    MyParser parser = LangAdapterCreator.createParser(language);
+                    ParseTree tree = parser.parse(curPath);
+                    if (tree == null) {
+                        logger.info("Failed to apply style rules to file '{}' because of compilation error.", curPath.toString());
+                        continue;
+                    }
+
+                    TokenAugmentor tokenAugmentor = new TokenAugmentor();
+                    List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+                    results.put(curPath.toString(), toString(tokens, tokenAugmentor, parser));
+                }
+
+            } catch (Exception e) {
+                logger.error("Failed to apply style rules to file: {}", fileCollection.getFilePath(i));
+                logger.error("Exception details:", e);
+            }
+        }
+        return results;
+    }
+
+
+    public String applyStyleFromString(String code) {
+        try {
+            MyParser parser = LangAdapterCreator.createParser(language);
+            ParseTree tree = parser.parseFromString(code);
+            if (tree == null) {
+                return code;
+            }
+
+            TokenAugmentor tokenAugmentor = new TokenAugmentor();
+            List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+            return toString(tokens, tokenAugmentor, parser);
+        } catch (Exception e) {
+            logger.error("Exception details:", e);
+        }
+        return code;
+    }
+
+    private static synchronized List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
         try {
 //            tokenAugmentor.process(parser, Stage.APPLY);
             MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());
@@ -88,6 +161,28 @@ public class Applicator {
 
         TokenAugmentor.restoreState(tokens, parser);
 
+    }
+
+    private void fillStylers(StylerContainer container, ProgramStyle programStyle) {
+        for (Styler styler : container.getStylers()) {
+            Style style = programStyle.getStyle(styler.getStyle().getStyleName());
+            if (style != null) {
+                styler.setStyle(style);
+            }
+        }
+    }
+
+
+    private String toString(List<Token> tokens, TokenAugmentor tokenAugmentor, MyParser parser) {
+        StringBuilder builder = new StringBuilder();
+        if (tokens.get(tokens.size() - 1).getType() == parser.getEOF()) {
+            tokens = tokens.subList(0, tokens.size() - 1);
+        }
+        tokenAugmentor.restoreState(tokens, parser);
+        for (Token token : tokens) {
+            builder.append(token.getText());
+        }
+        return builder.toString();
     }
 
 }

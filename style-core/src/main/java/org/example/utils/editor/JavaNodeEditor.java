@@ -1,9 +1,8 @@
 package org.example.utils.editor;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.java.antlr.JavaParser;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.java.JavaParser;
 
 public class JavaNodeEditor implements NodeEditor {
 //	@Override

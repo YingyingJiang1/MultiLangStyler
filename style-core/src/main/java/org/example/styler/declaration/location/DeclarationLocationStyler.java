@@ -5,9 +5,10 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.Resolver;
 import org.example.semantic.intf.symbol.Symbol;
@@ -16,8 +17,8 @@ import org.example.styler.Styler;
 import org.example.styler.declaration.location.style.DeclarationLocationProperty;
 import org.example.styler.declaration.location.style.DeclarationLocationStyle;
 import org.example.styler.naming.NameType;
-import org.example.utils.searcher.intf.VarDeclarationSearcher;
-import org.example.utils.searcher.intf.ExpressionSearcher;
+import org.example.lang.intf.searcher.VarDeclarationSearcher;
+import org.example.lang.intf.searcher.ExpressionSearcher;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -133,12 +134,12 @@ public class DeclarationLocationStyler extends Styler {
      * This is a safe but overly restrictive condition.
      */
     private boolean isMovable(ExtendContext decStmt, MyParser parser) {
-        ExpressionSearcher searcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createExpressionSearcher();
+        ExpressionSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createExpressionSearcher();
         return searcher.searchFunctionCall(decStmt, parser) == null;
     }
 
     private int getForwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
-        VarDeclarationSearcher varDeclarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createVarDeclarationSearcher();
+        VarDeclarationSearcher varDeclarationSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
         List<ExtendContext> decIdentifiers = varDeclarationSearcher.searchIdentifiers(decStmt, parser);
 
         // Init insertion point with the next index of last variable declaration statement in the block start.
@@ -155,7 +156,7 @@ public class DeclarationLocationStyler extends Styler {
         for (ExtendContext decIdentifier : decIdentifiers) {
             ExtendContext initializer = varDeclarationSearcher.searchInitializerNode(decStmt, decIdentifier, parser);
             List<ExtendContext> usedNodes = initializer.getAllChildContextsIf(parser::isIdentifier); // The identifiers that the initializer depends on.
-            Resolver resolver = GlobalInfo.getResolver();
+            Resolver resolver = MyEnvironment.getResolver();
             for (ExtendContext node : usedNodes) {
                 Symbol symbol = resolver.resolve(node, parser);
                 if (symbol == null) {
@@ -179,9 +180,9 @@ public class DeclarationLocationStyler extends Styler {
 
 
     private int getBackwardInsertionPoint(ExtendContext decStmt, ExtendContext block, MyParser parser) {
-        VarDeclarationSearcher varDeclarationSearcher = GlobalInfo.getConf().getLanguageConfig().getNodeSearcherFactory().createVarDeclarationSearcher();
+        VarDeclarationSearcher varDeclarationSearcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
         List<ExtendContext> decIdentifiers = varDeclarationSearcher.searchIdentifiers(decStmt, parser);
-        Resolver resolver = GlobalInfo.getResolver();
+        Resolver resolver = MyEnvironment.getResolver();
 
         int insertionPoint = block.indexOfIf(t -> t instanceof ExtendContext ctx && parser.getSpecificStmt(ctx) == decStmt); // before }
         for (ExtendContext decIdentifier : decIdentifiers) {

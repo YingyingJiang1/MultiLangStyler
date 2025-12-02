@@ -2,7 +2,7 @@ package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.myException.TreeConvertException;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.styler.structure.EquivalentStructure;
 
 import java.util.List;

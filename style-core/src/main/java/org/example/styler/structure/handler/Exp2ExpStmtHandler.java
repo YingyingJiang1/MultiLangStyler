@@ -1,14 +1,12 @@
 package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+
 import org.example.styler.structure.EquivalentStructure;
 
-import javax.naming.event.EventContext;
-import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class Exp2ExpStmtHandler extends Handler{
     }
 
     private ExtendContext toExpStmt(ExtendContext expression, MyParser parser) {
-        ParseTree expStmt = MyParserFactory.createParser(parser.getClass()).parseFromString("a=b;");
+        ParseTree expStmt =  LangAdapterCreator.createParser(parser.getLanguage()).parseFromString("a=b;");
         if (expStmt instanceof ExtendContext stmt) {
             ExtendContext parent = stmt;
             ExtendContext expCtx = parent.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleExpression());

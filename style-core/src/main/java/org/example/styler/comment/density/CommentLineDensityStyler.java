@@ -1,9 +1,8 @@
 package org.example.styler.comment.density;
 
 import org.antlr.v4.runtime.Token;
-import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -95,7 +94,7 @@ public class CommentLineDensityStyler extends Styler {
         Map<Token, Integer> commentTokens = new HashMap<>();
         for (int i = 0; i < tokens.size(); i++) {
             Token token = tokens.get(i);
-            if (parser.belongToComment(token.getType())) {
+            if (parser.isComment(token.getType())) {
                 commentTokens.put(token, i);
             }
         }

@@ -1,8 +1,7 @@
 package org.example.styler.naming.format.style;
 
-import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.StyleContext;
 import org.example.styler.naming.NameType;
 import org.example.styler.naming.format.SymbolAttr;

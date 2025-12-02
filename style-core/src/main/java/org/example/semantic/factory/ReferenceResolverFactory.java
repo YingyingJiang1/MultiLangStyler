@@ -7,6 +7,7 @@ public class ReferenceResolverFactory {
     public static ReferenceResolver createReferenceResolver(String language) {
         return switch (language) {
             case "java" -> new ReferenceResolverImpl();
+            case "cpp" -> null;
             default -> throw new IllegalArgumentException("Unsupported language: " + language);
         };
     }

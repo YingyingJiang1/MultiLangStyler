@@ -1,8 +1,7 @@
 package org.example.styler.optionalbrace.style;
 
-import org.apache.poi.xwpf.usermodel.BodyType;
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.StyleContext;
 import org.example.styler.format.newline.bodylayout.BodySizeType;
 import org.example.styler.format.newline.bodylayout.BodyTypeEnum;

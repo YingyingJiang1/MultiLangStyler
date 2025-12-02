@@ -1,6 +1,6 @@
 package org.example.semantic.intf.symbol;
 
-import org.example.parser.common.context.ExtendContext;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.naming.NameType;
 
 import java.util.ArrayList;

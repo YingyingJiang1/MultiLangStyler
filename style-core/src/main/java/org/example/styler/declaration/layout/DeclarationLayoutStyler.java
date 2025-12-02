@@ -2,19 +2,17 @@ package org.example.styler.declaration.layout;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.apache.logging.log4j.spi.Terminable;
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.layout.style.DeclarationLayoutContext;
 import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
 import org.example.styler.declaration.layout.style.DeclarationLayoutStyle;
-import org.example.utils.ParseTreeUtil;
-import org.example.utils.searcher.NodeSearcherFactory;
-import org.example.utils.searcher.intf.VarDeclarationSearcher;
+import org.example.lang.intf.searcher.VarDeclarationSearcher;
 
 import java.util.*;
 
@@ -47,10 +45,10 @@ public class DeclarationLayoutStyler extends Styler {
             DeclarationLayoutProperty property = extractProperty(group,parser);
             if (style.getProperty(null) instanceof DeclarationLayoutProperty targetProperty) {
                 if (targetProperty.isMerge() && property.hasSingleDec()) {
-                    ParseTreeUtil.getInstance().mergeDeclarations(group, parser);
+                    LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations(group, parser);
                     RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 } else if (!targetProperty.isMerge() && property.hasMergedDec()) {
-                    ParseTreeUtil.getInstance().splitDeclarations(group, parser);
+                    LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations(group, parser);
                     RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             }
@@ -59,7 +57,7 @@ public class DeclarationLayoutStyler extends Styler {
     }
 
     private DeclarationLayoutProperty extractProperty(List<ExtendContext> decNodes, MyParser parser) {
-        VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+        VarDeclarationSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
         int mergedCount = 0;
         int totalVarCount = 0;
         for (ExtendContext decNode : decNodes) {
@@ -124,7 +122,7 @@ public class DeclarationLayoutStyler extends Styler {
     private boolean isValidDecGroup(List<ExtendContext> decGroup, MyParser parser) {
         return decGroup.size() > 1 ||
                 ( decGroup.size() == 1 &&
-                        NodeSearcherFactory.getInstance().createVarDeclarationSearcher()
+                        LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher()
                                 .searchVarDeclaratorList(decGroup.get(0), parser).size() > 1);
     }
 
@@ -180,10 +178,10 @@ public class DeclarationLayoutStyler extends Styler {
         public static VarDecContext parseContext(ExtendContext decNode, MyParser parser) {
             decNode = parser.getSpecificStmt(decNode);
             VarDecContext ctx = new VarDecContext();
-            VarDeclarationSearcher searcher = NodeSearcherFactory.getInstance().createVarDeclarationSearcher();
+            VarDeclarationSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
             searcher.searchModifiers(decNode, parser).forEach(e -> ctx.modifiers.add(e.getText()));
             ctx.type = searcher.searchTypeNode(decNode, parser).getText();
-            ctx.hasComment = ((ExtendToken) decNode.getStop()).indexOfFirstTokenAfterIf(parser::belongToComment) >= 0;
+            ctx.hasComment = ((ExtendToken) decNode.getStop()).indexOfFirstTokenAfterIf(parser::isComment) >= 0;
             ctx.hasTrailingComment = ((ExtendToken) decNode.getStop()).getTrailingCommentIndex(parser) >= 0;
             return ctx;
         }

@@ -1,16 +1,17 @@
 package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.lang.LangAdapterCreator;
 import org.example.myException.TreeConvertException;
 import org.example.myException.UndefException;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.Scope;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.structure.EquivalentStructure;
-import org.example.utils.searcher.NodeSearcherFactory;
+import org.example.lang.intf.INodeSearcherFactory;
 
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +52,7 @@ public class VarUndefExceptionHandler extends Handler implements ExceptionHandle
 					declarationNode = ctx.getAllCtxsRecIf(parser::isLocalVarDeclaration).stream().findAny().orElseGet(() -> null);
 				}
 				if (declarationNode != null) {
-					List<ExtendContext> identifiers = NodeSearcherFactory.getInstance().createVarDeclarationSearcher().searchIdentifiers(declarationNode, parser);
+					List<ExtendContext> identifiers = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher().searchIdentifiers(declarationNode, parser);
 
 					// Get all scope nodes that use the variables in the declaration
 					SymbolTable st = SymbolTableManager.getSymbolTable(parser);

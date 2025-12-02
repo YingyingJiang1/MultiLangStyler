@@ -1,7 +1,7 @@
 package org.example.styler.structure.vtree;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 
 import java.util.ArrayList;
 import java.util.List;

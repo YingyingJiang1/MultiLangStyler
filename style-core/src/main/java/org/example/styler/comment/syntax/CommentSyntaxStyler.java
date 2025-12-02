@@ -1,8 +1,8 @@
 package org.example.styler.comment.syntax;
 
 import org.antlr.v4.runtime.Token;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.comment.CommentType;
@@ -39,7 +39,7 @@ public class CommentSyntaxStyler extends Styler {
 
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
-        return parser.belongToComment(tokens.get(i).getType());
+        return parser.isComment(tokens.get(i).getType());
     }
 
     private CommentSyntaxContext extractStyleContext(List<Token> tokens, int index) {

@@ -2,13 +2,9 @@ package org.example.styler;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.token.ExtendToken;
-import org.example.styler.format.newline.style.NewlineContext;
-import org.example.styler.format.newline.style.NewlineProperty;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.utils.NodeUtil;
-
-import java.util.List;
 
 public class NewlinePatchStyler extends Styler {
 	protected int countNewlineBetween(ParseTree curNode, ParseTree nextNode, MyParser parser) {

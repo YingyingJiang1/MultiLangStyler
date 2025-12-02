@@ -2,8 +2,8 @@ package org.example.styler.format.space;
 
 import org.antlr.v4.runtime.Token;
 import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.format.space.style.SpaceStyle;
 
 import java.util.List;

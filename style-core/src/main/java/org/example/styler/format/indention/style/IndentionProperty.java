@@ -2,7 +2,7 @@ package org.example.styler.format.indention.style;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.StyleProperty;
 
 import java.util.Objects;

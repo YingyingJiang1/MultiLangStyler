@@ -2,9 +2,9 @@ package org.example.utils;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.ExtendToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +58,11 @@ public class NodeUtil {
 	public static int countCommentLineBetween(ExtendToken stop, ExtendToken start, MyParser parser) {
 		long commentLines = 0;
 		commentLines += stop.getContextTokens().subList(stop.getContextTokens().indexOf(stop) + 1, stop.getContextTokens().size())
-				.stream().filter(t -> parser.belongToComment(t.getType()))
+				.stream().filter(t -> parser.isComment(t.getType()))
 				.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count())
 				.sum();
 		commentLines += start.getContextTokens().subList(0, start.getContextTokens().indexOf(start))
-				.stream().filter(t -> parser.belongToComment(t.getType()))
+				.stream().filter(t -> parser.isComment(t.getType()))
 				.mapToLong(t -> t.getText().chars().filter(c -> c == '\n').count())
 				.sum();
 		return (int) commentLines;

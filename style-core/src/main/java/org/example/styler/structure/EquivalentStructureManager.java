@@ -1,25 +1,15 @@
 package org.example.styler.structure;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.styler.structure.style.CategoryResult;
 import org.example.styler.structure.style.StyleCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -74,12 +64,12 @@ public class EquivalentStructureManager {
     return result;
   }
 
-  public List<EquivalentStructure> loadEquivalences(Class<? extends MyParser> parserClass, String confFile) {
+  public List<EquivalentStructure> loadEquivalences(String confFile, String language) {
     try {
       loadConfFile(confFile);
 
       for(Element node : rootEle.elements()) {
-        EquivalentStructure structure = EquivalentStructure.create(node, parserClass);
+        EquivalentStructure structure = EquivalentStructure.create(node, language);
 
         if (structure != null) {
           equivalences.add(structure);

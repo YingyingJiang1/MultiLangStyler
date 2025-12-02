@@ -1,9 +1,9 @@
 package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.MyEnvironment;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.intf.TypeResolver;
 import org.example.semantic.intf.symbol.ClassSym;
 import org.example.semantic.intf.symbol.FunctionSym;
@@ -49,7 +49,7 @@ public class TypeResolverImpl implements TypeResolver {
 	}
 
 	private Type getIdentifierType(ExtendContext identifier, MyParser parser) {
-		Symbol sym = GlobalInfo.getResolver().resolve(identifier, parser);
+		Symbol sym = MyEnvironment.getResolver().resolve(identifier, parser);
 		if (sym instanceof VarSym varSym) {
 			return varSym.getType();
 		} else if (sym instanceof FunctionSym functionSym) {

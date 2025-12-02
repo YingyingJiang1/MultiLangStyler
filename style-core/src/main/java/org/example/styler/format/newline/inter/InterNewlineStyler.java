@@ -1,9 +1,9 @@
 package org.example.styler.format.newline.inter;
 
 import org.antlr.v4.runtime.Token;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.NewlineApplicator;

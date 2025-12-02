@@ -1,8 +1,8 @@
 package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.InconsistencyInfo;
 import org.example.style.Style;

@@ -1,10 +1,10 @@
 package org.example.styler.structure.handler;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.structure.EquivalentStructure;
-import org.example.styler.structure.StmtType;
 import org.example.utils.ParseTreeUtil;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class BraceWrapHandler extends Handler{
 						// If no {}, then add {}.
 						ExtendContext subStmt = ctx.getFirstCtxChildIf(parser::belongToStmt);
 						if (!parser.isBlock(parser.getSpecificStmt(subStmt))) {
-							ParseTreeUtil.getInstance().encapsulateStmtWithBrace(subStmt, parser);
+							LangAdapterCreator.createASTRewriter(parser.getLanguage()).encapsulateStmtWithBrace(subStmt, parser);
 						}
 						break;
 					}

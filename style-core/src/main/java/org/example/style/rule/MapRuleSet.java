@@ -1,6 +1,6 @@
 package org.example.style.rule;
 
-import org.example.global.GlobalInfo;
+import org.example.MyEnvironment;
 
 import java.util.*;
 
@@ -79,7 +79,7 @@ public class MapRuleSet implements RuleSet{
             int index = getMaxFreqIndex(curFreList);
             int totalFreq = curFreList.stream().reduce(Integer::sum).orElse(0);
             double dominantRatio = totalFreq == 0 ? 0 : (double) curFreList.get(index) / (double) totalFreq;
-            double threshold = GlobalInfo.getConf().getStyleConfig().getMinDominantRatio();
+            double threshold = MyEnvironment.getIConfig().getMinDominantRatio();
             if (dominantRatio >= threshold) {
                 entry.setValue(List.of(entry.getValue().get(index)));
             } else {

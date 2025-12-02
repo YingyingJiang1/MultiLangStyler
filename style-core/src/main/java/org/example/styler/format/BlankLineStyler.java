@@ -4,13 +4,13 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.context.FineGrainedRuleGrouper;
-import org.example.parser.common.token.ExtendToken;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.RuleGroup;
-import org.example.parser.common.token.TokenGroup;
-import org.example.parser.common.token.TokenGrouper;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.context.FineGrainedRuleGrouper;
+import org.example.antlr.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.RuleGroup;
+import org.example.antlr.common.token.TokenGroup;
+import org.example.lang.base.FormatUnitGrouperBase;
 import org.example.styler.Stage;
 import org.example.styler.format.style.NewlineContext;
 import org.example.styler.format.style.NewlineProperty;
@@ -85,12 +85,12 @@ public class BlankLineStyler extends Styler {
                 int insertionPoint = adjacentCodeBlock.child1.index + 1;
                 if (newlineProperty.newlines > 0) {
                     // child1: comment. child2: a syntax rule.
-                    if(parser.belongToComment(adjacentCodeBlock.child1.token.getType())) {
+                    if(parser.isComment(adjacentCodeBlock.child1.token.getType())) {
                         String vwsStr = StringUtils.repeat(System.lineSeparator(), newlineProperty.newlines);
                         Token vwsToken = parser.getTokenFactory().create(parser.getVws(), vwsStr);
                         // Insert vws before the leading comment.
                         adjacentCodeBlock.child2.token.addToken(
-                                adjacentCodeBlock.child2.token.indexOfFirstTokenBeforeIf(parser::belongToComment),
+                                adjacentCodeBlock.child2.token.indexOfFirstTokenBeforeIf(parser::isComment),
                                 vwsToken
                         );
                     } else if(insertionPoint >= 0) { // codeBlock1: a rule info
@@ -220,7 +220,7 @@ public class BlankLineStyler extends Styler {
 
         boolean hasComment = false;
         if (codeBlock2.treeNode instanceof ExtendContext ctx && ctx.getStart() instanceof ExtendToken token) {
-            hasComment = token.getContextTokens().stream().anyMatch(t -> parser.belongToComment(t.getType()));
+            hasComment = token.getContextTokens().stream().anyMatch(t -> parser.isComment(t.getType()));
         }
         NewlineContext context = new NewlineContext(typeName1, typeName2, 0, hasSameDataType);
         context.hasComment = hasComment;
@@ -252,7 +252,7 @@ public class BlankLineStyler extends Styler {
             int i = codeBlock2.token.indexInContextTokens();
             for (int j = 0; j < i; j++) {
                 Token  token = contextTokens.get(j);
-                if (parser.belongToComment(token.getType())) {
+                if (parser.isComment(token.getType())) {
                     newlines -= token.getText().split("\n").length;
                 }
             }
@@ -283,12 +283,12 @@ public class BlankLineStyler extends Styler {
         int insertionPoint = adjacentCodeBlock.child1.index + 1;
         if (newlineProperty.newlines > 0) {
             // child1: comment. child2: a syntax rule.
-            if(parser.belongToComment(adjacentCodeBlock.child1.token.getType())) {
+            if(parser.isComment(adjacentCodeBlock.child1.token.getType())) {
                 String vwsStr = StringUtils.repeat(System.lineSeparator(), newlineProperty.newlines);
                 Token vwsToken = parser.getTokenFactory().create(parser.getVws(), vwsStr);
                 // Insert vws before the leading comment.
                 adjacentCodeBlock.child2.token.addToken(
-                        adjacentCodeBlock.child2.token.indexOfFirstTokenBeforeIf(parser::belongToComment),
+                        adjacentCodeBlock.child2.token.indexOfFirstTokenBeforeIf(parser::isComment),
                         vwsToken
                 );
             } else if(insertionPoint >= 0) { // codeBlock1: a rule info
@@ -336,7 +336,7 @@ public class BlankLineStyler extends Styler {
     private String getTypeName(AdjacentCodeBlock.CodeBlock codeBlock, MyParser parser) {
         int type= codeBlock.type;
         if (codeBlock.type < 0) {
-            TokenGroup group = TokenGrouper.getInstance().getGroup(codeBlock.token, parser);
+            TokenGroup group = FormatUnitGrouperBase.getInstance().getTokenGroup(codeBlock.token, parser);
             if (group == TokenGroup.SELF_TOKEN) {
                 return codeBlock.token.getText();
             }

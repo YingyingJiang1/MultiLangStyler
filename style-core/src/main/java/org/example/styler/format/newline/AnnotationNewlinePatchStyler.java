@@ -1,18 +1,11 @@
 package org.example.styler.format.newline;
 
-import ch.qos.logback.core.net.server.ServerRunner;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.style.rule.StyleRule;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.NewlinePatchStyler;
 import org.example.styler.Stage;
-import org.example.styler.Styler;
-import org.example.styler.format.newline.style.NewlineProperty;
-
-import java.util.List;
 
 public class AnnotationNewlinePatchStyler extends NewlinePatchStyler {
 	public AnnotationNewlinePatchStyler() {

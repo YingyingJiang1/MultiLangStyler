@@ -1,10 +1,8 @@
 package org.example.styler.exp.updatevar;
 
 import org.antlr.v4.runtime.Token;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.MyParserFactory;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.exp.ExpType;
@@ -21,7 +19,7 @@ public class UpdateVarStyler extends Styler {
 
     public UpdateVarStyler() {
         style.setStyleName("update_variable");
-        structures = EquivalentStructureManager.getInstance().loadEquivalences(MyParserFactory.createParser(GlobalInfo.getLanguage()).getClass(), "/removedEquivalences.json");
+        structures = EquivalentStructureManager.getInstance().loadEquivalences("/removedEquivalences.json", "java");
     }
 
 
@@ -70,11 +68,11 @@ public class UpdateVarStyler extends Styler {
     @Override
     public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
         int ruleIndex = ctx.getRuleIndex();
-        return ruleIndex == parser.getRuleExpStmt();
+        return ruleIndex == parser.getRuleExpressionStmt();
     }
 
     private UpdateVarContext extractStyleContext(ExtendContext ctx, MyParser parser) {
-        if (ctx.getRuleIndex() == parser.getRuleExpStmt()) {
+        if (ctx.getRuleIndex() == parser.getRuleExpressionStmt()) {
             return new UpdateVarContext(ExpType.RVALUE_EXP);
         } else {
             return null;

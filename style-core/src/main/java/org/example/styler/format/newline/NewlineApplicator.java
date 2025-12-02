@@ -4,15 +4,12 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.lang3.StringUtils;
-import org.example.RunStatistic;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.factory.ExtendTokenFactory;
-import org.example.parser.common.factory.TreeNodeFactoryGetter;
-import org.example.parser.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.factory.ExtendTokenFactory;
+import org.example.antlr.common.token.ExtendToken;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class NewlineApplicator {
@@ -25,7 +22,7 @@ public class NewlineApplicator {
 			int i = token.getTrailingCommentIndex(parser);
 			if (i < 0) {
 				for (i = 0; i < token.getContextTokens().size(); i++) {
-					if (parser.belongToComment(token.getContextTokens().get(i).getType())) {
+					if (parser.isComment(token.getContextTokens().get(i).getType())) {
 						break;
 					}
 				}
@@ -46,7 +43,7 @@ public class NewlineApplicator {
 			int i = extendToken.getTrailingCommentIndex(parser);
 			if (i < 0) {
 				for (i = 0; i < extendToken.getContextTokens().size(); i++) {
-					if (parser.belongToComment(extendToken.getContextTokens().get(i).getType())) {
+					if (parser.isComment(extendToken.getContextTokens().get(i).getType())) {
 						break;
 					}
 				}

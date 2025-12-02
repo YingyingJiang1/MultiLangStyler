@@ -1,7 +1,7 @@
 package org.example.styler.arrangement.classmember.style;
 
 import org.dom4j.Element;
-import org.example.parser.common.MyParser;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.StyleContext;
 
 import java.util.HashMap;

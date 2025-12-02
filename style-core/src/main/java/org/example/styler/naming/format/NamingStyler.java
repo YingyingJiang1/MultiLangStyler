@@ -3,9 +3,8 @@ package org.example.styler.naming.format;
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.RunStatistic;
-import org.example.global.GlobalInfo;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
@@ -13,7 +12,6 @@ import org.example.semantic.intf.type.ReferenceType;
 import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
-import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;
@@ -199,15 +197,6 @@ public class NamingStyler extends Styler {
     @Override
     public void extractFinalize() {
         super.extractFinalize();
-        if (GlobalInfo.getConf().getLlmConfig().getIdentifierLengthLimit() < 0) {
-            int lengthLimit = 0;
-            for (StyleRule rule : style.getRules())  {
-                if (rule.getStyleProperty() instanceof NamingFormatProperty property && property.maxLength > lengthLimit) {
-                    lengthLimit = property.maxLength;
-                }
-            }
-            GlobalInfo.getConf().getLlmConfig().setIdentifierLengthLimit(lengthLimit);
-        }
 
     }
 }

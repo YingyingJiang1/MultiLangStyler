@@ -15,7 +15,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.example.controller.StylerContainer;
-import org.example.parser.common.MyParser;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
 import org.example.style.rule.*;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.StructPreferenceContext;
@@ -31,7 +32,7 @@ import org.slf4j.Logger;
 public class StyleFileIO {
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(StyleFileIO.class);
 
-    public static ProgramStyle read(String file, MyParser parser) {
+    public static ProgramStyle read(String file) {
         ProgramStyle programStyle = new ProgramStyle();
         final List<Styler> stylers = new StylerContainer().getStylers();
         stylers.forEach(styler -> programStyle.add(styler.getStyle()));
@@ -39,6 +40,8 @@ public class StyleFileIO {
             SAXReader reader = new SAXReader();
             Document document = reader.read(new File(file));
             Element root = document.getRootElement();
+            String language = root.attributeValue("language");
+            MyParser parser = LangAdapterCreator.createParser(language);
             programStyle.parseElement(root, parser);
             for (Style style : programStyle.getStyles()) {
                 style.fillStyle();
@@ -52,11 +55,12 @@ public class StyleFileIO {
             }
         } catch (DocumentException e) {
             logger.error("read style file error. Target path: {}", file);
+            return null;
         }
         return programStyle;
     }
 
-    public static void write(ProgramStyle programStyle, String file, MyParser parser) {
+    public static void write(ProgramStyle programStyle, String file, String lang) {
         if (programStyle == null) {
             logger.info("no style to save in file {}, because `programStyle` is null.", file);
             return;
@@ -65,6 +69,8 @@ public class StyleFileIO {
             // 创建xml文件并写入内容
             Document document = DocumentHelper.createDocument();
             Element root = document.addElement("program_style");
+            MyParser parser = LangAdapterCreator.createParser(lang);
+            root.addAttribute("language", lang);
             programStyle.addElement(root, parser);
 
             File dir = new File(file).getParentFile();

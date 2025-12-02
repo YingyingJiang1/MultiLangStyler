@@ -1,30 +1,23 @@
 package org.example.styler.structure;
 
 
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.*;
 import org.dom4j.Element;
+import org.example.lang.LangAdapterCreator;
 import org.example.myException.TreeConvertException;
-import org.example.parser.common.context.ExtendContext;
-import org.example.parser.common.MyParser;
-import org.example.parser.common.factory.ExtendTokenFactory;
-import org.example.parser.common.factory.MyParserFactory;
-import org.example.parser.common.token.ExtendToken;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
 import org.example.styler.structure.handler.ExceptionHandler;
 import org.example.styler.structure.vtree.VirtualNodeMatcher;
 import org.example.utils.ParseTreeUtil;
 import org.example.myException.CompilationException;
-import org.example.parser.java.MyJavaParser;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.example.styler.structure.vtree.VirtualNode;
 import org.example.styler.structure.vtree.PlaceholderContainer;
 import org.example.styler.structure.vtree.Forest;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.w3c.dom.*;
 
 import java.util.*;
 
@@ -58,13 +51,13 @@ public class EquivalentStructure {
 		this.bannedTransfer = bannedTransfer;
 	}
 
-	public static EquivalentStructure create(Element node, Class<? extends MyParser> parserClass) {
+	public static EquivalentStructure create(Element node, String language) {
 		XmlRuleParser.Rule rule =  XmlRuleParser.parseRule(node);
 		if (rule == null) {
 			return null;
 		}
 		EquivalentStructure structure = new EquivalentStructure(Integer.parseInt(rule.id), rule.category, rule.checkers, rule.handlers, rule.bannedTransfer);
-		structure.compile(rule);
+		structure.compile(rule, language);
 
 		return structure;
 	}
@@ -96,14 +89,14 @@ public class EquivalentStructure {
 		return forests.get(index).getStyle();
 	}
 
-	void compile(XmlRuleParser.Rule xmlRule) {
+	void compile(XmlRuleParser.Rule xmlRule, String language) {
 		String[] codes = xmlRule.codes.toArray(new String[0]);
 		try {
 			placeholderContainer = PlaceholderContainer.createInstance(codes);
 			for (int i = 0; i < codes.length; i++) {
 				boolean multiStmts = codes[i].startsWith("$^");
 				String code = replacePlaceholder(codes[i]);
-				MyJavaParser parser = new MyJavaParser();
+				MyParser parser = LangAdapterCreator.createParser(language);
 
 				int priority = getPriority(code);
 				ParseTree tree = parser.parseFromString(code);
