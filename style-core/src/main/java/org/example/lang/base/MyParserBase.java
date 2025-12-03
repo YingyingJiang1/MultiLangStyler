@@ -4,25 +4,53 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.factory.ExtendTokenFactory;
+import org.example.antlr.common.token.AmbigousToken;
 import org.example.antlr.common.token.ExtendToken;
+import org.example.antlr.common.token.TokenNameGetter;
 import org.example.antlr.java.JavaLexer;
 import org.example.antlr.java.JavaParser;
 import org.example.controller.TokenAugmentor;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class MyParserBase implements MyParser {
-	Parser parser = null;
-	Path curFile = null;
-	ParseTree root = null;
+	protected Parser parser = null;
+	protected Path curFile = null;
+	protected ParseTree root = null;
+
+
+	static Set<String> assignOps = new HashSet<>(Arrays.asList(
+			"=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", ">>=", ">>>="
+	));
+	static Set<String> compareOps = new HashSet<>(Arrays.asList(
+			"==", "!=", "<", ">", "<=", ">="
+	));
+	static Set<String> binOps = new HashSet<>(Arrays.asList(
+			"+", "-", "*", "/",  "%", "&", "|", "^", "=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=",
+			"<<=", ">>=", ">>>=", "<", ">", "<=", ">=", "==", "!=", ":", "::", ".", "->",
+			"&&", "||", "instanceof"
+	));
+
+	static Set<String> unaryOps = new HashSet<>(Arrays.asList(
+			"~", "!", "++", "--", "?", AmbigousToken.NEGATIVE.name()
+	));
+
+	static Set<String> separators = new HashSet<>(Arrays.asList(
+			",",  "(", ")", "{", "}", "[", "]", ";", AmbigousToken.LEFT_ANGLE_BRACKET.name(), AmbigousToken.RIGHT_ANGLE_BRACKET.name()
+	));
 
 	@Override
 	public ParseTree parse(Path filePath) throws IOException {
-		return null;
+		return parseFromString(Files.readString(filePath));
 	}
 
 	@Override
@@ -32,6 +60,26 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public ParseTree parseFromString(String code) {
+		parser = generateParser(code);
+		root = tryParse();
+
+		if (root == null) {
+			logger.error("Failed to parse code, " +
+					"this program is only able to parse the top-level, typeDeclaration-level, method-level, stmt-level,expression-level code.");
+			return null;
+		}
+
+		TokenAugmentor.addContextTokens(this);
+		// 统一换行符
+		((CommonTokenStream) parser.getTokenStream()).getTokens().forEach(t -> {
+			if (t.getType() == getVws() || t.getType() == getBlockComment() || t.getType() == getLineComment()) {
+				((ExtendToken) t).setText(t.getText().replace("\r\n", "\n"));
+			}
+		});
+		return root;
+	}
+
+	protected Parser generateParser(String code) {
 		return null;
 	}
 
@@ -41,7 +89,7 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public TokenStream getTokenStream() {
-		return null;
+		return parser.getTokenStream();
 	}
 
 	@Override
@@ -60,7 +108,7 @@ public class MyParserBase implements MyParser {
 	}
 
 	@Override
-	public boolean belongToSingleStmt(ParseTree t) {
+	public boolean belongToSimpleStmt(ParseTree t) {
 		return false;
 	}
 
@@ -96,17 +144,18 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public boolean belongToBinOp(String text) {
-		return false;
+		return binOps.contains(text);
 	}
 
 	@Override
 	public boolean belongToUnOp(String name) {
-		return false;
+		return unaryOps.contains(name);
 	}
 
 	@Override
 	public boolean belongToOperator(String name) {
-		return false;
+		return binOps.contains(name) || unaryOps.contains(name) ||
+				name.equals("?") || name.equals(":");
 	}
 
 	@Override
@@ -491,12 +540,18 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public ExtendContext getSpecificStmt(ExtendContext stmt) {
-		return null;
+		if (isStatement(stmt) && stmt.getChild(0) instanceof ExtendContext ctx) {
+			return ctx;
+		}
+		return stmt;
 	}
 
 	@Override
 	public int getSpecificStmtType(ExtendContext ctx) {
-		return 0;
+		if (isStatement(ctx) && ctx.getChild(0) instanceof ExtendContext specificStmt) {
+			return specificStmt.getRuleIndex();
+		}
+		return ctx.getRuleIndex();
 	}
 
 	@Override
@@ -676,37 +731,46 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public int getType(String text) {
-		return 0;
+		if (text == null) {
+			return Integer.MIN_VALUE;
+		}
+		return text.startsWith("RULE") ?
+				parser.getRuleIndex(text) :
+				parser.getTokenType(TokenNameGetter.getInstance().getName(text));
+
 	}
 
 	@Override
 	public String getTokenName(int type) {
-		return "";
+		return parser.getVocabulary().getSymbolicName(type);
 	}
 
 	@Override
 	public String getRuleName(int type) {
-		return "";
+		return parser.getRuleNames()[type];
 	}
 
 	@Override
 	public ExtendTokenFactory getTokenFactory() {
-		return null;
+		return ExtendTokenFactory.DEFAULT;
 	}
 
 	@Override
 	public Set<String> getOperators() {
-		return Set.of();
+		Set<String> operators = new HashSet<>();
+		operators.addAll(binOps);
+		operators.addAll(unaryOps);
+		return operators;
 	}
 
 	@Override
 	public Set<String> getBinOps() {
-		return Set.of();
+		return binOps;
 	}
 
 	@Override
 	public Set<String> getUnaryOps() {
-		return Set.of();
+		return unaryOps;
 	}
 
 	@Override
@@ -746,12 +810,12 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public int getRuleIndex(String ruleName) {
-		return 0;
+		return parser.getRuleIndex(ruleName);
 	}
 
 	@Override
 	public ParseTree getRoot() {
-		return null;
+		return root;
 	}
 
 	@Override
@@ -761,12 +825,12 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public String getSourceFile() {
-		return "";
+		return parser.getSourceName();
 	}
 
 	@Override
 	public String getInputCode() {
-		return "";
+		return parser.getInputStream().getText();
 	}
 
 	@Override
@@ -776,7 +840,15 @@ public class MyParserBase implements MyParser {
 
 	@Override
 	public void updateRoot(List<ParseTree> newTrees) {
+		if (newTrees.isEmpty()) {
+			return;
+		}
 
+		ExtendContext virtualRoot = LangAdapterCreator.createTreeNodeFactory(getLanguage()).createStatement(null);
+		for (ParseTree tree : newTrees) {
+			virtualRoot.addChild(tree);
+		}
+		root = virtualRoot;
 	}
 
 	@Override

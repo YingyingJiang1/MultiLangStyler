@@ -31,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class TestBase {
 
+	protected static String javaTestCasesDir = "src/test/sources";
+	protected static String cppTestCasesDir = "src/test/cpp-sources";;
+	protected static String pythonTestCasesDir = "src/test/python-sources";
 
 	public Logger logger = LoggerFactory.getLogger(TestBase.class);
 	@Autowired

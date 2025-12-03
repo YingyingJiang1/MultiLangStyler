@@ -132,7 +132,7 @@ public abstract class BodyStyler extends Styler {
             if (stmtNum == 0) {
                 return BodySizeType.EMPTY;
             } else if(stmtNum == 1) {
-                return parser.belongToSingleStmt(parser.getSpecificStmt(stmts.get(0))) ?  BodySizeType.ONE_SINGLE_STMT : BodySizeType.ONE_COMPOUND_STMT;
+                return parser.belongToSimpleStmt(parser.getSpecificStmt(stmts.get(0))) ?  BodySizeType.ONE_SINGLE_STMT : BodySizeType.ONE_COMPOUND_STMT;
             } else {
                 return BodySizeType.MULTI_STMTS;
             }

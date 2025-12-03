@@ -20,22 +20,22 @@ public class CppTreeNodeFactory implements TreeNodeFactory {
 
 	@Override
 	public ExtendContext createBlock(ExtendContext parent) {
-		return new JavaParser.BlockContext(parent, parent.invokingState);
+		return new JavaParser.BlockContext(parent, parent == null ? -1 : parent.invokingState);
 	}
 
 	@Override
 	public ExtendContext createStatement(ExtendContext parent) {
-		return new CPPParser.StatementContext(parent, parent.invokingState);
+		return new CPPParser.StatementContext(parent, parent == null ? -1 : parent.invokingState);
 	}
 
 	@Override
 	public ExtendContext createExpression(ExtendContext parent) {
-		return new CPPParser.ExpressionContext(parent, parent.invokingState);
+		return new CPPParser.ExpressionContext(parent, parent == null ? -1 : parent.invokingState);
 	}
 
 	@Override
 	public ExtendContext createExpressionList(ExtendContext parent) {
-		return new CPPParser.ExpressionListContext(parent, parent.invokingState);
+		return new CPPParser.ExpressionListContext(parent, parent == null ? -1 : parent.invokingState);
 	}
 
 
@@ -46,6 +46,6 @@ public class CppTreeNodeFactory implements TreeNodeFactory {
 
 	@Override
 	public ExtendContext createFieldDeclarationList(ExtendContext parent) {
-		return new JavaParser.FieldDeclarationListContext(parent, parent.invokingState);
+		return new JavaParser.FieldDeclarationListContext(parent, parent == null ? -1 : parent.invokingState);
 	}
 }

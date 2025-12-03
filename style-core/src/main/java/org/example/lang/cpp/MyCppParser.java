@@ -167,7 +167,7 @@ public class MyCppParser implements MyParser {
 	}
 
 	@Override
-	public boolean belongToSingleStmt(ParseTree t) {
+	public boolean belongToSimpleStmt(ParseTree t) {
 		if (t instanceof ExtendContext ctx) {
 			return simpleStmts.contains(getSpecificStmtType(ctx));
 		}

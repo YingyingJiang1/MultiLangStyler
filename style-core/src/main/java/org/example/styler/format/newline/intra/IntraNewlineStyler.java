@@ -47,7 +47,7 @@ public class IntraNewlineStyler extends Styler {
 		} else {
 			// 获取换行策略
 			ExtendContext targetNode = ctx;
-			if (parser.belongToSingleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
+			if (parser.belongToSimpleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
 				targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
 			}
 			if (targetNode == null) {
@@ -65,7 +65,7 @@ public class IntraNewlineStyler extends Styler {
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
 		ExtendContext targetNode = ctx;
-		if (parser.belongToSingleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
+		if (parser.belongToSimpleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
 			targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
 		}
 		if (targetNode == null) {
@@ -442,7 +442,7 @@ public class IntraNewlineStyler extends Styler {
 		} else{
 			boolean isExpressionRelevant = rule == parser.getRuleLocalVarDeclaration()
 					|| rule == parser.getRuleParExpression()
-					|| parser.belongToSingleStmt(ctx);
+					|| parser.belongToSimpleStmt(ctx);
 			boolean noFunctionDeclaration = ctx.getFirstContextRecIf(parser::isBlock) == null; // 排除变量初始化中定义函数
 			return isExpressionRelevant && noFunctionDeclaration;
 		}

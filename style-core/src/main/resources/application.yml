@@ -22,10 +22,13 @@ lang:
       parser: org.example.lang.cpp.MyCppParser
       treeNodeFactory: org.example.lang.cpp.CppTreeNodeFactory
       astRewriter: org.example.lang.base.ASTRewriterBase
-      equivalencesConfig: "/equivalences.xml"
+      equivalencesConfig: "/cpp-equivalences.xml"
 
     python:
-
+      parser: org.example.lang.python.MyPythonParser
+      treeNodeFactory: org.example.lang.python.PythonTreeNodeFactory
+      astRewriter: org.example.lang.base.ASTRewriterBase
+      equivalencesConfig: "/python-equivalences.xml"
 
 llm:
   apikey: "your-api-key"

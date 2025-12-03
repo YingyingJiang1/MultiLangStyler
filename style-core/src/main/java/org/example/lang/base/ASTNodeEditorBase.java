@@ -23,8 +23,6 @@ public class ASTNodeEditorBase implements ASTNodeEditor {
 			return;
 		}
 
-		ExtendContext parent = (ExtendContext) node.getParent();
-
 		processGeneralIndentCase(node, this.getParser());
 		// Note: The following call overrides the result produced by the previous function.
 		processForLang(node, this.getParser());

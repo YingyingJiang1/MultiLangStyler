@@ -85,6 +85,6 @@ public class CascadingIfChecker extends Checker{
 	}
 
 	private boolean checkComplexity(ExtendContext node, MyParser parser) {
-		return !parser.isLambdaExpression(node) && parser.belongToSingleStmt(parser.getSpecificStmt(node));
+		return !parser.isLambdaExpression(node) && parser.belongToSimpleStmt(parser.getSpecificStmt(node));
 	}
 }

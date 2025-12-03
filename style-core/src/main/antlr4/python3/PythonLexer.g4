@@ -30,6 +30,8 @@ THE SOFTWARE.
 
 lexer grammar PythonLexer;
 
+channels {COMMENT_CHANNEL}
+
 options { superClass=PythonLexerBase; }
 
 tokens {
@@ -156,7 +158,7 @@ STRING
 NEWLINE : '\r'? '\n'; // Unix, Windows
 
 // https://docs.python.org/3.13/reference/lexical_analysis.html#comments
-COMMENT : '#' ~[\r\n]*                    -> channel(HIDDEN);
+COMMENT : '#' ~[\r\n]*                    -> channel(COMMENT_CHANNEL);
 
 // https://docs.python.org/3.13/reference/lexical_analysis.html#whitespace-between-tokens
 WS : [ \t\f]+                             -> channel(HIDDEN);
@@ -282,7 +284,8 @@ mode DQ3R_FORMAT_SPECIFICATION_MODE; // it is only used after a format specifier
 //
 // https://docs.python.org/3.13/reference/lexical_analysis.html#string-and-bytes-literals
 fragment STRING_LITERAL : STRING_PREFIX? (SHORT_STRING | LONG_STRING);
-fragment STRING_PREFIX options { caseInsensitive=true; }  : 'r' | 'u'; // 'r' | 'u' | 'R' | 'U'
+//fragment STRING_PREFIX options { caseInsensitive=true; }  : 'r' | 'u'; // 'r' | 'u' | 'R' | 'U'
+fragment STRING_PREFIX : 'r' | 'u' | 'R' | 'U';
 
 fragment SHORT_STRING
     : ['] SHORT_STRING_ITEM_FOR_SINGLE_QUOTE* [']
@@ -308,7 +311,9 @@ fragment STRING_ESCAPE_SEQ : ESCAPE_SEQ_NEWLINE | '\\' .;       // "\" <any sour
 
 // https://docs.python.org/3.13/reference/lexical_analysis.html#string-and-bytes-literals
 fragment BYTES_LITERAL : BYTES_PREFIX (SHORT_BYTES | LONG_BYTES);
-fragment BYTES_PREFIX options { caseInsensitive=true; } : 'b' | 'br' | 'rb'; // 'b' | 'B' | 'br' | 'Br' | 'bR' | 'BR' | 'rb' | 'rB' | 'Rb' | 'RB'
+//fragment BYTES_PREFIX options { caseInsensitive=true; } : 'b' | 'br' | 'rb'; // 'b' | 'B' | 'br' | 'Br' | 'bR' | 'BR' | 'rb' | 'rB' | 'Rb' | 'RB'
+fragment BYTES_PREFIX : 'b' | 'B' | 'br' | 'Br' | 'bR' | 'BR' | 'rb' | 'rB' | 'Rb' | 'RB';
+
 
 fragment SHORT_BYTES
     : ['] SHORT_BYTES_ITEM_FOR_SINGLE_QUOTE* [']
@@ -347,7 +352,9 @@ fragment BYTES_ESCAPE_SEQ : '\\' [\u0000-\u007F];              // "\" <any ASCII
 // https://docs.python.org/3.13/reference/lexical_analysis.html#formatted-string-literals
 // https://docs.python.org/3.13/library/string.html#format-specification-mini-language
 // 'f' | 'F' | 'fr' | 'Fr' | 'fR' | 'FR' | 'rf' | 'rF' | 'Rf' | 'RF'
-fragment FSTRING_PREFIX options { caseInsensitive=true; } : 'f' | 'fr' | 'rf';
+//fragment FSTRING_PREFIX options { caseInsensitive=true; } : 'f' | 'fr' | 'rf';
+fragment FSTRING_PREFIX : 'f' | 'F' | 'fr' | 'Fr' | 'fR' | 'FR' | 'rf' | 'rF' | 'Rf' | 'RF';
+
 
 fragment SQ1__FSTRING_ITEM : (SQ1__FSTRING_PART+ TERMINATING_FSTRING_MIDDLE?)      | TERMINATING_FSTRING_MIDDLE;
 fragment DQ1__FSTRING_ITEM : (DQ1__FSTRING_PART+ TERMINATING_FSTRING_MIDDLE?)      | TERMINATING_FSTRING_MIDDLE;

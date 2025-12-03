@@ -5,7 +5,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.factory.ExtendTokenFactory;
 import org.example.antlr.common.token.AmbigousToken;
-import org.example.lang.java.MyJavaParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public interface MyParser {
 
     boolean belongToStmt(ParseTree t);
     boolean belongToMemberList(ParseTree t);
-    boolean belongToSingleStmt(ParseTree t);
+    boolean belongToSimpleStmt(ParseTree t);
     boolean belongToCompoundStmt(ParseTree t);
     boolean belongToFileHeadDec(int rule);
     boolean belongToMethodHead(int ruleIndex);
@@ -163,10 +162,16 @@ public interface MyParser {
     int getRuleTextBlockLiteral();
     int getRuleThrowStmt();
 
-
-
+    /**
+     * Return the token type of newline.
+     */
     int getVws();
+
+    /**
+     * Return the token type of horizontal whitespace.
+     */
     int getHws();
+
     int getIdentifier();
     int getLE();
     int getGE();
@@ -174,13 +179,22 @@ public interface MyParser {
     int getGT();
     int getComma();
     int getSemi();
+
+    /**
+     * Return the token type of line comment.
+     */
     int getLineComment();
     int getLBrace();
     int getRBrace();
     int getLParen();
     int getRParen();
     int getBang();
+
+    /**
+     * Return the token type of block comment.
+     */
     int getBlockComment();
+
     int getSub();
     int getEOF();
     int getMul();

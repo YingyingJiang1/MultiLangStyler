@@ -76,7 +76,7 @@ public class StmtComplexityChecker extends  Checker{
 		public boolean isType(ParseTree node, MyParser parser) {
 			switch (this) {
 				case SINGLE_STMT:
-					return parser.belongToSingleStmt(node);
+					return parser.belongToSimpleStmt(node);
 				default:
 					return false;
 			}

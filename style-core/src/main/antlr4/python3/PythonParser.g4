@@ -37,7 +37,7 @@ parser grammar PythonParser;
 
 options {
 tokenVocab=PythonLexer;
-contextSuperClass = org.example.ExtendContext;
+contextSuperClass = org.example.antlr.common.context.ExtendContext;
 }
 
 // STARTING RULES

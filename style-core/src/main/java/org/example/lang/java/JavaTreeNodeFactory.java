@@ -18,17 +18,17 @@ public class JavaTreeNodeFactory implements TreeNodeFactory {
 
     @Override
     public ExtendContext createBlock(ExtendContext parent) {
-        return new JavaParser.BlockContext(parent, parent.invokingState);
+        return new JavaParser.BlockContext(parent, parent == null ? -1 : parent.invokingState);
     }
 
     @Override
     public ExtendContext createStatement(ExtendContext parent) {
-        return new JavaParser.StatementContext(parent, parent.invokingState);
+        return new JavaParser.StatementContext(parent, parent == null ? -1 : parent.invokingState);
     }
 
     @Override
     public ExtendContext createExpression(ExtendContext parent) {
-        return new JavaParser.ExpressionContext(parent, parent.invokingState);
+        return new JavaParser.ExpressionContext(parent, parent == null ? -1 : parent.invokingState);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class JavaTreeNodeFactory implements TreeNodeFactory {
 
     @Override
     public ExtendContext createFieldDeclarationList(ExtendContext parent) {
-        return new JavaParser.FieldDeclarationListContext(parent, parent.invokingState);
+        return new JavaParser.FieldDeclarationListContext(parent, parent == null ? -1 : parent.invokingState);
     }
 
 

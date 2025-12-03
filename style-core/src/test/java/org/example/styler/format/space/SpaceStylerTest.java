@@ -18,7 +18,7 @@ class SpaceStylerTest extends TestBase {
 
 	@Test
 	void applyStyle() {
-		String dir = "src/test/sources/format/space/";
+		String dir = Paths.get(javaTestCasesDir, "format", "space").toString();
 		String[] srcFiles = {
 				"f1.java",
 				"f2.java",
@@ -52,7 +52,7 @@ class SpaceStylerTest extends TestBase {
 	@Test
 	void applyStyleCpp() {
 		String fileExt = ".cpp";
-		String dir = "src/test/cpp-sources/space/";
+		String dir = Paths.get(cppTestCasesDir, "space").toString();
 		String[] srcFiles = {
 //				"f1" + fileExt,
 //				"f2" + fileExt,
@@ -71,6 +71,46 @@ class SpaceStylerTest extends TestBase {
 			Path gtPath = Paths.get(dir, String.format("%s-gt" + fileExt, srcFiles[i].replace(fileExt, "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "cpp", List.of(SpaceStyler.class));
 			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			try {
+				testCodeEqual(actual, gtPath);
+			} catch (AssertionFailedError e) {
+				logger.error("Pair `{}` test failed%n", i + 1, e);
+			}
+//			break;
+		}
+	}
+
+
+	@Test
+	void applyStylePython() {
+		String fileExt = ".py";
+		String language = "python";
+		String dir = "src/test/python-sources/space/";
+		String[] srcFiles = {
+				"f1" + fileExt,
+				"f2" + fileExt,
+//				"f3" + fileExt,
+//				"f4" + fileExt
+		};
+
+		String[] targetFiles = {
+				"f2" + fileExt,
+				"f1" + fileExt,
+//				"f4" + fileExt,
+//				"f3" + fileExt
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%sto%sgt" + fileExt, srcFiles[i].replace(fileExt, ""), targetFiles[i].replace(fileExt, "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), language, List.of(SpaceStyler.class));
+			if (true) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

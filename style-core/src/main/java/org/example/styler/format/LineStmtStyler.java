@@ -46,7 +46,7 @@ public class LineStmtStyler extends Styler {
         int curLength =  indentionLength;
         for (int i = 0; i < ctx.getChildCount() - 1; i++) {
             ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
-            if (parser.belongToSingleStmt(cur) && (parser.belongToSingleStmt(next) || next instanceof TerminalNode)) {
+            if (parser.belongToSimpleStmt(cur) && (parser.belongToSimpleStmt(next) || next instanceof TerminalNode)) {
                 ExtendContext curCtx = (ExtendContext) cur;
                 int stmtLength = curCtx.stop.getCharPositionInLine() + curCtx.stop.getText().length() - curCtx.start.getCharPositionInLine();
                 curLength += stmtLength;
@@ -71,7 +71,7 @@ public class LineStmtStyler extends Styler {
         int maxTextLengthInLine = 0, textLengthInLine = 0;
         for (int i = 0; i < ctx.getChildCount() - 1; i++) {
             ParseTree cur = ctx.getChild(i), next = ctx.getChild(i + 1);
-            if (parser.belongToSingleStmt(cur) && parser.belongToSingleStmt(next)) {
+            if (parser.belongToSimpleStmt(cur) && parser.belongToSimpleStmt(next)) {
                 ExtendContext curCtx = (ExtendContext) cur, nextCtx = (ExtendContext) next;
                 if (curCtx.stop.getLine() == nextCtx.start.getLine()) {
                     textLengthInLine = nextCtx.stop.getCharPositionInLine() + nextCtx.stop.getText().length();

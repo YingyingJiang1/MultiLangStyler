@@ -55,7 +55,7 @@ public class InterNewlineStyler extends Styler {
 
 	@Override
 	public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-		return parser.belongToSingleStmt(ctx) ||
+		return parser.belongToSimpleStmt(ctx) ||
 		parser.isStatement(ctx) && ctx.getText().equals(";") // empty statement
 				|| parser.getRuleImportDeclaration() == ctx.getRuleIndex();
 	}

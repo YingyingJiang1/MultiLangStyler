@@ -73,7 +73,7 @@ public class For2whileHandler extends Handler{
             }
         }
 
-        if (!parser.belongToSingleStmt(node)) {
+        if (!parser.belongToSimpleStmt(node)) {
             for (int i = 0; i < node.children.size(); i++) {
                 ParseTree child = node.children.get(i);
                 if (child instanceof ExtendContext) {

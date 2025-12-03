@@ -20,17 +20,6 @@ public class CppASTNodeEditor extends ASTNodeEditorBase {
 				!(parser.getSpecificStmt(node) instanceof CPPParser.BlockContext); // 排除block statement
 	}
 
-//	@Override
-//	protected boolean isBracedContent(ExtendContext node) {
-//		// Check function body
-//		if (node.getParent().getParent() instanceof CPPParser.FunctionBodyContext) {
-//			return true;
-//		}
-//		if (node.getParent() instanceof CPPParser.ClassSpecifierContext || node.getParent() instanceof CPPParser.EnumSpecifierContext) {
-//			return true;
-//		}
-//		return false;
-//	}
 
 	@Override
 	protected boolean isSubStmt(ExtendContext node) {

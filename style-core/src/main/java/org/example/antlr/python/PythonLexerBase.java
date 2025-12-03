@@ -196,7 +196,7 @@ public abstract class PythonLexerBase extends Lexer {
             encodingName = "utf-8"; // default Python source code encoding
         }
 
-        final CommonToken encodingToken = new CommonToken(PythonLexer.ENCODING, encodingName);
+        final CommonToken encodingToken = (CommonToken) getTokenFactory().create(PythonLexer.ENCODING, encodingName);
         encodingToken.setChannel(Token.HIDDEN_CHANNEL);
         this.addPendingToken(encodingToken);
     }
@@ -249,7 +249,7 @@ public abstract class PythonLexerBase extends Lexer {
         } else if (this.opened > 0) { // We're in an implicit line joining, ignore the current NEWLINE token
             this.hideAndAddPendingToken(this.curToken);
         } else {
-            final Token nlToken = new CommonToken(this.curToken); // save the current NEWLINE token
+            final Token nlToken = getTokenFactory().create(this.curToken.getType(), this.curToken.getText()); // save the current NEWLINE token
             final boolean isLookingAhead = this.ffgToken.getType() == PythonLexer.WS;
             if (isLookingAhead) {
                 this.setCurrentAndFollowingTokens(); // set the next two tokens
@@ -323,7 +323,7 @@ public abstract class PythonLexerBase extends Lexer {
             case PythonLexer.NEWLINE:
                 // append the current brace expression with the current newline
                 this.appendToBraceExpression(this.curToken.getText());
-                final CommonToken ctkn = new CommonToken(this.curToken);
+                final CommonToken ctkn = (CommonToken) getTokenFactory().create(this.curToken.getType(), this.curToken.getText());
                 ctkn.setChannel(Token.HIDDEN_CHANNEL);
                 this.curToken = ctkn;
                 break;
@@ -501,7 +501,7 @@ public abstract class PythonLexerBase extends Lexer {
         // trim the last char and add the modified curToken to the pendingTokens stack
         final String curTokenText = this.curToken.getText();
         final String tokenTextWithoutLastChar = curTokenText.substring(0, curTokenText.length() - 1);
-        final CommonToken ctkn = new CommonToken(this.curToken);
+        final CommonToken ctkn = (CommonToken) getTokenFactory().create(this.curToken.getType(), this.curToken.getText());
         ctkn.setText(tokenTextWithoutLastChar);
         ctkn.setStopIndex(ctkn.getStopIndex() - 1);
         this.addPendingToken(ctkn);
@@ -516,13 +516,13 @@ public abstract class PythonLexerBase extends Lexer {
             // In fstring a colonequal (walrus operator) can only be used in parentheses
             // Not in parentheses, replace COLONEQUAL token with COLON as format specifier
             // and insert the equal symbol to the following FSTRING_MIDDLE token
-            CommonToken ctkn = new CommonToken(this.curToken);
+            CommonToken ctkn = (CommonToken) getTokenFactory().create(this.curToken.getType(), this.curToken.getText());
             ctkn.setType(PythonLexer.COLON);
             ctkn.setText(":");
             ctkn.setStopIndex(ctkn.getStartIndex());
             this.curToken = ctkn;
             if (this.ffgToken.getType() == PythonLexer.FSTRING_MIDDLE) {
-                ctkn = new CommonToken(this.ffgToken);
+                ctkn = (CommonToken) getTokenFactory().create(this.ffgToken.getType(), this.ffgToken.getText());
                 ctkn.setText("=" + ctkn.getText());
                 ctkn.setStartIndex(ctkn.getStartIndex() - 1);
                 ctkn.setCharPositionInLine(ctkn.getCharPositionInLine() - 1);
@@ -536,7 +536,7 @@ public abstract class PythonLexerBase extends Lexer {
     }
 
     private void createNewCurToken(final int type, final String text, final int channel) {
-        final CommonToken ctkn = new CommonToken(this.curToken);
+        final CommonToken ctkn = (CommonToken) getTokenFactory().create(this.curToken.getType(), this.curToken.getText());
         ctkn.setType(type);
         ctkn.setText(text);
         ctkn.setChannel(channel);
@@ -617,13 +617,13 @@ public abstract class PythonLexerBase extends Lexer {
     }
 
     private void hideAndAddPendingToken(final Token tkn) {
-        final CommonToken ctkn = new CommonToken(tkn);
+        final CommonToken ctkn = (CommonToken) getTokenFactory().create(tkn.getType(), tkn.getText());
         ctkn.setChannel(Token.HIDDEN_CHANNEL);
         this.addPendingToken(ctkn);
     }
 
     private void createAndAddPendingToken(final int ttype, final int channel, final String text, final Token sampleToken) {
-        final CommonToken ctkn = new CommonToken(sampleToken);
+        final CommonToken ctkn = (CommonToken) getTokenFactory().create(sampleToken.getType(), sampleToken.getText());
         ctkn.setType(ttype);
         ctkn.setChannel(channel);
         ctkn.setStopIndex(sampleToken.getStartIndex() - 1);

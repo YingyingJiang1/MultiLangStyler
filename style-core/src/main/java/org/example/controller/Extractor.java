@@ -66,6 +66,8 @@ public class Extractor {
                     }
                     TokenAugmentor tokenAugmentor = new TokenAugmentor();
                     Extractor.extractRules(parser, container, tokenAugmentor);
+                } else {
+                    logger.warn("File extension {} is not supported.", curPath.getFileName().toString());
                 }
 
             } catch (Exception e) {

@@ -239,7 +239,7 @@ public class NewlineStyler extends Styler {
 				return new NewlineContext.NodeType("LOOP_STMT");
 			} else if (parser.isStatement(node) && node.getChild(0) instanceof TerminalNode) {
 				return new NewlineContext.NodeType("EMPTY_STMT");
-			} else if (parser.belongToSingleStmt(node) && rule != parser.getRuleLocalVarDeclarationStmt()) {
+			} else if (parser.belongToSimpleStmt(node) && rule != parser.getRuleLocalVarDeclarationStmt()) {
 				return new NewlineContext.NodeType("SINGLE_STMT");
 			}
 			return new NewlineContext.NodeType(parser.getRuleName(rule));

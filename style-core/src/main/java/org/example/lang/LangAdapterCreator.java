@@ -7,6 +7,7 @@ import org.example.lang.cpp.CppASTNodeEditor;
 import org.example.lang.intf.*;
 import org.example.lang.java.JavaCodeContextPredicate;
 import org.example.lang.java.JavaASTNodeEditor;
+import org.example.lang.python.PythonAstNodeEditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,6 +98,7 @@ public class LangAdapterCreator {
 		return switch (lang) {
 			case "java" -> JavaASTNodeEditor.getInstance();
 			case "cpp" -> CppASTNodeEditor.getInstance();
+			case "python" -> PythonAstNodeEditor.getInstance();
 			default -> null;
 		};
 	}
