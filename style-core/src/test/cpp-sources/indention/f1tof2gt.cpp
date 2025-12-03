@@ -11,7 +11,7 @@ namespace demo {
 		};
 
 		class Math {
-		public:
+			public:
 			int sum(const std::vector<int>& v);
 			Point mirror(const Point& p);
 		};
@@ -35,12 +35,12 @@ namespace demo {
 
 	int utilFunc(int n) {
 		switch (n) {
-		case 0:
-			return -1;
-		case 1:
-			return 1;
-		default:
-			return n * 2;
+			case 0:
+				return -1;
+			case 1:
+				return 1;
+			default:
+				return n * 2;
 		}
 	}
 

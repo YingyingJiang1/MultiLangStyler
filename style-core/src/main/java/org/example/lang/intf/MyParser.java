@@ -5,6 +5,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.factory.ExtendTokenFactory;
 import org.example.antlr.common.token.AmbigousToken;
+import org.example.lang.java.MyJavaParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface MyParser {
+    Logger logger = LoggerFactory.getLogger(MyParser.class);
+
     Set<String> assignOps = new HashSet<>(Arrays.asList(
             "=", "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", ">>=", ">>>="
     ));
@@ -72,6 +77,10 @@ public interface MyParser {
     boolean isConstructorDeclarationList(ParseTree t);
     boolean isInitializerList(ParseTree t);
     boolean isTypeDeclarationList(ParseTree t);
+
+    /**
+     * @return {@code true} if the node is the body of a function or a type declaration; {@code false} otherwise
+     */
     boolean isBody(ParseTree t);
     boolean isAnnotation(ParseTree t);
     boolean isBlock(ParseTree t);

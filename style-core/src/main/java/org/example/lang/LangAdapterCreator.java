@@ -3,8 +3,10 @@ package org.example.lang;
 import org.example.MyEnvironment;
 import org.example.lang.base.CodeContextPredicateBase;
 import org.example.lang.base.FormatUnitGrouperBase;
+import org.example.lang.cpp.CppASTNodeEditor;
 import org.example.lang.intf.*;
 import org.example.lang.java.JavaCodeContextPredicate;
+import org.example.lang.java.JavaASTNodeEditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,6 +89,15 @@ public class LangAdapterCreator {
 	public static FormatUnitGrouper createFormatUnitGrouper(String lang) {
 		return switch (lang) {
 			default -> FormatUnitGrouperBase.getInstance();
+		};
+	}
+
+
+	public static ASTNodeEditor createASTNodeEditor(String lang) {
+		return switch (lang) {
+			case "java" -> JavaASTNodeEditor.getInstance();
+			case "cpp" -> CppASTNodeEditor.getInstance();
+			default -> null;
 		};
 	}
 }

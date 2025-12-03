@@ -5,13 +5,13 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.antlr.common.AntlrHelper;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.AmbigousToken;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.antlr.java.JavaLexer;
 import org.example.utils.TokenStreamUtil;
-import org.example.utils.editor.NodeEditorFactory;
 
 import java.util.*;
 
@@ -39,7 +39,7 @@ public class TokenAugmentor {
 
 	private static  void traverseTree(ParseTree node, MyParser parser) {
 		if (node instanceof ExtendContext ctx) {
-			NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
+			LangAdapterCreator.createASTNodeEditor(parser.getLanguage()).updateHierarchy(ctx);
 			for (int i = 0; i < node.getChildCount(); i++) {
 				traverseTree(node.getChild(i), parser);
 			}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style language="cpp">
+  <style name="indention">
+    <rule>
+      <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="0"/>
+    </rule>
+  </style>
+</program_style>

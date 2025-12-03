@@ -1,4 +1,4 @@
-package org.example.lang.python;
+package org.example.lang.base;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -7,8 +7,6 @@ import org.example.antlr.common.factory.ExtendTokenFactory;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.antlr.java.JavaLexer;
 import org.example.antlr.java.JavaParser;
-import org.example.antlr.python.PythonLexer;
-import org.example.antlr.python.PythonParser;
 import org.example.controller.TokenAugmentor;
 import org.example.lang.intf.MyParser;
 
@@ -16,10 +14,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
-public class MyPythonParser implements MyParser {
-	PythonParser parser = null;
+public class MyParserBase implements MyParser {
+	Parser parser = null;
 	Path curFile = null;
 	ParseTree root = null;
 
@@ -35,70 +32,21 @@ public class MyPythonParser implements MyParser {
 
 	@Override
 	public ParseTree parseFromString(String code) {
-		ExtendTokenFactory tokenFactory = new ExtendTokenFactory();
-		Lexer lexer = new PythonLexer(CharStreams.fromString(code));
-		lexer.setTokenFactory(tokenFactory);
-		CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-		parser = new PythonParser(tokenStream);
-		parser.setTokenFactory(tokenFactory);
-
-		parser.removeErrorListeners();
-
-		root = tryParse();
-		return root;
+		return null;
 	}
 
-	private ParseTree tryParse() {
-		Predicate<ExtendContext> parseFailTester = new Predicate<ExtendContext>() {
-			@Override
-			public boolean test(ExtendContext root) {
-				return parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
-			}
-		};
-
-		ExtendContext root = (ExtendContext) parser.file_input();
-		if (parseFailTester.test(root)) {
-			parser.reset();
-			root = parser.interactive();
-			if (parseFailTester.test(root)) {
-				parser.reset();
-				root = parser.eval();
-				if (parseFailTester.test(root)) {
-					parser.reset();
-					root = parser.func_type();
-					if (parseFailTester.test(root)) {
-						parser.reset();
-						root = parser.statements();
-					}
-				}
-			}
-		}
-		if (parser.getNumberOfSyntaxErrors() > 0) {
-			logger.error("Failed to parse code, " +
-					"this program is only able to parse the top-level, typeDeclaration-level, method-level, stmt-level,expression-level code.");
-			return null;
-		}
-
-
-		TokenAugmentor.addContextTokens(this);
-		// 统一换行符
-		((CommonTokenStream) parser.getTokenStream()).getTokens().forEach(t -> {
-			if (t.getType() == getVws() || t.getType() == getBlockComment() || t.getType() == getLineComment()) {
-				((ExtendToken) t).setText(t.getText().replace("\r\n", "\n"));
-			}
-		});
-		return root;
+	protected ParseTree tryParse() {
+		return null;
 	}
-
 
 	@Override
 	public TokenStream getTokenStream() {
-		return parser.getTokenStream();
+		return null;
 	}
 
 	@Override
 	public String getLanguage() {
-		return "python";
+		return "";
 	}
 
 	@Override

@@ -7,10 +7,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.factory.ExtendTokenFactory;
 import org.example.antlr.common.token.ExtendToken;
-import org.example.utils.editor.NodeEditorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -161,7 +161,7 @@ public class ParseTreeUtil {
 //      }
     } else {
       ExtendContext ctx = (ExtendContext) root;
-      NodeEditorFactory.createASTEditor(parser.getLanguage()).updateHierarchy(parser, ctx);
+      LangAdapterCreator.createASTNodeEditor(parser.getLanguage()).updateHierarchy(ctx);
       for (ParseTree child : ctx.children) {
         generateTokens(child, tokens, parser);
       }

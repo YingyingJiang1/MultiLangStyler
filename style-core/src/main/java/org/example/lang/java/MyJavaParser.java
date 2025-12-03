@@ -25,8 +25,6 @@ import java.util.function.Predicate;
  * @create       2024/4/5 22:08
  */
 public class MyJavaParser implements MyParser {
-    public static Logger logger =LoggerFactory.getLogger(MyJavaParser.class);
-
     JavaParser parser = null;
     Path curFile = null;
     ParseTree root = null;

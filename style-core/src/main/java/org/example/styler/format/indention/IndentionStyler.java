@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.CodeContextPredicate;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
@@ -231,13 +233,8 @@ public class IndentionStyler extends Styler {
 
     @Override
     public boolean isRelevant(List<Token> tokens, int i, Stage stage, MyParser parser) {
-        if (stage == Stage.EXTRACT) {
-            return tokens.get(i).getCharPositionInLine() == 0;
-        } else if(stage == Stage.APPLY) {
-            return isLineLeadingToken(tokens, i, parser);
-        } else {
-            return false;
-        }
+        CodeContextPredicate predicate = LangAdapterCreator.createCodeContextPredicate(parser.getLanguage());
+        return predicate.isIndentionContext(tokens, i, parser);
     }
 
     /**

@@ -17,7 +17,7 @@ public class CodeContextPredicateBase implements CodeContextPredicate {
 
 	@Override
 	public boolean isIndentionContext(List<Token> tokens, int i, MyParser parser) {
-		return false;
+		return tokens.get(i).getCharPositionInLine() == 0;
 	}
 
 	@Override

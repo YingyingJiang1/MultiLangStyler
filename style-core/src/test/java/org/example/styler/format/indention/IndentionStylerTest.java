@@ -57,17 +57,21 @@ class IndentionStylerTest extends TestBase {
 		String[] srcFiles = {
 				"f1.cpp",
 				"f2.cpp",
+				"f3.cpp",
+				"f3.cpp"
 		};
 
 		String[] targetFiles = {
 				"f2.cpp",
 				"f1.cpp",
+				"f1.cpp",
+				"f2.cpp"
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("%s-gt.cpp", srcFiles[i].replace(".cpp", "")));
+			Path gtPath = Paths.get(dir, String.format("%sto%sgt.cpp", srcFiles[i].replace(".cpp", ""), targetFiles[i].replace(".cpp", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "cpp", List.of(IndentionStyler.class));
-			if (true) {
+			if (false) {
 				try {
 					Files.writeString(gtPath, actual);
 				} catch (Exception e) {
