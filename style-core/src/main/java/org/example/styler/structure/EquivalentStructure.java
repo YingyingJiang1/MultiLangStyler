@@ -8,13 +8,12 @@ import org.example.myException.TreeConvertException;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.intf.MyParser;
 import org.example.styler.structure.handler.ExceptionHandler;
-import org.example.styler.structure.vtree.VirtualNodeMatcher;
 import org.example.utils.ParseTreeUtil;
 import org.example.myException.CompilationException;
 import org.example.styler.structure.checker.Checker;
 import org.example.styler.structure.handler.Handler;
 import org.example.styler.structure.vtree.VirtualNode;
-import org.example.styler.structure.vtree.PlaceholderContainer;
+import org.example.lang.base.PlaceholderParser;
 import org.example.styler.structure.vtree.Forest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class EquivalentStructure {
 	// Each style of writing will be transformed into a forest.
 	List<Forest> forests = new ArrayList<>();
 	// Stores the corresponding virtual node for a placeholder with the same name.
-	PlaceholderContainer placeholderContainer = null;
+	PlaceholderParser placeholderParser = null;
 	Map<Integer, List<Integer>> bannedTransfer;
 	// key: tree generated from the placeholder, value: The virtual node corresponding to the placeholder.
 	Map<ParseTree, VirtualNode> vTreeMap = new HashMap<>();
@@ -92,7 +91,9 @@ public class EquivalentStructure {
 	void compile(XmlRuleParser.Rule xmlRule, String language) {
 		String[] codes = xmlRule.codes.toArray(new String[0]);
 		try {
-			placeholderContainer = PlaceholderContainer.createInstance(codes);
+
+			placeholderParser = LangAdapterCreator.createPlaceholderParser(language);
+			placeholderParser.init(codes);
 			for (int i = 0; i < codes.length; i++) {
 				boolean multiStmts = codes[i].startsWith("$^");
 				String code = replacePlaceholder(codes[i]);
@@ -134,7 +135,7 @@ public class EquivalentStructure {
 //				}
 
 				forests.add(new Forest(trees, priority, xmlRule.styles.get(i)));
-				uniqueVNodes(placeholderContainer, parser);
+				uniqueVNodes(placeholderParser, parser);
 			}
 		} catch (CompilationException e) {
 			logger.error(e.getMessage(), e);
@@ -174,7 +175,7 @@ public class EquivalentStructure {
         return forests;
     }
 	public VirtualNode getVNode(String placeholderName) {
-		return placeholderContainer.getVNodeByPlaceholderName(placeholderName);
+		return placeholderParser.getVNodeByPlaceholderName(placeholderName);
 	}
 
 	public List<VirtualNode> getAllVNodes() {
@@ -246,7 +247,7 @@ public class EquivalentStructure {
 
 	private boolean isContextMatched(List<VirtualNode> vNodes, MyParser parser) {
 		for (VirtualNode vNode :vNodes) {
-			if (!vNode.checkState(parser)) {
+			if (!vNode.checkState(placeholderParser)) {
 				return false;
 			}
 		}
@@ -378,7 +379,7 @@ public class EquivalentStructure {
 			boolean matchResult = ruleMatches(vtCtx, ctx);
 			VirtualNode virtualNode = vTreeMap.get(vt);
 			if (virtualNode != null) {
-				return virtualNode.matches(t, parser);
+				return virtualNode.matches(t, placeholderParser);
 			}
 			// A second try to match the root when real tree has a body without {}.
 			if(!matchResult) {
@@ -404,7 +405,7 @@ public class EquivalentStructure {
 
 				// Different match strategies for virtual node and non-virtual node.
 				if (virtualNode != null) {
-					matched = virtualNode.matches(tChild, parser);
+					matched = virtualNode.matches(tChild, placeholderParser);
 				} else {
 					matched = isMatched(vtChild, tChild, forest, parser);
 				}
@@ -469,7 +470,7 @@ public class EquivalentStructure {
 	/**
 	 * @apiNote After the method is called, parent filed of ParseTree is invalid.
 	 */
-	private void uniqueVNodes(PlaceholderContainer placeholderContainer, MyParser parser) {
+	private void uniqueVNodes(PlaceholderParser placeholderParser, MyParser parser) {
 		for (Forest forest : forests) {
 			for(ParseTree t : forest.getTrees()) {
 				doUnique(t, forest, parser);
@@ -487,8 +488,8 @@ public class EquivalentStructure {
 		if (!(node instanceof ExtendContext)) {
 			return;
 		}
-		VirtualNode vNode = placeholderContainer.getVNode(node, parser);
-		if (vNode != null && VirtualNodeMatcher.getInstance(parser).isMatched(vNode.type, node, parser)) {
+		VirtualNode vNode = placeholderParser.getVNode(node, parser);
+		if (vNode != null && placeholderParser.isMatched(vNode.type, node)) {
 			if (vNode.isEmpty()) {
 				vTreeMap.put(node, vNode);
 				vNode.tree = node;
@@ -509,13 +510,13 @@ public class EquivalentStructure {
 
 	private String replacePlaceholder(String code) {
 		// Placeholder name with a longer prefix should be replaced first.
-		List<String> placeholderNames = placeholderContainer.getPlaceholderNames().stream().sorted(Comparator.comparing(s -> -s.length())).toList();
+		List<String> placeholderNames = placeholderParser.getPlaceholderNames().stream().sorted(Comparator.comparing(s -> -s.length())).toList();
 		boolean flag = code.startsWith("$^");
 		String[] strs = code.split(" ");
 		StringBuilder retCode = new StringBuilder();
 		for(String str : strs) {
 			for(String placeholderName : placeholderNames) {
-				str = str.replace(placeholderName, placeholderContainer.getValue(placeholderName));
+				str = str.replace(placeholderName, placeholderParser.getValue(placeholderName));
 			}
 			retCode.append(str);
 			retCode.append(" ");
@@ -529,7 +530,7 @@ public class EquivalentStructure {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, category, rules, forests, placeholderContainer, bannedTransfer, vTreeMap, checkers, handlers);
+		return Objects.hash(id, category, rules, forests, placeholderParser, bannedTransfer, vTreeMap, checkers, handlers);
 	}
 
 	@Override
@@ -539,7 +540,7 @@ public class EquivalentStructure {
 					Objects.equals(category, structure.category) &&
 					Objects.equals(rules, structure.rules) &&
 					Objects.equals(forests, structure.forests) &&
-					Objects.equals(placeholderContainer, structure.placeholderContainer) &&
+					Objects.equals(placeholderParser, structure.placeholderParser) &&
 					Objects.equals(bannedTransfer, structure.bannedTransfer) &&
 					Objects.equals(vTreeMap, structure.vTreeMap) &&
 					Objects.equals(checkers, structure.checkers) &&

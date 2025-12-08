@@ -8,6 +8,7 @@ import org.example.lang.intf.*;
 import org.example.lang.java.JavaCodeContextPredicate;
 import org.example.lang.java.JavaASTNodeEditor;
 import org.example.lang.python.PythonAstNodeEditor;
+import org.example.lang.base.PlaceholderParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +102,17 @@ public class LangAdapterCreator {
 			case "python" -> PythonAstNodeEditor.getInstance();
 			default -> null;
 		};
+	}
+
+	public static PlaceholderParser createPlaceholderParser(String lang) {
+		Class<?> parserClass = MyEnvironment.getIConfig().getPlaceholderParser(lang);
+		try {
+			return (PlaceholderParser) parserClass.getDeclaredConstructor().newInstance();
+		} catch (Exception e) {
+			logger.warn("Failed to create parser instance via constructor for class: {}",
+					parserClass.getName(), e);
+			return null;
+		}
 	}
 }
 

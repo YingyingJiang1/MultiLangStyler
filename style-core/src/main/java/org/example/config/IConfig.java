@@ -42,4 +42,6 @@ public interface IConfig {
 	 * Set enabled stylers for specific language.
 	 */
 	void SetEnabledStylers(String lang, List<Class<?>> stylerClasses);
+
+	Class<?> getPlaceholderParser(String lang);
 }

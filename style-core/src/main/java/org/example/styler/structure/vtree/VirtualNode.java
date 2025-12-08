@@ -1,7 +1,7 @@
 package org.example.styler.structure.vtree;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.lang.intf.MyParser;
+import org.example.lang.base.PlaceholderParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +33,9 @@ public class VirtualNode {
         return tree == null;
     }
 
-    public boolean matches(ParseTree t1, MyParser parser) {
+    public boolean matches(ParseTree t1, PlaceholderParser parser) {
         // Check node
-        boolean isMatched = VirtualNodeMatcher.getInstance(parser).isMatched(type, t1, parser);
+        boolean isMatched = parser.isMatched(type, t1);
         // Check state
         int step = moveStep();
 
@@ -46,10 +46,10 @@ public class VirtualNode {
         return false;
     }
 
-    public boolean checkState(MyParser parser) {
+    public boolean checkState(PlaceholderParser parser) {
         // Check tree type correct.
         for (ParseTree tree : matchedTrees) {
-            if (!VirtualNodeMatcher.getInstance(parser).isMatched(type, tree, parser)) {
+            if (!parser.isMatched(type, tree)) {
                 return false;
             }
         }

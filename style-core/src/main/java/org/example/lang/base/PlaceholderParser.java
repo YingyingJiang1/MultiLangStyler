@@ -1,8 +1,10 @@
-package org.example.styler.structure.vtree;
+package org.example.lang.base;
 
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.styler.structure.vtree.VirtualNode;
 
 import java.util.*;
 import java.util.Objects;
@@ -25,7 +27,7 @@ import java.util.regex.Pattern;
  * $HOMO_BOP_ASSIGN: assign and compound assign
  * $LITERAL: literal
  */
-public class PlaceholderContainer {
+public class PlaceholderParser {
 
 
     // key: placeholder value, value:placeholder names
@@ -35,59 +37,67 @@ public class PlaceholderContainer {
     static int DIGITAL_GROUP = 2;
     static int REPETITION_GROUP = 3;
     // Ensure each pattern has three groups. If regular1 is a prefix of regular2 then regular1 should be put after regular2.
-    static Pattern[] placeholderPatterns = {
-            Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
-            Pattern.compile("(\\$ARRAY_INITIALIZER)(\\d*)()"),
-            Pattern.compile("(\\$VAR_DEC)(\\d*)([*+?]?)"),
-            Pattern.compile("(\\$EXP_LIST)(\\d*)([*+?]?)"),
-            Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
-            Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
-            Pattern.compile("(\\$[ISEMVT^])(\\d*)([*+?]?)"),
-            Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
-            Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
-            Pattern.compile("(\\$LITERAL)(\\d*)()")
-    };
+    static Pattern[] placeholderPatterns;
 
     // Make sure each placeholder type has a different placeholder values.
     // For the placeholder has the same value, such as $M,$ARRAY_INITIALIZER,$HOMO_BOP..., if a configured structure has more
     // than one kind of that placeholder($M1,$M2 is seen as two kinds of $M), it may go wrong.
-    private static final Map<String, String> placeholderMap = new HashMap<>() {{
-        put("$I", "I#id");
-        put("$E", "E#id");
-        put("$V", "V#id");
-        put("$T", "T#id");
-        put("$M", "");
-        put("$ARRAY_INITIALIZER", "{}");
-        put("$EXP_LIST", "I#id=0,J#id=1");
-        put("$S(ifStmt)", "if(IFCOND#id>0){}");
-        put("$S(ifElseStmt)", "if(IFELSECOND#id>0){}else{}");
-        put("$S(expStmt)", "I#id=0;");
-        put("$S", "RV#id=LV#id;");
-        put("$HOMO_BOP", "+");
-        put("$HOMO_BOP_ASSIGN", "+=");
-        put("$LITERAL", "1#id");
-        put("$VAR_DEC", "int VAR#id");
-    }};
+    private static Map<String, String> parserMap;
 
-
-    public static PlaceholderContainer createInstance(String[] codes) {
-        PlaceholderContainer container = new PlaceholderContainer();
+    public void init(String[] codes) {
         for(String code : codes) {
             String[] tokens = code.split(" ");
             for (String token : tokens) {
                 if (token.startsWith("$")) {
-                    Placeholder placeholderObj = container.createPlaceholder(token);
+                    Placeholder placeholderObj = createPlaceholder(token);
                     placeholderObj.vNode = new VirtualNode(placeholderObj.type, placeholderObj.repetition);
-                    container.placeholders.put(token, placeholderObj);
+                    placeholders.put(token, placeholderObj);
                 }
             }
         }
-        return container;
+        initPlaceholderPatterns();
+        initParserMap();
     }
 
-    public Placeholder getPlaceholder(String placeholderName) {
-        return placeholders.get(placeholderName);
+    protected void initPlaceholderPatterns() {
+        if (placeholderPatterns == null) {
+            placeholderPatterns = new Pattern[]{
+                Pattern.compile("(\\$S\\([a-zA-Z]+\\))(\\d*)([*+?]?)"),
+                        Pattern.compile("(\\$ARRAY_INITIALIZER)(\\d*)()"),
+                        Pattern.compile("(\\$VAR_DEC)(\\d*)([*+?]?)"),
+                        Pattern.compile("(\\$EXP_LIST)(\\d*)([*+?]?)"),
+                        Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
+                        Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
+                        Pattern.compile("(\\$[ISEMVT^])(\\d*)([*+?]?)"),
+                        Pattern.compile("(\\$HOMO_BOP_ASSIGN)(\\d*)()"),
+                        Pattern.compile("(\\$HOMO_BOP)(\\d*)()"),
+                        Pattern.compile("(\\$LITERAL)(\\d*)()")
+            };
+        }
     }
+
+    protected void initParserMap() {
+        if (parserMap == null) {
+            parserMap = new HashMap<>() {{
+                put("$I", "I#id");
+                put("$E", "E#id");
+                put("$V", "V#id");
+                put("$T", "T#id");
+                put("$M", "");
+                put("$ARRAY_INITIALIZER", "{}");
+                put("$EXP_LIST", "I#id=0,J#id=1");
+                put("$S(ifStmt)", "if(IFCOND#id>0){}");
+                put("$S(ifElseStmt)", "if(IFELSECOND#id>0){}else{}");
+                put("$S(expStmt)", "I#id=0;");
+                put("$S", "RV#id=LV#id;");
+                put("$HOMO_BOP", "+");
+                put("$HOMO_BOP_ASSIGN", "+=");
+                put("$LITERAL", "1#id");
+                put("$VAR_DEC", "int VAR#id");
+            }};
+        }
+    }
+
 
     public String getValue(String placeholderName) {
         Placeholder placeholder = placeholders.get(placeholderName);
@@ -193,11 +203,12 @@ public class PlaceholderContainer {
                 repetition = matcher.group(REPETITION_GROUP);
             }
         }
-        String placeholderValue = placeholderMap.getOrDefault(type, "").replace("#id", digitalId);
+        String placeholderValue = parserMap.getOrDefault(type, "").replace("#id", digitalId);
         valueNameMap.computeIfAbsent(placeholderValue, v -> new ArrayList<>());
         valueNameMap.get(placeholderValue).add(placeholderName);
         return new Placeholder(placeholderName, placeholderValue, repetition, type);
     }
+
 
     public static class Placeholder {
         String placeholderName;
@@ -238,10 +249,34 @@ public class PlaceholderContainer {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof PlaceholderContainer placeholderContainer) {
-            return Objects.equals(valueNameMap, placeholderContainer.valueNameMap) &&
-                    Objects.equals(placeholders, placeholderContainer.placeholders);
+        if (obj instanceof PlaceholderParser placeholderParser) {
+            return Objects.equals(valueNameMap, placeholderParser.valueNameMap) &&
+                    Objects.equals(placeholders, placeholderParser.placeholders);
         }
         return false;
+    }
+
+    protected Map<String, Set<Integer>> getTokenMatchMap() {
+        return  null;
+    }
+
+    protected Map<String, Set<Integer>> getRuleMatchMap() {
+        return  null;
+    }
+
+    public boolean isMatched(String type, ParseTree tree) {
+
+        if (tree instanceof TerminalNode) {
+            if (tree.getText().equals(";") && type.equals("$S")) {
+                return true;
+            }
+            Map<String, Set<Integer>> matchTokens = getTokenMatchMap();
+            return matchTokens.get(type) != null && matchTokens.get(type).contains(((TerminalNode) tree).getSymbol().getType());
+        } else {
+            int rule = ((ExtendContext) tree).getRuleIndex();
+            Map<String, Set<Integer>> matchRules = getRuleMatchMap();
+            Set<Integer> rules = matchRules.get(type);
+            return rules != null && rules.contains(rule);
+        }
     }
 }

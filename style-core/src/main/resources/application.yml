@@ -16,6 +16,7 @@ lang:
       treeNodeFactory: org.example.lang.java.JavaTreeNodeFactory
       astRewriter: org.example.lang.base.ASTRewriterBase
       nodeSearcherFactory: org.example.lang.java.JavaNodeSearcherFactory
+      placeholderParser: org.example.lang.java.JavaPlaceholderParser
       equivalencesConfig: "/equivalences.xml"
 
     cpp:

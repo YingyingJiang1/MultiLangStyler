@@ -167,6 +167,12 @@ public class MyConfiguration implements IConfig {
     return doGetClass(lang + ".nodeSearcherFactory");
   }
 
+  @Override
+  public Class<?> getPlaceholderParser(String lang) {
+    return doGetClass(lang + ".placeholderParser");
+  }
+
+
   private Class<?> doGetClass(String key) {
     try {
       return Class.forName(languageConfigs.all.getOrDefault(key, null));
