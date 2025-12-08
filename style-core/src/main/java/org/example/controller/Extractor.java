@@ -50,7 +50,7 @@ public class Extractor {
                 Path curPath = Paths.get(fileCollection.getFilePath(i));
 
                 // Read style from style file successfully, return directly.
-                if (curPath.endsWith(".xml")) {
+                if (curPath.getFileName().toString().endsWith(".xml")) {
                     ProgramStyle ret = StyleFileIO.read(curPath.toString());
                     if (ret != null) {
                         return ret;

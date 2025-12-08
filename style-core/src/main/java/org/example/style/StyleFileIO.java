@@ -41,6 +41,9 @@ public class StyleFileIO {
             Document document = reader.read(new File(file));
             Element root = document.getRootElement();
             String language = root.attributeValue("language");
+            if (language == null) {
+                language = "java";
+            }
             MyParser parser = LangAdapterCreator.createParser(language);
             programStyle.parseElement(root, parser);
             for (Style style : programStyle.getStyles()) {

@@ -13,7 +13,7 @@ public class JavaPlaceholderParser extends PlaceholderParser {
 	private static Map<String, Set<Integer>> matchRules = new HashMap<>();
 	private static Map<String, Set<Integer>> matchTokens = new HashMap<>();
 
-	private static void init() {
+	static {
 		MyParser parser = LangAdapterCreator.createParser("java");
 
 		matchRules.put("$I", Set.of(parser.getRuleIdentifier()));
@@ -31,6 +31,7 @@ public class JavaPlaceholderParser extends PlaceholderParser {
 		matchTokens.put("$HOMO_BOP", parser.getHomoOps());
 		matchTokens.put("$HOMO_BOP_ASSIGN", parser.getCompoundAssign());
 	}
+
 
 	@Override
 	protected Map<String, Set<Integer>> getTokenMatchMap() {
