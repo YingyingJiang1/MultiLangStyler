@@ -45,6 +45,9 @@ public class PlaceholderParser {
     private static Map<String, String> parserMap;
 
     public void init(String[] codes) {
+        initPlaceholderPatterns();
+        initParserMap();
+
         for(String code : codes) {
             String[] tokens = code.split(" ");
             for (String token : tokens) {
@@ -55,8 +58,6 @@ public class PlaceholderParser {
                 }
             }
         }
-        initPlaceholderPatterns();
-        initParserMap();
     }
 
     protected void initPlaceholderPatterns() {

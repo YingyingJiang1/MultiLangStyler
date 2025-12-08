@@ -80,29 +80,8 @@ public class TestBase {
 	 * @return the transformed code
 	 */
 	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Object>> classes) {
-//		Controller controller = new Controller();
-//
-//		StylerContainer container = new StylerContainer();
-//		for (Styler styler : container.getStylers()) {
-//			if (!classes.contains(styler.getClass())) {
-//				styler.disable();
-//			}
-//		}
-//
-//
-//		FileCollection targetCollection = FileCollector.getFileCollection(List.of(targetPath.toString()));
-//
-//		ProgramStyle sytle = null;
-//		if (targetCollection.size() == 1 && targetCollection.getFilePath(0).endsWith("xml")) {
-//			sytle = StyleFileIO.read(targetCollection.getFilePath(0));
-//			controller.setTargetProgramStyle(sytle);
-//
-//		} else {
-//			sytle = controller.extractStyle(targetCollection);
-//		}
-//		StyleFileIO.write(sytle, Paths.get(srcPath.getParent().toString(), "style.xml").toString(), LangAdapterCreator.createParser("java"));
-//		return controller.applyStyle(srcPath);
-		return null;
+		String lang = "java";
+		return apply(srcPath, targetPath, lang, classes);
 	}
 
 	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {

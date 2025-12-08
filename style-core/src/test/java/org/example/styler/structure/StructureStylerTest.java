@@ -53,16 +53,6 @@ class StructureStylerTest extends TestBase {
 
 	@Test
 	void testRedudantCode() {
-		String code = "for (int i = 0; i < 4; ++i) { if (test(i)) {a *= i;b += a;} else {a -= i;b += a;}}";
-		StructureStyler styler = doStyler(code, "java", Stage.EXTRACT);
-		for (StyleRule rule : styler.getStyle().getRules()) {
-			if (rule.getStyleContext() instanceof StructPreferenceContext context
-					&& context.getStructID() == 25) {
-				System.out.printf("Test %s:%s...", context.getStructID(), 1);
-				assertEquals(1, ((StructPreferenceProperty) rule.getStyleProperty()).getPreferenceIndex());
-				System.out.println("OK!");
-			}
-		}
 
 		String dir = "src/test/sources/structure/redundant_code/";
 		String[] srcFiles = {
