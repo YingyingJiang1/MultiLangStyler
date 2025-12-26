@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
@@ -11,6 +12,7 @@ import org.example.style.rule.StyleContext;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.*;
+import org.example.styler.structure.vtree.Forest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
@@ -25,21 +27,14 @@ import java.util.*;
 public class StructureStyler extends Styler {
     public static boolean TEST_MODE = false;
 
-    private static final String CONF_FILE = "/equivalences.xml";
-    private static final Map<Integer, List<EquivalentStructure>> equivalencesMap = new HashMap<>();
+    private Map<Integer, Set<EquivalentStructure>> equivalencesMap = null;
     private Map<EquivalentStructure, Set<Integer>> convertionPerformed = new HashMap<>();
     private int recursiveDepth = 0;
 
     public static Logger logger = LoggerFactory.getLogger(StructureStyler.class);
 
     static {
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyEnvironment.getIConfig().getJavaEquivalencesConfig(), "java"); // TBD: extend for other languages
-        for (EquivalentStructure equivalence : equivalences) {
-            for (int rule : equivalence.rules) {
-                // create map for efficiency, avoid to traverse all configured structures.
-                equivalencesMap.computeIfAbsent(rule, v -> new ArrayList<>()).add(equivalence);
-            }
-        }
+
 
     }
 
@@ -48,9 +43,26 @@ public class StructureStyler extends Styler {
         // executeWhenExit is true
     }
 
+    private void loadData(String lang) {
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyEnvironment.getIConfig().getEquivalencesConfig(lang), lang); // TBD: extend for other languages
+        // create map for efficiency, avoid to traverse all configured structures.
+        equivalencesMap = new HashMap<>();
+        MyParser parser = LangAdapterCreator.createParser(lang);
+        for (EquivalentStructure equivalence : equivalences) {
+            for (Forest forest : equivalence.getForests()) {
+                ParseTree root = forest.getTree(0);
+                if (parser.isStatement(root)) {
+                    equivalencesMap.computeIfAbsent(parser.getSpecificStmtType((ExtendContext) root), v -> new HashSet<>()).add(equivalence);
+                } else {
+                    equivalencesMap.computeIfAbsent(((ExtendContext) root).getRuleIndex(), v -> new HashSet<>()).add(equivalence);
+
+                }
+            }
+        }
+    }
+
 
     /**
-     *
      * @param ctx
      * @param parser
      * @return the inconsistency info if found, otherwise null
@@ -63,7 +75,7 @@ public class StructureStyler extends Styler {
         if (ctx.getRuleIndex() == parser.getRuleStmt()) {
             ruIndex = parser.getSpecificStmt(ctx).getRuleIndex();
         }
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
+        Set<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
         if (equivalentStructures != null) {
             Set<MatchedStructure> matchedStructures = new TreeSet<>();
             for (EquivalentStructure structure : equivalentStructures) {
@@ -100,13 +112,17 @@ public class StructureStyler extends Styler {
 
     @Override
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        if (equivalencesMap == null) {
+            loadData(parser.getLanguage());
+        }
+
         int ruIndex = ctx.getRuleIndex();
         if (ctx.getRuleIndex() == parser.getRuleStmt()) {
             ruIndex = parser.getSpecificStmt(ctx).getRuleIndex();
         }
         ++recursiveDepth;
         ParseTree newTree = ctx;
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
+        Set<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruIndex);
         if (equivalentStructures != null) {
             // Get all matched structures
             Set<MatchedStructure> matchedStructures = new TreeSet<>();
@@ -163,11 +179,15 @@ public class StructureStyler extends Styler {
 
     @Override
     public void extractStyle(ExtendContext ctx, MyParser parser) {
+        if (equivalencesMap == null) {
+            loadData(parser.getLanguage());
+        }
+
         int ruleIndex = ctx.getRuleIndex();
         if (ctx.getRuleIndex() == parser.getRuleStmt()) {
             ruleIndex = parser.getSpecificStmt(ctx).getRuleIndex();
         }
-        List<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
+        Set<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
         if (equivalentStructures != null) {
 //            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
 //                System.out.println("--------------------waiting to match---------------------");

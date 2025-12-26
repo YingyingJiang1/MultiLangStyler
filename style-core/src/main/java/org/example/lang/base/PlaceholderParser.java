@@ -115,20 +115,6 @@ public class PlaceholderParser {
     /**
      * @param placeholderValue
      * @return
-     * @apiNote This method can't handle the case where different placeholder names has the same placeholder value.
-     */
-    public String getPlaceholderName(String placeholderValue) {
-        for (Placeholder placeholder : placeholders.values()) {
-            if (placeholderValue.equals(placeholder.placeholderValue.replace(" ", ""))) {
-                return placeholder.placeholderName;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @param placeholderValue
-     * @return
      * @apiNote This method can handle the case where different placeholder names has the same placeholder value.
      * But there may be some bugs.
      */
@@ -149,21 +135,34 @@ public class PlaceholderParser {
      * @return
      * @apiNote This method can't handle the case where different placeholder names has the same placeholder value.
      */
-    public VirtualNode getVNode(ParseTree node, MyParser parser) {
+    public VirtualNode getVNode(ParseTree node) {
 
-        String placeholderName = getPlaceholderName(node.getText());
+        // Get placeholder name by its value.
+        String placeholderValue = node.getText();
+        String placeholderName = null;
+        for (Placeholder placeholder : placeholders.values()) {
+            if (placeholderValue.equals(placeholder.placeholderValue.replace(" ", ""))) {
+                placeholderName = placeholder.placeholderName;
+            }
+        }
+
         Placeholder placeholder = placeholders.get(placeholderName);
 
         if (placeholder == null) {
             return null;
         }
 
-        boolean ret = checkNodeType(node, placeholder, parser);
-        if (!ret) {
-            return null;
+        if (isMatched(placeholder.type, node)) {
+            return placeholder.vNode;
         }
+        return null;
 
-        return placeholder.vNode;
+        // Old implementation
+//        boolean ret = checkNodeType(node, placeholder, parser);
+//        if (!ret) {
+//            return null;
+//        }
+//        return placeholder.vNode;
     }
 
     private boolean checkNodeType(ParseTree node, Placeholder placeholder, MyParser parser) {

@@ -17,13 +17,19 @@ lang:
       astRewriter: org.example.lang.base.ASTRewriterBase
       nodeSearcherFactory: org.example.lang.java.JavaNodeSearcherFactory
       placeholderParser: org.example.lang.java.JavaPlaceholderParser
+      symbolResolver: org.example.lang.java.symbol.JavaResolver
+      typeResolver: org.example.lang.base.symbol.TypeResolverImpl
       equivalencesConfig: "/equivalences.xml"
+
 
     cpp:
       parser: org.example.lang.cpp.MyCppParser
       treeNodeFactory: org.example.lang.cpp.CppTreeNodeFactory
       astRewriter: org.example.lang.base.ASTRewriterBase
-      equivalencesConfig: "/cpp-equivalences.xml"
+      placeholderParser: org.example.lang.cpp.CppPlaceholderParser
+      symbolResolver: org.example.lang.java.symbol.JavaResolver
+      typeResolver: org.example.lang.base.symbol.TypeResolverImpl
+      equivalencesConfig: "/cpp_equivalences.xml"
 
     python:
       parser: org.example.lang.python.MyPythonParser

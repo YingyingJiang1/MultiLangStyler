@@ -121,14 +121,28 @@ public class MyCppParser implements MyParser {
 	 * But must be careful when return the root, root should be the child of compilationUnit node if the production used is new added.
 	 */
 	private ParseTree tryParse() {
+
+		 // Predicate returns true if parsing failed
 		Predicate<ExtendContext> parseFailTester = new Predicate<ExtendContext>() {
 			@Override
 			public boolean test(ExtendContext root) {
-				return parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
+				return !parser.isMatchedEOF() || parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
 			}
 		};
 
-		ExtendContext root = (ExtendContext) parser.declarationseq();
+		ExtendContext root = (ExtendContext) parser.expression();
+		if (parseFailTester.test(root)) {
+			parser.reset();
+			root = parser.statement();
+			if (parseFailTester.test(root)) {
+				parser.reset();
+				root = parser.declarationseq();
+				if (parseFailTester.test(root)) {
+					parser.reset();
+					root = parser.translationUnit();
+				}
+			}
+		}
 		if (parser.getNumberOfSyntaxErrors() > 0) {
 			logger.error("Failed to parse code.");
 			return null;

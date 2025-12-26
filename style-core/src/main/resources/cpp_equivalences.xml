@@ -1,0 +1,560 @@
+<rules>
+    <!-- 要求每条规则的id和name唯一 -->
+    <rule id="1" name="inc" category="Increment or decrement preferences">
+        <codes>
+            <code>$E ++ ;</code>
+            <code>++ $E ;</code>
+            <code>$E += 1 ;</code>
+            <code>$E = $E1 + 1 ;</code>
+            <code>$E = 1 + $E1 ;</code>
+        </codes>
+        <holders value="$E,$E1"/>
+        <checkers>
+            <checker>
+                <class>EqualChecker</class>
+                <argsList>
+                    <args>3,$E,$E1</args><args>4,$E,$E1</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ReplicationHandler</class>
+                <argsList>
+                    <args>3,$E,$E1</args><args>4,$E,$E1</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="2" name="dec" category="Increment or decrement preferences">
+        <codes>
+            <code>$E -- ;</code>
+            <code>-- $E ;</code>
+            <code>$E -= 1 ;</code>
+            <code>$E = $E1 - 1 ;</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>EqualChecker</class>
+                <argsList>
+                    <args>3,$E,$E1</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ReplicationHandler</class>
+                <argsList>
+                    <args>3,$E,$E1</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <!-- exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT). -->
+    <rule id="3" name="assignment1" category="Assignment statement preferences">
+        <codes>
+            <code>$E = $E1 $HOMO_BOP $E2 ;</code>
+            <code>$E $HOMO_BOP_ASSIGN $E2 ;</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>EqualChecker</class>
+                <argsList>
+                    <args>0,$E,$E1</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>NotIntegerChecker</class>
+                <argsList>
+                    <args>0,1,$E2</args><args>1,0,$E2</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ReplicationHandler</class>
+                <argsList>
+                    <args>0,$E,$E1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>OpOpAssignConvertHandler</class>
+                <argsList>
+                    <args>0,1,$HOMO_BOP,$HOMO_BOP_ASSIGN</args><args>1,0,$HOMO_BOP_ASSIGN,$HOMO_BOP</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="4" name="nesting if" category="Continuous logic and preferences">
+        <codes>
+            <code>if ( $E &amp;&amp; $E1 ) $S</code>
+            <code>if ( $E ) { if ( $E1 ) $S }</code>
+        </codes>
+        <checkers/>
+        <handlers>
+            <handler>
+                <class>WrapCondHandler</class>
+                <argsList>
+                    <args>1,0,$E,$E1</args><args>2,0,$E,$E1</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="5" name="cascading if" category="Continuous logic or preferences">
+        <codes>
+            <code>if ( $E || $E1 ) $S</code>
+            <code>$^ if ( $E ) $S if ( $E1 ) $S1 </code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>EqualChecker</class>
+                <argsList>
+                    <args>1,$S,$S1</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>CascadingIfChecker</class>
+                <argsList>
+                    <args>0,$S</args><args>1,$S</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ReplicationHandler</class>
+                <argsList>
+                    <args>1,$S,$S1</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="6" name="loop_empty" category="Loops">
+        <codes>
+            <code>for ( ; ; ) $S</code>
+            <code>while ( true ) $S</code>
+        </codes>
+    </rule>
+    <rule id="7" name="loop1" category="Loops">
+        <codes>
+            <code>for ( ; $E ; ) $S</code>
+            <code>while ( $E ) $S</code>
+        </codes>
+    </rule>
+    <rule id="8" name="loop2" category="Loops" enable="false">
+        <codes>
+            <code>for ( $EXP_LIST ; $E1 ; ) $S</code>
+            <code>$^ $S(expStmt) for ( ; $E1 ; ) $S</code>
+            <code>$^ $S(expStmt) while ( $E1 ) $S</code>
+        </codes>
+        <handlers>
+            <handler>
+                <class>Exp2ExpStmtHandler</class>
+                <argsList>
+                    <args>0,2,$EXP_LIST,$S(expStmt)</args><args>0,1,$EXP_LIST,$S(expStmt)</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>ExpStmt2ExpHandler</class>
+                <argsList>
+                    <args>2,0,$S(expStmt),$EXP_LIST</args><args>1,0,$S(expStmt),$EXP_LIST</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E1,2</args><args>0,2,$E1,2</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="9" name="loop3" category="Loops">
+        <codes>
+            <code>for ( $VAR_DEC ; $E ; ) $S</code>
+            <code>$^ $VAR_DEC ; for ( ; $E ; ) $S</code>
+            <code>$^ $VAR_DEC ; while ( $E ) $S</code>
+        </codes>
+        <handlers>
+            <handler>
+                <class>ConflictNameHandler</class>
+                <argsList>
+                    <args>0,1,$VAR_DEC,1</args><args>0,2,$VAR_DEC,1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>VarUndefExceptionHandler</class>
+                <argsList>
+                    <args>1,0,$VAR_DEC,$E</args><args>2,0,$VAR_DEC,$E</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E,2</args><args>0,2,$E,2</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="10" name="loop4" category="Loops" enable="false">
+        <codes>
+            <code>for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
+            <code>while ( $E1 ) { $S* $S(expStmt) }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>VarUpdateStmtChecker</class>
+                <argsList>
+                    <args>1,$S(expStmt)</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>Exp2ExpStmtHandler</class>
+                <argsList>
+                    <args>0,1,$EXP_LIST,$S(expStmt)</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>ExpStmt2ExpHandler</class>
+                <argsList>
+                    <args>1,0,$S(expStmt),$EXP_LIST</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>For2whileHandler</class>
+                <argsList>
+                    <args>0,1,$S(expStmt),$S*</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="11" name="loop5" category="Loops" enable="false">
+        <codes>
+            <code>for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }</code>
+            <code>$^ $S(expStmt) while ( $E1 ) { $S* $S(expStmt)1 }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>VarUpdateStmtChecker</class>
+                <argsList>
+                    <args>1,$S(expStmt)1,$S(expStmt)</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>Exp2ExpStmtHandler</class>
+                <argsList>
+                    <args>0,1,$EXP_LIST,$S(expStmt)</args><args>0,1,$EXP_LIST1,$S(expStmt)1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>ExpStmt2ExpHandler</class>
+                <argsList>
+                    <args>1,0,$S(expStmt),$EXP_LIST</args><args>1,0,$S(expStmt)1,$EXP_LIST1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>For2whileHandler</class>
+                <argsList>
+                    <args>0,1,$S(expStmt)1,$S*</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E1,2</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="12" name="loop6" category="Loops">
+        <codes>
+            <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
+            <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
+            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>VarUpdateStmtChecker</class>
+                <argsList>
+                    <args>2,$S(expStmt),$VAR_DEC</args><args>1,$EXP_LIST,$VAR_DEC</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ConflictNameHandler</class>
+                <argsList>
+                    <args>0,1,$VAR_DEC,1</args><args>0,2,$VAR_DEC,1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>VarUndefExceptionHandler</class>
+                <argsList>
+                    <args>1,0,$VAR_DEC,$E1</args><args>2,0,$VAR_DEC,$E1</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>Exp2ExpStmtHandler</class>
+                <argsList>
+                    <args>0,2,$EXP_LIST,$S(expStmt)</args><args>1,2,$EXP_LIST,$S(expStmt)</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>ExpStmt2ExpHandler</class>
+                <argsList>
+                    <args>2,0,$S(expStmt),$EXP_LIST</args><args>2,1,$S(expStmt),$EXP_LIST</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>For2whileHandler</class>
+                <argsList>
+                    <args>0,2,$S(expStmt),$S*</args><args>1,2,$S(expStmt),$S*</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>0,1,$E1,2</args><args>0,2,$E1,2</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="13" name="check_then_return" category="Check then return preferences">
+        <codes>
+            <code>return $E ? $E1 : $E2 ;</code>
+            <code>if ( $E ) { return $E1 ; } else { return $E2 ; }</code>
+        </codes>
+    </rule>
+    <rule id="14" name="dec_then_check_assign" category="CHECK_THEN_ASSIGN">
+        <codes>
+            <code style="DEFAULT_OVERRIDE_STYLE">$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
+            <code  style="TERNARY_STYLE">$M $T $I = $E ? $E1 : $E2 ;</code>
+            <code  style="TERNARY_STYLE1">$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>
+            <code style="IF_ELSE_STYLE">$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>EqualChecker</class>
+                <argsList>
+                    <args>0,$I,$E3</args><args>2,$I,$E3</args><args>3,$I,$E3,$E4</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>NoSubExpChecker</class>
+                <argsList>
+                    <args>0,$I,$E,$E1,$E2,$E3</args><args>1,$I,$E,$E1,$E2</args><args>2,$I,$E,$E1,$E2,$E3</args><args>3,$I,$E,$E1,$E2,$E3,$E4</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ReplicationHandler</class>
+                <argsList>
+                    <args>0,$I,$E3</args><args>2,$I,$E3</args><args>3,$I,$E3,$E4</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="15" name="check_then_assign" category="CHECK_THEN_ASSIGN">
+        <codes>
+            <code style="DEFAULT_OVERRIDE_STYLE">$^ $E = $E3 ; if ( $E1 ) { $E4 = $E2 ; }</code>
+            <code style="TERNARY_STYLE">$E = $E1 ? $E2 : $E3 ;</code>
+            <code style="IF_ELSE_STYLE">if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>EqualChecker</class>
+                <argsList>
+                    <args>0,$E,$E4</args><args>2,$E,$E4</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>ReplicationHandler</class>
+                <argsList>
+                    <args>0,$E,$E4</args><args>2,$E,$E4</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>CheckThenAssignHandler</class>
+                <argsList></argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="16" name="op_preference1" category="Operator preferences" enable="false">
+        <codes>
+            <code>$E &lt; $E1</code>
+            <code>$E1 > $E</code>
+        </codes>
+    </rule>
+    <rule id="17"  name="op_preference2" category="Operator preferences" enable="false">
+        <codes>
+            <code>$E &lt;= $E1</code>
+            <code>$E1 >= $E</code>
+        </codes>
+    </rule>
+    <rule id="18"  name="op_preference3" category="Operator preferences">
+        <codes>
+            <code>$E == false</code>
+            <code>! $E</code>
+        </codes>
+    </rule>
+    <rule id="19"  name="literal_position" category="Literal position in bool expression">
+        <codes>
+            <code>$LITERAL == $E</code>
+            <code>$E == $LITERAL</code>
+        </codes>
+    </rule>
+    <rule id="22"  name="continue_jump1" category="Continue preferences">
+        <codes>
+            <code>$^ if ( $E ) { continue ; }  $S+</code>
+            <code>if ( $E ) { continue ; } else { $S+ }</code>
+            <code>if ( $E ) { $S+ }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>ContinuePreferenceChecker</class>
+                <argsList>
+                    <args>0,$S+</args><args>1,$E</args><args>2,$E</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>StmtComplexityChecker</class>
+                <argsList>
+                    <args>2,$S+,2,100</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>CondReverserHandler</class>
+                <argsList>
+                    <args>0,2,$E</args><args>1,2,$E</args><args>2,0,$E</args><args>2,1,$E</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>1,0,$E,2</args><args>2,0,$E,2</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="23" name="continue_jump2" category="Continue preferences">
+        <codes>
+            <code>$^ if ( $E ) { $S+ continue ; }  $S1+</code>
+            <code>if ( $E ) { $S+ continue ; } else { $S1+ }</code>
+            <code>if ( $E ) { $S+ } else { $S1+ }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>ContinuePreferenceChecker</class>
+                <argsList>
+                    <args>0,$S1+</args><args>1,$E</args><args>2,$E</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>UnreachableCauseChecker</class>
+                <argsList>
+                    <args>2,$S+</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>BraceWrapHandler</class>
+                <argsList>
+                    <args>1,0,$E,2</args><args>2,0,$E,2</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <!-- Consider to add complexity checker to check the complexity of '$S1+' -->
+    <rule id="24" name="redundant_code1" category="Redundant code">
+        <codes>
+            <code>$^ if ( $E ) { $S+ }  $S1+</code>
+            <code>if ( $E ) { $S+ } else { $S1+ }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>UnreachableCauseChecker</class>
+                <argsList>
+                    <args>0,$S+</args><args>1,$S+</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>EndsWithChecker</class>
+                <argsList>
+                    <args>1,$S+,$S1+</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>StmtComplexityChecker</class>
+                <argsList>
+                    <args>0,$S1+,1,3,SINGLE_STMT</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>AppendTreeHandler</class>
+                <argsList>
+                    <args>0,1,$S+,$S1+</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>RedundantCodeHandler</class>
+                <argsList>
+                    <args>1,0,$S+,$S1+,$S1+</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+    <rule id="25"  name="redundant_code2" category="Redundant code">
+        <codes>
+            <code>$^ if ( $E ) { $S+ } else { $S1+ } $S2+</code>
+            <code>if ( $E ) { $S+ } else { $S1+ }</code>
+        </codes>
+        <checkers>
+            <checker>
+                <class>UnreachableCauseChecker</class>
+                <argsList>
+                    <args>0,$S+,$S1+</args><args>1,$S+,$S1+</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>HasSameEndingStmtChecker</class>
+                <argsList>
+                    <args>1,$S+,$S1+</args>
+                </argsList>
+            </checker>
+            <checker>
+                <class>StmtComplexityChecker</class>
+                <argsList>
+                    <args>0,$S2+,1,3,SINGLE_STMT</args>
+                </argsList>
+            </checker>
+        </checkers>
+        <handlers>
+            <handler>
+                <class>AppendTreeHandler</class>
+                <argsList>
+                    <args>0,1,$S+,$S2+</args><args>0,1,$S1+,$S2+</args>
+                </argsList>
+            </handler>
+            <handler>
+                <class>RedundantCodeHandler</class>
+                <argsList>
+                    <args>1,0,$S+,$S1+,$S2+</args>
+                </argsList>
+            </handler>
+        </handlers>
+    </rule>
+
+    <!-- 级联和嵌套if-else互相转换,例如： if(a)$S else if(b)$S1 else if(c)$S2 <==> if(!a){if(b)$S1 else if(c)$S2} else$S -->
+
+
+</rules>

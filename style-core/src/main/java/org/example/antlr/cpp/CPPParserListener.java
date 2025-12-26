@@ -517,16 +517,6 @@ public interface CPPParserListener extends ParseTreeListener {
 	 */
 	void exitBlock(CPPParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CPPParser#statementSeq}.
-	 * @param ctx the parse tree
-	 */
-	void enterStatementSeq(CPPParser.StatementSeqContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CPPParser#statementSeq}.
-	 * @param ctx the parse tree
-	 */
-	void exitStatementSeq(CPPParser.StatementSeqContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link CPPParser#ifStatement}.
 	 * @param ctx the parse tree
 	 */

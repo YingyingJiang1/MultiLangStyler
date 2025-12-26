@@ -5,6 +5,7 @@ import org.example.lang.base.CodeContextPredicateBase;
 import org.example.lang.base.FormatUnitGrouperBase;
 import org.example.lang.cpp.CppASTNodeEditor;
 import org.example.lang.intf.*;
+import org.example.lang.intf.symbol.Resolver;
 import org.example.lang.java.JavaCodeContextPredicate;
 import org.example.lang.java.JavaASTNodeEditor;
 import org.example.lang.python.PythonAstNodeEditor;
@@ -113,6 +114,16 @@ public class LangAdapterCreator {
 					parserClass.getName(), e);
 			return null;
 		}
+	}
+
+	public static Resolver createSymbolResolver(String lang) {
+		Class<?> searcherClass = MyEnvironment.getIConfig().getSymbolResolver(lang);
+		return createByGetInstance(searcherClass, lang);
+	}
+
+	public static Resolver createTypeResolver(String lang) {
+		Class<?> searcherClass = MyEnvironment.getIConfig().getTypeResolver(lang);
+		return createByGetInstance(searcherClass, lang);
 	}
 }
 

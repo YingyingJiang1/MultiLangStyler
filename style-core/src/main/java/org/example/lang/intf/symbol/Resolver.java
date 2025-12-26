@@ -1,4 +1,4 @@
-package org.example.semantic.intf;
+package org.example.lang.intf.symbol;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.lang.intf.MyParser;

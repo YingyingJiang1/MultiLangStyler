@@ -1,6 +1,7 @@
 package org.example.lang.base;
 
 import org.antlr.v4.runtime.Token;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.intf.CodeContextPredicate;
 import org.example.lang.intf.MyParser;
 
@@ -40,4 +41,5 @@ public class CodeContextPredicateBase implements CodeContextPredicate {
 	private boolean isKeyword(String text) {
 		return text.matches("[a-zA-Z]+");
 	}
+
 }

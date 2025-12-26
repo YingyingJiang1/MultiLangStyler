@@ -1,4 +1,4 @@
-package org.example.semantic.intf;
+package org.example.lang.intf.symbol;
 
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;

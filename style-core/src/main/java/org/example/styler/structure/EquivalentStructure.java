@@ -135,7 +135,12 @@ public class EquivalentStructure {
 //				}
 
 				forests.add(new Forest(trees, priority, xmlRule.styles.get(i)));
-				uniqueVNodes(placeholderParser, parser);
+			}
+
+			for (Forest forest : forests) {
+				for(ParseTree t : forest.getTrees()) {
+					createVNodeMap(t, forest);
+				}
 			}
 		} catch (CompilationException e) {
 			logger.error(e.getMessage(), e);
@@ -467,28 +472,17 @@ public class EquivalentStructure {
 	}
 
 
-	/**
-	 * @apiNote After the method is called, parent filed of ParseTree is invalid.
-	 */
-	private void uniqueVNodes(PlaceholderParser placeholderParser, MyParser parser) {
-		for (Forest forest : forests) {
-			for(ParseTree t : forest.getTrees()) {
-				doUnique(t, forest, parser);
-			}
-		}
-	}
-
 	// param t is a real tree.
 
 	/**
 	 * Associates a placeholder-generated tree in the tree to a specific virtual node.
 	 *
 	 */
-	private void doUnique(ParseTree node, Forest forest, MyParser parser) {
+	private void createVNodeMap(ParseTree node, Forest forest) {
 		if (!(node instanceof ExtendContext)) {
 			return;
 		}
-		VirtualNode vNode = placeholderParser.getVNode(node, parser);
+		VirtualNode vNode = placeholderParser.getVNode(node);
 		if (vNode != null && placeholderParser.isMatched(vNode.type, node)) {
 			if (vNode.isEmpty()) {
 				vTreeMap.put(node, vNode);
@@ -504,7 +498,7 @@ public class EquivalentStructure {
 		}
 
 		for (ParseTree child : ((ExtendContext) node).children) {
-			doUnique(child, forest, parser);
+			createVNodeMap(child, forest);
 		}
 	}
 

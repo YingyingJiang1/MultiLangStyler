@@ -1,11 +1,11 @@
-package org.example.semantic.java;
+package org.example.lang.java.symbol;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.SymbolTable;
 import org.example.semantic.SymbolTableManager;
-import org.example.semantic.intf.Resolver;
+import org.example.lang.intf.symbol.Resolver;
 import org.example.semantic.intf.symbol.ClassSym;
 import org.example.semantic.intf.symbol.FunctionSym;
 import org.example.semantic.intf.symbol.Symbol;
@@ -22,6 +22,15 @@ import java.util.List;
 
 public class JavaResolver implements Resolver {
     public static Logger logger = LoggerFactory.getLogger(JavaResolver.class);
+
+    private static final JavaResolver instance = new JavaResolver();
+
+    private JavaResolver() {
+    }
+
+    public static JavaResolver getInstance() {
+        return instance;
+    }
 
 
     /**

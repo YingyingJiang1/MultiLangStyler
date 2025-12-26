@@ -13,11 +13,7 @@ public interface IConfig {
 
 	Class<?> getASTRewriterClass(String lang);
 
-	String getJavaEquivalencesConfig();
-
-	String getCPPEquivalencesConfig();
-
-	String getPythonEquivalencesConfig();
+	String getEquivalencesConfig(String lang);
 
 	Class<?> getNodeSearcherFactory(String lang);
 
@@ -44,4 +40,8 @@ public interface IConfig {
 	void SetEnabledStylers(String lang, List<Class<?>> stylerClasses);
 
 	Class<?> getPlaceholderParser(String lang);
+
+	Class<?> getSymbolResolver(String lang);
+
+	Class<?> getTypeResolver(String lang);
 }

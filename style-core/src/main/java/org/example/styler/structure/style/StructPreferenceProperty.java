@@ -14,6 +14,10 @@ public class StructPreferenceProperty extends StyleProperty {
     public StructPreferenceProperty() {
     }
 
+    public StructPreferenceProperty(int preferenceIndex) {
+        this.preferenceIndex = preferenceIndex;
+    }
+
     public StructPreferenceProperty(int preferenceIndex, String style) {
         this.preferenceIndex = preferenceIndex;
         this.style = style;

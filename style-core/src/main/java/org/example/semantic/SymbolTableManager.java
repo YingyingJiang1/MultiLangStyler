@@ -2,8 +2,8 @@ package org.example.semantic;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.MyEnvironment;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
-import org.example.semantic.factory.ResolverFactory;
 import org.example.semantic.intf.symbol.Symbol;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class SymbolTableManager {
     public static List<Symbol> getAllSymbols(MyParser parser) {
         SymbolTable st = stCache.get(parser.getRoot());
         if (st == null) {
-            st = ResolverFactory.createResolver(MyEnvironment.getLanguage()).resolveAll(parser.getRoot(), parser);
+            st = LangAdapterCreator.createSymbolResolver(MyEnvironment.getLanguage()).resolveAll(parser.getRoot(), parser);
             stCache.put(parser.getRoot(), st);
         }
 
@@ -31,7 +31,7 @@ public class SymbolTableManager {
         ParseTree root = parser.getRoot();
         SymbolTable st =  stCache.get(root);
         if (st == null) {
-            st = ResolverFactory.createResolver(parser.getLanguage()).resolveAll(root, parser);
+            st = LangAdapterCreator.createSymbolResolver(parser.getLanguage()).resolveAll(root, parser);
             stCache.put(root, st);
         }
         return st;

@@ -316,11 +316,7 @@ expressionStatement
     ;
 
 block
-    : LeftBrace statementSeq? RightBrace
-    ;
-
-statementSeq
-    : statement+
+    : LeftBrace statement* RightBrace
     ;
     
 

@@ -1,10 +1,10 @@
-package org.example.semantic;
+package org.example.lang.base.symbol;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.MyEnvironment;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
-import org.example.semantic.intf.TypeResolver;
+import org.example.lang.intf.symbol.TypeResolver;
 import org.example.semantic.intf.symbol.ClassSym;
 import org.example.semantic.intf.symbol.FunctionSym;
 import org.example.semantic.intf.symbol.Symbol;

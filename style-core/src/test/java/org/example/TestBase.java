@@ -2,18 +2,21 @@ package org.example;
 
 import org.example.config.IConfig;
 import org.example.config.MyConfiguration;
-import org.example.controller.Controller;
-import org.example.controller.StylerContainer;
+import org.example.controller.*;
 import org.example.antlr.common.context.ExtendContext;
-import org.example.controller.TaskOptions;
 import org.example.lang.LangAdapterCreator;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.style.ProgramStyle;
 import org.example.style.Style;
 import org.example.style.StyleFileIO;
 import org.example.styler.Styler;
+import org.example.styler.structure.StructureStyler;
+import org.example.styler.structure.style.StructPreferenceContext;
+import org.example.styler.structure.style.StructPreferenceProperty;
+import org.example.styler.structure.style.StructureStyle;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
+import org.opentest4j.AssertionFailedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,80 @@ public class TestBase {
 	MyConfiguration conf;
 	protected Style extract(String path) {
 		return null;
+	}
+
+	protected void testCpp(String dir, String[] srcFiles, String[] targetFiles, List<Class<?>> classes) {
+		String fileExt = ".cpp";
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%sto%s" + fileExt, srcFiles[i].split("[.]")[0], targetFiles[i].split("[.]")[0]));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "cpp", classes);
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			try {
+				testCodeEqual(actual, gtPath);
+			} catch (AssertionFailedError e) {
+				logger.error("Pair `{}` test failed%n", i + 1, e);
+			}
+//			break;
+		}
+	}
+
+	protected void testCppStructureStyle(String dir, String[] srcFiles, StructureStyle style, boolean saveStyle) {
+		String fileExt = ".cpp";
+		String language = "cpp";
+
+		MyEnvironment.setConf(conf);
+		StructPreferenceProperty property = (StructPreferenceProperty) style.getRules().get(0).getStyleProperty();
+		StructPreferenceContext context = (StructPreferenceContext) style.getRules().get(0).getStyleContext();
+		int id = context.getStructID();
+		int index = property.getPreferenceIndex();
+		for (int i = 0; i < srcFiles.length; i++) {
+
+			Path gtPath = Paths.get(dir, String.format("%s-%d-%d-gt" + fileExt,srcFiles[i].split("[.]")[0],  id, index));
+
+			if (saveStyle) {
+				conf.SetEnabledStylers("cpp", List.of(StructureStyler.class));
+				Extractor extractor = new Extractor(language);
+
+				String srcPath = Paths.get(dir, srcFiles[i]).toString();
+				ProgramStyle selfStyle = extractor.extractStyle(srcPath);
+				StyleFileIO.write(selfStyle, srcPath.replace(fileExt, ".xml"), "cpp");
+			}
+
+
+			ProgramStyle programStyle = new ProgramStyle();
+			programStyle.add(style);
+			Applicator applicator = new Applicator(language, programStyle);
+			Map<String, String> resultMap = applicator.applyStyle(Paths.get(dir, srcFiles[i]).toString());
+			String actual = resultMap.entrySet().stream().toList().get(0).getValue();
+			if (!new File(gtPath.toString()).exists()) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			try {
+				testCodeEqualIgnoreWS(actual, gtPath);
+			} catch (AssertionFailedError e) {
+				logger.error("Pair `{}` test failed", i + 1, e);
+			}
+//			break;
+		}
+	}
+
+	protected StructureStyle createStructureStyle(int id, int index) {
+		StructureStyle style = new StructureStyle();
+		style.getRuleSet().addRule(new StructPreferenceContext(id), new StructPreferenceProperty(index));
+		return style;
 	}
 
 
@@ -134,6 +211,21 @@ public class TestBase {
 		try {
 			String expected = Files.readString(gtPath).replace("\r\n", "\n");
 			assertEquals(expected, actual.replace("\r\n", "\n"));
+		} catch (Exception e)  {
+			logger.error("Test `{}` failed!", gtPath, e);
+		}
+		logger.info("Compare `{}`...OK", gtPath);
+	}
+
+	protected void testCodeEqualIgnoreWS(String actual, Path gtPath) {
+		logger.info("Compare `{}`...", gtPath);
+		File gtFile = new File(gtPath.toString());
+		if (!gtFile.exists()) {
+			System.out.println("Warning: invalid test! Ground truth is not found!");
+		}
+		try {
+			String expected = Files.readString(gtPath).replaceAll("[ \t\r\n]", "");
+			assertEquals(expected, actual.replaceAll("[ \t\r\n]", ""));
 		} catch (Exception e)  {
 			logger.error("Test `{}` failed!", gtPath, e);
 		}

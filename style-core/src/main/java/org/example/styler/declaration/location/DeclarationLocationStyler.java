@@ -10,7 +10,7 @@ import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.SymbolTableManager;
-import org.example.semantic.intf.Resolver;
+import org.example.lang.intf.symbol.Resolver;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.styler.Stage;
 import org.example.styler.Styler;

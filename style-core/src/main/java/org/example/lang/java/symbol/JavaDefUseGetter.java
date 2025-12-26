@@ -1,9 +1,9 @@
-package org.example.semantic.java;
+package org.example.lang.java.symbol;
 
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
-import org.example.semantic.intf.DefUseGetter;
+import org.example.lang.intf.symbol.DefUseGetter;
 import org.example.lang.intf.searcher.CompilationUnitSearcher;
 import org.example.lang.intf.searcher.MethodSearcher;
 import org.example.lang.intf.searcher.TypeDecSearcher;

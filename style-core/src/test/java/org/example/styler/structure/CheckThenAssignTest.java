@@ -7,14 +7,21 @@ import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
 import org.example.styler.format.newline.inter.InterNewlineStyler;
 import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.format.newline.style.NewlineStyle;
+import org.example.styler.format.space.SpaceStyler;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 public class CheckThenAssignTest extends TestBase {
+
+	int id = 14;
+
+
 
 	@Test
 	void test() {
@@ -77,5 +84,15 @@ public class CheckThenAssignTest extends TestBase {
 
 			testCodeEqual(actual, gtPath);
 		}
+	}
+
+	@Test
+	void testCpp() {
+		int id = 14;
+		super.testCppStructureStyle(Paths.get(cppTestCasesDir, "structure", "check-then-assign").toString(),
+				new String[]{"f1.cpp"},
+				createStructureStyle(id, 0),
+				true
+		);
 	}
 }

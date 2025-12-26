@@ -2,7 +2,7 @@ package org.example.semantic;
 
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
-import org.example.semantic.intf.ReferenceResolver;
+import org.example.lang.intf.symbol.ReferenceResolver;
 import org.example.semantic.intf.symbol.Symbol;
 
 import java.util.ArrayList;

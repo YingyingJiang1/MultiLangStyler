@@ -627,18 +627,6 @@ public class CPPParserBaseListener implements CPPParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatementSeq(CPPParser.StatementSeqContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStatementSeq(CPPParser.StatementSeqContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIfStatement(CPPParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}

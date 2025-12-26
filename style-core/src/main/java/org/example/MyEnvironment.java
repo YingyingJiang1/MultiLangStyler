@@ -2,12 +2,9 @@ package org.example;
 
 import org.example.config.MyConfiguration;
 import org.example.config.IConfig;
-import org.example.semantic.factory.ReferenceResolverFactory;
-import org.example.semantic.factory.ResolverFactory;
-import org.example.semantic.factory.TypeSystemFactory;
-import org.example.semantic.intf.ReferenceResolver;
-import org.example.semantic.intf.Resolver;
-import org.example.semantic.intf.TypeResolver;
+import org.example.lang.intf.symbol.ReferenceResolver;
+import org.example.lang.intf.symbol.Resolver;
+import org.example.lang.intf.symbol.TypeResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,9 +21,6 @@ public class MyEnvironment {
 
     public static void setLanguage(String language) {
         MyEnvironment.language = language;
-        resolver = ResolverFactory.createResolver(language);
-        referenceResolver = ReferenceResolverFactory.createReferenceResolver(language);
-        typeResolver = TypeSystemFactory.createTypeSystem(language);
 
         if (language.equals("java")) {
             pathSeparator = ".";

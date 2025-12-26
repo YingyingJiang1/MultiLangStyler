@@ -148,18 +148,8 @@ public class MyConfiguration implements IConfig {
   }
 
   @Override
-  public String getJavaEquivalencesConfig() {
-    return doGetString("java.equivalencesConfig");
-  }
-
-  @Override
-  public String getCPPEquivalencesConfig() {
-    return doGetString("cpp.equivalencesConfig");
-  }
-
-  @Override
-  public String getPythonEquivalencesConfig() {
-    return doGetString("python.equivalencesConfig");
+  public String getEquivalencesConfig(String lang) {
+    return doGetString(lang + ".equivalencesConfig");
   }
 
   @Override
@@ -172,6 +162,15 @@ public class MyConfiguration implements IConfig {
     return doGetClass(lang + ".placeholderParser");
   }
 
+  @Override
+  public Class<?> getSymbolResolver(String lang) {
+    return doGetClass(lang + ".symbolResolver");
+  }
+
+  @Override
+  public Class<?> getTypeResolver(String lang) {
+    return doGetClass(lang + ".typeResolver");
+  }
 
   private Class<?> doGetClass(String key) {
     try {
