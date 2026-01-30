@@ -30,7 +30,7 @@ public class MyCppParser implements MyParser {
 	Path curFile = null;
 	ParseTree root = null;
 
-	protected static Set<Integer> compoundStmts = new HashSet<>(Arrays.asList(
+	protected static final Set<Integer> compoundStmts = new HashSet<>(Arrays.asList(
 			CPPParser.RULE_ifStatement,
 			CPPParser.RULE_ifElseStatement,
 			CPPParser.RULE_switchStatement,
@@ -41,16 +41,28 @@ public class MyCppParser implements MyParser {
 			CPPParser.RULE_tryBlock
 	));
 
-	protected static Set<Integer> simpleStmts = new HashSet<>(Arrays.asList(
+	protected static final Set<Integer> simpleStmts = new HashSet<>(Arrays.asList(
 			CPPParser.RULE_labeledStatement,
 			CPPParser.RULE_declarationStatement,
 			CPPParser.RULE_expressionStatement,
 			CPPParser.RULE_jumpStatement
 	));
-	private static Set<Integer> literals = Set.of(
+	private static final Set<Integer> literals = Set.of(
 			CPPParser.IntegerLiteral, CPPParser.CharacterLiteral,CPPParser.FloatingLiteral,
 			CPPParser.StringLiteral,CPPParser.BooleanLiteral,CPPParser.PointerLiteral,CPPParser.UserDefinedLiteral
 			);
+	private static final Set<String> keywords = Set.of(
+			"alignas","alignof","asm","auto","bool","break","case","catch","char",
+			"char16_t","char32_t","class","const","constexpr","const_cast","continue",
+			"decltype","default","delete","do","double","dynamic_cast","else","enum",
+			"explicit","export","extern","false","final","float","for","friend","goto",
+			"if","inline","int","long","mutable","namespace","new","noexcept","nullptr",
+			"operator","override","private","protected","public","register",
+			"reinterpret_cast","return","short","signed","sizeof","static","static_assert",
+			"static_cast","struct","switch","template","this","thread_local","throw",
+			"true","try","typedef","typeid","typename","union","unsigned","using","virtual",
+			"void","volatile","wchar_t","while"
+	);
 
 
 	@Override
@@ -244,6 +256,11 @@ public class MyCppParser implements MyParser {
 	@Override
 	public boolean isKeyword(Token token) {
 		return token.getType() != CPPParser.Identifier && token.getText().matches("[a-zA-Z]+");
+	}
+
+	@Override
+	public boolean isKeyword(String text) {
+		return keywords.contains(text);
 	}
 
 	@Override

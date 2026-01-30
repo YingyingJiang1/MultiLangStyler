@@ -169,6 +169,11 @@ public class MyParserBase implements MyParser {
 	}
 
 	@Override
+	public boolean isKeyword(String text) {
+		return false;
+	}
+
+	@Override
 	public boolean belongToIntLiteral(int type) {
 		return false;
 	}

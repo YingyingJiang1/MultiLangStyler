@@ -61,6 +61,7 @@ public interface MyParser {
     boolean belongToOperator(String name);
     boolean isComment(int type);
     boolean isKeyword(Token token);
+    boolean isKeyword(String text);
     boolean belongToIntLiteral(int type);
     boolean belongToFloatLiteral(int type);
     boolean belongToStringLiteral(int type);

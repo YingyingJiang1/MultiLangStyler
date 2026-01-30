@@ -23,8 +23,10 @@ import org.example.styler.naming.format.style.NamingFormatStyle;
 import org.example.styler.naming.format.style.NamingInconsistencyInfo;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class NamingStyler extends Styler {
+    private static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$");
     Map<StyleContext, Integer> maxLengthMap = new HashMap<>();
 
     public NamingStyler() {
@@ -70,7 +72,7 @@ public class NamingStyler extends Styler {
                     newName = "_" + newName;
                 }
 
-                if (!newName.equals(name)) {
+                if (!newName.equals(name) && isValidName(newName, parser)) {
                     // 预修改
                     symbol.setText(newName);
 
@@ -164,6 +166,9 @@ public class NamingStyler extends Styler {
         return context;
     }
 
+    private boolean isValidName(String name, MyParser parser) {
+        return IDENTIFIER_PATTERN.matcher(name).matches() && !parser.isKeyword(name);
+    }
 
     private MyCaseFormat getCaseFormat(String name) {
         String noNumName = name.replaceAll("[0-9]", "");

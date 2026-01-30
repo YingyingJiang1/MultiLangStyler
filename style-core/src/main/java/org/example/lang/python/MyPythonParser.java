@@ -20,6 +20,16 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class MyPythonParser extends MyParserBase {
+	private static final Set<String> keywords = Set.of(
+			"False", "await", "else", "import", "pass", "None", "break", "except", "in", "raise",
+			"True", "class", "finally", "is", "return", "and", "continue", "for", "lambda", "try",
+			"as", "def", "from", "nonlocal", "while", "assert", "del", "global", "not", "with",
+			"async", "elif", "if", "or", "yield",
+			// soft keywords
+			"type", "match", "case", "_"
+	);
+
+
 	@Override
 	protected Parser generateParser(String code) {
 		ExtendTokenFactory tokenFactory = getTokenFactory();
@@ -111,5 +121,10 @@ public class MyPythonParser extends MyParserBase {
 	@Override
 	public int getBlockComment() {
 		return PythonParser.COMMENT;
+	}
+
+	@Override
+	public boolean isKeyword(String text) {
+		return keywords.contains(text);
 	}
 }

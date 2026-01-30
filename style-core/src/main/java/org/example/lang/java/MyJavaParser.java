@@ -54,6 +54,26 @@ public class MyJavaParser implements MyParser {
             JavaParser.STRING_LITERAL, JavaParser.TEXT_BLOCK
     );
 
+    private static final Set<String> keywords = Set.of(
+            // types
+            "boolean", "byte", "char", "double", "float", "int", "long", "short", "void", "var",
+            // Control keywords
+            "catch", "do", "else", "finally", "for", "if", "switch", "try", "while",
+            "goto", "break", "case", "continue", "return","yield",
+            // Other keywords
+            "abstract", "assert", "class", "const", "default", "enum", "extends", "final",
+            "implements", "import", "instanceof", "interface", "native", "new", "package",
+            "private", "protected", "public", "static", "strictfp", "super", "synchronized",
+            "this", "throw", "throws", "transient", "volatile",
+            // Module/class related
+            "module", "open", "requires", "exports", "opens", "to", "uses", "provides",
+            "with", "transitive","sealed", "permits", "non-sealed","record",
+            // literals
+            "true", "false","null"
+
+    );
+
+
     public MyJavaParser() {}
 
 
@@ -413,6 +433,11 @@ public class MyJavaParser implements MyParser {
     @Override
     public boolean isKeyword(Token token) {
         return token.getType() != JavaParser.IDENTIFIER && token.getText().matches("[a-zA-Z]+");
+    }
+
+    @Override
+    public boolean isKeyword(String text) {
+        return keywords.contains(text);
     }
 
     @Override
