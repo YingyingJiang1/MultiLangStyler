@@ -1,8 +1,8 @@
 package org.example.web;
 
+import org.checkerframework.checker.units.qual.A;
 import org.example.MyEnvironment;
 import org.example.lang.LangAdapterCreator;
-import org.example.style.Style;
 import org.example.style.StyleFileIO;
 import org.example.style.StyleProfile;
 import org.example.style.StylerContainer;
@@ -13,6 +13,8 @@ import org.example.web.model.entity.StyleProfileEntity;
 import org.example.web.repository.ProjectRepository;
 import org.example.web.repository.StyleProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -21,14 +23,13 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 @Service
 public class StyleService {
+
     private final ProjectRepository projectRepository;
     private final StyleProfileRepository styleProfileRepository;
-
     /**
      * key: style profile id
      * value: container filled with the style profile>
@@ -37,39 +38,46 @@ public class StyleService {
     private Map<String, StylerContainer> stylerCache;
 
     @Autowired
-    public StyleService(ProjectRepository projectRepository, StyleProfileRepository styleProfileRepository) {
+    public StyleService(
+            ProjectRepository projectRepository,
+            StyleProfileRepository styleProfileRepository,
+            @Qualifier("ioTaskPool") ExecutorService extractPool,
+            @Qualifier("shortTaskPool") ExecutorService shortTaskPool) {
         this.projectRepository = projectRepository;
         this.styleProfileRepository = styleProfileRepository;
-        this.stylerCache = new ConcurrentHashMap<>();
     }
 
-    public Result registerProject(RegisterRequest request) {
-        // 检查是否已有相同项目
-        String existingKey = projectRepository.findProjectKey(request.getClientId(), request.getLocalPath());
+    @Async("shortTaskPool")
+    public CompletableFuture<Result> registerProject(RegisterRequest request) {
+        String existingKey =
+                projectRepository.findProjectKey(
+                        request.getClientId(), request.getLocalPath());
+
         if (existingKey != null) {
-            return new Result(true, ResultCode.SUCCESS,
-                    "Project already registered", existingKey);
+            return CompletableFuture.completedFuture(Result.ok(existingKey));
         }
 
-        // 构建新的实体并保存
-        String projectKey = String.format("proj-%s", UUID.randomUUID());
-        ProjectEntity project = new ProjectEntity(projectKey, request.getClientId(), request.getLocalPath());
-        projectRepository.save(project);
-
-        return new Result(true, ResultCode.SUCCESS,
-                "Project registered successfully", projectKey);
+        String projectKey = "proj-" + UUID.randomUUID();
+        projectRepository.save(
+                new ProjectEntity(projectKey,
+                        request.getClientId(), request.getLocalPath()));
+        return CompletableFuture.completedFuture(Result.ok(projectKey));
     }
 
-    public Result findStyleProfileId(String projectKey, String language) {
+    @Async("shortTaskPool")
+    public CompletableFuture<Result> findStyleProfileId(String projectKey, String language) {
         Optional<StyleProfileEntity> styleProfile = styleProfileRepository.findActiveProfile(projectKey, language);
         if (styleProfile.isPresent()) {
-            return Result.ok(styleProfile.get().getStyleProfileId());
+            return CompletableFuture.completedFuture(
+                    Result.ok(styleProfile.get().getStyleProfileId()));
         } else {
-            return Result.fail(ResultCode.LOOKUP_FAILURE, "No style profile found for the given project and language");
+            return CompletableFuture.completedFuture(
+                    Result.fail(ResultCode.LOOKUP_FAILURE, "No style profile found for the given project and language"));
         }
     }
 
-    public Result extractStyle(ExtractRequest request) {
+    @Async("ioTaskPool")
+    public CompletableFuture<Result> extractStyle(ExtractRequest request) {
         StylerContainer container = LangAdapterCreator.createStylerContainer(request.getLanguage());
 
         // 根据类型选择不同的处理方法
@@ -81,10 +89,12 @@ public class StyleService {
             task = () -> Extractor.extractStyleFromString(
                     request.getSource(), request.getLanguage(), container);
         } else {
-            return Result.fail(ResultCode.EXTRACT_FAILURE, "Invalid extraction options");
+            return CompletableFuture.completedFuture(
+                    Result.fail(ResultCode.EXTRACT_FAILURE, "Unsupported source type"));
         }
 
-        return executeExtraction(task, request, container);
+        return CompletableFuture.completedFuture(
+                executeExtraction(task, request, container));
     }
 
 

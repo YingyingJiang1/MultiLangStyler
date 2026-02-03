@@ -1,32 +1,24 @@
 package org.example.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.MyEnvironment;
-import org.example.config.MyConfiguration;
 import org.example.web.model.dto.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.concurrent.CompletableFuture;
 
-//@WebMvcTest(Controller.class)
-//@Import(MyConfiguration.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(Controller.class)
 class ControllerTest {
 
     @Autowired
@@ -35,109 +27,125 @@ class ControllerTest {
     @MockBean
     private StyleService mockStyleService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void testRegisterProject() throws Exception {
         // Setup
         // Configure StyleService.registerProject(...).
-        final Result result1 = new Result(false, ResultCode.SUCCESS, "msg", "data");
+        Result result = Result.ok("data");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
         final RegisterRequest request = new RegisterRequest();
         request.setClientId("clientId");
         request.setLocalPath("localPath");
-        when(mockStyleService.registerProject(request)).thenReturn(result1);
+        when(mockStyleService.registerProject(request)).thenReturn(resultCompletableFuture);
 
-        // Run the test and verify the results
-        mockMvc.perform(post("/api/v1/projects")
-                        .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(result1), true));
+        comparePostResults(post("/api/v1/projects"), request, result);
     }
 
     @Test
     void testRegisterProject_StyleServiceReturnsFailure() throws Exception {
         // Setup
         // Configure StyleService.registerProject(...).
-        final Result result1 = Result.fail(ResultCode.SUCCESS, "msg");
+        Result result = Result.fail(ResultCode.REGISTER_FAILURE, "Invalid parameters for project register");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
         final RegisterRequest request = new RegisterRequest();
-        request.setClientId("clientId");
-        request.setLocalPath("localPath");
-        when(mockStyleService.registerProject(request)).thenReturn(result1);
+        when(mockStyleService.registerProject(request)).thenReturn(resultCompletableFuture);
 
-        // Run the test and verify the results
-        mockMvc.perform(post("/api/v1/projects")
-                        .content("content").contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{}", true));
+        comparePostResults(post("/api/v1/projects"), request, result);
     }
+
 
     @Test
     void testExtractStyle() throws Exception {
-        // Setup
-        // Configure StyleService.extractStyle(...).
-        final Result result1 = new Result(false, ResultCode.SUCCESS, "msg", "data");
+        Result result = Result.ok("data");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
         final ExtractRequest request = new ExtractRequest();
         request.setProjectKey("projectKey");
-        request.setLanguage("language");
+        request.setLanguage("java");
         request.setSourceType(SourceType.FILE);
         request.setSource("source");
-        when(mockStyleService.extractStyle(request)).thenReturn(result1);
+        when(mockStyleService.extractStyle(request)).thenReturn(resultCompletableFuture);
 
-        // Run the test and verify the results
-        mockMvc.perform(post("/api/v1/style-profiles")
-                        .content("content").contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{}", true));
+        comparePostResults(post("/api/v1/style-profiles"), request, result);
     }
 
     @Test
     void testExtractStyle_StyleServiceReturnsFailure() throws Exception {
         // Setup
-        // Configure StyleService.extractStyle(...).
-        final Result result1 = Result.fail(ResultCode.SUCCESS, "msg");
+        Result result = Result.fail(ResultCode.EXTRACT_FAILURE, "");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
         final ExtractRequest request = new ExtractRequest();
         request.setProjectKey("projectKey");
-        request.setLanguage("language");
-        request.setSourceType(SourceType.FILE);
+        request.setLanguage("cpp");
         request.setSource("source");
-        when(mockStyleService.extractStyle(request)).thenReturn(result1);
+        when(mockStyleService.extractStyle(request)).thenReturn(resultCompletableFuture);
 
-        // Run the test and verify the results
         mockMvc.perform(post("/api/v1/style-profiles")
-                        .content("content").contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{}", true));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value("EXTRACT_FAILURE"))
+                .andExpect(jsonPath("$.data").isEmpty());
+
+        verify(mockStyleService, never()).extractStyle(any());
+
     }
+
 
     @Test
     void testGetStyleProfileId() throws Exception {
-        // Setup
-        // Configure StyleService.findStyleProfileId(...).
-        final Result result1 = new Result(false, ResultCode.SUCCESS, "msg", "data");
-        when(mockStyleService.findStyleProfileId("projectKey", "language")).thenReturn(result1);
+        Result result = Result.ok("data");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
+        when(mockStyleService.findStyleProfileId("proj-1", "java")).thenReturn(resultCompletableFuture);
 
         // Run the test and verify the results
-        mockMvc.perform(get("/api/v1/style-profiles/{projectKey}/{language}", "projectKey", "language")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json("{}", true));
+        MockHttpServletRequestBuilder getBuilder = get("/api/v1/style-profiles/{projectKey}/{language}", "proj-1", "java");
+        compareGetResults(getBuilder, null, result);
     }
 
     @Test
     void testGetStyleProfileId_StyleServiceReturnsFailure() throws Exception {
-        // Setup
-        // Configure StyleService.findStyleProfileId(...).
-        final Result result1 = Result.fail(ResultCode.SUCCESS, "msg");
-        when(mockStyleService.findStyleProfileId("projectKey", "language")).thenReturn(result1);
+        Result result = Result.fail(ResultCode.EXTRACT_FAILURE, "");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
+        when(mockStyleService.findStyleProfileId("proj-1", "language")).thenReturn(resultCompletableFuture);
 
         // Run the test and verify the results
-        mockMvc.perform(get("/api/v1/style-profiles/{projectKey}/{language}", "projectKey", "language")
+        mockMvc.perform(get("/api/v1/style-profiles/{projectKey}/{language}", "proj-1", "language")
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value("EXTRACT_FAILURE"))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
+
+
+    private void comparePostResults(MockHttpServletRequestBuilder requestBuilder, Object request, Result expected) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(requestBuilder
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+
+        // 第二次 dispatch，真正拿结果
+        mockMvc.perform(asyncDispatch(mvcResult))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{}", true));
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(expected), false));
+    }
+
+    private void compareGetResults(MockHttpServletRequestBuilder requestBuilder, Object request, Result expected) throws Exception {
+        MvcResult mvcResult = mockMvc.perform(requestBuilder.accept(MediaType.APPLICATION_JSON))
+                .andExpect(request().asyncStarted())
+                .andReturn();
+
+        // 第二次 dispatch，真正拿结果
+        mockMvc.perform(asyncDispatch(mvcResult))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        objectMapper.writeValueAsString(expected), false));
     }
 }

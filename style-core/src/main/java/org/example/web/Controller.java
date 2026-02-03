@@ -15,8 +15,7 @@ import java.util.concurrent.*;
 @RestController
 @RequestMapping("/api/v1")
 public class Controller {
-    private final ExecutorService extractPool;
-    private final ExecutorService shortTaskPool;
+
     private final StyleService styleService;
 
     private static final Set<String> SUPPORTED_LANGUAGES = Set.of("java", "cpp", "python");
@@ -24,47 +23,37 @@ public class Controller {
     @Autowired
     public Controller(StyleService styleService) {
         this.styleService = styleService;
-        MyConfiguration.ProjectConfig.ThreadPoolConfig tpConfig = MyEnvironment.getIConfig().getProjectConfig().getThreadPool();
-        this.extractPool = new ThreadPoolExecutor(tpConfig.getCorePoolSize(),
-                tpConfig.getMaxPoolSize(),
-                tpConfig.getKeepAliveSeconds(),
-                TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(tpConfig.getQueueCapacity()));
-        this.shortTaskPool = new ThreadPoolExecutor(tpConfig.getCorePoolSize(),
-                tpConfig.getMaxPoolSize(),
-                tpConfig.getKeepAliveSeconds(),
-                TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(tpConfig.getQueueCapacity()));
     }
 
     @PostMapping("/projects")
-    public Future<Result> registerProject(@RequestBody RegisterRequest request) {
+    public CompletableFuture<Result> registerProject(@RequestBody RegisterRequest request) {
         // 参数校验
         if (request.getClientId() == null || request.getClientId().isEmpty()
                 || request.getLocalPath() == null || request.getLocalPath().isEmpty()) {
             return CompletableFuture.completedFuture(
-                    new Result(false, ResultCode.REGISTER_FAILURE, "Invalid parameters for project register", null)
+                    Result.fail(ResultCode.REGISTER_FAILURE, "Invalid parameters for project register")
             );
         }
 
-        return shortTaskPool.submit(() -> styleService.registerProject(request));
+        return styleService.registerProject(request);
     }
 
     @PostMapping("/style-profiles")
-    public Future<Result> extractStyle(@RequestBody ExtractRequest request) {
+    public CompletableFuture<Result> extractStyle(@RequestBody ExtractRequest request) {
+
         validateCodeSource(request.getSourceType(), request.getSource());
         validateLanguage(request.getLanguage());
 
-        return extractPool.submit(() -> styleService.extractStyle(request));
+        return styleService.extractStyle(request);
     }
 
     /**
      * Get current style profile ID for the specified project and language.
      */
     @GetMapping("style-profiles/{projectKey}/{language}")
-    public Future<Result> getStyleProfileId(@PathVariable String projectKey, @PathVariable String language) {
+    public CompletableFuture<Result> getStyleProfileId(@PathVariable String projectKey, @PathVariable String language) {
         validateLanguage(language);
-       return shortTaskPool.submit(() -> styleService.findStyleProfileId(projectKey, language));
+       return styleService.findStyleProfileId(projectKey, language);
     }
 
     private void validateLanguage(String language) {
