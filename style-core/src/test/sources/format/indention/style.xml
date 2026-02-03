@@ -3,7 +3,7 @@
 <program_style language="java">
   <style name="indention">
     <rule>
-      <style_property indentionUnit="2" indentionType=" " indentEmptyLine="false" topHierarchyIndention="2"/>
+      <style_property indentionUnit="4" indentionType=" " indentEmptyLine="false" topHierarchyIndention="0"/>
     </rule>
   </style>
 </program_style>

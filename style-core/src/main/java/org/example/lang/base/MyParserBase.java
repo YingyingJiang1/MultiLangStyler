@@ -7,13 +7,10 @@ import org.example.antlr.common.factory.ExtendTokenFactory;
 import org.example.antlr.common.token.AmbigousToken;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.antlr.common.token.TokenNameGetter;
-import org.example.antlr.java.JavaLexer;
-import org.example.antlr.java.JavaParser;
-import org.example.controller.TokenAugmentor;
+import org.example.stylekit.TokenAugmentor;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

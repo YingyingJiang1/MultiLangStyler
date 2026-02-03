@@ -14,7 +14,6 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.example.controller.StylerContainer;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.style.rule.*;
@@ -32,10 +31,10 @@ import org.slf4j.Logger;
 public class StyleFileIO {
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(StyleFileIO.class);
 
-    public static ProgramStyle read(String file) {
-        ProgramStyle programStyle = new ProgramStyle();
+    public static StyleProfile read(String file) {
+        StyleProfile styleProfile = new StyleProfile();
         final List<Styler> stylers = new StylerContainer().getStylers();
-        stylers.forEach(styler -> programStyle.add(styler.getStyle()));
+        stylers.forEach(styler -> styleProfile.add(styler.getStyle()));
         try {
             SAXReader reader = new SAXReader();
             Document document = reader.read(new File(file));
@@ -45,8 +44,8 @@ public class StyleFileIO {
                 language = "java";
             }
             MyParser parser = LangAdapterCreator.createParser(language);
-            programStyle.parseElement(root, parser);
-            for (Style style : programStyle.getStyles()) {
+            styleProfile.parseElement(root, parser);
+            for (Style style : styleProfile.getStyles()) {
                 style.fillStyle();
                 List<StyleContext> removedContexts = style.filterRules();
                 if (removedContexts != null) {
@@ -60,11 +59,11 @@ public class StyleFileIO {
             logger.error("read style file error. Target path: {}", file);
             return null;
         }
-        return programStyle;
+        return styleProfile;
     }
 
-    public static void write(ProgramStyle programStyle, String file, String lang) {
-        if (programStyle == null) {
+    public static void write(StyleProfile styleProfile, String file, String lang) {
+        if (styleProfile == null) {
             logger.info("no style to save in file {}, because `programStyle` is null.", file);
             return;
         }
@@ -74,7 +73,7 @@ public class StyleFileIO {
             Element root = document.addElement("program_style");
             MyParser parser = LangAdapterCreator.createParser(lang);
             root.addAttribute("language", lang);
-            programStyle.addElement(root, parser);
+            styleProfile.addElement(root, parser);
 
             File dir = new File(file).getParentFile();
             if (!dir.exists()) {
@@ -139,8 +138,8 @@ public class StyleFileIO {
         return null;
     }
 
-    public static void writeStatistic(ProgramStyle programStyle, String file) {
-        List<Style> styles = programStyle.getStyles();
+    public static void writeStatistic(StyleProfile styleProfile, String file) {
+        List<Style> styles = styleProfile.getStyles();
         Map<String, Map<Integer, Map<Integer, Integer>>> styleMap = new HashMap<>();
         // 为style context 和style property编号
         for (Style style : styles) {

@@ -94,7 +94,7 @@ public class NewlineStyle extends CommonStyle {
 				int maxFreq = 0;
 				Map.Entry<NewlineProperty, List<Double>> maxFreqEntry = propertyMap.entrySet().stream().sorted(Comparator.comparingInt(e -> -e.getValue().size())).toList().get(0);
 				double ratio = (double) maxFreqEntry.getValue().size() / (double) propertyMap.values().stream().mapToInt(List::size).sum();
-				if (ratio >= MyEnvironment.getIConfig().getMinDominantRatio()) {
+				if (ratio >= MyEnvironment.getIConfig().getProjectConfig().getMinDominantRatio()) {
 					propertyMap.clear();
 					propertyMap.put(maxFreqEntry.getKey(), maxFreqEntry.getValue());
 				}

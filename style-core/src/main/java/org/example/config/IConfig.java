@@ -1,8 +1,6 @@
 package org.example.config;
 
-import org.example.controller.StylerContainer;
-import org.example.lang.intf.MyParser;
-import org.example.styler.Styler;
+import org.example.style.StylerContainer;
 
 import java.util.List;
 
@@ -17,22 +15,21 @@ public interface IConfig {
 
 	Class<?> getNodeSearcherFactory(String lang);
 
-
-	double getMinDominantRatio();
-
 	String getLLMUrl();
 	String getLLMApiKey();
 	String getLLMModel();
 	double getLLMTemperature();
 	double getLLMMaxTokens();
 
-	int getIdentifierLengthLimit();
+	MyConfiguration.ProjectConfig getProjectConfig();
+
+
 
 	/**
-	 * Get StylerContainer for specific language with all stylers.
+	 * Create StylerContainer for specific language with all stylers.
 	 * @param lang
 	 */
-	StylerContainer getStylerContainer(String lang);
+	StylerContainer creasteStylerContainer(String lang);
 
 	/**
 	 * Set enabled stylers for specific language.

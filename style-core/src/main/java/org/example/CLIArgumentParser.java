@@ -1,13 +1,9 @@
 package org.example;
 
 import org.apache.commons.cli.*;
-import org.example.config.MyConfiguration;
-import org.example.controller.TaskOptions;
+import org.example.stylekit.TaskOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pascal.taie.ir.exp.BinaryExp;
-
-import java.io.File;
 
 public class CLIArgumentParser {
     public static Logger logger = LoggerFactory.getLogger(CLIArgumentParser.class);
@@ -41,12 +37,18 @@ public class CLIArgumentParser {
                 taskOptions.setOverrideSource(true);
             }
 
-            String styleOut = cmd.getOptionValue("so");
+            String styleOut = cmd.getOptionValue("o");
             if (styleOut != null) {
-                taskOptions.setStyleOutPath(styleOut);
+                taskOptions.setOutPath(styleOut);
             }
 
-            taskOptions.setDoCheck(cmd.hasOption("check"));
+            if (cmd.hasOption("extract")) {
+                taskOptions.setOpId(TaskOptions.EXTRACT);
+            } else if (cmd.hasOption("analyze")) {
+                taskOptions.setOpId(TaskOptions.ANALYZE);
+            } else {
+                taskOptions.setOpId(TaskOptions.APPLY);
+            }
 
             taskOptions.setLanguage(cmd.getOptionValue("lang", "java"));
 
@@ -66,10 +68,10 @@ public class CLIArgumentParser {
     private static boolean validateParameters(TaskOptions taskOptions) {
         String src = taskOptions.getSrc();
         String target = taskOptions.getTarget();
-        String styleOutPath = taskOptions.getStyleOutPath();
+        String styleOutPath = taskOptions.getOutPath();
 
         if (target == null || (src == null &&  styleOutPath == null)) {
-            logger.error("Wrong usage.\n Correct argument usage:\n -src <arg> -target <arg> \n or \n -target <arg> -so <arg>");
+            logger.error("Wrong usage.\n Correct argument usage:\n -src <arg> -target <arg> \n or \n -target <arg> -o <arg>");
             return false;
         }
 
@@ -77,21 +79,41 @@ public class CLIArgumentParser {
     }
 
     private static void printHelp(Options options) {
-        // 创建帮助生成器
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("\n-src <arg> -target <arg> [-f/-d <arg>] [-so <arg>] [-c/--check]\n-target <arg> -so <arg> [-c/--check]\n\n", options);
+        String header = "\nUsage examples:\n" +
+                "  Transfer style:    " +
+                "   Single file or directory: -src <src_path> -target <arg> [-f <output_file> | -d <output_dir>] -lang <language>\n" +
+                "   Batch file or directories: -src <path1;path2;...> -target <arg> -lang <language>" +
+                "  Extract style:     -e -target <path1;path2;...> -o <output_file> -lang <language>\n" +
+                "  Analyze style:     -c -src <path1;path2;...> -target <arg> -o <output_file> -lang <language>\n\n";
+
+        String footer = "\nOptions:";
+
+        formatter.printHelp(
+                "java -jar <path of jar package>", // 命令行程序名
+                header,
+                options,
+                footer,
+                true // 自动对齐
+        );
     }
 
     private static Options getOptions() {
         Options options = new Options();
 
-        Option srcOption = new Option("src", true, "Source file or directory path");
-        Option targetOption = new Option("target", true, "File or directory path of target codes, or path of target style file");
-        Option outputFileOption = new Option("f", true, "Output file path of transformed codes.");
-        Option outputDirOption = new Option("d", true, "Output directory path of transformed codes, file name is the same as the original file name");
-        Option styleOutOption = new Option("so", "style-out", true, "Output path for the style file (optional)");
-        Option doCheckOption = new Option("c", "check", false, "Execute style check only");
-        Option langOption = new Option("lang", true, "Programming language (default: java)");
+        Option srcOption = new Option("src", true, "Source file or directory path seperated by semicolon.");
+        Option targetOption = new Option("target", true,
+                "File or directory path of target codes, or path of a target style file");
+        Option outputFileOption = new Option("f", true,
+                "1) One or more target code paths separated by ';'\n" +
+                        "2) A single style file (XML) for applying style");
+        Option outputDirOption = new Option("d", true,
+                "Output directory path of transformed codes, file name is the same as the original file name");
+        Option styleOutOption = new Option("o", "output", true,
+                "Output path for result, such as extracted style file or analysis report.");
+        Option langOption = new Option("lang", true, "Programming language (default: java): java, python, cpp.");
+        Option doExtractOption = new Option("e", "extract", false, "Execute style extraction only");
+        Option doCheckOption = new Option("a", "analyze", false, "Execute style inconsistencies analysis only");
 
         targetOption.setRequired(true);
 
@@ -100,8 +122,9 @@ public class CLIArgumentParser {
         options.addOption(outputFileOption);
         options.addOption(outputDirOption);
         options.addOption(styleOutOption);
-        options.addOption(doCheckOption);
         options.addOption(langOption);
+        options.addOption(doExtractOption);
+        options.addOption(doCheckOption);
 
         return options;
     }

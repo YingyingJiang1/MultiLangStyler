@@ -249,7 +249,8 @@ public class ExpressionStyler extends Styler {
         // Set a meaningful name for the newly created variable
         VarDeclarationSearcher varDeclarationSearcher =LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
         ExtendContext identifier = varDeclarationSearcher.searchIdentifiers(decStmt, parser).get(0);
-        String newName = NameGenerator.generateMeaningfulName(identifier, parser, MyEnvironment.getIConfig().getIdentifierLengthLimit());
+        String newName = NameGenerator.generateMeaningfulName(identifier, parser,
+                MyEnvironment.getIConfig().getProjectConfig().getIdentifierLengthLimit());
         if (newName != null && identifier.getStart() instanceof ExtendToken extendToken) {
             extendToken.setText(newName);
         }

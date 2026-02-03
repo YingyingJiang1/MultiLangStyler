@@ -4,15 +4,13 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.lang.intf.MyParser;
-import org.example.controller.TokenAugmentor;
+import org.example.stylekit.TokenAugmentor;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.factory.ExtendTokenFactory;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.antlr.common.token.TokenNameGetter;
 import org.example.antlr.java.JavaLexer;
 import org.example.antlr.java.JavaParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;

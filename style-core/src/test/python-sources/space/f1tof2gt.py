@@ -4,7 +4,7 @@ from typing import List
 
 
 
-def calculate_area(radius:float) -> float:
+def calculate_area(radius: float) -> float:
     
     <INDENT>return math.pi * radius ** 2
 
@@ -12,14 +12,14 @@ def calculate_area(radius:float) -> float:
 
 <DEDENT>class Shape:
     
-    <INDENT>def __init__ (self, name:str, dimensions:List[float]):
+    <INDENT>def __init__(self, name: str, dimensions: List[float]):
         
         <INDENT>self.name = name
         
         self.dimensions = dimensions
 
     
-    <DEDENT>def perimeter(self ) -> float:
+    <DEDENT>def perimeter(self) -> float:
         
         <INDENT>if self.name == "circle":
             
@@ -48,8 +48,8 @@ for shape in shapes:
     peri = shape.perimeter()
     
     results[shape.name] = {
-        "area":area,
-        "perimeter":peri,
+        "area": area,
+        "perimeter": peri,
     }
 
 

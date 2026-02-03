@@ -55,4 +55,8 @@ public class MyEnvironment {
         return config;
     }
 
+    public static MyConfiguration.ProjectConfig getProjectConfig() {
+        return config.getProjectConfig();
+    }
+
 }

@@ -354,7 +354,7 @@
 
 - [Kover](https://github.com/Kotlin/kotlinx-kover) integration
 - Enable [Gradle Configuration Cache](https://docs.gradle.org/current/userguide/configuration_cache.html) in `gradle.properties`
-- GitHub Actions — mark the pull request created with _Publish Plugin_ workflow with `release changelog` label
+- GitHub Actions — mark the pull extractRequest created with _Publish Plugin_ workflow with `release changelog` label
 - GitHub Actions — send code coverage reports to [CodeCov](https://codecov.io)
 - Dependencies - upgrade `org.jetbrains.kotlinx.kover` to `0.6.1`
 
@@ -374,7 +374,7 @@
 ### Fixed
 
 - Update broken link in `gradle.properties`
-- GitHub Actions — use `$BRANCH` for creating changelog pull request
+- GitHub Actions — use `$BRANCH` for creating changelog pull extractRequest
 
 ## [1.2.0] - 2022-08-07
 
@@ -503,7 +503,7 @@
 ### Changed
 
 - Dependencies (GitHub Actions) - upgrade `actions/cache` to `v2.1.6`
-- Trigger GitHub Actions `Build` workflows only on pushes to `main` branch or pull request to avoid duplicated checks
+- Trigger GitHub Actions `Build` workflows only on pushes to `main` branch or pull extractRequest to avoid duplicated checks
 
 ## [0.10.0] - 2021-05-27
 

@@ -2,9 +2,17 @@ spring:
   application:
     name: transformer
 
-general:
+project:
   #  When a value's proportion >= `minDominantRatio`, it is considered dominant, and the style is assigned this value.
   minDominantRatio: 0.7
+  styleOutputDir: "./style-data/style-profiles"
+  projectsFile: "./style-data/projects.json"
+  styleProfilesFile: "./style-data/style-profiles.json"
+  threadPool:
+    corePoolSize: 3
+    maxPoolSize: 10
+    keepAliveSeconds: 60
+    queueCapacity: 50
 
 stylers:
 

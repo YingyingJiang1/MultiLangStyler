@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import org.example.Configuration;
-import org.example.controller.Controller;
+import org.example.stylekit.Controller;
 import org.example.settings.AppSettings;
 import org.example.style.InconsistencyInfo;
 import org.jetbrains.annotations.NotNull;

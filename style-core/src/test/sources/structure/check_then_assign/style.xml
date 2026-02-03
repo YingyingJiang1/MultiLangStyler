@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<program_style>
+<program_style language="java">
   <style name="naming_format"/>
   <style name="newline"/>
   <style name="if_else_body_order"/>
@@ -9,8 +9,8 @@
   <style name="modifier_order"/>
   <style name="structure_preference">
     <rule>
-      <style_context id="15"/>
-      <style_property preferenceIndex="0"/>
+      <style_context id="14"/>
+      <style_property preferenceIndex="1"/>
     </rule>
   </style>
   <style name="declaration_layout"/>

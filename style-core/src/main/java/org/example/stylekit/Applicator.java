@@ -1,15 +1,13 @@
-package org.example.controller;
+package org.example.stylekit;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.MyEnvironment;
 import org.example.lang.LangAdapterCreator;
 import org.example.myException.ApplyException;
 import org.example.lang.MyParseTreeWalker;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.token.ExtendToken;
-import org.example.style.ProgramStyle;
-import org.example.style.Style;
+import org.example.style.StylerContainer;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
@@ -26,24 +24,28 @@ import java.util.*;
 public class Applicator {
     private static final Logger logger = LoggerFactory.getLogger(Applicator.class);
 
-    private ProgramStyle targetProgramStyle;
-    private StylerContainer container;
-    private String language;
+//    private StylerContainer container;
+//    private String language;
+//
+//
+//    public Applicator(String language, StyleProfile targetStyleProfile) {
+//        this.container = MyEnvironment.getIConfig().creasteStylerContainer(language);
+//        this.container.fillStyle(targetStyleProfile);
+//        this.language = language;
+//    }
+//
+//    public Applicator(String language, StylerContainer container) {
+//        this.container = container;
+//        this.language = language;
+//    }
 
-
-    public Applicator(String language, ProgramStyle targetProgramStyle) {
-        this.targetProgramStyle = targetProgramStyle;
-        this.container = MyEnvironment.getIConfig().getStylerContainer(language);
-        this.language = language;
-        fillStylers(container, this.targetProgramStyle);
-    }
 
     /**
      * Apply style rules to program files.
      * @param path program file or directory paths separated by semicolon.
      * @return Map<file path, result code>
      */
-    public Map<String, String> applyStyle(String path) {
+    public static Map<String, String> applyStyle(String path, String language, StylerContainer container) {
         FileCollection fileCollection = FileCollector.getFileCollection(List.of(path.split(";")));
 
         Map<String, String> results = new HashMap<>();
@@ -59,7 +61,7 @@ public class Applicator {
                     }
 
                     TokenAugmentor tokenAugmentor = new TokenAugmentor();
-                    List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+                    List<Token> tokens = Applicator.applyRules(parser, container);
                     results.put(curPath.toString(), toString(tokens, tokenAugmentor, parser));
                 }
 
@@ -72,7 +74,7 @@ public class Applicator {
     }
 
 
-    public String applyStyleFromString(String code) {
+    public static String applyStyleFromString(String code, String language, StylerContainer container) {
         try {
             MyParser parser = LangAdapterCreator.createParser(language);
             ParseTree tree = parser.parseFromString(code);
@@ -81,7 +83,7 @@ public class Applicator {
             }
 
             TokenAugmentor tokenAugmentor = new TokenAugmentor();
-            List<Token> tokens = Applicator.applyRules(parser, container, tokenAugmentor);
+            List<Token> tokens = Applicator.applyRules(parser, container);
             return toString(tokens, tokenAugmentor, parser);
         } catch (Exception e) {
             logger.error("Exception details:", e);
@@ -89,7 +91,7 @@ public class Applicator {
         return code;
     }
 
-    private static synchronized List<Token> applyRules(MyParser parser, StylerContainer container, TokenAugmentor tokenAugmentor) throws ApplyException {
+    private static synchronized List<Token> applyRules(MyParser parser, StylerContainer container) throws ApplyException {
         try {
 //            tokenAugmentor.process(parser, Stage.APPLY);
             MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());
@@ -163,17 +165,8 @@ public class Applicator {
 
     }
 
-    private void fillStylers(StylerContainer container, ProgramStyle programStyle) {
-        for (Styler styler : container.getStylers()) {
-            Style style = programStyle.getStyle(styler.getStyle().getStyleName());
-            if (style != null) {
-                styler.setStyle(style);
-            }
-        }
-    }
 
-
-    private String toString(List<Token> tokens, TokenAugmentor tokenAugmentor, MyParser parser) {
+    private static String toString(List<Token> tokens, TokenAugmentor tokenAugmentor, MyParser parser) {
         StringBuilder builder = new StringBuilder();
         if (tokens.get(tokens.size() - 1).getType() == parser.getEOF()) {
             tokens = tokens.subList(0, tokens.size() - 1);

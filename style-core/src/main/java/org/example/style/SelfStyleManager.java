@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SelfStyleManager {
-    private static Map<FileCollection, ProgramStyle> styleMap = new HashMap<>();
+    private static Map<FileCollection, StyleProfile> styleMap = new HashMap<>();
 
-    public static void addStyle(FileCollection fileCollection, ProgramStyle programStyle) {
-        styleMap.put(fileCollection, programStyle);
+    public static void addStyle(FileCollection fileCollection, StyleProfile styleProfile) {
+        styleMap.put(fileCollection, styleProfile);
     }
 
     public static Style getStyle(FileCollection fileCollection, String styleName) {

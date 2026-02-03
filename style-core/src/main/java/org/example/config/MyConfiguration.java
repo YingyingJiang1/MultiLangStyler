@@ -1,10 +1,9 @@
 package org.example.config;
 
-import org.checkerframework.checker.units.qual.C;
+import lombok.Data;
 import org.dom4j.Element;
 import org.example.MyEnvironment;
-import org.example.controller.StylerContainer;
-import org.example.styler.Styler;
+import org.example.style.StylerContainer;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
 import java.util.*;
 
 
@@ -24,6 +22,7 @@ import java.util.*;
  * @create       2024/3/13 16:11
  */
 @Component
+@Data
 public class MyConfiguration implements IConfig {
 
 	private static final Logger log = LoggerFactory.getLogger(MyConfiguration.class);
@@ -47,40 +46,7 @@ public class MyConfiguration implements IConfig {
   private AllLanguageConfigs  languageConfigs;
 
   @Autowired
-  private GeneralConfig generalConfig;
-//
-//  public ConfigurationManager() {
-//    try {
-//      ApplicationContext context = new ClassPathXmlApplicationContext("config.xml");
-//      llmConfig = context.getBean(LLMConfig.class);
-//      languageConfig = context.getBean(LanguageConfig.class);
-//      styleConfig = context.getBean(StyleConfig.class);
-//    } catch (Exception e) {
-//      llmConfig = new LLMConfig();
-//      languageConfig = new LanguageConfig();
-//      styleConfig = new StyleConfig();
-//      log.warn("Failed to load configuration");
-//    }
-//  }
-
-
-//  public void loadConf() {
-//    try {
-//      InputStream inputStream  = getClass().getResourceAsStream("/config.xml");
-//      SAXReader reader = new SAXReader();
-//      Document document = reader.read(inputStream);
-//      root = document.getRootElement();
-//
-//
-//    } catch (DocumentException e) {
-//      log.error("Failed to load configuration", e);
-//    }
-//
-//  }
-
-  public AllLanguageConfigs getLanguageConfigs() {
-    return languageConfigs;
-  }
+  private ProjectConfig projectConfig;
 
 
   private FileCollection collectFile(String path) {
@@ -92,9 +58,6 @@ public class MyConfiguration implements IConfig {
     return collection;
   }
 
-  public LLMConfig getLlmConfig() {
-    return llmConfig;
-  }
 
   public void setSrc(String src) {
     this.src = src;
@@ -122,14 +85,6 @@ public class MyConfiguration implements IConfig {
     } else {
       extractionCollection = collectFile(target);
     }
-  }
-
-  public String getTarget() {
-    return target;
-  }
-
-  public String getSrc() {
-    return src;
   }
 
   @Override
@@ -186,7 +141,7 @@ public class MyConfiguration implements IConfig {
   }
 
   public double getMinDominantRatio() {
-    return generalConfig.minDominantRatio;
+    return projectConfig.minDominantRatio;
   }
 
   @Override
@@ -215,12 +170,7 @@ public class MyConfiguration implements IConfig {
   }
 
   @Override
-  public int getIdentifierLengthLimit() {
-    return generalConfig.identifierLengthLimit;
-  }
-
-  @Override
-  public StylerContainer getStylerContainer(String lang) {
+  public StylerContainer creasteStylerContainer(String lang) {
     if (enabledStylers != null && enabledStylers.containsKey(lang)) {
       return new StylerContainer(enabledStylers.get(lang));
     }
@@ -314,17 +264,23 @@ public class MyConfiguration implements IConfig {
   }
 
   @Configuration
-  @ConfigurationProperties(prefix = "general")
-  public static class GeneralConfig {
+  @ConfigurationProperties(prefix = "project")
+  @Data
+  public static class ProjectConfig {
     double minDominantRatio;
     int identifierLengthLimit;
+    String styleOutputDir;
+    String projectsFile;
+    String styleProfilesFile;
+    ThreadPoolConfig threadPool;
 
-    public void setMinDominantRatio(double minDominantRatio) {
-      this.minDominantRatio = minDominantRatio;
-    }
 
-    public void setIdentifierLengthLimit(int identifierLengthLimit) {
-      this.identifierLengthLimit = identifierLengthLimit;
+    @Data
+    public static class ThreadPoolConfig {
+      int corePoolSize;
+      int maxPoolSize;
+      int keepAliveSeconds;
+      int queueCapacity;
     }
   }
 }

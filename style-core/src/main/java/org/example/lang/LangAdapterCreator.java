@@ -10,9 +10,11 @@ import org.example.lang.java.JavaCodeContextPredicate;
 import org.example.lang.java.JavaASTNodeEditor;
 import org.example.lang.python.PythonAstNodeEditor;
 import org.example.lang.base.PlaceholderParser;
+import org.example.style.StylerContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.script.ScriptContext;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -124,6 +126,10 @@ public class LangAdapterCreator {
 	public static Resolver createTypeResolver(String lang) {
 		Class<?> searcherClass = MyEnvironment.getIConfig().getTypeResolver(lang);
 		return createByGetInstance(searcherClass, lang);
+	}
+
+	public static StylerContainer createStylerContainer(String lang) {
+		return new StylerContainer();
 	}
 }
 

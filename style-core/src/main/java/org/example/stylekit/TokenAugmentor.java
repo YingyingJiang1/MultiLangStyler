@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.stylekit;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;

@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.Configuration;
-import org.example.controller.Controller;
+import org.example.stylekit.Controller;
 import org.example.parser.common.factory.MyParserFactory;
 import org.example.settings.AppSettings;
 import org.example.style.ProgramStyle;

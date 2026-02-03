@@ -1,21 +1,18 @@
 package org.example;
 
-import org.example.config.IConfig;
 import org.example.config.MyConfiguration;
-import org.example.controller.*;
-import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.LangAdapterCreator;
+import org.example.style.StylerContainer;
+import org.example.stylekit.*;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
-import org.example.style.ProgramStyle;
+import org.example.style.StyleProfile;
 import org.example.style.Style;
 import org.example.style.StyleFileIO;
-import org.example.styler.Styler;
 import org.example.styler.structure.StructureStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.example.styler.structure.style.StructureStyle;
-import org.example.utils.FileCollection;
-import org.example.utils.FileCollector;
 import org.opentest4j.AssertionFailedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,18 +80,18 @@ public class TestBase {
 
 			if (saveStyle) {
 				conf.SetEnabledStylers("cpp", List.of(StructureStyler.class));
-				Extractor extractor = new Extractor(language);
 
 				String srcPath = Paths.get(dir, srcFiles[i]).toString();
-				ProgramStyle selfStyle = extractor.extractStyle(srcPath);
+				StyleProfile selfStyle = Extractor.extractStyle(srcPath, language, LangAdapterCreator.createStylerContainer(language));
 				StyleFileIO.write(selfStyle, srcPath.replace(fileExt, ".xml"), "cpp");
 			}
 
 
-			ProgramStyle programStyle = new ProgramStyle();
-			programStyle.add(style);
-			Applicator applicator = new Applicator(language, programStyle);
-			Map<String, String> resultMap = applicator.applyStyle(Paths.get(dir, srcFiles[i]).toString());
+			StyleProfile styleProfile = new StyleProfile();
+			styleProfile.add(style);
+			StylerContainer container = LangAdapterCreator.createStylerContainer(language);
+			container.fillStyle(styleProfile);
+			Map<String, String> resultMap = Applicator.applyStyle(Paths.get(dir, srcFiles[i]).toString(), language, container);
 			String actual = resultMap.entrySet().stream().toList().get(0).getValue();
 			if (!new File(gtPath.toString()).exists()) {
 				try{
@@ -163,15 +160,16 @@ public class TestBase {
 
 	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {
 		conf.SetEnabledStylers(lang, classes);
+		MyEnvironment.setConf(conf);
 
 		TaskOptions taskOptions = new TaskOptions();
 		taskOptions.setLanguage(lang);
 		taskOptions.setSrc(srcPath.toString());
 		taskOptions.setTarget(targetPath.toString());
-		taskOptions.setStyleOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
+		taskOptions.setOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
 
-		Controller controller = new Controller();
-		Map<String, String> results = controller.execute(conf, taskOptions);
+		Coordinator coordinator = new Coordinator();
+		Map<String, String> results = coordinator.transferStyle(taskOptions);
 		for (Map.Entry<String, String> entry : results.entrySet()) {
 			return entry.getValue();
 		}

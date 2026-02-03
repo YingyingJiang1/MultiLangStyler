@@ -13,7 +13,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
-import org.example.controller.Controller;
+import org.example.stylekit.Controller;
 import org.example.style.ProgramStyle;
 import org.jetbrains.annotations.NotNull;
 

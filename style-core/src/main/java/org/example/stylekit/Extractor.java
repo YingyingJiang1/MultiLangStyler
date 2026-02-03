@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.stylekit;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
@@ -8,8 +8,9 @@ import org.example.lang.LangAdapterCreator;
 import org.example.myException.ExtractException;
 import org.example.lang.MyParseTreeWalker;
 import org.example.lang.intf.MyParser;
-import org.example.style.ProgramStyle;
+import org.example.style.StyleProfile;
 import org.example.style.StyleFileIO;
+import org.example.style.StylerContainer;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
@@ -19,9 +20,6 @@ import org.example.utils.ParseTreeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -30,28 +28,24 @@ import java.util.List;
 public class Extractor {
     private static final Logger logger = LoggerFactory.getLogger(Extractor.class);
 
-    private String language;
-
-    public Extractor(String language) {
-        this.language = language;
-    }
 
     /**
-     *
-     * @param path style file path; program file or directory paths separated by semicolon.
-     * @return extracted ProgramStyle
+     * Extract dominant style for each style aspects from program files or an XML style file.
+     * @param path file or directory paths separated by semicolon.
+     * @param language programming language.
+     * @param container StylerContainer to use.
+     * @return extracted ProgramStyle object.
      */
-    public ProgramStyle extractStyle(String path) {
+    public static StyleProfile extractStyle(String path, String language, StylerContainer container) {
         FileCollection fileCollection = FileCollector.getFileCollection(List.of(path.split(";")));
 
-        StylerContainer container = MyEnvironment.getIConfig().getStylerContainer(language);
         for (int i = 0; i < fileCollection.size(); i++) {
             try {
                 Path curPath = Paths.get(fileCollection.getFilePath(i));
 
                 // Read style from style file successfully, return directly.
                 if (curPath.getFileName().toString().endsWith(".xml")) {
-                    ProgramStyle ret = StyleFileIO.read(curPath.toString());
+                    StyleProfile ret = StyleFileIO.read(curPath.toString());
                     if (ret != null) {
                         return ret;
                     }
@@ -79,8 +73,14 @@ public class Extractor {
         return combineStyle(container);
     }
 
-    public ProgramStyle extractStyleFromString(String code) {
-        StylerContainer container = MyEnvironment.getIConfig().getStylerContainer(language);
+    /**
+     * Extract dominant style for each style aspects from source code string.
+     * @param code source code string.
+     * @param language programming language.
+     * @param container StylerContainer to use.
+     * @return extracted ProgramStyle object.
+     */
+    public static StyleProfile extractStyleFromString(String code, String language, StylerContainer container) {
         language = language.toLowerCase();
         MyEnvironment.setLanguage(language);
         MyParser parser = LangAdapterCreator.createParser(language);
@@ -151,13 +151,12 @@ public class Extractor {
     }
 
 
-    private static ProgramStyle combineStyle(StylerContainer container) {
-        ProgramStyle programStyle = new ProgramStyle();
+    private static StyleProfile combineStyle(StylerContainer container) {
+        StyleProfile styleProfile = new StyleProfile();
         for (Styler styler : container.getStylers()) {
-            programStyle.add(styler.getStyle());
+            styleProfile.add(styler.getStyle());
         }
-        return programStyle;
+        return styleProfile;
     }
-
 
 }

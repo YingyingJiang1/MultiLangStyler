@@ -1,11 +1,23 @@
-package org.example.controller;
+package org.example.stylekit;
 
 public class TaskOptions {
+	public static final int APPLY = 1;
+	public static final int EXTRACT = 2;
+	public static final int ANALYZE = 3;
+
 	private String src; // files or directories for applying code style
 	private String target; // files or directories for extracting code style
 	private String resOutPath; // output directory for results or output file
-	private String styleOutPath; // output path for extracted code style
-	private boolean doCheck; // whether to perform style checking only
+	/**
+	 * A target directory or file path where the processed code or analysis results will be saved.
+	 * <p>
+	 * If {@link #src} contains multiple paths and {@link #outPath} is a directory,
+	 * each input source will generate a corresponding output file in this directory, preserving
+	 * the original file names.
+	 * <p>
+	 */
+	private String outPath;
+	private int opId;
 	private String language;
 
 	public String getLanguage() {
@@ -51,21 +63,20 @@ public class TaskOptions {
 		this.target = target;
 	}
 
-	public String getStyleOutPath() {
-		return styleOutPath;
+	public String getOutPath() {
+		return outPath;
 	}
 
-	public void setStyleOutPath(String styleOutPath) {
-		this.styleOutPath = styleOutPath;
-	}
-
-	public boolean isDoCheck() {
-		return doCheck;
-	}
-
-	public void setDoCheck(boolean doCheck) {
-		this.doCheck = doCheck;
+	public void setOutPath(String outPath) {
+		this.outPath = outPath;
 	}
 
 
+	public void setOpId(int opId) {
+		this.opId = opId;
+	}
+
+	public int getOpId() {
+		return opId;
+	}
 }

@@ -397,7 +397,7 @@ All plugins and dependencies used by Gradle are managed with [Gradle version cat
 
 Keeping the project in good shape and having all the dependencies up-to-date requires time and effort, but it is possible to automate that process using [Dependabot][gh:dependabot].
 
-Dependabot is a bot provided by GitHub to check the build configuration files and review any outdated or insecure dependencies of yours – in case if any update is available, it creates a new pull request providing [the proper change][gh:dependabot-pr].
+Dependabot is a bot provided by GitHub to check the build configuration files and review any outdated or insecure dependencies of yours – in case if any update is available, it creates a new pull extractRequest providing [the proper change][gh:dependabot-pr].
 
 > [!NOTE]
 > Dependabot doesn't yet support checking of the Gradle Wrapper.
@@ -462,7 +462,7 @@ To configure how the Changelog plugin behaves, i.e., to create headers with the 
 ### Release flow
 
 The release process depends on the workflows already described above.
-When your main branch receives a new pull request or a direct push, the [Build](.github/workflows/build.yml) workflow runs multiple tests on your plugin and prepares a draft release.
+When your main branch receives a new pull extractRequest or a direct push, the [Build](.github/workflows/build.yml) workflow runs multiple tests on your plugin and prepares a draft release.
 
 ![Release draft][file:draft-release.png]
 
@@ -613,7 +613,7 @@ That approach gives more possibilities for testing and debugging pre-releases, f
 [jb:ui-guidelines]: https://jetbrains.github.io/ui
 
 [codecov]: https://codecov.io
-[github-actions-skip-ci]: https://github.blog/changelog/2021-02-08-github-actions-skip-pull-request-and-push-workflows-with-skip-ci/
+[github-actions-skip-ci]: https://github.blog/changelog/2021-02-08-github-actions-skip-pull-extractRequest-and-push-workflows-with-skip-ci/
 [keep-a-changelog]: https://keepachangelog.com
 [keep-a-changelog-how]: https://keepachangelog.com/en/1.0.0/#how
 [semver]: https://semver.org

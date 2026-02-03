@@ -6,8 +6,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class InconsistencyInfo {
+	protected InconsistencyType type;
 	protected int[] startLoc, endLoc; // start from 0
 	protected String message;
+	protected String expected, actual;
 
 	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
 		this.startLoc = startLoc;
@@ -20,12 +22,30 @@ public class InconsistencyInfo {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		InconsistencyInfo that = (InconsistencyInfo) o;
-		return Objects.deepEquals(startLoc, that.startLoc) && Objects.deepEquals(endLoc, that.endLoc) && Objects.equals(message, that.message);
+		return Objects.deepEquals(startLoc, that.startLoc) && Objects.deepEquals(endLoc, that.endLoc)
+				&& Objects.equals(expected, that.expected) && Objects.equals(actual, that.actual)
+				&& Objects.equals(message, that.message);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("""
+				Type     : %s
+				Location : line %d, column %d
+				Expected : %s
+				Actual   : %s
+				Message  : %s
+				""",
+				type.name(),
+				getStartRow(), getStartColumn(),
+				expected,
+				actual,
+				message);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Arrays.hashCode(startLoc), Arrays.hashCode(endLoc), message);
+		return Objects.hash(Arrays.hashCode(startLoc), Arrays.hashCode(endLoc), message, expected, actual);
 	}
 
 	public int getStartRow() {

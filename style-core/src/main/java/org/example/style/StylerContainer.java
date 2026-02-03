@@ -1,9 +1,8 @@
-package org.example.controller;
+package org.example.style;
 
 import org.example.styler.Styler;
 import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
-import org.example.styler.exp.complexity.ExpressionStyler;
 import org.example.styler.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.NewlineStyler;
@@ -16,7 +15,6 @@ import org.example.styler.naming.format.NamingStyler;
 import org.example.styler.structure.StructureStyler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class StylerContainer {
@@ -74,6 +72,15 @@ public class StylerContainer {
 		retainStylers(firstRoundStylers, enabledStylers);
 		retainStylers(secondRoundStylers, enabledStylers);
 		retainStylers(tsStylers, enabledStylers);
+	}
+
+	public void fillStyle(StyleProfile styleProfile) {
+		for (Styler styler : this.getStylers()) {
+			Style style = styleProfile.getStyle(styler.getStyle().getStyleName());
+			if (style != null) {
+				styler.setStyle(style);
+			}
+		}
 	}
 
 	public List<Styler> getStylers() {

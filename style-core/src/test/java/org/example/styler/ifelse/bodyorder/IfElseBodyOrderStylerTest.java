@@ -1,20 +1,14 @@
 package org.example.styler.ifelse.bodyorder;
 
-import org.example.config.MyConfiguration;
 import org.example.TestBase;
-import org.example.controller.Controller;
-import org.example.style.ProgramStyle;
-import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderProperty;
-import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderStyle;
+import org.example.stylekit.Coordinator;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class IfElseBodyOrderStylerTest extends TestBase {
 
 	@Test
 	void applyStyle() {
-		Controller controller = new Controller();
+		Coordinator coordinator = new Coordinator();
 		String code = """
 public static void main(String[] args) {
         int fuelLevel = 35; // 剩余油量（单位：升）

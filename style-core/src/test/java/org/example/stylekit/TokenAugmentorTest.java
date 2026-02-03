@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.stylekit;
 
 import org.antlr.v4.runtime.Token;
 import org.example.TestBase;
