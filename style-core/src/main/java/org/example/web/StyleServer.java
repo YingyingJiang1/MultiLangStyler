@@ -1,5 +1,7 @@
-package org.example;
+package org.example.web;
 
+import org.example.Main;
+import org.example.MyEnvironment;
 import org.example.config.MyConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,12 +9,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"org.example.config"})
+@ComponentScan(basePackages = {"org.example"})
 public class StyleServer {
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(Main.class, args);
-        MyConfiguration config = context.getBean(MyConfiguration.class);
-        MyEnvironment.setConf(config);
-        SpringApplication.run(StyleServer.class, args);
+        SpringApplication application = new SpringApplication(StyleServer.class);
+//        application.addInitializers(new org.example.MyEnvironmentInitializer());
+        application.run(args);
     }
 }

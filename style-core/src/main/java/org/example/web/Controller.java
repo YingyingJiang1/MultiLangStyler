@@ -3,11 +3,13 @@ package org.example.web;
 import org.example.MyEnvironment;
 import org.example.config.MyConfiguration;
 import org.example.style.StylerContainer;
+import org.example.web.exception.InvalidRequestException;
 import org.example.web.model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.*;
 
 @RestController
@@ -15,7 +17,9 @@ import java.util.concurrent.*;
 public class Controller {
     private final ExecutorService extractPool;
     private final ExecutorService shortTaskPool;
-    private StyleService styleService;
+    private final StyleService styleService;
+
+    private static final Set<String> SUPPORTED_LANGUAGES = Set.of("java", "cpp", "python");
 
     @Autowired
     public Controller(StyleService styleService) {
@@ -48,15 +52,8 @@ public class Controller {
 
     @PostMapping("/style-profiles")
     public Future<Result> extractStyle(@RequestBody ExtractRequest request) {
-        if (!(request.getSourceType() == SourceType.FILE || request.getSourceType() == SourceType.STRING)) {
-            return CompletableFuture.completedFuture(
-                    new Result(false, ResultCode.EXTRACT_FAILURE, "Invalid source type", null)
-            );
-        }
-        Future<Result> langValidation = validateLanguage(request.getLanguage());
-        if (langValidation != null) {
-            return langValidation;
-        }
+        validateCodeSource(request.getSourceType(), request.getSource());
+        validateLanguage(request.getLanguage());
 
         return extractPool.submit(() -> styleService.extractStyle(request));
     }
@@ -66,21 +63,20 @@ public class Controller {
      */
     @GetMapping("style-profiles/{projectKey}/{language}")
     public Future<Result> getStyleProfileId(@PathVariable String projectKey, @PathVariable String language) {
-        Future<Result> langValidation = validateLanguage(language);
-        if (langValidation != null) {
-            return langValidation;
-        }
+        validateLanguage(language);
        return shortTaskPool.submit(() -> styleService.findStyleProfileId(projectKey, language));
     }
 
-    private Future<Result> validateLanguage(String language) {
-        if (language.equalsIgnoreCase("java")
-                || language.equalsIgnoreCase("cpp")
-                || language.equalsIgnoreCase("python")) {
-            return null;
+    private void validateLanguage(String language) {
+        if (!SUPPORTED_LANGUAGES.contains(language)) {
+            throw new InvalidRequestException(ResultCode.EXTRACT_FAILURE.name(),  "Supported language: " + SUPPORTED_LANGUAGES);
         }
-        return CompletableFuture.completedFuture(
-                Result.fail(ResultCode.EXTRACT_FAILURE, "Supported language: java, cpp, python"));
+    }
+
+    private void validateCodeSource(SourceType sourceType, String source) {
+        if (!(sourceType == SourceType.FILE || sourceType == SourceType.STRING)) {
+            throw new InvalidRequestException(ResultCode.EXTRACT_FAILURE.name(), "Invalid source type");
+        }
     }
 
 }

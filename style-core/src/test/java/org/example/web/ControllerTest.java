@@ -1,11 +1,20 @@
 package org.example.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.MyEnvironment;
+import org.example.config.MyConfiguration;
 import org.example.web.model.dto.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
@@ -14,7 +23,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(Controller.class)
+//@WebMvcTest(Controller.class)
+//@Import(MyConfiguration.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class ControllerTest {
 
     @Autowired
@@ -22,6 +34,8 @@ class ControllerTest {
 
     @MockBean
     private StyleService mockStyleService;
+
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void testRegisterProject() throws Exception {
@@ -35,10 +49,10 @@ class ControllerTest {
 
         // Run the test and verify the results
         mockMvc.perform(post("/api/v1/projects")
-                        .content("content").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{}", true));
+                .andExpect(content().json(objectMapper.writeValueAsString(result1), true));
     }
 
     @Test
