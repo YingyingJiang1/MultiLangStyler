@@ -15,6 +15,11 @@ public class CliRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         TaskOptions taskOptions = CLIArgumentParser.parseArgs(args);
+        if (taskOptions == null) {
+            System.out.println("Invalid arguments.");
+            CLIArgumentParser.printHelp();
+            return;
+        }
 
         switch (taskOptions.getOpId()) {
             case TaskOptions.APPLY:

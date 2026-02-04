@@ -52,9 +52,7 @@ public class CLIArgumentParser {
             }
 
         } catch (ParseException|InvalidParameterException e) {
-            // 打印帮助信息并退出
-            logger.error("Error parsing command line arguments: " + e.getMessage(), e);
-            printHelp(options);
+            return null;
         }
         return null;
     }
@@ -71,19 +69,17 @@ public class CLIArgumentParser {
         return true;
     }
 
-    private static void printHelp(Options options) {
+    public static void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        String header = "\nUsage examples:\n" +
+        String footer = "\nUsage examples:\n" +
                 "  Transfer style:    -src <path1;path2;...> -target <arg> [-f <output_file> | -d <output_directory>] -so <style_output_file> -lang <language>\n" +
                 "  Extract style:     -e -target <path1;path2;...> -so <style_output_file> -lang <language>\n" +
                 "  Analyze style:     -a -src <path1;path2;...> -target <arg> [-f <output_file> | -d <output_directory>] -lang <language>\n\n";
 
-        String footer = "\nOptions:";
-
         formatter.printHelp(
-                "java -jar <path of jar package>", // 命令行程序名
-                header,
-                options,
+                "java -jar <jar file> --spring.profiles.active=cli", // 命令行程序名
+                "Options:",
+                getOptions(),
                 footer,
                 true // 自动对齐
         );
