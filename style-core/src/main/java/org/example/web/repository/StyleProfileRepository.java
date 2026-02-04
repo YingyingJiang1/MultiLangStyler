@@ -24,4 +24,10 @@ public interface StyleProfileRepository {
      * </p>
      */
     void setActiveStat(String styleProfileId);
+
+    /**
+     * Deletes the style profile with the specified ID.
+     * If no ACTIVE style profile, choose the one with the highest version as ACTIVE.
+     */
+    StyleProfileEntity deleteById(String styleProfileId);
 }

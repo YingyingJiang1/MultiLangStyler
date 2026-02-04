@@ -82,7 +82,6 @@ public class Extractor {
      */
     public static StyleProfile extractStyleFromString(String code, String language, StylerContainer container) {
         language = language.toLowerCase();
-        MyEnvironment.setLanguage(language);
         MyParser parser = LangAdapterCreator.createParser(language);
         ParseTree tree = parser.parseFromString(code);
         if (tree == null) {
@@ -151,7 +150,7 @@ public class Extractor {
     }
 
 
-    private static StyleProfile combineStyle(StylerContainer container) {
+    public static StyleProfile combineStyle(StylerContainer container) {
         StyleProfile styleProfile = new StyleProfile();
         for (Styler styler : container.getStylers()) {
             styleProfile.add(styler.getStyle());

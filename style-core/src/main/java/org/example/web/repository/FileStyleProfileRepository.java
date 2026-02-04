@@ -62,9 +62,20 @@ public class FileStyleProfileRepository implements StyleProfileRepository {
     public void save(StyleProfileEntity profile) {
         Objects.requireNonNull(profile, "profile cannot be null");
 
+        // Ensure only one active profile per project
+        if (profile.getStatus() == StyleProfileStatus.ACTIVE &&
+                projectIndex.get(profile.getProjectKey()) != null) {
+            projectIndex.get(profile.getProjectKey()).stream().map(profileMap::get)
+                    .filter(p -> p.getStatus() == StyleProfileStatus.ACTIVE)
+                    .forEach(p -> p.setStatus(StyleProfileStatus.INACTIVE));
+        }
+
         profileMap.put(profile.getStyleProfileId(), profile);
         projectIndex.computeIfAbsent(profile.getProjectKey(), k -> new CopyOnWriteArrayList<>())
                 .add(profile.getStyleProfileId());
+        if (profile.getStatus() == StyleProfileStatus.ACTIVE) {
+            setActiveStat(profile.getStyleProfileId());
+        }
 
        flush();
     }
@@ -90,8 +101,33 @@ public class FileStyleProfileRepository implements StyleProfileRepository {
                 }
             }
             profileEntity.setStatus(StyleProfileStatus.ACTIVE);
+            int maxVersion = ids.stream().map(profileMap::get)
+                    .max(Comparator.comparingInt(StyleProfileEntity::getVersion)).get().getVersion();
+            profileEntity.setVersion(maxVersion + 1);
         }
         flush();
+    }
+
+    @Override
+    public StyleProfileEntity deleteById(String styleProfileId) {
+        StyleProfileEntity profile = profileMap.remove(styleProfileId);
+        if (profile != null) {
+            List<String> ids = projectIndex.getOrDefault(profile.getProjectKey(), Collections.emptyList());
+            ids.remove(styleProfileId);
+
+            // Ensure there is always an active profile
+            if (profile.getStatus() == StyleProfileStatus.ACTIVE) {
+                Optional<StyleProfileEntity> maxVersionProfile =
+                        ids.stream().map(profileMap::get).max(Comparator.comparingInt(StyleProfileEntity::getVersion));
+                if (maxVersionProfile.isPresent()) {
+                    setActiveStat(maxVersionProfile.get().getStyleProfileId());
+                }
+            }
+            File profileFile = new File(profile.getStoragePath());
+            profileFile.delete();
+            flush();
+        }
+        return profile;
     }
 
     public List<StyleProfileEntity> findByProject(String projectKey) {

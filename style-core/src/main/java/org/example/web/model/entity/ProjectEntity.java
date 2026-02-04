@@ -1,5 +1,7 @@
 package org.example.web.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
@@ -11,4 +13,15 @@ public class ProjectEntity {
      */
     private final String clientId;
     private final String localPath; // local abs path of the project
+
+    @JsonCreator
+    public ProjectEntity(
+            @JsonProperty("projectKey") String projectKey,
+            @JsonProperty("clientId") String clientId,
+            @JsonProperty("localPath") String localPath
+    ) {
+        this.projectKey = projectKey;
+        this.clientId = clientId;
+        this.localPath = localPath;
+    }
 }

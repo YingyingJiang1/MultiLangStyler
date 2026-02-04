@@ -121,6 +121,17 @@ class ControllerTest {
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
+    @Test
+    void testGetStyleProfileEntity() throws Exception {
+        Result result = Result.ok("data");
+        final CompletableFuture<Result> resultCompletableFuture = CompletableFuture.completedFuture(result);
+        when(mockStyleService.getStyleProfileEntity("profileId")).thenReturn(resultCompletableFuture);
+
+        // Run the test and verify the results
+        MockHttpServletRequestBuilder getBuilder = get("/api/v1/style-profiles/{id}", "profileId");
+        compareGetResults(getBuilder, null, result);
+    }
+
 
     private void comparePostResults(MockHttpServletRequestBuilder requestBuilder, Object request, Result expected) throws Exception {
         MvcResult mvcResult = mockMvc.perform(requestBuilder

@@ -114,7 +114,7 @@ public class NameGenerator {
                 + "\n");
         if (codeContext != null) {
             promptBuilder.append(
-                    String.format("Here is the %s code snippet:\n", MyEnvironment.getLanguage()) +
+                    String.format("Here is the %s code snippet:\n", parser.getLanguage()) +
                             "\n" +
                             "\"" + codeContext + "\"\n");
         }

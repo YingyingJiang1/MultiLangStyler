@@ -165,7 +165,12 @@ public class IndentionStyler extends Styler {
         indentionLengthMap.entrySet().stream().filter(e -> e.getKey().indentionType != '\0')
                 .forEach(e -> typeMap.put(e.getKey().indentionType,
                         e.getValue() + typeMap.getOrDefault(e.getKey().indentionType, 0)));
-        char indentionType = typeMap.entrySet().stream().filter(e -> e.getKey() != '\0').max(Map.Entry.comparingByValue()).orElseThrow().getKey();
+        Optional<Map.Entry<Character, Integer>> optional = typeMap.entrySet().stream().filter(e -> e.getKey() != '\0')
+                .max(Map.Entry.comparingByValue());
+        if (!optional.isPresent()) {
+            return; // 无有效风格特征，提前退出
+        }
+        char indentionType = optional.get().getKey();
 
         Map<Integer, List<Integer>> hierarchy2lenListMap = new HashMap<>();
         indentionLengthMap.entrySet().stream().filter(e -> e.getKey().indentionType == indentionType)

@@ -16,7 +16,7 @@ public class SymbolTableManager {
     public static List<Symbol> getAllSymbols(MyParser parser) {
         SymbolTable st = stCache.get(parser.getRoot());
         if (st == null) {
-            st = LangAdapterCreator.createSymbolResolver(MyEnvironment.getLanguage()).resolveAll(parser.getRoot(), parser);
+            st = LangAdapterCreator.createSymbolResolver(parser.getLanguage()).resolveAll(parser.getRoot(), parser);
             stCache.put(parser.getRoot(), st);
         }
 

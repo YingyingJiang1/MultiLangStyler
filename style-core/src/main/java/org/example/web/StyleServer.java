@@ -13,7 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
 public class StyleServer {
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(StyleServer.class);
-//        application.addInitializers(new org.example.MyEnvironmentInitializer());
         application.run(args);
     }
 }

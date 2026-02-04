@@ -56,6 +56,14 @@ public class Controller {
        return styleService.findStyleProfileId(projectKey, language);
     }
 
+    /**
+     * Get current style profile entity for the specified project and language.
+     */
+    @GetMapping("style-profiles/{profileId}")
+    public CompletableFuture<Result> getStyleProfileEntity(@PathVariable String profileId) {
+        return styleService.getStyleProfileEntity(profileId);
+    }
+
     private void validateLanguage(String language) {
         if (!SUPPORTED_LANGUAGES.contains(language)) {
             throw new InvalidRequestException(ResultCode.EXTRACT_FAILURE.name(),  "Supported language: " + SUPPORTED_LANGUAGES);

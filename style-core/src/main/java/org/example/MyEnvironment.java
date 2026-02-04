@@ -12,7 +12,6 @@ public class MyEnvironment {
     private static IConfig config;
     public static Logger logger = LoggerFactory.getLogger(MyEnvironment.class);
 
-    private static String language = "";
     private static String pathSeparator;
     private static Resolver resolver;
     private static ReferenceResolver referenceResolver;
@@ -20,8 +19,6 @@ public class MyEnvironment {
 
 
     public static void setLanguage(String language) {
-        MyEnvironment.language = language;
-
         if (language.equals("java")) {
             pathSeparator = ".";
         }
@@ -29,10 +26,6 @@ public class MyEnvironment {
 
     public static String getPathSeparator() {
         return pathSeparator;
-    }
-
-    public static String getLanguage() {
-        return language;
     }
 
     public static Resolver getResolver() {

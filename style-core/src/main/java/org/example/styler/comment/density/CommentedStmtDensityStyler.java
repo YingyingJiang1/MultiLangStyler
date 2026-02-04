@@ -57,12 +57,12 @@ public class CommentedStmtDensityStyler extends Styler {
 						targetProperty.commentDensity, ctx.getFormattedText(parser));
 		String constraints = "1. Output the resulting Java code only. Do not include any explanations or additional text outside the code block.\n" +
 				"2. You may only add, delete or modify comments.";
-		List<String> candidates = ModelClient.getInstance().sendRequestWithTemplate(taskDescription, constraints, MyEnvironment.getLanguage());
+		List<String> candidates = ModelClient.getInstance().sendRequestWithTemplate(taskDescription, constraints, parser.getLanguage());
 		if (candidates == null) {
 			return;
 		}
 		for (String candidate : candidates) {
-			MyParser newParser = LangAdapterCreator.createParser(MyEnvironment.getLanguage());
+			MyParser newParser = LangAdapterCreator.createParser(parser.getLanguage());
 			newParser.parseFromString(candidate);
 			if (newParser.getRoot() == null) {
 				continue;

@@ -10,6 +10,7 @@ import org.example.stylekit.Extractor;
 import org.example.web.model.dto.*;
 import org.example.web.model.entity.ProjectEntity;
 import org.example.web.model.entity.StyleProfileEntity;
+import org.example.web.model.entity.StyleProfileStatus;
 import org.example.web.repository.ProjectRepository;
 import org.example.web.repository.StyleProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,14 +37,12 @@ public class StyleService {
      * value: container filled with the style profile>
      * This field is used to avoid re-creating objects for the same style profile.
      */
-    private Map<String, StylerContainer> stylerCache;
+    private final Map<String, StylerContainer> stylerCache = new ConcurrentHashMap<>();
 
     @Autowired
     public StyleService(
             ProjectRepository projectRepository,
-            StyleProfileRepository styleProfileRepository,
-            @Qualifier("ioTaskPool") ExecutorService extractPool,
-            @Qualifier("shortTaskPool") ExecutorService shortTaskPool) {
+            StyleProfileRepository styleProfileRepository) {
         this.projectRepository = projectRepository;
         this.styleProfileRepository = styleProfileRepository;
     }
@@ -77,6 +77,16 @@ public class StyleService {
     }
 
     @Async("ioTaskPool")
+    public CompletableFuture<Result> getStyleProfileEntity(String profileId) {
+        Optional<StyleProfileEntity> profileEntity = styleProfileRepository.findById(profileId);
+        if (profileEntity.isPresent()) {
+            return CompletableFuture.completedFuture(Result.ok(profileEntity.get()));
+        }
+        return CompletableFuture.completedFuture(
+                Result.fail(ResultCode.LOOKUP_FAILURE, "Style profile entity not found"));
+    }
+
+    @Async("ioTaskPool")
     public CompletableFuture<Result> extractStyle(ExtractRequest request) {
         StylerContainer container = LangAdapterCreator.createStylerContainer(request.getLanguage());
 
@@ -93,8 +103,13 @@ public class StyleService {
                     Result.fail(ResultCode.EXTRACT_FAILURE, "Unsupported source type"));
         }
 
-        return CompletableFuture.completedFuture(
-                executeExtraction(task, request, container));
+        try {
+            return CompletableFuture.completedFuture(
+                    executeExtraction(task, request, container));
+        } catch (Exception e) {
+            return CompletableFuture.completedFuture(Result.fail(ResultCode.EXTRACT_FAILURE,
+                    "Server internal execution exception"));
+        }
     }
 
 
@@ -112,7 +127,8 @@ public class StyleService {
             styleProfileRepository.save(new StyleProfileEntity(
                     styleProfileId, storagePath,
                     extractRequest.getProjectKey(), extractRequest.getLanguage(),
-                    Instant.now(), ""));
+                    StyleProfileStatus.ACTIVE, 0,
+                    new Date(), ""));
 
             stylerCache.put(styleProfileId, container);
             return Result.ok(styleProfileId);
