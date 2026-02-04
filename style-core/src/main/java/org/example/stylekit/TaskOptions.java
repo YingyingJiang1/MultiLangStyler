@@ -20,6 +20,8 @@ public class TaskOptions {
 	 */
 	private String resOutPath;
 	private String styleOutPath;
-	private int opId;
+	private int opId = APPLY;
 	private String language;
+	private boolean overrideSource;
+	private boolean isOut2file; // output to file, otherwise output to directory
 }

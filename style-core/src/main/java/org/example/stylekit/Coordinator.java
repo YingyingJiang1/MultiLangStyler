@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -23,50 +26,55 @@ public class Coordinator {
      * @param taskOptions
      * @return Map<file path, result code>
      */
-    public Map<String, String> transferStyle(TaskOptions taskOptions) {
+    public void transferStyle(TaskOptions taskOptions) {
         try {
             StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
             StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
 
-            if (taskOptions.getOutPath() != null) {
-                StyleFileIO.write(targetStyleProfile, taskOptions.getOutPath(), taskOptions.getLanguage());
+            if (taskOptions.getStyleOutPath() != null) {
+                StyleFileIO.write(targetStyleProfile, taskOptions.getStyleOutPath(), taskOptions.getLanguage());
             }
 
             Map<String, String> results = Applicator.applyStyle(taskOptions.getSrc(), taskOptions.getLanguage(), container);
 
-            // Don't save results.
-            if (!taskOptions.isOverrideSource() && taskOptions.getResOutPath() == null) {
-                return results;
-            }
-
-            // Save transformed results
-            File outPathOption = new File(taskOptions.getResOutPath());
-            for (Map.Entry<String, String> entry : results.entrySet()) {
-                String originPath = entry.getKey();
-                String outPath = originPath;
-                if (!taskOptions.isOverrideSource()) {
-                    if (outPathOption.isFile()) {
-                        outPath = outPathOption.getPath();
-                    } else if (outPathOption.isDirectory()) {
-                        String fileName = Paths.get(entry.getKey()).getFileName().toString();
-                        outPath = Paths.get(outPathOption.getPath(), fileName).toString();
+            // Write result
+            if (taskOptions.isOverrideSource()) {
+                // Override original  source
+                for (Map.Entry<String, String> entry : results.entrySet()) {
+                    Files.write(Paths.get(entry.getKey()), entry.getValue().getBytes());
+                }
+            } else if (taskOptions.getResOutPath() != null) {
+                // Write all results to the same file
+                File resOutFile = new File(taskOptions.getResOutPath());
+                if (taskOptions.isOut2file()) {
+                    StringBuilder sb = new StringBuilder();
+                    for (Map.Entry<String, String> entry : results.entrySet()) {
+                        sb.append(entry.getValue());
                     }
-                }
+                    Files.writeString(resOutFile.toPath(), sb.toString());
+                } else {
+                    // Write all results to the same directory
+                    if (!resOutFile.exists()) {
+                        resOutFile.mkdirs();
+                    }
+                    for (Map.Entry<String, String> entry : results.entrySet()) {
+                        Path srcPath = Paths.get(entry.getKey());
+                        Path targetPath = Paths.get(taskOptions.getResOutPath(), srcPath.getFileName().toString());
+                        Files.writeString(targetPath,entry.getValue());
+                    }
 
-                File dir = new File(outPath).getParentFile();
-                if (!dir.exists()) {
-                    dir.mkdirs();
                 }
-                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outPath)))) {
-                    writer.write(entry.getValue());
+            } else {
+                // output to  console
+                for (Map.Entry<String, String> entry : results.entrySet()) {
+                    System.out.println(entry.getKey());
+                    System.out.println(entry.getValue());
                 }
             }
-            return results;
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return null;
     }
 
 
@@ -77,8 +85,8 @@ public class Coordinator {
         StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
         StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
 
-        if (taskOptions.getOutPath() != null) {
-            StyleFileIO.write(targetStyleProfile, taskOptions.getOutPath(), taskOptions.getLanguage());
+        if (taskOptions.getStyleOutPath() != null) {
+            StyleFileIO.write(targetStyleProfile, taskOptions.getStyleOutPath(), taskOptions.getLanguage());
         }
     }
 
@@ -89,8 +97,8 @@ public class Coordinator {
 
         Map<String, List<InconsistencyInfo>> infosMap = Analyzer.anayzeInconsistency(taskOptions.getTarget(), taskOptions.getLanguage(), container);
 
-        if (taskOptions.getOutPath() != null) {
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(taskOptions.getOutPath())))) {
+        if (taskOptions.getResOutPath() != null) {
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(taskOptions.getResOutPath())))) {
                 for (Map.Entry<String, List<InconsistencyInfo>> entry : infosMap.entrySet()) {
                     // Write header
                     writer.write(StringUtils.repeat('=', 60) + "\n");
@@ -103,7 +111,7 @@ public class Coordinator {
                     }
                 }
             } catch (IOException e) {
-                logger.error("Failed to write inconsistency analysis results to file: {}", taskOptions.getOutPath(), e);
+                logger.error("Failed to write inconsistency analysis results to file: {}", taskOptions.getResOutPath(), e);
             }
         }
         

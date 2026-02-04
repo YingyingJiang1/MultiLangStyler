@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.scheduling.config.Task;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -166,10 +167,10 @@ public class TestBase {
 		taskOptions.setLanguage(lang);
 		taskOptions.setSrc(srcPath.toString());
 		taskOptions.setTarget(targetPath.toString());
-		taskOptions.setOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
+		taskOptions.setStyleOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
 
 		Coordinator coordinator = new Coordinator();
-		Map<String, String> results = coordinator.transferStyle(taskOptions);
+		Map<String, String> results = transferStyle(taskOptions);
 		for (Map.Entry<String, String> entry : results.entrySet()) {
 			return entry.getValue();
 		}
@@ -177,6 +178,17 @@ public class TestBase {
 	}
 
 
+	private Map<String, String> transferStyle(TaskOptions taskOptions) {
+		StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
+		StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
+
+		if (taskOptions.getStyleOutPath() != null) {
+			StyleFileIO.write(targetStyleProfile, taskOptions.getStyleOutPath(), taskOptions.getLanguage());
+		}
+
+		Map<String, String> results = Applicator.applyStyle(taskOptions.getSrc(), taskOptions.getLanguage(), container);
+		return results;
+	}
 
 //	protected String apply(Path srcPath, Path targetPath) {
 //		MyConfiguration conf = new MyConfiguration();

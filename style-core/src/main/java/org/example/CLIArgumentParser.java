@@ -5,6 +5,8 @@ import org.example.stylekit.TaskOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.InvalidParameterException;
+
 public class CLIArgumentParser {
     public static Logger logger = LoggerFactory.getLogger(CLIArgumentParser.class);
     
@@ -17,27 +19,22 @@ public class CLIArgumentParser {
             cmd = parser.parse(options, args);
             TaskOptions taskOptions = new TaskOptions();
 
-            // 获取并设置参数
             String src = cmd.getOptionValue("src");
             String target = cmd.getOptionValue("target");
             taskOptions.setSrc(src);
             taskOptions.setTarget(target);
 
-            String outputFile = cmd.getOptionValue("f");
-            String outputDir = cmd.getOptionValue("d");
-
-            if (outputFile != null) {
-                taskOptions.setResOutPath(outputFile);
+            if (cmd.hasOption("f")) {
+                taskOptions.setResOutPath(cmd.getOptionValue("f"));
+                taskOptions.setOut2file( true);
+            } else if (cmd.hasOption("d")) {
+                taskOptions.setResOutPath(cmd.getOptionValue("d"));
+                taskOptions.setOut2file(false);
             }
+            String styleOut = cmd.getOptionValue("so");
+            taskOptions.setStyleOutPath(styleOut);
+            taskOptions.setOverrideSource(cmd.hasOption("override"));
 
-            if (outputDir != null) {
-                taskOptions.setResOutPath(outputDir);
-            }
-
-            String styleOut = cmd.getOptionValue("o");
-            if (styleOut != null) {
-                taskOptions.setOutPath(styleOut);
-            }
 
             if (cmd.hasOption("extract")) {
                 taskOptions.setOpId(TaskOptions.EXTRACT);
@@ -54,7 +51,7 @@ public class CLIArgumentParser {
                 return taskOptions;
             }
 
-        } catch (ParseException e) {
+        } catch (ParseException|InvalidParameterException e) {
             // 打印帮助信息并退出
             logger.error("Error parsing command line arguments: " + e.getMessage(), e);
             printHelp(options);
@@ -62,14 +59,13 @@ public class CLIArgumentParser {
         return null;
     }
 
-    private static boolean validateParameters(TaskOptions taskOptions) {
-        String src = taskOptions.getSrc();
-        String target = taskOptions.getTarget();
-        String styleOutPath = taskOptions.getOutPath();
+    private static boolean validateParameters(TaskOptions taskOptions) throws InvalidParameterException {
 
-        if (target == null || (src == null &&  styleOutPath == null)) {
-            logger.error("Wrong usage.\n Correct argument usage:\n -src <arg> -target <arg> \n or \n -target <arg> -o <arg>");
-            return false;
+        if (taskOptions.getLanguage() == null) {
+            throw new InvalidParameterException("arg -lang should be set.");
+        }
+        if (taskOptions.getTarget() == null) {
+            throw new InvalidParameterException("arg -target should be set.");
         }
 
         return true;
@@ -78,9 +74,9 @@ public class CLIArgumentParser {
     private static void printHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
         String header = "\nUsage examples:\n" +
-                "  Transfer style:    -src <path1;path2;...> -target <arg> [-f <output_file> | -d <output_dir>] -lang <language>\n" +
-                "  Extract style:     -e -target <path1;path2;...> -o <output_file> -lang <language>\n" +
-                "  Analyze style:     -a -src <path1;path2;...> -target <arg> -o <output_file> -lang <language>\n\n";
+                "  Transfer style:    -src <path1;path2;...> -target <arg> [-f <output_file> | -d <output_directory>] -so <style_output_file> -lang <language>\n" +
+                "  Extract style:     -e -target <path1;path2;...> -so <style_output_file> -lang <language>\n" +
+                "  Analyze style:     -a -src <path1;path2;...> -target <arg> [-f <output_file> | -d <output_directory>] -lang <language>\n\n";
 
         String footer = "\nOptions:";
 
@@ -99,27 +95,28 @@ public class CLIArgumentParser {
         Option srcOption = new Option("src", true, "Source file or directory path, multiple paths are seperated by ';'.");
         Option targetOption = new Option("target", true,
                 "Source file or directory path of reference code, or path of a target style file. Multiple paths are seperated by ';'.");
-        Option outputFileOption = new Option("f", true,
-                "1) One or more target code paths separated by ';'\n" +
-                        "2) A single style file (XML) for applying style");
-        Option outputDirOption = new Option("d", true,
-                "Output directory path of transformed codes, file name is the same as the original file name");
-        Option styleOutOption = new Option("o", "output", true,
-                "Output path for result, such as extracted style file or analysis report.");
+        Option resOutFileOption = new Option("f","file", true,
+                "Output file path for style-transferred code and analysis results.");
+        Option resOutDirOption = new Option("d", "directory", true,
+                "Output directory for style-transferred code and analysis results.");
+        Option styleOutOption = new Option("so", "style-output", true,
+                "Output file for style profile extracted from reference code.");
         Option langOption = new Option("lang", true, "Programming language: java, python, cpp.");
         Option doExtractOption = new Option("e", "extract", false, "Execute style extraction only");
         Option doCheckOption = new Option("a", "analyze", false, "Execute style inconsistencies analysis only");
+        Option overrideOption = new Option("override", false, "Override source code with style-transferred code.");
 
         targetOption.setRequired(true);
 
         options.addOption(srcOption);
         options.addOption(targetOption);
-        options.addOption(outputFileOption);
-        options.addOption(outputDirOption);
         options.addOption(styleOutOption);
+        options.addOption(resOutFileOption);
+        options.addOption(resOutDirOption);
         options.addOption(langOption);
         options.addOption(doExtractOption);
         options.addOption(doCheckOption);
+        options.addOption(overrideOption);
 
         return options;
     }
