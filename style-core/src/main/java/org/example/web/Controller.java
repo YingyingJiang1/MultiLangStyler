@@ -6,6 +6,7 @@ import org.example.style.StylerContainer;
 import org.example.web.exception.InvalidRequestException;
 import org.example.web.model.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.concurrent.*;
 
 @RestController
 @RequestMapping("/api/v1")
+@Profile("web")
 public class Controller {
 
     private final StyleService styleService;

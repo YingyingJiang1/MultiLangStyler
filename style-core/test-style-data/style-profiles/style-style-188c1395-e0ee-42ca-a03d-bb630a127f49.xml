@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style language="java">
+  <style name="naming_format">
+    <rule>
+      <style_context nameType="TYPE"/>
+      <style_property caseFormat="UPPER_CAMEL" startsWithUnderScore="false" maxLength="4"/>
+    </rule>
+  </style>
+  <style name="newline">
+    <rule>
+      <style_context nodeNames="KEYWORD, identifier" isAstNode="false, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="classHead, body" isAstNode="true, true" lengths="11.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LBRACE, RBRACE" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+  </style>
+  <style name="if_else_body_order"/>
+  <style name="indention"/>
+  <style name="optional_brace"/>
+  <style name="modifier_order">
+    <rule>
+      <style_property order=""/>
+    </rule>
+  </style>
+  <style name="structure_preference"/>
+  <style name="declaration_layout"/>
+  <style name="inter_newline"/>
+  <style name="body_layout"/>
+  <style name="space">
+    <rule>
+      <style_context tokens="IDENTIFIER KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="{ }"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER {"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+  </style>
+  <style name="intra_newline"/>
+</program_style>

@@ -33,9 +33,6 @@ public class CLIArgumentParser {
             if (outputDir != null) {
                 taskOptions.setResOutPath(outputDir);
             }
-            if (outputFile == null && outputDir == null) {
-                taskOptions.setOverrideSource(true);
-            }
 
             String styleOut = cmd.getOptionValue("o");
             if (styleOut != null) {
@@ -81,11 +78,9 @@ public class CLIArgumentParser {
     private static void printHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
         String header = "\nUsage examples:\n" +
-                "  Transfer style:    " +
-                "   Single file or directory: -src <src_path> -target <arg> [-f <output_file> | -d <output_dir>] -lang <language>\n" +
-                "   Batch file or directories: -src <path1;path2;...> -target <arg> -lang <language>" +
+                "  Transfer style:    -src <path1;path2;...> -target <arg> [-f <output_file> | -d <output_dir>] -lang <language>\n" +
                 "  Extract style:     -e -target <path1;path2;...> -o <output_file> -lang <language>\n" +
-                "  Analyze style:     -c -src <path1;path2;...> -target <arg> -o <output_file> -lang <language>\n\n";
+                "  Analyze style:     -a -src <path1;path2;...> -target <arg> -o <output_file> -lang <language>\n\n";
 
         String footer = "\nOptions:";
 
@@ -101,9 +96,9 @@ public class CLIArgumentParser {
     private static Options getOptions() {
         Options options = new Options();
 
-        Option srcOption = new Option("src", true, "Source file or directory path seperated by semicolon.");
+        Option srcOption = new Option("src", true, "Source file or directory path, multiple paths are seperated by ';'.");
         Option targetOption = new Option("target", true,
-                "File or directory path of target codes, or path of a target style file");
+                "Source file or directory path of reference code, or path of a target style file. Multiple paths are seperated by ';'.");
         Option outputFileOption = new Option("f", true,
                 "1) One or more target code paths separated by ';'\n" +
                         "2) A single style file (XML) for applying style");
@@ -111,7 +106,7 @@ public class CLIArgumentParser {
                 "Output directory path of transformed codes, file name is the same as the original file name");
         Option styleOutOption = new Option("o", "output", true,
                 "Output path for result, such as extracted style file or analysis report.");
-        Option langOption = new Option("lang", true, "Programming language (default: java): java, python, cpp.");
+        Option langOption = new Option("lang", true, "Programming language: java, python, cpp.");
         Option doExtractOption = new Option("e", "extract", false, "Execute style extraction only");
         Option doCheckOption = new Option("a", "analyze", false, "Execute style inconsistencies analysis only");
 
