@@ -46,6 +46,7 @@ public class Extractor {
                 // Read style from style file successfully, return directly.
                 if (curPath.getFileName().toString().endsWith(".xml")) {
                     StyleProfile ret = StyleFileIO.read(curPath.toString());
+                    container.fillStyle(ret);
                     if (ret != null) {
                         return ret;
                     }

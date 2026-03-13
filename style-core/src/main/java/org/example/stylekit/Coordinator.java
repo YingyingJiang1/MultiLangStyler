@@ -26,7 +26,7 @@ public class Coordinator {
      * @param taskOptions
      * @return Map<file path, result code>
      */
-    public void transferStyle(TaskOptions taskOptions) {
+    public Map<String, String> transferStyle(TaskOptions taskOptions) {
         try {
             StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
             StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
@@ -71,10 +71,12 @@ public class Coordinator {
                     System.out.println(entry.getValue());
                 }
             }
+            return results;
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+        return null;
     }
 
 

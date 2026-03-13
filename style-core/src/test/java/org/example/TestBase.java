@@ -170,7 +170,7 @@ public class TestBase {
 		taskOptions.setStyleOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
 
 		Coordinator coordinator = new Coordinator();
-		Map<String, String> results = transferStyle(taskOptions);
+		Map<String, String> results = coordinator.transferStyle(taskOptions);
 		for (Map.Entry<String, String> entry : results.entrySet()) {
 			return entry.getValue();
 		}
@@ -180,6 +180,7 @@ public class TestBase {
 
 	private Map<String, String> transferStyle(TaskOptions taskOptions) {
 		StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
+		Coordinator	coordinator = new Coordinator();
 		StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
 
 		if (taskOptions.getStyleOutPath() != null) {
