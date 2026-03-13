@@ -44,6 +44,8 @@ public class CLIArgumentParser {
                 taskOptions.setOpId(TaskOptions.APPLY);
             }
 
+            taskOptions.setOut2console(cmd.hasOption("c"));
+
             taskOptions.setLanguage(cmd.getOptionValue("lang", "java"));
 
             // 参数验证
@@ -101,6 +103,7 @@ public class CLIArgumentParser {
         Option doExtractOption = new Option("e", "extract", false, "Execute style extraction only");
         Option doCheckOption = new Option("a", "analyze", false, "Execute style inconsistencies analysis only");
         Option overrideOption = new Option("override", false, "Override source code with style-transferred code.");
+        Option out2consoleOption = new Option("c", "console", false, "Output style-transferred code console.");
 
         targetOption.setRequired(true);
 
@@ -113,6 +116,7 @@ public class CLIArgumentParser {
         options.addOption(doExtractOption);
         options.addOption(doCheckOption);
         options.addOption(overrideOption);
+        options.addOption(out2consoleOption);
 
         return options;
     }

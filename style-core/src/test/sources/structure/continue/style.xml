@@ -12,10 +12,6 @@
       <style_context id="23"/>
       <style_property preferenceIndex="0"/>
     </rule>
-    <rule>
-      <style_context id="22"/>
-      <style_property preferenceIndex="1"/>
-    </rule>
   </style>
   <style name="declaration_layout"/>
   <style name="inter_newline"/>

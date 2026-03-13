@@ -64,7 +64,7 @@ public class Coordinator {
                     }
 
                 }
-            } else {
+            } else if (taskOptions.isOut2console()) {
                 // output to  console
                 for (Map.Entry<String, String> entry : results.entrySet()) {
                     System.out.println(entry.getKey());
@@ -97,23 +97,32 @@ public class Coordinator {
         StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
         StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
 
-        Map<String, List<InconsistencyInfo>> infosMap = Analyzer.anayzeInconsistency(taskOptions.getTarget(), taskOptions.getLanguage(), container);
+        Map<String, List<InconsistencyInfo>> infosMap = Analyzer.anayzeInconsistency(taskOptions.getSrc(), taskOptions.getLanguage(), container);
 
-        if (taskOptions.getResOutPath() != null) {
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(taskOptions.getResOutPath())))) {
-                for (Map.Entry<String, List<InconsistencyInfo>> entry : infosMap.entrySet()) {
-                    // Write header
-                    writer.write(StringUtils.repeat('=', 60) + "\n");
-                    writer.write("File: " + entry.getKey() + "\n");
-                    writer.write("Total Inconsistencies: " + entry.getValue().size() + "\n");
-                    writer.write(StringUtils.repeat('=', 60) + "\n");
-                    // Write inconsistency infos
-                    for (int i = 0; i < entry.getValue().size(); i++) {
-                        writer.write(String.format("[%d] %s\n", i+1, entry.getValue().get(i).toString()));
-                    }
+        if (taskOptions.getResOutPath() != null || taskOptions.isOut2console()) {
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry<String, List<InconsistencyInfo>> entry : infosMap.entrySet()) {
+                // header
+                sb.append(StringUtils.repeat('=', 60)).append("\n");
+                sb.append("File: ").append(entry.getKey()).append("\n");
+                sb.append("Total Inconsistencies: ").append(entry.getValue().size()).append("\n");
+                sb.append(StringUtils.repeat('=', 60)).append("\n");
+                // inconsistency infos
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    sb.append(String.format("[%d] %s\n", i+1, entry.getValue().get(i).toString()));
                 }
-            } catch (IOException e) {
-                logger.error("Failed to write inconsistency analysis results to file: {}", taskOptions.getResOutPath(), e);
+            }
+
+            if (taskOptions.isOut2console()) {
+                System.out.println(sb);
+            }
+
+            if (taskOptions.getResOutPath() != null) {
+                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(taskOptions.getResOutPath())))) {
+                    writer.write(sb.toString());
+                } catch (IOException e) {
+                    logger.error("Failed to write inconsistency analysis results to file: {}", taskOptions.getResOutPath(), e);
+                }
             }
         }
         

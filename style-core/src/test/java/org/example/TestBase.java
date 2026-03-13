@@ -168,6 +168,7 @@ public class TestBase {
 		taskOptions.setSrc(srcPath.toString());
 		taskOptions.setTarget(targetPath.toString());
 		taskOptions.setStyleOutPath(Paths.get(targetPath.getParent().toString(), "style.xml").toString());
+//		taskOptions.setOut2console(true);
 
 		Coordinator coordinator = new Coordinator();
 		Map<String, String> results = coordinator.transferStyle(taskOptions);

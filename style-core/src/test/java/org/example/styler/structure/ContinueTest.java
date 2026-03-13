@@ -58,6 +58,4 @@ public class ContinueTest extends TestBase {
 			testCodeEqual(actual, gtPath);
 		}
 	}
-
-
 }

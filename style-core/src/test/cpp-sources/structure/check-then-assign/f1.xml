@@ -1,5 +1,665 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style language="cpp">
+  <style name="naming_format">
+    <rule>
+      <style_context nameType="FIELD"/>
+      <style_property caseFormat="UPPER_CAMEL" startsWithUnderScore="false" maxLength="7"/>
+    </rule>
+    <rule>
+      <style_context nameType="PARAMETER"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="14"/>
+    </rule>
+  </style>
+  <style name="newline">
+    <rule>
+      <style_context nodeNames="Dot, idExpression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, Semi" isAstNode="true, false" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="initDeclarator, Comma" isAstNode="true, false" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Colon, constantExpression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declaration, declaration" isAstNode="true, true" lengths="85.0"/>
+      <style_property newlines="6" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="templateName, Less" isAstNode="true, false" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declarator, initializer" isAstNode="true, true" lengths="5.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="nestedNameSpecifier, unqualifiedId" isAstNode="true, true" lengths="10.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Comma, enumeratorDefinition" isAstNode="false, true" lengths="5.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="constantExpression, RightBracket" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="IDENTIFIER, Colon" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBrace, RightBrace" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Arrow, idExpression" isAstNode="false, true" lengths="6.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="memberSpecification, RightBrace" isAstNode="true, false" lengths="54.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declSpecifierSeq, initDeclaratorList" isAstNode="true, true" lengths="10.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="SINGLE_STMT, BRANCH_STMT" isAstNode="true, true" lengths="35.5"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declarator, braceOrEqualInitializer" isAstNode="true, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="namespaceName, Semi" isAstNode="true, false" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Comma, initializerClause" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, namespaceName" isAstNode="false, true" lengths="12.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declSpecifier, declSpecifier" isAstNode="true, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="initDeclaratorList, Semi" isAstNode="true, false" lengths="6.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="pointerMemberExpression, Mod" isAstNode="true, false" lengths="12.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="postfixExpression, PlusPlus" isAstNode="true, false" lengths="11.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBrace, enumeratorList" isAstNode="false, true" lengths="15.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Comma, initDeclarator" isAstNode="false, true" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="classHead, LeftBrace" isAstNode="true, false" lengths="12.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftParen, RightParen" isAstNode="false, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="shiftExpression, Less" isAstNode="true, false" lengths="3.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBracket, expression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="assignmentOperator, initializerClause" isAstNode="true, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftParen, expressionList" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declSpecifierSeq, declarator" isAstNode="true, true" lengths="16.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, SINGLE_STMT" isAstNode="true, true" lengths="34.5"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBracket, constantExpression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Colon, memInitializerList" isAstNode="false, true" lengths="9.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="memberDeclaratorList, Semi" isAstNode="true, false" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declSpecifierSeq, Semi" isAstNode="true, false" lengths="67.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Equal, relationalExpression" isAstNode="false, true" lengths="3.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="pointerOperator, noPointerDeclarator" isAstNode="true, true" lengths="2.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, RightBrace" isAstNode="true, false" lengths="22.5"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="initializerList, RightBrace" isAstNode="true, false" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="postfixExpression, LeftBracket" isAstNode="true, false" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, LeftParen" isAstNode="false, false" lengths="3.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBrace, initializerList" isAstNode="false, true" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="noPointerDeclarator, LeftBracket" isAstNode="true, false" lengths="5.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declarator, functionBody" isAstNode="true, true" lengths="141.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="memberdeclaration, memberdeclaration" isAstNode="true, true" lengths="20.5"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="BRANCH_STMT, RightBrace" isAstNode="true, false" lengths="15.5"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="initializerClause, Comma" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="constructorInitializer, block" isAstNode="true, true" lengths="11.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="enumkey, IDENTIFIER" isAstNode="true, false" lengths="14.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Less, templateArgumentList" isAstNode="false, true" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Assign, initializerClause" isAstNode="false, true" lengths="3.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declarationseq, EOF" isAstNode="true, false" lengths="933.0"/>
+      <style_property newlines="3" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="noPointerDeclarator, parametersAndQualifiers" isAstNode="true, true" lengths="16.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="SINGLE_STMT, RightBrace" isAstNode="true, false" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="enumHead, LeftBrace" isAstNode="true, false" lengths="15.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="postfixExpression, Arrow" isAstNode="true, false" lengths="3.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="meminitializerid, LeftParen" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="logicalOrExpression, assignmentOperator" isAstNode="true, true" lengths="5.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBrace, SINGLE_STMT" isAstNode="false, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Greater, shiftExpression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="postfixExpression, LeftParen" isAstNode="true, false" lengths="14.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="shiftExpression, Greater" isAstNode="true, false" lengths="2.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declSpecifierSeq, memberDeclaratorList" isAstNode="true, true" lengths="9.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="classKey, classHeadName" isAstNode="true, true" lengths="11.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="unaryOperator, unaryExpression" isAstNode="true, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="theTypeName, Doublecolon" isAstNode="true, false" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expression, RightBracket" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Mod, pointerMemberExpression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftParen, parameterDeclarationClause" isAstNode="false, true" lengths="12.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="KEYWORD, KEYWORD" isAstNode="false, false" lengths="11.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="postfixExpression, Dot" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="relationalExpression, Equal" isAstNode="true, false" lengths="5.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="templateArgumentList, Greater" isAstNode="true, false" lengths="4.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftBrace, memberSpecification" isAstNode="false, true" lengths="54.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="declaration, declaration" isAstNode="true, true" lengths="241.5"/>
+      <style_property newlines="2" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Less, shiftExpression" isAstNode="false, true" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="RightParen, block" isAstNode="false, true" lengths="11.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="expressionList, RightParen" isAstNode="true, false" lengths="2.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="Plus, multiplicativeExpression" isAstNode="false, true" lengths="3.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="parameterDeclarationClause, RightParen" isAstNode="true, false" lengths="12.5"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="enumeratorList, RightBrace" isAstNode="true, false" lengths="15.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="multiplicativeExpression, Plus" isAstNode="true, false" lengths="8.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="enumeratorDefinition, Comma" isAstNode="true, false" lengths="5.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="LeftParen, condition" isAstNode="false, true" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="condition, RightParen" isAstNode="true, false" lengths="7.0"/>
+      <style_property newlines="0" breakIndex="1"/>
+    </rule>
+    <rule>
+      <style_context nodeNames="SINGLE_STMT, SINGLE_STMT" isAstNode="true, true" lengths="21.0"/>
+      <style_property newlines="1" breakIndex="1"/>
+    </rule>
+  </style>
+  <style name="if_else_body_order"/>
+  <style name="indention">
+    <rule>
+      <style_property indentionUnit="4" indentionType=" " indentEmptyLine="false" topHierarchyIndention="0"/>
+    </rule>
+  </style>
+  <style name="optional_brace">
+    <rule>
+      <style_context bodyType="STMT_BODY" bodySize="ONE_SINGLE_STMT" hasRightNeighbour="false"/>
+      <style_property useBrace="true"/>
+    </rule>
+  </style>
+  <style name="modifier_order">
+    <rule>
+      <style_property order="usingnamespacestd;structMyStruct{intcounter=0;intv;int&amp;ref;unsigneda:3;unsignedb:5;};structObj{intv;Obj(intv):v(v){}Obj(constObj&amp;other):v(other.v+10){}};enumclassColor{Red,Green,Blue};intprimitiveTypes(constMyStruct&amp;s){staticintt=0;if(s.counter++%2==0){t=s.counter;}longu=t;if(u&gt;0){u=-t;}intx=0;if(x&gt;0){x=1;}inta=1;if(x&gt;0){a=2;}}voidpointers(MyStructs){intv=10;int*p=&amp;v;if(*p&gt;5){*p=77;}int*q=&amp;v;if(*p&lt;v){*q=88;}MyStruct*r=&amp;s;if(s.v==0){r=nullptr;}int*p1=nullptr;if(r-&gt;counter==1){p1=&amp;r-&gt;v;}}voidarrayAndRefs(){vector&lt;int&gt;arr={1,2,3};intv=arr[0];intidx=1;if(idx&lt;2){v=arr[idx];}int&amp;r1=arr[0];if(idx==1){r1=arr[idx];}inttmp=5;int&amp;r2=tmp;if(arr[1]&gt;1){r2=arr[2];}inta=0,b=1;vector&lt;vector&lt;int&gt;&gt;mat={{1,2},{3,4}};if(arr[a]==2){mat[b][a]=a;}int&amp;ref=a;intt=side_effect_f(ref);if(ref&gt;1){t=b;}}voidcomplexType(){Colorc=Color::Red;if(c==Color::Red){c=Color::Green;}BitFieldbf{1,2};if(c==Color::Red){bf.b=7;}Obja(5);Objb(1);if(a.v==5){b=a;}}, &lt;EOF&gt;"/>
+    </rule>
+  </style>
   <style name="structure_preference"/>
+  <style name="declaration_layout"/>
+  <style name="inter_newline">
+    <rule>
+      <style_property hasNewline="true"/>
+    </rule>
+  </style>
+  <style name="body_layout">
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
+        <bodySize>ONE_INITIALIZER</bodySize>
+        <hasLeftNeighbour>false</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+  </style>
+  <style name="space">
+    <rule>
+      <style_context tokens="IDENTIFIER ("/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( LITERAL"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ,"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="LITERAL ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="&lt;"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens=", LITERAL"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=", {"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="} ,"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="LEFT_ANGLE_BRACKET IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD ("/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="RIGHT_ANGLE_BRACKET IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="DOT"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="[ IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="{ LITERAL"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD RIGHT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="} ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="{ {"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="=="/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="( KEYWORD"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="{ }"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="="/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="LITERAL ]"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="RIGHT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="-&gt;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( IDENTIFIER"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens=") {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="COLON"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="COLON_COLON"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER LEFT_ANGLE_BRACKET"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="%"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="{ IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="] ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="( )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="LEFT_ANGLE_BRACKET KEYWORD"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="&gt;"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="LITERAL }"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=", IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER }"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="] ["/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="} }"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="; }"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="LITERAL )"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens=") ;"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ["/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ]"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="+"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="LITERAL ,"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER ++"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="[ LITERAL"/>
+      <style_property space1="false" space2="false"/>
+    </rule>
+  </style>
+  <style name="intra_newline"/>
 </program_style>

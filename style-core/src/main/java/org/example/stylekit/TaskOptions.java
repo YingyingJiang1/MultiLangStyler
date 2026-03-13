@@ -24,4 +24,5 @@ public class TaskOptions {
 	private String language;
 	private boolean overrideSource;
 	private boolean isOut2file; // output to file, otherwise output to directory
+	private boolean isOut2console; // output to console
 }
