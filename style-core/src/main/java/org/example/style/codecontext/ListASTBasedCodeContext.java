@@ -50,7 +50,7 @@ public class ListASTBasedCodeContext extends CodeContext {
 				NodeUtil.getStopToken(nodes.get(nodes.size() - 1)).getText().length();
 	}
 
-	public List<ParseTree> getNodes() {
+	public List<? extends ParseTree> getNodes() {
 		return nodes;
 	}
 

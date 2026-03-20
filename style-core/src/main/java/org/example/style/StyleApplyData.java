@@ -10,7 +10,9 @@ public class StyleApplyData {
 		this.codeContext = codeContext;
 	}
 
-	public enum ApplyOperation {
-
+	public StyleApplyData(CodeContext codeContext, ApplyOperation operation) {
+		this.codeContext = codeContext;
+		this.operation = operation;
 	}
+
 }

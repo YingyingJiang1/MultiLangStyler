@@ -4,9 +4,17 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
 import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.ASTNodeSearcher;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
+import org.example.style.ApplyOperation;
+import org.example.style.InconsistencyInfo;
+import org.example.style.InconsistencyType;
+import org.example.style.StyleApplyData;
+import org.example.style.codecontext.CodeContext;
+import org.example.style.codecontext.ListASTBasedCodeContext;
+import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.layout.style.DeclarationLayoutContext;
@@ -25,50 +33,99 @@ public class DeclarationLayoutStyler extends Styler {
 
 
     /**
-     *
      * @param ctx Local variable declaration statement node or field declaration statement node.
-     * @param parser
      */
     @Override
-    public void extractStyle(ExtendContext ctx, MyParser parser) {
+    protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
         List<List<ExtendContext>> decGroup = getMergeableDecGroup(ctx, parser);
+        List<CodeContext> codeContexts = new ArrayList<>();
+
         for (List<ExtendContext> group : decGroup) {
-            DeclarationLayoutProperty property = extractProperty(group,parser);
-            style.addRule(null, property);
+            codeContexts.add(new ListASTBasedCodeContext(group));
         }
+
+        return codeContexts;
     }
 
     @Override
-    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        List<List<ExtendContext>> decGroup = getMergeableDecGroup(ctx, parser);
-        for (List<ExtendContext> group : decGroup) {
-            DeclarationLayoutProperty property = extractProperty(group,parser);
-            if (style.getProperty(null) instanceof DeclarationLayoutProperty targetProperty) {
-                if (targetProperty.isMerge() && property.hasSingleDec()) {
-                    LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations(group, parser);
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-                } else if (!targetProperty.isMerge() && property.hasMergedDec()) {
-                    LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations(group, parser);
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-                }
+    protected ExtendContext doApply(InconsistencyInfo info, StyleProperty targetProperty, MyParser parser) {
+        DeclarationLayoutProperty property = (DeclarationLayoutProperty) targetProperty;
+
+        StyleApplyData applyData = info.getStyleApplyData();
+        ListASTBasedCodeContext codeContext = (ListASTBasedCodeContext) applyData.codeContext;
+
+        List<ExtendContext> group = new ArrayList<>();
+        for (ParseTree node : codeContext.getNodes()) {
+            if (applyData.operation == ApplyOperation.MERGE_VAR_DECLARATION) {
+                LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations(group, parser);
+//                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+            } else if (applyData.operation == ApplyOperation.SPLIT_VAR_DECLARATION) {
+                LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations(group, parser);
+//                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
             }
         }
-        return ctx;
+
+        return null;
     }
 
-    private DeclarationLayoutProperty extractProperty(List<ExtendContext> decNodes, MyParser parser) {
-        VarDeclarationSearcher searcher = LangAdapterCreator.createNodeSearcherFactory(parser.getLanguage()).createVarDeclarationSearcher();
-        int mergedCount = 0;
-        int totalVarCount = 0;
-        for (ExtendContext decNode : decNodes) {
-            int count = searcher.searchIdentifiers(decNode, parser).size();
-            totalVarCount += count;
-            if (count > 1) {
-                mergedCount += count;
-            }
-        }
+    @Override
+    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
+                                                          StyleProperty targetProperty, boolean fillApplyData, MyParser parser) {
+        if (currentProperty instanceof DeclarationLayoutProperty current &&
+                targetProperty instanceof DeclarationLayoutProperty target) {
 
-        return new DeclarationLayoutProperty(mergedCount, totalVarCount);
+            if (current.isMerge() == target.isMerge()) {
+                return null;
+            }
+
+            InconsistencyInfo info = new InconsistencyInfo(
+                    InconsistencyType.DECLARATION_LAYOUT,
+                    target.isMerge() ? "merge" : "split",
+                    current.isMerge() ? "merged" : "separate", "",
+                    new InconsistencyInfo.Location(codeContext.getStartRow(), codeContext.getStartColumn(),
+                            codeContext.getEndRow(), codeContext.getEndColumn())
+            );
+            if (fillApplyData) {
+                if (target.isMerge()) {
+                    info.setStyleApplyData(new StyleApplyData(codeContext, ApplyOperation.MERGE_VAR_DECLARATION));
+                } else {
+                    info.setStyleApplyData(new StyleApplyData(codeContext, ApplyOperation.SPLIT_VAR_DECLARATION));
+                }
+            }
+
+            return info;
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isInconsistent(StyleProperty currentProperty, StyleProperty targetProperty, MyParser parser) {
+        if (currentProperty instanceof DeclarationLayoutProperty current &&
+                targetProperty instanceof DeclarationLayoutProperty target) {
+            return target.isMerge() && current.hasSingleDec()
+                    || !target.isMerge() && current.hasMergedDec();
+        }
+        return false;
+    }
+
+    @Override
+    protected DeclarationLayoutProperty extractStyleProperty(CodeContext codeContext, MyParser parser) {
+        if (codeContext instanceof ListASTBasedCodeContext listContext) {
+            List<ExtendContext> decNodes = (List<ExtendContext>) listContext.getNodes();
+            ASTNodeSearcher searcher = LangAdapterCreator.createASTNodeSearcher(parser.getLanguage());
+            int mergedCount = 0;
+            int totalVarCount = 0;
+            for (ExtendContext decNode : decNodes) {
+                int count = searcher.searchAllDeclaredIdentifiers(decNode).size();
+                totalVarCount += count;
+                if (count > 1) {
+                    mergedCount += count;
+                }
+            }
+
+            return new DeclarationLayoutProperty(mergedCount, totalVarCount);
+        }
+        return null;
     }
 
     /**
@@ -202,7 +259,7 @@ public class DeclarationLayoutStyler extends Styler {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof VarDecContext that)) return false;
-			return Objects.equals(type, that.type) && Objects.equals(modifiers, that.modifiers);
+            return Objects.equals(type, that.type) && Objects.equals(modifiers, that.modifiers);
         }
 
         @Override
