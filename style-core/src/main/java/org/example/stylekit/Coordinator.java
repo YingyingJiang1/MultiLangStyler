@@ -92,7 +92,7 @@ public class Coordinator {
         }
     }
 
-    public void analyzeInconsistency(TaskOptions taskOptions) {
+    public Map<String, List<InconsistencyInfo>> analyzeInconsistency(TaskOptions taskOptions) {
 
         StylerContainer container = LangAdapterCreator.createStylerContainer(taskOptions.getLanguage());
         StyleProfile targetStyleProfile = Extractor.extractStyle(taskOptions.getTarget(), taskOptions.getLanguage(), container);
@@ -125,6 +125,6 @@ public class Coordinator {
                 }
             }
         }
-        
+        return infosMap;
     }
 }

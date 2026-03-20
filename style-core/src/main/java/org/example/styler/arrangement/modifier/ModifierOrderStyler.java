@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.RunStatistic;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.style.InconsistencyInfo;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.modifier.style.ModifierOrderProperty;

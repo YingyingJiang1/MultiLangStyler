@@ -1,13 +1,13 @@
 package org.example.style;
 
-import pascal.taie.analysis.pta.core.heap.Obj;
+import org.example.style.codecontext.CodeContext;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 public class InconsistencyInfo {
-	protected InconsistencyType type;
 	protected int[] startLoc, endLoc; // start from 0
+	protected InconsistencyType type;
 	protected String message;
 	protected String expected, actual;
 
@@ -31,13 +31,15 @@ public class InconsistencyInfo {
 	public String toString() {
 		return String.format("""
 				Type     : %s
-				Location : line %d, column %d
+				BeginLocation : line %d, column %d
+				EndLocation   : line %d, column %d
 				Expected : %s
 				Actual   : %s
 				Message  : %s
 				""",
 				type.name(),
 				getStartRow(), getStartColumn(),
+				getEndRow(), getEndColumn(),
 				expected,
 				actual,
 				message);

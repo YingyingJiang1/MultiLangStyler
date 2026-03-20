@@ -1,6 +1,8 @@
 spring:
   application:
     name: transformer
+  main:
+    banner-mode: off
 
 project:
   #  When a value's proportion >= `minDominantRatio`, it is considered dominant, and the style is assigned this value.
