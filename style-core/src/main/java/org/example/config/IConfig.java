@@ -25,17 +25,6 @@ public interface IConfig {
 
 
 
-	/**
-	 * Create StylerContainer for specific language with all stylers.
-	 * @param lang
-	 */
-	StylerContainer creasteStylerContainer(String lang);
-
-	/**
-	 * Set enabled stylers for specific language.
-	 */
-	void SetEnabledStylers(String lang, List<Class<?>> stylerClasses);
-
 	Class<?> getPlaceholderParser(String lang);
 
 	Class<?> getSymbolResolver(String lang);

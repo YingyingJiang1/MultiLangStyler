@@ -80,7 +80,7 @@ public class TestBase {
 			Path gtPath = Paths.get(dir, String.format("%s-%d-%d-gt" + fileExt,srcFiles[i].split("[.]")[0],  id, index));
 
 			if (saveStyle) {
-				conf.SetEnabledStylers("cpp", List.of(StructureStyler.class));
+				conf.getProjectConfig().SetEnabledStylers("cpp", List.of(StructureStyler.class));
 
 				String srcPath = Paths.get(dir, srcFiles[i]).toString();
 				StyleProfile selfStyle = Extractor.extractStyle(srcPath, language, LangAdapterCreator.createStylerContainer(language));
@@ -160,7 +160,7 @@ public class TestBase {
 	}
 
 	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {
-		conf.SetEnabledStylers(lang, classes);
+		conf.getProjectConfig().SetEnabledStylers(lang, classes);
 		MyEnvironment.setConf(conf);
 
 		TaskOptions taskOptions = new TaskOptions();

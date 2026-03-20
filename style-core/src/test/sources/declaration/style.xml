@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style language="java">
-  <style name="declaration_layout"/>
+  <style name="declaration_layout">
+    <rule>
+      <style_property mergeVar="false"/>
+    </rule>
+  </style>
 </program_style>

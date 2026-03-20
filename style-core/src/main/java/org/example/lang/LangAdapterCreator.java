@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.script.ScriptContext;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LangAdapterCreator {
@@ -127,7 +128,13 @@ public class LangAdapterCreator {
 	}
 
 	public static StylerContainer createStylerContainer(String lang) {
-		return new StylerContainer();
+		List<Class<?>> enabledStylers = MyEnvironment.getProjectConfig().getEnabledStylers(lang);
+		if (!enabledStylers.isEmpty()) {
+			return new StylerContainer(enabledStylers);
+		} else {
+			return new StylerContainer();
+		}
+
 	}
 
 	public static ASTNodeSearcher createASTNodeSearcher(String lang) {

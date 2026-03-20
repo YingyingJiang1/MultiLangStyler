@@ -4,6 +4,7 @@ import lombok.Data;
 import org.dom4j.Element;
 import org.example.MyEnvironment;
 import org.example.style.StylerContainer;
+import org.example.styler.Styler;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
 import org.slf4j.Logger;
@@ -36,9 +37,6 @@ public class MyConfiguration implements IConfig {
   private String target;
   public FileCollection extractionCollection = new FileCollection();
   public FileCollection applicationCollection = new FileCollection();
-
-  // This field controls which stylers are enabled dynamically for languages.
-  private Map<String, List<Class<?>>> enabledStylers;
 
   @Autowired
   private LLMConfig llmConfig;
@@ -175,21 +173,6 @@ public class MyConfiguration implements IConfig {
     return llmConfig.maxNewTokens;
   }
 
-  @Override
-  public StylerContainer creasteStylerContainer(String lang) {
-    if (enabledStylers != null && enabledStylers.containsKey(lang)) {
-      return new StylerContainer(enabledStylers.get(lang));
-    }
-    return new StylerContainer();
-  }
-
-  @Override
-  public void SetEnabledStylers(String lang, List<Class<?>> stylerClasses) {
-    if (enabledStylers == null) {
-      this.enabledStylers = new HashMap<>();
-    }
-    this.enabledStylers.put(lang, stylerClasses);
-  }
 
 
   @Configuration
@@ -278,6 +261,8 @@ public class MyConfiguration implements IConfig {
     String styleOutputDir;
     String projectsFile;
     String styleProfilesFile;
+    // This field controls which stylers are enabled dynamically for languages.
+    private Map<String, List<Class<?>>> enabledStylers;
     ThreadPoolConfig threadPool;
 
 
@@ -287,6 +272,20 @@ public class MyConfiguration implements IConfig {
       int maxPoolSize;
       int keepAliveSeconds;
       int queueCapacity;
+    }
+
+    public void SetEnabledStylers(String lang, List<Class<?>> stylerClasses) {
+      if (enabledStylers == null) {
+        this.enabledStylers = new HashMap<>();
+      }
+      this.enabledStylers.put(lang, stylerClasses);
+    }
+
+    public List<Class<?>> getEnabledStylers(String lang) {
+      if (enabledStylers != null && enabledStylers.containsKey(lang)) {
+        return enabledStylers.get(lang);
+      }
+      return Collections.emptyList();
     }
   }
 }
