@@ -50,20 +50,25 @@ public abstract class Styler {
 	}
 
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-		CodeContext codeContext = constructCodeContext(ctx, parser);
-		StyleContext styleContext = extractStyleContext(codeContext, parser);
-		StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
-		StyleProperty targetProperty = style.getProperty(styleContext);
-		if (targetProperty == null) {
-			return ctx;
+		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
+		ExtendContext ret = null;
+		for (CodeContext codeContext : codeContexts) {
+			StyleContext styleContext = extractStyleContext(codeContext, parser);
+			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
+			StyleProperty targetProperty = style.getProperty(styleContext);
+			if (targetProperty == null) {
+				return ctx;
+			}
+
+			if (isInconsistent(currentProperty, targetProperty, parser)) {
+				InconsistencyInfo info = generateInconsistencyInfo(codeContext, currentProperty, targetProperty,
+						true, parser);
+				ret = doApply(info, targetProperty, parser);
+			}
 		}
 
-		ExtendContext ret = null;
-		if (isInconsistent(currentProperty, targetProperty, parser)) {
-			List<InconsistencyInfo> infos = generateInconsistencyInfo(codeContext, currentProperty, targetProperty,
-					true, parser);
-			ret = doApply(infos, targetProperty, parser);
-		}
+		// If there's only one code context derived from ctx and the reference to ctx has been changed, return the changed ctx;
+		// otherwise, return the original ctx to avoid.
 		return ret == null ?  ctx : ret;
 	}
 
@@ -72,33 +77,43 @@ public abstract class Styler {
 	}
 
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		CodeContext codeContext = constructCodeContext(ctx, parser);
-		StyleContext styleContext = extractStyleContext(codeContext, parser);
-		StyleProperty property = extractStyleProperty(codeContext, parser);
-		style.addRule(styleContext, property);
+		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
+		for (CodeContext codeContext : codeContexts) {
+			StyleContext styleContext = extractStyleContext(codeContext, parser);
+			StyleProperty property = extractStyleProperty(codeContext, parser);
+			style.addRule(styleContext, property);
+		}
 	}
 
 	public @Nullable List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
-		CodeContext codeContext = constructCodeContext(ctx, parser);
-		StyleContext styleContext = extractStyleContext(codeContext, parser);
-		StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
-		StyleProperty targetProperty = style.getProperty(styleContext);
-		if (targetProperty == null) {
-			return null;
+		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
+		List<InconsistencyInfo> allInfos = null;
+		for (CodeContext codeContext : codeContexts) {
+			StyleContext styleContext = extractStyleContext(codeContext, parser);
+			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
+			StyleProperty targetProperty = style.getProperty(styleContext);
+			if (targetProperty == null) {
+				return null;
+			}
+			if (isInconsistent(currentProperty, targetProperty, parser)) {
+				allInfos.add(generateInconsistencyInfo(codeContext, currentProperty, targetProperty, false, parser));
+			}
 		}
 
-		if (isInconsistent(currentProperty, targetProperty, parser)) {
-			return generateInconsistencyInfo(codeContext, currentProperty, targetProperty, false, parser);
-		}
-		return null;
+		return allInfos;
 	}
 
 	public @Nullable List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
 		return null;
 	}
 
-	protected CodeContext constructCodeContext(ExtendContext ctx, MyParser parser) {
-		return new ASTBasedCodeContext(ctx);
+	/**
+	 * @param ctx
+	 * @param parser
+	 * @return a list of code contexts derived from the given context, which are relevant for style extraction and application.
+	 */
+	protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
+		return List.of(new ASTBasedCodeContext(ctx));
 	}
 
 	protected StyleContext extractStyleContext(CodeContext codeContext, MyParser parser) {
@@ -109,11 +124,11 @@ public abstract class Styler {
 		return null;
 	}
 
-	protected ExtendContext doApply(List<InconsistencyInfo> infos, StyleProperty targetProperty, MyParser parser) {
+	protected ExtendContext doApply(InconsistencyInfo info, StyleProperty targetProperty, MyParser parser) {
 		return null;
 	}
 
-	protected List<InconsistencyInfo> generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
+	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
 																	StyleProperty targetProperty, boolean fillApplyData, MyParser parser) {
 		return null;
 	}

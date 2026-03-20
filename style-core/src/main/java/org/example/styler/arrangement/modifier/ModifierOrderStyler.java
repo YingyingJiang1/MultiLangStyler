@@ -63,13 +63,13 @@ public class ModifierOrderStyler extends Styler {
 //	}
 
 	@Override
-	protected CodeContext constructCodeContext(ExtendContext ctx, MyParser parser) {
+	protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
 		List<ParseTree> modifiers = LangAdapterCreator.createASTNodeSearcher(parser.getLanguage()).searchAllModifiers(ctx);
 		List<Integer> indices = new ArrayList<>();
 		for (ParseTree modifier : modifiers) {
 			indices.add(ctx.children.indexOf(modifier));
 		}
-		return new ListASTBasedCodeContext(modifiers, indices);
+		return List.of(new ListASTBasedCodeContext(modifiers, indices));
 	}
 
 	@Override
@@ -88,47 +88,45 @@ public class ModifierOrderStyler extends Styler {
 	}
 
 	@Override
-	protected ExtendContext doApply(List<InconsistencyInfo> infos, StyleProperty targetProperty, MyParser parser) {
+	protected ExtendContext doApply(InconsistencyInfo info, StyleProperty targetProperty, MyParser parser) {
 		ModifierOrderProperty property = (ModifierOrderProperty) targetProperty;
 		List<String> target = property.order;
 
-		for (InconsistencyInfo info : infos) {
-			StyleApplyData applyData = info.getStyleApplyData();
-			ListASTBasedCodeContext codeContext = (ListASTBasedCodeContext) applyData.codeContext;
+		StyleApplyData applyData = info.getStyleApplyData();
+		ListASTBasedCodeContext codeContext = (ListASTBasedCodeContext) applyData.codeContext;
 
-			// mapping from modifier node to its index in the target order list,
-			// and mapping from modifier node to its index in the original children list.
-			Map<ParseTree, Integer> inTargetMap = new HashMap<>();
-			Map<ParseTree, Integer> indexInOriginalMap = new HashMap<>();
-			int index = -1;
-			for (int i = 0; i < codeContext.size(); i++) {
-				ParseTree node = codeContext.getNode(i);
-				index = target.indexOf(getModifierName(node, parser));
-				if (index >= 0) {
-					inTargetMap.put(node, index);
-					indexInOriginalMap.put(node, i);
-				}
+		// mapping from modifier node to its index in the target order list,
+		// and mapping from modifier node to its index in the original children list.
+		Map<ParseTree, Integer> inTargetMap = new HashMap<>();
+		Map<ParseTree, Integer> indexInOriginalMap = new HashMap<>();
+		int index = -1;
+		for (int i = 0; i < codeContext.size(); i++) {
+			ParseTree node = codeContext.getNode(i);
+			index = target.indexOf(getModifierName(node, parser));
+			if (index >= 0) {
+				inTargetMap.put(node, index);
+				indexInOriginalMap.put(node, i);
 			}
+		}
 
-			// Resort modifier which are in the target order list.
-			List<ParseTree> ordered = inTargetMap.keySet().stream().sorted(Comparator.comparing(inTargetMap::get)).toList();
-			ExtendContext parent = (ExtendContext) codeContext.getNode(0).getParent();
-			// 相关modifier在原始children中的索引按照从小到大顺序排列
-			List<Integer> originalIndices = indexInOriginalMap.values().stream().sorted().toList();
-			for (int i = 0; i < originalIndices.size(); i++) {
-				parent.setChild(originalIndices.get(i), ordered.get(i));
-			}
-			parent.updateStartToken();
-			parent.updateStopToken();
+		// Resort modifier which are in the target order list.
+		List<ParseTree> ordered = inTargetMap.keySet().stream().sorted(Comparator.comparing(inTargetMap::get)).toList();
+		ExtendContext parent = (ExtendContext) codeContext.getNode(0).getParent();
+		// 相关modifier在原始children中的索引按照从小到大顺序排列
+		List<Integer> originalIndices = indexInOriginalMap.values().stream().sorted().toList();
+		for (int i = 0; i < originalIndices.size(); i++) {
+			parent.setChild(originalIndices.get(i), ordered.get(i));
+		}
+		parent.updateStartToken();
+		parent.updateStopToken();
 
 //			RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-		}
 
 		return null;
 	}
 
 	@Override
-	protected List<InconsistencyInfo> generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
+	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
 														   StyleProperty targetProperty, boolean fillApplyData, MyParser parser) {
 		if (currentProperty instanceof ModifierOrderProperty current && targetProperty instanceof ModifierOrderProperty target) {
 			 List[] filteredLists = alignModifiers(current.order, target.order);
@@ -144,7 +142,7 @@ public class ModifierOrderStyler extends Styler {
 				info.setStyleApplyData(new StyleApplyData(codeContext));
 			}
 
-			return List.of(info);
+			return info;
 		}
 		return null;
 	}
