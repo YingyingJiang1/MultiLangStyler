@@ -6,6 +6,9 @@ import org.example.lang.intf.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.InconsistencyInfo;
 import org.example.style.Style;
+import org.example.style.codecontext.ASTBasedCodeContext;
+import org.example.style.codecontext.CodeContext;
+import org.example.style.rule.StyleProperty;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -43,6 +46,16 @@ public abstract class Styler {
     }
 
     public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
+        StyleProperty targetProperty = getProperty();
+        if (targetProperty == null) {
+            return ctx;
+        }
+
+        CodeContext codeContext = constructCodeContext(ctx, parser);
+        if (isInconsistent(targetProperty, codeContext, parser)) {
+            List<InconsistencyInfo> infos = analyzeInconsistency(ctx, parser);
+            doApply(infos, parser);
+        }
         return ctx;
     }
 
@@ -56,6 +69,27 @@ public abstract class Styler {
 
     public @Nullable List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
         return null;
+    }
+
+    protected CodeContext constructCodeContext(ExtendContext ctx, MyParser parser) {
+        return new ASTBasedCodeContext(ctx);
+    }
+
+    protected void doApply(List<InconsistencyInfo> infos, MyParser parser) {}
+
+    protected boolean isInconsistent(StyleProperty targetProperty, CodeContext codeContext, MyParser parser) {
+        return false;
+    }
+
+    public StyleProperty getProperty() {
+        if (style != null) {
+            return style.getProperty(null);
+        }
+        return null;
+    }
+
+    public boolean isRelevant(ExtendContext ctx, Stage stage) {
+        return true;
     }
 
     public boolean isEnable(Stage stage) {
@@ -85,6 +119,7 @@ public abstract class Styler {
 
     public void applicationFinalize() {
     }
+
 
     protected Set<Integer> getRelevantRules(MyParser parser) {return null;}
 

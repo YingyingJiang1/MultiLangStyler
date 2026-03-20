@@ -1,11 +1,10 @@
 package org.example.style;
 
-import org.example.style.codecontext.CodeContext;
-
 import java.util.Arrays;
 import java.util.Objects;
 
 public class InconsistencyInfo {
+	protected String source;
 	protected int[] startLoc, endLoc; // start from 0
 	protected InconsistencyType type;
 	protected String message;
