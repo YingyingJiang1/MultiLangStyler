@@ -128,6 +128,11 @@ public class MyConfiguration implements IConfig {
     return doGetClass(lang + ".typeResolver");
   }
 
+  @Override
+  public Class<?> getASTNodeSearcher(String lang) {
+    return doGetClass(lang + ".astNodeSearcher");
+  }
+
   private Class<?> doGetClass(String key) {
     try {
       return Class.forName(languageConfigs.all.getOrDefault(key, null));

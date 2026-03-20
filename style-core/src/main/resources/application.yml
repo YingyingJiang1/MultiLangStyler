@@ -29,6 +29,7 @@ lang:
       placeholderParser: org.example.lang.java.JavaPlaceholderParser
       symbolResolver: org.example.lang.java.symbol.JavaResolver
       typeResolver: org.example.lang.base.symbol.TypeResolverImpl
+      astNodeSearcher: org.example.lang.java.JavaASTNodeSearcher
       equivalencesConfig: "/equivalences.xml"
 
 

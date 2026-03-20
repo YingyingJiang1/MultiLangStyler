@@ -56,8 +56,6 @@ public class LangAdapterCreator {
 		}
 	}
 
-	// ------------ 业务类构造 ------------
-
 	public static MyParser createParser(String lang) {
 		Class<?> parserClass = MyEnvironment.getIConfig().getMyParserClass(lang);
 		try {
@@ -130,6 +128,11 @@ public class LangAdapterCreator {
 
 	public static StylerContainer createStylerContainer(String lang) {
 		return new StylerContainer();
+	}
+
+	public static ASTNodeSearcher createASTNodeSearcher(String lang) {
+		Class<?> searcherClass = MyEnvironment.getIConfig().getASTNodeSearcher(lang);
+		return createByGetInstance(searcherClass, lang);
 	}
 }
 

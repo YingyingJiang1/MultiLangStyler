@@ -1,18 +1,25 @@
 package org.example.style;
 
+import lombok.Data;
+
 import java.util.Arrays;
 import java.util.Objects;
 
 public class InconsistencyInfo {
-	protected String source;
-	protected int[] startLoc, endLoc; // start from 0
 	protected InconsistencyType type;
 	protected String message;
 	protected String expected, actual;
+	protected Location location;
+	protected StyleApplyData styleApplyData; // used to apply style without re-extracting and re-comparing code style.
 
-	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
-		this.startLoc = startLoc;
-		this.endLoc = endLoc;
+	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message){}
+
+	public InconsistencyInfo(InconsistencyType type, String expected, String actual,String message,
+							 Location location) {
+		this.type = type;
+		this.expected = expected;
+		this.actual = actual;
+		this.location = location;
 		this.message = message;
 	}
 
@@ -21,9 +28,8 @@ public class InconsistencyInfo {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		InconsistencyInfo that = (InconsistencyInfo) o;
-		return Objects.deepEquals(startLoc, that.startLoc) && Objects.deepEquals(endLoc, that.endLoc)
-				&& Objects.equals(expected, that.expected) && Objects.equals(actual, that.actual)
-				&& Objects.equals(message, that.message);
+		return Objects.equals(location, that.location) && Objects.equals(message, that.message)
+				&& Objects.equals(expected, that.expected) && Objects.equals(actual, that.actual);
 	}
 
 	@Override
@@ -46,23 +52,31 @@ public class InconsistencyInfo {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(Arrays.hashCode(startLoc), Arrays.hashCode(endLoc), message, expected, actual);
+		return Objects.hash(location, message, expected, actual);
 	}
 
 	public int getStartRow() {
-		return startLoc[0];
+		return location.getStartRow();
 	}
 
 	public int getStartColumn() {
-		return startLoc[1];
+		return location.getStartColumn();
 	}
 
 	public int getEndRow() {
-		return endLoc[0];
+		return location.getEndRow();
 	}
 
 	public int getEndColumn() {
-		return endLoc[0];
+		return location.getEndColumn();
+	}
+
+	public StyleApplyData getStyleApplyData() {
+		return styleApplyData;
+	}
+
+	public void setStyleApplyData(StyleApplyData styleApplyData) {
+		this.styleApplyData = styleApplyData;
 	}
 
 	public String getMessage() {
@@ -71,5 +85,22 @@ public class InconsistencyInfo {
 
 	public void setMessage(String str) {
 		message = str;
+	}
+
+	@Data
+	public static class Location {
+		private int startRow, startColumn, endRow, endColumn;
+		private String source;
+		private int type;
+
+		public final static int FILE = 1;
+		public final static int STRING = 2;
+
+		public Location(int startRow, int startColumn, int endRow, int endColumn) {
+			this.startRow = startRow;
+			this.startColumn = startColumn;
+			this.endRow = endRow;
+			this.endColumn = endColumn;
+		}
 	}
 }

@@ -41,4 +41,6 @@ public interface IConfig {
 	Class<?> getSymbolResolver(String lang);
 
 	Class<?> getTypeResolver(String lang);
+
+	Class<?> getASTNodeSearcher(String lang);
 }
