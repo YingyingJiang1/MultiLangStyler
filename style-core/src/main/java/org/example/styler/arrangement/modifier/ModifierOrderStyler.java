@@ -1,15 +1,14 @@
 package org.example.styler.arrangement.modifier;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.RunStatistic;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
-import org.example.style.StyleApplyData;
 import org.example.style.codecontext.CodeContext;
 import org.example.style.codecontext.ListASTBasedCodeContext;
+import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -122,8 +121,8 @@ public class ModifierOrderStyler extends Styler {
 	}
 
 	@Override
-	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
-														   StyleProperty targetProperty, MyParser parser) {
+	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
+														  StyleProperty targetProperty, MyParser parser) {
 		if (currentProperty instanceof ModifierOrderProperty current && targetProperty instanceof ModifierOrderProperty target) {
 			 List[] filteredLists = alignModifiers(current.order, target.order);
 			InconsistencyInfo info = new InconsistencyInfo(

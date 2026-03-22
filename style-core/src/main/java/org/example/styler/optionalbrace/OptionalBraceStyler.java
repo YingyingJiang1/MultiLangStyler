@@ -1,17 +1,21 @@
 package org.example.styler.optionalbrace;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.RunStatistic;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.style.InconsistencyInfo;
+import org.example.style.codecontext.ASTBasedCodeContext;
+import org.example.style.codecontext.CodeContext;
+import org.example.style.rule.StyleContext;
+import org.example.style.rule.StyleProperty;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.format.newline.bodylayout.BodySizeType;
 import org.example.styler.format.newline.bodylayout.BodyStyler;
 import org.example.styler.format.newline.bodylayout.style.BodyContext;
 import org.example.styler.optionalbrace.style.OptionalBraceContext;
 import org.example.styler.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.optionalbrace.style.OptionalBraceStyle;
-import org.example.utils.ParseTreeUtil;
 
 import java.util.*;
 import java.util.ArrayList;
@@ -24,17 +28,87 @@ public class OptionalBraceStyler extends BodyStyler {
     }
 
     @Override
-    public void extractStyle(ExtendContext ctx, MyParser parser) {
+    protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
         List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);
-        ExtendContext typeNode = parser.getSpecificStmt(ctx);
+        List<CodeContext> codeContexts = new ArrayList<>();
         for (ExtendContext bodyNode : bodyNodes) {
-            OptionalBraceContext context = extractContext(bodyNode, typeNode, parser);
-            OptionalBraceProperty property = extractProperty(bodyNode, parser);
+            codeContexts.add(new ASTBasedCodeContext(bodyNode));
+        }
+        return codeContexts;
+    }
 
-            if (isBraceOptional(context)) {
-                style.addRule(context, property);
+    @Override
+    protected StyleContext extractStyleContext(CodeContext codeContext, MyParser parser) {
+        ExtendContext bodyNode = ((ASTBasedCodeContext) codeContext).getContextNode();
+        ExtendContext typeNode = (ExtendContext) bodyNode.getParent();
+        BodyContext bodyContext = extractBodyContext(bodyNode, typeNode, parser);
+        return new OptionalBraceContext(bodyContext.bodyType, bodyContext.bodySizeType, bodyContext.hasRightNeighbour);
+    }
+
+    @Override
+    protected StyleProperty extractStyleProperty(CodeContext codeContext, MyParser parser) {
+        ExtendContext bodyNode = ((ASTBasedCodeContext) codeContext).getContextNode();
+        int subStmt = parser.getSpecificStmtType(bodyNode);
+        boolean useBrace = subStmt == parser.getRuleBlock();
+        return new OptionalBraceProperty(useBrace);
+    }
+
+    @Override
+    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
+                                                          StyleProperty targetProperty, MyParser parser) {
+        if (codeContext instanceof ASTBasedCodeContext nodeContext &&
+                styleContext instanceof OptionalBraceContext optionalBraceContext
+                && currentProperty instanceof OptionalBraceProperty current
+                && targetProperty instanceof OptionalBraceProperty target) {
+            ExtendContext body = nodeContext.getContextNode();
+            ExtendContext specificBody = parser.getSpecificStmt(body);
+            if (target.useBrace && !parser.isBlock(specificBody)) {
+                return InconsistencyInfoGenerator.generateForOptionalBrace(nodeContext,
+                        optionalBraceContext, current, target);
+            } else if (!target.useBrace) {
+                boolean isBraceRemovable = parser.isBlock(specificBody) &&
+                        (optionalBraceContext.bodySizeType == BodySizeType.EMPTY
+                                || optionalBraceContext.bodySizeType == BodySizeType.ONE_SINGLE_STMT);
+                if (isBraceRemovable) {
+                    return InconsistencyInfoGenerator.generateForOptionalBrace(nodeContext, optionalBraceContext, current, target);
+                }
             }
         }
+        return null;
+    }
+
+    @Override
+    protected ExtendContext doApply(CodeContext codeContext, StyleProperty currentProperty,
+                                    StyleProperty targetProperty, MyParser parser) {
+        if (codeContext instanceof ASTBasedCodeContext nodeContext &&
+                currentProperty instanceof OptionalBraceProperty current && targetProperty instanceof OptionalBraceProperty target) {
+            ExtendContext body = nodeContext.getContextNode();
+            ExtendContext typeNode = (ExtendContext) body.getParent();
+            ExtendContext specificBody = parser.getSpecificStmt(body);
+            if (target.useBrace && !parser.isBlock(specificBody)) {
+                // Add {}
+                ExtendContext bracedBody = LangAdapterCreator.createASTRewriter(parser.getLanguage()).encapsulateStmtWithBrace(body, parser);
+                typeNode.replaceChild(body, bracedBody);
+
+            } else if (!target.useBrace) {
+                OptionalBraceContext optionalBraceContext = (OptionalBraceContext) extractStyleContext(codeContext, parser);
+                boolean isBraceRemovable = parser.isBlock(specificBody) &&
+                        (optionalBraceContext.bodySizeType == BodySizeType.EMPTY
+                                || optionalBraceContext.bodySizeType == BodySizeType.ONE_SINGLE_STMT);
+                if (isBraceRemovable) {
+                    ExtendContext innerStmt = LangAdapterCreator.createASTRewriter(parser.getLanguage()).removeBraceOfStmt(body, parser);
+                    nodeContext.getSourceNode().replaceChild(body, innerStmt);
+                }
+            }
+        }
+        return null;
+    }
+
+
+
+    @Override
+    protected boolean testStyleContext(StyleContext context) {
+        return isBraceOptional((OptionalBraceContext) context);
     }
 
     private boolean isBraceOptional(OptionalBraceContext context) {
@@ -43,59 +117,7 @@ public class OptionalBraceStyler extends BodyStyler {
                 || context.bodySizeType == BodySizeType.ONE_COMPOUND_STMT;
     }
 
-    private OptionalBraceContext extractContext(ExtendContext bodyNode, ExtendContext typeNode, MyParser parser) {
-        BodyContext bodyContext = extractBodyContext(bodyNode, typeNode, parser);
-        return new OptionalBraceContext(bodyContext.bodyType, bodyContext.bodySizeType, bodyContext.hasRightNeighbour);
-    }
 
-    private OptionalBraceProperty extractProperty(ExtendContext bodyNode, MyParser parser) {
-        int subStmt = parser.getSpecificStmtType(bodyNode);
-        boolean useBrace = subStmt == parser.getRuleBlock();
-        return new OptionalBraceProperty(useBrace);
-    }
-
-    @Override
-    public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-        ExtendContext typeNode = parser.getSpecificStmt(ctx);
-        List<ExtendContext> bodyNodes = getBodyNodes(typeNode, parser);
-        for (ExtendContext body : bodyNodes) {
-            OptionalBraceContext optionalBraceContext = extractContext(body, typeNode, parser);
-            OptionalBraceProperty property = extractProperty(body, parser);
-            if (style.getProperty(optionalBraceContext) instanceof OptionalBraceProperty targetProperty
-            && !targetProperty.equals(property)) {
-                ExtendContext specificBody = parser.getSpecificStmt(body);
-                if (targetProperty.useBrace && !parser.isBlock(specificBody)) {
-                    // Add {}
-//                    TreeNodeFactory factory = TreeNodeFactoryGetter.getFactory(parser);
-//                    ExtendContext block = factory.createBlock((ExtendContext) body.getParent());
-                    ExtendContext bracedBody = LangAdapterCreator.createASTRewriter(parser.getLanguage()).encapsulateStmtWithBrace(body, parser);
-//                    TerminalNode lb = factory.createTerminal(parser.getTokenFactory().create(parser.getLBrace(), "{"));
-//                    TerminalNode rb = factory.createTerminal(parser.getTokenFactory().create(parser.getRBrace(), "}"));
-//                    List<ParseTree> children = new ArrayList<>();
-//                    children.add(lb);
-//                    children.add(body);
-//                    children.add(rb);
-//                    block.addChildren(children);
-                    typeNode.replaceChild(body, bracedBody);
-
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-                } else if (!targetProperty.useBrace) {
-                    // Removing {} happens when the bodyNumType is EMPTY or SINGLE. Otherwise, it may cause an error.
-                    boolean isBraceRemovable = parser.isBlock(specificBody) &&
-                            (optionalBraceContext.bodySizeType == BodySizeType.EMPTY
-                                    || optionalBraceContext.bodySizeType == BodySizeType.ONE_SINGLE_STMT);
-                    if (isBraceRemovable) {
-                        ExtendContext innerStmt = LangAdapterCreator.createASTRewriter(parser.getLanguage()).removeBraceOfStmt(body, parser);
-                        ctx.replaceChild(body, innerStmt);
-
-                        RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-                    }
-                }
-            }
-        }
-
-        return ctx;
-    }
 
     /**
      *

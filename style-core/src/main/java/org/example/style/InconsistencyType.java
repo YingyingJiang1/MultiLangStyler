@@ -20,5 +20,6 @@ public enum InconsistencyType {
     ACCESSIBILITY,         // 可访问性修饰符
     SEMICOLON_USAGE,       // 分号使用
     TYPE_ANNOTATION,       // 类型注解
+    OPTIONAL_BRACES,       // 可选大括号
     OTHER                  // 其他未归类类型
 }

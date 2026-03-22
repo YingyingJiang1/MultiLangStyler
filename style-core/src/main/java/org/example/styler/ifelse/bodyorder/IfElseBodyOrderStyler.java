@@ -8,6 +8,7 @@ import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.CodeContext;
+import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -29,7 +30,7 @@ public class IfElseBodyOrderStyler extends Styler {
     @Override
     protected StyleProperty extractStyleProperty(CodeContext codeContext, MyParser parser) {
         if (codeContext instanceof ASTBasedCodeContext astBasedCodeContext) {
-            ExtendContext ctx = astBasedCodeContext.getCtx();
+            ExtendContext ctx = astBasedCodeContext.getContextNode();
             ExtendContext firstBodyCtx = (ExtendContext) ctx.getChild(ctx.getChildCount() - 3);
             ExtendContext secondBodyCtx = (ExtendContext) ctx.getChild(ctx.getChildCount() - 1);
             int firstBodyLines = firstBodyCtx.stop.getLine() - firstBodyCtx.start.getLine() + 1;
@@ -50,7 +51,7 @@ public class IfElseBodyOrderStyler extends Styler {
     }
 
     @Override
-    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
+    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
                                                           StyleProperty targetProperty, MyParser parser) {
         if (codeContext instanceof ASTBasedCodeContext nodeContext
         && targetProperty instanceof IfElseBodyOrderProperty target) {
@@ -83,7 +84,7 @@ public class IfElseBodyOrderStyler extends Styler {
     protected ExtendContext doApply(CodeContext codeContext, StyleProperty currentProperty,
                                     StyleProperty targetProperty, MyParser parser) {
         if (codeContext instanceof ASTBasedCodeContext nodeContext) {
-            ExtendContext ctx = nodeContext.getCtx();
+            ExtendContext ctx = nodeContext.getContextNode();
             int firstBodyIndex = ctx.getChildCount() - 3;
             int secondBodyIndex = ctx.getChildCount() - 1;
             ExtendContext firstBodyCtx = (ExtendContext) ctx.getChild(firstBodyIndex);

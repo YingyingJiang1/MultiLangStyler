@@ -2,18 +2,16 @@ package org.example.styler.declaration.layout;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.RunStatistic;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.ASTNodeSearcher;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
-import org.example.style.ApplyOperation;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
-import org.example.style.StyleApplyData;
 import org.example.style.codecontext.CodeContext;
 import org.example.style.codecontext.ListASTBasedCodeContext;
+import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -63,7 +61,7 @@ public class DeclarationLayoutStyler extends Styler {
     }
 
     @Override
-    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
+    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
                                                           StyleProperty targetProperty, MyParser parser) {
         if (currentProperty instanceof DeclarationLayoutProperty current &&
                 targetProperty instanceof DeclarationLayoutProperty target) {

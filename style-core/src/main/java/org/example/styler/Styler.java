@@ -6,7 +6,6 @@ import org.example.lang.intf.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.InconsistencyInfo;
 import org.example.style.Style;
-import org.example.style.StyleApplyData;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.CodeContext;
 import org.example.style.rule.StyleContext;
@@ -80,10 +79,18 @@ public abstract class Styler {
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
 			StyleProperty property = extractStyleProperty(codeContext, parser);
-			if (property != null) {
+			if (testStyleContext(styleContext) && testStyleProperty(property)) {
 				style.addRule(styleContext, property);
 			}
 		}
+	}
+
+	protected boolean testStyleContext(StyleContext context) {
+		return true;
+	}
+
+	protected boolean testStyleProperty(StyleProperty property) {
+		return property != null;
 	}
 
 	public @Nullable List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
@@ -97,7 +104,7 @@ public abstract class Styler {
 				return null;
 			}
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				allInfos.add(generateInconsistencyInfo(codeContext, currentProperty, targetProperty, parser));
+				allInfos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
 			}
 		}
 
@@ -130,12 +137,15 @@ public abstract class Styler {
 		return null;
 	}
 
-	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
-																	StyleProperty targetProperty, MyParser parser) {
+	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
+														  StyleProperty targetProperty, MyParser parser) {
 		return null;
 	}
 
 	protected boolean isInconsistent(StyleProperty currentProperty, StyleProperty targetProperty, MyParser parser) {
+		if (currentProperty == null || targetProperty == null) {
+			return false;
+		}
 		return !Objects.equals(currentProperty, targetProperty);
 	}
 
