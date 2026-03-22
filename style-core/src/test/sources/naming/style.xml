@@ -3,16 +3,16 @@
 <program_style language="java">
   <style name="naming_format">
     <rule>
+      <style_context nameType="PARAMETER"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="12"/>
+    </rule>
+    <rule>
       <style_context nameType="LOCAL_VARIABLE"/>
       <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="12"/>
     </rule>
     <rule>
       <style_context nameType="TYPE"/>
       <style_property caseFormat="UPPER_CAMEL" startsWithUnderScore="false" maxLength="16"/>
-    </rule>
-    <rule>
-      <style_context nameType="PARAMETER"/>
-      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="12"/>
     </rule>
     <rule>
       <style_context nameType="METHOD"/>

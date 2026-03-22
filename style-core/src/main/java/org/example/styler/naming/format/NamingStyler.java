@@ -10,8 +10,10 @@ import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.style.InconsistencyInfo;
+import org.example.style.InconsistencyType;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.semantic.SymbolTableManager;
@@ -61,16 +63,7 @@ public class NamingStyler extends Styler {
             NamingFormatProperty property = (NamingFormatProperty) style.getProperty(context);
             if (property != null ) {
                 String name = symbol.getText();
-                MyCaseFormat curFormat = getCaseFormat(name);
-                String newName = AbbreviationLibrary.getInstance().getAbbreviation(name, property.maxLength);
-
-                if (curFormat != null && curFormat.isConvertible(property.caseFormat)) {
-                    newName = curFormat.to(property.caseFormat, newName);
-                }
-
-                if (property.startsWithUnderScore && !newName.startsWith("_")) {
-                    newName = "_" + newName;
-                }
+                String newName = generateNewName(name, property);
 
                 if (!newName.equals(name) && isValidName(newName, parser)) {
                     // 预修改
@@ -105,11 +98,26 @@ public class NamingStyler extends Styler {
             NamingFormatProperty targetProperty = (NamingFormatProperty) style.getProperty(context);
             if (!Objects.equals(property, targetProperty)) {
                 Token token = symbol.getDecIdentifierNode().getStop();
-                int[] loc = {token.getLine(), token.getCharPositionInLine()};
-                infos.add(new NamingInconsistencyInfo(loc, loc, ""));
+                String newName = generateNewName(token.getText(), property);
+                        infos.add(InconsistencyInfoGenerator.generateForNaming(symbol, newName, property));
             }
         }
         return infos;
+    }
+
+
+    private String generateNewName(String oldName, NamingFormatProperty property) {
+        MyCaseFormat curFormat = getCaseFormat(oldName);
+        String newName = AbbreviationLibrary.getInstance().getAbbreviation(oldName, property.maxLength);
+
+        if (curFormat != null && curFormat.isConvertible(property.caseFormat)) {
+            newName = curFormat.to(property.caseFormat, newName);
+        }
+
+        if (property.startsWithUnderScore && !newName.startsWith("_")) {
+            newName = "_" + newName;
+        }
+        return newName;
     }
 
     private NamingFormatProperty extractProperty(Symbol symbol, NamingFormatContext context, MyParser parser) {

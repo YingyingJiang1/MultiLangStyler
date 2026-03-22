@@ -27,7 +27,7 @@ class NamingStylerTest extends TestBase {
 	  for (int i = 0; i < srcFiles.length; i++) {
 		  Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 		  String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(NamingStyler.class));
-		  if (true) {
+		  if (false) {
 			  try{
 				  Files.writeString(gtPath, actual);
 			  }	catch (Exception e) {

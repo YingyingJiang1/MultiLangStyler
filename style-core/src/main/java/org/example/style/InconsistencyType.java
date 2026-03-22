@@ -5,7 +5,7 @@ public enum InconsistencyType {
     SPACING,               // 空格
     NEWLINE,               // 换行
     MODIFIER_ORDER,        // 修饰符顺序
-    NAMING_FORMAT,         // 命名格式
+    NAMING,         // 命名格式
     DECLARATION_LAYOUT,    // 声明布局
     BRACE_STYLE,           // 大括号风格
     PARAMETER_LAYOUT,      // 参数布局
