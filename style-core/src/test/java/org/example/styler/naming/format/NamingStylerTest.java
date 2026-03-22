@@ -16,10 +16,12 @@ class NamingStylerTest extends TestBase {
 	  String dir = "src/test/sources/naming/";
 	  String[] srcFiles = {
 			  "f1.java",
+			  "f2.java"
 	  };
 
 	  String[] targetFiles = {
-			  "style1.xml",
+			  "f2.java",
+			  "f1.java"
 	  };
 
 	  for (int i = 0; i < srcFiles.length; i++) {

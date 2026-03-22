@@ -1,9 +1,14 @@
-import java.lang.*;
-import java.util.*;
+public class NamingStyleTestA {
 
-public class Luckysubstring {
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		String input = in.nextLine();
+	public static int calculateTotalScore(int studentCount, int bonusPoints) {
+		int totalScore = 0;
+		int baseScore = 60;
+
+		for (int studentIndex = 0; studentIndex < studentCount; studentIndex++) {
+			int currentScore = baseScore + bonusPoints;
+			totalScore += currentScore;
+		}
+
+		return totalScore;
 	}
 }

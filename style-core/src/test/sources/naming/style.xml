@@ -4,18 +4,19 @@
   <style name="naming_format">
     <rule>
       <style_context nameType="LOCAL_VARIABLE"/>
-      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="0"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="12"/>
+    </rule>
+    <rule>
+      <style_context nameType="TYPE"/>
+      <style_property caseFormat="UPPER_CAMEL" startsWithUnderScore="false" maxLength="16"/>
+    </rule>
+    <rule>
+      <style_context nameType="PARAMETER"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="12"/>
+    </rule>
+    <rule>
+      <style_context nameType="METHOD"/>
+      <style_property caseFormat="LOWER_CAMEL" startsWithUnderScore="false" maxLength="19"/>
     </rule>
   </style>
-  <style name="newline"/>
-  <style name="if_else_body_order"/>
-  <style name="indention"/>
-  <style name="optional_brace"/>
-  <style name="modifier_order"/>
-  <style name="structure_preference"/>
-  <style name="declaration_layout"/>
-  <style name="inter_newline"/>
-  <style name="body_layout"/>
-  <style name="space"/>
-  <style name="intra_newline"/>
 </program_style>
