@@ -1,6 +1,7 @@
 package org.example.style;
 
 import lombok.Data;
+import org.example.style.codecontext.CodeContext;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -12,7 +13,10 @@ public class InconsistencyInfo {
 	protected Location location;
 	protected StyleApplyData styleApplyData; // used to apply style without re-extracting and re-comparing code style.
 
-	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message){}
+	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
+		this.location = new Location(startLoc[0],startLoc[1], endLoc[0], endLoc[1]);
+		this.message = message;
+	}
 
 	public InconsistencyInfo(InconsistencyType type, String expected, String actual,String message,
 							 Location location) {
@@ -96,11 +100,22 @@ public class InconsistencyInfo {
 		public final static int FILE = 1;
 		public final static int STRING = 2;
 
+		public Location(CodeContext codeContext) {
+			this.startRow = codeContext.getStartRow();
+			this.startColumn = codeContext.getStartColumn();
+			this.endRow = codeContext.getEndRow();
+			this.endColumn = codeContext.getEndColumn();
+			this.type = STRING;
+			this.source = null;
+		}
+
 		public Location(int startRow, int startColumn, int endRow, int endColumn) {
 			this.startRow = startRow;
 			this.startColumn = startColumn;
 			this.endRow = endRow;
 			this.endColumn = endColumn;
+			this.type = STRING;
+			this.source = null;
 		}
 	}
 }

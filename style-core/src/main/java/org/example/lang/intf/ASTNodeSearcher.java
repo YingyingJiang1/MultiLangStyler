@@ -14,4 +14,5 @@ public interface ASTNodeSearcher {
 	 * e.g.: int a = c + 1, b = 2; then the result is [a, b].
 	 */
 	List<ParseTree> searchAllDeclaredIdentifiers(ExtendContext ctx);
+
 }

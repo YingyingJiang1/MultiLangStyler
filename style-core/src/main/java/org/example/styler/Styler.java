@@ -62,9 +62,7 @@ public abstract class Styler {
 			}
 
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				InconsistencyInfo info = generateInconsistencyInfo(codeContext, currentProperty, targetProperty,
-						true, parser);
-				ret = doApply(info, targetProperty, parser);
+				ret = doApply(codeContext, currentProperty, targetProperty, parser);
 			}
 		}
 
@@ -99,7 +97,7 @@ public abstract class Styler {
 				return null;
 			}
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				allInfos.add(generateInconsistencyInfo(codeContext, currentProperty, targetProperty, false, parser));
+				allInfos.add(generateInconsistencyInfo(codeContext, currentProperty, targetProperty, parser));
 			}
 		}
 
@@ -127,12 +125,13 @@ public abstract class Styler {
 		return null;
 	}
 
-	protected ExtendContext doApply(InconsistencyInfo info, StyleProperty targetProperty, MyParser parser) {
+	protected ExtendContext doApply(CodeContext codeContext, StyleProperty currentProperty,
+									StyleProperty targetProperty, MyParser parser) {
 		return null;
 	}
 
 	protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
-																	StyleProperty targetProperty, boolean fillApplyData, MyParser parser) {
+																	StyleProperty targetProperty, MyParser parser) {
 		return null;
 	}
 

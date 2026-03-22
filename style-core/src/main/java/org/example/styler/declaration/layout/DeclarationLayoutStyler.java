@@ -47,27 +47,24 @@ public class DeclarationLayoutStyler extends Styler {
         return codeContexts;
     }
 
+
+
     @Override
-    protected ExtendContext doApply(InconsistencyInfo info, StyleProperty targetProperty, MyParser parser) {
-        DeclarationLayoutProperty property = (DeclarationLayoutProperty) targetProperty;
+    protected ExtendContext doApply(CodeContext codeContext, StyleProperty currentProperty,
+                                    StyleProperty targetProperty, MyParser parser) {
+        List<ExtendContext> nodes = (List<ExtendContext>) ((ListASTBasedCodeContext) codeContext).getNodes();
 
-        StyleApplyData applyData = info.getStyleApplyData();
-        ListASTBasedCodeContext codeContext = (ListASTBasedCodeContext) applyData.codeContext;
-
-        if (applyData.operation == ApplyOperation.MERGE_VAR_DECLARATION) {
-            LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations((List<ExtendContext>) codeContext.getNodes(), parser);
-//                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-        } else if (applyData.operation == ApplyOperation.SPLIT_VAR_DECLARATION) {
-            LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations((List<ExtendContext>) codeContext.getNodes(), parser);
-//                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+        if (targetProperty instanceof DeclarationLayoutProperty target && target.isMerge()) {
+            LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations(nodes, parser);
+        } else {
+            LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations(nodes, parser);
         }
-
         return null;
     }
 
     @Override
     protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleProperty currentProperty,
-                                                          StyleProperty targetProperty, boolean fillApplyData, MyParser parser) {
+                                                          StyleProperty targetProperty, MyParser parser) {
         if (currentProperty instanceof DeclarationLayoutProperty current &&
                 targetProperty instanceof DeclarationLayoutProperty target) {
 
@@ -79,21 +76,14 @@ public class DeclarationLayoutStyler extends Styler {
                     InconsistencyType.DECLARATION_LAYOUT,
                     target.isMerge() ? "merge" : "split",
                     current.isMerge() ? "merged" : "separate", "",
-                    new InconsistencyInfo.Location(codeContext.getStartRow(), codeContext.getStartColumn(),
-                            codeContext.getEndRow(), codeContext.getEndColumn())
+                    new InconsistencyInfo.Location(codeContext)
             );
-            if (fillApplyData) {
-                if (target.isMerge()) {
-                    info.setStyleApplyData(new StyleApplyData(codeContext, ApplyOperation.MERGE_VAR_DECLARATION));
-                } else {
-                    info.setStyleApplyData(new StyleApplyData(codeContext, ApplyOperation.SPLIT_VAR_DECLARATION));
-                }
-            }
 
             return info;
         }
         return null;
     }
+
 
     @Override
     protected boolean isInconsistent(StyleProperty currentProperty, StyleProperty targetProperty, MyParser parser) {
