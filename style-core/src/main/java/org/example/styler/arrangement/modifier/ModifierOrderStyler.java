@@ -65,11 +65,7 @@ public class ModifierOrderStyler extends Styler {
 	@Override
 	protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
 		List<ParseTree> modifiers = LangAdapterCreator.createASTNodeSearcher(parser.getLanguage()).searchAllModifiers(ctx);
-		List<Integer> indices = new ArrayList<>();
-		for (ParseTree modifier : modifiers) {
-			indices.add(ctx.children.indexOf(modifier));
-		}
-		return List.of(new ListASTBasedCodeContext(modifiers, indices));
+		return List.of(new ListASTBasedCodeContext(modifiers));
 	}
 
 	@Override

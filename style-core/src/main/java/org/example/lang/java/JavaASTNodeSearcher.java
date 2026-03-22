@@ -6,6 +6,7 @@ import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.java.JavaParser;
 import org.example.lang.intf.ASTNodeSearcher;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JavaASTNodeSearcher implements ASTNodeSearcher {
@@ -30,6 +31,17 @@ public class JavaASTNodeSearcher implements ASTNodeSearcher {
 			}
 		}
 		return modifiers;
+	}
+
+	@Override
+	public List<ParseTree> searchAllDeclaredIdentifiers(ExtendContext ctx) {
+		List<ParseTree> result = new ArrayList<>();
+		List<ExtendContext> declaratorList = ctx.getAllCtxsRecIf(t -> t instanceof JavaParser.VariableDeclaratorIdContext);
+		for (ExtendContext declarator : declaratorList) {
+			ExtendContext identifierNode = declarator.getFirstCtxChildIf(t -> t instanceof JavaParser.IdentifierContext);
+			result.add(identifierNode);
+		}
+		return result;
 	}
 
 	private boolean isModifier(TerminalNode node) {

@@ -1,20 +1,31 @@
 package org.example.style.codecontext;
 
+import jakarta.el.ELContext;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.utils.NodeUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @description: CodeContext implementation based on a list of AST nodes which have the same parent.
  */
 public class ListASTBasedCodeContext extends CodeContext {
-	List<ParseTree> nodes;
+	List<? extends ParseTree> nodes;
 	List<Integer> indices;
 
-	public ListASTBasedCodeContext(List<ParseTree> nodes, List<Integer> indices) {
+	public ListASTBasedCodeContext(List<? extends ParseTree> nodes) {
+		if (nodes == null || nodes.isEmpty()) {
+			return;
+		}
+
 		this.nodes = nodes;
-		this.indices = indices;
+		ExtendContext parent = (ExtendContext) nodes.get(0);
+		indices = new ArrayList<>();
+		for (ParseTree node : nodes) {
+			indices.add(parent.children.indexOf(node));
+		}
 	}
 
 	@Override

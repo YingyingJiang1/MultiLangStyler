@@ -5,10 +5,13 @@ import org.example.antlr.common.context.ExtendContext;
 
 import java.util.List;
 
-/**
- * @description: Interface for searching specific AST nodes in a given context.
- * Default implementation is to search direct children of the given context, but it can be implemented in a more flexible way if needed.
- */
 public interface ASTNodeSearcher {
+	// Search for all modifier nodes in the given context.
 	List<ParseTree> searchAllModifiers(ExtendContext ctx);
+
+	/**
+	 * Search all declared identifiers in the given context.
+	 * e.g.: int a = c + 1, b = 2; then the result is [a, b].
+	 */
+	List<ParseTree> searchAllDeclaredIdentifiers(ExtendContext ctx);
 }

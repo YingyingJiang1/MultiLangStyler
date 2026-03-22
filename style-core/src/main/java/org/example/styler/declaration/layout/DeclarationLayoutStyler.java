@@ -54,15 +54,12 @@ public class DeclarationLayoutStyler extends Styler {
         StyleApplyData applyData = info.getStyleApplyData();
         ListASTBasedCodeContext codeContext = (ListASTBasedCodeContext) applyData.codeContext;
 
-        List<ExtendContext> group = new ArrayList<>();
-        for (ParseTree node : codeContext.getNodes()) {
-            if (applyData.operation == ApplyOperation.MERGE_VAR_DECLARATION) {
-                LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations(group, parser);
+        if (applyData.operation == ApplyOperation.MERGE_VAR_DECLARATION) {
+            LangAdapterCreator.createASTRewriter(parser.getLanguage()).mergeVarDeclarations((List<ExtendContext>) codeContext.getNodes(), parser);
 //                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-            } else if (applyData.operation == ApplyOperation.SPLIT_VAR_DECLARATION) {
-                LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations(group, parser);
+        } else if (applyData.operation == ApplyOperation.SPLIT_VAR_DECLARATION) {
+            LangAdapterCreator.createASTRewriter(parser.getLanguage()).splitVarDeclarations((List<ExtendContext>) codeContext.getNodes(), parser);
 //                RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-            }
         }
 
         return null;
