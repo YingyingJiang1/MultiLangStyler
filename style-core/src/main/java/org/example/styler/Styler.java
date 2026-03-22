@@ -81,7 +81,9 @@ public abstract class Styler {
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
 			StyleProperty property = extractStyleProperty(codeContext, parser);
-			style.addRule(styleContext, property);
+			if (property != null) {
+				style.addRule(styleContext, property);
+			}
 		}
 	}
 
@@ -135,10 +137,6 @@ public abstract class Styler {
 
 	protected boolean isInconsistent(StyleProperty currentProperty, StyleProperty targetProperty, MyParser parser) {
 		return !Objects.equals(currentProperty, targetProperty);
-	}
-
-	public boolean isRelevant(ExtendContext ctx, Stage stage) {
-		return true;
 	}
 
 	public boolean isEnable(Stage stage) {

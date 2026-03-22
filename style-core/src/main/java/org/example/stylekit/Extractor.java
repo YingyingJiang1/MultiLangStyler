@@ -104,6 +104,7 @@ public class Extractor {
         try {
 //            tokenAugmentor.process(parser, Stage.EXTRACT);
             List<Styler> stylers = container.getStylers();
+
             extractOnAST(parser, stylers);
             extractOnTS(parser, stylers);
         } catch (Exception e) {

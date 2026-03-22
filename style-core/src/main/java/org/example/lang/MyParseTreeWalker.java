@@ -2,6 +2,7 @@ package org.example.lang;
 
 import org.antlr.v4.runtime.tree.*;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.example.lang.intf.ASTNodeEditor;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
@@ -25,6 +26,7 @@ public class MyParseTreeWalker extends ParseTreeWalker {
 	private List<Styler> enterStylers = new ArrayList<>();
 	private List<Styler> exitStylers = new ArrayList<>();
 	private List<InconsistencyInfo> infos = new ArrayList<>(); // This should be moved to Styler classes.
+	private ASTNodeEditor nodeEditor;
 
 	public MyParseTreeWalker(MyParser parser, List<Styler> stylers) {
 		this.parser = parser;
@@ -35,6 +37,7 @@ public class MyParseTreeWalker extends ParseTreeWalker {
 				enterStylers.add(styler);
 			}
 		}
+		nodeEditor = LangAdapterCreator.createASTNodeEditor(parser.getLanguage());
 	}
 
 	public void walkTree(Stage stage){
@@ -53,6 +56,7 @@ public class MyParseTreeWalker extends ParseTreeWalker {
 		} else if (t instanceof ExtendContext ctx) {
 			doTask(ctx, enterStylers, stage); // enter rule
 
+			nodeEditor.updateHierarchy(ctx);
 			for(int i = 0; i < ctx.getChildCount(); ++i) {
 				this.walk(ctx.getChild(i), stage);
 			}

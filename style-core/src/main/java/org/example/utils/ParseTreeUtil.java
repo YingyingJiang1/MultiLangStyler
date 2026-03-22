@@ -168,9 +168,13 @@ public class ParseTreeUtil {
     }
   }
 
-  public static ExtendToken getPreToken(ExtendContext ctx, Token targetToken) {
+  /**
+   * Find the previous token of the target token {@code startToken} in the context.
+   * {@code startToken} is the start token or the stop token of {@code ctx}.
+   */
+  public static ExtendToken getPreToken(ExtendContext ctx, Token startToken) {
     ParserRuleContext parent = ctx.getParent();
-    while (parent != null && parent.getStart() == targetToken) {
+    while (parent != null && parent.getStart() == startToken) {
       if (parent.getParent() == null) {
         break;
       }
@@ -181,7 +185,7 @@ public class ParseTreeUtil {
       return null;
     }
     List<Token> tokens = ((ExtendContext) parent).getAllTokensRec();
-    int index = tokens.indexOf(targetToken) -1;
+    int index = tokens.indexOf(startToken) -1;
     return index >= 0 ? (ExtendToken) tokens.get(index) : null;
   }
 

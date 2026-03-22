@@ -4,16 +4,21 @@ import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.example.RunStatistic;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.CodeContextPredicate;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
+import org.example.style.codecontext.CodeContext;
+import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
+import org.example.utils.NodeUtil;
+import org.example.utils.ParseTreeUtil;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
@@ -26,40 +31,59 @@ public class IndentionStyler extends Styler {
     private Map<IndentionInfo, Integer> indentionLengthMap = new HashMap<>();
     private MutablePair<String, IndentionStyle> styleCache = null;
     private static final int HWS = 1, VWS = 2, OTHER = 3;
-
+    private Set<Integer> relevantASTNodeTypes = null;
 
     public IndentionStyler() {
         style = new IndentionStyle();
     }
 
-//    @Override
-//    public void extractStyle(ExtendContext ctx, MyParser parser) {
-//        ExtendToken start = NodeUtil.getStartToken(ctx);
-//        int hwsIndex = start.indexInContextTokens() - 1;
-//        char indentionType = hwsIndex >= 0 && start.getContextTokens().get(hwsIndex).getType() == parser.getHws()
-//                ? getIndentionType(start.getContextTokens().get(hwsIndex).getText()) : '\0';
-//        IndentionInfo indention = new IndentionInfo(start.getCharPositionInLine(), 0, indentionType, -1, -1);
-//        indentionLengthMap.put(indention, indentionLengthMap.getOrDefault(indention, 0) + 1);
-//    }
-//
-//    @Override
-//    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
-//        return ctx == parser.getRoot() && (
-//                ctx.getRuleIndex() == parser.getRuleCompilationUnit() || ctx.getRuleIndex() == parser.getRuleTypeDeclaration() ||
-//                        ctx.getRuleIndex() == parser.getRuleMethodDeclaration() || ctx.getRuleIndex() == parser.getRuleConstructorDeclaration()
-//                        || ctx.getRuleIndex() == parser.getRuleStmt()
-//                );
-//    }
-
     @Override
     public void extractStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken token = (ExtendToken) tokens.get(index);
         IndentionInfo info = extractIndentionInfo(tokens, index, parser);
-        if (info != null) {
+        if (info != null && info.hierarchy > 0) {
             indentionLengthMap.put(info, indentionLengthMap.getOrDefault(info, 0) + 1);
         }
     }
 
+    @Override
+    public boolean isRelevant(ExtendContext ctx, Stage stage, MyParser parser) {
+        if (relevantASTNodeTypes == null) {
+            relevantASTNodeTypes = new HashSet<>() {
+                {
+                    add(parser.getRuleTypeDeclaration());
+                    add(parser.getRuleMethodDeclaration());
+                    add(parser.getRuleConstructorDeclaration());
+                    add(parser.getRuleFieldDeclaration());
+                    add(parser.getRuleStmt());
+                }
+            };
+        }
+        return relevantASTNodeTypes.contains(ctx.getRuleIndex());
+    }
+
+    /**
+     * Handles the hierarchy 0 case, which needs syntactic information to determine whether the leading token is a valid
+     * hierarchy 0 indention token.
+     */
+    @Override
+    public void extractStyle(ExtendContext ctx, MyParser parser) {
+        if (ctx.hierarchy == 0 && ctx.getStart() != null) {
+            Token preToken = ParseTreeUtil.getPreToken(ctx, ctx.getStart());
+            Token realPreToken = null; // previous token of ctx.getStart() in token stream.
+            // start token of ctx is the first token in default channel.
+            if (preToken == null && ctx.getStart() instanceof ExtendToken firstDefaultToken) {
+                realPreToken = firstDefaultToken.getContextTokens().get(0);
+            } else if (preToken instanceof ExtendToken extendToken && extendToken.getContextTokens() != null) {
+                realPreToken = extendToken.getContextTokens().get(extendToken.getContextTokens().size() - 1);
+            }
+            if (realPreToken != null && realPreToken.getType() == parser.getHws()) {
+                IndentionInfo info = new IndentionInfo(realPreToken.getText().length(), 0,
+                        parseIndentionType(realPreToken.getText()), parser.getHws(), -1);
+                indentionLengthMap.put(info, indentionLengthMap.getOrDefault(info, 0) + 1);
+            }
+        }
+    }
 
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
@@ -199,7 +223,7 @@ public class IndentionStyler extends Styler {
         try {
             // 计算每一级缩进单位
             List<Integer> indentionUnitLens = new ArrayList<>();
-            // 跳过 0-1， 应为hierarchy 0的样本较少，有比较大概率会出现异常
+            // 跳过 0-1，因为hierarchy 0的样本较少，有比较大概率会出现异常
             for (int i = 2; i < hierarchy2lenMap.size(); i++) {
                 indentionUnitLens.add(hierarchy2lenMap.get(i) - hierarchy2lenMap.get(i - 1));
             }
@@ -310,12 +334,7 @@ public class IndentionStyler extends Styler {
         String text = token.getText();
         int curLineIndention = text.length();
 
-        char indentionType = '\0';
-        if(text.matches(" +")){
-            indentionType = ' ';
-        } else if(text.matches("\t+")) {
-            indentionType = '\t';
-        }
+        char indentionType = parseIndentionType(text);
 
         // Invalid indention type
         if (indentionType == '\0') {
@@ -351,6 +370,16 @@ public class IndentionStyler extends Styler {
             return false;
         }
         return j < 0;
+    }
+
+    private char parseIndentionType(String indentionStr) {
+        if (indentionStr.matches(" +")) {
+            return ' ';
+        } else if (indentionStr.matches("\t+")) {
+            return '\t';
+        } else {
+            return '\0';
+        }
     }
 
     private static class IndentionInfo {
