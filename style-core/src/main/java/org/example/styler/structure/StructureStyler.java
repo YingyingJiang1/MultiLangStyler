@@ -8,7 +8,9 @@ import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
+import org.example.style.codecontext.CodeContext;
 import org.example.style.rule.StyleContext;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.structure.style.*;
@@ -84,24 +86,8 @@ public class StructureStyler extends Styler {
                 StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
                 int targetIndex = getTargetIndex(property, structure);
                 if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
-                    // Create inconsistency info
-                    int[] startLoc = { ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine() };
-                    Token stopToken = ctx.getStop();
-                    int off = structure.getForests().get(targetIndex).getTrees().size() - 1;
-                    if (off > 0) {
-                        ExtendContext parent = (ExtendContext) ctx.getParent();
-                        ParseTree lastMatchedTreeRoot = parent.getChild(parent.children.indexOf(ctx) + off);
-                        if (lastMatchedTreeRoot instanceof ExtendContext ctx1) {
-                            stopToken = ctx1.getStop();
-                        } else if (lastMatchedTreeRoot instanceof TerminalNode ter) {
-                            stopToken = ter.getSymbol();
-                        }
-                    }
-                    int[] endLoc = { stopToken.getLine(), stopToken.getCharPositionInLine() };
-
-                    infos = new ArrayList<>();
-                    infos.add(new StructureInconsistencyInfo(startLoc, endLoc, "Inconsistent syntax structure"));
-                    break; // Meet first matched structure, break
+                    infos.add(InconsistencyInfoGenerator.generateForStructuralStyle());
+                    break;
                 }
             }
 
@@ -189,11 +175,6 @@ public class StructureStyler extends Styler {
         }
         Set<EquivalentStructure> equivalentStructures = equivalencesMap.get(ruleIndex);
         if (equivalentStructures != null) {
-//            if (ctx.getRuleIndex() == parser.getRuleIfElseStmt()) {
-//                System.out.println("--------------------waiting to match---------------------");
-//                System.out.println(ctx.getText());
-//                TreePrinter.printTree(ctx, parser);
-//            }
             for (EquivalentStructure structure : equivalentStructures) {
                 int index = structure.match(ctx, parser);
                 if (index != -1) {
@@ -205,8 +186,6 @@ public class StructureStyler extends Styler {
             }
         }
     }
-
-
 
     private StructPreferenceProperty extractProperty(EquivalentStructure structure, int targetIndex) {
         return new StructPreferenceProperty(targetIndex, structure.getStyleOf(targetIndex));

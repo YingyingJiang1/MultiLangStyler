@@ -8,6 +8,11 @@ import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
+import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
+import org.example.styler.format.newline.inter.InterNewlineStyler;
+import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.junit.jupiter.api.Test;
@@ -49,8 +54,6 @@ class StructureStylerTest extends TestBase {
 
 	}
 
-
-
 	@Test
 	void testRedudantCode() {
 
@@ -84,31 +87,6 @@ class StructureStylerTest extends TestBase {
 
 	}
 
-	private String doApply(Path srcPath, StructureStyler styler) {
-		try {
-			MyParser parser = LangAdapterCreator.createParser("java");
-			ParseTree root = parser.parse(srcPath);
-			MyParseTreeWalker walker = new MyParseTreeWalker(parser, List.of(styler));
-			walker.walkTree(Stage.APPLY);
-			if (root instanceof ExtendContext ctx) {
-				return getFormattedText(ctx);
-			}
-			return root.getText();
-		} catch (IOException e) {
-			log.error("e: ", e);
-		}
-		return "";
-	}
-
-
-	private StructureStyler doStyler(String code, String language, Stage stage) {
-		StructureStyler styler = new StructureStyler();
-		MyParser parser = LangAdapterCreator.createParser("java");
-		ParseTree root = parser.parseFromString(code);
-		MyParseTreeWalker walker = new MyParseTreeWalker(parser, List.of(styler));
-		walker.walkTree(stage);
-		return styler;
-	}
 
 
 	@Test
@@ -142,29 +120,19 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-
-
 			testCodeEqual(actual, gtPath);
 		}
 	}
-
-
-
-
 
 	@Test
 	void testCombination1() {
 		String dir = "src/test/sources/combination-test/test1";
 		String[] srcFiles = {
-				"f4.java",
 				"f7.java",
 		};
-
 		String[] targetFiles = {
 				"style1",
-				"style1",
 		};
-
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
@@ -176,12 +144,119 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-
 			testCodeEqual(actual, gtPath);
-//			break;
 		}
 	}
 
+	@Test
+	void testLoop() {
+		StructureStyler.TEST_MODE = true;
+		String dir = "src/test/sources/structure/loop/";
+		String[] srcFiles = {
+				"f1.java", // 0
+				"f2.java",
+				"f3.java",
+				"f4.java",
+				"f5.java", // 4
+				"f6.java",
+				"f7.java",
+				"f8.java",
+				"f9.java",
+				"f10.java"
 
+		};
+
+		String[] targetFiles = {
+				"style1.xml", // 0
+				"style2.xml",
+				"style3.xml",
+				"style4.xml",
+				"style4.xml", // 4
+				"style5.xml",
+				"style4.xml",
+				"style6.xml",
+				"style2.xml",
+				"style3.xml",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			testCodeEqual(actual, gtPath);
+		}
+	}
+
+	@Test
+	void testApplyStyle_continuePreference() {
+		StructureStyler.TEST_MODE = true;
+		String dir = "src/test/sources/structure/continue/";
+		String[] srcFiles = {
+				"f2.java",
+				"f3.java",
+				"f4.java",
+				"f5.java",
+				"f6.java"
+
+		};
+		String[] targetFiles = {
+				"style2.xml",
+				"style3.xml",
+				"style4.xml",
+				"style5.xml",
+				"style6.xml"
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			testCodeEqual(actual, gtPath);
+		}
+	}
+
+	@Test
+	void testCheckThenAssign() {
+		StructureStyler.TEST_MODE = true;
+		String dir = "src/test/sources/structure/check_then_assign/";
+		String[] srcFiles = {
+				"f1.java",
+				"f2.java",
+				"f4.java"
+		};
+
+		String[] targetFiles = {
+				"style1.xml",
+				"style2.xml",
+				"style4.xml",
+		};
+
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format(srcFiles[i].replace(".java", "-gt.java")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+
+			testCodeEqual(actual, gtPath);
+		}
+	}
 
 }

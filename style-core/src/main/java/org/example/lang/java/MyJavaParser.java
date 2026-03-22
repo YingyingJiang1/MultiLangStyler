@@ -126,6 +126,7 @@ public class MyJavaParser implements MyParser {
                 return parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
             }
         };
+        parser.removeErrorListeners();
 
         ExtendContext root = (ExtendContext) parser.compilationUnit();
         if (parseFailTester.test(root)) {

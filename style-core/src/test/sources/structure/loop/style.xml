@@ -10,7 +10,7 @@
   <style name="structure_preference">
     <rule>
       <style_context id="12"/>
-      <style_property preferenceIndex="1"/>
+      <style_property preferenceIndex="0"/>
     </rule>
   </style>
   <style name="declaration_layout"/>
