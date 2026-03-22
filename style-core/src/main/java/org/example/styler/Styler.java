@@ -6,6 +6,7 @@ import org.example.lang.intf.MyParser;
 import org.example.style.CommonStyle;
 import org.example.style.InconsistencyInfo;
 import org.example.style.Style;
+import org.example.style.StyleApplyData;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.CodeContext;
 import org.example.style.rule.StyleContext;
