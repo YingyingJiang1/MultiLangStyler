@@ -133,9 +133,6 @@ public class IndentionStyler extends Styler {
 
         if (targetProperty != null) {
             String extraIndention = "";
-//            if (index - 1 >= 0 && tokens.get(index - 1).getType() == parser.getVws() && tokens.get(index - 1) instanceof ExtendToken preExt) {
-//                extraIndention = preExt.indention;
-//            }
             String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + extraIndention;
             int indentionLen = indentionStr.length();
 

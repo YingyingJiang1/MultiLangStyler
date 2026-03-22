@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style language="java">
+  <style name="if_else_body_order">
+    <rule>
+      <style_property shortBodyComesFirst="true"/>
+    </rule>
+  </style>
+</program_style>
