@@ -12,6 +12,7 @@ import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.springframework.lang.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -46,8 +47,16 @@ public abstract class Styler {
 	}
 
 	public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
-		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
-
+		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
+		for (CodeContext codeContext : codeContexts) {
+			StyleContext styleContext = extractStyleContext(codeContext, parser);
+			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
+			StyleProperty targetProperty = style.getProperty(styleContext);
+			if (targetProperty != null && isInconsistent(currentProperty, targetProperty, parser)) {
+				doApply(codeContext, currentProperty, targetProperty, parser);
+			}
+		}
+		return tokens;
 	}
 
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
@@ -72,9 +81,17 @@ public abstract class Styler {
 	}
 
 
-
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
+		commonExtractStyle(codeContexts, parser);
+	}
+	
+	public void extractStyle(List<Token> tokens, int index, MyParser parser) {
+		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
+		commonExtractStyle(codeContexts, parser);
+	}
+
+	private void commonExtractStyle(List<CodeContext> codeContexts, MyParser parser) {
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
 			StyleProperty property = extractStyleProperty(codeContext, parser);
@@ -82,12 +99,6 @@ public abstract class Styler {
 				style.addRule(styleContext, property);
 			}
 		}
-	}
-	
-	public void extractStyle(List<Token> tokens, int index, MyParser parser) {
-		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
-		// abstract the general extraction logic
-		
 	}
 
 	protected boolean testStyleContext(StyleContext context) {
@@ -109,7 +120,7 @@ public abstract class Styler {
 	}
 
 	private List<InconsistencyInfo> commonAnalyzeInconsistency(List<CodeContext> codeContexts, MyParser parser) {
-		List<InconsistencyInfo> allInfos = null;
+		List<InconsistencyInfo> allInfos = new ArrayList<>();
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
 			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
@@ -122,7 +133,7 @@ public abstract class Styler {
 			}
 		}
 
-		return allInfos;
+		return allInfos.isEmpty() ? null : allInfos;
 	}
 
 	protected List<CodeContext> constructCodeContext(List<Token> tokens, int index, MyParser parser) {
