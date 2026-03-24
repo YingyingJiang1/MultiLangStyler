@@ -1,31 +1,22 @@
 package org.example.styler.structure;
 
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.TestBase;
-import org.example.lang.LangAdapterCreator;
-import org.example.lang.MyParseTreeWalker;
-import org.example.lang.intf.MyParser;
-import org.example.antlr.common.context.ExtendContext;
-import org.example.style.rule.StyleRule;
-import org.example.styler.Stage;
-import org.example.styler.format.indention.IndentionStyler;
-import org.example.styler.format.newline.NewlineStyler;
-import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
-import org.example.styler.format.newline.inter.InterNewlineStyler;
-import org.example.styler.format.newline.intra.IntraNewlineStyler;
-import org.example.styler.structure.style.StructPreferenceContext;
-import org.example.styler.structure.style.StructPreferenceProperty;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.TestBase;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.style.rule.StyleRule;
+import org.example.styler.structure.style.StructPreferenceContext;
+import org.example.styler.structure.style.StructPreferenceProperty;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class StructureStylerTest extends TestBase {
 	/********************************************************** Note!!!  **********************************************************/

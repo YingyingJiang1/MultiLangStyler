@@ -1,24 +1,17 @@
 package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.antlr.common.context.ExtendContext;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
 import org.example.style.codecontext.ASTBasedCodeContext;
-import org.example.style.codecontext.CodeContext;
-import org.example.style.rule.StyleProperty;
+import org.example.style.codecontext.StructureCodeContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.optionalbrace.style.OptionalBraceContext;
 import org.example.styler.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
-import org.example.styler.structure.style.StructureInconsistencyInfo;
-import org.example.styler.structure.vtree.Forest;
-
-import java.util.ArrayList;
 
 public class InconsistencyInfoGenerator {
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
@@ -71,14 +64,19 @@ public class InconsistencyInfoGenerator {
 		);
 	}
 
-	public static InconsistencyInfo generateForStructuralStyle(EquivalentStructure templateStructure, StructPreferenceProperty current,
-															   StructPreferenceProperty target) {
-		Forest curForest = templateStructure.getForests().get(current.getPreferenceIndex());
-		Forest tarForest = templateStructure.getForests().get(target.getPreferenceIndex());
-		// generate expected , actual and message based on the template skeleton
-		
-
-		return null;
+	public static InconsistencyInfo generateForStructuralStyle(StructureCodeContext codeContext, StructPreferenceContext styleContext,
+		StructPreferenceProperty current, StructPreferenceProperty target) {
+			EquivalentStructure templateStructure = codeContext.getStructure();
+			String expected = templateStructure.getCodeSkeletonStr(target.getPreferenceIndex());
+			String actual = templateStructure.getCodeSkeletonStr(current.getPreferenceIndex());
+			expected = expected.replaceAll("\\$\\{[^}]+\\}", "...");
+			actual = actual.replaceAll("\\$\\{[^}]+\\}", "...");
+			String message = "";
+			return new InconsistencyInfo(
+				InconsistencyType.STRUCTURAL_STYLE,
+				expected, actual,
+				message, new InconsistencyInfo.Location(codeContext)
+			);
 	}
 
 }

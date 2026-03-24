@@ -21,5 +21,5 @@ public enum InconsistencyType {
     SEMICOLON_USAGE,       // 分号使用
     TYPE_ANNOTATION,       // 类型注解
     OPTIONAL_BRACES,       // 可选大括号
-    OTHER                  // 其他未归类类型
+    STRUCTURAL_STYLE,      // 结构风格
 }

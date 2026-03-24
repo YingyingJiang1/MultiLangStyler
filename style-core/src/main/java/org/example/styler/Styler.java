@@ -46,7 +46,8 @@ public abstract class Styler {
 	}
 
 	public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
-		return null;
+		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
+
 	}
 
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
@@ -71,8 +72,6 @@ public abstract class Styler {
 	}
 
 
-	public void extractStyle(List<Token> tokens, int index, MyParser parser) {
-	}
 
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
@@ -83,6 +82,12 @@ public abstract class Styler {
 				style.addRule(styleContext, property);
 			}
 		}
+	}
+	
+	public void extractStyle(List<Token> tokens, int index, MyParser parser) {
+		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
+		// abstract the general extraction logic
+		
 	}
 
 	protected boolean testStyleContext(StyleContext context) {
@@ -95,6 +100,15 @@ public abstract class Styler {
 
 	public @Nullable List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
+		return commonAnalyzeInconsistency(codeContexts, parser);
+	}
+
+	public @Nullable List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
+		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
+		return commonAnalyzeInconsistency(codeContexts, parser);
+	}
+
+	private List<InconsistencyInfo> commonAnalyzeInconsistency(List<CodeContext> codeContexts, MyParser parser) {
 		List<InconsistencyInfo> allInfos = null;
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
@@ -111,8 +125,8 @@ public abstract class Styler {
 		return allInfos;
 	}
 
-	public @Nullable List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
-		return null;
+	protected List<CodeContext> constructCodeContext(List<Token> tokens, int index, MyParser parser) {
+		return new ArrayList<>();
 	}
 
 	/**
