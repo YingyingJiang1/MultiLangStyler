@@ -1,17 +1,19 @@
 package org.example.styler.structure;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.example.lang.intf.MyParser;
 import org.example.styler.structure.style.CategoryResult;
 import org.example.styler.structure.style.StyleCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.InputStream;
-import java.util.*;
 
 /*
  * @description
@@ -58,7 +60,7 @@ public class EquivalentStructureManager {
     for (EquivalentStructure equivalentStructure : structures) {
       int index = equivalentStructure.getIndexOf(style);
       if (index >= 0) {
-        result.add(equivalentStructure.id, index);
+        result.add(equivalentStructure.getId(), index);
       }
     }
     return result;

@@ -13,7 +13,10 @@ import org.example.style.rule.StyleProperty;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.optionalbrace.style.OptionalBraceContext;
 import org.example.styler.optionalbrace.style.OptionalBraceProperty;
+import org.example.styler.structure.EquivalentStructure;
+import org.example.styler.structure.style.StructPreferenceProperty;
 import org.example.styler.structure.style.StructureInconsistencyInfo;
+import org.example.styler.structure.vtree.Forest;
 
 import java.util.ArrayList;
 
@@ -68,28 +71,13 @@ public class InconsistencyInfoGenerator {
 		);
 	}
 
-	public static InconsistencyInfo generateForStructuralStyle() {
-		String expected = "Inconsistent syntax structure";
-		String actual = "Inconsistent syntax structure";
-		String message = "Inconsistent syntax structure";
+	public static InconsistencyInfo generateForStructuralStyle(EquivalentStructure templateStructure, StructPreferenceProperty current,
+															   StructPreferenceProperty target) {
+		Forest curForest = templateStructure.getForests().get(current.getPreferenceIndex());
+		Forest tarForest = templateStructure.getForests().get(target.getPreferenceIndex());
+		// generate expected , actual and message based on the template skeleton
+		
 
-		// Create inconsistency info
-//		int[] startLoc = { ctx.getStart().getLine(), ctx.getStart().getCharPositionInLine() };
-//		Token stopToken = ctx.getStop();
-//		int off = structure.getForests().get(targetIndex).getTrees().size() - 1;
-//		if (off > 0) {
-//			ExtendContext parent = (ExtendContext) ctx.getParent();
-//			ParseTree lastMatchedTreeRoot = parent.getChild(parent.children.indexOf(ctx) + off);
-//			if (lastMatchedTreeRoot instanceof ExtendContext ctx1) {
-//				stopToken = ctx1.getStop();
-//			} else if (lastMatchedTreeRoot instanceof TerminalNode ter) {
-//				stopToken = ter.getSymbol();
-//			}
-//		}
-//		int[] endLoc = { stopToken.getLine(), stopToken.getCharPositionInLine() };
-//
-//		infos = new ArrayList<>();
-//		infos.add(new StructureInconsistencyInfo(startLoc, endLoc, "Inconsistent syntax structure"));
 		return null;
 	}
 

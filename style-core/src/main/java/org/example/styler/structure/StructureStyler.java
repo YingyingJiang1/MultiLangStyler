@@ -86,7 +86,8 @@ public class StructureStyler extends Styler {
                 StructPreferenceProperty property = (StructPreferenceProperty) style.getProperty(context);
                 int targetIndex = getTargetIndex(property, structure);
                 if (matchedIndex != -1 && targetIndex != -1 && targetIndex != matchedIndex) {
-                    infos.add(InconsistencyInfoGenerator.generateForStructuralStyle());
+                    infos.add(InconsistencyInfoGenerator.generateForStructuralStyle(structure,
+                            new StructPreferenceProperty(matchedIndex), property));
                     break;
                 }
             }

@@ -1,24 +1,35 @@
 package org.example.styler.structure;
 
 
-import org.antlr.v4.runtime.tree.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.dom4j.Element;
-import org.example.lang.LangAdapterCreator;
-import org.example.myException.TreeConvertException;
 import org.example.antlr.common.context.ExtendContext;
-import org.example.lang.intf.MyParser;
-import org.example.styler.structure.handler.ExceptionHandler;
-import org.example.utils.ParseTreeUtil;
-import org.example.myException.CompilationException;
-import org.example.styler.structure.checker.Checker;
-import org.example.styler.structure.handler.Handler;
-import org.example.styler.structure.vtree.VirtualNode;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.base.PlaceholderParser;
+import org.example.lang.intf.MyParser;
+import org.example.myException.CompilationException;
+import org.example.myException.TreeConvertException;
+import org.example.styler.structure.checker.Checker;
+import org.example.styler.structure.handler.ExceptionHandler;
+import org.example.styler.structure.handler.Handler;
 import org.example.styler.structure.vtree.Forest;
+import org.example.styler.structure.vtree.VirtualNode;
+import org.example.utils.ParseTreeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import lombok.Data;
 
 /*
  * @description
@@ -28,26 +39,22 @@ import java.util.*;
 public class EquivalentStructure {
 	public static Logger logger = LoggerFactory.getLogger(EquivalentStructure.class);
 
-	int id;
-	String category;
+	// int id;
+	// String category;
 	// Each style of writing will be transformed into a forest.
 	List<Forest> forests = new ArrayList<>();
 	// Stores the corresponding virtual node for a placeholder with the same name.
 	PlaceholderParser placeholderParser = null;
-	Map<Integer, List<Integer>> bannedTransfer;
+	// Map<Integer, List<Integer>> bannedTransfer;
 	// key: tree generated from the placeholder, value: The virtual node corresponding to the placeholder.
 	Map<ParseTree, VirtualNode> vTreeMap = new HashMap<>();
-	List<Checker> checkers = null;
-	List<Handler> handlers = null;
-	Set<Integer> rules = new HashSet<>();
+	// List<Checker> checkers = null;
+	// List<Handler> handlers = null;
+	Set<Integer> rules = new HashSet<>(); // 记录每个模板对应的 antlr 规则索引
+	XmlRuleParser.Rule rule;
 
-	public EquivalentStructure(int id, String category,List<Checker> checkers,
-	                           List<Handler> handlers, Map<Integer, List<Integer>> bannedTransfer) {
-		this.category = category;
-		this.id = id;
-		this.checkers = checkers;
-		this.handlers = handlers;
-		this.bannedTransfer = bannedTransfer;
+	public EquivalentStructure(XmlRuleParser.Rule rule) {
+		this.rule = rule;
 	}
 
 	public static EquivalentStructure create(Element node, String language) {
@@ -55,18 +62,18 @@ public class EquivalentStructure {
 		if (rule == null) {
 			return null;
 		}
-		EquivalentStructure structure = new EquivalentStructure(Integer.parseInt(rule.id), rule.category, rule.checkers, rule.handlers, rule.bannedTransfer);
+		EquivalentStructure structure = new EquivalentStructure(rule);
 		structure.compile(rule, language);
 
 		return structure;
 	}
 
 	public void setHandlers(List<Handler> handlers) {
-		this.handlers = handlers;
+		rule.handlers = handlers;
 	}
 
 	public void setCheckers(List<Checker> checkers) {
-		this.checkers = checkers;
+		rule.checkers = checkers;
 	}
 
 	public int getIndexOf(String style) {
@@ -102,7 +109,7 @@ public class EquivalentStructure {
 				int priority = getPriority(code);
 				ParseTree tree = parser.parseFromString(code);
 				if (tree == null) {
-					throw new CompilationException("The equivalent structure with id:" + id + " has a compilation error. " +
+					throw new CompilationException("The equivalent structure with id:" + rule.id + " has a compilation error. " +
 							"Please ensure adjacent tokens in configured codes are seperated by space!");
 				}
 				List<ParseTree> trees = new ArrayList<>();
@@ -169,11 +176,11 @@ public class EquivalentStructure {
 
 
 	public Integer getId() {
-		return id;
+		return rule.id;
 	}
 
 	public String getCategory() {
-		return category;
+		return rule.category;
 	}
 
     public List<Forest> getForests() {
@@ -185,6 +192,10 @@ public class EquivalentStructure {
 
 	public List<VirtualNode> getAllVNodes() {
 		return new ArrayList<>(vTreeMap.values());
+	}
+
+	public String getCodeSkeletonStr(int index) {
+		return rule.codes.get(index);
 	}
 
 	public synchronized int match(ParseTree t, MyParser parser) {
@@ -260,6 +271,7 @@ public class EquivalentStructure {
 	}
 
 	private boolean check(int index, MyParser parser) {
+		List<Checker> checkers = rule.checkers;
 		if (checkers == null) {
 			return true;
 		}
@@ -280,6 +292,8 @@ public class EquivalentStructure {
 	 * @return
 	 */
 	public ParseTree convert(int from, int to, ParseTree oldTree, MyParser parser) {
+		Map<Integer, List<Integer>> bannedTransfer = rule.bannedTransfer;
+		List<Handler> handlers = rule.handlers;
 		if(bannedTransfer != null && bannedTransfer.get(from) != null && bannedTransfer.get(from).contains(to)) {
 			return null;
 		}
@@ -524,21 +538,17 @@ public class EquivalentStructure {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, category, rules, forests, placeholderParser, bannedTransfer, vTreeMap, checkers, handlers);
+		return Objects.hash(rules, forests, placeholderParser, vTreeMap, rule);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof EquivalentStructure structure) {
-			return Objects.equals(id, structure.id) &&
-					Objects.equals(category, structure.category) &&
-					Objects.equals(rules, structure.rules) &&
+			return Objects.equals(rules, structure.rules) &&
 					Objects.equals(forests, structure.forests) &&
 					Objects.equals(placeholderParser, structure.placeholderParser) &&
-					Objects.equals(bannedTransfer, structure.bannedTransfer) &&
 					Objects.equals(vTreeMap, structure.vTreeMap) &&
-					Objects.equals(checkers, structure.checkers) &&
-					Objects.equals(handlers, structure.handlers);
+					Objects.equals(rule, structure.rule);
 		}
 		return false;
 	}
@@ -550,8 +560,9 @@ public class EquivalentStructure {
 class XmlRuleParser {
 	private static Logger logger = LoggerFactory.getLogger(XmlRuleParser.class);
 
+	@Data
 	public static class Rule {
-		public String id;
+		public int id;
 		public String name;
 		public String category;
 		public List<String> codes = new ArrayList<>();
@@ -580,7 +591,7 @@ class XmlRuleParser {
 		}
 
 
-		rule.id = node.attributeValue("id");
+		rule.id = Integer.parseInt(node.attributeValue("id"));
 		rule.name = node.attributeValue("name");
 		rule.category = node.attribute("category") != null ? node.attributeValue("category") : "";
 		if (rule.category.isEmpty()) {
@@ -654,6 +665,8 @@ class XmlRuleParser {
 		});
 		return bannedTransferMap;
 	}
+
+	
 }
 
 
