@@ -196,7 +196,7 @@ public class StructureStyler extends Styler {
             && targetProperty instanceof StructPreferenceProperty target
         ) {
             return InconsistencyInfoGenerator.generateForStructuralStyle(structureCodeContext, structPreferenceContext, 
-                current, target);
+                current, target, parser);
         }
         return null;
     }

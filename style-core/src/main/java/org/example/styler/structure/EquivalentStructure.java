@@ -292,6 +292,26 @@ public class EquivalentStructure {
 	 * @return
 	 */
 	public ParseTree convert(int from, int to, ParseTree oldTree, MyParser parser) {
+		Forest newForestForest = generateNewForest(from, to, oldTree, parser);
+		if (newForestForest == null) { // No need to convert.
+			return oldTree;
+		}
+
+		// Update old trees to new trees.
+		List<ParseTree> newTrees = newForestForest.getTrees();
+		int fromSize = forests.get(from).getRealForestSize(); // size of matched real trees(real trees are subtrees of input codes).
+		if (oldTree.getParent() != null) {
+			ExtendContext parent = (ExtendContext) oldTree.getParent();
+			int startIndex = parent.children.indexOf(oldTree);
+			parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
+		} else {
+			parser.updateRoot(newTrees);
+		}
+		cleanState();
+		return newTrees.isEmpty() ? null : newTrees.get(0);
+	}
+
+	public Forest generateNewForest(int from, int to, ParseTree oldTree, MyParser parser) {
 		Map<Integer, List<Integer>> bannedTransfer = rule.bannedTransfer;
 		List<Handler> handlers = rule.handlers;
 		if(bannedTransfer != null && bannedTransfer.get(from) != null && bannedTransfer.get(from).contains(to)) {
@@ -305,7 +325,7 @@ public class EquivalentStructure {
 				});
 			} catch (TreeConvertException e) {
 				cleanState();
-				return oldTree; // Exception caught, don't do any convert.
+				return null; // Exception caught, don't do any convert.
 			}
 
 			for (Handler handler : handlers) {
@@ -321,17 +341,7 @@ public class EquivalentStructure {
 		for(ParseTree t : toforest.getTrees()) {
 			newTrees.addAll(createTree(t));
 		}
-
-		// Update old trees to new trees.
-		if (oldTree.getParent() != null) {
-			ExtendContext parent = (ExtendContext) oldTree.getParent();
-			int startIndex = parent.children.indexOf(oldTree);
-			parent.replaceChildren(startIndex, startIndex + fromSize, newTrees);
-		} else {
-			parser.updateRoot(newTrees);
-		}
-		cleanState();
-		return newTrees.isEmpty() ? null : newTrees.get(0);
+		return new Forest(newTrees, toforest.getPriority(), toforest.getStyle());
 	}
 
 	/**

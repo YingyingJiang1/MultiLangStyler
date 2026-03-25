@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.lang.LangAdapterCreator;
@@ -29,6 +30,7 @@ import org.example.styler.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
+import org.example.styler.structure.vtree.Forest;
 
 public class InconsistencyInfoGenerator {
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
@@ -82,12 +84,14 @@ public class InconsistencyInfoGenerator {
 	}
 
 	public static InconsistencyInfo generateForStructuralStyle(StructureCodeContext codeContext, StructPreferenceContext styleContext,
-		StructPreferenceProperty current, StructPreferenceProperty target) {
+		StructPreferenceProperty current, StructPreferenceProperty target, MyParser parser) {
 			EquivalentStructure templateStructure = codeContext.getStructure();
-			String expected = templateStructure.getCodeSkeletonStr(target.getPreferenceIndex());
-			String actual = templateStructure.getCodeSkeletonStr(current.getPreferenceIndex());
-			expected = expected.replaceAll("\\$\\{[^}]+\\}", "...");
-			actual = actual.replaceAll("\\$\\{[^}]+\\}", "...");
+			Forest forest = templateStructure.generateNewForest(current.getPreferenceIndex(), target.getPreferenceIndex(),
+					codeContext.getStartNode(),parser);
+			List<ParseTree> expectedTress = forest.getTrees();
+			List<? extends ParseTree> actualTress = codeContext.getNodes();
+			String expected = generateCodeStr(expectedTress);
+			String actual = generateCodeStr(actualTress);
 			String message = "";
 			return new InconsistencyInfo(
 				InconsistencyType.STRUCTURAL_STYLE,
@@ -95,6 +99,23 @@ public class InconsistencyInfoGenerator {
 				message, new InconsistencyInfo.Location(codeContext)
 			);
 	}
+
+	private static String generateCodeStr(List<? extends ParseTree> trees) {
+		StringBuilder str = new StringBuilder();
+		for (ParseTree tree : trees) {
+			if (tree instanceof TerminalNode  node) {
+				str.append(((ExtendToken)node.getSymbol()).getFormattedText());
+			} else if (tree instanceof ExtendContext ctx) {
+				ctx.getAllTokensRec().forEach(
+					t -> {
+						str.append(((ExtendToken)t).getFormattedText());
+					}
+				);
+			}
+		}
+		return str.toString();
+	}
+
 
 	public static InconsistencyInfo generateForSpace(TokenBasedContext codeContext, SpaceContext styleContext,
 		SpaceProperty current, SpaceProperty target) {
