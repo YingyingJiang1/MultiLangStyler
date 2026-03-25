@@ -66,10 +66,10 @@ public class IntraNewlineStyler extends Styler {
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
 		ExtendContext targetNode = ctx;
 		if (parser.belongToSimpleStmt(ctx) || parser.getRuleParExpression() == ctx.getRuleIndex()) {
-			targetNode = ctx.getFirstCtxChildIf(parser::isExpression);
+			targetNode = ctx.getFirstContextRecIf(parser::isExpression);
 		}
 		if (targetNode == null) {
-			return ctx;
+			targetNode = ctx;
 		}
 
 		IntraNewlineContext context =  extractContext(targetNode, parser);

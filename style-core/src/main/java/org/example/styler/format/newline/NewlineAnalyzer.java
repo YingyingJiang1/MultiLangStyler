@@ -36,6 +36,7 @@ public class NewlineAnalyzer {
 		return null;
 	}
 
+
 	public static InconsistencyInfo analyzeWhenRemoving(ParseTree node, int num, MyParser parser) {
 		ExtendToken token = NodeUtil.getStopToken(node);
 		if (token == null) {

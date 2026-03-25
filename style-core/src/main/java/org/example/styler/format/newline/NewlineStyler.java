@@ -15,6 +15,9 @@ import org.example.style.InconsistencyInfo;
 import org.example.style.rule.StyleRule;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
+import org.example.styler.format.newline.inter.InterNewlineStyler;
+import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.format.newline.style.NewlineContext;
 import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
@@ -27,17 +30,14 @@ public class NewlineStyler extends Styler {
     private String newline = "\n";
 	private int LINE_TOLERANCE = 1;
 	private int TEXT_LEN_TOLERANCE = 1;
+	Styler mutexStyler = new AnnotationNewlinePatchStyler();
 
 
 	// 补充的newline stylers， 处理更加细节的换行
-//	List<Styler> stylers = List.of(
-//			new IntraNewlineStyler(),
-//			new InterNewlineStyler(),
-//			new BodyLayoutStyler()
-//	);
-
-	List<Styler> pathchStyler = List.of(
-			new AnnotationNewlinePatchStyler()
+	List<Styler> stylers = List.of(
+			new IntraNewlineStyler(),
+			new InterNewlineStyler(),
+			new BodyLayoutStyler()
 	);
 
 
@@ -49,102 +49,104 @@ public class NewlineStyler extends Styler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		for (Styler styler : pathchStyler) {
+		if (mutexStyler.isRelevant(ctx, Stage.EXTRACT, parser)) {
+			mutexStyler.extractStyle(ctx, parser);
+		} else {
+			for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+				StyleRule rule = extractStyleRule(ctx, i, parser);
+				if (rule != null) {
+					style.addRule(rule.getStyleContext(), rule.getStyleProperty());
+				}
+			}
+		}
+
+
+		for (Styler styler : stylers) {
 			if (styler.isRelevant(ctx, Stage.EXTRACT, parser)) {
 				styler.extractStyle(ctx, parser);
-				return;
 			}
 		}
-
-		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-			StyleRule rule = extractStyleRule(ctx, i, parser);
-			if (rule != null) {
-				style.addRule(rule.getStyleContext(), rule.getStyleProperty());
-			}
-		}
-
-//		for (Styler styler : stylers) {
-//			if (styler.isRelevant(ctx, Stage.EXTRACT, parser)) {
-//				styler.extractStyle(ctx, parser);
-//			}
-//		}
 
 	}
 
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-		for (Styler styler : pathchStyler) {
+		if (mutexStyler.isRelevant(ctx, Stage.APPLY, parser)) {
+			mutexStyler.applyStyle(ctx, parser);
+		} else{
+			for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+				StyleRule rule = extractStyleRule(ctx, i, parser);
+				if (rule == null) {
+					continue;
+				}
+
+				NewlineContext context = (NewlineContext) rule.getStyleContext();
+				NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
+
+
+				if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
+					int diff = targetProperty.newlines - property.newlines;
+					if (diff > 0) {
+						NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
+						RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+					} else if (diff < 0) {
+						NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
+						RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+					}
+				}
+
+			}
+		}
+
+		for (Styler styler : stylers) {
 			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
 				styler.applyStyle(ctx, parser);
-				return ctx;
 			}
 		}
 
-		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-			StyleRule rule = extractStyleRule(ctx, i, parser);
-			if (rule == null) {
-				continue;
-			}
+		return ctx;
+	}
 
-			NewlineContext context = (NewlineContext) rule.getStyleContext();
-			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
-
-
-			if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
-				int diff = targetProperty.newlines - property.newlines;
-				if (diff > 0) {
-					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
-					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-				} else if (diff < 0) {
-					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
-					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-				}
-			}
-
-		}
-
+//	@Override
+//	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+//		for (Styler styler : pathchStyler) {
+//			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
+//				styler.analyzeInconsistency(ctx, parser);
+//				return ctx;
+//			}
+//		}
+//
+//		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+//			StyleRule rule = extractStyleRule(ctx, i, parser);
+//			if (rule == null) {
+//				continue;
+//			}
+//
+//			NewlineContext context = (NewlineContext) rule.getStyleContext();
+//			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
+//
+//
+//			if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
+//				int diff = targetProperty.newlines - property.newlines;
+//				if (diff > 0) {
+//					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
+//					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+//				} else if (diff < 0) {
+//					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
+//					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+//				}
+//			}
+//
+//		}
+//
 //		for (Styler styler : stylers) {
 //			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
 //				styler.applyStyle(ctx, parser);
 //			}
 //		}
-
-		return ctx;
-	}
-
-	@Override
-	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
-		List<InconsistencyInfo> infos = null;
-
-		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-			StyleRule rule = extractStyleRule(ctx, i, parser);
-			if (rule == null) {
-				continue;
-			}
-
-			NewlineContext context = (NewlineContext) rule.getStyleContext();
-			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
-
-
-			if (style instanceof NewlineStyle newlineStyle) {
-				if (newlineStyle.getProperty(context) instanceof NewlineProperty targetProperty && !Objects.equals(property, targetProperty)) {
-					if (infos == null) {
-						infos = new ArrayList<>();
-					}
-
-
-					int diff = targetProperty.newlines - property.newlines;
-					if (diff > 0) {
-						infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser));
-					} else if (diff < 0) {
-						infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), Math.abs(diff), parser));
-					}
-				}
-			}
-
-		}
-		return infos;
-	}
+//
+//		return inconsistencyInfos;
+//	}
 
 	protected StyleRule extractStyleRule(ExtendContext ctx, int index, MyParser parser) {
 		List<NewlineContext.NodeType> nodeTypes = new ArrayList<>();
@@ -243,6 +245,22 @@ public class NewlineStyler extends Styler {
 				return new NewlineContext.NodeType("SINGLE_STMT");
 			}
 			return new NewlineContext.NodeType(parser.getRuleName(rule));
+		}
+	}
+
+	@Override
+	public void extractFinalize() {
+		super.extractFinalize();
+		for (Styler styler : stylers) {
+			styler.extractFinalize();
+		}
+	}
+
+	@Override
+	public void applicationFinalize() {
+		super.applicationFinalize();
+		for (Styler styler : stylers) {
+			styler.applicationFinalize();
 		}
 	}
 

@@ -40,9 +40,9 @@ class NewlineStylerTest extends TestBase {
 			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(
 					NewlineStyler.class,
-					IntraNewlineStyler.class,
-					InterNewlineStyler.class,
-					BodyLayoutStyler.class,
+//					IntraNewlineStyler.class,
+//					InterNewlineStyler.class,
+//					BodyLayoutStyler.class,
 					IndentionStyler.class));
 			if (false) {
 							try{
@@ -52,17 +52,7 @@ class NewlineStylerTest extends TestBase {
 			}
 			}
 
-			try {
-				testCodeEqual(actual, gtPath);
-			} catch (AssertionFailedError e) {
-				try {
-					Files.writeString(Paths.get(String.format("tmp-%d.java", i + 1)), actual);
-				} catch (Exception e1) {
-
-				}
-				logger.error("Pair `{}` test failed%n", i + 1, e);
-			}
-
+			testCodeEqual(actual, gtPath);
 //			break;
 		}
 	}

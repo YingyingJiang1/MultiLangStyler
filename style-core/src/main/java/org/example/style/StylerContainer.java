@@ -6,9 +6,6 @@ import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.optionalbrace.OptionalBraceStyler;
 import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.NewlineStyler;
-import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
-import org.example.styler.format.newline.inter.InterNewlineStyler;
-import org.example.styler.format.newline.intra.IntraNewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.naming.format.NamingStyler;
@@ -53,10 +50,10 @@ public class StylerContainer {
 		firstRoundStylers.add(new ModifierOrderStyler());
 
 		/**********************************************************  Format Styles(Lexical) **********************************************************/
-        secondRoundStylers.add(new NewlineStyler());
-		secondRoundStylers.add(new IntraNewlineStyler());
-		secondRoundStylers.add(new InterNewlineStyler());
-		secondRoundStylers.add(new BodyLayoutStyler());
+		        secondRoundStylers.add(new NewlineStyler());
+//		secondRoundStylers.add(new IntraNewlineStyler());
+//		secondRoundStylers.add(new InterNewlineStyler());
+//		secondRoundStylers.add(new BodyLayoutStyler());
 
 
         tsStylers.add(new SpaceStyler());

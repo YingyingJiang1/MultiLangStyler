@@ -6,4 +6,5 @@ public class NewlineInconsistencyInfo extends InconsistencyInfo {
 	public NewlineInconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
 		super(startLoc, endLoc, message);
 	}
+
 }
