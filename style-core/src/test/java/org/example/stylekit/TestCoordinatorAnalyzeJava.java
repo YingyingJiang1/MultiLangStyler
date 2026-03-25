@@ -38,8 +38,8 @@ class TestCoordinatorAnalyzeJava {
 	@Test
 	void testAnalyzeInconsistency_declarationLayout() {
 		final String dir = Paths.get(SOURCES, "declaration").toString();
-		String[] srcFiles = {"f1.java", "f4.java",};
-		String[] targetFiles = {"f2.java", "f3.java",};
+		String[] srcFiles = {"f1.java", "f3.java",};
+		String[] targetFiles = {"f2.java", "f4.java",};
 		doAnalyze(dir, srcFiles, targetFiles, List.of(DeclarationLayoutStyler.class));
 	}
 

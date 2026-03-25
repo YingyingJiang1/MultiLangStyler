@@ -1,13 +1,16 @@
 package org.example.styler;
 
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.ASTNodeSearcher;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
-import org.example.style.codecontext.ASTBasedCodeContext;
-import org.example.style.codecontext.StructureCodeContext;
-import org.example.style.codecontext.TokenBasedContext;
-import org.example.styler.format.newline.NewlineApplicator;	
+import org.example.style.codecontext.*;
+import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
+import org.example.styler.format.newline.NewlineApplicator;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.lang.intf.MyParser;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
@@ -20,6 +23,10 @@ import org.example.styler.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InconsistencyInfoGenerator {
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
@@ -170,5 +177,54 @@ public class InconsistencyInfoGenerator {
 				new InconsistencyInfo.Location(anchorToken.getLine(), anchorToken.getCharPositionInLine(),
 						anchorToken.getLine(), anchorToken.getCharPositionInLine() + anchorToken.getText().length())
 		);
+	}
+
+	public static InconsistencyInfo generateForDeclarationLayout(ListASTBasedCodeContext codeContext,
+																 DeclarationLayoutProperty current, DeclarationLayoutProperty target, MyParser parser) {
+		ASTNodeSearcher searcher = LangAdapterCreator.createASTNodeSearcher(parser.getLanguage());
+		if (target.isMerge()) {
+			// 获取分开声明的变量
+			List<String> identifierNames = new ArrayList<>();
+			for (ParseTree node : codeContext.getNodes()) {
+				if (node instanceof ExtendContext ctx) {
+					List<ParseTree> identifiers = searcher.searchAllDeclaredIdentifiers(ctx);
+					if (identifiers.size() == 1) {
+						identifierNames.add(identifiers.get(0).getText());
+					}
+				}
+			}
+
+			String vars = identifierNames.stream()
+					.map(name -> "'" + name + "'")
+					.collect(Collectors.joining(", "));
+			return new InconsistencyInfo(
+				InconsistencyType.DECLARATION_LAYOUT,
+				"merged declaration", // 单独生命的变量应该被合并
+				"separate declarations",
+					vars + " should be merged with an existing declaration",
+				new InconsistencyInfo.Location(codeContext)
+			);
+
+		} else {
+			List<String> identifierNames = new ArrayList<>();
+			for (ParseTree node : codeContext.getNodes()) {
+				if (node instanceof ExtendContext ctx) {
+					List<String> identifiers = searcher.searchAllDeclaredIdentifiers(ctx)
+							.stream().map(ParseTree::getText).toList();
+					if (identifiers.size() > 1) {
+						identifierNames.addAll(identifiers);
+					}
+				}
+			}
+
+			String vars = String.join(", ", identifierNames);
+			return new InconsistencyInfo(
+				InconsistencyType.DECLARATION_LAYOUT,
+				"separate declarations",
+				"merged declaration",
+				"'" + vars + "'" + " should be declared individually",
+				new InconsistencyInfo.Location(codeContext)
+			);
+		}
 	}
 }

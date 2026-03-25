@@ -13,6 +13,7 @@ import org.example.style.codecontext.CodeContext;
 import org.example.style.codecontext.ListASTBasedCodeContext;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.declaration.layout.style.DeclarationLayoutContext;
@@ -61,23 +62,18 @@ public class DeclarationLayoutStyler extends Styler {
     }
 
     @Override
-    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
-                                                          StyleProperty targetProperty, MyParser parser) {
+    protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext,
+                                                          StyleProperty currentProperty, StyleProperty targetProperty, MyParser parser) {
         if (currentProperty instanceof DeclarationLayoutProperty current &&
-                targetProperty instanceof DeclarationLayoutProperty target) {
+                targetProperty instanceof DeclarationLayoutProperty target
+        && codeContext instanceof ListASTBasedCodeContext listContext) {
 
             if (current.isMerge() == target.isMerge()) {
                 return null;
             }
 
-            InconsistencyInfo info = new InconsistencyInfo(
-                    InconsistencyType.DECLARATION_LAYOUT,
-                    target.isMerge() ? "merge" : "split",
-                    current.isMerge() ? "merged" : "separate", "",
-                    new InconsistencyInfo.Location(codeContext)
-            );
+            return InconsistencyInfoGenerator.generateForDeclarationLayout(listContext, current, target, parser);
 
-            return info;
         }
         return null;
     }
