@@ -39,7 +39,7 @@ public class AbbreviationLibrary {
             String word = (String) entry.get("word");
             List<Map<String, String>> abbrs = (List<Map<String, String>>) entry.get("abbrs");
             if (!abbrs.isEmpty()) {
-                abbreviationMap.put(word, abbrs.get(0).get("abbr"));
+                abbreviationMap.put(word.toLowerCase(), abbrs.get(0).get("abbr"));
             }
         }
     }
@@ -55,12 +55,21 @@ public class AbbreviationLibrary {
         return abbreviationMap.get(word);
     }
 
+    /**
+     * @param name
+     * @param maxLength
+     * @return name in lower_underscore format
+     */
     public String getAbbreviation(String name, int maxLength) {
-        if (name.length() <= maxLength) {
-            return name;
+        String[] words = name.split("(?<=\\D)(?=\\p{Upper})|_");
+        for (int i = 0; i < words.length; i++) {
+            words[i] = words[i].toLowerCase();
         }
 
-        String[] words = name.split("(?<=\\D)(?=\\p{Upper})|_");
+        if (name.length() <= maxLength) {
+            return String.join("_", words);
+        }
+
         AbbreviationLibrary  abbreviationLibrary = AbbreviationLibrary.getInstance();
         int curLen = name.length();
         int i = 0;
@@ -69,11 +78,12 @@ public class AbbreviationLibrary {
             if (abbreviation != null) {
                 name = name.replace(words[i], abbreviation);
                 curLen -= words[i].length() - abbreviation.length();
+                words[i] = abbreviation;
             }
             i++;
         }
 
-        return name;
+        return String.join("_", words);
     }
 
 }

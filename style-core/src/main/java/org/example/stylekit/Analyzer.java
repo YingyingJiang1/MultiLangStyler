@@ -79,10 +79,20 @@ public class Analyzer {
 		analyzeOnTS(tokens, parser, container);
 
 		List<InconsistencyInfo> inconsistencies = new ArrayList<>();
+		PriorityQueue<InconsistencyInfo> pq = new PriorityQueue<>(new Comparator<InconsistencyInfo>() {
+			@Override
+			public int compare(InconsistencyInfo o1, InconsistencyInfo o2) {
+					return o1.getLocation().compareTo(o2.getLocation());
+			}
+		});
 		for (Styler styler : container.getStylers()) {
-			inconsistencies.addAll(styler.getInconsistencyInfos());
+			pq.addAll(styler.getInconsistencyInfos());
 		}
 
+		while (!pq.isEmpty()) {
+			InconsistencyInfo info = pq.poll();
+			inconsistencies.add(info);
+		}
 		return inconsistencies;
 	}
 

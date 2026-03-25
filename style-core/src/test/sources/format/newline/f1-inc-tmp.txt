@@ -1,0 +1,144 @@
+============================================================
+File: src\test\sources\format\newline\f1.java
+Total Inconsistencies: 20
+============================================================
+[1] Type     : NEWLINE
+BeginLocation : line 1, column 24
+EndLocation   : line 1, column 25
+Expected : 4 newlines after ';'
+Actual   : 4 newlines after ';'
+Message  : 0 Newline should be removed
+
+[2] Type     : NEWLINE
+BeginLocation : line 5, column 0
+EndLocation   : line 5, column 6
+Expected : 0 newlines after 'public'
+Actual   : 0 newlines after 'public'
+Message  : -1 Newline should be removed
+
+[3] Type     : NEWLINE
+BeginLocation : line 5, column 24
+EndLocation   : line 5, column 25
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[4] Type     : NEWLINE
+BeginLocation : line 7, column 8
+EndLocation   : line 7, column 14
+Expected : 0 newlines after 'static'
+Actual   : 0 newlines after 'static'
+Message  : -1 Newline should be removed
+
+[5] Type     : NEWLINE
+BeginLocation : line 7, column 40
+EndLocation   : line 7, column 41
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[6] Type     : NEWLINE
+BeginLocation : line 11, column 15
+EndLocation   : line 11, column 16
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[7] Type     : NEWLINE
+BeginLocation : line 15, column 23
+EndLocation   : line 15, column 24
+Expected : 0 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -2 Newline should be removed
+
+[8] Type     : NEWLINE
+BeginLocation : line 17, column 25
+EndLocation   : line 17, column 26
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[9] Type     : NEWLINE
+BeginLocation : line 19, column 9
+EndLocation   : line 19, column 10
+Expected : 1 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -1 Newline should be removed
+
+[10] Type     : NEWLINE
+BeginLocation : line 23, column 23
+EndLocation   : line 23, column 24
+Expected : 0 newlines after ')'
+Actual   : 2 newlines after ')'
+Message  : -3 Newline should be removed
+
+[11] Type     : NEWLINE
+BeginLocation : line 31, column 32
+EndLocation   : line 31, column 33
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[12] Type     : NEWLINE
+BeginLocation : line 33, column 27
+EndLocation   : line 33, column 28
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[13] Type     : NEWLINE
+BeginLocation : line 35, column 27
+EndLocation   : line 35, column 28
+Expected : 1 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -1 Newline should be removed
+
+[14] Type     : NEWLINE
+BeginLocation : line 37, column 12
+EndLocation   : line 37, column 13
+Expected : 2 newlines after '{'
+Actual   : 2 newlines after '{'
+Message  : 0 Newline should be removed
+
+[15] Type     : NEWLINE
+BeginLocation : line 39, column 27
+EndLocation   : line 39, column 28
+Expected : 1 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -1 Newline should be removed
+
+[16] Type     : NEWLINE
+BeginLocation : line 41, column 5
+EndLocation   : line 41, column 6
+Expected : 1 newlines after '}'
+Actual   : 2 newlines after '}'
+Message  : -1 Newline should be removed
+
+[17] Type     : NEWLINE
+BeginLocation : line 45, column 24
+EndLocation   : line 45, column 25
+Expected : 0 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -2 Newline should be removed
+
+[18] Type     : NEWLINE
+BeginLocation : line 49, column 23
+EndLocation   : line 49, column 24
+Expected : 0 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -7 Newline should be removed
+
+[19] Type     : NEWLINE
+BeginLocation : line 53, column 12
+EndLocation   : line 53, column 13
+Expected : 0 newlines after ';'
+Actual   : 2 newlines after ';'
+Message  : -3 Newline should be removed
+
+[20] Type     : NEWLINE
+BeginLocation : line 55, column 1
+EndLocation   : line 55, column 2
+Expected : 1 newlines after '}'
+Actual   : 2 newlines after '}'
+Message  : -1 Newline should be removed
+

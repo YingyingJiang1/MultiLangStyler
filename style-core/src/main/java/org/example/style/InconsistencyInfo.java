@@ -1,5 +1,6 @@
 package org.example.style;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 import org.example.style.codecontext.CodeContext;
@@ -78,6 +79,10 @@ public class InconsistencyInfo {
 		return location.getEndColumn();
 	}
 
+	public Location getLocation() {
+		return location;
+	}
+
 	public StyleApplyData getStyleApplyData() {
 		return styleApplyData;
 	}
@@ -95,7 +100,7 @@ public class InconsistencyInfo {
 	}
 
 	@Data
-	public static class Location {
+	public static class Location implements Comparable<Location> {
 		private int startRow, startColumn, endRow, endColumn; // all start from 0
 		private String source;
 		private int type;
@@ -119,6 +124,14 @@ public class InconsistencyInfo {
 			this.endColumn = endColumn;
 			this.type = STRING;
 			this.source = null;
+		}
+
+		@Override
+		public int compareTo(Location o) {
+			if (startRow != o.startRow) return startRow - o.startRow;
+			if (startColumn != o.startColumn) return startColumn - o.startColumn;
+			if (endRow != o.endRow) return endRow - o.endRow;
+			return endColumn - o.endColumn;
 		}
 	}
 }

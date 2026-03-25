@@ -11,6 +11,8 @@ import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
+import org.example.styler.naming.format.NamingStyler;
+import org.example.styler.optionalbrace.OptionalBraceStyler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,6 +51,22 @@ class TestCoordinatorAnalyzeJava {
 		String[] srcFiles = {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"};
 		String[] targetFiles = {"f2.java", "f1.java", "f2.java", "f1.java"};
 		doAnalyze(dir, srcFiles, targetFiles, List.of(IfElseBodyOrderStyler.class));
+	}
+
+	@Test
+	void testAnalyzeInconsistency_naming() {
+		final String dir = Paths.get(SOURCES, "naming").toString();
+		String[] srcFiles = {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"};
+		String[] targetFiles = {"f2.java", "f1.java", "f2.java", "f1.java"};
+		doAnalyze(dir, srcFiles, targetFiles, List.of(NamingStyler.class));
+	}
+
+	@Test
+	void testAnalyzeInconsistency_optionalBrace() {
+		final String dir = Paths.get(SOURCES, "optional_brace").toString();
+		String[] srcFiles = {"f2.java", "f2-gt.java", "f5.java", "f5-gt.java"};
+		String[] targetFiles = {"f1.java", "f1.java", "style1.java", "style1.java"};
+		doAnalyze(dir, srcFiles, targetFiles, List.of(OptionalBraceStyler.class));
 	}
 
 

@@ -1,31 +1,32 @@
 package org.example.styler.naming.format;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import org.antlr.v4.runtime.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.example.RunStatistic;
-import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
 import org.example.semantic.SymbolTable;
+import org.example.semantic.SymbolTableManager;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.semantic.intf.symbol.VarSym;
 import org.example.semantic.intf.type.ReferenceType;
 import org.example.style.InconsistencyInfo;
-import org.example.style.InconsistencyType;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
-import org.example.semantic.SymbolTableManager;
 import org.example.styler.naming.MyCaseFormat;
 import org.example.styler.naming.NameType;
 import org.example.styler.naming.format.style.NamingFormatContext;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.naming.format.style.NamingFormatStyle;
-import org.example.styler.naming.format.style.NamingInconsistencyInfo;
-
-import java.util.*;
-import java.util.regex.Pattern;
 
 public class NamingStyler extends Styler {
     private static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$");
@@ -40,11 +41,28 @@ public class NamingStyler extends Styler {
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
         for (Symbol symbol : symbols) {
             NamingFormatContext context = extractStyleContext(symbol, parser);
-            NamingFormatProperty property = extractProperty(symbol, context, parser);
+            NamingFormatProperty currentProperty = extractProperty(symbol, context, parser);
 
-            if (property.caseFormat != MyCaseFormat.ALL_LOWER_CASE) {
-                style.addRule(context, property);
+            if (currentProperty.caseFormat != MyCaseFormat.ALL_LOWER_CASE) {
+                if (style.getProperty(context) == null) {
+                    style.addRule(context, currentProperty);
+                } else {
+                    // update length
+                    int curLength = currentProperty.maxLength;
+                    // Update max length;
+                    List<StyleProperty> properties = style.getProperties(context);
+                    if (properties != null) {
+                        for (StyleProperty property : properties) {
+                            if (property instanceof NamingFormatProperty namingProperty &&
+                            namingProperty.maxLength < curLength) {
+                                namingProperty.maxLength = curLength;
+                            }
+                        }
+                    }
+                }
+
             }
+
         }
     }
 
@@ -59,11 +77,12 @@ public class NamingStyler extends Styler {
             }
 
             NamingFormatContext context = extractStyleContext(symbol, parser);
+            NamingFormatProperty property = extractProperty(symbol, context, parser);
 
-            NamingFormatProperty property = (NamingFormatProperty) style.getProperty(context);
-            if (property != null ) {
+            NamingFormatProperty targetProperty = (NamingFormatProperty) style.getProperty(context);
+            if (isInconsistent(property, targetProperty, parser)) {
                 String name = symbol.getText();
-                String newName = generateNewName(name, property);
+                String newName = generateNewName(name, targetProperty);
 
                 if (!newName.equals(name) && isValidName(newName, parser)) {
                     // 预修改
@@ -87,6 +106,7 @@ public class NamingStyler extends Styler {
     public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
         List<InconsistencyInfo> infos = new ArrayList<>();
         List<Symbol> symbols = SymbolTableManager.getAllSymbols(parser);
+        SymbolTable st = SymbolTableManager.getSymbolTable(parser);
         for (Symbol symbol : symbols) {
             if (!isMutable(symbol)) {
                 continue;
@@ -96,23 +116,44 @@ public class NamingStyler extends Styler {
             NamingFormatProperty property = extractProperty(symbol, context, parser);
 
             NamingFormatProperty targetProperty = (NamingFormatProperty) style.getProperty(context);
-            if (!Objects.equals(property, targetProperty)) {
+            if (isInconsistent(property, targetProperty, parser)) {
                 Token token = symbol.getDecIdentifierNode().getStop();
-                String newName = generateNewName(token.getText(), property);
-                        infos.add(InconsistencyInfoGenerator.generateForNaming(symbol, newName, property));
+                String newName = generateNewName(token.getText(), targetProperty);
+                String originalName = symbol.getText();
+                if (!newName.equals(symbol.getText()) && isValidName(newName, parser)) {
+                    symbol.setText(newName);
+
+                    if (!st.hasConflictSymbol(symbol, parser)) {
+                        symbol.setText(originalName);
+                        infos.add(InconsistencyInfoGenerator.generateForNaming(symbol, newName, targetProperty));
+                    } 
+                    symbol.setText(originalName);
+                }
             }
         }
+
+        inconsistencyInfos.addAll(infos);
         return infos;
     }
 
+    @Override
+    protected boolean isInconsistent(StyleProperty currentProperty, StyleProperty targetProperty, MyParser parser) {
+        if (targetProperty instanceof NamingFormatProperty target && currentProperty instanceof NamingFormatProperty current
+        && (current.caseFormat != target.caseFormat || current.maxLength > target.maxLength
+        || current.startsWithUnderScore != target.startsWithUnderScore)) {
+            return true;
+        }
+        return false;
+    }
 
     private String generateNewName(String oldName, NamingFormatProperty property) {
         MyCaseFormat curFormat = getCaseFormat(oldName);
-        String newName = AbbreviationLibrary.getInstance().getAbbreviation(oldName, property.maxLength);
-
-        if (curFormat != null && curFormat.isConvertible(property.caseFormat)) {
-            newName = curFormat.to(property.caseFormat, newName);
+        if (curFormat == null || !curFormat.isConvertible(property.caseFormat)) {
+            return oldName;
         }
+
+        String lowerUnderscoreName = AbbreviationLibrary.getInstance().getAbbreviation(oldName, property.maxLength);
+        String newName = MyCaseFormat.LOWER_UNDERSCORE.to(property.caseFormat, lowerUnderscoreName);
 
         if (property.startsWithUnderScore && !newName.startsWith("_")) {
             newName = "_" + newName;
@@ -125,20 +166,8 @@ public class NamingStyler extends Styler {
         MyCaseFormat caseFormat = getCaseFormat(name);
 
         int curLength = name.length();
-        if (!maxLengthMap.containsKey(context) || maxLengthMap.get(context) < curLength) {
-            maxLengthMap.put(context, curLength);
-            // Update max length;
-            List<StyleProperty> properties = style.getProperties(context);
-            if (properties != null) {
-                for (StyleProperty property : properties) {
-                    if (property instanceof NamingFormatProperty namingProperty) {
-                        namingProperty.maxLength = curLength;
-                    }
-                }
-            }
-        }
-
-        NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_', caseFormat, maxLengthMap.get(context));
+        NamingFormatProperty property = new NamingFormatProperty(name.charAt(0) == '_',
+                caseFormat, curLength);
         return property;
     }
 
@@ -210,6 +239,6 @@ public class NamingStyler extends Styler {
     @Override
     public void extractFinalize() {
         super.extractFinalize();
-
+        maxLengthMap.clear();
     }
 }

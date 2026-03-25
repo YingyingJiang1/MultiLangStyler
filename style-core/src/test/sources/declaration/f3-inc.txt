@@ -10,51 +10,51 @@ Actual   : separate declarations
 Message  : 'id', 'version' should be merged with an existing declaration
 
 [2] Type     : DECLARATION_LAYOUT
-BeginLocation : line 35, column 3
-EndLocation   : line 36, column 17
-Expected : merged declaration
-Actual   : separate declarations
-Message  : 'f1', 'f2' should be merged with an existing declaration
-
-[3] Type     : DECLARATION_LAYOUT
-BeginLocation : line 40, column 3
-EndLocation   : line 41, column 13
-Expected : merged declaration
-Actual   : separate declarations
-Message  : 't1', 't2' should be merged with an existing declaration
-
-[4] Type     : DECLARATION_LAYOUT
-BeginLocation : line 43, column 3
-EndLocation   : line 44, column 17
-Expected : merged declaration
-Actual   : separate declarations
-Message  : 'code', 'level' should be merged with an existing declaration
-
-[5] Type     : DECLARATION_LAYOUT
 BeginLocation : line 11, column 2
 EndLocation   : line 14, column 12
 Expected : merged declaration
 Actual   : separate declarations
 Message  : 'b', 'c', 'x' should be merged with an existing declaration
 
-[6] Type     : DECLARATION_LAYOUT
+[3] Type     : DECLARATION_LAYOUT
 BeginLocation : line 18, column 2
 EndLocation   : line 20, column 11
 Expected : merged declaration
 Actual   : separate declarations
 Message  : 'd1', 'd2', 'd3' should be merged with an existing declaration
 
-[7] Type     : DECLARATION_LAYOUT
+[4] Type     : DECLARATION_LAYOUT
 BeginLocation : line 22, column 2
 EndLocation   : line 23, column 21
 Expected : merged declaration
 Actual   : separate declarations
 Message  : 's1', 's2' should be merged with an existing declaration
 
-[8] Type     : DECLARATION_LAYOUT
+[5] Type     : DECLARATION_LAYOUT
 BeginLocation : line 26, column 2
 EndLocation   : line 28, column 20
 Expected : merged declaration
 Actual   : separate declarations
 Message  : 'names', 'values', 'cache' should be merged with an existing declaration
+
+[6] Type     : DECLARATION_LAYOUT
+BeginLocation : line 35, column 3
+EndLocation   : line 36, column 17
+Expected : merged declaration
+Actual   : separate declarations
+Message  : 'f1', 'f2' should be merged with an existing declaration
+
+[7] Type     : DECLARATION_LAYOUT
+BeginLocation : line 40, column 3
+EndLocation   : line 41, column 13
+Expected : merged declaration
+Actual   : separate declarations
+Message  : 't1', 't2' should be merged with an existing declaration
+
+[8] Type     : DECLARATION_LAYOUT
+BeginLocation : line 43, column 3
+EndLocation   : line 44, column 17
+Expected : merged declaration
+Actual   : separate declarations
+Message  : 'code', 'level' should be merged with an existing declaration
 

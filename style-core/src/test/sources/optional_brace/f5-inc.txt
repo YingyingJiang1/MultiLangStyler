@@ -1,0 +1,18 @@
+============================================================
+File: src\test\sources\optional_brace\f5.java
+Total Inconsistencies: 2
+============================================================
+[1] Type     : OPTIONAL_BRACES
+BeginLocation : line 11, column 35
+EndLocation   : line 11, column 47
+Expected : Braces should be present
+Actual   : Braces omitted
+Message  : Braces should be added.
+
+[2] Type     : OPTIONAL_BRACES
+BeginLocation : line 14, column 41
+EndLocation   : line 14, column 53
+Expected : Braces should be present
+Actual   : Braces omitted
+Message  : Braces should be added.
+

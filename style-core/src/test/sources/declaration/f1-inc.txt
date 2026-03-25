@@ -17,44 +17,44 @@ Actual   : merged declaration
 Message  : 'ratio, factor' should be declared individually
 
 [3] Type     : DECLARATION_LAYOUT
-BeginLocation : line 37, column 3
-EndLocation   : line 37, column 21
-Expected : separate declarations
-Actual   : merged declaration
-Message  : 't1, t2' should be declared individually
-
-[4] Type     : DECLARATION_LAYOUT
 BeginLocation : line 14, column 2
 EndLocation   : line 15, column 7
 Expected : separate declarations
 Actual   : merged declaration
 Message  : 'a, b, c' should be declared individually
 
-[5] Type     : DECLARATION_LAYOUT
+[4] Type     : DECLARATION_LAYOUT
 BeginLocation : line 16, column 2
 EndLocation   : line 16, column 23
 Expected : separate declarations
 Actual   : merged declaration
 Message  : 'x, y, z' should be declared individually
 
-[6] Type     : DECLARATION_LAYOUT
+[5] Type     : DECLARATION_LAYOUT
 BeginLocation : line 18, column 2
 EndLocation   : line 19, column 25
 Expected : separate declarations
 Actual   : merged declaration
 Message  : 's2, s3' should be declared individually
 
-[7] Type     : DECLARATION_LAYOUT
+[6] Type     : DECLARATION_LAYOUT
 BeginLocation : line 22, column 2
 EndLocation   : line 22, column 48
 Expected : separate declarations
 Actual   : merged declaration
 Message  : 'names, values' should be declared individually
 
-[8] Type     : DECLARATION_LAYOUT
+[7] Type     : DECLARATION_LAYOUT
 BeginLocation : line 26, column 2
 EndLocation   : line 27, column 12
 Expected : separate declarations
 Actual   : merged declaration
 Message  : 'arr1, arr2' should be declared individually
+
+[8] Type     : DECLARATION_LAYOUT
+BeginLocation : line 37, column 3
+EndLocation   : line 37, column 21
+Expected : separate declarations
+Actual   : merged declaration
+Message  : 't1, t2' should be declared individually
 

@@ -1,0 +1,32 @@
+============================================================
+File: src\test\sources\naming\f2.java
+Total Inconsistencies: 4
+============================================================
+[1] Type     : NAMING
+BeginLocation : line 3, column 43
+EndLocation   : line 3, column 50
+Expected : stuCnt
+Actual   : stu_cnt
+Message  : Name should be LOWER_CAMEL, max length 12
+
+[2] Type     : NAMING
+BeginLocation : line 3, column 56
+EndLocation   : line 3, column 63
+Expected : bnsPts
+Actual   : bns_pts
+Message  : Name should be LOWER_CAMEL, max length 12
+
+[3] Type     : NAMING
+BeginLocation : line 4, column 6
+EndLocation   : line 4, column 13
+Expected : ttlScr
+Actual   : ttl_scr
+Message  : Name should be LOWER_CAMEL, max length 12
+
+[4] Type     : NAMING
+BeginLocation : line 5, column 6
+EndLocation   : line 5, column 12
+Expected : bsScr
+Actual   : bs_scr
+Message  : Name should be LOWER_CAMEL, max length 12
+
