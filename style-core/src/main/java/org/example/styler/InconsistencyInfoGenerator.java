@@ -1,32 +1,34 @@
 package org.example.styler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.token.ExtendToken;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.ASTNodeSearcher;
+import org.example.lang.intf.MyParser;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
-import org.example.style.codecontext.*;
+import org.example.style.codecontext.ASTBasedCodeContext;
+import org.example.style.codecontext.ListASTBasedCodeContext;
+import org.example.style.codecontext.StructureCodeContext;
+import org.example.style.codecontext.TokenBasedContext;
 import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
-import org.example.styler.format.newline.NewlineApplicator;
-import org.example.antlr.common.token.ExtendToken;
-import org.example.lang.intf.MyParser;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
-import org.example.styler.format.newline.inter.style.InterNewlineProperty;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceProperty;
+import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderProperty;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.optionalbrace.style.OptionalBraceContext;
 import org.example.styler.optionalbrace.style.OptionalBraceProperty;
 import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class InconsistencyInfoGenerator {
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
@@ -226,5 +228,30 @@ public class InconsistencyInfoGenerator {
 				new InconsistencyInfo.Location(codeContext)
 			);
 		}
+	}
+
+	public static InconsistencyInfo generateForIfElseBodyOrder(ASTBasedCodeContext codeContext, 
+		IfElseBodyOrderProperty current, IfElseBodyOrderProperty target) {
+		InconsistencyInfo.Location location = new InconsistencyInfo.Location(codeContext);
+            String message = target.shortBodyComesFirst ?
+                    "branches should be ordered by line count in ascending order."
+                    : "branches should be ordered by line count in descending order.";
+            if (target.shortBodyComesFirst) {
+                return new InconsistencyInfo(
+                        InconsistencyType.IF_ELSE_ORDER,
+                        "shorter branch first", "longer branch first",
+                        message,
+                        location
+                );
+
+            } else {
+                return new InconsistencyInfo(
+                        InconsistencyType.IF_ELSE_ORDER,
+                        "longer branch first", "shorter branch first",
+                        message,
+                        location
+                );
+
+            }
 	}
 }

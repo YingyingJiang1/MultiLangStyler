@@ -1,10 +1,10 @@
 package org.example.style;
 
-import lombok.Data;
+import java.util.Objects;
+
 import org.example.style.codecontext.CodeContext;
 
-import java.util.Arrays;
-import java.util.Objects;
+import lombok.Data;
 
 public class InconsistencyInfo {
 	protected InconsistencyType type;
@@ -96,7 +96,7 @@ public class InconsistencyInfo {
 
 	@Data
 	public static class Location {
-		private int startRow, startColumn, endRow, endColumn;
+		private int startRow, startColumn, endRow, endColumn; // all start from 0
 		private String source;
 		private int type;
 

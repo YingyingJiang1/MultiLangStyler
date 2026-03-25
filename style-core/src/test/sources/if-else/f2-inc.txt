@@ -1,0 +1,11 @@
+============================================================
+File: src\test\sources\if-else\f2.java
+Total Inconsistencies: 1
+============================================================
+[1] Type     : IF_ELSE_ORDER
+BeginLocation : line 6, column 2
+EndLocation   : line 14, column 3
+Expected : shorter branch first
+Actual   : longer branch first
+Message  : branches should be ordered by line count in ascending order.
+

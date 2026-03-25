@@ -1,19 +1,19 @@
 package org.example.stylekit;
 
-import org.apache.commons.io.FileUtils;
-import org.example.MyEnvironment;
-import org.example.styler.arrangement.modifier.ModifierOrderStyler;
-import org.example.styler.declaration.layout.DeclarationLayoutStyler;
-import org.example.styler.format.newline.NewlineStyler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.example.MyEnvironment;
+import org.example.styler.arrangement.modifier.ModifierOrderStyler;
+import org.example.styler.declaration.layout.DeclarationLayoutStyler;
+import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class TestCoordinatorAnalyzeJava {
@@ -38,9 +38,17 @@ class TestCoordinatorAnalyzeJava {
 	@Test
 	void testAnalyzeInconsistency_declarationLayout() {
 		final String dir = Paths.get(SOURCES, "declaration").toString();
-		String[] srcFiles = {"f1.java", "f3.java",};
-		String[] targetFiles = {"f2.java", "f4.java",};
+		String[] srcFiles = {"f1.java", "f3.java", "f1-gt.java", "f3-gt.java"};
+		String[] targetFiles = {"f2.java", "f4.java", "f2.java", "f4.java"};
 		doAnalyze(dir, srcFiles, targetFiles, List.of(DeclarationLayoutStyler.class));
+	}
+
+	@Test
+	void testAnalyzeInconsistency_ifElseBodyOrder() {
+		final String dir = Paths.get(SOURCES, "if-else").toString();
+		String[] srcFiles = {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"};
+		String[] targetFiles = {"f2.java", "f1.java", "f2.java", "f1.java"};
+		doAnalyze(dir, srcFiles, targetFiles, List.of(IfElseBodyOrderStyler.class));
 	}
 
 

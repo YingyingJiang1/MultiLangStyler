@@ -1,15 +1,15 @@
 package org.example.styler.ifelse.bodyorder;
 
 
+import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
-import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
-import org.example.style.InconsistencyType;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.CodeContext;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderProperty;
@@ -54,28 +54,9 @@ public class IfElseBodyOrderStyler extends Styler {
     protected InconsistencyInfo generateInconsistencyInfo(CodeContext codeContext, StyleContext styleContext, StyleProperty currentProperty,
                                                           StyleProperty targetProperty, MyParser parser) {
         if (codeContext instanceof ASTBasedCodeContext nodeContext
+            && currentProperty instanceof IfElseBodyOrderProperty current
         && targetProperty instanceof IfElseBodyOrderProperty target) {
-            InconsistencyInfo.Location location = new InconsistencyInfo.Location(nodeContext);
-            String message = target.shortBodyComesFirst ?
-                    "branches should be ordered by line count in ascending order."
-                    : "branches should be ordered by line count in descending order.";
-            if (target.shortBodyComesFirst) {
-                return new InconsistencyInfo(
-                        InconsistencyType.IF_ELSE_ORDER,
-                        "shorter branch first", "longer branch first",
-                        message,
-                        location
-                );
-
-            } else {
-                return new InconsistencyInfo(
-                        InconsistencyType.IF_ELSE_ORDER,
-                        "longer branch first", "shorter branch first",
-                        message,
-                        location
-                );
-
-            }
+            return InconsistencyInfoGenerator.generateForIfElseBodyOrder(nodeContext, current, target);
         }
         return null;
     }
