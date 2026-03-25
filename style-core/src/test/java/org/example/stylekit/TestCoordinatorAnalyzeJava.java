@@ -1,6 +1,8 @@
 package org.example.stylekit;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -10,9 +12,11 @@ import org.example.MyEnvironment;
 import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
 import org.example.styler.format.newline.NewlineStyler;
+import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
 import org.example.styler.naming.format.NamingStyler;
 import org.example.styler.optionalbrace.OptionalBraceStyler;
+import org.example.styler.structure.StructureStyler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TestCoordinatorAnalyzeJava {
 	private static final String LANG = "java";
 	private static final String SOURCES = "src/test/sources";
+	private static final boolean UPDATE_GOLDENS = false;
 
 	private Coordinator coordinatorUnderTest;
 
@@ -69,6 +74,50 @@ class TestCoordinatorAnalyzeJava {
 		doAnalyze(dir, srcFiles, targetFiles, List.of(OptionalBraceStyler.class));
 	}
 
+	@Test
+	void testAnalyzeInconsistency_structurePreference_redundantCode() {
+		List<Class<?>> enabled = List.of(StructureStyler.class);
+		final String dir = Paths.get(SOURCES, "structure", "redundant_code").toString();
+		String[] srcFiles = {"f1.java", "f2.java", "f2-gt.java"};
+		String[] targetFiles = {"f2.java", "f3.java", "f2.java"};
+		doAnalyze(dir, srcFiles, targetFiles, enabled);
+	}
+
+	@Test
+	void testAnalyzeInconsistency_structurePreference_continuePreference() {
+		List<Class<?>> enabled = List.of(StructureStyler.class);
+		final String dir = Paths.get(SOURCES, "structure", "continue").toString();
+		String[] srcFiles = {"f2.java", "f2-gt.java", "f4.java", "f4-gt.java"};
+		String[] targetFiles = {"style2.xml", "f2.java", "style4.xml", "f4.java"};
+		doAnalyze(dir, srcFiles, targetFiles, enabled);
+	}
+
+	@Test
+	void testAnalyzeInconsistency_structurePreference_checkThenAssign() {
+		List<Class<?>> enabled = List.of(StructureStyler.class);
+		final String dir = Paths.get(SOURCES, "structure", "check_then_assign").toString();
+		String[] srcFiles = {"f1.java", "f1-gt.java", "f2.java", "f2-gt.java"};
+		String[] targetFiles = {"style1.xml", "f1.java", "style2.xml", "f2.java"};
+		doAnalyze(dir, srcFiles, targetFiles, enabled);
+	}
+
+	@Test
+	void testAnalyzeInconsistency_structurePreference_if() {
+		List<Class<?>> enabled = List.of(StructureStyler.class);
+		final String dir = Paths.get(SOURCES, "structure", "if").toString();
+		String[] srcFiles = {"f1.java", "f1-gt.java", "f3.java", "f3-gt.java"};
+		String[] targetFiles = {"style1.xml", "f1.java", "style2.xml", "f3.java"};
+		doAnalyze(dir, srcFiles, targetFiles, enabled);
+	}
+
+	@Test
+	void testAnalyzeInconsistency_structurePreference_loop() {
+		List<Class<?>> enabled = List.of(StructureStyler.class);
+		final String dir = Paths.get(SOURCES, "structure", "loop").toString();
+		String[] srcFiles = {"f1.java", "f1-gt.java", "f3.java", "f3-gt.java"};
+		String[] targetFiles = {"style1.xml", "f1.java", "style3.xml", "f3.java"};
+		doAnalyze(dir, srcFiles, targetFiles, enabled);
+	}
 
 	@Test
 	void testAnalyzeInconsistency_newline() {
@@ -80,14 +129,13 @@ class TestCoordinatorAnalyzeJava {
 	}
 
 	@Test
-	void testAnalyzeInconsistency_indentation() {
-		final String dir = Paths.get(SOURCES, "format", "indentation").toString();
+	void testAnalyzeInconsistency_space() {
+		final String dir = Paths.get(SOURCES, "format", "space").toString();
 		String[] srcFiles = {"f1.java", };
 		String[] targetFiles = {"f2.java",};
-
-		doAnalyze(dir, srcFiles, targetFiles, List.of());
-
+		doAnalyze(dir, srcFiles, targetFiles, List.of(SpaceStyler.class));
 	}
+
 
 	TaskOptions createTaskOptions(String dir, String srcFile, String targetFile) {
 		TaskOptions taskOptions = new TaskOptions();
