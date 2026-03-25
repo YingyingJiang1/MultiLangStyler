@@ -8,11 +8,14 @@ import org.example.style.InconsistencyInfo;
 import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
+import org.example.styler.format.newline.NewlineAnalyzer;
 import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.inter.style.InterNewlineProperty;
 import org.example.styler.format.newline.inter.style.InterNewlineStyle;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 专注于相邻语句之间，import之间的换行符使用习惯
@@ -45,6 +48,28 @@ public class InterNewlineStyler extends Styler {
 			}
 		}
 		return ctx;
+	}
+
+	@Override
+	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+		Token stop = ctx.getStop();
+		InterNewlineProperty property = extractProperty(ctx, parser);
+		if (property == null) {
+			return null;
+		}
+
+		List<InconsistencyInfo> inconsistencies = new ArrayList<>();
+		if (style.getProperty(null) instanceof InterNewlineProperty targetProperty
+				&& !property.equals(targetProperty)) {
+			int num = 1;
+			if (targetProperty.hasNewline) {
+				inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(stop, num, parser));
+			} else  {
+				inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(stop, num, parser));
+			}
+		}
+
+		return inconsistencies.stream().filter(Objects::nonNull).toList();
 	}
 
 	private InterNewlineProperty extractProperty(ExtendContext ctx, MyParser parser) {

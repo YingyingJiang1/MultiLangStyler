@@ -21,7 +21,7 @@ public class ListASTBasedCodeContext extends CodeContext {
 		}
 
 		this.nodes = nodes;
-		ExtendContext parent = (ExtendContext) nodes.get(0);
+		ExtendContext parent = (ExtendContext) nodes.get(0).getParent();
 		indices = new ArrayList<>();
 		for (ParseTree node : nodes) {
 			indices.add(parent.children.indexOf(node));
@@ -58,7 +58,7 @@ public class ListASTBasedCodeContext extends CodeContext {
 			return -1;
 		}
 		return NodeUtil.getStopToken(nodes.get(nodes.size() - 1)).getCharPositionInLine() +
-				NodeUtil.getStopToken(nodes.get(nodes.size() - 1)).getText().length();
+				NodeUtil.getStopToken(nodes.get(nodes.size() - 1)).getText().length() - 1;
 	}
 
 	public List<? extends ParseTree> getNodes() {

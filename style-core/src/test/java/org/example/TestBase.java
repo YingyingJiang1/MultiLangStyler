@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scheduling.config.Task;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -80,7 +79,7 @@ public class TestBase {
 			Path gtPath = Paths.get(dir, String.format("%s-%d-%d-gt" + fileExt,srcFiles[i].split("[.]")[0],  id, index));
 
 			if (saveStyle) {
-				conf.getProjectConfig().SetEnabledStylers("cpp", List.of(StructureStyler.class));
+				conf.getProjectConfig().setEnabledStylers("cpp", List.of(StructureStyler.class));
 
 				String srcPath = Paths.get(dir, srcFiles[i]).toString();
 				StyleProfile selfStyle = Extractor.extractStyle(srcPath, language, LangAdapterCreator.createStylerContainer(language));
@@ -160,7 +159,7 @@ public class TestBase {
 	}
 
 	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {
-		conf.getProjectConfig().SetEnabledStylers(lang, classes);
+		conf.getProjectConfig().setEnabledStylers(lang, classes);
 		MyEnvironment.setConf(conf);
 
 		TaskOptions taskOptions = new TaskOptions();

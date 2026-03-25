@@ -1,0 +1,60 @@
+============================================================
+File: src\test\sources\declaration\f1.java
+Total Inconsistencies: 8
+============================================================
+[1] Type     : DECLARATION_LAYOUT
+BeginLocation : line 6, column 1
+EndLocation   : line 6, column 31
+Expected : split
+Actual   : merged
+Message  : 
+
+[2] Type     : DECLARATION_LAYOUT
+BeginLocation : line 9, column 1
+EndLocation   : line 9, column 40
+Expected : split
+Actual   : merged
+Message  : 
+
+[3] Type     : DECLARATION_LAYOUT
+BeginLocation : line 37, column 3
+EndLocation   : line 37, column 21
+Expected : split
+Actual   : merged
+Message  : 
+
+[4] Type     : DECLARATION_LAYOUT
+BeginLocation : line 14, column 2
+EndLocation   : line 15, column 7
+Expected : split
+Actual   : merged
+Message  : 
+
+[5] Type     : DECLARATION_LAYOUT
+BeginLocation : line 16, column 2
+EndLocation   : line 16, column 23
+Expected : split
+Actual   : merged
+Message  : 
+
+[6] Type     : DECLARATION_LAYOUT
+BeginLocation : line 18, column 2
+EndLocation   : line 19, column 25
+Expected : split
+Actual   : merged
+Message  : 
+
+[7] Type     : DECLARATION_LAYOUT
+BeginLocation : line 22, column 2
+EndLocation   : line 22, column 48
+Expected : split
+Actual   : merged
+Message  : 
+
+[8] Type     : DECLARATION_LAYOUT
+BeginLocation : line 26, column 2
+EndLocation   : line 27, column 12
+Expected : split
+Actual   : merged
+Message  : 
+

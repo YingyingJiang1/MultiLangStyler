@@ -9,6 +9,7 @@ import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
+import org.example.styler.format.newline.NewlineAnalyzer;
 import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.bodylayout.style.BodyContext;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
@@ -119,9 +120,45 @@ public class BodyLayoutStyler extends BodyStyler {
 	}
 
 
+	// @Override
+	// public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+	// 	List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);
+	// 	List<InconsistencyInfo> infos = new ArrayList<>();
+	// 	for (ExtendContext bodyNode : bodyNodes) {
+	// 		BodyContext styleContext = extractBodyContext(bodyNode, ctx, parser);
+	// 		if (styleContext == null) {
+	// 			continue;
+	// 		}
+
+	// 		// 获取token list: ... startToken ... stopToken
+	// 		Token startToken = bodyNode.getStart(), stopToken = bodyNode.getStop();
+	// 		ParserRuleContext targetAncestor = ctx.getParent();
+	// 		while (targetAncestor != null && targetAncestor.getChildCount() == 1) {
+	// 			targetAncestor = targetAncestor.getParent();
+	// 		}
+	// 		if (targetAncestor == null) {
+	// 			targetAncestor = ctx;
+	// 		}
+	// 		List<Token> tokens = ((ExtendContext) targetAncestor).getAllTokensRec();
+
+
+	// 		BodyLayoutProperty property = extractProperty(tokens, startToken, stopToken, parser);
+	// 		StyleProperty targetProperty = style.getProperty(styleContext);
+
+	// 		if (isInconsistent(property, targetProperty, parser) && startToken != null && stopToken != null) {
+	// 			inconsistencyInfos.add(InconsistencyInfoGenerator.generateForBodyLayout(startToken, stopToken,
+	// 				property, (BodyLayoutProperty) targetProperty));
+	// 		}
+	// 	}
+
+	// 	return infos;
+	// }
+
+
 	@Override
 	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
 		List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);
+		List<InconsistencyInfo> inconsistencies = new ArrayList<>();
 		for (ExtendContext bodyNode : bodyNodes) {
 			BodyContext styleContext = extractBodyContext(bodyNode, ctx, parser);
 			if (styleContext == null) {
@@ -139,17 +176,50 @@ public class BodyLayoutStyler extends BodyStyler {
 			}
 			List<Token> tokens = ((ExtendContext) targetAncestor).getAllTokensRec();
 
-
 			BodyLayoutProperty property = extractProperty(tokens, startToken, stopToken, parser);
-			StyleProperty targetProperty = style.getProperty(styleContext);
-
-			if (isInconsistent(property, targetProperty, parser) && startToken != null && stopToken != null) {
-				inconsistencyInfos.add(InconsistencyInfoGenerator.generateForBodyLayout(startToken, stopToken,
-					property, (BodyLayoutProperty) targetProperty));
+			if (style.getProperty(styleContext) instanceof BodyLayoutProperty targetProperty
+					&& property != null ) {
+				if (startToken != null) {
+					if (property.beforeLB != targetProperty.beforeLB) {
+						Token targetToken = tokens.get(tokens.indexOf(startToken) - 1);
+						int diff = targetProperty.beforeLB - property.beforeLB;
+						if (diff > 0) {
+							inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser));
+						} else if (diff < 0) {
+							inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser));
+						}
+					}
+					if (property.afterLB != targetProperty.afterLB) {
+						Token targetToken = startToken;
+						int diff = targetProperty.afterLB - property.afterLB;
+						if (diff > 0) {
+							inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser));
+						} else if (diff < 0) {
+							inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser));
+						}
+					}
+//					if (property.beforeRB != targetProperty.beforeRB) {
+//						Token targetToken = tokens.get(tokens.indexOf(stopToken) - 1);
+//						if (targetProperty.beforeRB) {
+//							NewlineApplicator.addNewline(targetToken, 1, parser);
+//						} else {
+//							NewlineApplicator.removeNewline(targetToken, 1, parser);
+//						}
+//					}
+					if (property.afterRB != targetProperty.afterRB) {
+						Token targetToken = stopToken;
+						int diff = targetProperty.afterRB - property.afterRB;
+						if (diff > 0) {
+							inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser));
+						} else if (diff < 0) {
+							inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser));
+						}
+					}
+				}
 			}
 		}
 
-		return inconsistencyInfos;
+		return inconsistencies.stream().filter(Objects::nonNull).toList();
 	}
 
 	@Override

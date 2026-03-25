@@ -64,7 +64,7 @@ public class ModifierOrderStyler extends Styler {
 	@Override
 	protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
 		List<ParseTree> modifiers = LangAdapterCreator.createASTNodeSearcher(parser.getLanguage()).searchAllModifiers(ctx);
-		return List.of(new ListASTBasedCodeContext(modifiers));
+		return modifiers.isEmpty() ? new ArrayList<>() : List.of(new ListASTBasedCodeContext(modifiers));
 	}
 
 	@Override
@@ -128,7 +128,8 @@ public class ModifierOrderStyler extends Styler {
 			InconsistencyInfo info = new InconsistencyInfo(
 					InconsistencyType.MODIFIER_ORDER,
 					filteredLists[1].toString().substring(1, filteredLists[1].toString().length() - 1),
-					filteredLists[0].toString().substring(1, filteredLists[0].toString().length() - 1), "",
+					filteredLists[0].toString().substring(1, filteredLists[0].toString().length() - 1),
+					"Incorrect modifier order",
 					new InconsistencyInfo.Location(codeContext)
 			);
 

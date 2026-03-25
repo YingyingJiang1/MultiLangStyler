@@ -13,8 +13,5 @@
   </style>
   <style name="structure_preference"/>
   <style name="declaration_layout"/>
-  <style name="inter_newline"/>
-  <style name="body_layout"/>
   <style name="space"/>
-  <style name="intra_newline"/>
 </program_style>

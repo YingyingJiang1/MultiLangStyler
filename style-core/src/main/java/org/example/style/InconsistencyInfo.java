@@ -13,6 +13,9 @@ public class InconsistencyInfo {
 	protected Location location;
 	protected StyleApplyData styleApplyData; // used to apply style without re-extracting and re-comparing code style.
 
+	public InconsistencyInfo() {
+	}
+
 	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
 		this.location = new Location(startLoc[0],startLoc[1], endLoc[0], endLoc[1]);
 		this.message = message;

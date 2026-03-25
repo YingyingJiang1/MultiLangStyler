@@ -32,7 +32,6 @@ class ModifierOrderStylerTest extends TestBase {
 				}
 			}
 
-
 			testCodeEqual(actual, gtPath);
 		}
 	}

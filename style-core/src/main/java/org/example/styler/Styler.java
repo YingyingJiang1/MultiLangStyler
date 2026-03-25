@@ -1,5 +1,6 @@
 package org.example.styler;
 
+import lombok.Getter;
 import org.antlr.v4.runtime.Token;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.intf.MyParser;
@@ -10,6 +11,7 @@ import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.CodeContext;
 import org.example.style.rule.StyleContext;
 import org.example.style.rule.StyleProperty;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public abstract class Styler {
 	protected boolean enableExtraction = true;
 	protected boolean enableApplication = true;
 	public boolean executeWhenExit = true;
+	@Getter
 	protected List<InconsistencyInfo> inconsistencyInfos = new ArrayList<>();
 
 	public Styler(boolean enableExtraction, boolean enableApplication) {
@@ -110,30 +113,32 @@ public abstract class Styler {
 		return property != null;
 	}
 
-	public @Nullable List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+	public @NonNull List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
 		return commonAnalyzeInconsistency(codeContexts, parser);
 	}
 
-	public @Nullable List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
+	public @NonNull List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
 		return commonAnalyzeInconsistency(codeContexts, parser);
 	}
 
-	private List<InconsistencyInfo> commonAnalyzeInconsistency(List<CodeContext> codeContexts, MyParser parser) {
+	private @NonNull List<InconsistencyInfo> commonAnalyzeInconsistency(List<CodeContext> codeContexts, MyParser parser) {
+		List<InconsistencyInfo> infos = new ArrayList<>();
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
 			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
 			StyleProperty targetProperty = style.getProperty(styleContext);
 			if (targetProperty == null) {
-				return null;
+				return infos;
 			}
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				inconsistencyInfos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
+				infos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
 			}
 		}
 
-		return inconsistencyInfos;
+		inconsistencyInfos.addAll(infos);
+		return infos;
 	}
 
 	protected List<CodeContext> constructCodeContext(List<Token> tokens, int index, MyParser parser) {

@@ -7,7 +7,9 @@ import org.example.style.InconsistencyType;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.StructureCodeContext;
 import org.example.style.codecontext.TokenBasedContext;
-import org.example.styler.format.newline.NewlineApplicator;
+import org.example.styler.format.newline.NewlineApplicator;	
+import org.example.antlr.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
 import org.example.styler.format.newline.inter.style.InterNewlineProperty;
 import org.example.styler.format.space.style.SpaceContext;
@@ -152,4 +154,21 @@ public class InconsistencyInfoGenerator {
 			);
 	}
 
+	public static InconsistencyInfo generateForNewline(ExtendToken anchorToken, int newlineOperation, MyParser parser) {
+		// original newlines
+		int originalNewlines = (int) anchorToken.getContextTokens().stream()
+				.filter(t -> t.getType() == parser.getVws())
+				.mapToLong(t -> t.getText().chars().filter(ch -> ch == '\n').count())
+				.sum();
+		int expectedNewlines = originalNewlines + newlineOperation;
+		return new InconsistencyInfo(
+				InconsistencyType.NEWLINE,
+				String.format("%d newlines after %s", Integer.max(expectedNewlines, 0), String.format("'%s'", anchorToken.getText())),
+				String.format("%d newlines after %s", Integer.max(originalNewlines, 0), String.format("'%s'", anchorToken.getText())),
+				newlineOperation > 0 ? String.format("%d Newline should be added", newlineOperation)
+						: String.format("%d Newline should be removed", newlineOperation) ,
+				new InconsistencyInfo.Location(anchorToken.getLine(), anchorToken.getCharPositionInLine(),
+						anchorToken.getLine(), anchorToken.getCharPositionInLine() + anchorToken.getText().length())
+		);
+	}
 }

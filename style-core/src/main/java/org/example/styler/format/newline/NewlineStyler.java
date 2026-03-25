@@ -1,10 +1,13 @@
 package org.example.styler.format.newline;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
@@ -12,7 +15,9 @@ import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
+import org.example.style.NewlineInconsistencyInfo;
 import org.example.style.rule.StyleRule;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.bodylayout.BodyLayoutStyler;
@@ -107,46 +112,59 @@ public class NewlineStyler extends Styler {
 		return ctx;
 	}
 
-//	@Override
-//	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
-//		for (Styler styler : pathchStyler) {
-//			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
-//				styler.analyzeInconsistency(ctx, parser);
-//				return ctx;
-//			}
-//		}
-//
-//		for (int i = 0; i < ctx.getChildCount() - 1; i++) {
-//			StyleRule rule = extractStyleRule(ctx, i, parser);
-//			if (rule == null) {
-//				continue;
-//			}
-//
-//			NewlineContext context = (NewlineContext) rule.getStyleContext();
-//			NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
-//
-//
-//			if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
-//				int diff = targetProperty.newlines - property.newlines;
-//				if (diff > 0) {
-//					NewlineApplicator.addNewline(ctx.getChild(i), diff, parser);
-//					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-//				} else if (diff < 0) {
-//					NewlineApplicator.removeNewline(ctx.getChild(i), Math.abs(diff), parser);
-//					RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
-//				}
-//			}
-//
-//		}
-//
-//		for (Styler styler : stylers) {
-//			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
-//				styler.applyStyle(ctx, parser);
-//			}
-//		}
-//
-//		return inconsistencyInfos;
-//	}
+	@Override
+	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+		List<InconsistencyInfo> infos = new ArrayList<>();
+		if (mutexStyler.isRelevant(ctx, Stage.APPLY, parser)) {
+			List<InconsistencyInfo> tmp = mutexStyler.analyzeInconsistency(ctx, parser);
+			infos.addAll(tmp);
+		} else {
+			for (int i = 0; i < ctx.getChildCount() - 1; i++) {
+				StyleRule rule = extractStyleRule(ctx, i, parser);
+				if (rule == null) {
+					continue;
+				}
+
+				NewlineContext context = (NewlineContext) rule.getStyleContext();
+				NewlineProperty property = (NewlineProperty) rule.getStyleProperty();
+				if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
+					int diff = targetProperty.newlines - property.newlines;
+					if (diff > 0) {
+						infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), i, parser));
+					} else if (diff < 0) {
+						infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), i, parser));
+					}
+				}
+			}
+		}
+
+		for (Styler styler : stylers) {
+			if (styler.isRelevant(ctx, Stage.APPLY, parser)) {
+				infos.addAll(styler.analyzeInconsistency(ctx, parser));
+			}
+		}
+
+		Map<Token, List<NewlineInconsistencyInfo>> infoMap = new HashMap<>();
+		for (InconsistencyInfo info : infos) {
+			if (info instanceof NewlineInconsistencyInfo newlineInconsistency) {
+				infoMap.computeIfAbsent(newlineInconsistency.getAnchorToken(), k -> new ArrayList<>()).add(newlineInconsistency);
+			}
+		}
+
+		List<InconsistencyInfo> realInconsistencyInfos = new ArrayList<>();
+		for (Map.Entry<Token, List<NewlineInconsistencyInfo>> entry : infoMap.entrySet()) {
+			ExtendToken anchorToken = (ExtendToken) entry.getKey();
+			int newlineOperation = entry.getValue().stream().map(NewlineInconsistencyInfo::getNewlineOperation)
+			.reduce(0, Integer::sum);
+			InconsistencyInfo info = InconsistencyInfoGenerator.generateForNewline(
+				anchorToken, newlineOperation, parser
+			);
+			realInconsistencyInfos.add(info);
+		}
+
+		inconsistencyInfos.addAll(realInconsistencyInfos);
+		return realInconsistencyInfos;
+	}
 
 	protected StyleRule extractStyleRule(ExtendContext ctx, int index, MyParser parser) {
 		List<NewlineContext.NodeType> nodeTypes = new ArrayList<>();

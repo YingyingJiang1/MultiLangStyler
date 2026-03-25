@@ -3,15 +3,12 @@ package org.example.config;
 import lombok.Data;
 import org.dom4j.Element;
 import org.example.MyEnvironment;
-import org.example.style.StylerContainer;
-import org.example.styler.Styler;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -274,7 +271,7 @@ public class MyConfiguration implements IConfig {
       int queueCapacity;
     }
 
-    public void SetEnabledStylers(String lang, List<Class<?>> stylerClasses) {
+    public void setEnabledStylers(String lang, List<Class<?>> stylerClasses) {
       if (enabledStylers == null) {
         this.enabledStylers = new HashMap<>();
       }

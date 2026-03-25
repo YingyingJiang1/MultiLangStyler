@@ -70,17 +70,20 @@ public class Analyzer {
 		// Analyze on ast.
 		MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());
 		walker.walkTree(Stage.ANALYZE);
-		List<InconsistencyInfo> infos = new ArrayList<>(walker.getInconsistencyInfos());
 
 		walker = new MyParseTreeWalker(parser, container.getSecondRoundStylers());
 		walker.walkTree(Stage.ANALYZE);
-		infos.addAll(walker.getInconsistencyInfos());
 
 		List<Token> tokens = new ArrayList<>();
 		ParseTreeUtil.generateTokens(parser.getRoot(), tokens, parser);
-		infos.addAll(analyzeOnTS(tokens, parser, container));
+		analyzeOnTS(tokens, parser, container);
 
-		return infos;
+		List<InconsistencyInfo> inconsistencies = new ArrayList<>();
+		for (Styler styler : container.getStylers()) {
+			inconsistencies.addAll(styler.getInconsistencyInfos());
+		}
+
+		return inconsistencies;
 	}
 
 	private static List<InconsistencyInfo> analyzeOnTS(List<Token> tokens, MyParser parser, StylerContainer container) {
