@@ -2,7 +2,6 @@
 
 <program_style language="cpp">
   <style name="indention">
-    <rule/>
     <rule>
       <style_property indentionUnit="1" indentionType="\t" indentEmptyLine="false" topHierarchyIndention="0"/>
     </rule>

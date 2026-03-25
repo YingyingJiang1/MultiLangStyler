@@ -4,11 +4,15 @@ import org.antlr.v4.runtime.Token;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
+import org.example.style.InconsistencyInfo;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.inter.style.InterNewlineProperty;
 import org.example.styler.format.newline.inter.style.InterNewlineStyle;
+
+import java.util.List;
 
 /**
  * 专注于相邻语句之间，import之间的换行符使用习惯

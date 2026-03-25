@@ -3,8 +3,11 @@ package org.example.styler.format.newline.bodylayout;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.example.lang.intf.MyParser;
+import org.example.style.InconsistencyInfo;
+import org.example.style.rule.StyleProperty;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.format.newline.NewlineApplicator;
 import org.example.styler.format.newline.bodylayout.style.BodyContext;
@@ -113,6 +116,40 @@ public class BodyLayoutStyler extends BodyStyler {
 		}
 
 		return ctx;
+	}
+
+
+	@Override
+	public List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
+		List<ExtendContext> bodyNodes = getBodyNodes(ctx, parser);
+		for (ExtendContext bodyNode : bodyNodes) {
+			BodyContext styleContext = extractBodyContext(bodyNode, ctx, parser);
+			if (styleContext == null) {
+				continue;
+			}
+
+			// 获取token list: ... startToken ... stopToken
+			Token startToken = bodyNode.getStart(), stopToken = bodyNode.getStop();
+			ParserRuleContext targetAncestor = ctx.getParent();
+			while (targetAncestor != null && targetAncestor.getChildCount() == 1) {
+				targetAncestor = targetAncestor.getParent();
+			}
+			if (targetAncestor == null) {
+				targetAncestor = ctx;
+			}
+			List<Token> tokens = ((ExtendContext) targetAncestor).getAllTokensRec();
+
+
+			BodyLayoutProperty property = extractProperty(tokens, startToken, stopToken, parser);
+			StyleProperty targetProperty = style.getProperty(styleContext);
+
+			if (isInconsistent(property, targetProperty, parser) && startToken != null && stopToken != null) {
+				inconsistencyInfos.add(InconsistencyInfoGenerator.generateForBodyLayout(startToken, stopToken,
+					property, (BodyLayoutProperty) targetProperty));
+			}
+		}
+
+		return inconsistencyInfos;
 	}
 
 	@Override

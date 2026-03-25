@@ -1,6 +1,6 @@
 import java.util.Scanner;
-
 public class PrimeCounter {
+
 	// Function to check if a number is prime
 	public static boolean isPrime(long n) {
 		// If number is less than 2, it's not prime

@@ -27,6 +27,7 @@ public abstract class Styler {
 	protected boolean enableExtraction = true;
 	protected boolean enableApplication = true;
 	public boolean executeWhenExit = true;
+	protected List<InconsistencyInfo> inconsistencyInfos = new ArrayList<>();
 
 	public Styler(boolean enableExtraction, boolean enableApplication) {
 		this.enableExtraction = enableExtraction;
@@ -120,7 +121,6 @@ public abstract class Styler {
 	}
 
 	private List<InconsistencyInfo> commonAnalyzeInconsistency(List<CodeContext> codeContexts, MyParser parser) {
-		List<InconsistencyInfo> allInfos = new ArrayList<>();
 		for (CodeContext codeContext : codeContexts) {
 			StyleContext styleContext = extractStyleContext(codeContext, parser);
 			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
@@ -129,11 +129,11 @@ public abstract class Styler {
 				return null;
 			}
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				allInfos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
+				inconsistencyInfos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
 			}
 		}
 
-		return allInfos.isEmpty() ? null : allInfos;
+		return inconsistencyInfos;
 	}
 
 	protected List<CodeContext> constructCodeContext(List<Token> tokens, int index, MyParser parser) {

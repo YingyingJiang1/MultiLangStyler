@@ -6,6 +6,12 @@ import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.StructureCodeContext;
+import org.example.style.codecontext.TokenBasedContext;
+import org.example.styler.format.newline.NewlineApplicator;
+import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
+import org.example.styler.format.newline.inter.style.InterNewlineProperty;
+import org.example.styler.format.space.style.SpaceContext;
+import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.naming.format.style.NamingFormatProperty;
 import org.example.styler.optionalbrace.style.OptionalBraceContext;
 import org.example.styler.optionalbrace.style.OptionalBraceProperty;
@@ -76,6 +82,73 @@ public class InconsistencyInfoGenerator {
 				InconsistencyType.STRUCTURAL_STYLE,
 				expected, actual,
 				message, new InconsistencyInfo.Location(codeContext)
+			);
+	}
+
+	public static InconsistencyInfo generateForSpace(TokenBasedContext codeContext, SpaceContext styleContext,
+		SpaceProperty current, SpaceProperty target) {
+			// spaces around a target token
+			if (styleContext.tokenName2.isEmpty()) {
+				Token token = codeContext.getTokens().get(codeContext.getStartIndex());
+				return new InconsistencyInfo(
+					InconsistencyType.SPACING,
+					(target.space1 ? "[SP]" : "[NUL]") + token.getText() + (target.space2 ? "[SP]" : "[NUL]"),
+					(current.space1 ? "[SP]" : "[NUL]") + token.getText() + (current.space2 ? "[SP]" : "[NUL]"),
+					"",
+					new InconsistencyInfo.Location(token.getLine(), token.getCharPositionInLine(), 
+					token.getLine(), token.getCharPositionInLine() + token.getText().length())
+				);
+            } else {
+				Token token1 = codeContext.getTokens().get(codeContext.getStartIndex());
+				Token token2 = codeContext.getTokens().get(codeContext.getStartIndex() + 1);
+				return new InconsistencyInfo(
+					InconsistencyType.SPACING,
+					token1.getText() + (target.space2 ? "[SP]" : "[NUL]") + token2.getText(),
+					token1.getText() + (current.space2 ? "[SP]" : "[NUL]") + token2.getText(),
+					"",
+					new InconsistencyInfo.Location(codeContext)
+				);
+			}
+	}
+
+	public static InconsistencyInfo generateForIndention(TokenBasedContext codeContext, String curIndentionStr,
+		String targetIndentionStr) {
+		Token anchor = codeContext.getTokens().get(codeContext.getStartIndex());
+		targetIndentionStr = targetIndentionStr.replaceAll("\t", "\\t").replaceAll(" ", " ");
+		curIndentionStr = curIndentionStr.replaceAll("\t", "\\t").replaceAll(" ", " ");
+		String expected = targetIndentionStr.isEmpty() ? "(none)" : "'" + targetIndentionStr + "'";
+		String actual = curIndentionStr.isEmpty() ? "(none)" : "'" + curIndentionStr + "'";
+		String message = "Indentation does not match";
+		return new InconsistencyInfo(
+			InconsistencyType.INDENTATION,
+			expected,
+			actual,
+			message,
+			new InconsistencyInfo.Location(anchor.getLine(), anchor.getCharPositionInLine(),
+				anchor.getLine(), anchor.getCharPositionInLine() + anchor.getText().length()));
+	}
+
+	public static InconsistencyInfo generateForBodyLayout(Token startToken, Token stopToken,
+		BodyLayoutProperty current, BodyLayoutProperty target) {
+			StringBuilder expected = new StringBuilder();
+			StringBuilder actual = new StringBuilder();
+			if (target.beforeLB != current.beforeLB || target.afterLB != current.afterLB) {
+				expected.append(target.beforeLB > 0 ? "\\n" : "(none)").
+				append(startToken.getText()).append(target.afterLB > 0 ? "\\n" : "(none)");
+				actual.append(current.beforeLB > 0 ? "\\n" : "(none)")
+				.append(startToken.getText()).append(current.afterLB > 0 ? "\\n" : "(none)");
+			}
+			if (target.afterRB != current.afterRB) {
+				expected.append(";" + (target.afterRB > 0 ? "\\n" : "(none)")).append(stopToken.getText());
+				actual.append(";" + (current.afterRB > 0 ? "\\n" : "(none)")).append(stopToken.getText());
+			}
+			return new InconsistencyInfo(
+				InconsistencyType.NEWLINE,
+				expected.toString(),
+				actual.toString(),
+				"",
+				new InconsistencyInfo.Location(startToken.getLine(), startToken.getCharPositionInLine(), 
+				stopToken.getLine(), stopToken.getCharPositionInLine() + stopToken.getText().length())
 			);
 	}
 

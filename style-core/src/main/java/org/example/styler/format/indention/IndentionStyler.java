@@ -11,10 +11,12 @@ import org.example.lang.intf.MyParser;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.style.codecontext.CodeContext;
+import org.example.style.codecontext.TokenBasedContext;
 import org.example.style.rule.StyleProperty;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.indention.style.IndentionInconsistencyInfo;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.indention.style.IndentionStyle;
 import org.example.utils.NodeUtil;
@@ -88,12 +90,12 @@ public class IndentionStyler extends Styler {
     @Override
     public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
         ExtendToken curToken = (ExtendToken) tokens.get(index);
-        IndentionProperty targetProperty = (IndentionProperty) style.getProperty(null);
+        StyleProperty targetStyleProperty = style.getProperty(null);
 
 
-        if (targetProperty != null) {
-            String extraIndention = curToken.getType() == parser.getHws() && index + 1 < tokens.size() ? ((ExtendToken) tokens.get(index + 1)).indention : curToken.indention;
-            // 缩进不一致，统一转换为目标缩进
+        if (targetStyleProperty instanceof IndentionProperty targetProperty) {
+            String extraIndention = curToken.getType() == parser.getHws() && index + 1 < tokens.size() 
+            ? ((ExtendToken) tokens.get(index + 1)).indention : curToken.indention;
             if (!extraIndention.isEmpty() && extraIndention.indexOf(targetProperty.indentionType) < 0) {
                 extraIndention = StringUtils.repeat(targetProperty.indentionType, targetProperty.indentionUnit);
             }
@@ -104,79 +106,77 @@ public class IndentionStyler extends Styler {
             }
             String indentionStr = targetProperty.getIndentionStr(hierarchy) + extraIndention;
 
+            // 缩进不一致，统一转换为目标缩进
             if (curToken.getType() == parser.getHws()) {
                 Token nextToken = tokens.get(index + 1);
                 if (nextToken.getType() == parser.getVws() && !targetProperty.indentEmptyLine) {
                     curToken.setText("");
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                    // RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 } else {
                     curToken.setText(indentionStr);
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                    // RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             } else if (!indentionStr.isEmpty()) {
                 if (targetProperty.indentEmptyLine || parser.getVws() != curToken.getType()) {
                     curToken.addTokenBefore(parser.getTokenFactory().create(parser.getHws(), indentionStr), parser);
-                    RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
+                    // RunStatistic.addTriggeredStyle(parser.getSourceFile(), style.getStyleName());
                 }
             }
         }
         return null;
     }
 
+
+
+
     @Override
-    public List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
-        List<InconsistencyInfo> infos = null;
+    public List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens,
+            int index, MyParser parser) {
+        List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
+        if (codeContexts.isEmpty()) {
+            return inconsistencyInfos;
+        }
 
+        TokenBasedContext codeContext = (TokenBasedContext) codeContexts.get(0);
         ExtendToken curToken = (ExtendToken) tokens.get(index);
-        IndentionProperty targetProperty = (IndentionProperty) style.getProperty(null);
+        StyleProperty targetStyleProperty = style.getProperty(null);
 
 
-        if (targetProperty != null) {
-            String extraIndention = "";
-            String indentionStr = targetProperty.getIndentionStr(curToken.getHierarchy()) + extraIndention;
-            int indentionLen = indentionStr.length();
+        if (targetStyleProperty instanceof IndentionProperty targetProperty) {
+            String extraIndention = curToken.getType() == parser.getHws() && index + 1 < tokens.size() 
+            ? ((ExtendToken) tokens.get(index + 1)).indention : curToken.indention;
+            if (!extraIndention.isEmpty() && extraIndention.indexOf(targetProperty.indentionType) < 0) {
+                extraIndention = StringUtils.repeat(targetProperty.indentionType, targetProperty.indentionUnit);
+            }
 
-            // Indention detected
-            if (curToken.getType() == parser.getHws()) {
-                int actualIndentLen = curToken.getText().length();
-                int[] loc = {curToken.getLine(), curToken.getCharPositionInLine()};
+            int hierarchy = curToken.getHierarchy();
+            if (curToken.getType() == parser.getHws() && index + 1 < tokens.size()) {
+                hierarchy = ((ExtendToken) tokens.get(index + 1)).getHierarchy();
+            }
+            String targetIndentionStr = targetProperty.getIndentionStr(hierarchy) + extraIndention;
+            String curIndentionStr = curToken.getType() == parser.getHws() ? curToken.getText() : "";
 
-                // check indention length
-                Token nextToken = tokens.get(index + 1);
-                // Indent empty line is prohibited, but empty line is indented actually.
-                if (nextToken.getType() == parser.getVws() && !targetProperty.indentEmptyLine) {
-                    infos = new ArrayList<>();
-                    infos.add(new IndentionInconsistencyInfo(loc, loc, "Extra indention before blank lines"));
-                } else if (nextToken.getType() != parser.getVws()) {
-                    if (indentionLen > actualIndentLen) {
-                        infos = new ArrayList<>();
-                        infos.add(new IndentionInconsistencyInfo(loc, loc, "Indent too short"));
-                    } else if (indentionLen < actualIndentLen) {
-                        infos = new ArrayList<>();
-                        infos.add(new IndentionInconsistencyInfo(loc, loc, "Indent too long"));
-                    }
-                }
-
-                // Check indention type
-                if (targetProperty.indentionType != curToken.getText().charAt(0)) {
-                    String message = String.format("Inconsistent indention type '%c',", curToken.getText().charAt(0));
-                    if (infos == null) {
-                        infos = new ArrayList<>();
-                        infos.add(new IndentionInconsistencyInfo(loc, loc, message));
-                    } else {
-                        infos.get(0).setMessage(infos.get(0).getMessage() + ", " + message);
-                    }
-                }
-            } else if (!indentionStr.isEmpty()) { // Need indention, but no indention detected actually
-                if (targetProperty.indentEmptyLine || parser.getVws() != curToken.getType()) {
-                    int[] loc = {curToken.getLine(), curToken.getCharPositionInLine()};
-                    infos = new ArrayList<>();
-                    infos.add(new IndentionInconsistencyInfo(loc, loc, "Indent too short"));
+            // 缩进不一致，统一转换为目标缩进
+            if (!curIndentionStr.equals(targetIndentionStr)) {
+                InconsistencyInfo info = InconsistencyInfoGenerator.generateForIndention(
+                    codeContext, curIndentionStr, targetIndentionStr);
+                if (info != null) {
+                    inconsistencyInfos.add(info);
                 }
             }
         }
+        return inconsistencyInfos;
+    }
 
-        return infos;
+    
+
+    @Override
+    protected List<CodeContext> constructCodeContext(List<Token> tokens,
+            int index, MyParser parser) {
+        if (index + 1 >= tokens.size()) {
+            return List.of();
+        }
+        return List.of(new TokenBasedContext(tokens, index, 2));
     }
 
     @Override

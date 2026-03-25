@@ -110,7 +110,7 @@ class SpaceStylerTest extends TestBase {
 		for (int i = 0; i < srcFiles.length; i++) {
 			Path gtPath = Paths.get(dir, String.format("%sto%sgt" + fileExt, srcFiles[i].replace(fileExt, ""), targetFiles[i].replace(fileExt, "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), language, List.of(SpaceStyler.class));
-			if (true) {
+			if (false) {
 				try{
 					Files.writeString(gtPath, actual);
 				}	catch (Exception e) {

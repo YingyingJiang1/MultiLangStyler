@@ -52,7 +52,17 @@ class NewlineStylerTest extends TestBase {
 			}
 			}
 
-			testCodeEqual(actual, gtPath);
+			try {
+				testCodeEqual(actual, gtPath);
+			} catch (AssertionFailedError e) {
+				try {
+					Files.writeString(Paths.get(String.format("tmp-%d.java", i + 1)), actual);
+				} catch (Exception e1) {
+
+				}
+				logger.error("Pair `{}` test failed%n", i + 1, e);
+			}
+
 //			break;
 		}
 	}

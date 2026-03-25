@@ -1,22 +1,22 @@
 package org.example.styler.format.space;
 
+import java.util.List;
+
 import org.antlr.v4.runtime.Token;
-import org.example.lang.LangAdapterCreator;
-import org.example.lang.intf.CodeContextPredicate;
-import org.example.lang.intf.MyParser;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.antlr.common.token.TokenGroup;
+import org.example.lang.LangAdapterCreator;
 import org.example.lang.base.FormatUnitGrouperBase;
+import org.example.lang.intf.CodeContextPredicate;
+import org.example.lang.intf.MyParser;
 import org.example.style.InconsistencyInfo;
+import org.example.style.codecontext.TokenBasedContext;
+import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.format.space.style.SpaceContext;
-import org.example.styler.format.space.style.SpaceInconsistencyInfo;
 import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.format.space.style.SpaceStyle;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Description This class focuses on the spaces around separators and operators.
@@ -71,42 +71,17 @@ public class SpaceStyler extends Styler {
 
     @Override
     public List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
-        List<InconsistencyInfo> infos = null;
-
         SpaceContext context = extractContext(tokens, index, parser);
         SpaceProperty property = extractProperty(context,tokens,  index, parser);
         SpaceProperty targetProperty = (SpaceProperty) style.getProperty(context);
 
 
         if (property != null && targetProperty != null && !property.equals(targetProperty)) {
-            infos = new ArrayList<>();
-            if (property.space2 != targetProperty.space2) {
-
-                if (targetProperty.space2) {
-                    int[] loc = {tokens.get(index).getLine(), tokens.get(index).getCharPositionInLine()};
-                    String message = "Missing space on the right";
-                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
-                } else {
-                    int[] loc = {tokens.get(index + 1).getLine(), tokens.get(index + 1).getCharPositionInLine()};
-                    String message = "An extra space";
-                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
-                }
-            }
-
-            if (context.tokenName2.isEmpty() && property.space1 != targetProperty.space1) {
-                if(targetProperty.space1) {
-                    int[] loc = {tokens.get(index).getLine(), tokens.get(index).getCharPositionInLine()};
-                    String message = "Missing space on the left";
-                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
-                } else {
-                    int[] loc = {tokens.get(index - 1).getLine(), tokens.get(index - 1).getCharPositionInLine()};
-                    String message = "An extra space";
-                    infos.add(new SpaceInconsistencyInfo(loc, loc, message));
-                }
-            }
+            inconsistencyInfos.add(InconsistencyInfoGenerator.generateForSpace(
+                new TokenBasedContext(tokens, index, 2), context, property, targetProperty));
         }
 
-        return infos;
+        return inconsistencyInfos;
     }
 
     private SpaceContext extractContext(List<Token> tokens, int index, MyParser parser) {
