@@ -1,0 +1,18 @@
+============================================================
+File: src\test\sources\structure\assignment\f2.java
+Total Inconsistencies: 2
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 4, column 2
+EndLocation   : line 4, column 8
+Expected : $E = $E1 $HOMO_BOP $E2 ;
+Actual   : $E $HOMO_BOP_ASSIGN $E2 ;
+Message  : 
+
+[2] Type     : STRUCTURAL_STYLE
+BeginLocation : line 4, column 2
+EndLocation   : line 4, column 8
+Expected : $E = $E1 $HOMO_BOP $E2 ;
+Actual   : $E $HOMO_BOP_ASSIGN $E2 ;
+Message  : 
+

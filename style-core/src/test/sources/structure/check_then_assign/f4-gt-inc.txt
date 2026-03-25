@@ -1,0 +1,4 @@
+============================================================
+File: src\test\sources\structure\check_then_assign\f4-gt.java
+Total Inconsistencies: 0
+============================================================

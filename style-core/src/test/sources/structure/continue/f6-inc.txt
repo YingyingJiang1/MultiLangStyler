@@ -1,0 +1,95 @@
+============================================================
+File: src\test\sources\structure\continue\f6.java
+Total Inconsistencies: 13
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[2] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[3] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[4] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[5] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[6] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[7] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[8] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[9] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[10] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[11] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[12] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+
+[13] Type     : STRUCTURAL_STYLE
+BeginLocation : line 28, column 4
+EndLocation   : line 48, column 4
+Expected : $^ if ( $E ) { $S+ continue ; }  $S1+
+Actual   : if ( $E ) { $S+ continue ; } else { $S1+ }
+Message  : 
+

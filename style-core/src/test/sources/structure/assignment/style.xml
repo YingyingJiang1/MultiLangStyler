@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style language="java">
+  <style name="structure_preference">
+    <rule>
+      <style_context id="3"/>
+      <style_property preferenceIndex="0"/>
+    </rule>
+  </style>
+</program_style>

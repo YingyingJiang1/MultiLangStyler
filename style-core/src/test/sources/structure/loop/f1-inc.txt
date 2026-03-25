@@ -1,0 +1,263 @@
+============================================================
+File: src\test\sources\structure\loop\f1.java
+Total Inconsistencies: 37
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[2] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[3] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[4] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[5] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[6] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[7] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[8] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[9] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[10] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[11] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[12] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[13] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[14] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[15] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[16] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[17] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[18] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[19] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[20] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[21] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[22] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[23] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[24] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[25] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[26] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[27] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[28] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[29] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[30] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[31] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[32] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[33] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[34] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[35] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[36] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[37] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 14, column 2
+Expected : $^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+

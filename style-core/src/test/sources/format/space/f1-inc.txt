@@ -1,0 +1,151 @@
+============================================================
+File: src\test\sources\format\space\f1.java
+Total Inconsistencies: 21
+============================================================
+[1] Type     : SPACING
+BeginLocation : line 1, column 0
+EndLocation   : line 33, column 1
+Expected : ,[NUL] 
+Actual   : ,[SP] 
+Message  : 
+
+[2] Type     : SPACING
+BeginLocation : line 1, column 0
+EndLocation   : line 33, column 1
+Expected : ,[NUL] 
+Actual   : ,[SP] 
+Message  : 
+
+[3] Type     : SPACING
+BeginLocation : line 1, column 0
+EndLocation   : line 33, column 1
+Expected : ,[NUL] 
+Actual   : ,[SP] 
+Message  : 
+
+[4] Type     : SPACING
+BeginLocation : line 6, column 24
+EndLocation   : line 6, column 25
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[5] Type     : SPACING
+BeginLocation : line 9, column 14
+EndLocation   : line 9, column 15
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[6] Type     : SPACING
+BeginLocation : line 10, column 14
+EndLocation   : line 10, column 15
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[7] Type     : SPACING
+BeginLocation : line 11, column 16
+EndLocation   : line 11, column 17
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[8] Type     : SPACING
+BeginLocation : line 12, column 19
+EndLocation   : line 12, column 20
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[9] Type     : SPACING
+BeginLocation : line 12, column 26
+EndLocation   : line 12, column 27
+Expected : [NUL]<[NUL]
+Actual   : [SP]<[SP]
+Message  : 
+
+[10] Type     : SPACING
+BeginLocation : line 13, column 17
+EndLocation   : line 13, column 18
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[11] Type     : SPACING
+BeginLocation : line 17, column 17
+EndLocation   : line 17, column 18
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[12] Type     : SPACING
+BeginLocation : line 19, column 14
+EndLocation   : line 19, column 15
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[13] Type     : SPACING
+BeginLocation : line 22, column 19
+EndLocation   : line 22, column 20
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[14] Type     : SPACING
+BeginLocation : line 22, column 26
+EndLocation   : line 22, column 27
+Expected : [NUL]<[NUL]
+Actual   : [SP]<[SP]
+Message  : 
+
+[15] Type     : SPACING
+BeginLocation : line 23, column 23
+EndLocation   : line 23, column 24
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[16] Type     : SPACING
+BeginLocation : line 23, column 39
+EndLocation   : line 23, column 40
+Expected : [NUL]-[NUL]
+Actual   : [SP]-[SP]
+Message  : 
+
+[17] Type     : SPACING
+BeginLocation : line 23, column 47
+EndLocation   : line 23, column 48
+Expected : [NUL]<[NUL]
+Actual   : [SP]<[SP]
+Message  : 
+
+[18] Type     : SPACING
+BeginLocation : line 24, column 22
+EndLocation   : line 24, column 23
+Expected : [NUL]=[NUL]
+Actual   : [SP]=[SP]
+Message  : 
+
+[19] Type     : SPACING
+BeginLocation : line 24, column 46
+EndLocation   : line 24, column 47
+Expected : [NUL]+[NUL]
+Actual   : [SP]+[SP]
+Message  : 
+
+[20] Type     : SPACING
+BeginLocation : line 24, column 62
+EndLocation   : line 24, column 63
+Expected : [NUL]-[NUL]
+Actual   : [SP]-[SP]
+Message  : 
+
+[21] Type     : SPACING
+BeginLocation : line 29, column 32
+EndLocation   : line 29, column 33
+Expected : [NUL]-[NUL]
+Actual   : [SP]-[SP]
+Message  : 
+

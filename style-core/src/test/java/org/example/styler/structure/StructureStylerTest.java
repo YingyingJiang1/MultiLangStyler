@@ -27,21 +27,14 @@ class StructureStylerTest extends TestBase {
 
 	@Test
 	void extractStyle_assignment() {
-		StructureStyler styler = new StructureStyler();
-
-		String code = "a = a + 3;";
-		MyParser parser = LangAdapterCreator.createParser("java");
-		ParseTree root = parser.parseFromString(code);
-		if (root instanceof ExtendContext ctx) {
-			styler.extractStyle(ctx, parser);
-			for (StyleRule rule : styler.getStyle().getRules()) {
-				if (rule.getStyleContext() instanceof StructPreferenceContext context
-				&& context.getStructID() == 3) {
-					System.out.printf("Test id:%s", context.getStructID());
-					assertEquals(0, ((StructPreferenceProperty) rule.getStyleProperty()).getPreferenceIndex());
-				}
-			}
-		}
+		String dir = "src/test/sources/structure/assignment/";
+		String[] srcFiles = {
+				"f1.java", "f2.java"
+		};
+		String[] targetFiles = {
+				"f2.java", "f1.java"
+		};
+		doTest(dir, srcFiles, targetFiles, List.of(StructureStyler.class));
 
 	}
 
@@ -246,6 +239,21 @@ class StructureStylerTest extends TestBase {
 			}
 
 
+			testCodeEqual(actual, gtPath);
+		}
+	}
+
+	void doTest(String dir, String[] srcFiles, String[] targetFiles, List<Class<?>> classes) {
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
+			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), List.of(StructureStyler.class));
+			if (false) {
+				try{
+					Files.writeString(gtPath, actual);
+				}	catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			testCodeEqual(actual, gtPath);
 		}
 	}

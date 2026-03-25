@@ -21,10 +21,12 @@ public class ListASTBasedCodeContext extends CodeContext {
 		}
 
 		this.nodes = nodes;
-		ExtendContext parent = (ExtendContext) nodes.get(0).getParent();
-		indices = new ArrayList<>();
-		for (ParseTree node : nodes) {
-			indices.add(parent.children.indexOf(node));
+		if (nodes.get(0).getParent() != null) {
+			ExtendContext parent = (ExtendContext) nodes.get(0).getParent();
+			indices = new ArrayList<>();
+			for (ParseTree node : nodes) {
+				indices.add(parent.children.indexOf(node));
+			}
 		}
 	}
 

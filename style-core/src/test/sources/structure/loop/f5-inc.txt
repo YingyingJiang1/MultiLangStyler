@@ -1,0 +1,1152 @@
+============================================================
+File: src\test\sources\structure\loop\f5.java
+Total Inconsistencies: 164
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[2] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[3] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[4] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[5] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[6] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[7] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[8] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[9] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[10] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[11] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[12] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[13] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[14] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[15] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[16] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[17] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[18] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[19] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[20] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[21] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[22] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[23] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[24] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[25] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[26] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[27] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[28] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[29] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[30] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[31] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[32] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[33] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[34] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[35] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[36] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[37] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[38] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[39] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[40] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[41] Type     : STRUCTURAL_STYLE
+BeginLocation : line 3, column 1
+EndLocation   : line 5, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[42] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[43] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[44] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[45] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[46] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[47] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[48] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[49] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[50] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[51] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[52] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[53] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[54] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[55] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[56] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[57] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[58] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[59] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[60] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[61] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[62] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[63] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[64] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[65] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[66] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[67] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[68] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[69] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[70] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[71] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[72] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[73] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[74] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[75] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[76] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[77] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[78] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[79] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[80] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[81] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[82] Type     : STRUCTURAL_STYLE
+BeginLocation : line 7, column 1
+EndLocation   : line 9, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[83] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[84] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[85] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[86] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[87] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[88] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[89] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[90] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[91] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[92] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[93] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[94] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[95] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[96] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[97] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[98] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[99] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[100] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[101] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[102] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[103] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[104] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[105] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[106] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[107] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[108] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[109] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[110] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[111] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[112] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[113] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[114] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[115] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[116] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[117] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[118] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[119] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[120] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[121] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[122] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[123] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 1
+EndLocation   : line 13, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[124] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[125] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[126] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[127] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[128] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[129] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[130] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[131] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[132] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[133] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[134] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[135] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[136] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[137] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[138] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[139] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[140] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[141] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[142] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[143] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[144] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[145] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[146] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[147] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[148] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[149] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[150] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[151] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[152] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[153] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[154] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[155] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[156] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[157] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[158] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[159] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[160] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[161] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[162] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[163] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+
+[164] Type     : STRUCTURAL_STYLE
+BeginLocation : line 15, column 1
+EndLocation   : line 17, column 1
+Expected : $^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }
+Actual   : for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }
+Message  : 
+

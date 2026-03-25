@@ -1,0 +1,207 @@
+============================================================
+File: src\test\sources\structure\if\f5.java
+Total Inconsistencies: 29
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[2] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[3] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[4] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[5] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[6] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[7] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[8] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[9] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[10] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[11] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[12] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[13] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[14] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[15] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[16] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[17] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[18] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[19] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[20] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[21] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[22] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[23] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[24] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[25] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[26] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[27] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[28] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+
+[29] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 3
+EndLocation   : line 17, column 9
+Expected : if ( $E || $E1 ) $S
+Actual   : $^ if ( $E ) $S if ( $E1 ) $S1 
+Message  : 
+

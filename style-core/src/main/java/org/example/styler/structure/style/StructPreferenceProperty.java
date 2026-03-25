@@ -23,9 +23,9 @@ public class StructPreferenceProperty extends StyleProperty {
         this.style = style;
 
         // 当配置了有效的style时，index无效，统一设置为0
-        if (style != null && !style.isEmpty()) {
-            this.preferenceIndex = -1;
-        }
+//        if (style != null && !style.isEmpty()) {
+//            this.preferenceIndex = -1;
+//        }
     }
 
     public int getPreferenceIndex() {
@@ -61,11 +61,11 @@ public class StructPreferenceProperty extends StyleProperty {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StructPreferenceProperty that = (StructPreferenceProperty) o;
-        return preferenceIndex == that.preferenceIndex && Objects.equals(style, that.style);
+        return preferenceIndex == that.preferenceIndex;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(preferenceIndex, style);
+        return Objects.hash(preferenceIndex);
     }
 }
