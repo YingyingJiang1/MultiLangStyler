@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<program_style language="java">
+  <style name=""/>
+  <style name="naming_format"/>
+  <style name="if_else_body_order"/>
+  <style name="indention"/>
+  <style name="optional_brace"/>
+  <style name="declaration_layout"/>
+  <style name="inter_newline"/>
+  <style name="space">
+    <rule>
+      <style_context tokens="IDENTIFIER KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD KEYWORD"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+  </style>
+  <style name="newline"/>
+  <style name="modifier_order"/>
+  <style name="structure_preference"/>
+  <style name="body_layout"/>
+  <style name="intra_newline"/>
+</program_style>

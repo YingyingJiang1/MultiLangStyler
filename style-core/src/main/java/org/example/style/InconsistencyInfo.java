@@ -12,7 +12,7 @@ public class InconsistencyInfo {
 	protected String message;
 	protected String expected, actual;
 	protected Location location;
-	protected StyleApplyData styleApplyData; // used to apply style without re-extracting and re-comparing code style.
+	protected StyleApplyData styleApplyData; // TODO: remove this field
 
 	public InconsistencyInfo() {
 	}
