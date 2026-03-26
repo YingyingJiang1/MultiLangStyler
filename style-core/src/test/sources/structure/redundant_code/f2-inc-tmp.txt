@@ -1,6 +1,6 @@
 ============================================================
 File: src\test\sources\structure\redundant_code\f2.java
-Total Inconsistencies: 2
+Total Inconsistencies: 1
 ============================================================
 [1] Type     : STRUCTURAL_STYLE
 BeginLocation : line 11, column 3
@@ -10,7 +10,6 @@ Expected :
     x++;
   }  
   System.out.println("Case " + caseNumber + ": " + x);
-
 Actual   : 
   if (x == 0) {
     x++;
@@ -18,25 +17,5 @@ Actual   :
   } else {
     System.out.println("Case " + caseNumber + ": " + x);
   }
-
-Message  : 
-
-[2] Type     : STRUCTURAL_STYLE
-BeginLocation : line 11, column 3
-EndLocation   : line 16, column 3
-Expected : 
-  if (x == 0) { 
-    x++;
-  }  
-  System.out.println("Case " + caseNumber + ": " + x);
-
-Actual   : 
-  if (x == 0) {
-    x++;
-    System.out.println("Case " + caseNumber + ": " + x);
-  } else {
-    System.out.println("Case " + caseNumber + ": " + x);
-  }
-
 Message  : 
 

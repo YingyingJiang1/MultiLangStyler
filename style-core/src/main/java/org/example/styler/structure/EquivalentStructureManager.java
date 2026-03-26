@@ -24,7 +24,7 @@ public class EquivalentStructureManager {
 
 
   private static EquivalentStructureManager instance = new EquivalentStructureManager();
-  private List<EquivalentStructure> equivalences = new ArrayList<>();
+  private List<EquivalentStructure> equivalences = null;
   private Map<StyleCategory, List<EquivalentStructure>> categoryLookupCache;
   Element rootEle = null;
   public static Logger logger = LoggerFactory.getLogger(EquivalentStructureManager.class);
@@ -67,7 +67,12 @@ public class EquivalentStructureManager {
   }
 
   public List<EquivalentStructure> loadEquivalences(String confFile, String language) {
+    if (equivalences != null) {
+      return equivalences;
+    }
+
     try {
+      equivalences = new ArrayList<>();
       loadConfFile(confFile);
 
       for(Element node : rootEle.elements()) {

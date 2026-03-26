@@ -27,9 +27,9 @@ public class CodeWrapperBase implements CodeWrapper {
         try {
             int startIndex = getStartIndex(wrappedCode, prefix);
             int endIndex = getEndIndex(wrappedCode, suffix);
-            return wrappedCode.substring(startIndex, endIndex);
+            return wrappedCode.substring(startIndex, endIndex).stripTrailing();
         } catch (RuntimeException e) {
-            return wrappedCode;
+            return wrappedCode.stripTrailing();
         }
     }
 

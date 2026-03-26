@@ -54,7 +54,8 @@ public class StructureStyler extends Styler {
     }
 
     private void loadData(String lang) {
-        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance().loadEquivalences(MyEnvironment.getIConfig().getEquivalencesConfig(lang), lang); // TBD: extend for other languages
+        List<EquivalentStructure> equivalences = EquivalentStructureManager.getInstance()
+                .loadEquivalences(MyEnvironment.getIConfig().getEquivalencesConfig(lang), lang); // TBD: extend for other languages
         // create map for efficiency, avoid to traverse all configured structures.
         equivalencesMap = new HashMap<>();
         MyParser parser = LangAdapterCreator.createParser(lang);

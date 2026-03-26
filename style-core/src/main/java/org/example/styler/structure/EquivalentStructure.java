@@ -221,7 +221,7 @@ public class EquivalentStructure {
 		for (Map.Entry<Forest, Integer> entry : vtMap.entrySet()) {
 			Forest forest = entry.getKey();
 			int index = entry.getValue();
-			cleanState();
+			reset();
 
 			int vi = 0, ti = startIndex;
 			for (; vi < forest.size() && ti < realTrees.size(); ++ti) {
@@ -256,7 +256,7 @@ public class EquivalentStructure {
 				return index;
 			}
 		}
-		cleanState();
+		reset();
 		return -1;
 	}
 
@@ -307,7 +307,7 @@ public class EquivalentStructure {
 		} else {
 			parser.updateRoot(newTrees);
 		}
-		cleanState();
+		reset();
 		return newTrees.isEmpty() ? null : newTrees.get(0);
 	}
 
@@ -324,7 +324,7 @@ public class EquivalentStructure {
 					((ExceptionHandler) handler).handleException(this, from, to, parser);
 				});
 			} catch (TreeConvertException e) {
-				cleanState();
+				reset();
 				return null; // Exception caught, don't do any convert.
 			}
 
@@ -383,7 +383,7 @@ public class EquivalentStructure {
 		return List.of(root);
 	}
 
-	private void cleanState() {
+	public void reset() {
 		for(VirtualNode vNode : vTreeMap.values()) {
 			vNode.cleanState();
 		}
