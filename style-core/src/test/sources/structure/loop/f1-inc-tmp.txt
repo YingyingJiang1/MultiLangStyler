@@ -1,4 +1,4 @@
 ============================================================
-File: src\test\sources\structure\redundant_code\f4-gt.java
+File: src\test\sources\structure\loop\f1.java
 Total Inconsistencies: 0
 ============================================================

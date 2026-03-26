@@ -137,6 +137,15 @@ public class LangAdapterCreator {
 
 	}
 
+	public static StylerContainer createStylerContainer(String lang, List<Class<?>> enabledStylers) {
+		if (!enabledStylers.isEmpty()) {
+			return new StylerContainer(enabledStylers);
+		} else {
+			return createStylerContainer(lang);
+		}
+
+	}
+
 	public static ASTNodeSearcher createASTNodeSearcher(String lang) {
 		Class<?> searcherClass = MyEnvironment.getIConfig().getASTNodeSearcher(lang);
 		return createByGetInstance(searcherClass, lang);

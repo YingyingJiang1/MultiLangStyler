@@ -7,7 +7,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 public class Main {
     public static void main(String[] args) {
         new SpringApplicationBuilder(Main.class)
-                .profiles("cli")
                 .run(args);
 
     }

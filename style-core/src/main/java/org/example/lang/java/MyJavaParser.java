@@ -149,7 +149,7 @@ public class MyJavaParser implements MyParser {
                 }
             }
         }
-        if (parser.getNumberOfSyntaxErrors() > 0) {
+        if (parser.getNumberOfSyntaxErrors() > 0 || (parser.getCurrentToken().getType() != JavaParser.EOF)) {
             logger.error("Failed to parse code, " +
                     "this program is only able to parse the top-level(RULE_compilationUnit), typeDeclaration-level, method-level, stmt-level,expression-level code.");
             return null;

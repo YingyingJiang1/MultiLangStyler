@@ -79,7 +79,7 @@ class TestCoordinatorAnalyzeJava {
 		List<Class<?>> enabled = List.of(StructureStyler.class);
 		final String dir = Paths.get(SOURCES, "structure", "redundant_code").toString();
 		String[] srcFiles = {"f1.java", "f2.java", "f2-gt.java"};
-		String[] targetFiles = {"f2.java", "f3.java", "f2.java"};
+		String[] targetFiles = {"f2.java", "f3.java", "f3.java"};
 		doAnalyze(dir, srcFiles, targetFiles, enabled);
 	}
 

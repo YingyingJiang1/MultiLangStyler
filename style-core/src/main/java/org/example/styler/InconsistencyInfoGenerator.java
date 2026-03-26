@@ -1,7 +1,14 @@
 package org.example.styler;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.Token;
@@ -15,12 +22,18 @@ import org.example.lang.intf.MyParser;
 import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
+import org.example.style.StyleFileIO;
+import org.example.style.StylerContainer;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.ListASTBasedCodeContext;
 import org.example.style.codecontext.StructureCodeContext;
 import org.example.style.codecontext.TokenBasedContext;
+import org.example.stylekit.Applicator;
 import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
+import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
+import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.format.space.style.SpaceContext;
 import org.example.styler.format.space.style.SpaceProperty;
 import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderProperty;
@@ -33,6 +46,9 @@ import org.example.styler.structure.style.StructPreferenceProperty;
 import org.example.styler.structure.vtree.Forest;
 
 public class InconsistencyInfoGenerator {
+	// 内置的格式化styler容器
+	private static final Map<String, StylerContainer> stylerContainers = new HashMap<>();
+	
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
 		Token token = symbol.getDecIdentifierNode().getStop();
 		// generate message
@@ -55,8 +71,6 @@ public class InconsistencyInfoGenerator {
 
 	public static InconsistencyInfo generateForOptionalBrace(ASTBasedCodeContext codeContext, OptionalBraceContext styleContext,
 															 OptionalBraceProperty current, OptionalBraceProperty target) {
-		Token token = codeContext.getContextNode().getStart();
-
 		String actual = current.useBrace
 				? "Braces present"
 				: "Braces omitted";
@@ -87,11 +101,19 @@ public class InconsistencyInfoGenerator {
 		StructPreferenceProperty current, StructPreferenceProperty target, MyParser parser) {
 			EquivalentStructure templateStructure = codeContext.getStructure();
 			Forest forest = templateStructure.generateNewForest(current.getPreferenceIndex(), target.getPreferenceIndex(),
-					codeContext.getStartNode(),parser);
-			List<ParseTree> expectedTress = forest.getTrees();
-			List<? extends ParseTree> actualTress = codeContext.getNodes();
-			String expected = generateCodeStr(expectedTress);
-			String actual = generateCodeStr(actualTress);
+					codeContext.getStartNode(), parser);
+			List<ParseTree> expectedTrees = forest.getTrees();
+			List<? extends ParseTree> actualTrees = codeContext.getNodes();
+
+			String expected = generateCodeStr(expectedTrees);
+			String actual = generateCodeStr(actualTrees);
+
+			// 封装格式化逻辑，只在这里做
+			String language = parser.getLanguage();
+
+			expected = formatCodeWithStyle(expected, language);
+			actual = formatCodeWithStyle(actual, language);
+
 			String message = "";
 			return new InconsistencyInfo(
 				InconsistencyType.STRUCTURAL_STYLE,
@@ -100,20 +122,67 @@ public class InconsistencyInfoGenerator {
 			);
 	}
 
+	// 只拼接格式化前的原始字符串序列
 	private static String generateCodeStr(List<? extends ParseTree> trees) {
 		StringBuilder str = new StringBuilder();
 		for (ParseTree tree : trees) {
-			if (tree instanceof TerminalNode  node) {
-				str.append(((ExtendToken)node.getSymbol()).getFormattedText());
+			if (tree instanceof TerminalNode node) {
+				str.append(((ExtendToken) node.getSymbol()).getFormattedText());
 			} else if (tree instanceof ExtendContext ctx) {
 				ctx.getAllTokensRec().forEach(
-					t -> {
-						str.append(((ExtendToken)t).getFormattedText());
-					}
+					t -> str.append(((ExtendToken) t).getFormattedText())
 				);
 			}
 		}
 		return str.toString();
+	}
+
+	// 从resource目录载入标准 style.xml 并缓存
+	private static void loadStandardStylerContainer(String language) {
+		String lang = language == null ? "" : language.toLowerCase();
+		String xmlPath = "/style/" + lang + "_style.xml";
+		try (InputStream is = InconsistencyInfoGenerator.class.getResourceAsStream(xmlPath)) {
+			if (is == null) {
+				return;
+			}
+
+			Path tmp = Files.createTempFile("style-", "-" + lang + ".xml");
+			try {
+				Files.copy(is, tmp, StandardCopyOption.REPLACE_EXISTING);
+				var styleProfile = StyleFileIO.read(tmp.toString());
+				if (styleProfile == null) {
+					return;
+				}
+
+				List<Class<?>> formatters = List.of(
+						NewlineStyler.class, SpaceStyler.class, IndentionStyler.class
+				);
+				StylerContainer container = LangAdapterCreator.createStylerContainer(lang, formatters);
+				container.fillStyle(styleProfile);
+				stylerContainers.put(lang, container);
+			} finally {
+				try {
+					Files.deleteIfExists(tmp);
+				} catch (IOException ignored) {
+				}
+			}
+		} catch (Exception ignored) {
+		}
+	}
+
+	private static String formatCodeWithStyle(String code, String language) {
+		if (code == null || code.isEmpty()) {
+			return code;
+		}
+		String lang = language == null ? "" : language.toLowerCase();
+		if (!stylerContainers.containsKey(lang)) {
+			loadStandardStylerContainer(lang);
+		}
+		StylerContainer container = stylerContainers.get(lang);
+		if (container == null) {
+			return code;
+		}
+		return Applicator.applyStyleFromString(code, lang, container);
 	}
 
 
@@ -274,5 +343,9 @@ public class InconsistencyInfoGenerator {
                 );
 
             }
+	}
+
+	public static void setStandardStylerContainer(String language, StylerContainer container) {
+		stylerContainers.put(language, container);
 	}
 }

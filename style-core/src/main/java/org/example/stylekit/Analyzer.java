@@ -16,6 +16,7 @@ import org.example.utils.ParseTreeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.example.styler.InconsistencyInfoGenerator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;

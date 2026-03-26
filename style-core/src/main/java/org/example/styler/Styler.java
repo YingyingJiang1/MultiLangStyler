@@ -130,7 +130,7 @@ public abstract class Styler {
 			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
 			StyleProperty targetProperty = style.getProperty(styleContext);
 			if (targetProperty == null) {
-				return infos;
+				continue;
 			}
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
 				infos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
