@@ -16,8 +16,7 @@ public class CliRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         // 只获取非选项参数，即 "--xxx" 这种 spring boot 的参数会被剔除
-        String[] sourceArgs = args.getSourceArgs();
-        TaskOptions taskOptions = CLIArgumentParser.parseArgs(sourceArgs);
+        TaskOptions taskOptions = CLIArgumentParser.parseArgs(args.getNonOptionArgs().toArray(new String[0]));
         if (taskOptions == null) {
             System.out.println("Invalid arguments.");
             CLIArgumentParser.printHelp();

@@ -76,6 +76,9 @@ public class StyleFileIO {
             styleProfile.addElement(root, parser);
 
             File dir = new File(file).getParentFile();
+            if (dir == null) {
+                dir = new File(".");
+            }
             if (!dir.exists()) {
                 dir.mkdirs();
             }

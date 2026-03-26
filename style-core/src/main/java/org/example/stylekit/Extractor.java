@@ -1,16 +1,21 @@
 package org.example.stylekit;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.MyEnvironment;
 import org.example.lang.LangAdapterCreator;
-import org.example.myException.ExtractException;
 import org.example.lang.MyParseTreeWalker;
 import org.example.lang.intf.MyParser;
-import org.example.style.StyleProfile;
+import org.example.myException.ExtractException;
 import org.example.style.StyleFileIO;
+import org.example.style.StyleProfile;
 import org.example.style.StylerContainer;
+import org.example.styler.CombinedStyler;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
@@ -19,11 +24,6 @@ import org.example.utils.GeneralUtil;
 import org.example.utils.ParseTreeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Extractor {
     private static final Logger logger = LoggerFactory.getLogger(Extractor.class);
@@ -39,16 +39,39 @@ public class Extractor {
     public static StyleProfile extractStyle(String path, String language, StylerContainer container) {
         FileCollection fileCollection = FileCollector.getFileCollection(List.of(path.split(";")));
 
+        class DirStat {
+            String dir;
+            int success = 0;
+            int fail = 0;
+            void update(String dir) {
+                this.dir = dir;
+                this.success = 0;
+                this.fail = 0;
+            }
+            void log() {
+                logger.info("Directory [{}] finished: {} files succeeded, {} files failed.", dir, success, fail);
+            }
+        }
+        DirStat dirStat = new DirStat();
         for (int i = 0; i < fileCollection.size(); i++) {
             try {
                 Path curPath = Paths.get(fileCollection.getFilePath(i));
+                String curDir = curPath.getParent() == null ? "" : curPath.getParent().toString();
+               if (!curDir.equals(dirStat.dir)) {
+                    dirStat.log();
+                    dirStat.update(curDir);
+               }
 
                 // Read style from style file successfully, return directly.
                 if (curPath.getFileName().toString().endsWith(".xml")) {
                     StyleProfile ret = StyleFileIO.read(curPath.toString());
                     container.fillStyle(ret);
                     if (ret != null) {
+                        dirStat.success++;
+                        dirStat.log();
                         return ret;
+                    } else {
+                        dirStat.fail++;
                     }
                 }
 
@@ -56,12 +79,15 @@ public class Extractor {
                     MyParser parser = LangAdapterCreator.createParser(language);
                     ParseTree tree = parser.parse(curPath);
                     if (tree == null) {
+                        dirStat.fail++;
                         logger.info("Failed to extract style rules from file '{}' because of compilation error.", curPath.toString());
                         continue;
                     }
                     TokenAugmentor tokenAugmentor = new TokenAugmentor();
                     Extractor.extractRules(parser, container, tokenAugmentor);
+                    dirStat.success++;
                 } else {
+                    dirStat.fail++;
                     logger.warn("File extension {} is not supported.", curPath.getFileName().toString());
                 }
 
@@ -69,6 +95,7 @@ public class Extractor {
                 logger.error("Failed to extract style rules from file: {}", fileCollection.getFilePath(i), e);
             }
         }
+        dirStat.log();
 
         extractFinalize(container);
         return combineStyle(container);
@@ -155,7 +182,13 @@ public class Extractor {
     public static StyleProfile combineStyle(StylerContainer container) {
         StyleProfile styleProfile = new StyleProfile();
         for (Styler styler : container.getStylers()) {
-            styleProfile.add(styler.getStyle());
+            if (styler instanceof CombinedStyler combinedStyler) {
+                combinedStyler.getStylers().forEach(
+                        s -> styleProfile.add(s.getStyle())
+                );
+            } else {
+                styleProfile.add(styler.getStyle());
+            }
         }
         return styleProfile;
     }

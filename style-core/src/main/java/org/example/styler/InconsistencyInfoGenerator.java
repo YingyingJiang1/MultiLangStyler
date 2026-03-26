@@ -44,6 +44,7 @@ import org.example.styler.structure.EquivalentStructure;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
 import org.example.styler.structure.vtree.Forest;
+import org.example.utils.CodeWrapResult;
 
 public class InconsistencyInfoGenerator {
 	// 内置的格式化styler容器
@@ -182,8 +183,14 @@ public class InconsistencyInfoGenerator {
 		if (container == null) {
 			return code;
 		}
-		return Applicator.applyStyleFromString(code, lang, container);
+		org.example.utils.CodeWrapper wrapper = org.example.utils.CodeWrapperFactory.createWrapper(lang);
+		CodeWrapResult wrapResult = wrapper.wrap(code);
+
+		String formatted = Applicator.applyStyleFromString(wrapResult.getWrappedCode(), lang, container);
+		wrapResult.setWrappedCode(formatted);
+		return wrapper.unwrap(wrapResult);
 	}
+
 
 
 	public static InconsistencyInfo generateForSpace(TokenBasedContext codeContext, SpaceContext styleContext,

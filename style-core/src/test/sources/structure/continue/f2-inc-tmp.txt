@@ -5,46 +5,34 @@ Total Inconsistencies: 1
 [1] Type     : STRUCTURAL_STYLE
 BeginLocation : line 26, column 3
 EndLocation   : line 46, column 22
-Expected : if ( i>=a && i>=b && i>=c) { mem[i]= Math.max(1+mem[i-a], Math.max(1+mem[i-b],1+mem[i-c]));
-			continue ; }  if(i>=a && i>=b)
-				mem[i]= Math.max(1+mem[i-a],1+mem[i-b]);
-			else
-			if(i>=c && i>=b)
-				mem[i]= Math.max(1+mem[i-c],1+mem[i-b]);
-			else
-			if(i>=a && i>=c)
-				mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
-			else
-			if(i>=a)
-				mem[i]= 1+mem[i-a];
-			else
-			if(i>=b)
-				mem[i]= 1+mem[i-b];
-			else
-			if(i>=c)
-				mem[i]= 1+mem[i-c];
-		
-Actual   : if(i>=a && i>=b && i>=c){
-				mem[i]= Math.max(1+mem[i-a], Math.max(1+mem[i-b],1+mem[i-c]));
-			}
-			else
-			if(i>=a && i>=b)
-				mem[i]= Math.max(1+mem[i-a],1+mem[i-b]);
-			else
-			if(i>=c && i>=b)
-				mem[i]= Math.max(1+mem[i-c],1+mem[i-b]);
-			else
-			if(i>=a && i>=c)
-				mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
-			else
-			if(i>=a)
-				mem[i]= 1+mem[i-a];
-			else
-			if(i>=b)
-				mem[i]= 1+mem[i-b];
-			else
-			if(i>=c)
-				mem[i]= 1+mem[i-c];
-		
+Expected : class __StyleCoreWrap { 
+  void __m() {
+    if (i >= a && i >= b && i >= c) { 
+      mem[i] = Math.max(1 + mem[i - a], Math.max(1 + mem[i - b], 1 + mem[i - c]));
+      continue; 
+    }  
+
+    if (i >= a && i >= b) mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - b]);
+    elseif (i >= c && i >= b) mem[i] = Math.max(1 + mem[i - c], 1 + mem[i - b]);
+    elseif (i >= a && i >= c) mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - c]);
+    elseif (i >= a) mem[i] = 1 + mem[i - a];
+    elseif (i >= b) mem[i] = 1 + mem[i - b];
+    elseif (i >= c) mem[i] = 1 + mem[i - c];
+  } 
+}
+
+Actual   : class __StyleCoreWrap { 
+  void __m() {
+    if (i >= a && i >= b && i >= c) {
+      mem[i] = Math.max(1 + mem[i - a], Math.max(1 + mem[i - b], 1 + mem[i - c]));
+    } elseif (i >= a && i >= b) mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - b]);
+    elseif (i >= c && i >= b) mem[i] = Math.max(1 + mem[i - c], 1 + mem[i - b]);
+    elseif (i >= a && i >= c) mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - c]);
+    elseif (i >= a) mem[i] = 1 + mem[i - a];
+    elseif (i >= b) mem[i] = 1 + mem[i - b];
+    elseif (i >= c) mem[i] = 1 + mem[i - c];
+  } 
+}
+
 Message  : 
 

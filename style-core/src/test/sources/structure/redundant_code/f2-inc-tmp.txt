@@ -1,109 +1,42 @@
 ============================================================
 File: src\test\sources\structure\redundant_code\f2.java
-Total Inconsistencies: 7
+Total Inconsistencies: 2
 ============================================================
 [1] Type     : STRUCTURAL_STYLE
 BeginLocation : line 11, column 3
 EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
+Expected : 
+  if (x == 0) { 
+    x++;
+  }  
+  System.out.println("Case " + caseNumber + ": " + x);
+
+Actual   : 
+  if (x == 0) {
+    x++;
+    System.out.println("Case " + caseNumber + ": " + x);
+  } else {
+    System.out.println("Case " + caseNumber + ": " + x);
+  }
+
 Message  : 
 
 [2] Type     : STRUCTURAL_STYLE
 BeginLocation : line 11, column 3
 EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
-Message  : 
+Expected : 
+  if (x == 0) { 
+    x++;
+  }  
+  System.out.println("Case " + caseNumber + ": " + x);
 
-[3] Type     : STRUCTURAL_STYLE
-BeginLocation : line 11, column 3
-EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
-Message  : 
+Actual   : 
+  if (x == 0) {
+    x++;
+    System.out.println("Case " + caseNumber + ": " + x);
+  } else {
+    System.out.println("Case " + caseNumber + ": " + x);
+  }
 
-[4] Type     : STRUCTURAL_STYLE
-BeginLocation : line 11, column 3
-EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
-Message  : 
-
-[5] Type     : STRUCTURAL_STYLE
-BeginLocation : line 11, column 3
-EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
-Message  : 
-
-[6] Type     : STRUCTURAL_STYLE
-BeginLocation : line 11, column 3
-EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
-Message  : 
-
-[7] Type     : STRUCTURAL_STYLE
-BeginLocation : line 11, column 3
-EndLocation   : line 16, column 3
-Expected : if ( x == 0) { x++;
-				}  System.out.println("Case " + caseNumber + ": " + x);
-			
-Actual   : if (x == 0) {
-				x++;
-				System.out.println("Case " + caseNumber + ": " + x);
-			} else {
-				System.out.println("Case " + caseNumber + ": " + x);
-			}
-		
 Message  : 
 

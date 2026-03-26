@@ -17,6 +17,7 @@ import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
 import org.example.style.NewlineInconsistencyInfo;
 import org.example.style.rule.StyleRule;
+import org.example.styler.CombinedStyler;
 import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -28,7 +29,7 @@ import org.example.styler.format.newline.style.NewlineProperty;
 import org.example.styler.format.newline.style.NewlineStyle;
 import org.example.utils.NodeUtil;
 
-public class NewlineStyler extends Styler {
+public class NewlineStyler extends Styler implements CombinedStyler {
     static int verticalPathLength = 0;
     static int horizontalPathLength = 2;
     static double similarityThreshold = 0.7;
@@ -318,6 +319,15 @@ public class NewlineStyler extends Styler {
 //			parent = parent.getParent();
 //		}
 //		return parent == null ? null : parent.getChild(parent.children.indexOf(node) + 1);
+	}
+
+	@Override
+	public List<Styler> getStylers() {
+		List<Styler> ret = new ArrayList<>();
+		ret.add(mutexStyler);
+		ret.add(this);
+		ret.addAll(stylers);
+		return ret;
 	}
 
 //	private String createExtraIndentionStr(ParseTree node, String fullIndentionStr, MyParser parser) {
