@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.example.MyEnvironment;
 import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
+import org.example.styler.format.indention.IndentionStyler;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.space.SpaceStyler;
 import org.example.styler.ifelse.bodyorder.IfElseBodyOrderStyler;
@@ -131,9 +132,18 @@ class TestCoordinatorAnalyzeJava {
 	@Test
 	void testAnalyzeInconsistency_space() {
 		final String dir = Paths.get(SOURCES, "format", "space").toString();
-		String[] srcFiles = {"f1.java", };
-		String[] targetFiles = {"f2.java",};
+		String[] srcFiles = {"f1.java",  "f1-gt.java"};
+		String[] targetFiles = {"f2.java", "f2.java"};
 		doAnalyze(dir, srcFiles, targetFiles, List.of(SpaceStyler.class));
+	}
+
+	@Test
+	void testAnalyzeInconsistency_indention() {
+		final String dir = Paths.get(SOURCES, "format", "indention").toString();
+		// Keep a small but representative subset (matches IndentionStylerTest inputs).
+		String[] srcFiles = {"f1.java", "f2.java"};
+		String[] targetFiles = {"f2.java", "f3.java"};
+		doAnalyze(dir, srcFiles, targetFiles, List.of(IndentionStyler.class));
 	}
 
 
@@ -163,6 +173,9 @@ class TestCoordinatorAnalyzeJava {
 			try {
 				String result = FileUtils.readFileToString(new File(tmpPath), "UTF-8");
 				String expectedResult = FileUtils.readFileToString(gtFile, "UTF-8");
+				// Normalize line endings across platforms (Windows CRLF vs Unix LF)
+				result = result.replace("\r\n", "\n");
+				expectedResult = expectedResult.replace("\r\n", "\n");
 				assertThat(result).isEqualTo(expectedResult);
 				FileUtils.deleteQuietly(new File(tmpPath));
 			} catch (Exception e) {

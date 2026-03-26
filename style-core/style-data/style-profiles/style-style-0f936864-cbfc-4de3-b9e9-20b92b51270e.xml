@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style language="java">
-  <style name="if_else_body_order"/>
+  <style name="structure_preference"/>
 </program_style>

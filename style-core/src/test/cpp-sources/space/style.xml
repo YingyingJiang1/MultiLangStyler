@@ -4,11 +4,11 @@
   <style name="space">
     <rule>
       <style_context tokens="IDENTIFIER ("/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER )"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="( LITERAL"/>
@@ -16,15 +16,19 @@
     </rule>
     <rule>
       <style_context tokens="LITERAL ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER ,"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
+    </rule>
+    <rule>
+      <style_context tokens="&lt;"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="++ )"/>
@@ -39,12 +43,8 @@
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context tokens="IDENTIFIER ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="KEYWORD ("/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="RIGHT_ANGLE_BRACKET IDENTIFIER"/>
@@ -60,7 +60,7 @@
     </rule>
     <rule>
       <style_context tokens="{ LITERAL"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD RIGHT_ANGLE_BRACKET"/>
@@ -71,20 +71,12 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context tokens="} ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="IDENTIFIER KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context tokens="( KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
       <style_context tokens="{ }"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="="/>
@@ -92,23 +84,23 @@
     </rule>
     <rule>
       <style_context tokens="KEYWORD LITERAL"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER RIGHT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="( IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
-      <style_context tokens="IDENTIFIER IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_context tokens=") {"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context tokens=") {"/>
-      <style_property space1="false" space2="true"/>
+      <style_context tokens="COLON"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="COLON_COLON"/>
@@ -127,16 +119,12 @@
       <style_property space1="true" space2="true"/>
     </rule>
     <rule>
-      <style_context tokens="LEFT_ANGLE_BRACKET KEYWORD"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="LITERAL }"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD {"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens=", IDENTIFIER"/>
@@ -144,11 +132,11 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER {"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens=") ,"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD LEFT_ANGLE_BRACKET"/>
@@ -156,19 +144,19 @@
     </rule>
     <rule>
       <style_context tokens="} KEYWORD"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="LITERAL )"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER ["/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens=") ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD KEYWORD"/>
@@ -176,7 +164,7 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER ]"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="+"/>
@@ -184,11 +172,11 @@
     </rule>
     <rule>
       <style_context tokens="LITERAL ,"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER ++"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="; IDENTIFIER"/>

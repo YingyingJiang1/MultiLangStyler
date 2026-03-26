@@ -126,9 +126,6 @@ public class IndentionStyler extends Styler {
         return null;
     }
 
-
-
-
     @Override
     public List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens,
             int index, MyParser parser) {
@@ -159,7 +156,7 @@ public class IndentionStyler extends Styler {
             // 缩进不一致，统一转换为目标缩进
             if (!curIndentionStr.equals(targetIndentionStr)) {
                 InconsistencyInfo info = InconsistencyInfoGenerator.generateForIndention(
-                    codeContext, curIndentionStr, targetIndentionStr);
+                    codeContext, curIndentionStr, targetIndentionStr, targetProperty);
                 if (info != null) {
                     inconsistencyInfos.add(info);
                 }
@@ -176,7 +173,7 @@ public class IndentionStyler extends Styler {
         if (index + 1 >= tokens.size()) {
             return List.of();
         }
-        return List.of(new TokenBasedContext(tokens, index, 2));
+        return List.of(new TokenBasedContext(tokens, List.of(index)));
     }
 
     @Override

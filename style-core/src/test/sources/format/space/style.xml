@@ -7,10 +7,6 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context tokens="IDENTIFIER )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="( )"/>
       <style_property space1="false" space2="false"/>
     </rule>
@@ -24,11 +20,7 @@
     </rule>
     <rule>
       <style_context tokens="LITERAL ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens=", IDENTIFIER"/>
@@ -40,11 +32,7 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="; COMMENT"/>
@@ -52,7 +40,7 @@
     </rule>
     <rule>
       <style_context tokens="KEYWORD ("/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="DOT"/>
@@ -76,23 +64,19 @@
     </rule>
     <rule>
       <style_context tokens="( KEYWORD"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="[ ]"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context tokens="LITERAL ]"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="KEYWORD ["/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="] )"/>
@@ -111,23 +95,11 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context tokens="IDENTIFIER IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
       <style_context tokens=") ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context tokens=") {"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER ["/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="KEYWORD KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>

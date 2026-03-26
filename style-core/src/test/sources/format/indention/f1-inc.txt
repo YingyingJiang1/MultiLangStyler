@@ -1,0 +1,207 @@
+============================================================
+File: src\test\sources\format\indention\f1.java
+Total Inconsistencies: 29
+============================================================
+[1] Type     : INDENTATION
+BeginLocation : line 1, column 0
+EndLocation   : line 1, column 6
+Expected : 't'
+Actual   : [NUL]
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[2] Type     : INDENTATION
+BeginLocation : line 2, column 0
+EndLocation   : line 2, column 2
+Expected : 'tt'
+Actual   : '  '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[3] Type     : INDENTATION
+BeginLocation : line 3, column 0
+EndLocation   : line 3, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[4] Type     : INDENTATION
+BeginLocation : line 5, column 0
+EndLocation   : line 5, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[5] Type     : INDENTATION
+BeginLocation : line 6, column 0
+EndLocation   : line 6, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[6] Type     : INDENTATION
+BeginLocation : line 7, column 0
+EndLocation   : line 7, column 4
+Expected : 'tttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[7] Type     : INDENTATION
+BeginLocation : line 8, column 0
+EndLocation   : line 8, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[8] Type     : INDENTATION
+BeginLocation : line 9, column 0
+EndLocation   : line 9, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[9] Type     : INDENTATION
+BeginLocation : line 10, column 0
+EndLocation   : line 10, column 4
+Expected : 'tttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[10] Type     : INDENTATION
+BeginLocation : line 11, column 0
+EndLocation   : line 11, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[11] Type     : INDENTATION
+BeginLocation : line 12, column 0
+EndLocation   : line 12, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[12] Type     : INDENTATION
+BeginLocation : line 13, column 0
+EndLocation   : line 13, column 4
+Expected : 'tttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[13] Type     : INDENTATION
+BeginLocation : line 14, column 0
+EndLocation   : line 14, column 4
+Expected : 'tttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[14] Type     : INDENTATION
+BeginLocation : line 15, column 0
+EndLocation   : line 15, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[15] Type     : INDENTATION
+BeginLocation : line 16, column 0
+EndLocation   : line 16, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[16] Type     : INDENTATION
+BeginLocation : line 17, column 0
+EndLocation   : line 17, column 4
+Expected : 'tttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[17] Type     : INDENTATION
+BeginLocation : line 18, column 0
+EndLocation   : line 18, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[18] Type     : INDENTATION
+BeginLocation : line 19, column 0
+EndLocation   : line 19, column 6
+Expected : 'ttttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[19] Type     : INDENTATION
+BeginLocation : line 20, column 0
+EndLocation   : line 20, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[20] Type     : INDENTATION
+BeginLocation : line 22, column 0
+EndLocation   : line 22, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[21] Type     : INDENTATION
+BeginLocation : line 23, column 0
+EndLocation   : line 23, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[22] Type     : INDENTATION
+BeginLocation : line 24, column 0
+EndLocation   : line 24, column 6
+Expected : 'tttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[23] Type     : INDENTATION
+BeginLocation : line 25, column 0
+EndLocation   : line 25, column 6
+Expected : 'tttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[24] Type     : INDENTATION
+BeginLocation : line 26, column 0
+EndLocation   : line 26, column 6
+Expected : 'tttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[25] Type     : INDENTATION
+BeginLocation : line 27, column 0
+EndLocation   : line 27, column 6
+Expected : 'tttt'
+Actual   : '      '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[26] Type     : INDENTATION
+BeginLocation : line 28, column 0
+EndLocation   : line 28, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[27] Type     : INDENTATION
+BeginLocation : line 30, column 0
+EndLocation   : line 30, column 4
+Expected : 'ttt'
+Actual   : '    '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[28] Type     : INDENTATION
+BeginLocation : line 31, column 0
+EndLocation   : line 31, column 2
+Expected : 'tt'
+Actual   : '  '
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+
+[29] Type     : INDENTATION
+BeginLocation : line 32, column 0
+EndLocation   : line 32, column 1
+Expected : 't'
+Actual   : [NUL]
+Message  : Indentation style: tabs, 1 per level; top-level offset: 1; empty lines: not indented.
+

@@ -30,7 +30,7 @@ class SpaceStylerTest extends TestBase {
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("gt%s.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", i + 1));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "java", List.of(SpaceStyler.class));
 			if (false) {
 				try{

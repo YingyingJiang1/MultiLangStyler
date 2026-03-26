@@ -52,30 +52,35 @@ public abstract class Styler {
 
 	public List<Token> applyStyle(List<Token> tokens, int index, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
-		for (CodeContext codeContext : codeContexts) {
-			StyleContext styleContext = extractStyleContext(codeContext, parser);
-			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
-			StyleProperty targetProperty = style.getProperty(styleContext);
-			if (targetProperty != null && isInconsistent(currentProperty, targetProperty, parser)) {
-				doApply(codeContext, currentProperty, targetProperty, parser);
+		if (codeContexts != null) {
+			for (CodeContext codeContext : codeContexts) {
+				StyleContext styleContext = extractStyleContext(codeContext, parser);
+				StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
+				StyleProperty targetProperty = style.getProperty(styleContext);
+				if (targetProperty != null && isInconsistent(currentProperty, targetProperty, parser)) {
+					doApply(codeContext, currentProperty, targetProperty, parser);
+				}
 			}
 		}
+		
 		return tokens;
 	}
 
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
 		ExtendContext ret = null;
-		for (CodeContext codeContext : codeContexts) {
-			StyleContext styleContext = extractStyleContext(codeContext, parser);
-			StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
-			StyleProperty targetProperty = style.getProperty(styleContext);
-			if (targetProperty == null) {
-				return ctx;
-			}
-
-			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				ret = doApply(codeContext, currentProperty, targetProperty, parser);
+		if (codeContexts != null) {
+			for (CodeContext codeContext : codeContexts) {
+				StyleContext styleContext = extractStyleContext(codeContext, parser);
+				StyleProperty currentProperty = extractStyleProperty(codeContext, parser);
+				StyleProperty targetProperty = style.getProperty(styleContext);
+				if (targetProperty == null) {
+					return ctx;
+				}
+	
+				if (isInconsistent(currentProperty, targetProperty, parser)) {
+					ret = doApply(codeContext, currentProperty, targetProperty, parser);
+				}
 			}
 		}
 
@@ -87,12 +92,16 @@ public abstract class Styler {
 
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
-		commonExtractStyle(codeContexts, parser);
+		if (codeContexts != null) {
+			commonExtractStyle(codeContexts, parser);
+		}
 	}
 	
 	public void extractStyle(List<Token> tokens, int index, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
-		commonExtractStyle(codeContexts, parser);
+		if (codeContexts != null) {
+			commonExtractStyle(codeContexts, parser);
+		}
 	}
 
 	private void commonExtractStyle(List<CodeContext> codeContexts, MyParser parser) {
@@ -115,12 +124,18 @@ public abstract class Styler {
 
 	public @NonNull List<InconsistencyInfo> analyzeInconsistency(ExtendContext ctx, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(ctx, parser);
-		return commonAnalyzeInconsistency(codeContexts, parser);
+		if (codeContexts != null) {
+			return commonAnalyzeInconsistency(codeContexts, parser);
+		}
+		return new ArrayList<>();
 	}
 
 	public @NonNull List<InconsistencyInfo> analyzeInconsistency(List<Token> tokens, int index, MyParser parser) {
 		List<CodeContext> codeContexts = constructCodeContext(tokens, index, parser);
-		return commonAnalyzeInconsistency(codeContexts, parser);
+		if (codeContexts != null) {
+			return commonAnalyzeInconsistency(codeContexts, parser);
+		}
+		return new ArrayList<>();
 	}
 
 	private @NonNull List<InconsistencyInfo> commonAnalyzeInconsistency(List<CodeContext> codeContexts, MyParser parser) {
@@ -142,7 +157,7 @@ public abstract class Styler {
 	}
 
 	protected List<CodeContext> constructCodeContext(List<Token> tokens, int index, MyParser parser) {
-		return new ArrayList<>();
+		return null;
 	}
 
 	/**
@@ -151,7 +166,7 @@ public abstract class Styler {
 	 * @return a list of code contexts derived from the given context, which are relevant for style extraction and application.
 	 */
 	protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
-		return List.of(new ASTBasedCodeContext(ctx));
+		return null;
 	}
 
 	protected StyleContext extractStyleContext(CodeContext codeContext, MyParser parser) {

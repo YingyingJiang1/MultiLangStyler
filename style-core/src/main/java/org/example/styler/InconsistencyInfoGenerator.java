@@ -31,6 +31,7 @@ import org.example.style.codecontext.TokenBasedContext;
 import org.example.stylekit.Applicator;
 import org.example.styler.declaration.layout.style.DeclarationLayoutProperty;
 import org.example.styler.format.indention.IndentionStyler;
+import org.example.styler.format.indention.style.IndentionProperty;
 import org.example.styler.format.newline.NewlineStyler;
 import org.example.styler.format.newline.bodylayout.style.BodyLayoutProperty;
 import org.example.styler.format.space.SpaceStyler;
@@ -49,6 +50,48 @@ import org.example.utils.CodeWrapResult;
 public class InconsistencyInfoGenerator {
 	// 内置的格式化styler容器
 	private static final Map<String, StylerContainer> stylerContainers = new HashMap<>();
+
+	private static String describeIndentation(String indentionStr) {
+		if (indentionStr == null || indentionStr.isEmpty()) {
+			return "[NUL]";
+		}
+
+		int tabs = 0;
+		int spaces = 0;
+		for (int i = 0; i < indentionStr.length(); i++) {
+			char ch = indentionStr.charAt(i);
+			if (ch == '\t') {
+				tabs++;
+			} else if (ch == ' ') {
+				spaces++;
+			}
+		}
+
+		StringBuilder rle = new StringBuilder();
+		int i = 0;
+		while (i < indentionStr.length()) {
+			char ch = indentionStr.charAt(i);
+			int j = i + 1;
+			while (j < indentionStr.length() && indentionStr.charAt(j) == ch) {
+				j++;
+			}
+			int count = j - i;
+			if (rle.length() > 0) {
+				rle.append(' ');
+			}
+			if (ch == '\t') {
+				rle.append("TABx").append(count);
+			} else if (ch == ' ') {
+				rle.append("SPx").append(count);
+			} else {
+				rle.append(String.format("U+%04Xx%d", (int) ch, count));
+			}
+			i = j;
+		}
+
+		return String.format("<%s> (tabs=%d, spaces=%d, len=%d)",
+				rle, tabs, spaces, indentionStr.length());
+	}
 	
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
 		Token token = symbol.getDecIdentifierNode().getStop();
@@ -195,47 +238,54 @@ public class InconsistencyInfoGenerator {
 
 
 
-	public static InconsistencyInfo generateForSpace(TokenBasedContext codeContext, SpaceContext styleContext,
-		SpaceProperty current, SpaceProperty target) {
-			// spaces around a target token
-			if (styleContext.tokenName2.isEmpty()) {
-				Token token = codeContext.getTokens().get(codeContext.getStartIndex());
-				return new InconsistencyInfo(
+	public static InconsistencyInfo generateForSpace(TokenBasedContext codeContext,
+			SpaceContext styleContext, SpaceProperty current, SpaceProperty target) {
+		// around(tokenName1): space1/space2 都有意义，分别表示 token 左/右是否有空格
+		if (styleContext.tokenName2.isEmpty()) {
+			Token token = codeContext.getToken(0);
+			return new InconsistencyInfo(
 					InconsistencyType.SPACING,
 					(target.space1 ? "[SP]" : "[NUL]") + token.getText() + (target.space2 ? "[SP]" : "[NUL]"),
 					(current.space1 ? "[SP]" : "[NUL]") + token.getText() + (current.space2 ? "[SP]" : "[NUL]"),
-					"",
+					String.format("Space around '%s' is%s required", token.getText(), target.space1 ? "" : " not"),
 					new InconsistencyInfo.Location(token.getLine(), token.getCharPositionInLine(), 
 					token.getLine(), token.getCharPositionInLine() + token.getText().length())
 				);
-            } else {
-				Token token1 = codeContext.getTokens().get(codeContext.getStartIndex());
-				Token token2 = codeContext.getTokens().get(codeContext.getStartIndex() + 1);
-				return new InconsistencyInfo(
-					InconsistencyType.SPACING,
-					token1.getText() + (target.space2 ? "[SP]" : "[NUL]") + token2.getText(),
-					token1.getText() + (current.space2 ? "[SP]" : "[NUL]") + token2.getText(),
-					"",
-					new InconsistencyInfo.Location(codeContext)
-				);
-			}
+		} else {
+			Token token1 = codeContext.getToken(0);
+			Token token2 = codeContext.getToken(1);
+			return new InconsistencyInfo(
+				InconsistencyType.SPACING,
+				token1.getText() + (target.space2 ? "[SP]" : "[NUL]") + token2.getText(),
+				token1.getText() + (current.space2 ? "[SP]" : "[NUL]") + token2.getText(),
+				String.format("Space between '%s' and '%s' is%s required", 
+				token1.getText(), token2.getText(), target.space2 ? "" : " not"),
+				new InconsistencyInfo.Location(codeContext)
+			);
+		}
 	}
 
+	
+
 	public static InconsistencyInfo generateForIndention(TokenBasedContext codeContext, String curIndentionStr,
-		String targetIndentionStr) {
-		Token anchor = codeContext.getTokens().get(codeContext.getStartIndex());
-		targetIndentionStr = targetIndentionStr.replaceAll("\t", "\\t").replaceAll(" ", " ");
-		curIndentionStr = curIndentionStr.replaceAll("\t", "\\t").replaceAll(" ", " ");
-		String expected = targetIndentionStr.isEmpty() ? "(none)" : "'" + targetIndentionStr + "'";
-		String actual = curIndentionStr.isEmpty() ? "(none)" : "'" + curIndentionStr + "'";
-		String message = "Indentation does not match";
+														 String targetIndentionStr, IndentionProperty targetProperty) {
+		String expected = describeIndentation(targetIndentionStr);
+		String actual = describeIndentation(curIndentionStr);
+
+		String message = String.format(
+				"Indentation style:  %d %s per level; top-level offset: %d; %s empty lines",
+				targetProperty.indentionUnit,
+				targetProperty.indentionType == '\t' ? "tabs" : "spaces",
+				targetProperty.topHierarchyIndention,
+				targetProperty.indentEmptyLine ? "indented" : "not indented"
+		);
+
 		return new InconsistencyInfo(
 			InconsistencyType.INDENTATION,
 			expected,
 			actual,
 			message,
-			new InconsistencyInfo.Location(anchor.getLine(), anchor.getCharPositionInLine(),
-				anchor.getLine(), anchor.getCharPositionInLine() + anchor.getText().length()));
+			new InconsistencyInfo.Location(codeContext));
 	}
 
 	public static InconsistencyInfo generateForBodyLayout(Token startToken, Token stopToken,
@@ -243,14 +293,14 @@ public class InconsistencyInfoGenerator {
 			StringBuilder expected = new StringBuilder();
 			StringBuilder actual = new StringBuilder();
 			if (target.beforeLB != current.beforeLB || target.afterLB != current.afterLB) {
-				expected.append(target.beforeLB > 0 ? "\\n" : "(none)").
-				append(startToken.getText()).append(target.afterLB > 0 ? "\\n" : "(none)");
-				actual.append(current.beforeLB > 0 ? "\\n" : "(none)")
-				.append(startToken.getText()).append(current.afterLB > 0 ? "\\n" : "(none)");
+				expected.append(target.beforeLB > 0 ? "\\n" : "[NUL]").
+				append(startToken.getText()).append(target.afterLB > 0 ? "\\n" : "[NUL]");
+				actual.append(current.beforeLB > 0 ? "\\n" : "[NUL]")
+				.append(startToken.getText()).append(current.afterLB > 0 ? "\\n" : "[NUL]");
 			}
 			if (target.afterRB != current.afterRB) {
-				expected.append(";" + (target.afterRB > 0 ? "\\n" : "(none)")).append(stopToken.getText());
-				actual.append(";" + (current.afterRB > 0 ? "\\n" : "(none)")).append(stopToken.getText());
+				expected.append(";" + (target.afterRB > 0 ? "\\n" : "[NUL]")).append(stopToken.getText());
+				actual.append(";" + (current.afterRB > 0 ? "\\n" : "[NUL]")).append(stopToken.getText());
 			}
 			return new InconsistencyInfo(
 				InconsistencyType.NEWLINE,
