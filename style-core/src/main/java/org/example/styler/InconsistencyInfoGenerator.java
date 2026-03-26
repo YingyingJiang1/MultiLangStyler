@@ -109,13 +109,15 @@ public class InconsistencyInfoGenerator {
 			String expected = generateCodeStr(expectedTrees);
 			String actual = generateCodeStr(actualTrees);
 
-			// 封装格式化逻辑，只在这里做
 			String language = parser.getLanguage();
-
 			expected = formatCodeWithStyle(expected, language);
 			actual = formatCodeWithStyle(actual, language);
 
-			String message = "";
+			// generate message
+			String templateCode = templateStructure.getCodeSkeletonStr(target.getPreferenceIndex())
+					.replace("$^", "").trim();
+			String message = String.format("Pattern preference '%s'", templateCode);
+
 			return new InconsistencyInfo(
 				InconsistencyType.STRUCTURAL_STYLE,
 				expected, actual,
