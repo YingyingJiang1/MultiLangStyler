@@ -131,9 +131,9 @@ public class NewlineStyler extends Styler implements CombinedStyler {
 				if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
 					int diff = targetProperty.newlines - property.newlines;
 					if (diff > 0) {
-						infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), i, parser));
+						infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser));
 					} else if (diff < 0) {
-						infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), i, parser));
+						infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), -diff, parser));
 					}
 				}
 			}
@@ -157,6 +157,9 @@ public class NewlineStyler extends Styler implements CombinedStyler {
 			ExtendToken anchorToken = (ExtendToken) entry.getKey();
 			int newlineOperation = entry.getValue().stream().map(NewlineInconsistencyInfo::getNewlineOperation)
 			.reduce(0, Integer::sum);
+			if (newlineOperation == 0) {
+				continue;
+			}
 			InconsistencyInfo info = InconsistencyInfoGenerator.generateForNewline(
 				anchorToken, newlineOperation, parser
 			);

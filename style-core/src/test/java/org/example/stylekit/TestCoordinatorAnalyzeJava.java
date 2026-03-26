@@ -1,8 +1,6 @@
 package org.example.stylekit;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -26,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TestCoordinatorAnalyzeJava {
 	private static final String LANG = "java";
 	private static final String SOURCES = "src/test/sources";
-	private static final boolean UPDATE_GOLDENS = false;
 
 	private Coordinator coordinatorUnderTest;
 
@@ -123,8 +120,8 @@ class TestCoordinatorAnalyzeJava {
 	@Test
 	void testAnalyzeInconsistency_newline() {
 		final String dir = Paths.get(SOURCES, "format", "newline").toString();
-		String[] srcFiles = {"f1.java", };
-		String[] targetFiles = {"f2.java",};
+		String[] srcFiles = {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"};
+		String[] targetFiles = {"f2.java", "f7.java", "f2.java", "f7.java"};
 
 		doAnalyze(dir, srcFiles, targetFiles, List.of(NewlineStyler.class));
 	}
@@ -132,8 +129,8 @@ class TestCoordinatorAnalyzeJava {
 	@Test
 	void testAnalyzeInconsistency_space() {
 		final String dir = Paths.get(SOURCES, "format", "space").toString();
-		String[] srcFiles = {"f1.java",  "f1-gt.java"};
-		String[] targetFiles = {"f2.java", "f2.java"};
+		String[] srcFiles = {"f1.java",  "f1-gt.java", "f2.java", "f2-gt.java"};
+		String[] targetFiles = {"f2.java", "f2.java", "f2.java", "f2.java"};
 		doAnalyze(dir, srcFiles, targetFiles, List.of(SpaceStyler.class));
 	}
 
@@ -141,8 +138,8 @@ class TestCoordinatorAnalyzeJava {
 	void testAnalyzeInconsistency_indention() {
 		final String dir = Paths.get(SOURCES, "format", "indention").toString();
 		// Keep a small but representative subset (matches IndentionStylerTest inputs).
-		String[] srcFiles = {"f1.java", "f2.java"};
-		String[] targetFiles = {"f2.java", "f3.java"};
+		String[] srcFiles = {"f1.java", "f2.java", "f1-gt.java"};
+		String[] targetFiles = {"f2.java", "f3.java", "f2.java"};
 		doAnalyze(dir, srcFiles, targetFiles, List.of(IndentionStyler.class));
 	}
 
@@ -162,12 +159,13 @@ class TestCoordinatorAnalyzeJava {
 			TaskOptions taskOptions = createTaskOptions(dir, srcFiles[i], targetFiles[i]);
 			File gtFile = new File(taskOptions.getResOutPath());
 			String tmpPath = Paths.get(taskOptions.getSrc().replace("."+LANG, "-inc-tmp.txt")).toString();
-			if (!gtFile.exists()) {
-				coordinatorUnderTest.analyzeInconsistency(taskOptions);
-			} else {
+			if (gtFile.exists()){
 				taskOptions.setResOutPath(tmpPath);
 				coordinatorUnderTest.analyzeInconsistency(taskOptions);
+			} else {
+				coordinatorUnderTest.analyzeInconsistency(taskOptions);
 			}
+
 
 			// 读取两个文件内容并比较
 			try {

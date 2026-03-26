@@ -5,147 +5,147 @@ Total Inconsistencies: 21
 [1] Type     : SPACING
 BeginLocation : line 6, column 24
 EndLocation   : line 6, column 25
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [2] Type     : SPACING
 BeginLocation : line 9, column 14
 EndLocation   : line 9, column 15
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [3] Type     : SPACING
 BeginLocation : line 10, column 14
 EndLocation   : line 10, column 15
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [4] Type     : SPACING
 BeginLocation : line 11, column 16
 EndLocation   : line 11, column 17
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [5] Type     : SPACING
 BeginLocation : line 12, column 19
 EndLocation   : line 12, column 20
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [6] Type     : SPACING
 BeginLocation : line 12, column 26
 EndLocation   : line 12, column 27
-Expected : [NUL]<[NUL]
-Actual   : [SP]<[SP]
+Expected : <
+Actual   : ·<·
 Message  : Space around '<' is not required
 
 [7] Type     : SPACING
 BeginLocation : line 13, column 17
 EndLocation   : line 13, column 18
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [8] Type     : SPACING
 BeginLocation : line 17, column 17
 EndLocation   : line 17, column 18
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [9] Type     : SPACING
 BeginLocation : line 18, column 22
 EndLocation   : line 18, column 30
-Expected : ,[NUL]Integer
-Actual   : ,[SP]Integer
+Expected : ,Integer
+Actual   : ,·Integer
 Message  : Space between ',' and 'Integer' is not required
 
 [10] Type     : SPACING
 BeginLocation : line 19, column 14
 EndLocation   : line 19, column 15
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [11] Type     : SPACING
 BeginLocation : line 22, column 19
 EndLocation   : line 22, column 20
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [12] Type     : SPACING
 BeginLocation : line 22, column 26
 EndLocation   : line 22, column 27
-Expected : [NUL]<[NUL]
-Actual   : [SP]<[SP]
+Expected : <
+Actual   : ·<·
 Message  : Space around '<' is not required
 
 [13] Type     : SPACING
 BeginLocation : line 23, column 23
 EndLocation   : line 23, column 24
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [14] Type     : SPACING
 BeginLocation : line 23, column 35
 EndLocation   : line 23, column 37
-Expected : ,[NUL]i
-Actual   : ,[SP]i
+Expected : ,i
+Actual   : ,·i
 Message  : Space between ',' and 'i' is not required
 
 [15] Type     : SPACING
 BeginLocation : line 23, column 39
 EndLocation   : line 23, column 40
-Expected : [NUL]-[NUL]
-Actual   : [SP]-[SP]
+Expected : -
+Actual   : ·-·
 Message  : Space around '-' is not required
 
 [16] Type     : SPACING
 BeginLocation : line 23, column 47
 EndLocation   : line 23, column 48
-Expected : [NUL]<[NUL]
-Actual   : [SP]<[SP]
+Expected : <
+Actual   : ·<·
 Message  : Space around '<' is not required
 
 [17] Type     : SPACING
 BeginLocation : line 24, column 22
 EndLocation   : line 24, column 23
-Expected : [NUL]=[NUL]
-Actual   : [SP]=[SP]
+Expected : =
+Actual   : ·=·
 Message  : Space around '=' is not required
 
 [18] Type     : SPACING
 BeginLocation : line 24, column 38
 EndLocation   : line 24, column 41
-Expected : ,[NUL]dp
-Actual   : ,[SP]dp
+Expected : ,dp
+Actual   : ,·dp
 Message  : Space between ',' and 'dp' is not required
 
 [19] Type     : SPACING
 BeginLocation : line 24, column 46
 EndLocation   : line 24, column 47
-Expected : [NUL]+[NUL]
-Actual   : [SP]+[SP]
+Expected : +
+Actual   : ·+·
 Message  : Space around '+' is not required
 
 [20] Type     : SPACING
 BeginLocation : line 24, column 62
 EndLocation   : line 24, column 63
-Expected : [NUL]-[NUL]
-Actual   : [SP]-[SP]
+Expected : -
+Actual   : ·-·
 Message  : Space around '-' is not required
 
 [21] Type     : SPACING
 BeginLocation : line 29, column 32
 EndLocation   : line 29, column 33
-Expected : [NUL]-[NUL]
-Actual   : [SP]-[SP]
+Expected : -
+Actual   : ·-·
 Message  : Space around '-' is not required
 

@@ -48,7 +48,10 @@ public class AnnotationNewlinePatchStyler extends NewlinePatchStyler {
 		List<InconsistencyInfo> inconsistencyInfos = new ArrayList<>();
 //		StyleRule styleRule = extractStyleRule((ExtendContext) parent, index, parser);
 		// ctx为modifier list或者annotation list, 去除ctx和其下一个节点的换行
-		inconsistencyInfos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx, 1, parser));
+		int newlines = countNewlineBetween(ctx, getNextNode(ctx), parser);
+		if (newlines > 0) {
+			inconsistencyInfos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx, newlines, parser));
+		}
 
 		// 处理annotation list和modifier list内部
 		for (int i = 0; i < ctx.getChildCount(); i++) {

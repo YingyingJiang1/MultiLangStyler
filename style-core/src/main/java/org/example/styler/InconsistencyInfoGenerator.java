@@ -51,47 +51,37 @@ public class InconsistencyInfoGenerator {
 	// 内置的格式化styler容器
 	private static final Map<String, StylerContainer> stylerContainers = new HashMap<>();
 
-	private static String describeIndentation(String indentionStr) {
-		if (indentionStr == null || indentionStr.isEmpty()) {
-			return "[NUL]";
+	private static String describeIndentation(String indentation) {
+		if (indentation == null || indentation.isEmpty()) {
+			return "";
 		}
 
-		int tabs = 0;
-		int spaces = 0;
-		for (int i = 0; i < indentionStr.length(); i++) {
-			char ch = indentionStr.charAt(i);
-			if (ch == '\t') {
-				tabs++;
-			} else if (ch == ' ') {
-				spaces++;
-			}
-		}
-
-		StringBuilder rle = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		int i = 0;
-		while (i < indentionStr.length()) {
-			char ch = indentionStr.charAt(i);
+		while (i < indentation.length()) {
+			char ch = indentation.charAt(i);
 			int j = i + 1;
-			while (j < indentionStr.length() && indentionStr.charAt(j) == ch) {
+			while (j < indentation.length() && indentation.charAt(j) == ch) {
 				j++;
 			}
 			int count = j - i;
-			if (rle.length() > 0) {
-				rle.append(' ');
-			}
+
+			String type;
 			if (ch == '\t') {
-				rle.append("TABx").append(count);
+				type = "<tab>";
 			} else if (ch == ' ') {
-				rle.append("SPx").append(count);
+				type = "<sp>";
 			} else {
-				rle.append(String.format("U+%04Xx%d", (int) ch, count));
+				type = String.format("<U+%04X>", (int) ch);
 			}
+
+			sb.append(count).append(type);
 			i = j;
 		}
 
-		return String.format("<%s> (tabs=%d, spaces=%d, len=%d)",
-				rle, tabs, spaces, indentionStr.length());
+		return sb.toString();
 	}
+
 	
 	public static InconsistencyInfo generateForNaming(Symbol symbol, String newName, NamingFormatProperty property) {
 		Token token = symbol.getDecIdentifierNode().getStop();
@@ -241,12 +231,13 @@ public class InconsistencyInfoGenerator {
 	public static InconsistencyInfo generateForSpace(TokenBasedContext codeContext,
 			SpaceContext styleContext, SpaceProperty current, SpaceProperty target) {
 		// around(tokenName1): space1/space2 都有意义，分别表示 token 左/右是否有空格
+		String spaceSymbol = "\u00b7";
 		if (styleContext.tokenName2.isEmpty()) {
 			Token token = codeContext.getToken(0);
 			return new InconsistencyInfo(
 					InconsistencyType.SPACING,
-					(target.space1 ? "[SP]" : "[NUL]") + token.getText() + (target.space2 ? "[SP]" : "[NUL]"),
-					(current.space1 ? "[SP]" : "[NUL]") + token.getText() + (current.space2 ? "[SP]" : "[NUL]"),
+					(target.space1 ? spaceSymbol : "") + token.getText() + (target.space2 ? spaceSymbol : ""),
+					(current.space1 ? spaceSymbol : "") + token.getText() + (current.space2 ? spaceSymbol : ""),
 					String.format("Space around '%s' is%s required", token.getText(), target.space1 ? "" : " not"),
 					new InconsistencyInfo.Location(token.getLine(), token.getCharPositionInLine(), 
 					token.getLine(), token.getCharPositionInLine() + token.getText().length())
@@ -256,8 +247,8 @@ public class InconsistencyInfoGenerator {
 			Token token2 = codeContext.getToken(1);
 			return new InconsistencyInfo(
 				InconsistencyType.SPACING,
-				token1.getText() + (target.space2 ? "[SP]" : "[NUL]") + token2.getText(),
-				token1.getText() + (current.space2 ? "[SP]" : "[NUL]") + token2.getText(),
+				token1.getText() + (target.space2 ? spaceSymbol : "") + token2.getText(),
+				token1.getText() + (current.space2 ? spaceSymbol : "") + token2.getText(),
 				String.format("Space between '%s' and '%s' is%s required", 
 				token1.getText(), token2.getText(), target.space2 ? "" : " not"),
 				new InconsistencyInfo.Location(codeContext)
@@ -290,6 +281,7 @@ public class InconsistencyInfoGenerator {
 
 	public static InconsistencyInfo generateForBodyLayout(Token startToken, Token stopToken,
 		BodyLayoutProperty current, BodyLayoutProperty target) {
+			String newlineSymbol = "\u21B5 ";
 			StringBuilder expected = new StringBuilder();
 			StringBuilder actual = new StringBuilder();
 			if (target.beforeLB != current.beforeLB || target.afterLB != current.afterLB) {
@@ -324,9 +316,9 @@ public class InconsistencyInfoGenerator {
 				String.format("%d newlines after %s", Integer.max(expectedNewlines, 0), String.format("'%s'", anchorToken.getText())),
 				String.format("%d newlines after %s", Integer.max(originalNewlines, 0), String.format("'%s'", anchorToken.getText())),
 				newlineOperation > 0 ? String.format("%d Newline should be added", newlineOperation)
-						: String.format("%d Newline should be removed", newlineOperation) ,
+						: String.format("%d Newline should be removed", -newlineOperation) ,
 				new InconsistencyInfo.Location(anchorToken.getLine(), anchorToken.getCharPositionInLine(),
-						anchorToken.getLine(), anchorToken.getCharPositionInLine() + anchorToken.getText().length())
+						anchorToken.getLine(), anchorToken.getCharPositionInLine() + anchorToken.getText().length()-1)
 		);
 	}
 

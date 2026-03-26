@@ -1,0 +1,130 @@
+============================================================
+File: src\test\sources\format\space\f2-gt.java
+Total Inconsistencies: 18
+============================================================
+[1] Type     : SPACING
+BeginLocation : line 3, column 12
+EndLocation   : line 3, column 13
+Expected : >
+Actual   : >·
+Message  : Space around '>' is not required
+
+[2] Type     : SPACING
+BeginLocation : line 3, column 26
+EndLocation   : line 3, column 27
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[3] Type     : SPACING
+BeginLocation : line 4, column 16
+EndLocation   : line 4, column 17
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[4] Type     : SPACING
+BeginLocation : line 5, column 14
+EndLocation   : line 5, column 15
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[5] Type     : SPACING
+BeginLocation : line 6, column 14
+EndLocation   : line 6, column 15
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[6] Type     : SPACING
+BeginLocation : line 7, column 19
+EndLocation   : line 7, column 20
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[7] Type     : SPACING
+BeginLocation : line 8, column 12
+EndLocation   : line 8, column 13
+Expected : >
+Actual   : >·
+Message  : Space around '>' is not required
+
+[8] Type     : SPACING
+BeginLocation : line 8, column 22
+EndLocation   : line 8, column 23
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[9] Type     : SPACING
+BeginLocation : line 10, column 19
+EndLocation   : line 10, column 20
+Expected : >
+Actual   : >·
+Message  : Space around '>' is not required
+
+[10] Type     : SPACING
+BeginLocation : line 10, column 32
+EndLocation   : line 10, column 33
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[11] Type     : SPACING
+BeginLocation : line 11, column 10
+EndLocation   : line 11, column 11
+Expected : =
+Actual   : ·=·
+Message  : Space around '=' is not required
+
+[12] Type     : SPACING
+BeginLocation : line 12, column 18
+EndLocation   : line 12, column 19
+Expected : >
+Actual   : >·
+Message  : Space around '>' is not required
+
+[13] Type     : SPACING
+BeginLocation : line 13, column 46
+EndLocation   : line 13, column 47
+Expected : +
+Actual   : ·+·
+Message  : Space around '+' is not required
+
+[14] Type     : SPACING
+BeginLocation : line 13, column 53
+EndLocation   : line 13, column 54
+Expected : +
+Actual   : ·+·
+Message  : Space around '+' is not required
+
+[15] Type     : SPACING
+BeginLocation : line 16, column 35
+EndLocation   : line 16, column 41
+Expected : ,since
+Actual   : ,·since
+Message  : Space between ',' and 'since' is not required
+
+[16] Type     : SPACING
+BeginLocation : line 16, column 42
+EndLocation   : line 16, column 48
+Expected : ,group
+Actual   : ,·group
+Message  : Space between ',' and 'group' is not required
+
+[17] Type     : SPACING
+BeginLocation : line 16, column 49
+EndLocation   : line 16, column 60
+Expected : ,complexity
+Actual   : ,·complexity
+Message  : Space between ',' and 'complexity' is not required
+
+[18] Type     : SPACING
+BeginLocation : line 16, column 61
+EndLocation   : line 16, column 69
+Expected : ,history
+Actual   : ,·history
+Message  : Space between ',' and 'history' is not required
+

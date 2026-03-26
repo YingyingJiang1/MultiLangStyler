@@ -118,7 +118,8 @@ public class Coordinator {
             }
 
             if (taskOptions.getResOutPath() != null) {
-                try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(taskOptions.getResOutPath())))) {
+                try (BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(new FileOutputStream(taskOptions.getResOutPath()), StandardCharsets.UTF_8))) {
                     writer.write(sb.toString());
                 } catch (IOException e) {
                     logger.error("Failed to write inconsistency analysis results to file: {}", taskOptions.getResOutPath(), e);

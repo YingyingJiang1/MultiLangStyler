@@ -5,7 +5,7 @@ Total Inconsistencies: 6
 [1] Type     : SPACING
 BeginLocation : line 3, column 12
 EndLocation   : line 3, column 13
-Expected : >·
+Expected : >
 Actual   : >·
 Message  : Space around '>' is not required
 
