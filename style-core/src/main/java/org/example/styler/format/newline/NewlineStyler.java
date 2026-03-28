@@ -1,6 +1,7 @@
 package org.example.styler.format.newline;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,9 +132,13 @@ public class NewlineStyler extends Styler implements CombinedStyler {
 				if (style.getProperty(context) instanceof NewlineProperty targetProperty) {
 					int diff = targetProperty.newlines - property.newlines;
 					if (diff > 0) {
-						infos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser));
+						NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), diff, parser);
+						info.setPriority(this.getClass());
+						infos.add(info);
 					} else if (diff < 0) {
-						infos.add(NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), -diff, parser));
+						NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenRemoving(ctx.getChild(i), -diff, parser);
+						info.setPriority(this.getClass());
+						infos.add(info);
 					}
 				}
 			}
@@ -155,15 +160,20 @@ public class NewlineStyler extends Styler implements CombinedStyler {
 		List<InconsistencyInfo> realInconsistencyInfos = new ArrayList<>();
 		for (Map.Entry<Token, List<NewlineInconsistencyInfo>> entry : infoMap.entrySet()) {
 			ExtendToken anchorToken = (ExtendToken) entry.getKey();
-			int newlineOperation = entry.getValue().stream().map(NewlineInconsistencyInfo::getNewlineOperation)
-			.reduce(0, Integer::sum);
-			if (newlineOperation == 0) {
-				continue;
+			NewlineInconsistencyInfo info = null;
+			if (entry.getValue().size() > 1) {
+				// 获取优先级最高的 inconsistency info
+				info = entry.getValue().stream().min(Comparator.comparingInt(NewlineInconsistencyInfo::getPriority)).get();
+			} else if (entry.getValue().size() == 1) {
+				info = entry.getValue().get(0);
 			}
-			InconsistencyInfo info = InconsistencyInfoGenerator.generateForNewline(
-				anchorToken, newlineOperation, parser
-			);
-			realInconsistencyInfos.add(info);
+
+			if (info != null && info.getNewlineOperation() != 0) {
+				realInconsistencyInfos.add( InconsistencyInfoGenerator.generateForNewline(
+					anchorToken, info.getNewlineOperation(), parser
+				));
+			}
+			
 		}
 
 		inconsistencyInfos.addAll(realInconsistencyInfos);

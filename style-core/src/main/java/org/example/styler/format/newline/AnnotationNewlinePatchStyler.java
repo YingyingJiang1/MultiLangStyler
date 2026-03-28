@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
+import org.example.style.NewlineInconsistencyInfo;
 import org.example.styler.NewlinePatchStyler;
 import org.example.styler.Stage;
 
@@ -59,7 +60,9 @@ public class AnnotationNewlinePatchStyler extends NewlinePatchStyler {
 			if (parser.isAnnotation(cur)) {
 				int newlineCount = countNewlineBetween(cur, getNextNode(cur), parser);
 				if (newlineCount == 0) {
-					inconsistencyInfos.add(NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), 1, parser));
+					NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenAdding(ctx.getChild(i), 1, parser);
+					info.setPriority(this.getClass());
+					inconsistencyInfos.add(info);
 				}
 			}
 		}

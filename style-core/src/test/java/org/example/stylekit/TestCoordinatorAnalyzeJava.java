@@ -120,8 +120,12 @@ class TestCoordinatorAnalyzeJava {
 	@Test
 	void testAnalyzeInconsistency_newline() {
 		final String dir = Paths.get(SOURCES, "format", "newline").toString();
-		String[] srcFiles = {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"};
-		String[] targetFiles = {"f2.java", "f7.java", "f2.java", "f7.java"};
+		String[] srcFiles = {
+				"f1.java",
+				"f2.java", "f1-gt.java", "f2-gt.java"};
+		String[] targetFiles = {
+				"f2.java",
+				"f7.java", "f2.java", "f7.java"};
 
 		doAnalyze(dir, srcFiles, targetFiles, List.of(NewlineStyler.class));
 	}

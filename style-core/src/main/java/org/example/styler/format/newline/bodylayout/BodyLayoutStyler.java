@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.example.lang.intf.MyParser;
 import org.example.style.InconsistencyInfo;
+import org.example.style.NewlineInconsistencyInfo;
 import org.example.style.rule.StyleProperty;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
@@ -184,18 +185,26 @@ public class BodyLayoutStyler extends BodyStyler {
 						Token targetToken = tokens.get(tokens.indexOf(startToken) - 1);
 						int diff = targetProperty.beforeLB - property.beforeLB;
 						if (diff > 0) {
-							inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser));
+							NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser);
+							info.setPriority(this.getClass());
+							inconsistencies.add(info);
 						} else if (diff < 0) {
-							inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser));
+							NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser);
+							info.setPriority(this.getClass());
+							inconsistencies.add(info);
 						}
 					}
 					if (property.afterLB != targetProperty.afterLB) {
 						Token targetToken = startToken;
 						int diff = targetProperty.afterLB - property.afterLB;
 						if (diff > 0) {
-							inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser));
+							NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser);
+							info.setPriority(this.getClass());
+							inconsistencies.add(info);
 						} else if (diff < 0) {
-							inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser));
+							NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser);
+							info.setPriority(this.getClass());
+							inconsistencies.add(info);
 						}
 					}
 //					if (property.beforeRB != targetProperty.beforeRB) {
@@ -210,9 +219,13 @@ public class BodyLayoutStyler extends BodyStyler {
 						Token targetToken = stopToken;
 						int diff = targetProperty.afterRB - property.afterRB;
 						if (diff > 0) {
-							inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser));
+							NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenAdding(targetToken, diff, parser);
+							info.setPriority(this.getClass());
+							inconsistencies.add(info);
 						} else if (diff < 0) {
-							inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser));
+							NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenRemoving(targetToken, Math.abs(diff), parser);
+							info.setPriority(this.getClass());
+							inconsistencies.add(info);
 						}
 					}
 				}

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewlineAnalyzer {
-	public static InconsistencyInfo analyzeWhenAdding(ParseTree node, int num, MyParser parser) {
+	public static NewlineInconsistencyInfo analyzeWhenAdding(ParseTree node, int num, MyParser parser) {
 		ExtendToken token = getStopToken(node);
 		if (token != null) {
 			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat("\n", num));
@@ -38,7 +38,7 @@ public class NewlineAnalyzer {
 		return null;
 	}
 
-	public static InconsistencyInfo analyzeWhenAdding(Token token, int num, MyParser parser) {
+	public static NewlineInconsistencyInfo analyzeWhenAdding(Token token, int num, MyParser parser) {
 		if (token instanceof ExtendToken extendToken) {
 			Token vws = ExtendTokenFactory.DEFAULT.create(parser.getVws(), StringUtils.repeat("\n", num));
 
@@ -60,7 +60,7 @@ public class NewlineAnalyzer {
 	}
 
 
-	public static InconsistencyInfo analyzeWhenRemoving(ParseTree node, int num, MyParser parser) {
+	public static NewlineInconsistencyInfo analyzeWhenRemoving(ParseTree node, int num, MyParser parser) {
 		ExtendToken token = getStopToken(node);
 		if (token == null) {
 			return null;
@@ -68,7 +68,7 @@ public class NewlineAnalyzer {
 		return new NewlineInconsistencyInfo(token, -num);
 	}
 
-	public static InconsistencyInfo analyzeWhenRemoving(Token token, int num, MyParser parser) {
+	public static NewlineInconsistencyInfo analyzeWhenRemoving(Token token, int num, MyParser parser) {
 		return new NewlineInconsistencyInfo(token, -num);
 	}
 

@@ -56,7 +56,7 @@ BeginLocation : line 23, column 23
 EndLocation   : line 23, column 23
 Expected : 0 newlines after ')'
 Actual   : 2 newlines after ')'
-Message  : 4 Newline should be removed
+Message  : 2 Newline should be removed
 
 [9] Type     : NEWLINE
 BeginLocation : line 31, column 32

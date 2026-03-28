@@ -5,6 +5,7 @@ import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
 import org.example.style.InconsistencyInfo;
+import org.example.style.NewlineInconsistencyInfo;
 import org.example.styler.InconsistencyInfoGenerator;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 专注于相邻语句之间，import之间的换行符使用习惯
+ * 用于语句或者import后面的换行
  */
 public class InterNewlineStyler extends Styler {
 	public InterNewlineStyler() {
@@ -63,9 +64,13 @@ public class InterNewlineStyler extends Styler {
 				&& !property.equals(targetProperty)) {
 			int num = 1;
 			if (targetProperty.hasNewline) {
-				inconsistencies.add(NewlineAnalyzer.analyzeWhenAdding(stop, num, parser));
+				NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenAdding(stop, num, parser);
+				info.setPriority(this.getClass());
+				inconsistencies.add(info);
 			} else  {
-				inconsistencies.add(NewlineAnalyzer.analyzeWhenRemoving(stop, num, parser));
+				NewlineInconsistencyInfo info = NewlineAnalyzer.analyzeWhenRemoving(stop, num, parser);
+				info.setPriority(this.getClass());
+				inconsistencies.add(info);
 			}
 		}
 
