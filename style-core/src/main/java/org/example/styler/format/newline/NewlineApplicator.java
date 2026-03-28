@@ -47,6 +47,8 @@ public class NewlineApplicator {
 						break;
 					}
 				}
+			} else {
+				i++;
 			}
 			extendToken.addToken(i, vws);
 		}

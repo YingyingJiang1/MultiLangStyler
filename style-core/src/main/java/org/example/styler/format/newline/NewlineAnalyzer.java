@@ -23,17 +23,17 @@ public class NewlineAnalyzer {
 
 			// vws should be inserted after trailing comment or before non-trailing comment.
 			int i = token.getTrailingCommentIndex(parser);
-			if (i < 0) {
-				for (i = 0; i < token.getContextTokens().size(); i++) {
-					if (parser.isComment(token.getContextTokens().get(i).getType())) {
-						break;
+			if (i >= 0) {
+				return new NewlineInconsistencyInfo(token.getContextTokens().get(i), num);
+			} else {
+				for (i = token.getContextTokens().size() - 1; i >= 0; i--) {
+					int tokenType = token.getContextTokens().get(i).getType();
+					boolean isSyntaxRelevant = tokenType != parser.getHws() && tokenType != parser.getVws() && !parser.isComment(tokenType);
+					if (isSyntaxRelevant) {
+						return new NewlineInconsistencyInfo(token.getContextTokens().get(i), num);
 					}
 				}
-			} else {
-				i++;
 			}
-			Token anchorToken = token.getContextTokens().get(i);
-			return new NewlineInconsistencyInfo(anchorToken, num);
 		}
 		return null;
 	}
@@ -44,14 +44,17 @@ public class NewlineAnalyzer {
 
 			// vws should be inserted after trailing comment or before non-trailing comment.
 			int i = extendToken.getTrailingCommentIndex(parser);
-			if (i < 0) {
-				for (i = 0; i < extendToken.getContextTokens().size(); i++) {
-					if (parser.isComment(extendToken.getContextTokens().get(i).getType())) {
-						break;
+			if (i >= 0) {
+				return new NewlineInconsistencyInfo(extendToken.getContextTokens().get(i), num);
+			} else {
+				for (i = extendToken.getContextTokens().size() - 1; i >= 0; i--) {
+					int tokenType = extendToken.getContextTokens().get(i).getType();
+					boolean isSyntaxRelevant = tokenType != parser.getHws() && tokenType != parser.getVws() && !parser.isComment(tokenType);
+					if (isSyntaxRelevant) {
+						return new NewlineInconsistencyInfo(extendToken.getContextTokens().get(i), num);
 					}
 				}
 			}
-			return new NewlineInconsistencyInfo(extendToken.getContextTokens().get(i), num);
 		}
 		return null;
 	}
