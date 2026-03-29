@@ -1,0 +1,50 @@
+============================================================
+File: src\test\sources\structure\continue\f2-gt.java
+Total Inconsistencies: 1
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 26, column 3
+EndLocation   : line 28, column 14
+Expected : 
+  if (i >= a && i >= b && i >= c) { 
+    mem[i] = Math.max(1 + mem[i - a], Math.max(1 + mem[i - b], 1 + mem[i - c]));
+  } else { 
+    if (i >= a && i >= b) { 
+      mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - b]);
+      continue; 
+    }  
+
+    if (i >= c && i >= b) { 
+      mem[i] = Math.max(1 + mem[i - c], 1 + mem[i - b]);
+      continue; 
+    }  
+
+    if (i >= a && i >= c) { 
+      mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - c]);
+      continue; 
+    }  
+
+    if (i >= a) { 
+      mem[i] = 1 + mem[i - a];
+      continue; 
+    }  
+
+    if (i >= b) { 
+      mem[i] = 1 + mem[i - b];
+      continue; 
+    }  
+
+    if (i >= c) mem[i] = 1 + mem[i - c];
+  }
+Actual   : 
+  if (i >= a && i >= b && i >= c) { 
+    mem[i] = Math.max(1 + mem[i - a], Math.max(1 + mem[i - b], 1 + mem[i - c]));
+    continue; 
+  }  
+
+  if (i >= a && i >= b) { 
+    mem[i] = Math.max(1 + mem[i - a], 1 + mem[i - b]);
+    continue; 
+  }
+Message  : Pattern preference 'if ( $E ) { $S+ } else { $S1+ }'
+

@@ -1,4 +1,29 @@
 ============================================================
 File: src\test\sources\structure\check_then_assign\f2-gt.java
-Total Inconsistencies: 0
+Total Inconsistencies: 2
 ============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 1
+EndLocation   : line 14, column 31
+Expected : 
+  int a = 0; 
+  if (first > 0) { 
+    a = bInd; 
+  }
+Actual   : 
+  int a; 
+  a = first > 0 ? bInd: 0;
+Message  : Pattern preference '$M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }'
+
+[2] Type     : STRUCTURAL_STYLE
+BeginLocation : line 14, column 9
+EndLocation   : line 14, column 31
+Expected : 
+  a = 0; 
+  if (first > 0) { 
+    a = bInd; 
+  }
+Actual   : 
+  a = first > 0 ? bInd: 0;
+Message  : Pattern preference '$E = $E3 ; if ( $E1 ) { $E4 = $E2 ; }'
+

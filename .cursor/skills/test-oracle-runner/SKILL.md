@@ -2,7 +2,7 @@
 name: test-oracle-runner
 description: >-
   Generates test cases together with explicit oracles (expected values, assertions,
-  golden files, or behavioral contracts) and runs only the tests the user selects.
+  golden files, or behavioral contracts) and runs only the tests the user specifies.
   For the style-transformer repo: style transfer uses (src, target) pairs with
   golden source oracles named *-gt.<lang>; inconsistency analysis uses the same
   pairs with text oracles *-inc.txt matching Coordinator output and
@@ -124,3 +124,6 @@ For selected IDs only:
 - [ ] User confirmed which IDs to implement and/or run
 - [ ] Commands target only selected tests where possible
 - [ ] Results mapped back to catalog IDs
+
+## Common pitfalls
+1. Do not generate any test class or test method unless explicitly be asked to do so.

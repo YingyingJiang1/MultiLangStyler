@@ -1,4 +1,21 @@
 ============================================================
 File: src\test\sources\structure\loop\f1-gt.java
-Total Inconsistencies: 0
+Total Inconsistencies: 1
 ============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 11, column 2
+EndLocation   : line 13, column 6
+Expected : 
+  for (int i = 0; i<n; i++) { 
+    a[i] = Integer.parseInt(st.nextToken());
+    if (a[i]<1 || a[i]>1000000000) while (true);
+  }
+Actual   : 
+  int i = 0; 
+  while (i<n) { 
+    a[i] = Integer.parseInt(st.nextToken());
+    if (a[i]<1 || a[i]>1000000000) while (true);
+    i++;
+  }
+Message  : Pattern preference 'for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }'
+

@@ -1,4 +1,16 @@
 ============================================================
 File: src\test\sources\structure\check_then_assign\f1.java
-Total Inconsistencies: 0
+Total Inconsistencies: 1
 ============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 18, column 2
+EndLocation   : line 21, column 2
+Expected : 
+  int a = first > 0 ? bInd: 0;
+Actual   : 
+  int a = 0;
+  if (first > 0) {
+    a = bInd;
+  }
+Message  : Pattern preference '$M $T $I = $E ? $E1 : $E2 ;'
+
