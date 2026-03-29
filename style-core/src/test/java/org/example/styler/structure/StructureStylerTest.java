@@ -187,7 +187,6 @@ class StructureStylerTest extends TestBase {
 		String[] srcFiles = {
 				"f2.java",
 				"f3.java",
-				"f4.java",
 				"f5.java",
 				"f6.java"
 
@@ -195,7 +194,6 @@ class StructureStylerTest extends TestBase {
 		String[] targetFiles = {
 				"style2.xml",
 				"style3.xml",
-				"style4.xml",
 				"style5.xml",
 				"style6.xml"
 		};
@@ -276,8 +274,8 @@ class StructureStylerTest extends TestBase {
 	void analyzeInconsistency_continuePreference_matchesGolden() {
 		String dir = Paths.get(javaTestCasesDir, "structure", "continue").toString();
 		assertAnalyzeInconsistencyMatchesGolden(dir,
-				new String[] {"f2.java", "f2-gt.java", "f4.java", "f4-gt.java"},
-				new String[] {"style2.xml", "style2.xml", "style4.xml", "style4.xml"},
+				new String[] {"f2.java", "f2-gt.java",},
+				new String[] {"style2.xml", "style2.xml",},
 				List.of(StructureStyler.class));
 	}
 

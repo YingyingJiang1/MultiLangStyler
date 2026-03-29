@@ -35,16 +35,15 @@ public class Contest {
 						curX += dx[curDirection];
 						curY += dy[curDirection];
 						mask[curX][curY] = 1;
-						if ( j == next) { newQueue.add(getStatus(curX, curY, (curDirection + 1) % 8));
+						if (j == next) {
+							newQueue.add(getStatus(curX, curY, (curDirection + 1) % 8));
 							int newDir = (curDirection - 1) % 8;
-							if ( newDir < 0) { newDir = 8 + newDir;
+							if (newDir < 0) newDir = 8 + newDir;
 							newQueue.add(getStatus(curX, curY, (newDir) % 8));
 							break;
-						} else { newQueue.add(getStatus(curX, curY, (newDir) % 8));
-							break;
-						} j++;
-					} else { j++;
-					} }
+						}
+						j++;
+					}
 					curQueue = newQueue;
 				}
 
@@ -59,11 +58,11 @@ public class Contest {
 		}
 	}
 
-		public static int getStatus ( int x, int y, int direction){
-			int result = 0;
-			result = x;
-			result = (result << 9) | y;
-			result = (result << 3) | direction;
-			return result;
-		}
+	public static int getStatus ( int x, int y, int direction){
+		int result = 0;
+		result = x;
+		result = (result << 9) | y;
+		result = (result << 3) | direction;
+		return result;
 	}
+}
