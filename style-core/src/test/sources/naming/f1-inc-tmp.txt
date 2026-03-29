@@ -1,0 +1,46 @@
+============================================================
+File: src\test\sources\naming\f1.java
+Total Inconsistencies: 6
+============================================================
+[1] Type     : NAMING
+BeginLocation : line 3, column 43
+EndLocation   : line 3, column 54
+Expected : student_cnt
+Actual   : studentCount
+Message  : Name should be LOWER_UNDERSCORE, max length 7
+
+[2] Type     : NAMING
+BeginLocation : line 3, column 61
+EndLocation   : line 3, column 71
+Expected : bonus_points
+Actual   : bonusPoints
+Message  : Name should be LOWER_UNDERSCORE, max length 7
+
+[3] Type     : NAMING
+BeginLocation : line 4, column 6
+EndLocation   : line 4, column 15
+Expected : total_score
+Actual   : totalScore
+Message  : Name should be LOWER_UNDERSCORE, max length 7
+
+[4] Type     : NAMING
+BeginLocation : line 5, column 6
+EndLocation   : line 5, column 14
+Expected : base_score
+Actual   : baseScore
+Message  : Name should be LOWER_UNDERSCORE, max length 7
+
+[5] Type     : NAMING
+BeginLocation : line 7, column 11
+EndLocation   : line 7, column 22
+Expected : student_idx
+Actual   : studentIndex
+Message  : Name should be LOWER_UNDERSCORE, max length 7
+
+[6] Type     : NAMING
+BeginLocation : line 8, column 7
+EndLocation   : line 8, column 18
+Expected : cur_score
+Actual   : currentScore
+Message  : Name should be LOWER_UNDERSCORE, max length 7
+

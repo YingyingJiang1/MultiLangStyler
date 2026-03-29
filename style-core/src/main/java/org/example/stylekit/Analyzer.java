@@ -100,6 +100,7 @@ public class Analyzer {
 	private static List<InconsistencyInfo> analyzeOnTS(List<Token> tokens, MyParser parser, StylerContainer container) {
 		List<Styler> stylers = container.getTsStylers();
 		List<InconsistencyInfo> infos = new ArrayList<>();
+		TokenAugmentor.processAmbiguousToken(tokens, parser);
 		for (int i = 0; i < tokens.size(); i++) {
 			for (Styler styler : stylers) {
 				if (styler.isRelevant(tokens, i, Stage.ANALYZE, parser)) {
@@ -110,6 +111,7 @@ public class Analyzer {
 				}
 			}
 		}
+		TokenAugmentor.restoreState(tokens, parser);
 		return infos;
 	}
 //

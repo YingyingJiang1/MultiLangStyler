@@ -99,8 +99,7 @@ public class InconsistencyInfoGenerator {
 				InconsistencyType.NAMING,
 				newName, token.getText(),
 				message.toString(),
-				new InconsistencyInfo.Location(token.getLine(), token.getCharPositionInLine(),
-						token.getLine(), token.getCharPositionInLine() + token.getText().length()));
+				new InconsistencyInfo.Location(token, token));
 	}
 
 	public static InconsistencyInfo generateForOptionalBrace(ASTBasedCodeContext codeContext, OptionalBraceContext styleContext,
@@ -239,8 +238,7 @@ public class InconsistencyInfoGenerator {
 					(target.space1 ? spaceSymbol : "") + token.getText() + (target.space2 ? spaceSymbol : ""),
 					(current.space1 ? spaceSymbol : "") + token.getText() + (current.space2 ? spaceSymbol : ""),
 					String.format("Space around '%s' is%s required", token.getText(), target.space1 ? "" : " not"),
-					new InconsistencyInfo.Location(token.getLine(), token.getCharPositionInLine(), 
-					token.getLine(), token.getCharPositionInLine() + token.getText().length())
+					new InconsistencyInfo.Location(token, token)
 				);
 		} else {
 			Token token1 = codeContext.getToken(0);
@@ -299,8 +297,7 @@ public class InconsistencyInfoGenerator {
 				expected.toString(),
 				actual.toString(),
 				"",
-				new InconsistencyInfo.Location(startToken.getLine(), startToken.getCharPositionInLine(), 
-				stopToken.getLine(), stopToken.getCharPositionInLine() + stopToken.getText().length())
+				new InconsistencyInfo.Location(startToken, stopToken)
 			);
 	}
 
@@ -317,9 +314,7 @@ public class InconsistencyInfoGenerator {
 				String.format("%d newlines after %s", Integer.max(originalNewlines, 0), String.format("'%s'", anchorToken.getText())),
 				newlineOperation > 0 ? String.format("%d Newline should be added", newlineOperation)
 						: String.format("%d Newline should be removed", -newlineOperation) ,
-				new InconsistencyInfo.Location(anchorToken.getLine(), anchorToken.getCharPositionInLine(),
-						anchorToken.getLine(), anchorToken.getCharPositionInLine() + anchorToken.getText().length()-1)
-		);
+				new InconsistencyInfo.Location(anchorToken, anchorToken));
 	}
 
 	public static InconsistencyInfo generateForDeclarationLayout(ListASTBasedCodeContext codeContext,

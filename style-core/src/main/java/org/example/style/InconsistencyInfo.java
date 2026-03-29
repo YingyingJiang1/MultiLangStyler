@@ -3,6 +3,7 @@ package org.example.style;
 import java.util.Comparator;
 import java.util.Objects;
 
+import org.antlr.v4.runtime.Token;
 import org.example.style.codecontext.CodeContext;
 
 import lombok.Data;
@@ -15,11 +16,6 @@ public class InconsistencyInfo {
 	protected StyleApplyData styleApplyData; // TODO: remove this field
 
 	public InconsistencyInfo() {
-	}
-
-	public InconsistencyInfo(int[] startLoc, int[] endLoc, String message) {
-		this.location = new Location(startLoc[0],startLoc[1], endLoc[0], endLoc[1]);
-		this.message = message;
 	}
 
 	public InconsistencyInfo(InconsistencyType type, String expected, String actual,String message,
@@ -101,29 +97,20 @@ public class InconsistencyInfo {
 
 	@Data
 	public static class Location implements Comparable<Location> {
-		private int startRow, startColumn, endRow, endColumn; // all start from 0
-		private String source;
-		private int type;
-
-		public final static int FILE = 1;
-		public final static int STRING = 2;
+		private int startRow, startColumn, endRow, endColumn; // row start from 1, column start from 0. endXXX is inclusive.
 
 		public Location(CodeContext codeContext) {
 			this.startRow = codeContext.getStartRow();
 			this.startColumn = codeContext.getStartColumn();
 			this.endRow = codeContext.getEndRow();
 			this.endColumn = codeContext.getEndColumn();
-			this.type = STRING;
-			this.source = null;
 		}
 
-		public Location(int startRow, int startColumn, int endRow, int endColumn) {
-			this.startRow = startRow;
-			this.startColumn = startColumn;
-			this.endRow = endRow;
-			this.endColumn = endColumn;
-			this.type = STRING;
-			this.source = null;
+		public Location(Token startToken, Token stopToken) {
+			this.startRow = startToken.getLine();
+			this.startColumn = startToken.getCharPositionInLine();
+			this.endRow = stopToken.getLine();
+			this.endColumn = stopToken.getCharPositionInLine() + stopToken.getText().length() - 1;
 		}
 
 		@Override

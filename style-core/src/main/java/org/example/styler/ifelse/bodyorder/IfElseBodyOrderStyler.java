@@ -1,6 +1,7 @@
 package org.example.styler.ifelse.bodyorder;
 
 
+import org.antlr.v4.runtime.Token;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
@@ -14,6 +15,8 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderProperty;
 import org.example.styler.ifelse.bodyorder.style.IfElseBodyOrderStyle;
+
+import java.util.List;
 
 /**
  * This implementation rely on the assumptions:
@@ -59,6 +62,11 @@ public class IfElseBodyOrderStyler extends Styler {
             return InconsistencyInfoGenerator.generateForIfElseBodyOrder(nodeContext, current, target);
         }
         return null;
+    }
+
+    @Override
+    protected List<CodeContext> constructCodeContext(ExtendContext ctx, MyParser parser) {
+        return List.of(new ASTBasedCodeContext(ctx));
     }
 
     @Override
