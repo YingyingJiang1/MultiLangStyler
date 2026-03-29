@@ -52,6 +52,7 @@ public class Coordinator {
                         sb.append(entry.getValue());
                     }
                     Files.writeString(resOutFile.toPath(), sb.toString());
+                    logger.info("Style transfer results written to file: {}", taskOptions.getResOutPath());
                 } else {
                     // Write all results to the same directory
                     if (!resOutFile.exists()) {
@@ -62,7 +63,7 @@ public class Coordinator {
                         Path targetPath = Paths.get(taskOptions.getResOutPath(), srcPath.getFileName().toString());
                         Files.writeString(targetPath,entry.getValue());
                     }
-
+                    logger.info("Style transfer results written to directory: {}", taskOptions.getResOutPath());
                 }
             } else if (taskOptions.isOut2console()) {
                 // output to  console

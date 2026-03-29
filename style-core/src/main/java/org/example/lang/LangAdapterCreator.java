@@ -11,6 +11,7 @@ import org.example.lang.java.JavaASTNodeEditor;
 import org.example.lang.python.PythonAstNodeEditor;
 import org.example.lang.base.PlaceholderParser;
 import org.example.style.StylerContainer;
+import org.example.styler.Styler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,7 +129,7 @@ public class LangAdapterCreator {
 	}
 
 	public static StylerContainer createStylerContainer(String lang) {
-		List<Class<?>> enabledStylers = MyEnvironment.getProjectConfig().getEnabledStylers(lang);
+		List<Class<? extends Styler>> enabledStylers = MyEnvironment.getProjectConfig().getEnabledStylers(lang);
 		if (!enabledStylers.isEmpty()) {
 			return new StylerContainer(enabledStylers);
 		} else {
@@ -137,7 +138,7 @@ public class LangAdapterCreator {
 
 	}
 
-	public static StylerContainer createStylerContainer(String lang, List<Class<?>> enabledStylers) {
+	public static StylerContainer createStylerContainer(String lang, List<Class<? extends Styler>> enabledStylers) {
 		if (!enabledStylers.isEmpty()) {
 			return new StylerContainer(enabledStylers);
 		} else {

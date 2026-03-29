@@ -15,7 +15,6 @@ import org.example.myException.ExtractException;
 import org.example.style.StyleFileIO;
 import org.example.style.StyleProfile;
 import org.example.style.StylerContainer;
-import org.example.styler.CombinedStyler;
 import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.utils.FileCollection;
@@ -98,7 +97,7 @@ public class Extractor {
         dirStat.log();
 
         extractFinalize(container);
-        return combineStyle(container);
+        return container.generateStyleProfile();
     }
 
     /**
@@ -120,7 +119,7 @@ public class Extractor {
             TokenAugmentor tokenAugmentor = new TokenAugmentor();
             Extractor.extractRules(parser, container, tokenAugmentor);
             extractFinalize(container);
-            return combineStyle(container);
+            return container.generateStyleProfile();
         } catch (Exception e) {
             logger.error("Failed to extract style .",  e);
         }
@@ -176,21 +175,6 @@ public class Extractor {
                 styler.extractFinalize();
             }
         }
-    }
-
-
-    public static StyleProfile combineStyle(StylerContainer container) {
-        StyleProfile styleProfile = new StyleProfile();
-        for (Styler styler : container.getStylers()) {
-            if (styler instanceof CombinedStyler combinedStyler) {
-                combinedStyler.getStylers().forEach(
-                        s -> styleProfile.add(s.getStyle())
-                );
-            } else {
-                styleProfile.add(styler.getStyle());
-            }
-        }
-        return styleProfile;
     }
 
 }

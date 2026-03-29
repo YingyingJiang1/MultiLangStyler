@@ -3,6 +3,7 @@ package org.example.config;
 import lombok.Data;
 import org.dom4j.Element;
 import org.example.MyEnvironment;
+import org.example.styler.Styler;
 import org.example.utils.FileCollection;
 import org.example.utils.FileCollector;
 import org.slf4j.Logger;
@@ -259,7 +260,7 @@ public class MyConfiguration implements IConfig {
     String projectsFile;
     String styleProfilesFile;
     // This field controls which stylers are enabled dynamically for languages.
-    private Map<String, List<Class<?>>> enabledStylers;
+    private Map<String, List<Class<? extends Styler>>> enabledStylers;
     ThreadPoolConfig threadPool;
 
 
@@ -271,14 +272,14 @@ public class MyConfiguration implements IConfig {
       int queueCapacity;
     }
 
-    public void setEnabledStylers(String lang, List<Class<?>> stylerClasses) {
+    public void setEnabledStylers(String lang, List<Class<? extends Styler>> stylerClasses) {
       if (enabledStylers == null) {
         this.enabledStylers = new HashMap<>();
       }
       this.enabledStylers.put(lang, stylerClasses);
     }
 
-    public List<Class<?>> getEnabledStylers(String lang) {
+    public List<Class<? extends Styler>> getEnabledStylers(String lang) {
       if (enabledStylers != null && enabledStylers.containsKey(lang)) {
         return enabledStylers.get(lang);
       }

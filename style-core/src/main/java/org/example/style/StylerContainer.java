@@ -1,5 +1,6 @@
 package org.example.style;
 
+import org.example.styler.CombinedStyler;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.modifier.ModifierOrderStyler;
 import org.example.styler.declaration.layout.DeclarationLayoutStyler;
@@ -61,7 +62,7 @@ public class StylerContainer {
 
 	}
 
-	public StylerContainer(List<Class<?>> enabledStylers) {
+	public StylerContainer(List<Class<? extends Styler>> enabledStylers) {
 		this();
 		if (enabledStylers == null || enabledStylers.isEmpty()) {
 			return;
@@ -115,8 +116,21 @@ public class StylerContainer {
 		return null;
 	}
 
-	private void retainStylers(List<Styler> oldStylers, List<Class<?>> retainedStylers) {
+	private void retainStylers(List<Styler> oldStylers, List<Class<? extends Styler>> retainedStylers) {
 		oldStylers.removeIf(styler -> !retainedStylers.contains(styler.getClass()));
 	}
 
+	public StyleProfile generateStyleProfile() {
+		StyleProfile styleProfile = new StyleProfile();
+        for (Styler styler : getStylers()) {
+            if (styler instanceof CombinedStyler combinedStyler) {
+                combinedStyler.getStylers().forEach(
+                        s -> styleProfile.add(s.getStyle())
+                );
+            } else {
+                styleProfile.add(styler.getStyle());
+            }
+        }
+        return styleProfile;
+	}
 }

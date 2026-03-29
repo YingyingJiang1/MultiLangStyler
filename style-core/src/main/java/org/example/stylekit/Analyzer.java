@@ -68,6 +68,7 @@ public class Analyzer {
 	}
 
 	private static List<InconsistencyInfo> doAnalyze(MyParser parser, StylerContainer container) {
+		InconsistencyInfoGenerator.setStandardFormatterContainer(parser.getLanguage(), container.generateStyleProfile());
 		// Analyze on ast.
 		MyParseTreeWalker walker = new MyParseTreeWalker(parser, container.getFirstRoundStylers());
 		walker.walkTree(Stage.ANALYZE);

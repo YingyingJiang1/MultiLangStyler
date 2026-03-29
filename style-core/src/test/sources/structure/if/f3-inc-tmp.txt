@@ -1,0 +1,23 @@
+============================================================
+File: src\test\sources\structure\if\f3.java
+Total Inconsistencies: 1
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 5, column 2
+EndLocation   : line 8, column 2
+Expected : if ( score >= 90) {
+			System.out.println("优秀");
+			continue;
+		}
+		if ( score >= 80 && score < 90) {
+			System.out.println("优秀");
+			continue;
+		}
+		
+Actual   : if ( score >= 90|| score >= 80 && score < 90) {
+			System.out.println("优秀");
+			continue;
+		}
+		
+Message  : Pattern preference 'if ( $E ) $S if ( $E1 ) $S1'
+

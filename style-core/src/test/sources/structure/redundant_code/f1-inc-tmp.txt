@@ -1,4 +1,4 @@
 ============================================================
-File: src\test\sources\structure\continue\f2-gt.java
+File: src\test\sources\structure\redundant_code\f1.java
 Total Inconsistencies: 0
 ============================================================

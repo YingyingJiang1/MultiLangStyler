@@ -1,0 +1,11 @@
+============================================================
+File: src\test\sources\structure\check_then_assign\f1-gt.java
+Total Inconsistencies: 1
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 18, column 2
+EndLocation   : line 18, column 28
+Expected : int a = 0; if ( first > 0) { a = bInd; } 
+Actual   : int a = first > 0? bInd: 0; 
+Message  : Pattern preference '$M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }'
+

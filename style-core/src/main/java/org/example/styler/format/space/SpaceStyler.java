@@ -227,6 +227,9 @@ public class SpaceStyler extends Styler {
         Token rightToken = tokenBasedContext.getToken(1);
         String rightText = rightToken == null ? "" : rightToken.getText();
         String rightName = generateTokenName(rightToken, parser);
+        if (isNotApplicable(name, rightName)) {
+            return null;
+        }
         if (!parser.belongToBinOp(rightText) && !rightName.equals("<EOF>")) {
             // name is separator, keyword or identifier.
             return new SpaceContext(name, rightName);
@@ -234,8 +237,9 @@ public class SpaceStyler extends Styler {
         return null;
     }
 
-    @Override
-    protected boolean testStyleContext(StyleContext context) {
-        return context instanceof SpaceContext;
+    // space between keyword and identifier is not applicable, total 4 cases
+    boolean isNotApplicable(String leftName, String rightName) {
+        return (leftName.equals(TokenGroup.KEYWORD.name()) || leftName.equals(TokenGroup.IDENTIFIER.name())) &&
+        (rightName.equals(TokenGroup.IDENTIFIER.name()) || rightName.equals(TokenGroup.KEYWORD.name()));
     }
 }

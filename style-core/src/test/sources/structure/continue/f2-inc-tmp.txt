@@ -1,0 +1,50 @@
+============================================================
+File: src\test\sources\structure\continue\f2.java
+Total Inconsistencies: 1
+============================================================
+[1] Type     : STRUCTURAL_STYLE
+BeginLocation : line 26, column 3
+EndLocation   : line 46, column 22
+Expected : if ( i>=a && i>=b && i>=c) { mem[i]= Math.max(1+mem[i-a], Math.max(1+mem[i-b],1+mem[i-c]));
+			continue ; }  if(i>=a && i>=b)
+				mem[i]= Math.max(1+mem[i-a],1+mem[i-b]);
+			else
+			if(i>=c && i>=b)
+				mem[i]= Math.max(1+mem[i-c],1+mem[i-b]);
+			else
+			if(i>=a && i>=c)
+				mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
+			else
+			if(i>=a)
+				mem[i]= 1+mem[i-a];
+			else
+			if(i>=b)
+				mem[i]= 1+mem[i-b];
+			else
+			if(i>=c)
+				mem[i]= 1+mem[i-c];
+		
+Actual   : if(i>=a && i>=b && i>=c){
+				mem[i]= Math.max(1+mem[i-a], Math.max(1+mem[i-b],1+mem[i-c]));
+			}
+			else
+			if(i>=a && i>=b)
+				mem[i]= Math.max(1+mem[i-a],1+mem[i-b]);
+			else
+			if(i>=c && i>=b)
+				mem[i]= Math.max(1+mem[i-c],1+mem[i-b]);
+			else
+			if(i>=a && i>=c)
+				mem[i]= Math.max(1+mem[i-a],1+mem[i-c]);
+			else
+			if(i>=a)
+				mem[i]= 1+mem[i-a];
+			else
+			if(i>=b)
+				mem[i]= 1+mem[i-b];
+			else
+			if(i>=c)
+				mem[i]= 1+mem[i-c];
+		
+Message  : Pattern preference 'if ( $E ) { $S+ continue ; }  $S1+'
+

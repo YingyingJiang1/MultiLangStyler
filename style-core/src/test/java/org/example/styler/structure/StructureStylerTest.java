@@ -19,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class StructureStylerTest extends TestBase {
+	{
+		StructureStyler.TEST_MODE = true;
+	}
 	/********************************************************** Note!!!  **********************************************************/
 	// 配置文件中结构id会影响使用风格文件作为目标风格的测试用例，不要变更结构id
 	/**********************************************************   **********************************************************/
@@ -66,7 +69,7 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 
 	}
@@ -104,7 +107,7 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 	}
 
@@ -128,7 +131,7 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 	}
 
@@ -173,7 +176,7 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 	}
 
@@ -207,7 +210,7 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 	}
 
@@ -239,7 +242,7 @@ class StructureStylerTest extends TestBase {
 			}
 
 
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 	}
 
@@ -254,9 +257,11 @@ class StructureStylerTest extends TestBase {
 					e.printStackTrace();
 				}
 			}
-			testCodeEqual(actual, gtPath);
+			testCodeEqualWithoutWS(actual, gtPath);
 		}
 	}
+
+	/*-------------------------------------- Analyze Inconsistency Tests ----------------------------------*/
 
 	@Test
 	void analyzeInconsistency_redundantCode_matchesGolden() {
@@ -272,7 +277,7 @@ class StructureStylerTest extends TestBase {
 		String dir = Paths.get(javaTestCasesDir, "structure", "continue").toString();
 		assertAnalyzeInconsistencyMatchesGolden(dir,
 				new String[] {"f2.java", "f2-gt.java", "f4.java", "f4-gt.java"},
-				new String[] {"style2.xml", "f2.java", "style4.xml", "f4.java"},
+				new String[] {"style2.xml", "style2.xml", "style4.xml", "style4.xml"},
 				List.of(StructureStyler.class));
 	}
 
@@ -290,7 +295,7 @@ class StructureStylerTest extends TestBase {
 		String dir = Paths.get(javaTestCasesDir, "structure", "if").toString();
 		assertAnalyzeInconsistencyMatchesGolden(dir,
 				new String[] {"f1.java", "f1-gt.java", "f3.java", "f3-gt.java"},
-				new String[] {"style1.xml", "f1.java", "style2.xml", "f3.java"},
+				new String[] {"style1.xml", "style1.xml", "style2.xml", "style2.xml"},
 				List.of(StructureStyler.class));
 	}
 

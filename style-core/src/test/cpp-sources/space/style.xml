@@ -7,6 +7,9 @@
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
       <style_context tokens="IDENTIFIER )"/>
       <style_property space1="true" space2="true"/>
     </rule>
@@ -28,7 +31,7 @@
     </rule>
     <rule>
       <style_context tokens="KEYWORD IDENTIFIER"/>
-      <style_property space1="true" space2="true"/>
+      <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="++ )"/>
@@ -92,6 +95,10 @@
     </rule>
     <rule>
       <style_context tokens="( IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>

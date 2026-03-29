@@ -39,7 +39,7 @@ class SpaceStylerTest extends TestBase {
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
-			Path gtPath = Paths.get(dir, String.format("%s-gt.java", i + 1));
+			Path gtPath = Paths.get(dir, String.format("%s-gt.java", srcFiles[i].replace(".java", "")));
 			String actual = apply(Paths.get(dir, srcFiles[i]), Paths.get(dir, targetFiles[i]), "java", List.of(SpaceStyler.class));
 			if (false) {
 				try{
@@ -49,11 +49,7 @@ class SpaceStylerTest extends TestBase {
 				}
 			}
 
-			try {
-				testCodeEqual(actual, gtPath);
-			} catch (AssertionFailedError e) {
-				System.out.printf("Pair %d test failed%n", i + 1);
-			}
+			testCodeEqual(actual, gtPath);
 //			break;
 		}
 	}
@@ -63,17 +59,17 @@ class SpaceStylerTest extends TestBase {
 		String fileExt = ".cpp";
 		String dir = Paths.get(cppTestCasesDir, "space").toString();
 		String[] srcFiles = {
-//				"f1" + fileExt,
-//				"f2" + fileExt,
+				"f1" + fileExt,
+				"f2" + fileExt,
 				"f3" + fileExt,
-//				"f4" + fileExt
+				"f4" + fileExt
 		};
 
 		String[] targetFiles = {
-//				"f2" + fileExt,
-//				"f1" + fileExt,
+				"f2" + fileExt,
+				"f1" + fileExt,
 				"f4" + fileExt,
-//				"f3" + fileExt
+				"f3" + fileExt
 		};
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -87,11 +83,7 @@ class SpaceStylerTest extends TestBase {
 				}
 			}
 
-			try {
-				testCodeEqual(actual, gtPath);
-			} catch (AssertionFailedError e) {
-				logger.error("Pair `{}` test failed%n", i + 1, e);
-			}
+			testCodeEqual(actual, gtPath);
 //			break;
 		}
 	}

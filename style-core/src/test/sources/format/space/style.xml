@@ -23,6 +23,10 @@
       <style_property space1="true" space2="false"/>
     </rule>
     <rule>
+      <style_context tokens="KEYWORD IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context tokens=", IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
@@ -95,11 +99,19 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
+      <style_context tokens="IDENTIFIER IDENTIFIER"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context tokens=") ;"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context tokens=") {"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
+      <style_context tokens="KEYWORD KEYWORD"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>

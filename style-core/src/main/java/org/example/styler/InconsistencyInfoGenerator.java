@@ -23,6 +23,7 @@ import org.example.semantic.intf.symbol.Symbol;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
 import org.example.style.StyleFileIO;
+import org.example.style.StyleProfile;
 import org.example.style.StylerContainer;
 import org.example.style.codecontext.ASTBasedCodeContext;
 import org.example.style.codecontext.ListASTBasedCodeContext;
@@ -135,6 +136,9 @@ public class InconsistencyInfoGenerator {
 			EquivalentStructure templateStructure = codeContext.getStructure();
 			Forest forest = templateStructure.generateNewForest(current.getPreferenceIndex(), target.getPreferenceIndex(),
 					codeContext.getStartNode(), parser);
+			if (forest == null) { // prohibit transformation between current and target
+				return null;
+			}
 			List<ParseTree> expectedTrees = forest.getTrees();
 			List<? extends ParseTree> actualTrees = codeContext.getNodes();
 
@@ -143,7 +147,7 @@ public class InconsistencyInfoGenerator {
 
 			String language = parser.getLanguage();
 			expected = formatCodeWithStyle(expected, language);
-			actual = formatCodeWithStyle(actual, language);
+//			actual = formatCodeWithStyle(actual, language);
 
 			// generate message
 			String templateCode = templateStructure.getCodeSkeletonStr(target.getPreferenceIndex())
@@ -189,12 +193,7 @@ public class InconsistencyInfoGenerator {
 					return;
 				}
 
-				List<Class<?>> formatters = List.of(
-						NewlineStyler.class, SpaceStyler.class, IndentionStyler.class
-				);
-				StylerContainer container = LangAdapterCreator.createStylerContainer(lang, formatters);
-				container.fillStyle(styleProfile);
-				stylerContainers.put(lang, container);
+				setStandardFormatterContainer(lang, styleProfile);
 			} finally {
 				try {
 					Files.deleteIfExists(tmp);
@@ -391,7 +390,17 @@ public class InconsistencyInfoGenerator {
             }
 	}
 
-	public static void setStandardStylerContainer(String language, StylerContainer container) {
+	public static void setStandardFormatterContainer(String language, StyleProfile profile) {
+		List<Class<? extends Styler>> formatters = List.of(
+			NewlineStyler.class, SpaceStyler.class, IndentionStyler.class);
+		// Check whether the style exists for all formatters
+		for (Class<? extends Styler> formatter : formatters) {
+			if (profile.getStyle(formatter.getSimpleName()) == null) {
+				return;
+			}
+		}
+		StylerContainer container = LangAdapterCreator.createStylerContainer(language, formatters);
+		container.fillStyle(profile);
 		stylerContainers.put(language, container);
 	}
 }

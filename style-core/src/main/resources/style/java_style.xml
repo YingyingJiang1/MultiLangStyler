@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!-- style extracted from google/gson -->
 <program_style language="java">
+  <style name=""/>
+
   <style name="indention">
     <rule>
       <style_property indentionUnit="2" indentionType=" " indentEmptyLine="false" topHierarchyIndention="0"/>
     </rule>
   </style>
+
+
   <style name="inter_newline">
     <rule>
       <style_property hasNewline="true"/>
     </rule>
   </style>
   <style name="space">
+    <rule>
+      <style_property space1="true" space2="true"/>
+    </rule>
     <rule>
       <style_context tokens="KEYWORD QUESTION"/>
       <style_property space1="false" space2="true"/>
@@ -30,15 +37,15 @@
     </rule>
     <rule>
       <style_context tokens="@ KEYWORD"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="LITERAL QUESTION"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="QUESTION IDENTIFIER"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="} )"/>
@@ -50,7 +57,7 @@
     </rule>
     <rule>
       <style_context tokens="} ,"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="LEFT_ANGLE_BRACKET IDENTIFIER"/>
@@ -74,7 +81,7 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER QUESTION"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="RIGHT_ANGLE_BRACKET IDENTIFIER"/>
@@ -90,19 +97,15 @@
     </rule>
     <rule>
       <style_context tokens="QUESTION ("/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="} ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER KEYWORD"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="( KEYWORD"/>
-      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="[ ]"/>
@@ -110,7 +113,7 @@
     </rule>
     <rule>
       <style_context tokens="{ }"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER COMMENT"/>
@@ -118,19 +121,19 @@
     </rule>
     <rule>
       <style_context tokens="KEYWORD LITERAL"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="( UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="UNARY_OP LITERAL"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER UNARY_OP"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER RIGHT_ANGLE_BRACKET"/>
@@ -146,10 +149,6 @@
     </rule>
     <rule>
       <style_context tokens="UNARY_OP )"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( IDENTIFIER"/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -170,11 +169,11 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER LEFT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="{ IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens=", ("/>
@@ -193,20 +192,12 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context tokens="UNARY_OP IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="LITERAL }"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER ..."/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD {"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="RIGHT_ANGLE_BRACKET ["/>
@@ -218,7 +209,7 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER {"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="; COMMENT"/>
@@ -234,15 +225,15 @@
     </rule>
     <rule>
       <style_context tokens="@ IDENTIFIER"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD LEFT_ANGLE_BRACKET"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="LITERAL UNARY_OP"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="RIGHT_ANGLE_BRACKET {"/>
@@ -250,7 +241,7 @@
     </rule>
     <rule>
       <style_context tokens="IDENTIFIER ["/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="; UNARY_OP"/>
@@ -266,19 +257,11 @@
     </rule>
     <rule>
       <style_context tokens="KEYWORD UNARY_OP"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="] {"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER ("/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="IDENTIFIER )"/>
-      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="( LITERAL"/>
@@ -289,24 +272,20 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context tokens="IDENTIFIER ,"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="LITERAL ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens=") COMMENT"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD IDENTIFIER"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
+      <style_context tokens=") COMMENT"/>
+      <style_property space1="false" space2="true"/>
+    </rule>
+    <rule>
       <style_context tokens="KEYWORD ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="LEFT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
@@ -329,16 +308,12 @@
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
-      <style_context tokens="IDENTIFIER ;"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
       <style_context tokens="{ COMMENT"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD ("/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD )"/>
@@ -362,15 +337,11 @@
     </rule>
     <rule>
       <style_context tokens="QUESTION LITERAL"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="LITERAL ]"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="KEYWORD ["/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="RIGHT_ANGLE_BRACKET RIGHT_ANGLE_BRACKET"/>
@@ -381,15 +352,15 @@
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
+      <style_context tokens="COLON"/>
+      <style_property space1="true" space2="true"/>
+    </rule>
+    <rule>
       <style_context tokens=") QUESTION"/>
       <style_property space1="false" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="COLON_COLON"/>
-      <style_property space1="false" space2="false"/>
-    </rule>
-    <rule>
-      <style_context tokens="( ("/>
       <style_property space1="false" space2="false"/>
     </rule>
     <rule>
@@ -422,7 +393,7 @@
     </rule>
     <rule>
       <style_context tokens="( ;"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="; LITERAL"/>
@@ -458,15 +429,11 @@
     </rule>
     <rule>
       <style_context tokens="} KEYWORD"/>
-      <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="LITERAL )"/>
-      <style_property space1="false" space2="false"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens="QUESTION UNARY_OP"/>
-      <style_property space1="false" space2="true"/>
+      <style_property space1="true" space2="true"/>
     </rule>
     <rule>
       <style_context tokens=") ;"/>
@@ -475,10 +442,6 @@
     <rule>
       <style_context tokens="KEYWORD KEYWORD"/>
       <style_property space1="false" space2="true"/>
-    </rule>
-    <rule>
-      <style_context tokens="LITERAL ,"/>
-      <style_property space1="false" space2="false"/>
     </rule>
     <rule>
       <style_context tokens="; IDENTIFIER"/>
@@ -1679,12 +1642,13 @@
       <style_property newlines="0" breakIndex="1"/>
     </rule>
   </style>
+
   <style name="body_layout">
     <rule>
       <style_context>
-        <bodyType>ARRAY_INITIALIZER_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>false</hasLeftNeighbour>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>true</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
@@ -1693,57 +1657,47 @@
     <rule>
       <style_context>
         <bodyType>ANY_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="1" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
         <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="1" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ARRAY_INITIALIZER_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="1" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
+      <style_property beforeLB="0" afterRB="0"/>
     </rule>
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
         <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -1762,7 +1716,7 @@
     </rule>
     <rule>
       <style_context>
-        <bodyType>DEC_BODY</bodyType>
+        <bodyType>STMT_BODY</bodyType>
         <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
@@ -1772,70 +1726,60 @@
     </rule>
     <rule>
       <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>false</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
+        <bodyType>ARRAY_INITIALIZER_BODY</bodyType>
         <bodySize>MULTI_STMTS</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
+      <style_property beforeLB="0" afterRB="1"/>
     </rule>
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
         <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
       </style_context>
       <style_property beforeLB="0" afterRB="0"/>
@@ -1843,6 +1787,26 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>false</hasBrace>
+      </style_context>
+      <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
         <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
@@ -1862,6 +1826,16 @@
     </rule>
     <rule>
       <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
         <bodyType>ANY_BODY</bodyType>
         <bodySize>ONE_COMPOUND_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
@@ -1872,28 +1846,8 @@
     </rule>
     <rule>
       <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
         <bodyType>DEC_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -1919,6 +1873,16 @@
         <hasBrace>false</hasBrace>
       </style_context>
       <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ARRAY_INITIALIZER_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>false</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
     </rule>
   </style>
   <style name="intra_newline">

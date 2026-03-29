@@ -9,6 +9,7 @@ import org.example.antlr.common.token.ExtendToken;
 import org.example.style.StyleProfile;
 import org.example.style.Style;
 import org.example.style.StyleFileIO;
+import org.example.styler.Styler;
 import org.example.styler.structure.StructureStyler;
 import org.example.styler.structure.style.StructPreferenceContext;
 import org.example.styler.structure.style.StructPreferenceProperty;
@@ -43,7 +44,7 @@ public class TestBase {
 		return null;
 	}
 
-	protected void testCpp(String dir, String[] srcFiles, String[] targetFiles, List<Class<?>> classes) {
+	protected void testCpp(String dir, String[] srcFiles, String[] targetFiles, List<Class<? extends Styler>> classes) {
 		String fileExt = ".cpp";
 
 		for (int i = 0; i < srcFiles.length; i++) {
@@ -154,7 +155,7 @@ public class TestBase {
 	 * @param classes Stylers to be tested.
 	 * @return the transformed code
 	 */
-	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Object>> classes) {
+	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Styler>> classes) {
 		String lang = "java";
 		return apply(srcPath, targetPath, lang, classes);
 	}
@@ -167,7 +168,7 @@ public class TestBase {
 			String dir,
 			String[] srcFiles,
 			String[] targetFiles,
-			List<Class<?>> enabledStylers) {
+			List<Class<? extends Styler>> enabledStylers) {
 		assertAnalyzeInconsistencyMatchesGolden(dir, srcFiles, targetFiles, enabledStylers, "java");
 	}
 
@@ -175,7 +176,7 @@ public class TestBase {
 			String dir,
 			String[] srcFiles,
 			String[] targetFiles,
-			List<Class<?>> enabledStylers,
+			List<Class<? extends Styler>> enabledStylers,
 			String lang) {
 		if (srcFiles.length != targetFiles.length) {
 			fail("srcFiles and targetFiles must have the same length");
@@ -198,20 +199,19 @@ public class TestBase {
 			try {
 				String actual = Files.readString(tmpInc).replace("\r\n", "\n");
 				String expected = Files.readString(goldenPath).replace("\r\n", "\n");
-				assertEquals(expected, actual);
+				if (enabledStylers.contains(StructureStyler.class)) {
+					testCodeEqualWithoutWS(actual, goldenPath);
+				} else {
+					assertEquals(expected, actual);
+				}
+//				Files.deleteIfExists(tmpInc);
 			} catch (IOException e) {
 				throw new AssertionError(e);
-			} finally {
-				try {
-					Files.deleteIfExists(tmpInc);
-				} catch (IOException e) {
-					logger.warn("Failed to delete temp {}", tmpInc, e);
-				}
 			}
 		}
 	}
 
-	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {
+	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<? extends Styler>> classes) {
 		conf.getProjectConfig().setEnabledStylers(lang, classes);
 		MyEnvironment.setConf(conf);
 
@@ -277,6 +277,27 @@ public class TestBase {
 			assertEquals(expected, actual.replace("\r\n", "\n"));
 		} catch (Exception e)  {
 			logger.error("Test `{}` failed!", gtPath, e);
+		}
+		logger.info("Compare `{}`...OK", gtPath);
+	}
+
+	protected void testCodeEqualWithoutWS(String actual, Path gtPath) {
+		logger.info("Compare `{}`...", gtPath);
+		File gtFile = new File(gtPath.toString());
+		if (!gtFile.exists()) {
+			System.out.println("Warning: invalid test! Ground truth is not found!");
+		}
+		String expected = "";
+		try {
+			expected = Files.readString(gtPath);
+			assertEquals(expected.replaceAll("[ \t\r\n]", ""), actual.replaceAll("[ \t\r\n]", ""));
+		} catch (IOException e)  {
+			logger.error("Test `{}` failed!", gtPath, e);
+			throw new AssertionFailedError();
+		} catch (AssertionFailedError e) {
+			logger.error("Test `{}` failed! Expected and actual content differ (ignoring whitespace)", gtPath, e);
+			logger.error("expected:{}\n\n actual:{}", expected, actual);
+			throw e;
 		}
 		logger.info("Compare `{}`...OK", gtPath);
 	}

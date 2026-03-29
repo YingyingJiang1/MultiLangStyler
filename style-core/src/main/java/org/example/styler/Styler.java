@@ -148,7 +148,10 @@ public abstract class Styler {
 				continue;
 			}
 			if (isInconsistent(currentProperty, targetProperty, parser)) {
-				infos.add(generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser));
+				InconsistencyInfo info = generateInconsistencyInfo(codeContext, styleContext, currentProperty, targetProperty, parser);
+				if (info != null) {
+					infos.add(info);
+				}
 			}
 		}
 
