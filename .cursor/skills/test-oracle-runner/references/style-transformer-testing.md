@@ -34,7 +34,7 @@ Examples:
 ## B) Style inconsistency analysis — oracle file
 
 - **Oracle type**: **plain text** `.txt`.
-- **Naming**: replace the language extension with **`-inc.txt`** (same rule as `TestCoordinatorAnalyzeJava#createTaskOptions`: `taskOptions.getSrc().replace("." + LANG, "-inc.txt")`).
+- **Naming**: replace the language extension with **`-inc.txt`** (same path rule as `TestBase#assertAnalyzeInconsistencyMatchesGolden`: `srcPath` with `.<lang>` → `-inc.txt`).
 
 Examples:
 
@@ -74,4 +74,4 @@ The golden file must match the **exact text** that `Coordinator.analyzeInconsist
 - Report layout: `style-core/src/main/java/org/example/stylekit/Coordinator.java` (`analyzeInconsistency`, `StringBuilder` + file write).
 - Line format per inconsistency: `style-core/src/main/java/org/example/style/InconsistencyInfo.java` (`toString()`).
 - Message / field construction for many kinds: `style-core/src/main/java/org/example/styler/InconsistencyInfoGenerator.java`.
-- Example harness comparing tmp output to golden: `style-core/src/test/java/org/example/stylekit/TestCoordinatorAnalyzeJava.java`.
+- Shared harness: `TestBase#assertAnalyzeInconsistencyMatchesGolden`; per-styler tests in `*StylerTest` (e.g. `StructureStylerTest#analyzeInconsistency_*_matchesGolden`).

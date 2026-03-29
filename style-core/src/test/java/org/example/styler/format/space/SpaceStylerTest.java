@@ -17,6 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class SpaceStylerTest extends TestBase {
 
 	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "format", "space").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f1-gt.java", "f2.java", "f2-gt.java"},
+				new String[] {"f2.java", "f2.java", "f1.java", "f1.java"},
+				List.of(SpaceStyler.class));
+	}
+
+	@Test
 	void applyStyle() {
 		String dir = Paths.get(javaTestCasesDir, "format", "space").toString();
 		String[] srcFiles = {

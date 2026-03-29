@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -156,6 +157,58 @@ public class TestBase {
 	protected String apply(Path srcPath, Path targetPath, List<Class<? extends Object>> classes) {
 		String lang = "java";
 		return apply(srcPath, targetPath, lang, classes);
+	}
+
+	/**
+	 * Runs {@link Coordinator#analyzeInconsistency(TaskOptions)} for each (src, target) pair
+	 * and asserts the report equals the golden {@code <src>-inc.txt} beside the source file.
+	 */
+	protected void assertAnalyzeInconsistencyMatchesGolden(
+			String dir,
+			String[] srcFiles,
+			String[] targetFiles,
+			List<Class<?>> enabledStylers) {
+		assertAnalyzeInconsistencyMatchesGolden(dir, srcFiles, targetFiles, enabledStylers, "java");
+	}
+
+	protected void assertAnalyzeInconsistencyMatchesGolden(
+			String dir,
+			String[] srcFiles,
+			String[] targetFiles,
+			List<Class<?>> enabledStylers,
+			String lang) {
+		if (srcFiles.length != targetFiles.length) {
+			fail("srcFiles and targetFiles must have the same length");
+		}
+		MyEnvironment.setConf(conf);
+		conf.getProjectConfig().setEnabledStylers(lang, enabledStylers);
+		Coordinator coordinator = new Coordinator();
+		for (int i = 0; i < srcFiles.length; i++) {
+			Path srcPath = Paths.get(dir, srcFiles[i]);
+			Path targetPath = Paths.get(dir, targetFiles[i]);
+			Path tmpInc = Paths.get(srcPath.toString().replace("." + lang, "-inc-tmp.txt"));
+			Path goldenPath = Paths.get(srcPath.toString().replace("." + lang, "-inc.txt"));
+			assertTrue(Files.exists(goldenPath), "Missing inconsistency oracle: " + goldenPath);
+			TaskOptions taskOptions = new TaskOptions();
+			taskOptions.setSrc(srcPath.toString());
+			taskOptions.setTarget(targetPath.toString());
+			taskOptions.setResOutPath(tmpInc.toString());
+			taskOptions.setLanguage(lang);
+			coordinator.analyzeInconsistency(taskOptions);
+			try {
+				String actual = Files.readString(tmpInc).replace("\r\n", "\n");
+				String expected = Files.readString(goldenPath).replace("\r\n", "\n");
+				assertEquals(expected, actual);
+			} catch (IOException e) {
+				throw new AssertionError(e);
+			} finally {
+				try {
+					Files.deleteIfExists(tmpInc);
+				} catch (IOException e) {
+					logger.warn("Failed to delete temp {}", tmpInc, e);
+				}
+			}
+		}
 	}
 
 	protected String apply(Path srcPath, Path targetPath, String lang, List<Class<?>> classes) {

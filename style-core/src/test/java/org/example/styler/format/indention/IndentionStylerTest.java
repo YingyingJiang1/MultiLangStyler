@@ -18,6 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = Main.class)
 class IndentionStylerTest extends TestBase {
+
+	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "format", "indention").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f2.java", "f1-gt.java"},
+				new String[] {"f2.java", "f3.java", "f2.java"},
+				List.of(IndentionStyler.class));
+	}
+
 	@Test
 	void testJava() {
 		String dir = "src/test/sources/format/indention/";

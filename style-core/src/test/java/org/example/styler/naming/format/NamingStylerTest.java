@@ -11,6 +11,16 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 class NamingStylerTest extends TestBase {
+
+	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "naming").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"},
+				new String[] {"f2.java", "f1.java", "f2.java", "f1.java"},
+				List.of(NamingStyler.class));
+	}
+
   @Test
 	void test() {
 	  String dir = "src/test/sources/naming/";

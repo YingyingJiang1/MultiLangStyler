@@ -18,6 +18,15 @@ import java.util.List;
 class OptionalBraceStylerTest extends TestBase {
 
 	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "optional_brace").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f2.java", "f2-gt.java", "f5.java", "f5-gt.java"},
+				new String[] {"f1.java", "f1.java", "style1.java", "style1.java"},
+				List.of(OptionalBraceStyler.class));
+	}
+
+	@Test
 	void test() {
 		String dir = "src/test/sources/optional_brace";
 		String[] srcFiles = {

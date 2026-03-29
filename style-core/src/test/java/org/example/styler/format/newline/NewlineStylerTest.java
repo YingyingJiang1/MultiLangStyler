@@ -18,6 +18,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class NewlineStylerTest extends TestBase {
 
 	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "format", "newline").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f2.java", "f1-gt.java", "f2-gt.java"},
+				new String[] {"f2.java", "f7.java", "f2.java", "f7.java"},
+				List.of(NewlineStyler.class));
+	}
+
+	@Test
 	void applyStyle() {
 		String dir = "src/test/sources/format/newline/";
 		String[] srcFiles = {

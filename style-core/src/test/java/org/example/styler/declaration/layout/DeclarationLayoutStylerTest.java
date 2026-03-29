@@ -17,6 +17,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeclarationLayoutStylerTest extends TestBase {
+
+	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "declaration").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f3.java", "f1-gt.java", "f3-gt.java"},
+				new String[] {"f2.java", "f4.java", "f2.java", "f4.java"},
+				List.of(DeclarationLayoutStyler.class));
+	}
+
 	@Test
 	void testSplit() {
 		String dir = "src/test/sources/declaration";

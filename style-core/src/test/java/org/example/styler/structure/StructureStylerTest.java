@@ -258,4 +258,49 @@ class StructureStylerTest extends TestBase {
 		}
 	}
 
+	@Test
+	void analyzeInconsistency_redundantCode_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "structure", "redundant_code").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f2.java", "f2-gt.java"},
+				new String[] {"f2.java", "f3.java", "f3.java"},
+				List.of(StructureStyler.class));
+	}
+
+	@Test
+	void analyzeInconsistency_continuePreference_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "structure", "continue").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f2.java", "f2-gt.java", "f4.java", "f4-gt.java"},
+				new String[] {"style2.xml", "f2.java", "style4.xml", "f4.java"},
+				List.of(StructureStyler.class));
+	}
+
+	@Test
+	void analyzeInconsistency_checkThenAssign_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "structure", "check_then_assign").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f1-gt.java", "f2.java", "f2-gt.java"},
+				new String[] {"style1.xml", "f1.java", "style2.xml", "f2.java"},
+				List.of(StructureStyler.class));
+	}
+
+	@Test
+	void analyzeInconsistency_if_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "structure", "if").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f1-gt.java", "f3.java", "f3-gt.java"},
+				new String[] {"style1.xml", "f1.java", "style2.xml", "f3.java"},
+				List.of(StructureStyler.class));
+	}
+
+	@Test
+	void analyzeInconsistency_loop_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "structure", "loop").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f1-gt.java", "f3.java", "f3-gt.java"},
+				new String[] {"style1.xml", "f1.java", "style3.xml", "f3.java"},
+				List.of(StructureStyler.class));
+	}
+
 }

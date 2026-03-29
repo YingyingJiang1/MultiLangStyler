@@ -11,6 +11,15 @@ import java.util.List;
 class ModifierOrderStylerTest extends TestBase {
 
 	@Test
+	void analyzeInconsistency_matchesGolden() {
+		String dir = Paths.get(javaTestCasesDir, "arrangement", "modifier").toString();
+		assertAnalyzeInconsistencyMatchesGolden(dir,
+				new String[] {"f1.java", "f1-gt.java"},
+				new String[] {"style1.xml", "style1.xml"},
+				List.of(ModifierOrderStyler.class));
+	}
+
+	@Test
 	void test() {
 		String dir = "src/test/sources/arrangement/modifier/";
 		String[] srcFiles = {
