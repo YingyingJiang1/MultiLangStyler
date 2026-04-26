@@ -96,18 +96,27 @@ public class EquivalentStructure {
 	}
 
 	void compile(XmlRuleParser.Rule xmlRule, String language) {
-		String[] codes = xmlRule.codes.toArray(new String[0]);
+		String[] codes = xmlRule.codeSpecs.stream().map(XmlRuleParser.CodeSpec::getCode).toArray(String[]::new);
 		try {
 
 			placeholderParser = LangAdapterCreator.createPlaceholderParser(language);
 			placeholderParser.init(codes);
-			for (int i = 0; i < codes.length; i++) {
-				boolean multiStmts = codes[i].startsWith("$^");
-				String code = replacePlaceholder(codes[i]);
+			for (int i = 0; i < xmlRule.codeSpecs.size(); i++) {
+				XmlRuleParser.CodeSpec spec = xmlRule.codeSpecs.get(i);
+				boolean multiStmts = spec.code.startsWith("$^");
+				String code = replacePlaceholder(spec.code);
 				MyParser parser = LangAdapterCreator.createParser(language);
 
 				int priority = getPriority(code);
-				ParseTree tree = parser.parseFromString(code);
+				String grammar = spec.grammar;
+				ParseTree tree;
+				if (grammar == null || grammar.trim().isEmpty()) {
+					// If grammar is not explicitly specified, fall back to tryParse-based parsing.
+					tree = parser.parseFromString(code);
+				} else {
+					// Otherwise, parse with the explicit grammar entry rule first.
+					tree = parseWithExplicitRuleIfProvided(parser, code, grammar);
+				}
 				if (tree == null) {
 					throw new CompilationException("The equivalent structure with id:" + rule.id + " has a compilation error. " +
 							"Please ensure adjacent tokens in configured codes are seperated by space!");
@@ -115,7 +124,7 @@ public class EquivalentStructure {
 				List<ParseTree> trees = new ArrayList<>();
 				if (multiStmts) {
 					if (tree instanceof ExtendContext ctx) {
-						ExtendContext blockCtx = (ExtendContext) ctx.children.get(0);
+						ExtendContext blockCtx = ctx.getFirstCtxChildIf(child -> child.getRuleIndex() == parser.getRuleBlock());
 						trees.addAll(blockCtx.children.subList(1, blockCtx.children.size() - 1));
 					}
 				} else {
@@ -141,7 +150,7 @@ public class EquivalentStructure {
 //					});
 //				}
 
-				forests.add(new Forest(trees, priority, xmlRule.styles.get(i)));
+				forests.add(new Forest(trees, priority, spec.style));
 			}
 
 			for (Forest forest : forests) {
@@ -152,6 +161,22 @@ public class EquivalentStructure {
 		} catch (CompilationException e) {
 			logger.error(e.getMessage(), e);
 		}
+	}
+
+	private ParseTree parseWithExplicitRuleIfProvided(MyParser parser, String code, String grammar) {
+		if (parser == null) {
+			return null;
+		}
+
+		// Logical rules (language-agnostic)
+		int ruleIndex = switch (grammar.toUpperCase()) {
+			case "STMT" -> parser.getRuleStmt();
+			case "EXPR" -> parser.getRuleExpression();
+			default -> throw new CompilationException("Invalid grammar `" + grammar + "` for equivalent structure id:" + rule.id
+							+ " (language=" + parser.getLanguage() + ")");
+			};
+
+		return  parser.parse(code, ruleIndex);
 	}
 
 	public int getPriority(int index) {
@@ -195,7 +220,7 @@ public class EquivalentStructure {
 	}
 
 	public String getCodeSkeletonStr(int index) {
-		return rule.codes.get(index);
+		return rule.codeSpecs.get(index).code;
 	}
 
 	public synchronized int match(ParseTree t, MyParser parser) {
@@ -503,9 +528,9 @@ public class EquivalentStructure {
 	 *
 	 */
 	private void createVNodeMap(ParseTree node, Forest forest) {
-		if (!(node instanceof ExtendContext)) {
-			return;
-		}
+//		if (!(node instanceof ExtendContext)) {
+//			return;
+//		}
 		VirtualNode vNode = placeholderParser.getVNode(node);
 		if (vNode != null && placeholderParser.isMatched(vNode.type, node)) {
 			if (vNode.isEmpty()) {
@@ -521,8 +546,10 @@ public class EquivalentStructure {
 			return;
 		}
 
-		for (ParseTree child : ((ExtendContext) node).children) {
-			createVNodeMap(child, forest);
+		if (node instanceof ExtendContext) {
+			for (ParseTree child : ((ExtendContext) node).children) {
+				createVNodeMap(child, forest);
+			}
 		}
 	}
 
@@ -571,12 +598,18 @@ class XmlRuleParser {
 	private static Logger logger = LoggerFactory.getLogger(XmlRuleParser.class);
 
 	@Data
+	public static class CodeSpec {
+		public String code;
+		public String style;
+		public String grammar;
+	}
+
+	@Data
 	public static class Rule {
 		public int id;
 		public String name;
 		public String category;
-		public List<String> codes = new ArrayList<>();
-		public List<String> styles = new ArrayList<>();
+		public List<CodeSpec> codeSpecs = new ArrayList<>();
 		public List<Checker> checkers = new ArrayList<>();
 		public List<Handler> handlers = new ArrayList<>();
 		Map<Integer, List<Integer>> bannedTransfer;
@@ -584,7 +617,7 @@ class XmlRuleParser {
 
 		@Override
 		public String toString() {
-			return "Rule{id='" + id + "', name='" + name + "', category='" + category + "', codes=" + codes +
+			return "Rule{id='" + id + "', name='" + name + "', category='" + category + "', codeSpecs=" + codeSpecs +
 					 ", checkers=" + checkers + ", handlers=" + handlers +
 					", comments='" + comments + "'}";
 		}
@@ -610,12 +643,11 @@ class XmlRuleParser {
 		try {
 			// Codes
 			node.element("codes").elements().forEach(e -> {
-				rule.codes.add(e.getText());
-				if (e.attribute("style") != null) {
-					rule.styles.add(e.attributeValue("style"));
-				} else {
-					rule.styles.add(null);
-				}
+				CodeSpec spec = new CodeSpec();
+				spec.code = e.getText();
+				spec.grammar = e.attribute("grammar") != null ? e.attributeValue("grammar") : null;
+				spec.style = e.attribute("style") != null ? e.attributeValue("style") : null;
+				rule.codeSpecs.add(spec);
 			});
 
 			rule.checkers = parseCheckers(node);

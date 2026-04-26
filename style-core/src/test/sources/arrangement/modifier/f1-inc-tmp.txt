@@ -1,0 +1,18 @@
+============================================================
+File: src\test\sources\arrangement\modifier\f1.java
+Total Inconsistencies: 2
+============================================================
+[1] Type     : MODIFIER_ORDER
+BeginLocation : line 1, column 0
+EndLocation   : line 1, column 12
+Expected : ACCESS_CONTROL, static
+Actual   : static, ACCESS_CONTROL
+Message  : Incorrect modifier order
+
+[2] Type     : MODIFIER_ORDER
+BeginLocation : line 2, column 1
+EndLocation   : line 2, column 32
+Expected : synchronized, ACCESS_CONTROL, static, final
+Actual   : final, static, ACCESS_CONTROL, synchronized
+Message  : Incorrect modifier order
+

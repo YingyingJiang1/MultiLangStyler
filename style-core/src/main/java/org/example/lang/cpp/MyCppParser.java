@@ -1,19 +1,5 @@
 package org.example.lang.cpp;
 
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
-import org.example.stylekit.TokenAugmentor;
-import org.example.lang.intf.MyParser;
-import org.example.antlr.common.context.ExtendContext;
-import org.example.antlr.common.factory.ExtendTokenFactory;
-import org.example.antlr.common.token.ExtendToken;
-import org.example.antlr.common.token.TokenNameGetter;
-import org.example.antlr.cpp.CPPLexer;
-import org.example.antlr.cpp.CPPParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -21,6 +7,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Lexer;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.factory.ExtendTokenFactory;
+import org.example.antlr.common.token.ExtendToken;
+import org.example.antlr.common.token.TokenNameGetter;
+import org.example.antlr.cpp.CPPLexer;
+import org.example.antlr.cpp.CPPParser;
+import org.example.lang.intf.MyParser;
+import org.example.stylekit.TokenAugmentor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyCppParser implements MyParser {
 	public static Logger logger = LoggerFactory.getLogger(MyCppParser.class);
@@ -95,7 +100,10 @@ public class MyCppParser implements MyParser {
 		ParseTree t = switch (rule) {
 			case CPPParser.RULE_translationUnit -> parser.translationUnit();
 			case CPPParser.RULE_statement -> parser.statement();
+			case CPPParser.RULE_block -> parser.block();
 			case CPPParser.RULE_declarationseq -> parser.declarationseq();
+			case CPPParser.RULE_expression -> parser.expression();
+			case CPPParser.RULE_functionDefinition -> parser.functionDefinition();
 			default -> null;
 		};
 
@@ -137,27 +145,40 @@ public class MyCppParser implements MyParser {
 		Predicate<ExtendContext> parseFailTester = new Predicate<ExtendContext>() {
 			@Override
 			public boolean test(ExtendContext root) {
-				return !parser.isMatchedEOF() || parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
+				// Don't use parser.isMatchedEOF() here (it can be unreliable across different entry rules).
+				// EOF is validated once at the end after a successful parse attempt.
+				return parser.getNumberOfSyntaxErrors() > 0 || root.children.isEmpty();
 			}
 		};
 
-		ExtendContext root = (ExtendContext) parser.expression();
+		// Try from larger granularity to smaller (similar to java tryParse)
+		ExtendContext root = (ExtendContext) parser.translationUnit();
 		if (parseFailTester.test(root)) {
 			parser.reset();
-			root = parser.statement();
+			root = parser.declarationseq();
 			if (parseFailTester.test(root)) {
 				parser.reset();
-				root = parser.declarationseq();
+				// method-level (function definition) snippets
+				root = parser.functionDefinition();
 				if (parseFailTester.test(root)) {
 					parser.reset();
-					root = parser.translationUnit();
+					root = parser.statement();
+					if (parseFailTester.test(root)) {
+						parser.reset();
+						root = parser.block();
+						if (parseFailTester.test(root)) {
+							parser.reset();
+							root = (ExtendContext) parser.expression();
+						}
+					}
 				}
 			}
 		}
-		if (parser.getNumberOfSyntaxErrors() > 0) {
-			logger.error("Failed to parse code.");
-			return null;
-		}
+        if (parser.getNumberOfSyntaxErrors() > 0 || (parser.getCurrentToken().getType() != CPPParser.EOF)) {
+            logger.error("Failed to parse code, " +
+                    "this program is only able to parse the top-level, typeDeclaration-level, method-level, stmt-level,expression-level code.");
+            return null;
+        }
 
 
 		TokenAugmentor.addContextTokens(this);
@@ -869,23 +890,29 @@ public class MyCppParser implements MyParser {
 
 	@Override
 	public ExtendTokenFactory getTokenFactory() {
+		if (parser != null && parser.getTokenFactory() instanceof ExtendTokenFactory tf) {
+			return tf;
+		}
 		return ExtendTokenFactory.DEFAULT;
 	}
 
 
 	@Override
 	public Set<String> getOperators() {
-		return Set.of();
+		Set<String> operators = new HashSet<>();
+		operators.addAll(getBinOps());
+		operators.addAll(getUnaryOps());
+		return operators;
 	}
 
 	@Override
 	public Set<String> getBinOps() {
-		return Set.of();
+		return MyParser.binOps;
 	}
 
 	@Override
 	public Set<String> getUnaryOps() {
-		return Set.of();
+		return MyParser.unaryOps;
 	}
 
 	@Override
@@ -900,17 +927,23 @@ public class MyCppParser implements MyParser {
 
 	@Override
 	public Set<Integer> getHomoOps() {
-		return Set.of();
+		return Set.of(
+				CPPParser.Plus, CPPParser.Minus, CPPParser.Star, CPPParser.Div, CPPParser.Mod,
+				CPPParser.And, CPPParser.Or, CPPParser.Caret
+		);
 	}
 
 	@Override
 	public Set<Integer> getCompoundAssign() {
-		return Set.of();
+		return Set.of(
+				CPPParser.PlusAssign, CPPParser.MinusAssign, CPPParser.StarAssign, CPPParser.DivAssign, CPPParser.ModAssign,
+				CPPParser.AndAssign, CPPParser.OrAssign, CPPParser.XorAssign
+		);
 	}
 
 	@Override
 	public Set<Integer> getLiterals() {
-		return Set.of();
+		return literals;
 	}
 
 	@Override

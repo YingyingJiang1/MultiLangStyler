@@ -74,7 +74,22 @@ public class ExtendContext extends ParserRuleContext {
 
     @Override
     public ExtendContext clone() throws CloneNotSupportedException {
-        return null;
+        try {
+            // Most generated parser contexts have a constructor (ParserRuleContext parent, int invokingState).
+            // Using reflection here avoids having to manually add clone() to each generated Context class.
+            @SuppressWarnings("unchecked")
+            Class<? extends ExtendContext> clazz = (Class<? extends ExtendContext>) this.getClass();
+            var ctor = clazz.getDeclaredConstructor(ParserRuleContext.class, int.class);
+            ctor.setAccessible(true);
+            ExtendContext copy = ctor.newInstance(getParent(), invokingState);
+            copy.hierarchy = this.hierarchy;
+            // children are rebuilt by ParseTreeUtil.copyTree; ensure fresh list here.
+            copy.children = new ArrayList<>(0);
+            return copy;
+        } catch (Exception e) {
+            // Keep contract: return null when clone can't be performed.
+            return null;
+        }
     }
 
     public void addChild(ParseTree t) {

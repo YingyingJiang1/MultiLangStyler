@@ -550,37 +550,7 @@
     <rule>
       <style_context>
         <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>DEC_BODY</bodyType>
         <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>true</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>true</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -591,36 +561,6 @@
       <style_context>
         <bodyType>DEC_BODY</bodyType>
         <bodySize>ONE_COMPOUND_STMT</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>ANY_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="0"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>MULTI_STMTS</bodySize>
-        <hasLeftNeighbour>true</hasLeftNeighbour>
-        <hasRightNeighbour>false</hasRightNeighbour>
-        <hasBrace>true</hasBrace>
-      </style_context>
-      <style_property beforeLB="0" afterRB="1"/>
-    </rule>
-    <rule>
-      <style_context>
-        <bodyType>STMT_BODY</bodyType>
-        <bodySize>EMPTY</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
         <hasRightNeighbour>false</hasRightNeighbour>
         <hasBrace>true</hasBrace>
@@ -639,6 +579,16 @@
     </rule>
     <rule>
       <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
         <bodyType>ANY_BODY</bodyType>
         <bodySize>ONE_SINGLE_STMT</bodySize>
         <hasLeftNeighbour>true</hasLeftNeighbour>
@@ -646,6 +596,56 @@
         <hasBrace>false</hasBrace>
       </style_context>
       <style_property beforeLB="1" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>EMPTY</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>DEC_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_SINGLE_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>true</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>STMT_BODY</bodyType>
+        <bodySize>ONE_COMPOUND_STMT</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="1"/>
+    </rule>
+    <rule>
+      <style_context>
+        <bodyType>ANY_BODY</bodyType>
+        <bodySize>MULTI_STMTS</bodySize>
+        <hasLeftNeighbour>true</hasLeftNeighbour>
+        <hasRightNeighbour>false</hasRightNeighbour>
+        <hasBrace>true</hasBrace>
+      </style_context>
+      <style_property beforeLB="0" afterRB="0"/>
     </rule>
   </style>
   <style name="intra_newline">

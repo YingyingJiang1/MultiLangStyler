@@ -2,11 +2,11 @@
     <!-- 要求每条规则的id和name唯一 -->
     <rule id="1" name="inc" category="Increment or decrement preferences">
         <codes>
-            <code>$E ++ ;</code>
-            <code>++ $E ;</code>
-            <code>$E += 1 ;</code>
-            <code>$E = $E1 + 1 ;</code>
-            <code>$E = 1 + $E1 ;</code>
+            <code grammar="STMT">$E ++ ;</code>
+            <code grammar="STMT">++ $E ;</code>
+            <code grammar="STMT">$E += 1 ;</code>
+            <code grammar="STMT">$E = $E1 + 1 ;</code>
+            <code grammar="STMT">$E = 1 + $E1 ;</code>
         </codes>
         <holders value="$E,$E1"/>
         <checkers>
@@ -28,10 +28,10 @@
     </rule>
     <rule id="2" name="dec" category="Increment or decrement preferences">
         <codes>
-            <code>$E -- ;</code>
-            <code>-- $E ;</code>
-            <code>$E -= 1 ;</code>
-            <code>$E = $E1 - 1 ;</code>
+            <code grammar="STMT">$E -- ;</code>
+            <code grammar="STMT">-- $E ;</code>
+            <code grammar="STMT">$E -= 1 ;</code>
+            <code grammar="STMT">$E = $E1 - 1 ;</code>
         </codes>
         <checkers>
             <checker>
@@ -53,8 +53,8 @@
     <!-- exclude <<,>>,>>>,because they are not single token(they are combinations of LT and GT). -->
     <rule id="3" name="assignment1" category="Assignment statement preferences">
         <codes>
-            <code>$E = $E1 $HOMO_BOP $E2 ;</code>
-            <code>$E $HOMO_BOP_ASSIGN $E2 ;</code>
+            <code grammar="STMT">$E = $E1 $HOMO_BOP $E2 ;</code>
+            <code grammar="STMT">$E $HOMO_BOP_ASSIGN $E2 ;</code>
         </codes>
         <checkers>
             <checker>
@@ -87,8 +87,8 @@
     </rule>
     <rule id="4" name="nesting if" category="Continuous logic and preferences">
         <codes>
-            <code>if ( $E &amp;&amp; $E1 ) $S</code>
-            <code>if ( $E ) { if ( $E1 ) $S }</code>
+            <code grammar="STMT">if ( $E &amp;&amp; $E1 ) $S</code>
+            <code grammar="STMT">if ( $E ) { if ( $E1 ) $S }</code>
         </codes>
         <checkers/>
         <handlers>
@@ -102,8 +102,8 @@
     </rule>
     <rule id="5" name="cascading if" category="Continuous logic or preferences">
         <codes>
-            <code>if ( $E || $E1 ) $S</code>
-            <code>$^ if ( $E ) $S if ( $E1 ) $S1 </code>
+            <code grammar="STMT">if ( $E || $E1 ) $S</code>
+            <code grammar="STMT">$^ if ( $E ) $S if ( $E1 ) $S1 </code>
         </codes>
         <checkers>
             <checker>
@@ -130,21 +130,21 @@
     </rule>
     <rule id="6" name="loop_empty" category="Loops">
         <codes>
-            <code>for ( ; ; ) $S</code>
-            <code>while ( true ) $S</code>
+            <code grammar="STMT">for ( ; ; ) $S</code>
+            <code grammar="STMT">while ( true ) $S</code>
         </codes>
     </rule>
     <rule id="7" name="loop1" category="Loops">
         <codes>
-            <code>for ( ; $E ; ) $S</code>
-            <code>while ( $E ) $S</code>
+            <code grammar="STMT">for ( ; $E ; ) $S</code>
+            <code grammar="STMT">while ( $E ) $S</code>
         </codes>
     </rule>
     <rule id="8" name="loop2" category="Loops" enable="false">
         <codes>
-            <code>for ( $EXP_LIST ; $E1 ; ) $S</code>
-            <code>$^ $S(expStmt) for ( ; $E1 ; ) $S</code>
-            <code>$^ $S(expStmt) while ( $E1 ) $S</code>
+            <code grammar="STMT">for ( $EXP_LIST ; $E1 ; ) $S</code>
+            <code grammar="STMT">$^ $S(expStmt) for ( ; $E1 ; ) $S</code>
+            <code grammar="STMT">$^ $S(expStmt) while ( $E1 ) $S</code>
         </codes>
         <handlers>
             <handler>
@@ -169,9 +169,9 @@
     </rule>
     <rule id="9" name="loop3" category="Loops">
         <codes>
-            <code>for ( $VAR_DEC ; $E ; ) $S</code>
-            <code>$^ $VAR_DEC ; for ( ; $E ; ) $S</code>
-            <code>$^ $VAR_DEC ; while ( $E ) $S</code>
+            <code grammar="STMT">for ( $VAR_DEC ; $E ; ) $S</code>
+            <code grammar="STMT">$^ $VAR_DEC ; for ( ; $E ; ) $S</code>
+            <code grammar="STMT">$^ $VAR_DEC ; while ( $E ) $S</code>
         </codes>
         <handlers>
             <handler>
@@ -196,8 +196,8 @@
     </rule>
     <rule id="10" name="loop4" category="Loops" enable="false">
         <codes>
-            <code>for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
-            <code>while ( $E1 ) { $S* $S(expStmt) }</code>
+            <code grammar="STMT">for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
+            <code grammar="STMT">while ( $E1 ) { $S* $S(expStmt) }</code>
         </codes>
         <checkers>
             <checker>
@@ -230,8 +230,8 @@
     </rule>
     <rule id="11" name="loop5" category="Loops" enable="false">
         <codes>
-            <code>for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }</code>
-            <code>$^ $S(expStmt) while ( $E1 ) { $S* $S(expStmt)1 }</code>
+            <code grammar="STMT">for ( $EXP_LIST ; $E1 ; $EXP_LIST1 ) { $S* }</code>
+            <code grammar="STMT">$^ $S(expStmt) while ( $E1 ) { $S* $S(expStmt)1 }</code>
         </codes>
         <checkers>
             <checker>
@@ -270,9 +270,9 @@
     </rule>
     <rule id="12" name="loop6" category="Loops">
         <codes>
-            <code>for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
-            <code>$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
-            <code>$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
+            <code grammar="STMT">for ( $VAR_DEC ; $E1 ; $EXP_LIST ) { $S* }</code>
+            <code grammar="STMT">$^ $VAR_DEC ; for ( ; $E1 ; $EXP_LIST ) { $S* }</code>
+            <code grammar="STMT">$^ $VAR_DEC ; while ( $E1 ) { $S* $S(expStmt) }</code>
         </codes>
         <checkers>
             <checker>
@@ -323,16 +323,16 @@
     </rule>
     <rule id="13" name="check_then_return" category="Check then return preferences">
         <codes>
-            <code>return $E ? $E1 : $E2 ;</code>
-            <code>if ( $E ) { return $E1 ; } else { return $E2 ; }</code>
+            <code grammar="STMT">return $E ? $E1 : $E2 ;</code>
+            <code grammar="STMT">if ( $E ) { return $E1 ; } else { return $E2 ; }</code>
         </codes>
     </rule>
     <rule id="14" name="dec_then_check_assign" category="CHECK_THEN_ASSIGN">
         <codes>
-            <code style="DEFAULT_OVERRIDE_STYLE">$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
-            <code  style="TERNARY_STYLE">$M $T $I = $E ? $E1 : $E2 ;</code>
-            <code  style="TERNARY_STYLE1">$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>
-            <code style="IF_ELSE_STYLE">$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
+            <code grammar="STMT" style="DEFAULT_OVERRIDE_STYLE">$^ $M $T $I = $E2 ; if ( $E ) { $E3 = $E1 ; }</code>
+            <code grammar="STMT"  style="TERNARY_STYLE">$M $T $I = $E ? $E1 : $E2 ;</code>
+            <code grammar="STMT"  style="TERNARY_STYLE1">$^ $M $T $I ; $E3 = $E ? $E1 : $E2 ;</code>
+            <code grammar="STMT" style="IF_ELSE_STYLE">$^ $M $T $I ; if ( $E ) { $E3 = $E1 ; } else { $E4 = $E2 ; }</code>
         </codes>
         <checkers>
             <checker>
@@ -359,9 +359,9 @@
     </rule>
     <rule id="15" name="check_then_assign" category="CHECK_THEN_ASSIGN">
         <codes>
-            <code style="DEFAULT_OVERRIDE_STYLE">$^ $E = $E3 ; if ( $E1 ) { $E4 = $E2 ; }</code>
-            <code style="TERNARY_STYLE">$E = $E1 ? $E2 : $E3 ;</code>
-            <code style="IF_ELSE_STYLE">if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }</code>
+            <code grammar="STMT" style="DEFAULT_OVERRIDE_STYLE">$^ $E = $E3 ; if ( $E1 ) { $E4 = $E2 ; }</code>
+            <code grammar="STMT" style="TERNARY_STYLE">$E = $E1 ? $E2 : $E3 ;</code>
+            <code grammar="STMT" style="IF_ELSE_STYLE">if ( $E1 ) { $E = $E2 ; } else { $E4 = $E3 ; }</code>
         </codes>
         <checkers>
             <checker>
@@ -386,33 +386,33 @@
     </rule>
     <rule id="16" name="op_preference1" category="Operator preferences" enable="false">
         <codes>
-            <code>$E &lt; $E1</code>
-            <code>$E1 > $E</code>
+            <code grammar="EXPR">$E &lt; $E1</code>
+            <code grammar="EXPR">$E1 &gt; $E</code>
         </codes>
     </rule>
     <rule id="17"  name="op_preference2" category="Operator preferences" enable="false">
         <codes>
-            <code>$E &lt;= $E1</code>
-            <code>$E1 >= $E</code>
+            <code grammar="EXPR">$E &lt;= $E1</code>
+            <code grammar="EXPR">$E1 &gt;= $E</code>
         </codes>
     </rule>
     <rule id="18"  name="op_preference3" category="Operator preferences">
         <codes>
-            <code>$E == false</code>
-            <code>! $E</code>
+            <code grammar="EXPR">$E == false</code>
+            <code grammar="EXPR">! $E</code>
         </codes>
     </rule>
     <rule id="19"  name="literal_position" category="Literal position in bool expression">
         <codes>
-            <code>$LITERAL == $E</code>
-            <code>$E == $LITERAL</code>
+            <code grammar="EXPR">$LITERAL == $E</code>
+            <code grammar="EXPR">$E == $LITERAL</code>
         </codes>
     </rule>
     <rule id="22"  name="continue_jump1" category="Continue preferences">
         <codes>
-            <code>$^ if ( $E ) { continue ; }  $S+</code>
-            <code>if ( $E ) { continue ; } else { $S+ }</code>
-            <code>if ( $E ) { $S+ }</code>
+            <code grammar="STMT">$^ if ( $E ) { continue ; }  $S+</code>
+            <code grammar="STMT">if ( $E ) { continue ; } else { $S+ }</code>
+            <code grammar="STMT">if ( $E ) { $S+ }</code>
         </codes>
         <checkers>
             <checker>
@@ -445,9 +445,9 @@
     </rule>
     <rule id="23" name="continue_jump2" category="Continue preferences">
         <codes>
-            <code>$^ if ( $E ) { $S+ continue ; }  $S1+</code>
-            <code>if ( $E ) { $S+ continue ; } else { $S1+ }</code>
-            <code>if ( $E ) { $S+ } else { $S1+ }</code>
+            <code grammar="STMT">$^ if ( $E ) { $S+ continue ; }  $S1+</code>
+            <code grammar="STMT">if ( $E ) { $S+ continue ; } else { $S1+ }</code>
+            <code grammar="STMT">if ( $E ) { $S+ } else { $S1+ }</code>
         </codes>
         <checkers>
             <checker>
@@ -475,8 +475,8 @@
     <!-- Consider to add complexity checker to check the complexity of '$S1+' -->
     <rule id="24" name="redundant_code1" category="Redundant code">
         <codes>
-            <code>$^ if ( $E ) { $S+ }  $S1+</code>
-            <code>if ( $E ) { $S+ } else { $S1+ }</code>
+            <code grammar="STMT">$^ if ( $E ) { $S+ }  $S1+</code>
+            <code grammar="STMT">if ( $E ) { $S+ } else { $S1+ }</code>
         </codes>
         <checkers>
             <checker>
@@ -515,8 +515,8 @@
     </rule>
     <rule id="25"  name="redundant_code2" category="Redundant code">
         <codes>
-            <code>$^ if ( $E ) { $S+ } else { $S1+ } $S2+</code>
-            <code>if ( $E ) { $S+ } else { $S1+ }</code>
+            <code grammar="STMT">$^ if ( $E ) { $S+ } else { $S1+ } $S2+</code>
+            <code grammar="STMT">if ( $E ) { $S+ } else { $S1+ }</code>
         </codes>
         <checkers>
             <checker>

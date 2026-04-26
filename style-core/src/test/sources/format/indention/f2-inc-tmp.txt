@@ -1,0 +1,235 @@
+============================================================
+File: src\test\sources\format\indention\f2.java
+Total Inconsistencies: 33
+============================================================
+[1] Type     : INDENTATION
+BeginLocation : line 1, column 0
+EndLocation   : line 1, column 0
+Expected : 
+Actual   : 1<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[2] Type     : INDENTATION
+BeginLocation : line 2, column 0
+EndLocation   : line 2, column 1
+Expected : 2<sp>
+Actual   : 2<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[3] Type     : INDENTATION
+BeginLocation : line 3, column 0
+EndLocation   : line 3, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[4] Type     : INDENTATION
+BeginLocation : line 5, column 0
+EndLocation   : line 5, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[5] Type     : INDENTATION
+BeginLocation : line 6, column 0
+EndLocation   : line 6, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[6] Type     : INDENTATION
+BeginLocation : line 7, column 0
+EndLocation   : line 7, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[7] Type     : INDENTATION
+BeginLocation : line 8, column 0
+EndLocation   : line 8, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[8] Type     : INDENTATION
+BeginLocation : line 9, column 0
+EndLocation   : line 9, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[9] Type     : INDENTATION
+BeginLocation : line 10, column 0
+EndLocation   : line 10, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[10] Type     : INDENTATION
+BeginLocation : line 11, column 0
+EndLocation   : line 11, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[11] Type     : INDENTATION
+BeginLocation : line 12, column 0
+EndLocation   : line 12, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[12] Type     : INDENTATION
+BeginLocation : line 13, column 0
+EndLocation   : line 13, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[13] Type     : INDENTATION
+BeginLocation : line 14, column 0
+EndLocation   : line 14, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[14] Type     : INDENTATION
+BeginLocation : line 15, column 0
+EndLocation   : line 15, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[15] Type     : INDENTATION
+BeginLocation : line 16, column 0
+EndLocation   : line 16, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[16] Type     : INDENTATION
+BeginLocation : line 18, column 0
+EndLocation   : line 18, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[17] Type     : INDENTATION
+BeginLocation : line 19, column 0
+EndLocation   : line 19, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[18] Type     : INDENTATION
+BeginLocation : line 20, column 0
+EndLocation   : line 20, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[19] Type     : INDENTATION
+BeginLocation : line 22, column 0
+EndLocation   : line 22, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[20] Type     : INDENTATION
+BeginLocation : line 23, column 0
+EndLocation   : line 23, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[21] Type     : INDENTATION
+BeginLocation : line 24, column 0
+EndLocation   : line 24, column 4
+Expected : 8<sp>
+Actual   : 5<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[22] Type     : INDENTATION
+BeginLocation : line 25, column 0
+EndLocation   : line 25, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[23] Type     : INDENTATION
+BeginLocation : line 26, column 0
+EndLocation   : line 26, column 4
+Expected : 8<sp>
+Actual   : 5<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[24] Type     : INDENTATION
+BeginLocation : line 27, column 0
+EndLocation   : line 27, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[25] Type     : INDENTATION
+BeginLocation : line 28, column 0
+EndLocation   : line 28, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[26] Type     : INDENTATION
+BeginLocation : line 29, column 0
+EndLocation   : line 29, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[27] Type     : INDENTATION
+BeginLocation : line 30, column 0
+EndLocation   : line 30, column 4
+Expected : 8<sp>
+Actual   : 5<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[28] Type     : INDENTATION
+BeginLocation : line 31, column 0
+EndLocation   : line 31, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[29] Type     : INDENTATION
+BeginLocation : line 32, column 0
+EndLocation   : line 32, column 4
+Expected : 8<sp>
+Actual   : 5<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[30] Type     : INDENTATION
+BeginLocation : line 33, column 0
+EndLocation   : line 33, column 3
+Expected : 6<sp>
+Actual   : 4<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[31] Type     : INDENTATION
+BeginLocation : line 34, column 0
+EndLocation   : line 34, column 2
+Expected : 4<sp>
+Actual   : 3<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[32] Type     : INDENTATION
+BeginLocation : line 35, column 0
+EndLocation   : line 35, column 1
+Expected : 2<sp>
+Actual   : 2<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+
+[33] Type     : INDENTATION
+BeginLocation : line 36, column 0
+EndLocation   : line 36, column 0
+Expected : 
+Actual   : 1<tab>
+Message  : Indentation style:  2 spaces per level; top-level offset: 0; not indented empty lines
+

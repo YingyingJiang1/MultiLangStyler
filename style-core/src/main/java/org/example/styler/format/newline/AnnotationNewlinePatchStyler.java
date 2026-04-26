@@ -1,17 +1,17 @@
 package org.example.styler.format.newline;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
+import org.example.lang.intf.MyParser;
 import org.example.style.InconsistencyInfo;
 import org.example.style.NewlineInconsistencyInfo;
 import org.example.styler.NewlinePatchStyler;
 import org.example.styler.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class AnnotationNewlinePatchStyler extends NewlinePatchStyler {
 	public AnnotationNewlinePatchStyler() {

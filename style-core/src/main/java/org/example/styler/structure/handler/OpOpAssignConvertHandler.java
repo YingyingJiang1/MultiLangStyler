@@ -26,6 +26,8 @@ public class OpOpAssignConvertHandler extends Handler{
 		convertMap.put("/=", "/");
 		convertMap.put("%", "%=");
 		convertMap.put("%=", "%");
+		convertMap.put("+", "+=");
+		convertMap.put("-", "-=");
 
 		convertMap.put("&", "&=");
 		convertMap.put("&=", "&");
@@ -33,6 +35,8 @@ public class OpOpAssignConvertHandler extends Handler{
 		convertMap.put("|=", "|");
 		convertMap.put("^", "^=");
 		convertMap.put("^=", "^");
+		convertMap.put("+=", "+");
+		convertMap.put("-=", "-");
 
 	}
 	public OpOpAssignConvertHandler(String[][] argsList) {

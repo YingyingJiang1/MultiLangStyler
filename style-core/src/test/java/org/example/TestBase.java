@@ -91,7 +91,7 @@ public class TestBase {
 
 			StyleProfile styleProfile = new StyleProfile();
 			styleProfile.add(style);
-			StylerContainer container = LangAdapterCreator.createStylerContainer(language);
+			StylerContainer container = LangAdapterCreator.createStylerContainer(language, List.of(StructureStyler.class));
 			container.fillStyle(styleProfile);
 			Map<String, String> resultMap = Applicator.applyStyle(Paths.get(dir, srcFiles[i]).toString(), language, container);
 			String actual = resultMap.entrySet().stream().toList().get(0).getValue();

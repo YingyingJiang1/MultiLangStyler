@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <program_style language="cpp">
-  <style name="structure_preference"/>
+  <style name="structure_preference">
+    <rule>
+      <style_context category="CHECK_THEN_ASSIGN"/>
+      <style_property preferenceIndex="0" style="DEFAULT_OVERRIDE_STYLE"/>
+    </rule>
+    <rule>
+      <style_context id="19"/>
+      <style_property preferenceIndex="1"/>
+    </rule>
+  </style>
 </program_style>

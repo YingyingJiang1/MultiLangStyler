@@ -5,16 +5,15 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.example.RunStatistic;
-import org.example.lang.intf.MyParser;
 import org.example.antlr.common.context.ExtendContext;
 import org.example.antlr.common.token.ExtendToken;
+import org.example.lang.intf.MyParser;
 import org.example.style.InconsistencyInfo;
 import org.example.style.NewlineInconsistencyInfo;
 import org.example.style.rule.StyleRule;
@@ -56,7 +55,7 @@ public class NewlineStyler extends Styler implements CombinedStyler {
 
 	@Override
 	public void extractStyle(ExtendContext ctx, MyParser parser) {
-		if (mutexStyler.isRelevant(ctx, Stage.EXTRACT, parser)) {
+		if ("java".equalsIgnoreCase(parser.getLanguage()) && mutexStyler.isRelevant(ctx, Stage.EXTRACT, parser)) {
 			mutexStyler.extractStyle(ctx, parser);
 		} else {
 			for (int i = 0; i < ctx.getChildCount() - 1; i++) {
@@ -78,7 +77,7 @@ public class NewlineStyler extends Styler implements CombinedStyler {
 
 	@Override
 	public ExtendContext applyStyle(ExtendContext ctx, MyParser parser) {
-		if (mutexStyler.isRelevant(ctx, Stage.APPLY, parser)) {
+		if ("java".equalsIgnoreCase(parser.getLanguage()) && mutexStyler.isRelevant(ctx, Stage.APPLY, parser)) {
 			mutexStyler.applyStyle(ctx, parser);
 		} else{
 			for (int i = 0; i < ctx.getChildCount() - 1; i++) {

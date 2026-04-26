@@ -40,6 +40,7 @@ lang:
       placeholderParser: org.example.lang.cpp.CppPlaceholderParser
       symbolResolver: org.example.lang.java.symbol.JavaResolver
       typeResolver: org.example.lang.base.symbol.TypeResolverImpl
+      astNodeSearcher: org.example.lang.cpp.CppASTNodeSearcher
       equivalencesConfig: "/cpp_equivalences.xml"
 
     python:

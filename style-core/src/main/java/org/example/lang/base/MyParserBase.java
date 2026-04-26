@@ -1,16 +1,5 @@
 package org.example.lang.base;
 
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.example.antlr.common.context.ExtendContext;
-import org.example.antlr.common.factory.ExtendTokenFactory;
-import org.example.antlr.common.token.AmbigousToken;
-import org.example.antlr.common.token.ExtendToken;
-import org.example.antlr.common.token.TokenNameGetter;
-import org.example.stylekit.TokenAugmentor;
-import org.example.lang.LangAdapterCreator;
-import org.example.lang.intf.MyParser;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +7,20 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.antlr.common.context.ExtendContext;
+import org.example.antlr.common.factory.ExtendTokenFactory;
+import org.example.antlr.common.token.AmbigousToken;
+import org.example.antlr.common.token.ExtendToken;
+import org.example.antlr.common.token.TokenNameGetter;
+import org.example.lang.LangAdapterCreator;
+import org.example.lang.intf.MyParser;
+import org.example.stylekit.TokenAugmentor;
 
 public class MyParserBase implements MyParser {
 	protected Parser parser = null;
@@ -83,6 +86,7 @@ public class MyParserBase implements MyParser {
 	protected ParseTree tryParse() {
 		return null;
 	}
+	
 
 	@Override
 	public TokenStream getTokenStream() {
