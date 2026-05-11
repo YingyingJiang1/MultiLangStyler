@@ -1,9 +1,15 @@
 package org.example.styler.arrangement.modifier;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.example.antlr.common.context.ExtendContext;
 import org.example.lang.LangAdapterCreator;
 import org.example.lang.intf.MyParser;
-import org.example.antlr.common.context.ExtendContext;
 import org.example.style.InconsistencyInfo;
 import org.example.style.InconsistencyType;
 import org.example.style.codecontext.CodeContext;
@@ -14,8 +20,6 @@ import org.example.styler.Stage;
 import org.example.styler.Styler;
 import org.example.styler.arrangement.modifier.style.ModifierOrderProperty;
 import org.example.styler.arrangement.modifier.style.ModifierOrderStyle;
-
-import java.util.*;
 
 /**
  * @implNote : style application rely on the hypothesis:
@@ -72,6 +76,9 @@ public class ModifierOrderStyler extends Styler {
 		if (codeContext instanceof ListASTBasedCodeContext listContext) {
 			List<String> modifiers = new ArrayList<>();
 			for (ParseTree node : listContext.getNodes()) {
+				if (parser.isAnnotation(node)) {
+					continue;
+				}
 				String modifierName = getModifierName(node, parser);
 				if (!modifierName.isEmpty()) {
 					modifiers.add(modifierName);
@@ -125,12 +132,17 @@ public class ModifierOrderStyler extends Styler {
 														  StyleProperty targetProperty, MyParser parser) {
 		if (currentProperty instanceof ModifierOrderProperty current && targetProperty instanceof ModifierOrderProperty target) {
 			 List[] filteredLists = alignModifiers(current.order, target.order);
+			 CodeContext filteredCodeContext = codeContext;
+			 if (codeContext instanceof ListASTBasedCodeContext listContext) {
+				filteredCodeContext = new ListASTBasedCodeContext(
+						listContext.getNodes().stream().filter(node ->  !parser.isAnnotation(node)).toList());
+			 }
 			InconsistencyInfo info = new InconsistencyInfo(
 					InconsistencyType.MODIFIER_ORDER,
 					filteredLists[1].toString().substring(1, filteredLists[1].toString().length() - 1),
 					filteredLists[0].toString().substring(1, filteredLists[0].toString().length() - 1),
 					"Incorrect modifier order",
-					new InconsistencyInfo.Location(codeContext)
+					new InconsistencyInfo.Location(filteredCodeContext)
 			);
 
 			return info;

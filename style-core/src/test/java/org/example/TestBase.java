@@ -107,6 +107,7 @@ public class TestBase {
 				testCodeEqualIgnoreWS(actual, gtPath);
 			} catch (AssertionFailedError e) {
 				logger.error("Pair `{}` test failed", i + 1, e);
+				throw e;
 			}
 //			break;
 		}
