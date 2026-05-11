@@ -3,7 +3,6 @@ This project is a style transfer and style inconsistency analysis tool for sourc
 It provides functionalities to extract coding style from reference code, 
 analyze the style inconsistencies between source code and reference code, and transfer the coding style of source code to match the style of reference code.
 It supports 20 style aspects, which are categorized into three groups: formatting style (e.g., indentation, spacing), syntactic style (e.g., variable declaration layout), and semantic style (e.g., order of if-else branches).
-It supports multiple programming languages, including Java, Python, and C++.
 
 # Running the Application
 
